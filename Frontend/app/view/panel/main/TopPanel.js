@@ -5,13 +5,14 @@
  */
 
 Ext.define(
-    'FBEditor.view.dockedPanel.TopPanel',
-    {
-        extend: 'FBEditor.view.dockedPanel.AbstractPanel',
-        width: '85%',
-        height: '20%',
-        x: '15%',
-        y: 0,
+	'FBEditor.view.panel.main.TopPanel',
+	{
+		extend: 'FBEditor.view.panel.main.AbstractPanel',
+		height: 100,
+		region: 'north',
+		collapsible: true,
+		split: true,
+		bodyPadding: 10,
         title: 'Верхняя панель',
         html: 'Содержимое верхней панели'
     }

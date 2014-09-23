@@ -5,13 +5,14 @@
  */
 
 Ext.define(
-    'FBEditor.view.dockedPanel.LeftPanel',
+    'FBEditor.view.panel.main.LeftPanel',
     {
-        extend: 'FBEditor.view.dockedPanel.AbstractPanel',
+        extend: 'FBEditor.view.panel.main.AbstractPanel',
         width: '15%',
-        height: '100%',
-        x: 0,
-        y: 0,
+	    region: 'west',
+	    collapsible: true,
+	    split: true,
+	    bodyPadding: 10,
         title: 'Левая панель',
         html: 'Содержимое левой панели'
     }

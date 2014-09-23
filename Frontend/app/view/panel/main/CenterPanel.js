@@ -5,15 +5,16 @@
  */
 
 Ext.define(
-    'FBEditor.view.dockedPanel.CenterPanel',
-    {
-        extend: 'FBEditor.view.dockedPanel.AbstractPanel',
-        width: '70%',
-        height: '80%',
-        maximizable: true,
-        x: '15%',
-        y: '20%',
+	'FBEditor.view.panel.main.CenterPanel',
+	{
+		extend: 'FBEditor.view.panel.main.AbstractPanel',
+		//width: '70%',
+		region: 'center',
+		collapsible: false,
+		split: true,
+		bodyPadding: 10,
         title: 'Центральная панель',
+		html: 'Содержимое центральной панели',
 
         afterRender: function ()
         {
@@ -21,7 +22,7 @@ Ext.define(
 	            htmlEditor,
                 panel;
 
-	        htmlEditor = Ext.create('Ext.form.field.HtmlEditor');
+	        /*htmlEditor = Ext.create('Ext.form.field.HtmlEditor');
             panel = Ext.create(
                 'Ext.panel.Panel',
                 {
@@ -34,7 +35,7 @@ Ext.define(
                 }
             );
             me.add(panel);
-	        htmlEditor.setValue(me.getText());
+	        htmlEditor.setValue(me.getText());*/
             me.callParent(arguments);
         },
 
