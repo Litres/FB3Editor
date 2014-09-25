@@ -3,6 +3,7 @@
  * "autoCreateViewport" property. That setting automatically applies the "viewport"
  * plugin to promote that instance of this class to the body element.
  */
+
 Ext.define(
 	'FBEditor.view.main.Main',
 	{
@@ -25,6 +26,34 @@ Ext.define(
 	        type: 'border'
 	    },
 
+		/**
+		 * @property {Object} Конфигурация панелей.
+		 */
+		panelConfig: {
+			navigation: {
+				xtype: 'panel-main-navigation',
+				width: '15%',
+				region: 'west',
+				maximize: true,
+				collapsible: true
+			},
+			props: {
+				xtype: 'panel-main-props',
+				width: '15%',
+				region: 'east',
+				maximize: true,
+				collapsible: true
+			}
+		},
+
+		/**
+		 * @property {Object} Ссылки на окна с отсоединенными панелями.
+		 */
+		windowPanels: {
+			navigation: null,
+			props: null
+		},
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -39,39 +68,28 @@ Ext.define(
 						xtype: 'panel-main-content'
 					}
 				];
-				if (!localStorage.getItem('navigation'))
-				{
-					me.items.push(
+
+				// добавляем панели, если они не отсоединены
+				Ext.Object.each(
+					me.windowPanels,
+					function (key)
+					{
+						if (!localStorage.getItem(key))
 						{
-							xtype: 'panel-main-navigation',
-							width: '15%',
-							region: 'west',
-							maximize: true,
-							collapsible: true
+							me.items.push(me.panelConfig[key]);
 						}
-					);
-				}
-				if (!localStorage.getItem('props'))
-				{
-					me.items.push(
-						{
-							xtype: 'panel-main-props',
-							width: '15%',
-							region: 'east',
-							maximize: true,
-							collapsible: true
-						}
-					);
-				}
+					}
+				);
 			}
+
 			me.callParent(arguments);
 		},
 
 		/**
-		 * Добавляет панель.
+		 * Создает панель в отдельном окне.
 		 * @param {String} name Имя панели.
 		 */
-		addPanel: function (name)
+		createPanel: function (name)
 		{
 			var me = this,
 				xtype,
@@ -85,6 +103,35 @@ Ext.define(
 				}
 			);
 			document.title = document.title + ' - ' + panel.title;
+		},
+
+		/**
+		 * Присоеденияет отсоединенную панель обратно.
+		 * @param {String} name Имя панели.
+		 */
+		attachPanel: function (name)
+		{
+			var me = this;
+
+			localStorage.removeItem(name);
+			me.add(me.panelConfig[name]);
+		},
+
+		/**
+		 * Убирает отсоединенную панель.
+		 * @param {Window} win Ссылка на окно с отсоединенной панелью.
+		 */
+		removeDetachedPanel: function (win)
+		{
+			var me = this,
+				name,
+				panel;
+
+			name = win.name;
+			me.windowPanels[name] = win;
+			localStorage.setItem(name, true);
+			panel = Ext.getCmp('panel-main-' + name);
+			panel.close();
 		}
 	}
 );

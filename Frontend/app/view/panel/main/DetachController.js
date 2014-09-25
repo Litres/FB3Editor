@@ -1,5 +1,5 @@
 /**
- * Контроллер панели навигации.
+ * Контроллер отсоединенной панели.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -18,9 +18,7 @@ Ext.define(
 		    var name;
 
 		    name = panel.panelName;
-		    panel.close();
-		    window.open('#panel/' + name, name, 'top=30,left=30');
-		    localStorage.setItem(name, true);
+		    window.open('#panel/' + name, name, 'top=30,left=30,toolbar=no,location=no');
 	    }
     }
 );

@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.PropsController',
 			'FBEditor.view.panel.main.props.PropsModel'
 		],
+		id: 'panel-main-props',
 		xtype: 'panel-main-props',
 		controller: 'panel.main.props',
 		viewModel: {

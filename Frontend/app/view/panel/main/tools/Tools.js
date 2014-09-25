@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.main.tools.ToolsController',
 			'FBEditor.view.panel.main.tools.ToolsModel'
 		],
+		id: 'panel-main-tools',
 		xtype: 'panel-main-tools',
 		controller: 'panel.main.tools',
 		viewModel: {

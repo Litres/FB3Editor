@@ -3,6 +3,7 @@
  * Ext.application(). This is the ideal place to handle application launch and initialization
  * details.
  */
+
 Ext.define(
 	'FBEditor.Application',
 	{
@@ -19,15 +20,25 @@ Ext.define(
 
 		init: function ()
 		{
+			var me = this;
+
 			// родительское окно
 			FBEditor.parentWindow = window.opener;
+
+			// закрытие/обновление окна
+			window.onbeforeunload = function ()
+			{
+				me.onbeforeunload(me);
+			}
 		},
 
 	    launch: function ()
 	    {
-		    var me = this;
-
-		    window.onbeforeunload = me.onbeforeunload;
+		    if (FBEditor.parentWindow)
+		    {
+			    // убираем отсоединенную панель из главного окна
+			    FBEditor.parentWindow.Ext.getCmp('main').removeDetachedPanel(window);
+		    }
 	    },
 
 		/**
@@ -44,14 +55,33 @@ Ext.define(
 
 		/**
 		 * Выполняет необходимые действия перед закрытием окна.
+		 * @param {FBEditor.Application} scope Ссылка на приложение.
 		 */
-		onbeforeunload: function ()
+		onbeforeunload: function (scope)
 		{
-			if (FBEditor.parentWindow)
+			var me = scope;
+
+			if (FBEditor.parentWindow && !FBEditor.closingWindow)
 			{
-				localStorage.removeItem(window.name);
+				// флаг закрытия окна, чтобы избежать зацикливания
+				FBEditor.closingWindow = true;
+
+				me.attachPanel();
 				window.close();
 			}
+		},
+
+		/**
+		 * Присоеденияет отсоединенную панель обратно в главное окно редактора.
+		 */
+		attachPanel: function ()
+		{
+			var panelName,
+				parentPanel;
+
+			panelName = window.name;
+			parentPanel = FBEditor.parentWindow.Ext.getCmp('main');
+			parentPanel.attachPanel(panelName);
 		}
 	}
 );

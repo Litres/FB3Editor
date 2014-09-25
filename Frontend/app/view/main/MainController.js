@@ -3,6 +3,7 @@
  * "autoCreateViewport" property. That setting automatically applies the "viewport"
  * plugin to promote that instance of this class to the body element.
  */
+
 Ext.define(
 	'FBEditor.view.main.MainController',
 	{
@@ -49,7 +50,7 @@ Ext.define(
 				view;
 
 			view = me.getView();
-			view.addPanel(name);
+			view.createPanel(name);
 		}
 	}
 );

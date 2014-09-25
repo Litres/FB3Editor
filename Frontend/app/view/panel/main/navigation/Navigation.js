@@ -12,6 +12,7 @@ Ext.define(
 		    'FBEditor.view.panel.main.navigation.NavigationController',
 		    'FBEditor.view.panel.main.navigation.NavigationModel'
 	    ],
+	    id: 'panel-main-navigation',
 	    xtype: 'panel-main-navigation',
 	    controller: 'panel.main.navigation',
 	    viewModel: {

@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.main.content.ContentController',
 			'FBEditor.view.panel.main.content.ContentModel'
 		],
+		id: 'panel-main-content',
 		xtype: 'panel-main-content',
 		controller: 'panel.main.content',
 		viewModel: {
