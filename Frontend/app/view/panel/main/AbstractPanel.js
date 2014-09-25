@@ -8,6 +8,13 @@
 Ext.define(
     'FBEditor.view.panel.main.AbstractPanel',
     {
-        extend: 'Ext.panel.Panel'
+        extend: 'Ext.panel.Panel',
+	    /*header: {
+		    padding: 5
+	    },*/
+	    split: {
+		    size: 2
+	    },
+	    bodyPadding: 5
     }
 );

@@ -1,19 +1,16 @@
 /**
- * Центральная основная панель.
+ * Панель контента.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.CenterPanel',
+	'FBEditor.view.panel.main.ContentPanel',
 	{
 		extend: 'FBEditor.view.panel.main.AbstractPanel',
-		//width: '70%',
+		xtype: 'panel-main-content',
 		region: 'center',
 		collapsible: false,
-		split: true,
-		bodyPadding: 10,
-        title: 'Центральная панель',
 		html: 'Содержимое центральной панели',
 
         afterRender: function ()

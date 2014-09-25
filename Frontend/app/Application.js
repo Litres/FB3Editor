@@ -3,16 +3,40 @@
  * Ext.application(). This is the ideal place to handle application launch and initialization
  * details.
  */
-Ext.define('FBEditor.Application', {
-    extend: 'Ext.app.Application',
-    
-    name: 'FBEditor',
+Ext.define(
+	'FBEditor.Application',
+	{
+	    extend: 'Ext.app.Application',
+	    name: 'FBEditor',
+	    stores: [],
+		listen: {
+			controller: {
+				'#': {
+					unmatchedroute : 'onUnmatchedRoute'
+				}
+			}
+		},
 
-    stores: [
-        // TODO: add global / shared stores here
-    ],
-    
-    launch: function () {
-        // TODO - Launch the application
-    }
-});
+		init: function ()
+		{
+			FBEditor.parentWindow = window.opener;
+		},
+
+	    launch: function ()
+	    {
+		    //
+	    },
+
+		/**
+		 * Отслеживает обращение к несуществующим хэшам роута.
+		 * @param {String} hash Хэш.
+		 */
+		onUnmatchedRoute : function (hash)
+		{
+			if (FBEditor.parentWindow)
+			{
+				window.close();
+			}
+		}
+	}
+);

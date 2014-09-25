@@ -2,32 +2,54 @@
  * This class is the main view for the application. It is specified in app.js as the
  * "autoCreateViewport" property. That setting automatically applies the "viewport"
  * plugin to promote that instance of this class to the body element.
- *
- * TODO - Replace this content of this view to suite the needs of your application.
  */
-Ext.define('FBEditor.view.main.MainController', {
-    extend: 'Ext.app.ViewController',
+Ext.define(
+	'FBEditor.view.main.MainController',
+	{
+	    extend: 'Ext.app.ViewController',
+	    alias: 'controller.main',
+		routes: {
+			'panel/:name': {
+				before: 'beforeCreatePanel',
+				action: 'createPanel',
+				conditions: {
+					':name' : '(navigation|props)'
+				}
+			}
+		},
 
-    requires: [
-        'Ext.MessageBox'
-    ],
+	    init: function ()
+	    {
+	        var me = this;
 
-    alias: 'controller.main',
+	        Ext.tip.QuickTipManager.init();
+	        me.callParent(arguments);
+	    },
 
-    init: function ()
-    {
-        var me = this;
+		/**
+		 * Выполняет необходимые проверки перед тем как создать панель.
+		 * @param {String} name Имя панели.
+		 * @param {Object} action Необходимые колбэки для передачи управления.
+		 */
+		beforeCreatePanel: function (name, action)
+		{
+			if (FBEditor.parentWindow)
+			{
+				action.resume();
+			}
+		},
 
-        Ext.tip.QuickTipManager.init();
-        me.callParent(arguments);
-    }
-     /*onClickButton: function () {
-        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
-    },
+		/**
+		 * Создает панель.
+		 * @param {String} name Имя панели.
+		 */
+		createPanel: function (name)
+		{
+			var me = this,
+				view;
 
-    onConfirm: function (choice) {
-        if (choice === 'yes') {
-            //
-        }
-    }*/
-});
+			view = me.getView();
+			view.addPanel(name);
+		}
+	}
+);
