@@ -34,14 +34,14 @@ Ext.define(
 				xtype: 'panel-main-navigation',
 				width: '15%',
 				region: 'west',
-				maximize: true,
+				detachable: true,
 				collapsible: true
 			},
 			props: {
 				xtype: 'panel-main-props',
 				width: '15%',
 				region: 'east',
-				maximize: true,
+				detachable: true,
 				collapsible: true
 			}
 		},

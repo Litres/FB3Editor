@@ -15,10 +15,18 @@ Ext.define(
 	     */
 	    onDetachPanel: function (panel)
 	    {
-		    var name;
+		    var name,
+			    box;
 
 		    name = panel.panelName;
-		    window.open('#panel/' + name, name, 'top=30,left=30,toolbar=no,location=no');
+		    box = panel.getBox();
+		    window.open('#panel/' + name, name,
+			    'width=' + box.width +
+				',height=' + box.height +
+			    ',top=' + box.top +
+				',left=' + box.left +
+				',toolbar=no' +
+				',location=no');
 	    }
     }
 );

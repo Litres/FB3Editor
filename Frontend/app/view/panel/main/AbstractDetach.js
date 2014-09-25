@@ -13,11 +13,16 @@ Ext.define(
 			detachpanel: 'onDetachPanel'
 	    },
 
+	    /**
+	     * @property {Boolean} Отсоединяемая ли панель.
+	     */
+	    detachable: false,
+
 	    initComponent: function ()
 	    {
 		    var me = this;
 
-		    if (me.maximize)
+		    if (me.detachable)
 		    {
 			    me.tools = [
 				    {
