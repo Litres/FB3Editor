@@ -6,7 +6,7 @@
  */
 
 Ext.define(
-    'FBEditor.view.panel.main.AbstractPanel',
+    'FBEditor.view.panel.main.Abstract',
     {
         extend: 'Ext.panel.Panel',
 	    /*header: {
@@ -15,6 +15,11 @@ Ext.define(
 	    split: {
 		    size: 2
 	    },
-	    bodyPadding: 5
+	    bodyPadding: 5,
+
+	    /**
+	     * @property {String} Имя панели.
+	     */
+	    panelName: null
     }
 );

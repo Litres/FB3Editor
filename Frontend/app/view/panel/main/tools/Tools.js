@@ -5,10 +5,19 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.ToolsPanel',
+	'FBEditor.view.panel.main.tools.Tools',
 	{
-		extend: 'FBEditor.view.panel.main.AbstractPanel',
+		extend: 'FBEditor.view.panel.main.Abstract',
+		requires: [
+			'FBEditor.view.panel.main.tools.ToolsController',
+			'FBEditor.view.panel.main.tools.ToolsModel'
+		],
 		xtype: 'panel-main-tools',
+		controller: 'panel.main.tools',
+		viewModel: {
+			type: 'panel.main.tools'
+		},
+		panelName: 'tools',
 		height: 100,
 		region: 'north',
 		collapsible: true,

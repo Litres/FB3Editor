@@ -19,12 +19,15 @@ Ext.define(
 
 		init: function ()
 		{
+			// родительское окно
 			FBEditor.parentWindow = window.opener;
 		},
 
 	    launch: function ()
 	    {
-		    //
+		    var me = this;
+
+		    window.onbeforeunload = me.onbeforeunload;
 	    },
 
 		/**
@@ -35,6 +38,18 @@ Ext.define(
 		{
 			if (FBEditor.parentWindow)
 			{
+				window.close();
+			}
+		},
+
+		/**
+		 * Выполняет необходимые действия перед закрытием окна.
+		 */
+		onbeforeunload: function ()
+		{
+			if (FBEditor.parentWindow)
+			{
+				localStorage.removeItem(window.name);
 				window.close();
 			}
 		}

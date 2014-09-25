@@ -6,9 +6,12 @@
  */
 
 Ext.define(
-    'FBEditor.view.panel.main.AbstractMaximizePanel',
+    'FBEditor.view.panel.main.AbstractDetach',
     {
-        extend: 'FBEditor.view.panel.main.AbstractPanel',
+        extend: 'FBEditor.view.panel.main.Abstract',
+	    listeners: {
+			detachpanel: 'onDetachPanel'
+	    },
 
 	    initComponent: function ()
 	    {
@@ -19,7 +22,7 @@ Ext.define(
 			    me.tools = [
 				    {
 					    type: 'maximize',
-					    callback: me.maximizePanel
+					    callback: me.detachPanel
 				    }
 			    ];
 		    }
@@ -28,18 +31,13 @@ Ext.define(
 
 	    /**
 	     * Открывает панель в отдельном окне.
-	     * @param {FBEditor.view.panel.main.AbstractPanel} panel Панель.
+	     * @param {FBEditor.view.panel.main.Abstract} panel Панель.
 	     * @param {Ext.panel.Tool} tool Инструменты на панели.
 	     * @param {Ext.event.Event} event Объект события.
 	     */
-	    maximizePanel: function (panel, tool, event)
+	    detachPanel: function (panel, tool, event)
 	    {
-		    var me = this,
-			    name;
-
-		    name = panel.panelName;
-		    panel.close();
-		    window.open('#panel/' + name, name, 'top=30');
+		    panel.fireEvent('detachpanel', panel);
 	    }
     }
 );

@@ -10,11 +10,12 @@ Ext.define(
 	    requires: [
 	        'FBEditor.view.main.MainController',
 	        'FBEditor.view.main.MainModel',
-		    'FBEditor.view.panel.main.ToolsPanel',
-	        'FBEditor.view.panel.main.NavigationPanel',
-		    'FBEditor.view.panel.main.ContentPanel',
-	        'FBEditor.view.panel.main.PropsPanel'
+		    'FBEditor.view.panel.main.tools.Tools',
+	        'FBEditor.view.panel.main.navigation.Navigation',
+		    'FBEditor.view.panel.main.content.Content',
+	        'FBEditor.view.panel.main.props.Props'
 	    ],
+		id: 'main',
 	    xtype: 'main',
 	    controller: 'main',
 	    viewModel: {
@@ -35,23 +36,33 @@ Ext.define(
 						xtype: 'panel-main-tools'
 					},
 					{
-						xtype: 'panel-main-navigation',
-						width: '15%',
-						region: 'west',
-						maximize: true,
-						collapsible: true
-					},
-					{
 						xtype: 'panel-main-content'
-					},
-					{
-						xtype: 'panel-main-props',
-						width: '15%',
-						region: 'east',
-						maximize: true,
-						collapsible: true
 					}
 				];
+				if (!localStorage.getItem('navigation'))
+				{
+					me.items.push(
+						{
+							xtype: 'panel-main-navigation',
+							width: '15%',
+							region: 'west',
+							maximize: true,
+							collapsible: true
+						}
+					);
+				}
+				if (!localStorage.getItem('props'))
+				{
+					me.items.push(
+						{
+							xtype: 'panel-main-props',
+							width: '15%',
+							region: 'east',
+							maximize: true,
+							collapsible: true
+						}
+					);
+				}
 			}
 			me.callParent(arguments);
 		},
