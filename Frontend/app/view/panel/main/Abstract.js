@@ -16,6 +16,7 @@ Ext.define(
 		    size: 2
 	    },
 	    bodyPadding: 5,
+	    stateful: true,
 
 	    /**
 	     * @property {String} Имя панели.

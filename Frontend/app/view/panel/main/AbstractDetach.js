@@ -37,10 +37,8 @@ Ext.define(
 	    /**
 	     * Открывает панель в отдельном окне.
 	     * @param {FBEditor.view.panel.main.Abstract} panel Панель.
-	     * @param {Ext.panel.Tool} tool Инструменты на панели.
-	     * @param {Ext.event.Event} event Объект события.
 	     */
-	    detachPanel: function (panel, tool, event)
+	    detachPanel: function (panel)
 	    {
 		    panel.fireEvent('detachpanel', panel);
 	    }

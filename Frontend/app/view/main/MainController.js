@@ -23,7 +23,6 @@ Ext.define(
 	    {
 	        var me = this;
 
-	        Ext.tip.QuickTipManager.init();
 	        me.callParent(arguments);
 	    },
 

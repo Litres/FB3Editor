@@ -29,7 +29,10 @@ Ext.define(
 			window.onbeforeunload = function ()
 			{
 				me.onbeforeunload(me);
-			}
+			};
+
+			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+			Ext.tip.QuickTipManager.init();
 		},
 
 	    launch: function ()
