@@ -50,6 +50,27 @@ Ext.define(
 
 			view = me.getView();
 			view.createPanel(name);
+		},
+
+		/**
+		 * Закрывает все отсоединеные панели.
+		 */
+		onCloseDetachPanels: function ()
+		{
+			var me = this,
+				view;
+
+			view = me.getView();
+			Ext.Object.each(
+				view.windowPanels,
+				function (key, win)
+				{
+					if (win)
+					{
+						win.close();
+					}
+				}
+			)
 		}
 	}
 );

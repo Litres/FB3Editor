@@ -72,6 +72,10 @@ Ext.define(
 				me.attachPanel();
 				window.close();
 			}
+			else
+			{
+				Ext.getCmp('main').fireEvent('closeapplication');
+			}
 		},
 
 		/**

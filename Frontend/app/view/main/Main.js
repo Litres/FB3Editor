@@ -25,9 +25,13 @@ Ext.define(
 	    layout: {
 	        type: 'border'
 	    },
+		listeners: {
+			closedetachpanels: 'onDetachPanel',
+			closeapplication: 'onCloseDetachPanels'
+		},
 
 		/**
-		 * @property {Object} Конфигурация панелей.
+		 * @property {Object} Конфигурация панелей по умолчанию.
 		 */
 		panelConfig: {
 			navigation: {
