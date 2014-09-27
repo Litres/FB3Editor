@@ -27,7 +27,8 @@ Ext.define(
 	    },
 		listeners: {
 			closedetachpanels: 'onDetachPanel',
-			closeapplication: 'onCloseDetachPanels'
+			closeapplication: 'onCloseDetachPanels',
+			restoredetachpanel: 'onRestoreDetachPanel'
 		},
 
 		/**
@@ -73,14 +74,20 @@ Ext.define(
 					}
 				];
 
-				// добавляем панели, если они не отсоединены
+				// добавляем панели
 				Ext.Object.each(
 					me.windowPanels,
 					function (key)
 					{
 						if (!localStorage.getItem(key))
 						{
+							// добавляем панели в главное окно редактора
 							me.items.push(me.panelConfig[key]);
+						}
+						else
+						{
+							// открываем отсоединенные панели
+							me.fireEvent('restoredetachpanel', key);
 						}
 					}
 				);
@@ -115,27 +122,34 @@ Ext.define(
 		 */
 		attachPanel: function (name)
 		{
-			var me = this;
+			var me = this,
+				id;
 
-			localStorage.removeItem(name);
-			me.add(me.panelConfig[name]);
+			id = 'panel-main-' + name;
+			if (!me.contains(Ext.getCmp(id)))
+			{
+				me.add(me.panelConfig[name]);
+				me.windowPanels[name] = null;
+			}
 		},
 
 		/**
-		 * Убирает отсоединенную панель.
+		 * Убирает отсоединенную панель из  главного окна.
 		 * @param {Window} win Ссылка на окно с отсоединенной панелью.
 		 */
 		removeDetachedPanel: function (win)
 		{
 			var me = this,
 				name,
-				panel;
+				id;
 
 			name = win.name;
 			me.windowPanels[name] = win;
-			localStorage.setItem(name, true);
-			panel = Ext.getCmp('panel-main-' + name);
-			panel.close();
+			id = 'panel-main-' + name;
+			if (me.contains(Ext.getCmp(id)))
+			{
+				Ext.getCmp(id).close();
+			}
 		}
 	}
 );

@@ -31,7 +31,7 @@ Ext.define(
 				me.onbeforeunload(me);
 			};
 
-			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 		},
 
@@ -66,29 +66,30 @@ Ext.define(
 
 			if (FBEditor.parentWindow && !FBEditor.closingWindow)
 			{
+				// процесс закрытия отсоединенной панели
+
 				// флаг закрытия окна, чтобы избежать зацикливания
 				FBEditor.closingWindow = true;
 
-				me.attachPanel();
+				if (!FBEditor.parentWindow.FBEditor.closingWindow)
+				{
+					// присоединяем отсоединенную панель обратно в главное окно редактора
+					FBEditor.parentWindow.Ext.getCmp('main').attachPanel(window.name);
+
+					// удаляем сохраненное состояние отсоединенной панели
+					localStorage.removeItem(window.name);
+				}
+
+				// принудительно закрываем окно, даже если оно было обновлено
 				window.close();
 			}
 			else
 			{
+				// процесс закрытия основного окна редактора
+
+				FBEditor.closingWindow = true;
 				Ext.getCmp('main').fireEvent('closeapplication');
 			}
-		},
-
-		/**
-		 * Присоеденияет отсоединенную панель обратно в главное окно редактора.
-		 */
-		attachPanel: function ()
-		{
-			var panelName,
-				parentPanel;
-
-			panelName = window.name;
-			parentPanel = FBEditor.parentWindow.Ext.getCmp('main');
-			parentPanel.attachPanel(panelName);
 		}
 	}
 );

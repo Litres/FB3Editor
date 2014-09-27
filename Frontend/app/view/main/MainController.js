@@ -53,12 +53,33 @@ Ext.define(
 		},
 
 		/**
+		 * Восстанавливает отсоединенную панель.
+		 * @param {String} name Имя панели.
+		 */
+		onRestoreDetachPanel: function (name)
+		{
+			var box,
+				params;
+
+			box = localStorage.getItem(name);
+			box = Ext.Object.fromQueryString(box, true);
+			params = 'width=' +box.width +
+				',height=' + box.height +
+				',top=' + box.top +
+				',left=' + box.left +
+				',toolbar=no' +
+				',location=no';
+			window.open('#panel/' + name, name, params);
+		},
+
+		/**
 		 * Закрывает все отсоединеные панели.
 		 */
 		onCloseDetachPanels: function ()
 		{
 			var me = this,
-				view;
+				view,
+				box;
 
 			view = me.getView();
 			Ext.Object.each(
@@ -67,6 +88,14 @@ Ext.define(
 				{
 					if (win)
 					{
+						// сохраняем состояние отсоединенной панели
+						box = {
+							width: win.innerWidth,
+							height: win.innerHeight,
+							left: win.screenX,
+							top: win.screenY
+						};
+						localStorage.setItem(key, Ext.Object.toQueryString(box, true));
 						win.close();
 					}
 				}
