@@ -58,8 +58,10 @@ Ext.define(
 		 */
 		onRestoreDetachPanel: function (name)
 		{
-			var box,
-				params;
+			var me = this,
+				box,
+				params,
+				win;
 
 			box = localStorage.getItem(name);
 			box = Ext.Object.fromQueryString(box, true);
@@ -69,7 +71,12 @@ Ext.define(
 				',left=' + box.left +
 				',toolbar=no' +
 				',location=no';
-			window.open('#panel/' + name, name, params);
+			win = window.open('#panel/' + name, name, params);
+			if (!win)
+			{
+				// если окно было заблокировано браузером, то показываем панель в главном окне
+				me.getView().attachPanel(name);
+			}
 		},
 
 		/**

@@ -73,7 +73,16 @@ Ext.define(
 						xtype: 'panel-main-content'
 					}
 				];
+			}
+			me.callParent(arguments);
+		},
 
+		afterRender: function ()
+		{
+			var me = this;
+
+			if (!FBEditor.parentWindow)
+			{
 				// добавляем панели
 				Ext.Object.each(
 					me.windowPanels,
@@ -81,8 +90,8 @@ Ext.define(
 					{
 						if (!localStorage.getItem(key))
 						{
-							// добавляем панели в главное окно редактора
-							me.items.push(me.panelConfig[key]);
+							// добавляем панели в главное окно
+							me.add(me.panelConfig[key]);
 						}
 						else
 						{
@@ -92,7 +101,6 @@ Ext.define(
 					}
 				);
 			}
-
 			me.callParent(arguments);
 		},
 
