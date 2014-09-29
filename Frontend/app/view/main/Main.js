@@ -1,7 +1,8 @@
 /**
- * This class is the main view for the application. It is specified in app.js as the
- * "autoCreateViewport" property. That setting automatically applies the "viewport"
- * plugin to promote that instance of this class to the body element.
+ * Главный контейнер приложения.
+ * Подключается в app.js через свойство "autoCreateViewport".
+ *
+ * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
@@ -10,7 +11,6 @@ Ext.define(
 	    extend: 'Ext.container.Container',
 	    requires: [
 	        'FBEditor.view.main.MainController',
-	        'FBEditor.view.main.MainModel',
 		    'FBEditor.view.panel.main.tools.Tools',
 	        'FBEditor.view.panel.main.navigation.Navigation',
 		    'FBEditor.view.panel.main.content.Content',
@@ -19,16 +19,14 @@ Ext.define(
 		id: 'main',
 	    xtype: 'main',
 	    controller: 'main',
-	    viewModel: {
-	        type: 'main'
-	    },
 	    layout: {
 	        type: 'border'
 	    },
 		listeners: {
 			closedetachpanels: 'onDetachPanel',
 			closeapplication: 'onCloseDetachPanels',
-			restoredetachpanel: 'onRestoreDetachPanel'
+			restoredetachpanel: 'onRestoreDetachPanel',
+			inithtmleditor: 'onAddToolbar'
 		},
 
 		/**

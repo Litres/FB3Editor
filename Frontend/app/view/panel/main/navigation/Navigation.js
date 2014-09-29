@@ -9,15 +9,11 @@ Ext.define(
     {
         extend: 'FBEditor.view.panel.main.AbstractDetach',
 	    requires: [
-		    'FBEditor.view.panel.main.navigation.NavigationController',
-		    'FBEditor.view.panel.main.navigation.NavigationModel'
+		    'FBEditor.view.panel.main.navigation.NavigationController'
 	    ],
 	    id: 'panel-main-navigation',
 	    xtype: 'panel-main-navigation',
 	    controller: 'panel.main.navigation',
-	    viewModel: {
-		    type: 'panel.main.navigation'
-	    },
 	    panelName: 'navigation',
         title: 'Навигация',
         html: 'Содержимое левой панели'

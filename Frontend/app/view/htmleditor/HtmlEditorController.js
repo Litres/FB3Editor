@@ -8,6 +8,16 @@ Ext.define(
 	'FBEditor.view.htmleditor.HtmlEditorController',
 	{
 		extend: 'Ext.app.ViewController',
-		alias: 'controller.view.htmleditor'
+		alias: 'controller.view.htmleditor',
+
+		/**
+		 * @event inithtmleditor
+		 * Вброс события инициализации htmleditor в главный контейнер.
+		 * @param {FBEditor.view.htmleditor.HtmlEditor} editor Html-редактор.
+		 */
+		onInitialize: function (editor)
+		{
+			Ext.getCmp('main').fireEvent('inithtmleditor', editor);
+		}
     }
 );

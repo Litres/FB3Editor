@@ -10,15 +10,11 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.content.ContentController',
-			'FBEditor.view.panel.main.content.ContentModel',
 			'FBEditor.view.htmleditor.HtmlEditor'
 		],
 		id: 'panel-main-content',
 		xtype: 'panel-main-content',
 		controller: 'panel.main.content',
-		viewModel: {
-			type: 'panel.main.content'
-		},
 		panelName: 'content',
 		region: 'center',
 		collapsible: false,
@@ -30,7 +26,7 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'htmleditor'
+					xtype: 'main-htmleditor'
 				}
 			];
 			me.callParent(arguments);

@@ -1,7 +1,5 @@
 /**
- * This class is the main view for the application. It is specified in app.js as the
- * "autoCreateViewport" property. That setting automatically applies the "viewport"
- * plugin to promote that instance of this class to the body element.
+ * Контроллер главного контейнера.
  */
 
 Ext.define(
@@ -21,9 +19,7 @@ Ext.define(
 
 	    init: function ()
 	    {
-	        var me = this;
-
-	        me.callParent(arguments);
+	        //
 	    },
 
 		/**
@@ -108,6 +104,18 @@ Ext.define(
 					}
 				}
 			);
+		},
+
+		/**
+		 * Добавляет на панель инструментов тулбар редактора HTML.
+		 * @param {FBEditor.view.htmleditor.HtmlEditor} htmlEditor Html-редактор.
+		 */
+		onAddToolbar: function (htmlEditor)
+		{
+			var toolbar;
+
+			toolbar = htmlEditor.getToolbar();
+			Ext.getCmp('panel-main-tools').add(toolbar);
 		}
 	}
 );

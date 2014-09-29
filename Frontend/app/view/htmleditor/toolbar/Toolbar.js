@@ -16,15 +16,15 @@ Ext.define(
 		xtype: 'htmleditor-toolbar',
 		controller: 'view.htmleditor.toolbar',
 
-		constructor: function ()
+		/**
+		 * Инициализация тулбара.
+		 * @param {Ext.toolbar.Toolbar} toolbar Тулбар от htmleditor.
+		 */
+		constructor: function (toolbar)
 		{
-			var me = this,
-				editor;
+			var me = this;
 
-			me.callParent(arguments);
-			editor = Ext.getCmp('main-htmleditor') || Ext.create('FBEditor.view.htmleditor.HtmlEditor');
-
-			return editor.getToolbar();
+			return toolbar;
 		}
 	}
 );
