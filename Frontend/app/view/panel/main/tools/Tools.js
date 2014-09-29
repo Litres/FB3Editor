@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.tools.ToolsController',
-			'FBEditor.view.panel.main.tools.ToolsModel'
+			'FBEditor.view.panel.main.tools.ToolsModel',
+			'FBEditor.view.htmleditor.toolbar.Toolbar'
 		],
 		id: 'panel-main-tools',
 		xtype: 'panel-main-tools',
@@ -19,10 +20,30 @@ Ext.define(
 			type: 'panel.main.tools'
 		},
 		panelName: 'tools',
-		height: 100,
 		region: 'north',
-		collapsible: true,
-        title: 'Инструменты',
-        html: 'Содержимое верхней панели'
+		bodyPadding: 0,
+		stateful: false,
+		split: false,
+		//frame: true,
+
+		initComponent: function ()
+		{
+			var me = this;
+
+			/*me.items = [
+				{
+					xtype: 'htmleditor-toolbar'
+				}
+			];*/
+			me.callParent(arguments);
+		},
+
+		afterRender: function ()
+		{
+			var me = this;
+
+			//me.add(Ext.getCmp('htmleditor-toolbar'));
+			me.callParent(arguments);
+		}
     }
 );

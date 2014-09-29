@@ -103,10 +103,11 @@ Ext.define(
 							top: win.screenY
 						};
 						localStorage.setItem(key, Ext.Object.toQueryString(box, true));
+						
 						win.close();
 					}
 				}
-			)
+			);
 		}
 	}
 );
