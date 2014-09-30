@@ -10,7 +10,9 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.tools.ToolsController',
-			'FBEditor.view.htmleditor.toolbar.Toolbar'
+			'FBEditor.view.htmleditor.toolbar.Toolbar',
+			'FBEditor.view.panel.toolstab.file.File',
+			'FBEditor.view.panel.toolstab.main.Main'
 		],
 		id: 'panel-main-tools',
 		xtype: 'panel-main-tools',
@@ -19,6 +21,21 @@ Ext.define(
 		region: 'north',
 		bodyPadding: 0,
 		stateful: false,
-		split: false
+		split: false,
+		height: 80,
+		items: [
+			{
+				xtype: 'tabpanel',
+				activeTab: 'panel-toolstab-main',
+				items: [
+					{
+						xtype: 'panel-toolstab-file'
+					},
+					{
+						xtype: 'panel-toolstab-main'
+					}
+				]
+			}
+		]
     }
 );

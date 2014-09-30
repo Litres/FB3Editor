@@ -107,7 +107,7 @@ Ext.define(
 		},
 
 		/**
-		 * Добавляет на панель инструментов тулбар редактора HTML.
+		 * Добавляет на вкладку панели инструментов тулбар редактора HTML.
 		 * @param {FBEditor.view.htmleditor.HtmlEditor} htmlEditor Html-редактор.
 		 */
 		onAddToolbar: function (htmlEditor)
@@ -115,7 +115,7 @@ Ext.define(
 			var toolbar;
 
 			toolbar = htmlEditor.getToolbar();
-			Ext.getCmp('panel-main-tools').add(toolbar);
+			Ext.getCmp('panel-toolstab-main').add(toolbar);
 		}
 	}
 );
