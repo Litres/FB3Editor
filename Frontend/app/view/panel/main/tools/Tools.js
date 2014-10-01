@@ -22,7 +22,7 @@ Ext.define(
 		bodyPadding: 0,
 		stateful: false,
 		split: false,
-		height: 80,
+		height: 75,
 		items: [
 			{
 				xtype: 'tabpanel',
