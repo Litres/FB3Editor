@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.toolstab.file.File',
 	{
 		extend: 'Ext.panel.Panel',
+		requires: [
+			'FBEditor.view.panel.toolstab.file.button.open.Open'
+		],
 		id:'panel-toolstab-file',
 		xtype: 'panel-toolstab-file',
 		title: 'Файл',
@@ -18,29 +21,7 @@ Ext.define(
 
 			me.tbar = [
 				{
-					xtype: 'filebutton',
-					text: 'Открыть',
-					listeners: {
-						change: function (btn, evt)
-						{
-							var file,
-								fr,
-								text;
-
-							if (evt.target.files.length)
-							{
-								file = evt.target.files[0];
-								fr = new FileReader();
-								fr.file = file;
-								fr.readAsText(file, 'windows-1251');
-								fr.onload = function ()
-								{
-									text = fr.result;
-									Ext.getCmp('main-htmleditor').setValue(text);
-								};
-							}
-						}
-					}
+					xtype: 'panel-toolstab-file-button-open'
 				}
 			];
 			me.callParent(arguments);

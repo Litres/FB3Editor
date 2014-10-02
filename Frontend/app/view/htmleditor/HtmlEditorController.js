@@ -18,6 +18,15 @@ Ext.define(
 		onInitialize: function (editor)
 		{
 			Ext.getCmp('main').fireEvent('inithtmleditor', editor);
+		},
+
+		onLoadText: function (text)
+		{
+			var me = this,
+				view;
+
+			view = me.getView();
+			view.setValue(text);
 		}
     }
 );

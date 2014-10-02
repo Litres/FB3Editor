@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-htmleditor',
 		controller: 'view.htmleditor',
 		listeners: {
-			initialize: 'onInitialize'
+			initialize: 'onInitialize',
+			loadtext: 'onLoadText'
 		},
 
 		/**
