@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.file.Manager',
 	{
 		singleton: true,
+		requires: [
+			'FBEditor.file.File'
+		],
 
 		/**
 		 * Возвращает объект файла считанного из события открытия файла.

@@ -42,15 +42,18 @@ Ext.define(
 		 * @param {Object} opts Параметры.
 		 * @param {String} opts.type Тип чтения файла.
 		 * @param {Function} opts.load вызывается при успешном чтении файла.
+		 * @return {Boolean} Успешно ли открыт файл.
 		 */
 		read: function (opts)
 		{
 			var me = this,
+				result,
 				fileReader,
 				file,
 				type,
 				encode;
 
+			result = false;
 			fileReader = me.fileReader;
 			file = me.file;
 			type = opts.type ? opts.type : me.LOAD_TYPE_TEXT;
@@ -64,7 +67,11 @@ Ext.define(
 										opts.load(this.result);
 									} :
 				                    null;
+
+				result = true;
 			}
+
+			return result;
 		},
 
 		/**

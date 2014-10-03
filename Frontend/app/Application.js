@@ -9,6 +9,10 @@ Ext.define(
 	{
 	    extend: 'Ext.app.Application',
 	    name: 'FBEditor',
+		requires: [
+			'FBEditor.file.Manager',
+			'FBEditor.command.HistoryCommand'
+		],
 	    stores: [],
 		listen: {
 			controller: {
@@ -33,6 +37,7 @@ Ext.define(
 
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
+			FBEditor.command.HistoryCommand.init();
 		},
 
 	    launch: function ()

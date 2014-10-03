@@ -10,8 +10,7 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.panel.toolstab.file.button.open',
 		requires: [
-			'FBEditor.file.Manager',
-			'FBEditor.file.File'
+			'FBEditor.command.OpenFile'
 		],
 
 		/**
@@ -22,29 +21,13 @@ Ext.define(
 		onChange: function (btn, evt)
 		{
 			var me = this,
-				fileManager,
-				file;
+				cmd;
 
-			fileManager = me.getFileManager();
-			file = fileManager.getFileFromEvent(evt);
-			file.read(
-				{
-					type: file.LOAD_TYPE_TEXT,
-					load: function (text)
-					{
-						Ext.getCmp('main-htmleditor').fireEvent('loadtext', text);
-					}
-				}
-			);
-		},
-
-		/**
-		 * Менеджер файлов.
-		 * @return {FBEditor.file.Manager}
-		 */
-		getFileManager: function ()
-		{
-			return FBEditor.file.Manager;
+			cmd = Ext.create('FBEditor.command.OpenFile', {evt: evt});
+			if (cmd.execute())
+			{
+				FBEditor.HistoryCommand.add(cmd);
+			}
 		}
 	}
 );
