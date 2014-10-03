@@ -16,3 +16,7 @@ Ext.application({
     // of merge conflicts when upgrading to new versions of Sencha Cmd.
     //-------------------------------------------------------------------------
 });
+
+// Загружаем сторонние ресурсы
+Ext.Loader.loadScript('bower_components/jszip/dist/jszip.min.js');
+Ext.Loader.loadScript('bower_components/FileSaver.js/FileSaver.min.js');

@@ -1,0 +1,30 @@
+{
+  "name": "FBEditor",
+  "version": "1.0.0",
+  "description": "FB3Editor - open source online eBook editor",
+  "main": "index.html",
+  "keywords": [
+    "fb3editor",
+    "fb3",
+    "fictionbook",
+    "editor",
+    "ebook"
+  ],
+  "authors": [
+    "Suvorov Andrey M. LitRes"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Litres/FB3Editor",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".idea"
+  ],
+  "dependencies": {
+    "jszip": "Stuk/jszip#~2.4.0",
+    "FileSaver.js": "eligrey/FileSaver.js"
+  }
+}
