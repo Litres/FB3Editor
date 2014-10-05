@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "jszip": "Stuk/jszip#~2.4.0",
-    "FileSaver.js": "eligrey/FileSaver.js"
+    "FileSaver.js": "eligrey/FileSaver.js",
+    "jsxml": "DrakeES/jsxml#~0.4.1"
   }
 }
