@@ -13,6 +13,11 @@ Ext.define(
 		LOAD_TYPE_TEXT: 'text',
 
 		/**
+		 * @const {String} Считывать файл как двоичные данные.
+		 */
+		LOAD_TYPE_ARRAYBUFFER: 'arraybuffer',
+
+		/**
 		 * @property {File} Объект файла из FileAPI.
 		 */
 		file: null,
@@ -47,29 +52,31 @@ Ext.define(
 		read: function (opts)
 		{
 			var me = this,
-				result,
-				fileReader,
-				file,
-				type,
+				result = true,
+				fileReader = me.fileReader,
+				file = me.file,
+				type = opts.type ? opts.type : me.LOAD_TYPE_TEXT,
 				encode;
 
-			result = false;
-			fileReader = me.fileReader;
-			file = me.file;
-			type = opts.type ? opts.type : me.LOAD_TYPE_TEXT;
 			if (type === me.LOAD_TYPE_TEXT)
 			{
 				encode = me.getEncode();
 				fileReader.readAsText(file, encode);
-				fileReader.onload = opts.load ?
-				                    function ()
-									{
-										opts.load(this.result);
-									} :
-				                    null;
-
-				result = true;
 			}
+			else if (type === me.LOAD_TYPE_ARRAYBUFFER)
+			{
+				fileReader.readAsArrayBuffer(file);
+			}
+			else
+			{
+				result = false;
+			}
+			fileReader.onload = opts.load ?
+			                    function ()
+			                    {
+				                    opts.load(this.result);
+			                    } :
+			                    null;
 
 			return result;
 		},

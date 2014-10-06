@@ -13,24 +13,10 @@ Ext.define(
 		{
 			var me = this,
 				data,
-				file,
 				result;
 
-			result = false;
 			data = me.data;
-			file = FBEditor.file.Manager.getFileFromEvent(data.evt);
-			if (file)
-			{
-				result = file.read(
-					{
-						type: file.LOAD_TYPE_TEXT,
-						load: function (text)
-						{
-							Ext.getCmp('main-htmleditor').fireEvent('loadtext', text);
-						}
-					}
-				);
-			}
+			result = FBEditor.file.Manager.openFB3(data.evt);
 
 			return result;
 		},
