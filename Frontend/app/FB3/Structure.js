@@ -1,5 +1,7 @@
 /**
  * Структура архива FB3.
+ * Файл fb3 представляет собой пакет
+ * {@link http://www.ecma-international.org/publications/standards/Ecma-376.htm OPC (ECMA-376 Part 2)}
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,62 +9,105 @@
 Ext.define(
 	'FBEditor.FB3.Structure',
 	{
+		requires: [
+			'FBEditor.FB3.rels.Rels',
+			'FBEditor.FB3.rels.RelType',
+			'FBEditor.util.xml.Json'
+		],
+
 		/**
-		 * @property {Object} Обязательные файлы в структуре.
+		 * @property {Object} Корневой файл в структуре, определяющий типы.
+		 * @property {String} contentTypes.file Имя файла.
+		 * @property {Object} contentTypes.data Содержимое файла.
 		 */
-		rels: {
-			'[Content_Types].xml': 'FBEditor.FB3.ContentTypes',
-			'_rels/.rels': 'FBEditor.FB3.Rels'
+		contentTypes: {
+			file: '[Content_Types].xml',
+			rel: null
 		},
 
+		/**
+		 * @property {Object} Корневой файл в структуре, определяющий связи.
+		 * @property {String} rels.file Имя файла.
+		 * @property {FBEditor.FB3.rels.Rels} rels.data Содержимое файла.
+		 */
+		rels: {
+			file: '_rels/.rels',
+			rel: null
+		},
 
+		/**
+		 * @property {FBEditor.FB3.File} Файл FB3.
+		 */
+		fb3file: null,
 
 		/**
 		 * Создает структуру архива.
-		 * @param {Object} files Файлы архива.
+		 * @param {FBEditor.FB3.File} fb3file Файл FB3.
 		 */
-		constructor: function (files)
+		constructor: function (fb3file)
 		{
 			var me = this;
 
-			if (!me.valid(files))
+			me.fb3file = fb3file;
+			if (me.valid())
+			{
+				me.setRels();
+			}
+			else
 			{
 				throw Error('Ошибка структуры архива');
 			}
 		},
 
 		/**
-		 * Проверяет валидность структуры файлов.
-		 * @param {Object} files Файлы архива.
-		 * @returns {Boolean} Валидна ли структура.
+		 * Устанаваливает связи между частями архива.
 		 */
-		valid: function (files)
+		setRels: function ()
 		{
 			var me = this,
-				rels = me.rels,
+				rels = me.rels;
+
+			rels.rel = Ext.create('FBEditor.FB3.rels.Rels', me);
+		},
+
+		/**
+		 * Проверяет валидность структуры файлов.
+		 * @return {Boolean} Валидна ли структура.
+		 */
+		valid: function ()
+		{
+			var me = this,
+				files = me.fb3file.getFiles(),
+				rootFiles = [me.contentTypes.file, me.rels.file],
 				keysFiles = Ext.Object.getKeys(files),
 				result = true;
 
+			/*var x2js = new X2JS(
+				{
+					attributePrefix: ' '
+				}
+			);
 			Ext.Msg.show(
 				{
 					title: 'Структура архива',
 					message: keysFiles
 				}
-			);
+			);*/
 			Ext.Object.each(
-				rels,
+				rootFiles,
 			    function (key, val)
 			    {
-				    //console.log(key);
-				    if (!Ext.Array.contains(keysFiles, key))
+				    if (!Ext.Array.contains(keysFiles, val))
 				    {
 					    result = false;
 
 					    return false;
 				    }
+				    /*var text = files[val].asText();
+				    var json = x2js.xml_str2json(text);
+				    console.log(json);*/
 			    }
 			);
-
 
 			return result;
 		}

@@ -34,7 +34,23 @@ Ext.define(
 			me.zip = zip;
 			zip.unPackage(data);
 			me.files = zip.getFiles();
-			me.structure = Ext.create('FBEditor.FB3.Structure', me.files);
+			me.structure = Ext.create('FBEditor.FB3.Structure', me);
+		},
+
+		/**
+		 * Возвращает файлы архива или конкретный файл по переданному имени.
+		 * @param {String} [name] Имя файла.
+		 * @return {Object} Файлы или один файл.
+		 */
+		getFiles: function (name)
+		{
+			var me = this,
+				result;
+
+			result = name ? me.files[name] : me.files;
+			result = result || null;
+
+			return result;
 		}
 	}
 );
