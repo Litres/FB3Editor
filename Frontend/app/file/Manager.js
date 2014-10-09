@@ -18,7 +18,7 @@ Ext.define(
 		/**
 		 * @property {FBEditor.FB3.File} Распакованный файл FB3.
 		 */
-		FB3File: null,
+		fb3file: null,
 
 		/**
 		 * Открывает файл FB3.
@@ -38,12 +38,34 @@ Ext.define(
 						type: file.LOAD_TYPE_ARRAYBUFFER,
 						load: function (data)
 						{
+							var structure,
+								books,
+								desc,
+								body,
+								content;
+
 							try
 							{
-								me.FB3File = Ext.create('FBEditor.FB3.File', data);
+								me.fb3file = Ext.create('FBEditor.FB3.File', data);
+								structure = me.fb3file.getStructure();
+								books = structure.getBooks();
+								desc = structure.getDesc(books[0]);
+								body = structure.getBodies(books[0]);
+								content = structure.getContent(body[0]);
+								console.log('books', books);
+								console.log('desc', desc);
+								//console.log(content);
 							}
 							catch (e)
 							{
+								Ext.log(
+									{
+										level: 'error',
+										msg: e,
+										dump: e,
+										stack: true
+									}
+								);
 								Ext.Msg.show(
 									{
 										title: 'Ошибка',
@@ -53,7 +75,7 @@ Ext.define(
 									}
 								);
 							}
-							//Ext.getCmp('main-htmleditor').fireEvent('loadtext', text);
+							Ext.getCmp('main-htmleditor').fireEvent('loadtext', content);
 						}
 					}
 				);

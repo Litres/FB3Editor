@@ -9,6 +9,7 @@
 Ext.define(
 	'FBEditor.FB3.Structure',
 	{
+		extend: 'FBEditor.FB3.InterfaceStructure',
 		requires: [
 			'FBEditor.FB3.rels.Rels',
 			'FBEditor.FB3.rels.RelType',
@@ -16,9 +17,10 @@ Ext.define(
 		],
 
 		/**
+		 * @private
 		 * @property {Object} Корневой файл в структуре, определяющий типы.
 		 * @property {String} contentTypes.file Имя файла.
-		 * @property {Object} contentTypes.data Содержимое файла.
+		 * @property {Object} contentTypes.rel Содержимое файла.
 		 */
 		contentTypes: {
 			file: '[Content_Types].xml',
@@ -26,9 +28,10 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * @property {Object} Корневой файл в структуре, определяющий связи.
 		 * @property {String} rels.file Имя файла.
-		 * @property {FBEditor.FB3.rels.Rels} rels.data Содержимое файла.
+		 * @property {FBEditor.FB3.rels.Rels} rels.rel Содержимое файла.
 		 */
 		rels: {
 			file: '_rels/.rels',
@@ -36,6 +39,7 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * @property {FBEditor.FB3.File} Файл FB3.
 		 */
 		fb3file: null,
@@ -46,12 +50,13 @@ Ext.define(
 		 */
 		constructor: function (fb3file)
 		{
-			var me = this;
+			var me = this,
+				rels = me.rels;
 
 			me.fb3file = fb3file;
 			if (me.valid())
 			{
-				me.setRels();
+				rels.rel = Ext.create('FBEditor.FB3.rels.Rels', me, rels.file);
 			}
 			else
 			{
@@ -59,40 +64,65 @@ Ext.define(
 			}
 		},
 
-		/**
-		 * Устанаваливает связи между частями архива.
-		 */
-		setRels: function ()
+		getBooks: function ()
 		{
-			var me = this,
-				rels = me.rels;
+			var me = this;
 
-			rels.rel = Ext.create('FBEditor.FB3.rels.Rels', me);
+			return me.getRels().getBooks();
+		},
+
+		getDesc: function (book)
+		{
+			return book.getDesc();
+		},
+
+		getBodies: function (book)
+		{
+			return book.getRels().getBodies();
+		},
+
+		getContent: function (body)
+		{
+			return body.getContent();
 		},
 
 		/**
+		 * Возвращает файл FB3.
+		 * @return {FBEditor.FB3.File} Файл FB3.
+		 */
+		getFb3file: function ()
+		{
+			var me = this;
+
+			return me.fb3file;
+		},
+
+		/**
+		 * @private
+		 * Возвращает связи между частями архива.
+		 * @return {FBEditor.FB3.rels.Rels} Корневой файл в структуре FB3, определяющий связи
+		 * между различными частями архива.
+		 */
+		getRels: function ()
+		{
+			var me = this;
+
+			return me.rels.rel;
+		},
+
+		/**
+		 * @private
 		 * Проверяет валидность структуры файлов.
 		 * @return {Boolean} Валидна ли структура.
 		 */
 		valid: function ()
 		{
 			var me = this,
-				files = me.fb3file.getFiles(),
+				files = me.getFb3file().getFiles(),
 				rootFiles = [me.contentTypes.file, me.rels.file],
 				keysFiles = Ext.Object.getKeys(files),
 				result = true;
 
-			/*var x2js = new X2JS(
-				{
-					attributePrefix: ' '
-				}
-			);
-			Ext.Msg.show(
-				{
-					title: 'Структура архива',
-					message: keysFiles
-				}
-			);*/
 			Ext.Object.each(
 				rootFiles,
 			    function (key, val)
@@ -103,9 +133,6 @@ Ext.define(
 
 					    return false;
 				    }
-				    /*var text = files[val].asText();
-				    var json = x2js.xml_str2json(text);
-				    console.log(json);*/
 			    }
 			);
 

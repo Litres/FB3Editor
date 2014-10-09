@@ -9,6 +9,12 @@ Ext.define(
 	'FBEditor.FB3.rels.AbstractRels',
 	{
 		/**
+		 * @property {String} Префикс перед именем свойств в json, которые являлись аттрибутами в xml
+		 * (берется из FBEditor.util.xml.Json#prefix).
+		 */
+		prefix: '',
+
+		/**
 		 * @private
 		 * @property {Object} Ссылки на части архива.
 		 */
@@ -28,51 +34,33 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {String} Префикс перед именем свойств в json (берется из FBEditor.util.xml.Json#prefix).
+		 * @property {String} Имя файла.
 		 */
-		prefix: '',
+		fileName: null,
 
-		constructor: function (structure)
+		/**
+		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
+		 * @param {String} fileName Имя файла в архиве.
+		 */
+		constructor: function (structure, fileName)
 		{
-			var me = this,
-				fileName;
+			var me = this;
 
 			me.structure = structure;
-
-			fileName = me.getFileName();
-			me.file = me.structure.fb3file.getFiles(fileName);
+			me.fileName = fileName;
+			me.file = me.structure.getFb3file().getFiles(fileName);
 			me.prefix = FBEditor.util.xml.Json.prefix;
 			me.rels = me.getRels();
 		},
 
 		/**
 		 * @abstract
-		 * Возвращает имя файла в архиве.
-		 * @return {String} Имя файла.
-		 */
-		getFileName: function ()
-		{
-			throw Error('Не реализован метод FB3.rels.AbstractRels#getFileName');
-		},
-
-		/**
-		 * Возвращает ссылки на части архива.
-		 * @return {Object} Ссылки.
+		 * Возвращает связи для файла.
+		 * @return {Object} Связи.
 		 */
 		getRels: function ()
 		{
-			var me = this,
-				rels = me.rels,
-				json;
-
-			if (!rels)
-			{
-				json = me.getJson();
-				rels = json.Relationships.Relationship;
-				rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
-			}
-
-			return rels;
+			throw Error('Не реализован метод FB3.rels.AbstractRels#getRels');
 		},
 
 		/**
@@ -84,6 +72,17 @@ Ext.define(
 			var me = this;
 
 			return me.structure;
+		},
+
+		/**
+		 * Возвращает имя файла.
+		 * @return {String} Имя файла.
+		 */
+		getFileName: function ()
+		{
+			var me = this;
+
+			return me.fileName;
 		},
 
 		/**

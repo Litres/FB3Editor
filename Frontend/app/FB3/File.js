@@ -8,19 +8,22 @@ Ext.define(
 	'FBEditor.FB3.File',
 	{
 		/**
-		 * @property {FBEditor.file.Zip} Zip-Архиватор.
+		 * @private
+		 * @property {Object} Файлы архива.
 		 */
-		zip: null,
+		files: null,
 
 		/**
+		 * @private
 		 * @property {FBEditor.FB3.Structure} Структура архива FB3.
 		 */
 		structure: null,
 
 		/**
-		 * @property {Object} Файлы архива.
+		 * @private
+		 * @property {FBEditor.file.Zip} Zip-Архиватор.
 		 */
-		files: null,
+		zip: null,
 
 		/**
 		 * Распаковывает файл.
@@ -38,6 +41,17 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает структуру архива FB3.
+		 * @return {FBEditor.FB3.Structure} Структура архива FB3.
+		 */
+		getStructure: function ()
+		{
+			var me = this;
+
+			return me.structure;
+		},
+
+		/**
 		 * Возвращает файлы архива или конкретный файл по переданному имени.
 		 * @param {String} [name] Имя файла.
 		 * @return {Object} Файлы или один файл.
@@ -49,6 +63,16 @@ Ext.define(
 
 			result = name ? me.files[name] : me.files;
 			result = result || null;
+			if (!result)
+			{
+				Ext.log(
+					{
+						level: 'warn',
+						msg: 'В архиве отсутствует файл ' + name + ', на который ссылается один из существующих файлов',
+						dump: me.files
+					}
+				);
+			}
 
 			return result;
 		}

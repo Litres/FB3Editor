@@ -10,9 +10,9 @@ Ext.define(
 		singleton: true,
 
 		/**
-		 * @property {String} Префикс перед именем свойств в json.
+		 * @property {String} Префикс перед именем свойств в json, которые являлись аттрибутами элементов в xml.
 		 */
-		prefix: ' ',
+		prefix: '_',
 
 		/**
 		 * @private
