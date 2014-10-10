@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 		requires: [
+			'FBEditor.FB3.rels.Meta',
 			'FBEditor.FB3.rels.Book',
 			'FBEditor.FB3.rels.BookRels',
 			'FBEditor.FB3.rels.Body'
@@ -88,6 +89,26 @@ Ext.define(
 			books = Ext.isNumeric(index) ? books[index] : books;
 
 			return books;
+		},
+
+		/**
+		 * Возвращает мета-информацию.
+		 * @return {FBEditor.FB3.rels.Meta}
+		 */
+		getMeta: function ()
+		{
+			var me = this,
+				meta = me.meta,
+				rels;
+
+			if (!meta)
+			{
+				rels = me.getRels();
+				meta = rels[FBEditor.FB3.rels.RelType.coreProperties];
+				meta = Ext.create('FBEditor.FB3.rels.Meta', me.getStructure(), meta[me.prefix + 'Target']);
+			}
+
+			return meta;
 		}
 	}
 );

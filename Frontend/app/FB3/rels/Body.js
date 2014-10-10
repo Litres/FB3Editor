@@ -1,5 +1,5 @@
 /**
- * Тело книга в архиве FB3.
+ * Тело книги в архиве FB3.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -42,7 +42,7 @@ Ext.define(
 
 		/**
 		 * Возвращает xml тела книги.
-		 * @returns {String} Строка xml.
+		 * @return {String} Строка xml.
 		 */
 		getContent: function ()
 		{

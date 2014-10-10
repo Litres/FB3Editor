@@ -8,6 +8,15 @@ Ext.define(
 	'FBEditor.FB3.InterfaceStructure',
 	{
 		/**
+		 * Возвращает мета-информацию.
+		 * @return {FBEditor.FB3.rels.Meta}
+		 */
+		getMeta: function ()
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#getMeta');
+		},
+
+		/**
 		 * Возвращает список книг.
 		 * @return {FBEditor.FB3.rels.Book[]}
 		 */

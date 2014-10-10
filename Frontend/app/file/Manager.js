@@ -39,6 +39,7 @@ Ext.define(
 						load: function (data)
 						{
 							var structure,
+								meta,
 								books,
 								desc,
 								body,
@@ -48,10 +49,12 @@ Ext.define(
 							{
 								me.fb3file = Ext.create('FBEditor.FB3.File', data);
 								structure = me.fb3file.getStructure();
+								meta = structure.getMeta();
 								books = structure.getBooks();
 								desc = structure.getDesc(books[0]);
 								body = structure.getBodies(books[0]);
 								content = structure.getContent(body[0]);
+								console.log('meta', meta);
 								console.log('books', books);
 								console.log('desc', desc);
 								//console.log(content);

@@ -64,6 +64,13 @@ Ext.define(
 			}
 		},
 
+		getMeta: function ()
+		{
+			var me = this;
+
+			return me.getRels().getMeta().getContent();
+		},
+
 		getBooks: function ()
 		{
 			var me = this;
