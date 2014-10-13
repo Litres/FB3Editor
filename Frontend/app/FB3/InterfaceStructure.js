@@ -8,8 +8,26 @@ Ext.define(
 	'FBEditor.FB3.InterfaceStructure',
 	{
 		/**
+		 * Возвращает типы данных.
+		 * @return {Object}
+		 */
+		getContentTypes: function ()
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#getContentTypes');
+		},
+
+		/**
+		 * Возвращает обложку.
+		 * @return {Image}
+		 */
+		getThumb: function ()
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#getThumb');
+		},
+
+		/**
 		 * Возвращает мета-информацию.
-		 * @return {FBEditor.FB3.rels.Meta}
+		 * @return {Object}
 		 */
 		getMeta: function ()
 		{
@@ -53,6 +71,16 @@ Ext.define(
 		getContent: function (body)
 		{
 			throw Error('Не реализован метод FB3.InterfaceStructure#getContent');
+		},
+
+		/**
+		 * Возвращает список изображений для тела книги.
+		 * @param {FBEditor.FB3.rels.Body} Тело книги.
+		 * @return {FBEditor.FB3.rels.Image[]} Список изображений.
+		 */
+		getImages: function (body)
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#getImages');
 		}
 	}
 );

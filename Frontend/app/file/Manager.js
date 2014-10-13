@@ -39,24 +39,33 @@ Ext.define(
 						load: function (data)
 						{
 							var structure,
+								thumb,
 								meta,
 								books,
 								desc,
-								body,
-								content;
+								bodies,
+								images,
+								contentBody,
+								contentTypes;
 
 							try
 							{
 								me.fb3file = Ext.create('FBEditor.FB3.File', data);
 								structure = me.fb3file.getStructure();
+								thumb = structure.getThumb();
+								contentTypes = structure.getContentTypes();
 								meta = structure.getMeta();
 								books = structure.getBooks();
 								desc = structure.getDesc(books[0]);
-								body = structure.getBodies(books[0]);
-								content = structure.getContent(body[0]);
+								bodies = structure.getBodies(books[0]);
+								images = structure.getImages(bodies[0]);
+								contentBody = structure.getContent(bodies[0]);
+								console.log('contentTypes', contentTypes);
+								console.log('thumb', thumb);
 								console.log('meta', meta);
 								console.log('books', books);
 								console.log('desc', desc);
+								console.log('images', images);
 								//console.log(content);
 							}
 							catch (e)
@@ -78,7 +87,7 @@ Ext.define(
 									}
 								);
 							}
-							Ext.getCmp('main-htmleditor').fireEvent('loadtext', content);
+							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 						}
 					}
 				);

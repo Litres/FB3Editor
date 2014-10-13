@@ -15,26 +15,6 @@ Ext.define(
 		 */
 		bodies: null,
 
-		/**
-		 * @private
-		 * @property {String} Директория архива FB3, в которой находятися текущая директория _rels.
-		 */
-		folderName: '',
-
-		/**
-		 *
-		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
-		 * @param {String} fileName Имя файла в архиве.
-		 * @param {String} folderName Директория архива FB3, в которой находятися текущая директория _rels.
-		 */
-		constructor: function (structure, fileName, folderName)
-		{
-			var me = this;
-
-			me.callParent(arguments);
-			me.folderName = folderName;
-		},
-
 		getRels: function ()
 		{
 			var me = this,
@@ -53,15 +33,14 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает тело книги или несколько тел книги, если не передан параметр index.
-		 * @param {Number} [index] Индекс тела книги в массиве.
-		 * @return {FBEditor.FB3.rels.Body|FBEditor.FB3.rels.Body[]} Тело книги или массив тел книги.
+		 * Возвращает несколько тел книги.
+		 * @return {FBEditor.FB3.rels.Body[]} Массив тел книги.
 		 */
-		getBodies: function (index)
+		getBodies: function ()
 		{
 			var me = this,
 				bodies = me.bodies,
-				folderName = me.folderName,
+				parentRelsDir = me.getParentRelsDir(),
 				rels;
 
 			if (!bodies)
@@ -73,13 +52,12 @@ Ext.define(
 					bodies,
 					function (item, i, selfBodies)
 					{
-						var fileName = folderName + '/' + item[me.prefix + 'Target'];
+						var fileName = parentRelsDir + '/' + item[me.prefix + 'Target'];
 
 						selfBodies[i] = Ext.create('FBEditor.FB3.rels.Body', me.getStructure(), fileName);
 					}
 				);
 			}
-			bodies = Ext.isNumeric(index) ? bodies[index] : bodies;
 
 			return bodies;
 		}

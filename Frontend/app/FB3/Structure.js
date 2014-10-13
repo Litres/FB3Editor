@@ -11,6 +11,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.InterfaceStructure',
 		requires: [
+			'FBEditor.FB3.rels.ContentTypes',
 			'FBEditor.FB3.rels.Rels',
 			'FBEditor.FB3.rels.RelType',
 			'FBEditor.util.xml.Json'
@@ -51,17 +52,33 @@ Ext.define(
 		constructor: function (fb3file)
 		{
 			var me = this,
-				rels = me.rels;
+				rels = me.rels,
+				contentTypes = me.contentTypes;
 
 			me.fb3file = fb3file;
 			if (me.valid())
 			{
+				contentTypes.rel = Ext.create('FBEditor.FB3.rels.ContentTypes', me, contentTypes.file);
 				rels.rel = Ext.create('FBEditor.FB3.rels.Rels', me, rels.file);
 			}
 			else
 			{
 				throw Error('Ошибка структуры архива');
 			}
+		},
+
+		getContentTypes: function ()
+		{
+			var me = this;
+
+			return me.contentTypes.rel.getContent();
+		},
+
+		getThumb: function ()
+		{
+			var me = this;
+
+			return me.getRels().getThumb();
 		},
 
 		getMeta: function ()
@@ -91,6 +108,11 @@ Ext.define(
 		getContent: function (body)
 		{
 			return body.getContent();
+		},
+
+		getImages: function (body)
+		{
+			return body.getRels().getImages();
 		},
 
 		/**

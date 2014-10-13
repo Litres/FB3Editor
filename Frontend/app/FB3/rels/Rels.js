@@ -9,10 +9,12 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 		requires: [
+			'FBEditor.FB3.rels.Thumb',
 			'FBEditor.FB3.rels.Meta',
 			'FBEditor.FB3.rels.Book',
 			'FBEditor.FB3.rels.BookRels',
-			'FBEditor.FB3.rels.Body'
+			'FBEditor.FB3.rels.Body',
+		    'FBEditor.FB3.rels.BodyRels'
 		],
 
 		/**
@@ -89,6 +91,26 @@ Ext.define(
 			books = Ext.isNumeric(index) ? books[index] : books;
 
 			return books;
+		},
+
+		/**
+		 * Возвращает обложку.
+		 * @return {FBEditor.FB3.rels.Thumb}
+		 */
+		getThumb: function ()
+		{
+			var me = this,
+				thumb = me.thumb,
+				rels;
+
+			if (!thumb)
+			{
+				rels = me.getRels();
+				thumb = rels[FBEditor.FB3.rels.RelType.thumbnail];
+				thumb = Ext.create('FBEditor.FB3.rels.Thumb', me.getStructure(), thumb[me.prefix + 'Target']);
+			}
+
+			return thumb;
 		},
 
 		/**

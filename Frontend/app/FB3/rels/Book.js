@@ -30,18 +30,12 @@ Ext.define(
 		{
 			var me = this,
 				rels = me.rels,
-				fileName = me.getFileName(),
-				folderName,
-				descName,
-				relsName;
+				relsName = me.getRelsName(),
+				parentDir = me.getParentDir();
 
 			if (!rels)
 			{
-				fileName = fileName.split('/');
-				descName = fileName.pop();
-				folderName = fileName.join('/');
-				relsName = folderName + '/_rels/' + descName + '.rels';
-				rels = Ext.create('FBEditor.FB3.rels.BookRels', me.getStructure(), relsName, folderName);
+				rels = Ext.create('FBEditor.FB3.rels.BookRels', me.getStructure(), relsName, parentDir);
 			}
 
 			return rels;

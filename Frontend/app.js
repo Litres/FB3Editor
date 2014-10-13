@@ -18,6 +18,7 @@ Ext.application({
 });
 
 // Загружаем сторонние ресурсы
+Ext.Loader.loadScript('bower_components/Blob.js/Blob.js');
 Ext.Loader.loadScript('bower_components/jszip/dist/jszip.min.js');
 Ext.Loader.loadScript('bower_components/FileSaver.js/FileSaver.min.js');
 Ext.Loader.loadScript('bower_components/jsxml/stand.js');

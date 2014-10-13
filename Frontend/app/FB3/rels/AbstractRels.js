@@ -39,15 +39,36 @@ Ext.define(
 		fileName: null,
 
 		/**
+		 * @private
+		 * @property {String} Имя файла, содержащицй связи для текущего файла.
+		 */
+		relsName: null,
+
+		/**
+		 * @private
+		 * @property {String} Родительская директория текущего файла.
+		 */
+		parentDir: null,
+
+		/**
+		 * @private
+		 * @property {String} Директория архива FB3, в которой находятися текущая директория _rels.
+		 */
+		parentRelsDir: null,
+
+		/**
 		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
 		 * @param {String} fileName Имя файла в архиве.
+		 * @param {String} [parentRelsDir] Директория архива FB3, в которой находятися текущая директория _rels.
 		 */
-		constructor: function (structure, fileName)
+		constructor: function (structure, fileName, parentRelsDir)
 		{
 			var me = this;
 
 			me.structure = structure;
 			me.fileName = fileName;
+			me.parentRelsDir = parentRelsDir ? parentRelsDir : null;
+			me.relsName = me.getRelsName();
 			me.file = me.structure.getFb3file().getFiles(fileName);
 			me.prefix = FBEditor.util.xml.Json.prefix;
 			me.rels = me.getRels();
@@ -86,6 +107,52 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает имя файла, содержащицй связи для текущего файла.
+		 * @return {String} Имя файла.
+		 */
+		getRelsName: function ()
+		{
+			var me = this,
+				fileName = me.getFileName(),
+				parentDir,
+				currentName,
+				relsName = me.relsName;
+
+			if (!relsName)
+			{
+				fileName = fileName.split('/');
+				currentName = fileName.pop();
+				parentDir = fileName.join('/');
+				me.parentDir = parentDir;
+				relsName = parentDir + '/_rels/' + currentName + '.rels';
+			}
+
+			return relsName;
+		},
+
+		/**
+		 * Возвращает родительскую директорию текущего файла.
+		 * @return {String} Имя директории.
+		 */
+		getParentDir: function ()
+		{
+			var me = this;
+
+			return me.parentDir;
+		},
+
+		/**
+		 * Возвращает директорию архива FB3, в которой находятися текущая директория _rels.
+		 * @return {String} Имя директории.
+		 */
+		getParentRelsDir: function ()
+		{
+			var me = this;
+
+			return me.parentRelsDir;
+		},
+
+		/**
 		 * Возвращает содержмиое файла как JSON.
 		 * @return {Object} Xml в виде JSON.
 		 */
@@ -110,6 +177,23 @@ Ext.define(
 				file = me.file;
 
 			return file.asText();
+		},
+
+		/**
+		 * Возвращает URL для доступа к ресурсу.
+		 * @return {String} Путь к картинке.
+		 */
+		getUrl: function ()
+		{
+			var me = this,
+				buffer = me.file.asArrayBuffer(),
+				blob,
+				url;
+
+			blob = new Blob([buffer]);
+			url = window.URL.createObjectURL(blob);
+
+			return url;
 		}
 	}
 );
