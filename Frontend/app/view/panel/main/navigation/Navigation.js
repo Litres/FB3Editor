@@ -9,13 +9,25 @@ Ext.define(
     {
         extend: 'FBEditor.view.panel.main.AbstractDetach',
 	    requires: [
-		    'FBEditor.view.panel.main.navigation.NavigationController'
+		    'FBEditor.view.panel.main.navigation.NavigationController',
+		    'FBEditor.view.button.Desc'
 	    ],
 	    id: 'panel-main-navigation',
 	    xtype: 'panel-main-navigation',
 	    controller: 'panel.main.navigation',
 	    panelName: 'navigation',
         title: 'Навигация',
-        html: 'Содержимое левой панели'
+
+	    initComponent: function ()
+	    {
+		    var me = this;
+
+		    me.items = [
+			    {
+				    xtype: 'button-desc'
+			    }
+		    ];
+		    me.callParent(arguments);
+	    }
     }
 );

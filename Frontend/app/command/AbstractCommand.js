@@ -10,10 +10,15 @@ Ext.define(
 		extend: 'FBEditor.command.InterfaceCommand',
 
 		/**
-		 * @private
-		 * @property {Object} Данные команды.
+		 * @property {Object} Данные для команды.
 		 */
 		data: null,
+
+		/**
+		 * @private
+		 * @property {window} Окно браузера, в котором должна быть выполнена команда.
+		 */
+		bridgeWindow: null,
 
 		/**
 		 * @param {Object} opts Данные.
@@ -23,6 +28,25 @@ Ext.define(
 			var me = this;
 
 			me.data = opts;
+			me.bridgeWindow = FBEditor.parentWindow || window;
+		},
+
+		/**
+		 * Возвращает данные для команды.
+		 * @return {Object} Данные для команды.
+		 */
+		getData: function ()
+		{
+			return this.data;
+		},
+
+		/**
+		 * Возвращает окно браузера, в котором должна быть выполнена команда.
+		 * @return {window} Окно браузера.
+		 */
+		getBridgeWindow: function ()
+		{
+			return this.bridgeWindow;
 		}
 	}
 );

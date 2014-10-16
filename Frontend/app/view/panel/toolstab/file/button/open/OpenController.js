@@ -20,8 +20,7 @@ Ext.define(
 		 */
 		onChange: function (btn, evt)
 		{
-			var me = this,
-				cmd;
+			var cmd;
 
 			cmd = Ext.create('FBEditor.command.OpenFile', {evt: evt});
 			if (cmd.execute())
