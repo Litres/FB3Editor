@@ -13,10 +13,10 @@ Ext.define(
 		],
 		id: 'window-desc',
 		xtype: 'window-desc',
-		width: '80%',
-		height: '80%',
+		closeAction: 'hide',
 		modal: true,
-		maximizable: true,
+		maximized: true,
+		autoScroll: true,
 		title: 'Описание книги',
 
 		initComponent: function ()
