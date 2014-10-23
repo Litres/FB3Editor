@@ -8,6 +8,11 @@ Ext.define(
     'FBEditor.view.panel.main.navigation.NavigationController',
     {
         extend: 'FBEditor.view.panel.main.DetachController',
-	    alias: 'controller.panel.main.navigation'
+	    alias: 'controller.panel.main.navigation',
+
+	    onRender: function ()
+	    {
+		    var me = this;
+	    }
     }
 );

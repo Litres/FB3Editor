@@ -1,5 +1,5 @@
 /**
- * Кнопка описания книги.
+ * Кнопка переключения на описание книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,15 +7,13 @@
 Ext.define(
 	'FBEditor.view.button.Desc',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.button.AbstractContent',
 		requires: [
-			'FBEditor.command.OpenDesc',
-			'FBEditor.view.window.desc.Desc'
+			'FBEditor.command.OpenDesc'
 		],
 		id: 'button-desc',
 		xtype: 'button-desc',
 		text: 'Описание книги',
-		width: '100%',
 		handler: function ()
 		{
 			this.openDesc();

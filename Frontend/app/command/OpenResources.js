@@ -1,11 +1,11 @@
 /**
- * Открывает описание книги.
+ * Открывает ресурсы книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.command.OpenDesc',
+	'FBEditor.command.OpenResources',
 	{
 		extend: 'FBEditor.command.AbstractCommand',
 
@@ -25,7 +25,7 @@ Ext.define(
 
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
 			me.activeItem = content.getLayout().getActiveItem();
-			content.fireEvent('contentDesc');
+			content.fireEvent('contentResources');
 
 			return result;
 		},

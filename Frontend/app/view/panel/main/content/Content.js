@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.content.ContentController',
-			'FBEditor.view.htmleditor.HtmlEditor'
+			'FBEditor.view.htmleditor.HtmlEditor',
+			'FBEditor.view.form.desc.Desc'
 		],
 		id: 'panel-main-content',
 		xtype: 'panel-main-content',
@@ -18,18 +19,18 @@ Ext.define(
 		panelName: 'content',
 		region: 'center',
 		collapsible: false,
-		layout: 'fit',
-
-		initComponent: function ()
-		{
-			var me = this;
-
-			me.items = [
-				{
-					xtype: 'main-htmleditor'
-				}
-			];
-			me.callParent(arguments);
+		layout: 'card',
+		items: [
+			{
+				xtype: 'main-htmleditor'
+			},
+			{
+				xtype: 'form-desc'
+			}
+		],
+		listeners: {
+			contentEditor: 'onContentEditor',
+			contentDesc: 'onContentDesc'
 		}
     }
 );

@@ -5,16 +5,16 @@
  */
 
 Ext.define(
-	'FBEditor.view.window.desc.Form',
+	'FBEditor.view.form.desc.Desc',
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
 			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator'
 		],
-		id: 'window-desc-form',
-		xtype: 'window-desc-form',
-		bodyPadding: 5,
+		id: 'form-desc',
+		xtype: 'form-desc',
+		bodyPadding: 0,
 		defaults: {
 			anchor: '100%'
 		},
@@ -124,26 +124,32 @@ Ext.define(
 							},
 							items: [
 								{
+									fieldLabel: 'ID',
 									name: 'subjectId',
 									allowBlank: false
 								},
 								{
+									fieldLabel: 'Тип связи',
 									name: 'subjectLink',
 									allowBlank: false
 								},
 								{
+									fieldLabel: 'Общепринятое наименование',
 									name: 'subjectTitle',
 									allowBlank: false
 								},
 								{
+									fieldLabel: 'Первое имя',
 									name: 'subjectFirstName',
 									allowBlank: true
 								},
 								{
+									fieldLabel: 'Второе имя',
 									name: 'subjectMiddleName',
 									allowBlank: true
 								},
 								{
+									fieldLabel: 'Последнее имя',
 									name: 'subjectLastName',
 									allowBlank: false
 								}
