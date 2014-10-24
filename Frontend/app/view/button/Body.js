@@ -19,6 +19,11 @@ Ext.define(
 			this.openBody();
 		},
 
+		getContentId: function ()
+		{
+			return 'main-htmleditor';
+		},
+
 		/**
 		 * Открывает текст книги.
 		 */

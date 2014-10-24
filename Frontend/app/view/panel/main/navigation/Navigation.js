@@ -19,9 +19,6 @@ Ext.define(
 	    controller: 'panel.main.navigation',
 	    panelName: 'navigation',
         title: 'Навигация',
-	    listeners: {
-		    afterrender: 'onRender'
-	    },
 
 	    initComponent: function ()
 	    {

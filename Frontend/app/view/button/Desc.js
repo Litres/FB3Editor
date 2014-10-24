@@ -19,6 +19,11 @@ Ext.define(
 			this.openDesc();
 		},
 
+		getContentId: function ()
+		{
+			return 'form-desc';
+		},
+
 		/**
 		 * Открывает описание книги.
 		 */

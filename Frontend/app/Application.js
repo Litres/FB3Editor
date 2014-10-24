@@ -29,6 +29,12 @@ Ext.define(
 			// родительское окно
 			FBEditor.parentWindow = window.opener;
 
+			// мост для передачи событий нужному окну
+			FBEditor.getBridgeWindow = function ()
+			{
+				return FBEditor.parentWindow || window;
+			};
+
 			// закрытие/обновление окна
 			window.onbeforeunload = function ()
 			{

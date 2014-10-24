@@ -15,12 +15,6 @@ Ext.define(
 		data: null,
 
 		/**
-		 * @private
-		 * @property {window} Окно браузера, в котором должна быть выполнена команда.
-		 */
-		bridgeWindow: null,
-
-		/**
 		 * @param {Object} opts Данные.
 		 */
 		constructor: function (opts)
@@ -28,7 +22,6 @@ Ext.define(
 			var me = this;
 
 			me.data = opts;
-			me.bridgeWindow = FBEditor.parentWindow || window;
 		},
 
 		/**
@@ -46,7 +39,7 @@ Ext.define(
 		 */
 		getBridgeWindow: function ()
 		{
-			return this.bridgeWindow;
+			return FBEditor.getBridgeWindow();
 		}
 	}
 );

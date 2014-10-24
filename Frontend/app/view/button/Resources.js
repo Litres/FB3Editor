@@ -19,6 +19,11 @@ Ext.define(
 			this.openResources();
 		},
 
+		getContentId: function ()
+		{
+			return '';
+		},
+
 		/**
 		 * Открывает ресурсы книги.
 		 */
