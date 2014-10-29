@@ -13,6 +13,7 @@ Ext.define(
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.view.form.desc.title.Title',
 			'FBEditor.view.form.desc.bookClass.BookClass',
+			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.relations.Relations',
 			'FBEditor.view.form.desc.classification.Classification'
 		],

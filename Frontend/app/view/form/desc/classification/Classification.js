@@ -19,12 +19,16 @@ Ext.define(
 				combineErrors: true,
 				msgTarget: 'side',
 				defaults: {
-					width: 200,
+					//width: 200,
+					flex: 1,
 					labelWidth: 200,
 					labelAlign: 'right',
 					msgTarget: 'none',
 					margin: '0 2 0 0'
 				}
+			},
+			{
+				xtype: 'form-desc-subject'
 			}
 		]
 	}
