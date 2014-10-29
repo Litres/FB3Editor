@@ -1,17 +1,17 @@
 /**
- * Авторы, правообладатели и другие имеющие отношение к произведению субьекты.
+ * Объекты имеющие отношение к произведению.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.relations.subject.Subject',
+	'FBEditor.view.form.desc.relations.object.Object',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.relations.subject.Link'
+			'FBEditor.view.form.desc.relations.object.Link'
 		],
-		xtype: 'form-desc-relations-subject',
+		xtype: 'form-desc-relations-object',
 		items: [
 			{
 				xtype: 'fieldcontainer',
@@ -27,7 +27,7 @@ Ext.define(
 				},
 				items: [
 					{
-						value: 'ID субъекта:',
+						value: 'ID объекта:',
 						flex: 0,
 						width: 200
 					},
@@ -40,15 +40,6 @@ Ext.define(
 						value: 'Общепринятое наименование:',
 						flex: 0,
 						width: 300
-					},
-					{
-						value: 'Первое имя:'
-					},
-					{
-						value: 'Второе имя:'
-					},
-					{
-						value: 'Последнее имя:'
 					},
 					{
 						value: 'Описание:'
@@ -85,13 +76,13 @@ Ext.define(
 				items: [
 					{
 						fieldLabel: 'ID',
-						name: 'relations-subject-id',
+						name: 'relations-object-id',
 						allowBlank: false,
 						flex: 0,
 						width: 200
 					},
 					{
-						xtype: 'form-desc-relations-subject-link',
+						xtype: 'form-desc-relations-object-link',
 						flex: 0,
 						width: 200
 					},
@@ -107,23 +98,8 @@ Ext.define(
 						}
 					},
 					{
-						fieldLabel: 'Первое имя',
-						name: 'relations-subject-firstName',
-						allowBlank: true
-					},
-					{
-						fieldLabel: 'Второе имя',
-						name: 'relations-subject-middleName',
-						allowBlank: true
-					},
-					{
-						fieldLabel: 'Последнее имя',
-						name: 'relations-subject-lastName',
-						allowBlank: false
-					},
-					{
 						fieldLabel: 'Описание',
-						name: 'relations-subject-desc',
+						name: 'relations-object-desc',
 						allowBlank: true
 					}
 				]
