@@ -12,6 +12,7 @@ Ext.define(
 			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.view.form.desc.title.Title',
+			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.relations.Relations',
 			'FBEditor.view.form.desc.classification.Classification'
 		],
@@ -59,7 +60,7 @@ Ext.define(
 					]
 				},
 				{
-					title: 'Положение в каталоге для данного произведения',
+					title: 'Классификация произведения',
 					items: [
 						{
 							xtype: 'form-desc-classification',

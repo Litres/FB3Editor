@@ -18,6 +18,7 @@ Ext.define(
 		fieldLabel: 'Тип связи',
 		name: 'relations-subject-link',
 		allowBlank: false,
+		editable: false,
 
 		initComponent: function ()
 		{

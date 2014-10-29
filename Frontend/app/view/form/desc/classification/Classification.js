@@ -8,13 +8,23 @@ Ext.define(
 	'FBEditor.view.form.desc.classification.Classification',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		requires: [
+			'FBEditor.view.form.desc.classification.class.Class'
+		],
 		xtype: 'form-desc-classification',
 		items: [
 			{
-				xtype: 'textfield',
-				name: 'classification-class',
-				fieldLabel: 'Литературная форма',
-				allowBlank: false
+				xtype: 'form-desc-classification-class',
+				layout: 'hbox',
+				combineErrors: true,
+				msgTarget: 'side',
+				defaults: {
+					width: 200,
+					labelWidth: 200,
+					labelAlign: 'right',
+					msgTarget: 'none',
+					margin: '0 2 0 0'
+				}
 			}
 		]
 	}
