@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.classification.class.Class'
+			'FBEditor.view.form.desc.classification.class.Class',
+			'FBEditor.view.form.desc.classification.target.Target'
 		],
 		xtype: 'form-desc-classification',
 		items: [
@@ -19,7 +20,6 @@ Ext.define(
 				combineErrors: true,
 				msgTarget: 'side',
 				defaults: {
-					//width: 200,
 					flex: 1,
 					labelWidth: 200,
 					labelAlign: 'right',
@@ -28,7 +28,30 @@ Ext.define(
 				}
 			},
 			{
-				xtype: 'form-desc-subject'
+				xtype: 'form-desc-subject',
+				plugins: 'fieldreplicator'
+			},
+			{
+				xtype: 'textfield',
+				name: 'classification-customSubject',
+				fieldLabel: 'Новый жанр',
+				labelWidth: 200,
+				labelAlign: 'right',
+				allowBlank: true,
+				plugins: 'fieldreplicator'
+			},
+			{
+				xtype: 'form-desc-classification-target',
+				layout: 'hbox',
+				combineErrors: true,
+				msgTarget: 'side',
+				defaults: {
+					flex: 1,
+					labelWidth: 200,
+					labelAlign: 'right',
+					msgTarget: 'none',
+					margin: '0 2 0 0'
+				}
 			}
 		]
 	}

@@ -19,6 +19,7 @@ Ext.define(
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
+		autoScroll: true,
 		bodyPadding: 0,
 		defaults: {
 			xtype: 'fieldset',
