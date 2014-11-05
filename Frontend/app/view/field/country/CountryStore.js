@@ -13,6 +13,7 @@ Ext.define(
 			'name'
 		],
 		data: [
+			{"value": "RU", "name": "\u0420\u043e\u0441\u0441\u0438\u044f"},
 			{"value": "AU", "name": "\u0410\u0432\u0441\u0442\u0440\u0430\u043b\u0438\u044f"},
 			{"value": "AT", "name": "\u0410\u0432\u0441\u0442\u0440\u0438\u044f"},
 			{"value": "AZ", "name": "\u0410\u0437\u0435\u0440\u0431\u0430\u0439\u0434\u0436\u0430\u043d"},
@@ -187,7 +188,6 @@ Ext.define(
 			{"value": "PR", "name": "\u041f\u0443\u044d\u0440\u0442\u043e-\u0420\u0438\u043a\u043e"},
 			{"value": "KR", "name": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u041a\u043e\u0440\u0435\u044f"},
 			{"value": "RE", "name": "\u0420\u0435\u044e\u043d\u044c\u043e\u043d"},
-			{"value": "RU", "name": "\u0420\u043e\u0441\u0441\u0438\u044f"},
 			{"value": "RW", "name": "\u0420\u0443\u0430\u043d\u0434\u0430"},
 			{"value": "RO", "name": "\u0420\u0443\u043c\u044b\u043d\u0438\u044f"},
 			{"value": "US", "name": "\u0421\u0428\u0410"},

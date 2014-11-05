@@ -11,13 +11,14 @@ Ext.define(
 		requires: [
 			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator',
+			'FBEditor.view.field.country.Country',
+			'FBEditor.view.field.lang.Lang',
 			'FBEditor.view.form.desc.title.Title',
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.relations.Relations',
 			'FBEditor.view.form.desc.classification.Classification',
-			'FBEditor.view.field.country.Country',
-			'FBEditor.view.field.lang.Lang'
+			'FBEditor.view.form.desc.written.Written'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -86,7 +87,13 @@ Ext.define(
 					forceSelection: true,
 					labelWidth: 200,
 					labelAlign: 'right',
-					msgTarget: 'side'
+					msgTarget: 'side',
+					style: {
+						paddingBottom: '5px'
+					}
+				},
+				{
+					xtype: 'form-desc-written'
 				}
 			];
 			me.callParent(arguments);
