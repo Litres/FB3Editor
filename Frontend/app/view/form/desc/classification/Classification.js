@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.classification.class.Class',
-			'FBEditor.view.form.desc.classification.target.Target'
+			'FBEditor.view.form.desc.classification.target.Target',
+			'FBEditor.view.form.desc.classification.coverage.Coverage'
 		],
 		xtype: 'form-desc-classification',
 		items: [
@@ -42,6 +43,19 @@ Ext.define(
 			},
 			{
 				xtype: 'form-desc-classification-target',
+				layout: 'hbox',
+				combineErrors: true,
+				msgTarget: 'side',
+				defaults: {
+					flex: 1,
+					labelWidth: 200,
+					labelAlign: 'right',
+					msgTarget: 'none',
+					margin: '0 2 0 0'
+				}
+			},
+			{
+				xtype: 'form-desc-classification-coverage',
 				layout: 'hbox',
 				combineErrors: true,
 				msgTarget: 'side',
