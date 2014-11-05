@@ -16,6 +16,12 @@ Ext.define(
 		items: [
 			{
 				xtype: 'textfield',
+				fieldLabel: 'Описание',
+				emptyText: 'Описание',
+				hideLabel: true
+			},
+			{
+				xtype: 'countryfield',
 				fieldLabel: 'Страна',
 				emptyText: 'Страна',
 				hideLabel: true

@@ -15,7 +15,9 @@ Ext.define(
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.relations.Relations',
-			'FBEditor.view.form.desc.classification.Classification'
+			'FBEditor.view.form.desc.classification.Classification',
+			'FBEditor.view.field.country.Country',
+			'FBEditor.view.field.lang.Lang'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -76,6 +78,15 @@ Ext.define(
 							}
 						}
 					]
+				},
+				{
+					xtype: 'langfield',
+					fieldLabel: 'Язык',
+					allowBlank: false,
+					forceSelection: true,
+					labelWidth: 200,
+					labelAlign: 'right',
+					msgTarget: 'side'
 				}
 			];
 			me.callParent(arguments);
