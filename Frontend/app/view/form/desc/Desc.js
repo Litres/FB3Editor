@@ -20,7 +20,8 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.Relations',
 			'FBEditor.view.form.desc.classification.Classification',
 			'FBEditor.view.form.desc.written.Written',
-			'FBEditor.view.form.desc.info.Info'
+			'FBEditor.view.form.desc.documentInfo.DocumentInfo',
+			'FBEditor.view.form.desc.publishInfo.PublishInfo'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -106,7 +107,7 @@ Ext.define(
 					title: 'Информация о файле',
 					items: [
 						{
-							xtype: 'form-desc-info',
+							xtype: 'form-desc-documentInfo',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
@@ -128,6 +129,22 @@ Ext.define(
 					style: {
 						paddingBottom: '5px'
 					}
+				},
+				{
+					title: 'Информация о бумажной публикации',
+					items: [
+						{
+							xtype: 'form-desc-publishInfo',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%',
+								labelWidth: 200,
+								labelAlign: 'right',
+								msgTarget: 'side',
+								margin: '0 0 2 0'
+							}
+						}
+					]
 				}
 			];
 			me.callParent(arguments);

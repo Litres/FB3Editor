@@ -5,10 +5,10 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.info.Info',
+	'FBEditor.view.form.desc.documentInfo.DocumentInfo',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
-		xtype: 'form-desc-info',
+		xtype: 'form-desc-documentInfo',
 
 		translateText: {
 			created: 'Создан',
@@ -26,33 +26,33 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'datetimefield',
-					name: 'info-created',
+					name: 'documentInfo-created',
 					fieldLabel: me.translateText.created
 				},
 				{
 					xtype: 'datetimefield',
-					name: 'info-updated',
+					name: 'documentInfo-updated',
 					fieldLabel: me.translateText.updated
 				},
 				{
 					xtype: 'textfield',
-					name: 'info-programUsed',
+					name: 'documentInfo-programUsed',
 					fieldLabel: me.translateText.programUsed
 				},
 				{
 					xtype: 'textfield',
 					vtype: 'url',
-					name: 'info-srcUrl',
+					name: 'documentInfo-srcUrl',
 					fieldLabel: me.translateText.srcUrl
 				},
 				{
 					xtype: 'textfield',
-					name: 'info-ocr',
+					name: 'documentInfo-ocr',
 					fieldLabel: me.translateText.ocr
 				},
 				{
 					xtype: 'textfield',
-					name: 'info-editor',
+					name: 'documentInfo-editor',
 					fieldLabel: me.translateText.editor
 				}
 			];
