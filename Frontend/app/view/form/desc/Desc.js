@@ -33,6 +33,10 @@ Ext.define(
 			anchor: '100%'
 		},
 
+		translateText: {
+
+		},
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -84,6 +88,7 @@ Ext.define(
 				},
 				{
 					xtype: 'langfield',
+					name: 'lang',
 					fieldLabel: 'Язык',
 					allowBlank: false,
 					forceSelection: true,
@@ -112,6 +117,17 @@ Ext.define(
 							}
 						}
 					]
+				},
+				{
+					xtype: 'textfield',
+					name: 'keywords',
+					fieldLabel: 'Ключевые слова',
+					labelWidth: 200,
+					labelAlign: 'right',
+					msgTarget: 'side',
+					style: {
+						paddingBottom: '5px'
+					}
 				}
 			];
 			me.callParent(arguments);
