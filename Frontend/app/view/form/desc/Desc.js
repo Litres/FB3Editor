@@ -13,12 +13,14 @@ Ext.define(
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.view.field.country.Country',
 			'FBEditor.view.field.lang.Lang',
+			'FBEditor.view.field.datetime.Datetime',
 			'FBEditor.view.form.desc.title.Title',
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.relations.Relations',
 			'FBEditor.view.form.desc.classification.Classification',
-			'FBEditor.view.form.desc.written.Written'
+			'FBEditor.view.form.desc.written.Written',
+			'FBEditor.view.form.desc.info.Info'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -94,6 +96,22 @@ Ext.define(
 				},
 				{
 					xtype: 'form-desc-written'
+				},
+				{
+					title: 'Информация о файле',
+					items: [
+						{
+							xtype: 'form-desc-info',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%',
+								labelWidth: 200,
+								labelAlign: 'right',
+								msgTarget: 'side',
+								margin: '0 0 2 0'
+							}
+						}
+					]
 				}
 			];
 			me.callParent(arguments);

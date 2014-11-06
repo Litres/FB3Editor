@@ -8,9 +8,6 @@ Ext.define(
 	'FBEditor.view.form.desc.classification.coverage.Coverage',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
-		requires: [
-
-		],
 		xtype: 'form-desc-classification-coverage',
 		fieldLabel: 'Привязка к месту и времени',
 		items: [
