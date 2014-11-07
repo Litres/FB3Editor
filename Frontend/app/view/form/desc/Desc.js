@@ -125,7 +125,10 @@ Ext.define(
 					fieldLabel: 'Ключевые слова',
 					labelWidth: 200,
 					labelAlign: 'right',
-					msgTarget: 'side'
+					msgTarget: 'side',
+					style: {
+						paddingBottom: '5px'
+					}
 				},
 				{
 					title: 'Информация о бумажной публикации',
@@ -134,11 +137,7 @@ Ext.define(
 							xtype: 'form-desc-publishInfo',
 							layout: 'anchor',
 							defaults: {
-								anchor: '100%',
-								labelWidth: 200,
-								labelAlign: 'right',
-								msgTarget: 'side',
-								margin: '0 0 2 0'
+								anchor: '100%'
 							}
 						}
 					]
