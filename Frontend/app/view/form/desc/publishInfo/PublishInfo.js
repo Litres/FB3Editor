@@ -15,7 +15,9 @@ Ext.define(
 			publisher: 'Издатель',
 			city: 'Город',
 			year: 'Год',
-			isbn: 'ISBN'
+			isbn: 'ISBN',
+			isbnError: 'Значение должно соответствовать шаблону ([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]. ' +
+			           'Например: 978-5-358-02523-3'
 		},
 
 		initComponent: function ()
@@ -46,6 +48,9 @@ Ext.define(
 				{
 					xtype: 'textfield',
 					name: 'publishInfo-isbn',
+					regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
+					regexText: me.translateText.isbnError,
+					emptyText: me.translateText.isbnError,
 					fieldLabel: me.translateText.isbn
 				}
 			];

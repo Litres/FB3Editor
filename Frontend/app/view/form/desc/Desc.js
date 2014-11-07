@@ -125,10 +125,7 @@ Ext.define(
 					fieldLabel: 'Ключевые слова',
 					labelWidth: 200,
 					labelAlign: 'right',
-					msgTarget: 'side',
-					style: {
-						paddingBottom: '5px'
-					}
+					msgTarget: 'side'
 				},
 				{
 					title: 'Информация о бумажной публикации',
