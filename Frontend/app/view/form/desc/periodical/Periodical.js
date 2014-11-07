@@ -58,11 +58,6 @@ Ext.define(
 						},
 						{
 							value: me.translateText.date + ':'
-						},
-						{
-							flex: 0,
-							width: 140,
-							value: ''
 						}
 					]
 				},
@@ -81,12 +76,6 @@ Ext.define(
 						msgTarget: 'none',
 						hideLabel: true,
 						margin: '0 2 0 0'
-					},
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: 'periodical',
-						btnPos: 'end',
-						btnStyle: 'margin: 0 0 0 2px'
 					},
 					items: [
 						{
