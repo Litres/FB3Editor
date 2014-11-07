@@ -97,6 +97,7 @@ Ext.define(
 							fieldLabel: me.translateText.city
 						},
 						{
+							xtype: 'numberfield',
 							name: 'publishInfo-year',
 							fieldLabel: me.translateText.year
 						},

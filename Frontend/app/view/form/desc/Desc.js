@@ -14,6 +14,7 @@ Ext.define(
 			'FBEditor.view.field.country.Country',
 			'FBEditor.view.field.lang.Lang',
 			'FBEditor.view.field.datetime.Datetime',
+			'FBEditor.view.form.desc.periodical.Periodical',
 			'FBEditor.view.form.desc.title.Title',
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
@@ -36,6 +37,14 @@ Ext.define(
 		},
 
 		translateText: {
+			periodical: 'Периодическое издание',
+			title: 'Название произведения',
+			relations: 'Все связанные с данным документом персоны и объекты',
+			classification: 'Классификация произведения',
+			lang: 'Язык',
+			documentInfo: 'Информация о файле',
+			keywords: 'Ключевые слова',
+			publishInfo: 'Информация о бумажной публикации',
 			customInfo: 'Пользовательская информация'
 		},
 
@@ -45,7 +54,19 @@ Ext.define(
 
 			me.items = [
 				{
-					title: 'Название произведения',
+					title: me.translateText.periodical,
+					items: [
+						{
+							xtype: 'form-desc-periodical',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
+				},
+				{
+					title: me.translateText.title,
 					items: [
 						{
 							xtype: 'form-desc-title',
@@ -61,7 +82,7 @@ Ext.define(
 					]
 				},
 				{
-					title: 'Все связанные с данным документом персоны и объекты',
+					title: me.translateText.relations,
 					items: [
 						{
 							xtype: 'form-desc-relations',
@@ -73,7 +94,7 @@ Ext.define(
 					]
 				},
 				{
-					title: 'Классификация произведения',
+					title: me.translateText.classification,
 					items: [
 						{
 							xtype: 'form-desc-classification',
@@ -91,7 +112,7 @@ Ext.define(
 				{
 					xtype: 'langfield',
 					name: 'lang',
-					fieldLabel: 'Язык',
+					fieldLabel: me.translateText.lang,
 					allowBlank: false,
 					forceSelection: true,
 					labelWidth: 200,
@@ -105,7 +126,7 @@ Ext.define(
 					xtype: 'form-desc-written'
 				},
 				{
-					title: 'Информация о файле',
+					title: me.translateText.documentInfo,
 					items: [
 						{
 							xtype: 'form-desc-documentInfo',
@@ -123,7 +144,7 @@ Ext.define(
 				{
 					xtype: 'textfield',
 					name: 'keywords',
-					fieldLabel: 'Ключевые слова',
+					fieldLabel: me.translateText.keywords,
 					labelWidth: 200,
 					labelAlign: 'right',
 					msgTarget: 'side',
@@ -132,7 +153,7 @@ Ext.define(
 					}
 				},
 				{
-					title: 'Информация о бумажной публикации',
+					title: me.translateText.publishInfo,
 					items: [
 						{
 							xtype: 'form-desc-publishInfo',
