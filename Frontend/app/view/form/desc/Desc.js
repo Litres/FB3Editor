@@ -21,7 +21,8 @@ Ext.define(
 			'FBEditor.view.form.desc.classification.Classification',
 			'FBEditor.view.form.desc.written.Written',
 			'FBEditor.view.form.desc.documentInfo.DocumentInfo',
-			'FBEditor.view.form.desc.publishInfo.PublishInfo'
+			'FBEditor.view.form.desc.publishInfo.PublishInfo',
+			'FBEditor.view.form.desc.customInfo.CustomInfo'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -35,7 +36,7 @@ Ext.define(
 		},
 
 		translateText: {
-
+			customInfo: 'Пользовательская информация'
 		},
 
 		initComponent: function ()
@@ -135,6 +136,18 @@ Ext.define(
 					items: [
 						{
 							xtype: 'form-desc-publishInfo',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
+				},
+				{
+					title: me.translateText.customInfo,
+					items: [
+						{
+							xtype: 'form-desc-customInfo',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%'
