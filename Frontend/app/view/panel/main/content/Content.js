@@ -20,6 +20,7 @@ Ext.define(
 		region: 'center',
 		collapsible: false,
 		layout: 'card',
+		overflowX: true,
 		items: [
 			{
 				xtype: 'main-htmleditor'

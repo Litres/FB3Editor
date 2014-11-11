@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
+			'FBEditor.view.form.desc.AbstractFieldContainer',
 			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.view.field.country.Country',
@@ -28,12 +29,17 @@ Ext.define(
 		id: 'form-desc',
 		xtype: 'form-desc',
 		autoScroll: true,
+		minWidth: 800,
 		bodyPadding: 0,
 		defaults: {
 			xtype: 'fieldset',
 			collapsible: true,
 			padding: '2',
 			anchor: '100%'
+		},
+		fieldDefaults: {
+			labelStyle: 'font-size: 10px; line-height: 1',
+			fieldStyle: 'font-size: 10px; line-height: 1'
 		},
 
 		translateText: {
@@ -48,13 +54,16 @@ Ext.define(
 			customInfo: 'Пользовательская информация'
 		},
 
+		titleTpl: '<span style="font-size: 12px">{%s}</span>',
+
 		initComponent: function ()
 		{
 			var me = this;
 
 			me.items = [
 				{
-					title: me.translateText.periodical,
+					title: me.titleTpl.replace('{%s}', me.translateText.periodical),
+					collapsed: true,
 					items: [
 						{
 							xtype: 'form-desc-periodical',
@@ -66,14 +75,14 @@ Ext.define(
 					]
 				},
 				{
-					title: me.translateText.title,
+					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.title),
 					items: [
 						{
 							xtype: 'form-desc-title',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 200,
+								labelWidth: 140,
 								labelAlign: 'right',
 								msgTarget: 'side',
 								margin: '0 0 2 0'
@@ -82,7 +91,7 @@ Ext.define(
 					]
 				},
 				{
-					title: me.translateText.relations,
+					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.relations),
 					items: [
 						{
 							xtype: 'form-desc-relations',
@@ -94,14 +103,14 @@ Ext.define(
 					]
 				},
 				{
-					title: me.translateText.classification,
+					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.classification),
 					items: [
 						{
 							xtype: 'form-desc-classification',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 200,
+								labelWidth: 140,
 								labelAlign: 'right',
 								msgTarget: 'side',
 								margin: '0 0 2 0'
@@ -112,10 +121,10 @@ Ext.define(
 				{
 					xtype: 'langfield',
 					name: 'lang',
-					fieldLabel: me.translateText.lang,
+					fieldLabel: '* ' + me.translateText.lang,
 					allowBlank: false,
 					forceSelection: true,
-					labelWidth: 200,
+					labelWidth: 140,
 					labelAlign: 'right',
 					msgTarget: 'side',
 					style: {
@@ -126,14 +135,14 @@ Ext.define(
 					xtype: 'form-desc-written'
 				},
 				{
-					title: me.translateText.documentInfo,
+					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.documentInfo),
 					items: [
 						{
 							xtype: 'form-desc-documentInfo',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 200,
+								labelWidth: 140,
 								labelAlign: 'right',
 								msgTarget: 'side',
 								margin: '0 0 2 0'
@@ -145,7 +154,7 @@ Ext.define(
 					xtype: 'textfield',
 					name: 'keywords',
 					fieldLabel: me.translateText.keywords,
-					labelWidth: 200,
+					labelWidth: 140,
 					labelAlign: 'right',
 					msgTarget: 'side',
 					style: {
@@ -153,7 +162,8 @@ Ext.define(
 					}
 				},
 				{
-					title: me.translateText.publishInfo,
+					title: me.titleTpl.replace('{%s}', me.translateText.publishInfo),
+					collapsed: true,
 					items: [
 						{
 							xtype: 'form-desc-publishInfo',
@@ -165,7 +175,8 @@ Ext.define(
 					]
 				},
 				{
-					title: me.translateText.customInfo,
+					title: me.titleTpl.replace('{%s}', me.translateText.customInfo),
+					collapsed: true,
 					items: [
 						{
 							xtype: 'form-desc-customInfo',

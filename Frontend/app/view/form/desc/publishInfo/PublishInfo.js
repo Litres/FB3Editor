@@ -26,7 +26,7 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
 					hideLabel: true,
 					margin: '0 0 0 0',
@@ -61,7 +61,7 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
 					hideLabel: true,
 					combineErrors: true,
@@ -80,7 +80,9 @@ Ext.define(
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'publishInfo',
 						btnPos: 'end',
-						btnStyle: 'margin: 0 0 0 2px'
+						btnStyle: {
+							margin: '0 0 0 2px'
+						}
 					},
 					items: [
 						{

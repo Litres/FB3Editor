@@ -14,7 +14,7 @@ Ext.define(
 		xtype: 'form-desc-relations-subject',
 		items: [
 			{
-				xtype: 'fieldcontainer',
+				xtype: 'desc-fieldcontainer',
 				layout: 'hbox',
 				hideLabel: true,
 				margin: '0 0 0 0',
@@ -27,31 +27,27 @@ Ext.define(
 				},
 				items: [
 					{
-						value: 'ID субъекта:',
-						flex: 0,
-						width: 200
+						value: 'ID субъекта:'
 					},
 					{
-						value: 'Тип связи:',
-						flex: 0,
-						width: 200
+						value: 'Тип связи:'
 					},
 					{
 						value: 'Общепринятое наименование:',
 						flex: 0,
-						width: 300
+						width: 210
 					},
 					{
-						value: 'Первое имя:'
+						value: 'Имя:'
 					},
 					{
-						value: 'Второе имя:'
+						value: 'Отчество (второе имя):'
 					},
 					{
-						value: 'Последнее имя:'
+						value: 'Фамилия:'
 					},
 					{
-						value: 'Описание:'
+						value: 'Написание:'
 					},
 					{
 						flex: 0,
@@ -61,7 +57,7 @@ Ext.define(
 				]
 			},
 			{
-				xtype: 'fieldcontainer',
+				xtype: 'desc-fieldcontainer',
 				layout: 'hbox',
 				hideLabel: true,
 				combineErrors: true,
@@ -80,49 +76,47 @@ Ext.define(
 					ptype: 'fieldcontainerreplicator',
 					groupName: 'subject',
 					btnPos: 'end',
-					btnStyle: 'margin: 0 0 0 2px'
+					btnStyle: {
+						margin: '0 0 0 2px'
+					}
 				},
 				items: [
 					{
 						fieldLabel: 'ID',
 						name: 'relations-subject-id',
-						allowBlank: false,
-						flex: 0,
-						width: 200
+						allowBlank: false
 					},
 					{
-						xtype: 'form-desc-relations-subject-link',
-						flex: 0,
-						width: 200
+						xtype: 'form-desc-relations-subject-link'
 					},
 					{
 						xtype: 'form-desc-title',
 						flex: 0,
-						width: 300,
+						width: 210,
 						layout: 'fit',
 						defaults: {
-							labelWidth: 175,
+							labelWidth: 90,
 							labelAlign: 'right',
 							margin: '0 0 2 0'
 						}
 					},
 					{
-						fieldLabel: 'Первое имя',
+						fieldLabel: 'Имя',
 						name: 'relations-subject-firstName',
 						allowBlank: true
 					},
 					{
-						fieldLabel: 'Второе имя',
+						fieldLabel: 'Отчество (второе имя)',
 						name: 'relations-subject-middleName',
 						allowBlank: true
 					},
 					{
-						fieldLabel: 'Последнее имя',
+						fieldLabel: 'Фамилия',
 						name: 'relations-subject-lastName',
 						allowBlank: false
 					},
 					{
-						fieldLabel: 'Описание',
+						fieldLabel: 'Написание',
 						name: 'relations-subject-desc',
 						allowBlank: true
 					}

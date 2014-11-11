@@ -27,7 +27,7 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
 					hideLabel: true,
 					margin: '0 0 0 0',
@@ -42,7 +42,7 @@ Ext.define(
 						{
 							value: me.translateText.title + ':',
 							flex: 0,
-							width: 300
+							width: 280
 						},
 						{
 							value: me.translateText.issn + ':'
@@ -62,7 +62,7 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
 					hideLabel: true,
 					combineErrors: true,
@@ -81,11 +81,11 @@ Ext.define(
 						{
 							xtype: 'form-desc-title',
 							flex: 0,
-							width: 300,
+							width: 280,
 							layout: 'fit',
 							allowBlank: true,
 							defaults: {
-								labelWidth: 175,
+								labelWidth: 140,
 								labelAlign: 'right',
 								margin: '0 0 2 0'
 							}

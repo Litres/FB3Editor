@@ -32,7 +32,6 @@ Ext.define(
 					msgTarget: 'side',
 					defaults: {
 						flex: 1,
-						labelWidth: 200,
 						labelAlign: 'right',
 						msgTarget: 'none',
 						margin: '0 2 0 0'
@@ -46,7 +45,6 @@ Ext.define(
 					xtype: 'textfield',
 					name: 'classification-customSubject',
 					fieldLabel: 'Новый жанр',
-					labelWidth: 200,
 					labelAlign: 'right',
 					allowBlank: true,
 					plugins: 'fieldreplicator'
@@ -58,7 +56,6 @@ Ext.define(
 					msgTarget: 'side',
 					defaults: {
 						flex: 1,
-						labelWidth: 200,
 						labelAlign: 'right',
 						msgTarget: 'none',
 						margin: '0 2 0 0'
@@ -71,7 +68,6 @@ Ext.define(
 					msgTarget: 'side',
 					defaults: {
 						flex: 1,
-						labelWidth: 200,
 						labelAlign: 'right',
 						msgTarget: 'none',
 						margin: '0 2 0 0'
@@ -81,7 +77,6 @@ Ext.define(
 					xtype: 'textfield',
 					name: 'classification-udk',
 					fieldLabel: 'Код УДК',
-					labelWidth: 200,
 					labelAlign: 'right',
 					allowBlank: true,
 					regex: /^\d+(\.\d+)+(:\d+)?$/,
@@ -93,7 +88,6 @@ Ext.define(
 					xtype: 'textfield',
 					name: 'classification-bbk',
 					fieldLabel: 'Код ББК',
-					labelWidth: 200,
 					labelAlign: 'right',
 					allowBlank: true,
 					regex: /^\d+([\.а-я]\d+)+$/,

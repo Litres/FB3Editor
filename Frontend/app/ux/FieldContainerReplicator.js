@@ -24,9 +24,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {String} Стили для кнопок.
+		 * @property {Object} Стили для кнопок.
 		 */
-		btnStyle: '',
+		btnStyle: {},
 
 		/**
 		 * @private
@@ -50,7 +50,7 @@ Ext.define(
 		 * @param {'begin'|'end'} config.btnPos
 		 * @param {Object} config.btnAddCfg
 		 * @param {Object} config.btnRemoveCfg
-		 * @param {String} config.btnStyle
+		 * @param {Object} config.btnStyle
 		 */
 		constructor: function(config)
 		{
@@ -60,7 +60,7 @@ Ext.define(
 			me.btnPos = config.btnPos || me.btnPos;
 			me.btnAddCfg = config.btnAddCfg ? Ext.apply(me.btnAddCfg, config.btnAddCfg) : me.btnAddCfg;
 			me.btnRemoveCfg = config.btnRemoveCfg ? Ext.apply(me.btnRemoveCfg, config.btnRemoveCfg) : me.btnRemoveCfg;
-			me.btnStyle = config.btnStyle || me.btnStyle;
+			me.btnStyle = config.btnStyle ? Ext.apply(me.btnStyle, config.btnStyle) : me.btnStyle;
 			me.callParent(arguments);
 		},
 

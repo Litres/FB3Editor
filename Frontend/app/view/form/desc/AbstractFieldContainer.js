@@ -8,6 +8,11 @@
 Ext.define(
 	'FBEditor.view.form.desc.AbstractFieldContainer',
 	{
-		extend: 'Ext.form.FieldContainer'
+		extend: 'Ext.form.FieldContainer',
+		xtype: 'desc-fieldcontainer',
+		fieldDefaults: {
+			labelStyle: 'font-size: 10px; line-height: 1',
+			fieldStyle: 'font-size: 10px; line-height: 1'
+		}
 	}
 );

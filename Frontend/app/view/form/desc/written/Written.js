@@ -14,7 +14,7 @@ Ext.define(
 		layout: 'hbox',
 		combineErrors: true,
 		msgTarget: 'side',
-		labelWidth: 200,
+		labelWidth: 140,
 		labelAlign: 'right',
 		defaults: {
 			flex: 1,

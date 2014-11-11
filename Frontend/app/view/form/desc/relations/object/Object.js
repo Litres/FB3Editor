@@ -14,7 +14,7 @@ Ext.define(
 		xtype: 'form-desc-relations-object',
 		items: [
 			{
-				xtype: 'fieldcontainer',
+				xtype: 'desc-fieldcontainer',
 				layout: 'hbox',
 				hideLabel: true,
 				margin: '0 0 0 0',
@@ -27,22 +27,18 @@ Ext.define(
 				},
 				items: [
 					{
-						value: 'ID объекта:',
-						flex: 0,
-						width: 200
+						value: 'ID объекта:'
 					},
 					{
-						value: 'Тип связи:',
-						flex: 0,
-						width: 200
+						value: 'Тип связи:'
 					},
 					{
 						value: 'Общепринятое наименование:',
 						flex: 0,
-						width: 300
+						width: 280
 					},
 					{
-						value: 'Описание:'
+						value: 'Написание:'
 					},
 					{
 						flex: 0,
@@ -52,7 +48,7 @@ Ext.define(
 				]
 			},
 			{
-				xtype: 'fieldcontainer',
+				xtype: 'desc-fieldcontainer',
 				layout: 'hbox',
 				hideLabel: true,
 				combineErrors: true,
@@ -71,34 +67,32 @@ Ext.define(
 					ptype: 'fieldcontainerreplicator',
 					groupName: 'subject',
 					btnPos: 'end',
-					btnStyle: 'margin: 0 0 0 2px'
+					btnStyle: {
+						margin: '0 0 0 2px'
+					}
 				},
 				items: [
 					{
 						fieldLabel: 'ID',
 						name: 'relations-object-id',
-						allowBlank: false,
-						flex: 0,
-						width: 200
+						allowBlank: false
 					},
 					{
-						xtype: 'form-desc-relations-object-link',
-						flex: 0,
-						width: 200
+						xtype: 'form-desc-relations-object-link'
 					},
 					{
 						xtype: 'form-desc-title',
 						flex: 0,
-						width: 300,
+						width: 280,
 						layout: 'fit',
 						defaults: {
-							labelWidth: 175,
+							labelWidth: 140,
 							labelAlign: 'right',
 							margin: '0 0 2 0'
 						}
 					},
 					{
-						fieldLabel: 'Описание',
+						fieldLabel: 'Написание',
 						name: 'relations-object-desc',
 						allowBlank: true
 					}
