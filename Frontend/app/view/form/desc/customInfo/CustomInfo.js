@@ -24,7 +24,7 @@ Ext.define(
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
 					hideLabel: true,
-					margin: '0 0 0 0',
+					margin: '0',
 					defaults: {
 						anchor: '100%',
 						flex: 1,
@@ -52,6 +52,7 @@ Ext.define(
 					hideLabel: true,
 					combineErrors: true,
 					msgTarget: 'side',
+					margin: '0 0 2',
 					defaults: {
 						anchor: '100%',
 						flex: 1,
@@ -79,7 +80,9 @@ Ext.define(
 						{
 							xtype: 'textareafield',
 							name: 'customInfo-desc',
-							fieldLabel: me.translateText.desc
+							allowBlank: false,
+							fieldLabel: me.translateText.desc,
+							grow: true
 						}
 					]
 				}

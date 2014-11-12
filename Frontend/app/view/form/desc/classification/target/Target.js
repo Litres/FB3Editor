@@ -13,35 +13,48 @@ Ext.define(
 		],
 		xtype: 'form-desc-classification-target',
 		fieldLabel: 'Целевая аудитория',
-		items: [
-			{
-				xtype: 'textfield',
-				name: 'classification-target',
-				fieldLabel: 'Описание',
-				emptyText: 'Описание',
-				hideLabel: true
-			},
-			{
-				xtype: 'numberfield',
-				name: 'classification-target-minAge',
-				fieldLabel: 'Минимальный возраст',
-				emptyText: 'Минимальный возраст',
-				hideLabel: true,
-				minValue: 2,
-				maxValue: 50
-			},
-			{
-				xtype: 'numberfield',
-				name: 'classification-target-maxAge',
-				fieldLabel: 'Максимальный возраст',
-				emptyText: 'Максимальный возраст',
-				hideLabel: true,
-				minValue: 2,
-				maxValue: 150
-			},
-			{
-				xtype: 'form-desc-classification-target-education'
-			}
-		]
+
+		translateText: {
+			desc: 'Описание',
+			minAge: 'Минимальный возраст',
+			maxAge: 'Максимальный возраст'
+		},
+
+		initComponent: function ()
+		{
+			var me = this;
+
+			me.items = [
+				{
+					xtype: 'textfield',
+					name: 'classification-target',
+					fieldLabel: me.translateText.desc,
+					emptyText: me.translateText.desc,
+					hideLabel: true
+				},
+				{
+					xtype: 'numberfield',
+					name: 'classification-target-minAge',
+					fieldLabel: me.translateText.minAge,
+					emptyText: me.translateText.minAge,
+					hideLabel: true,
+					minValue: 2,
+					maxValue: 50
+				},
+				{
+					xtype: 'numberfield',
+					name: 'classification-target-maxAge',
+					fieldLabel: me.translateText.maxAge,
+					emptyText: me.translateText.maxAge,
+					hideLabel: true,
+					minValue: 2,
+					maxValue: 150
+				},
+				{
+					xtype: 'form-desc-classification-target-education'
+				}
+			];
+			me.callParent(arguments);
+		}
 	}
 );

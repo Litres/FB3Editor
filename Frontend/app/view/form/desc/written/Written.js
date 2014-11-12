@@ -21,32 +21,45 @@ Ext.define(
 			msgTarget: 'none',
 			margin: '0 2 0 0'
 		},
-		items: [
-			{
-				xtype: 'langfield',
-				name: 'written-lang',
-				fieldLabel: 'Язык',
-				emptyText: 'Язык',
-				hideLabel: true,
-				allowBlank: true,
-				forceSelection: true
-			},
-			{
-				xtype: 'datefield',
-				name: 'written-date',
-				fieldLabel: 'Дата',
-				emptyText: 'Дата',
-				hideLabel: true
-			},
-			{
-				xtype: 'countryfield',
-				name: 'written-country',
-				fieldLabel: 'Страна',
-				emptyText: 'Страна',
-				forceSelection: false,
-				editable: false,
-				hideLabel: true
-			}
-		]
+
+		translateText: {
+			lang: 'Язык',
+			date: 'Дата',
+			country: 'Страна'
+		},
+
+		initComponent: function ()
+		{
+			var me = this;
+
+			me.items = [
+				{
+					xtype: 'langfield',
+					name: 'written-lang',
+					fieldLabel: me.translateText.lang,
+					emptyText: me.translateText.lang,
+					hideLabel: true,
+					allowBlank: false,
+					forceSelection: true
+				},
+				{
+					xtype: 'datefield',
+					name: 'written-date',
+					fieldLabel: me.translateText.date,
+					emptyText: me.translateText.date,
+					hideLabel: true
+				},
+				{
+					xtype: 'countryfield',
+					name: 'written-country',
+					fieldLabel: me.translateText.country,
+					emptyText: me.translateText.country,
+					forceSelection: false,
+					editable: false,
+					hideLabel: true
+				}
+			];
+			me.callParent(arguments);
+		}
 	}
 );

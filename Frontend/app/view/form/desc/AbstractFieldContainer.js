@@ -10,6 +10,9 @@ Ext.define(
 	{
 		extend: 'Ext.form.FieldContainer',
 		xtype: 'desc-fieldcontainer',
+		style: {
+			marginBottom: '0px'
+		},
 		fieldDefaults: {
 			labelStyle: 'font-size: 10px; line-height: 1',
 			fieldStyle: 'font-size: 10px; line-height: 1'

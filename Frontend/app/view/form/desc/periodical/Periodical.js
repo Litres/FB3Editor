@@ -12,6 +12,9 @@ Ext.define(
 		xtype: 'form-desc-periodical',
 
 		translateText: {
+			id: 'ID',
+			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
+			         'Например: 18ea4ccf-daa9-102b-9003-10751c2f945c',
 			title: 'Заголовок',
 			issn: 'ISSN',
 			issnError: 'Значение должно соответствовать шаблону \d{4}-\d{3}(\d|X). Например: 1748-7188',
@@ -23,7 +26,9 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				fieldStyleAllow = me.fieldDefaults.fieldStyle + '; color: ' +
+				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
 			me.items = [
 				{
@@ -40,15 +45,21 @@ Ext.define(
 					},
 					items: [
 						{
+					        value: me.translateText.id + ':'
+				        },
+						{
 							value: me.translateText.title + ':',
 							flex: 0,
-							width: 280
+							width: 210,
+							fieldStyle: fieldStyleAllow
 						},
 						{
-							value: me.translateText.issn + ':'
+							value: me.translateText.issn + ':',
+							fieldStyle: fieldStyleAllow
 						},
 						{
-							value: me.translateText.desc + ':'
+							value: me.translateText.desc + ':',
+							fieldStyle: fieldStyleAllow
 						},
 						{
 							value: me.translateText.number + ':'
@@ -57,7 +68,8 @@ Ext.define(
 							value: me.translateText.year + ':'
 						},
 						{
-							value: me.translateText.date + ':'
+							value: me.translateText.date + ':',
+							fieldStyle: fieldStyleAllow
 						}
 					]
 				},
@@ -79,13 +91,20 @@ Ext.define(
 					},
 					items: [
 						{
+							name: 'periodical-id',
+							allowBlank: false,
+							regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+							regexText: me.translateText.idError,
+							fieldLabel: me.translateText.id
+						},
+						{
 							xtype: 'form-desc-title',
 							flex: 0,
-							width: 280,
+							width: 210,
 							layout: 'fit',
 							allowBlank: true,
 							defaults: {
-								labelWidth: 140,
+								labelWidth: 90,
 								labelAlign: 'right',
 								margin: '0 0 2 0'
 							}
@@ -98,7 +117,6 @@ Ext.define(
 						},
 						{
 							name: 'periodical-desc',
-							allowBlank: false,
 							fieldLabel: me.translateText.desc
 						},
 						{
@@ -116,7 +134,6 @@ Ext.define(
 						{
 							xtype: 'datefield',
 							name: 'periodical-date',
-							allowBlank: false,
 							fieldLabel: me.translateText.date
 						}
 					]

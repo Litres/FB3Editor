@@ -34,7 +34,7 @@ Ext.define(
 		defaults: {
 			xtype: 'fieldset',
 			collapsible: true,
-			padding: '2',
+			padding: '4',
 			anchor: '100%'
 		},
 		fieldDefaults: {
@@ -51,10 +51,28 @@ Ext.define(
 			documentInfo: 'Информация о файле',
 			keywords: 'Ключевые слова',
 			publishInfo: 'Информация о бумажной публикации',
-			customInfo: 'Пользовательская информация'
+			customInfo: 'Пользовательская информация',
+			annotation: 'Аннотация',
+			annotationError: Ext.String.htmlEncode('Значение должно соответствовать шаблону <p>.*?<\/p>(<p>.*?<\/p><\/br>){0,}. ' +
+			                 'Например: <p>абзац 1</p><p>абзац 2</p></br><p>абзац 3</p></br>')
 		},
 
-		titleTpl: '<span style="font-size: 12px">{%s}</span>',
+		statics: {
+			/**
+			 * @const {String} Цвет необязтаельных полей.
+			 */
+			ALLOW_COLOR: 'gray',
+
+			/**
+			 * @const {String} Шаблон заголовка для наборов необязательных полей, заключенных в fieldset.
+			 */
+			TITLE_TPL: '<span style="font-size: 11px; color: gray">{%s}</span>',
+
+			/**
+			 * @const {String} Шаблон заголовка для наборов обязательных полей, заключенных в fieldset.
+			 */
+			TITLE_REQ_TPL: '<span style="font-size: 11px">* {%s}</span>'
+		},
 
 		initComponent: function ()
 		{
@@ -62,7 +80,7 @@ Ext.define(
 
 			me.items = [
 				{
-					title: me.titleTpl.replace('{%s}', me.translateText.periodical),
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.periodical),
 					collapsed: true,
 					items: [
 						{
@@ -75,7 +93,7 @@ Ext.define(
 					]
 				},
 				{
-					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.title),
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.title),
 					items: [
 						{
 							xtype: 'form-desc-title',
@@ -91,7 +109,7 @@ Ext.define(
 					]
 				},
 				{
-					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.relations),
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.relations),
 					items: [
 						{
 							xtype: 'form-desc-relations',
@@ -103,12 +121,13 @@ Ext.define(
 					]
 				},
 				{
-					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.classification),
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.classification),
 					items: [
 						{
 							xtype: 'form-desc-classification',
 							layout: 'anchor',
 							defaults: {
+								xtype: 'textfield',
 								anchor: '100%',
 								labelWidth: 140,
 								labelAlign: 'right',
@@ -132,15 +151,17 @@ Ext.define(
 					}
 				},
 				{
-					xtype: 'form-desc-written'
+					xtype: 'form-desc-written',
+					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
 				},
 				{
-					title: me.titleTpl.replace('{%s}', '* ' + me.translateText.documentInfo),
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.documentInfo),
 					items: [
 						{
 							xtype: 'form-desc-documentInfo',
 							layout: 'anchor',
 							defaults: {
+								xtype: 'textfield',
 								anchor: '100%',
 								labelWidth: 140,
 								labelAlign: 'right',
@@ -159,10 +180,11 @@ Ext.define(
 					msgTarget: 'side',
 					style: {
 						paddingBottom: '5px'
-					}
+					},
+					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
 				},
 				{
-					title: me.titleTpl.replace('{%s}', me.translateText.publishInfo),
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.publishInfo),
 					collapsed: true,
 					items: [
 						{
@@ -175,7 +197,7 @@ Ext.define(
 					]
 				},
 				{
-					title: me.titleTpl.replace('{%s}', me.translateText.customInfo),
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.customInfo),
 					collapsed: true,
 					items: [
 						{
@@ -186,6 +208,17 @@ Ext.define(
 							}
 						}
 					]
+				},
+				{
+					xtype: 'textareafield',
+					name: 'annotation',
+					fieldLabel: me.translateText.annotation,
+					labelAlign: 'top',
+					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR,
+					msgTarget: 'under',
+					grow: true,
+					regex: /^<p>.*?<\/p>(<p>.*?<\/p><\/br>){0,}$/,
+					regexText: me.translateText.annotationError
 				}
 			];
 			me.callParent(arguments);

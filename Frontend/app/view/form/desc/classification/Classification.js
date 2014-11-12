@@ -16,13 +16,18 @@ Ext.define(
 		xtype: 'form-desc-classification',
 
 		translateText: {
+			customSubject: 'Новый жанр',
+			udk: 'Код УДК',
+			bbk: 'Код ББК',
 			udkError: 'Значение должно соответсвовать шаблону \d+(\.\d+)+(:\d+)?. Например: 373.167.1:58',
 			bbkError: 'Значение должно соответсвовать шаблону \d+([\.а-я]\d+)+. Например: 28.5я72'
 		},
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
+				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
 			me.items = [
 				{
@@ -42,11 +47,9 @@ Ext.define(
 					plugins: 'fieldreplicator'
 				},
 				{
-					xtype: 'textfield',
 					name: 'classification-customSubject',
-					fieldLabel: 'Новый жанр',
-					labelAlign: 'right',
-					allowBlank: true,
+					fieldLabel: me.translateText.customSubject,
+					labelStyle: labelStyleAllow,
 					plugins: 'fieldreplicator'
 				},
 				{
@@ -54,6 +57,7 @@ Ext.define(
 					layout: 'hbox',
 					combineErrors: true,
 					msgTarget: 'side',
+					labelStyle: labelStyleAllow,
 					defaults: {
 						flex: 1,
 						labelAlign: 'right',
@@ -66,6 +70,7 @@ Ext.define(
 					layout: 'hbox',
 					combineErrors: true,
 					msgTarget: 'side',
+					labelStyle: labelStyleAllow,
 					defaults: {
 						flex: 1,
 						labelAlign: 'right',
@@ -74,22 +79,18 @@ Ext.define(
 					}
 				},
 				{
-					xtype: 'textfield',
 					name: 'classification-udk',
-					fieldLabel: 'Код УДК',
-					labelAlign: 'right',
-					allowBlank: true,
+					fieldLabel: me.translateText.udk,
+					labelStyle: labelStyleAllow,
 					regex: /^\d+(\.\d+)+(:\d+)?$/,
 					regexText: me.translateText.udkError,
 					emptyText: me.translateText.udkError,
 					plugins: 'fieldreplicator'
 				},
 				{
-					xtype: 'textfield',
 					name: 'classification-bbk',
-					fieldLabel: 'Код ББК',
-					labelAlign: 'right',
-					allowBlank: true,
+					fieldLabel: me.translateText.bbk,
+					labelStyle: labelStyleAllow,
 					regex: /^\d+([\.а-я]\d+)+$/,
 					regexText: me.translateText.bbkError,
 					emptyText: me.translateText.bbkError,
