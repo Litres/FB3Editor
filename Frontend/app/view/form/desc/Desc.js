@@ -53,8 +53,9 @@ Ext.define(
 			publishInfo: 'Информация о бумажной публикации',
 			customInfo: 'Пользовательская информация',
 			annotation: 'Аннотация',
-			annotationError: Ext.String.htmlEncode('Значение должно соответствовать шаблону <p>.*?<\/p>(<p>.*?<\/p><\/br>){0,}. ' +
-			                 'Например: <p>абзац 1</p><p>абзац 2</p></br><p>абзац 3</p></br>')
+			annotationError: Ext.String.htmlEncode('Значение должно соответствовать шаблону ' +
+			                                       '<p>.*?<\/p>(<p>.*?<\/p>|<\/br>){0,}. Например: ' +
+			                                       '<p>абзац 1</p><p>абзац 2</p></br><p>абзац 3</p>')
 		},
 
 		statics: {
@@ -217,7 +218,7 @@ Ext.define(
 					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR,
 					msgTarget: 'under',
 					grow: true,
-					regex: /^<p>.*?<\/p>(<p>.*?<\/p><\/br>){0,}$/,
+					regex: /^<p>.*?<\/p>(<p>.*?<\/p>|<\/br>){0,}$/,
 					regexText: me.translateText.annotationError
 				}
 			];
