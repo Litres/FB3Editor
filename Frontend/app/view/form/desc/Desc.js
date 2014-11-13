@@ -52,10 +52,7 @@ Ext.define(
 			keywords: 'Ключевые слова',
 			publishInfo: 'Информация о бумажной публикации',
 			customInfo: 'Пользовательская информация',
-			annotation: 'Аннотация',
-			annotationError: Ext.String.htmlEncode('Значение должно соответствовать шаблону ' +
-			                                       '<p>.*?<\/p>(<p>.*?<\/p>|<\/br>){0,}. Например: ' +
-			                                       '<p>абзац 1</p><p>абзац 2</p></br><p>абзац 3</p>')
+			annotation: 'Аннотация'
 		},
 
 		statics: {
@@ -211,15 +208,16 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'textareafield',
+					xtype: 'htmleditor',
 					name: 'annotation',
 					fieldLabel: me.translateText.annotation,
 					labelAlign: 'top',
 					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR,
-					msgTarget: 'under',
-					grow: true,
-					regex: /^<p>.*?<\/p>(<p>.*?<\/p>|<\/br>){0,}$/,
-					regexText: me.translateText.annotationError
+					enableColors: false,
+					enableAlignments: false,
+					enableFont: false,
+					enableFontSize: false,
+					enableLists: false
 				}
 			];
 			me.callParent(arguments);
