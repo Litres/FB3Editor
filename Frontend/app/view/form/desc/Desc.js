@@ -24,7 +24,8 @@ Ext.define(
 			'FBEditor.view.form.desc.written.Written',
 			'FBEditor.view.form.desc.documentInfo.DocumentInfo',
 			'FBEditor.view.form.desc.publishInfo.PublishInfo',
-			'FBEditor.view.form.desc.customInfo.CustomInfo'
+			'FBEditor.view.form.desc.customInfo.CustomInfo',
+			'FBEditor.view.form.desc.annotation.Annotation'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -51,8 +52,7 @@ Ext.define(
 			documentInfo: 'Информация о файле',
 			keywords: 'Ключевые слова',
 			publishInfo: 'Информация о бумажной публикации',
-			customInfo: 'Пользовательская информация',
-			annotation: 'Аннотация'
+			customInfo: 'Пользовательская информация'
 		},
 
 		statics: {
@@ -208,16 +208,8 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'htmleditor',
-					name: 'annotation',
-					fieldLabel: me.translateText.annotation,
-					labelAlign: 'top',
-					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR,
-					enableColors: false,
-					enableAlignments: false,
-					enableFont: false,
-					enableFontSize: false,
-					enableLists: false
+					xtype: 'form-desc-annotation',
+					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
 				}
 			];
 			me.callParent(arguments);

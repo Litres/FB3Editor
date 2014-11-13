@@ -1,5 +1,5 @@
 /**
- * Редактор HTML.
+ * Редактор HTML содержимого книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
