@@ -30,6 +30,20 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {Object} Стили для полей, которые вкладываются.
+		 */
+		putStyle: {
+			marginLeft: '20px'
+		},
+
+		/**
+		 * @private
+		 * @property {Boolean} Надо ли показывать кнопку 'Вложить'.
+		 */
+		enableBtnPut: false,
+
+		/**
+		 * @private
 		 * @property {Object} Конфиг кнопки добавления.
 		 */
 		btnAddCfg: {
@@ -45,12 +59,22 @@ Ext.define(
 		},
 
 		/**
+		 * @private
+		 * @property {Object} Конфиг кнопки вложения.
+		 */
+		btnPutCfg: {
+			text: 'Вложить'
+		},
+
+		/**
 		 * @param {Object} config
 		 * @param {String} config.groupName
 		 * @param {'begin'|'end'} config.btnPos
 		 * @param {Object} config.btnAddCfg
 		 * @param {Object} config.btnRemoveCfg
 		 * @param {Object} config.btnStyle
+		 * @param {Boolean} config.enableBtnPut
+		 * @param {Object} config.btnPutCfg
 		 */
 		constructor: function(config)
 		{
@@ -61,6 +85,9 @@ Ext.define(
 			me.btnAddCfg = config.btnAddCfg ? Ext.apply(me.btnAddCfg, config.btnAddCfg) : me.btnAddCfg;
 			me.btnRemoveCfg = config.btnRemoveCfg ? Ext.apply(me.btnRemoveCfg, config.btnRemoveCfg) : me.btnRemoveCfg;
 			me.btnStyle = config.btnStyle ? Ext.apply(me.btnStyle, config.btnStyle) : me.btnStyle;
+			me.putStyle = config.putStyle ? Ext.apply(me.putStyle, config.putStyle) : me.putStyle;
+			me.enableBtnPut = config.enableBtnPut || me.enableBtnPut;
+			me.btnPutCfg = config.btnPutCfg ? Ext.apply(me.btnPutCfg, config.btnPutCfg) : me.btnPutCfg;
 			me.callParent(arguments);
 		},
 
@@ -70,7 +97,9 @@ Ext.define(
 				container = fieldcontainer,
 				btnPos = me.btnPos,
 				groupName = me.groupName,
-				buttons = me.getButtons();
+				buttons = me.getButtons(),
+				enableBtnPut = me.enableBtnPut,
+				containerAdd;
 
 			container.on(
 				'afterrender',
@@ -83,13 +112,16 @@ Ext.define(
 			// уникальный id группы контейнеров
 			container.replicatorId = container.replicatorId || groupName + '-' + Ext.id();
 
+			// контейнер, в который добавляются кнопки
+			containerAdd = enableBtnPut ? container.items.last() : container;
+
 			switch (btnPos)
 			{
 				case 'begin':
-					container.insert(0, buttons);
+					containerAdd.insert(0, buttons);
 					break;
 				case 'end':
-					container.add(buttons);
+					containerAdd.add(buttons);
 					break;
 			}
 		},
@@ -105,8 +137,18 @@ Ext.define(
 				btnStyle = me.btnStyle,
 				btnAddCfg = me.btnAddCfg,
 				btnRemoveCfg = me.btnRemoveCfg,
-				buttons;
+				enableBtnPut = me.enableBtnPut,
+				btnPutCfg = me.btnPutCfg,
+				buttons,
+				items = [];
 
+			btnPutCfg = Ext.apply(
+				btnPutCfg,
+				{
+					handler: me.putFields,
+					scope: me
+				}
+			);
 			btnAddCfg = Ext.apply(
 				btnAddCfg,
 				{
@@ -121,6 +163,12 @@ Ext.define(
 					scope: me
 				}
 			);
+			items.push(btnRemoveCfg);
+			items.push(btnAddCfg);
+			if (enableBtnPut)
+			{
+				items.push(btnPutCfg);
+			}
 			buttons = [
 				{
 					xtype: 'fieldcontainer',
@@ -131,10 +179,7 @@ Ext.define(
 						xtype: 'button',
 						style: btnStyle
 					},
-					items: [
-						btnAddCfg,
-						btnRemoveCfg
-					]
+					items: items
 				}
 			];
 
@@ -149,14 +194,16 @@ Ext.define(
 		addFields: function (btn)
 		{
 			var me = this,
-				container = btn.ownerCt.ownerCt,
-				removeBtn = btn.next(),
+				container,
+				removeBtn = btn.prev(),
+				enableBtnPut = me.enableBtnPut,
 				replicatorId,
 				ownerCt,
 				clone,
 				idx;
 
 			removeBtn.enable();
+			container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
 			replicatorId = container.replicatorId;
 			ownerCt = container.ownerCt;
 			clone = container.cloneConfig({replicatorId: replicatorId});
@@ -167,16 +214,44 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Удаяляет поля.
+		 * Вкладывает поля.
+		 * @param {Ext.button.Button} Кнопка вложения.
+		 */
+		putFields: function (btn)
+		{
+			var me = this,
+				container = btn.ownerCt.ownerCt.ownerCt,
+				putStyle = me.putStyle,
+				removeBtn,
+				replicatorId,
+				clone;
+
+			replicatorId = container.replicatorId + '-' + Ext.id();
+			clone = container.cloneConfig(
+				{
+					replicatorId: replicatorId,
+					style: putStyle
+				}
+			);
+			container.add(clone);
+			removeBtn = clone.query('button')[0];
+			removeBtn.enable();
+		},
+
+		/**
+		 * @private
+		 * Удаляет поля.
 		 * @param {Ext.button.Button} Кнопка удаления.
 		 */
 		removeFields: function (btn)
 		{
 			var me = this,
-				container = btn.ownerCt.ownerCt,
+				enableBtnPut = me.enableBtnPut,
+				container,
 				ownerCt,
 				replicatorId;
 
+			container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
 			ownerCt = container.ownerCt;
 			replicatorId = container.replicatorId;
 			ownerCt.remove(container);
@@ -197,15 +272,18 @@ Ext.define(
 				removeBtn;
 
 			siblings = ownerCt.query('[replicatorId=' + replicatorId + ']');
-			isLastInGroup = siblings.length === 1;
-			removeBtn = siblings[siblings.length - 1].query('button')[1];
-			if (isLastInGroup)
+			if (siblings.length)
 			{
-				removeBtn.disable();
-			}
-			else
-			{
-				removeBtn.enable();
+				isLastInGroup = siblings.length === 1;
+				removeBtn = siblings[siblings.length - 1].query('button')[0];
+				if (isLastInGroup)
+				{
+					removeBtn.disable();
+				}
+				else
+				{
+					removeBtn.enable();
+				}
 			}
 		}
 	}

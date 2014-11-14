@@ -17,6 +17,7 @@ Ext.define(
 			'FBEditor.view.field.datetime.Datetime',
 			'FBEditor.view.form.desc.periodical.Periodical',
 			'FBEditor.view.form.desc.title.Title',
+			'FBEditor.view.form.desc.sequence.Sequence',
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.relations.Relations',
@@ -46,6 +47,7 @@ Ext.define(
 		translateText: {
 			periodical: 'Периодическое издание',
 			title: 'Название произведения',
+			sequence: 'Серия, в которой выпущено произведение',
 			relations: 'Все связанные с данным документом персоны и объекты',
 			classification: 'Классификация произведения',
 			lang: 'Язык',
@@ -102,6 +104,19 @@ Ext.define(
 								labelAlign: 'right',
 								msgTarget: 'side',
 								margin: '0 0 2 0'
+							}
+						}
+					]
+				},
+				{
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.sequence),
+					collapsed: true,
+					items: [
+						{
+							xtype: 'form-desc-sequence',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
 							}
 						}
 					]
