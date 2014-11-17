@@ -43,8 +43,7 @@ Ext.define(
 					}
 				},
 				{
-					xtype: 'form-desc-subject',
-					plugins: 'fieldreplicator'
+					xtype: 'form-desc-subject'
 				},
 				{
 					name: 'classification-customSubject',

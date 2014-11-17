@@ -160,7 +160,8 @@ Ext.define(
 				btnRemoveCfg,
 				{
 					handler: me.removeFields,
-					scope: me
+					scope: me,
+					name: 'fieldcontainerreplicator-btn-remove'
 				}
 			);
 			items.push(btnRemoveCfg);
@@ -275,7 +276,7 @@ Ext.define(
 			if (siblings.length)
 			{
 				isLastInGroup = siblings.length === 1;
-				removeBtn = siblings[siblings.length - 1].query('button')[0];
+				removeBtn = siblings[siblings.length - 1].query('button[name=fieldcontainerreplicator-btn-remove]')[0];
 				if (isLastInGroup)
 				{
 					removeBtn.disable();

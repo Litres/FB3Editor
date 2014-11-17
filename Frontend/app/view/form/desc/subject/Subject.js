@@ -7,26 +7,67 @@
 Ext.define(
 	'FBEditor.view.form.desc.subject.Subject',
 	{
-		extend: 'Ext.form.field.ComboBox',
+		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.subject.SubjectStore'
+			'FBEditor.view.form.desc.subject.SubjectController',
+			'FBEditor.view.form.desc.subject.SubjectTree'
 		],
 		xtype: 'form-desc-subject',
-		queryMode: 'local',
-		displayField: 'name',
-		valueField: 'value',
+		controller: 'form.desc.subject',
+		layout: 'hbox',
 		fieldLabel: 'Жанр',
-		name: 'subject',
-		allowBlank: false,
-		editable: false,
+		plugins: 'fieldcontainerreplicator',
+		combineErrors: true,
+		msgTarget: 'side',
+		listeners: {
+			selectSubject: 'onSelectSubject',
+			showSubjectTree: 'onShowSubjectTree'
+		},
+
+		translateText: {
+			select: 'Выбрать'
+		},
+
+		/**
+		 * @property {FBEditor.view.form.desc.subject.SubjectTree} Список жанров.
+		 */
+		subjectTree: null,
 
 		initComponent: function ()
 		{
-			var me = this,
-				store;
+			var me = this;
 
-			store = Ext.create('FBEditor.view.form.desc.subject.SubjectStore');
-			me.store = store;
+			me.subjectTree = Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree');
+			me.items = [
+				{
+					xtype: 'textfield',
+					name: 'subject[]',
+					flex: 1,
+					allowBlank: false,
+					editable: false,
+					listeners: {
+						click: {
+							element: 'el',
+							scope: me,
+							fn: function ()
+							{
+								this.fireEvent('showSubjectTree');
+							}
+						}
+					}
+				},
+				{
+					xtype: 'button',
+					text: me.translateText.select,
+					margin: '0 0 0 2',
+					menu: [],
+					scope: me,
+					handler: function ()
+					{
+						this.fireEvent('showSubjectTree');
+					}
+				}
+			];
 			me.callParent(arguments);
 		}
 	}
