@@ -34,7 +34,7 @@ Ext.define(
 
 			subjectTree = view.subjectTree;
 			subjectTree.subjectView = view;
-			subjectTree.showBy(view, 'tr', [-450, -420]);
+			subjectTree.show();
 		}
 	}
 );

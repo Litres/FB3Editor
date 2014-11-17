@@ -15,12 +15,13 @@ Ext.define(
 		id: 'form-desc-subjectTree',
 		xtype: 'form-desc-subjectTree',
 		controller: 'form.desc.subjectTree',
+		resizable: true,
 		floating: true,
 		closable: true,
 		closeAction: 'hide',
 		title: 'Выберите жанр',
 		width: 450,
-		minHeight: 380,
+		minHeight: 200,
 		maxHeight: 500,
 		autoScroll: true,
 		rootVisible: false,
@@ -54,6 +55,15 @@ Ext.define(
 			var me = this;
 
 			me.collapseAll();
+			me.callParent(arguments);
+		},
+
+		afterShow: function()
+		{
+			var me = this;
+
+			console.log([-me.getWidth(), -me.getHeight()]);
+			me.alignTo(me.subjectView, 'tr', [-me.getWidth(), -me.getHeight()]);
 			me.callParent(arguments);
 		}
 	}
