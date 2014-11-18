@@ -7,26 +7,10 @@
 Ext.define(
 	'FBEditor.view.form.desc.annotation.Annotation',
 	{
-		extend: 'Ext.form.field.HtmlEditor',
+		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		xtype: 'form-desc-annotation',
-		name: 'annotation',
+		name: 'anotation',
 		fieldLabel: 'Аннотация',
-		labelAlign: 'top',
-		enableColors: false,
-		enableAlignments: false,
-		enableFont: false,
-		enableFontSize: false,
-		enableLists: false,
-
-		afterRender: function()
-		{
-			var me = this,
-				toolbar = me.toolbar;
-
-			// удаляем кнопку underline
-			toolbar.items.removeAt(2);
-
-			me.callParent(arguments);
-		}
+		labelAlign: 'top'
 	}
 );

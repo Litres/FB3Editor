@@ -28,7 +28,7 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'datetimefield',
-					name: 'documentInfo-created',
+					name: 'document-info-created',
 					fieldLabel: me.translateText.created,
 					layout: 'hbox',
 					combineErrors: true,
@@ -42,7 +42,7 @@ Ext.define(
 				},
 				{
 					xtype: 'datetimefield',
-					name: 'documentInfo-updated',
+					name: 'document-info-updated',
 					fieldLabel: me.translateText.updated,
 					layout: 'hbox',
 					combineErrors: true,
@@ -56,23 +56,23 @@ Ext.define(
 				},
 				{
 					xtype: 'textfield',
-					name: 'documentInfo-programUsed',
+					name: 'document-info-program-used',
 					fieldLabel: me.translateText.programUsed,
 					labelStyle: labelStyleAllow
 				},
 				{
 					vtype: 'url',
-					name: 'documentInfo-srcUrl',
+					name: 'document-info-src-url',
 					fieldLabel: me.translateText.srcUrl,
 					labelStyle: labelStyleAllow
 				},
 				{
-					name: 'documentInfo-ocr',
+					name: 'document-info-ocr',
 					fieldLabel: me.translateText.ocr,
 					labelStyle: labelStyleAllow
 				},
 				{
-					name: 'documentInfo-editor',
+					name: 'document-info-editor',
 					fieldLabel: me.translateText.editor,
 					labelStyle: labelStyleAllow
 				}

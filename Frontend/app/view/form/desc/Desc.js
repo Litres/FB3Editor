@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
+			'FBEditor.view.form.desc.DescController',
 			'FBEditor.view.form.desc.AbstractFieldContainer',
 			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator',
@@ -26,10 +27,12 @@ Ext.define(
 			'FBEditor.view.form.desc.documentInfo.DocumentInfo',
 			'FBEditor.view.form.desc.publishInfo.PublishInfo',
 			'FBEditor.view.form.desc.customInfo.CustomInfo',
+			'FBEditor.view.form.desc.history.History',
 			'FBEditor.view.form.desc.annotation.Annotation'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
+		controller: 'form.desc',
 		autoScroll: true,
 		minWidth: 800,
 		bodyPadding: 0,
@@ -42,6 +45,9 @@ Ext.define(
 		fieldDefaults: {
 			labelStyle: 'font-size: 10px; line-height: 1',
 			fieldStyle: 'font-size: 10px; line-height: 1'
+		},
+		listeners: {
+			loadDesc: 'onLoadDesc'
 		},
 
 		translateText: {
@@ -221,6 +227,10 @@ Ext.define(
 							}
 						}
 					]
+				},
+				{
+					xtype: 'form-desc-history',
+					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
 				},
 				{
 					xtype: 'form-desc-annotation',

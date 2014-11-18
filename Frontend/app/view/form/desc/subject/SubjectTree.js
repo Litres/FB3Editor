@@ -62,7 +62,6 @@ Ext.define(
 		{
 			var me = this;
 
-			console.log([-me.getWidth(), -me.getHeight()]);
 			me.alignTo(me.subjectView, 'tr', [-me.getWidth(), -me.getHeight()]);
 			me.callParent(arguments);
 		}

@@ -17,6 +17,7 @@ Ext.define(
 		labelWidth: 140,
 		labelAlign: 'right',
 		defaults: {
+			labelAlign: 'top',
 			flex: 1,
 			msgTarget: 'none',
 			margin: '0 2 0 0'
@@ -25,38 +26,43 @@ Ext.define(
 		translateText: {
 			lang: 'Язык',
 			date: 'Дата',
+			dateText: 'Описание даты',
 			country: 'Страна'
 		},
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
+				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
 			me.items = [
 				{
 					xtype: 'langfield',
 					name: 'written-lang',
 					fieldLabel: me.translateText.lang,
-					emptyText: me.translateText.lang,
-					hideLabel: true,
 					allowBlank: false,
 					forceSelection: true
 				},
 				{
 					xtype: 'datefield',
-					name: 'written-date',
+					name: 'written-date-value',
 					fieldLabel: me.translateText.date,
-					emptyText: me.translateText.date,
-					hideLabel: true
+					labelStyle: labelStyleAllow
+				},
+				{
+					xtype: 'textfield',
+					name: 'written-date-text',
+					fieldLabel: me.translateText.dateText,
+					labelStyle: labelStyleAllow
 				},
 				{
 					xtype: 'countryfield',
 					name: 'written-country',
 					fieldLabel: me.translateText.country,
-					emptyText: me.translateText.country,
 					forceSelection: false,
 					editable: false,
-					hideLabel: true
+					labelStyle: labelStyleAllow
 				}
 			];
 			me.callParent(arguments);

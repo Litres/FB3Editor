@@ -64,7 +64,7 @@ Ext.define(
 								console.log('thumb', thumb);
 								console.log('meta', meta);
 								console.log('books', books);
-								console.log('desc', desc);
+								//console.log('desc', desc);
 								console.log('images', images);
 								//console.log(content);
 							}
@@ -88,6 +88,7 @@ Ext.define(
 								);
 							}
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
+							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
 						}
 					}
 				);
