@@ -103,6 +103,7 @@ Ext.define(
 								},
 								{
 									xtype: 'form-desc-title',
+									name: 'sequence-title',
 									flex: 0,
 									width: 280,
 									layout: 'fit',

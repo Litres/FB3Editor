@@ -17,7 +17,6 @@ Ext.define(
 		valueField: 'value',
 		fieldLabel: 'Образование',
 		emptyText: 'Образование',
-		name: 'classification-target-education',
 		editable: false,
 		hideLabel: true,
 

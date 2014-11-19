@@ -16,10 +16,12 @@ Ext.define(
 		items: [
 			{
 				xtype: 'form-desc-bookClass',
+				name: 'classification-class-text',
 				hideLabel: true
 			},
 			{
 				xtype: 'form-desc-classification-class-contents',
+				name: 'classification-class-contents',
 				hideLabel: true
 			}
 		]

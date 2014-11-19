@@ -35,13 +35,14 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				name = me.name ? me.name : 'subject';
 
 			me.subjectTree = Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree');
 			me.items = [
 				{
 					xtype: 'textfield',
-					name: 'subject[]',
+					name: name,
 					flex: 1,
 					allowBlank: false,
 					editable: false,

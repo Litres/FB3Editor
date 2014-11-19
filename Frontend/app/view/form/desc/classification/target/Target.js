@@ -27,14 +27,14 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'textfield',
-					name: 'classification-target',
+					name: 'classification-target-audience-text',
 					fieldLabel: me.translateText.desc,
 					emptyText: me.translateText.desc,
 					hideLabel: true
 				},
 				{
 					xtype: 'numberfield',
-					name: 'classification-target-minAge',
+					name: 'classification-target-audience-age-min',
 					fieldLabel: me.translateText.minAge,
 					emptyText: me.translateText.minAge,
 					hideLabel: true,
@@ -43,7 +43,7 @@ Ext.define(
 				},
 				{
 					xtype: 'numberfield',
-					name: 'classification-target-maxAge',
+					name: 'classification-target-audience-age-max',
 					fieldLabel: me.translateText.maxAge,
 					emptyText: me.translateText.maxAge,
 					hideLabel: true,
@@ -51,7 +51,8 @@ Ext.define(
 					maxValue: 150
 				},
 				{
-					xtype: 'form-desc-classification-target-education'
+					xtype: 'form-desc-classification-target-education',
+					name: 'classification-target-audience-education'
 				}
 			];
 			me.callParent(arguments);

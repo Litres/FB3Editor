@@ -27,6 +27,7 @@ Ext.define(
 			converter = FBEditor.converter.desc.Data;
 			data = converter.toForm(df);
 			console.log(data);
+			form.reset();
 			form.setValues(data);
 		}
 	}

@@ -16,7 +16,6 @@ Ext.define(
 		displayField: 'name',
 		valueField: 'value',
 		fieldLabel: 'Литературная форма',
-		name: 'bookClass',
 		allowBlank: false,
 		editable: false,
 

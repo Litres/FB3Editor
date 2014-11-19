@@ -20,25 +20,26 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
+				name = me.name,
 				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
 				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
 			me.items = [
 				{
 					xtype: 'textfield',
-					name: 'title-main',
+					name: name + '-main',
 					fieldLabel: me.translateText.main,
 					allowBlank: false
 				},
 				{
 					xtype: 'textfield',
-					name: 'title-sub',
+					name: name + '-sub',
 					fieldLabel: me.translateText.sub,
 					labelStyle: labelStyleAllow
 				},
 				{
 					xtype: 'textfield',
-					name: 'title-alt',
+					name: name + '-alt',
 					fieldLabel: me.translateText.alt,
 					labelStyle: labelStyleAllow,
 					plugins: 'fieldreplicator'

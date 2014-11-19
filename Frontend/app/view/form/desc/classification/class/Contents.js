@@ -17,7 +17,6 @@ Ext.define(
 		valueField: 'value',
 		fieldLabel: 'Тип содержимого литературной формы',
 		emptyText: 'Тип содержимого литературной формы',
-		name: 'classification-class-contents',
 		allowBlank: false,
 		editable: false,
 

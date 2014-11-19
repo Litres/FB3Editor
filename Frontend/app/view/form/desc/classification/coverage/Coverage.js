@@ -13,7 +13,7 @@ Ext.define(
 		items: [
 			{
 				xtype: 'textfield',
-				name: 'classification-coverage-desc',
+				name: 'classification-coverage-text',
 				fieldLabel: 'Описание',
 				emptyText: 'Описание',
 				hideLabel: true
@@ -43,14 +43,14 @@ Ext.define(
 			},
 			{
 				xtype: 'datefield',
-				name: 'classification-coverage-dateFrom',
+				name: 'classification-coverage-date-from',
 				fieldLabel: 'Дата начала',
 				emptyText: 'Дата начала',
 				hideLabel: true
 			},
 			{
 				xtype: 'datefield',
-				name: 'classification-coverage-dateTo',
+				name: 'classification-coverage-date-to',
 				fieldLabel: 'Дата окончания',
 				emptyText: 'Дата окончания',
 				hideLabel: true

@@ -48,7 +48,21 @@ Ext.define(
 		getDesc: function ()
 		{
 			var me = this,
-				desc = me.desc || me.getJson()['fb3-description'];
+				desc = me.desc,
+				text,
+				anotation,
+				history;
+
+			if (!desc)
+			{
+				desc = me.getJson()['fb3-description'];
+				text = me.getText();
+				text = text.replace(/[\n\r\t]/g, '');
+				anotation = text.match(/<anotation>(.*?)<\/anotation>/);
+				desc.anotation = anotation ? anotation[1] : '';
+				history = text.match(/<history>(.*?)<\/history>/);
+				desc.history = history ? history[1] : '';
+			}
 
 			return desc;
 		}

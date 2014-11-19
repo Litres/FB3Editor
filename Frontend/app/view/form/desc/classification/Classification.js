@@ -43,10 +43,11 @@ Ext.define(
 					}
 				},
 				{
-					xtype: 'form-desc-subject'
+					xtype: 'form-desc-subject',
+					name: 'classification-subject'
 				},
 				{
-					name: 'classification-customSubject',
+					name: 'classification-custom-subject',
 					fieldLabel: me.translateText.customSubject,
 					labelStyle: labelStyleAllow,
 					plugins: 'fieldreplicator'

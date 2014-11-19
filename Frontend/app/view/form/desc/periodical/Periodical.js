@@ -99,6 +99,7 @@ Ext.define(
 						},
 						{
 							xtype: 'form-desc-title',
+							name: 'periodical-title',
 							flex: 0,
 							width: 210,
 							layout: 'fit',
@@ -116,7 +117,7 @@ Ext.define(
 							fieldLabel: me.translateText.issn
 						},
 						{
-							name: 'periodical-desc',
+							name: 'periodical-text',
 							fieldLabel: me.translateText.desc
 						},
 						{
