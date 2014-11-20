@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.object.Link'
 		],
 		xtype: 'form-desc-relations-object',
+		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
 			id: 'ID объекта',
@@ -82,7 +83,7 @@ Ext.define(
 					},
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
-						groupName: 'subject',
+						groupName: 'object',
 						btnPos: 'end',
 						btnStyle: {
 							margin: '0 0 0 2px'

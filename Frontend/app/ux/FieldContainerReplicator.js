@@ -7,7 +7,9 @@
 Ext.define(
 	'FBEditor.ux.FieldContainerReplicator',
 	{
+		extend: 'Ext.plugin.Abstract',
 		alias: 'plugin.fieldcontainerreplicator',
+		pluginId: 'fieldcontainerreplicator',
 
 		/**
 		 * @private
@@ -146,14 +148,16 @@ Ext.define(
 				btnPutCfg,
 				{
 					handler: me.putFields,
-					scope: me
+					scope: me,
+					name: 'fieldcontainerreplicator-btn-put'
 				}
 			);
 			btnAddCfg = Ext.apply(
 				btnAddCfg,
 				{
 					handler: me.addFields,
-					scope: me
+					scope: me,
+					name: 'fieldcontainerreplicator-btn-add'
 				}
 			);
 			btnRemoveCfg = Ext.apply(

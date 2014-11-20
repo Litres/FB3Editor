@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		xtype: 'form-desc-publishInfo',
+		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
 			title: 'Заголовок',

@@ -84,7 +84,7 @@ Ext.define(
 		{
 			var d = data;
 
-			if (d.sequence)
+			/*if (d.sequence)
 			{
 				d['sequence-id'] = d.sequence.id;
 				d['sequence-number'] = d.sequence.number ? d.sequence.number : '';
@@ -92,7 +92,9 @@ Ext.define(
 				d['sequence-title-sub'] = d.sequence.title.sub ? d.sequence.title.sub : '';
 				d['sequence-title-alt'] = d.sequence.title.alt ? d.sequence.title.alt : '';
 				delete d.sequence;
-			}
+			}*/
+			d.sequence = d.sequence ? d.sequence : '';
+			d.sequence = d.sequence.id ? [d.sequence] : d.sequence;
 
 			return d;
 		},

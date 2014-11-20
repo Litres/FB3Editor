@@ -47,7 +47,8 @@ Ext.define(
 			fieldStyle: 'font-size: 10px; line-height: 1'
 		},
 		listeners: {
-			loadDesc: 'onLoadDesc'
+			loadDesc: 'onLoadData',
+			reset: 'onReset'
 		},
 
 		translateText: {

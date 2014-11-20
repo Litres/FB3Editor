@@ -14,6 +14,7 @@ Ext.define(
 		],
 		xtype: 'form-desc-subject',
 		controller: 'form.desc.subject',
+		name: 'form-desc-plugin-fieldcontainerreplicator',
 		layout: 'hbox',
 		fieldLabel: 'Жанр',
 		plugins: 'fieldcontainerreplicator',
@@ -35,14 +36,13 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				name = me.name ? me.name : 'subject';
+			var me = this;
 
 			me.subjectTree = Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree');
 			me.items = [
 				{
 					xtype: 'textfield',
-					name: name,
+					name: 'classification-subject',
 					flex: 1,
 					allowBlank: false,
 					editable: false,

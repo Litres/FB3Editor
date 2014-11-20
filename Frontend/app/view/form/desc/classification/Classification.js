@@ -14,6 +14,7 @@ Ext.define(
 			'FBEditor.view.form.desc.classification.coverage.Coverage'
 		],
 		xtype: 'form-desc-classification',
+		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
 			customSubject: 'Новый жанр',
@@ -43,8 +44,7 @@ Ext.define(
 					}
 				},
 				{
-					xtype: 'form-desc-subject',
-					name: 'classification-subject'
+					xtype: 'form-desc-subject'
 				},
 				{
 					name: 'classification-custom-subject',

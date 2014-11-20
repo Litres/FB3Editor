@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.subject.Link'
 		],
 		xtype: 'form-desc-relations-subject',
+		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
 			id: 'ID субъекта',

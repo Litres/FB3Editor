@@ -11,7 +11,13 @@ Ext.define(
 	'FBEditor.view.form.desc.sequence.Sequence',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		requires: [
+			'FBEditor.view.form.desc.sequence.SequenceController'
+		],
+		id: 'form-desc-sequence',
 		xtype: 'form-desc-sequence',
+		controller: 'form.desc.sequence',
+		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
 			id: 'ID',
