@@ -129,6 +129,39 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает кнопку добавления.
+		 * @return {Ext.button.Button}
+		 */
+		getBtnAdd: function ()
+		{
+			var me = this;
+
+			return me.getCmp().query('[name=fieldcontainerreplicator-btn-add]')[0];
+		},
+
+		/**
+		 * Возвращает кнопку удаления.
+		 * @return {Ext.button.Button}
+		 */
+		getBtnRemove: function ()
+		{
+			var me = this;
+
+			return me.getCmp().query('[name=fieldcontainerreplicator-btn-remove]')[0];
+		},
+
+		/**
+		 * Возвращает кнопку вложения.
+		 * @return {Ext.button.Button}
+		 */
+		getBtnPut: function ()
+		{
+			var me = this;
+
+			return me.getCmp().query('[name=fieldcontainerreplicator-btn-put]')[0];
+		},
+
+		/**
 		 * @private
 		 * Возвращает контейнер с кнопками.
 		 * @return {Ext.form.FieldContainer}
@@ -192,21 +225,22 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * Добавляет поля.
-		 * @param {Ext.button.Button} Кнопка добавления.
+		 * @param {[Ext.button.Button]} Кнопка добавления.
 		 */
 		addFields: function (btn)
 		{
 			var me = this,
-				container,
-				removeBtn = btn.prev(),
 				enableBtnPut = me.enableBtnPut,
+				container,
+				removeBtn,
 				replicatorId,
 				ownerCt,
 				clone,
 				idx;
 
+			btn = btn || me.getBtnAdd();
+			removeBtn = btn.prev();
 			removeBtn.enable();
 			container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
 			replicatorId = container.replicatorId;

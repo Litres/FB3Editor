@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.relations.object.Link'
 		],
+		id: 'form-desc-relations-object',
 		xtype: 'form-desc-relations-object',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
@@ -114,7 +115,7 @@ Ext.define(
 						},
 						{
 							fieldLabel: me.translateText.desc,
-							name: 'relations-object-desc',
+							name: 'relations-object-description',
 							allowBlank: true
 						}
 					]

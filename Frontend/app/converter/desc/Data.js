@@ -19,6 +19,7 @@ Ext.define(
 			d = me.convertPeriodical(d);
 			d = me.convertTitle(d);
 			d = me.convertSequence(d);
+			d = me.convertRelations(d);
 			d = me.convertClassification(d);
 			d = me.convertWritten(d);
 			d = me.convertDocumentInfo(d);
@@ -84,17 +85,85 @@ Ext.define(
 		{
 			var d = data;
 
-			/*if (d.sequence)
-			{
-				d['sequence-id'] = d.sequence.id;
-				d['sequence-number'] = d.sequence.number ? d.sequence.number : '';
-				d['sequence-title-main'] = d.sequence.title.main;
-				d['sequence-title-sub'] = d.sequence.title.sub ? d.sequence.title.sub : '';
-				d['sequence-title-alt'] = d.sequence.title.alt ? d.sequence.title.alt : '';
-				delete d.sequence;
-			}*/
 			d.sequence = d.sequence ? d.sequence : '';
 			d.sequence = d.sequence.id ? [d.sequence] : d.sequence;
+			Ext.Object.each(
+				d.sequence,
+				function (index, item)
+				{
+					d.sequence[index]['sequence-id'] = item.id;
+					d.sequence[index]['sequence-number'] = item.number ? item.number : '';
+					d.sequence[index]['sequence-title-main'] = item.title.main;
+					d.sequence[index]['sequence-title-sub'] = item.title.sub ? item.title.sub : '';
+					d.sequence[index]['sequence-title-alt'] = item.title.alt ? item.title.alt : '';
+					delete d.sequence[index].id;
+					delete d.sequence[index].number;
+					delete d.sequence[index].title;
+				}
+			);
+
+			return d;
+		},
+
+		/**
+		 * @private
+		 * Пребразует данные для поля relations.
+		 * @param {Object} data Исходные данные.
+		 * @return {Object} Преобразованные данные.
+		 */
+		convertRelations: function (data)
+		{
+			var d = data;
+
+			d.relations = {
+				subject: d['fb3-relations'].subject,
+				object: d['fb3-relations'].object ? d['fb3-relations'].object : ''
+			};
+			d.relations.subject = d.relations.subject.id ? [d.relations.subject] : d.relations.subject;
+			d.relations.object = d.relations.object.id ? [d.relations.object] : d.relations.object;
+			Ext.Object.each(
+				d.relations.subject,
+				function (index, item)
+				{
+					d.relations.subject[index]['relations-subject-id'] = item.id;
+					d.relations.subject[index]['relations-subject-link'] = item.link;
+					d.relations.subject[index]['relations-subject-last-name'] = item['last-name'];
+					d.relations.subject[index]['relations-subject-first-name'] = item['first-name'] ?
+					                                                             item['first-name'] : '';
+					d.relations.subject[index]['relations-subject-middle-name'] = item['middle-name'] ?
+					                                                              item['middle-name'] : '';
+					d.relations.subject[index]['relations-subject-description'] = item.description ?
+					                                                              item.description : '';
+					d.relations.subject[index]['relations-subject-title-main'] = item.title.main;
+					d.relations.subject[index]['relations-subject-title-sub'] = item.title.sub ? item.title.sub : '';
+					d.relations.subject[index]['relations-subject-title-alt'] = item.title.alt ? item.title.alt : '';
+					delete d.relations.subject[index].id;
+					delete d.relations.subject[index].link;
+					delete d.relations.subject[index]['last-name'];
+					delete d.relations.subject[index]['first-name'];
+					delete d.relations.subject[index]['middle-name'];
+					delete d.relations.subject[index].description;
+					delete d.relations.subject[index].title;
+				}
+			);
+			Ext.Object.each(
+				d.relations.object,
+				function (index, item)
+				{
+					d.relations.object[index]['relations-object-id'] = item.id;
+					d.relations.object[index]['relations-object-link'] = item.link;
+					d.relations.object[index]['relations-object-description'] = item.description ?
+					                                                              item.description : '';
+					d.relations.object[index]['relations-object-title-main'] = item.title.main;
+					d.relations.object[index]['relations-object-title-sub'] = item.title.sub ? item.title.sub : '';
+					d.relations.object[index]['relations-object-title-alt'] = item.title.alt ? item.title.alt : '';
+					delete d.relations.object[index].id;
+					delete d.relations.object[index].link;
+					delete d.relations.object[index].description;
+					delete d.relations.object[index].title;
+				}
+			);
+			delete d['fb3-relations'];
 
 			return d;
 		},

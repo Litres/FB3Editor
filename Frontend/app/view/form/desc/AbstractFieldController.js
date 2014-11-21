@@ -17,7 +17,35 @@ Ext.define(
 		 */
 		onLoadData:  function (data)
 		{
+			var me = this,
+				view = me.getView(),
+				plugin;
 
+			console.log(data);
+			plugin = me.getPluginContainerReplicator(view);
+			Ext.Object.each(
+				data,
+			    function (index, obj)
+			    {
+				    var nextContainer;
+
+				    Ext.Object.each(
+					    obj,
+				        function (name, value)
+				        {
+					        var field = plugin.getCmp().query('[name=' + name + ']')[0];
+
+					        field.setValue(value);
+				        }
+				    );
+				    if (data[parseInt(index) + 1])
+				    {
+					    plugin.addFields();
+					    nextContainer = plugin.getCmp().nextSibling();
+					    plugin = nextContainer.getPlugin('fieldcontainerreplicator');
+				    }
+			    }
+			);
 		},
 
 		/**
@@ -44,7 +72,7 @@ Ext.define(
 				field;
 
 			// удаляем клонированные поля с плагином fieldcontainerreplicator
-			containers = view.query('[name=plugin-fieldcontainerreplicator]');
+			containers = me.getContainersReplicator(view);
 			Ext.each(
 				containers,
 				function (item, index)
@@ -57,7 +85,7 @@ Ext.define(
 					else
 					{
 						// удаляем вложенные контейнеры первого контенейра
-						childContainers = item.query('[name=plugin-fieldcontainerreplicator]');
+						childContainers = me.getContainersReplicator(item);
 						Ext.each(
 							childContainers,
 							function (itemContainer, indexContainer)
@@ -85,6 +113,33 @@ Ext.define(
 					}
 				}
 			);
+		},
+
+		/**
+		 * @private
+		 * Возвращает дочерние контейнеры с плагином fieldcontainerreplicator.
+		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} Родительский контейнер.
+		 * @return {FBEditor.view.form.desc.AbstractFieldContainer[]} Дочерние контейнеры.
+		 */
+		getContainersReplicator: function (container)
+		{
+			return container.query('[name=plugin-fieldcontainerreplicator]');
+		},
+
+		/**
+		 * @private
+		 * Возвращает плагин контейнера fieldcontainerreplicator.
+		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} Контейнер.
+		 * @return {FBEditor.ux.FieldContainerReplicator} Плагин fieldcontainerreplicator.
+		 */
+		getPluginContainerReplicator: function (container)
+		{
+			var me = this,
+				plugin;
+
+			plugin = me.getContainersReplicator(container)[0].getPlugin('fieldcontainerreplicator');
+
+			return plugin;
 		}
 	}
 );

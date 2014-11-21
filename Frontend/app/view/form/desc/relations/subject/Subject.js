@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.Link'
 		],
+		id: 'form-desc-relations-subject',
 		xtype: 'form-desc-relations-subject',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
@@ -128,20 +129,20 @@ Ext.define(
 						},
 						{
 							fieldLabel: me.translateText.firstName,
-							name: 'relations-subject-firstName'
+							name: 'relations-subject-first-name'
 						},
 						{
 							fieldLabel: me.translateText.middleName,
-							name: 'relations-subject-middleName'
+							name: 'relations-subject-middle-name'
 						},
 						{
 							fieldLabel: me.translateText.lastName,
-							name: 'relations-subject-lastName',
+							name: 'relations-subject-last-name',
 							allowBlank: false
 						},
 						{
 							fieldLabel: me.translateText.desc,
-							name: 'relations-subject-desc'
+							name: 'relations-subject-description'
 						}
 					]
 				}

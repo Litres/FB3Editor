@@ -27,10 +27,12 @@ Ext.define(
 
 			converter = FBEditor.converter.desc.Data;
 			data = converter.toForm(df);
-			//console.log(data);
+			console.log(data);
 			view.fireEvent('reset');
 			form.setValues(data);
 			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
+			Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations.subject);
+			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations.object);
 		},
 
 		/**
