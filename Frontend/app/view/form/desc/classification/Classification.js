@@ -50,7 +50,8 @@ Ext.define(
 					name: 'classification-custom-subject',
 					fieldLabel: me.translateText.customSubject,
 					labelStyle: labelStyleAllow,
-					plugins: 'fieldreplicator'
+					plugins: 'fieldreplicator',
+					cls: 'plugin-fieldreplicator'
 				},
 				{
 					xtype: 'form-desc-classification-target',

@@ -39,10 +39,13 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				containers,
-				childContainers;
+				childContainers,
+				fields,
+				field;
 
+			// удаляем клонированные поля с плагином fieldcontainerreplicator
 			containers = view.query('[name=plugin-fieldcontainerreplicator]');
-			 Ext.each(
+			Ext.each(
 				containers,
 				function (item, index)
 				{
@@ -62,7 +65,23 @@ Ext.define(
 								item.remove(itemContainer);
 							}
 						);
+
+						// делаем неактивной кнопку удалить
 						item.query('button[name=fieldcontainerreplicator-btn-remove]')[0].disable();
+					}
+				}
+			);
+
+			// удаляем клонированные поля с плагином fieldreplicator
+			fields = document.querySelectorAll('#' + view.getId() + ' .plugin-fieldreplicator');
+			Ext.each(
+				fields,
+				function (item, index)
+				{
+					if (index)
+					{
+						field = view.queryById(item.id);
+						view.remove(field);
 					}
 				}
 			);

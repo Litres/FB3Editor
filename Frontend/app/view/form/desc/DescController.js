@@ -43,8 +43,9 @@ Ext.define(
 				form = view.getForm(),
 				fieldContainers;
 
-			// сбрасываем все поля, которые имеют плагин fieldcontainerreplicator
-			fieldContainers = view.query('[name=form-desc-plugin-fieldcontainerreplicator]');
+			// сбрасываем все поля, которые имеют плагин fieldcontainerreplicator или fieldreplicator
+			fieldContainers = view.query('[name=form-desc-plugin-fieldcontainerreplicator],' +
+			                             'form-desc-title');
 			Ext.each(
 				fieldContainers,
 			    function (item)

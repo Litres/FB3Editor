@@ -116,6 +116,7 @@ Ext.define(
 						},
 						{
 							xtype: 'form-desc-title',
+							name: 'relations-subject-title',
 							flex: 0,
 							width: 210,
 							layout: 'fit',

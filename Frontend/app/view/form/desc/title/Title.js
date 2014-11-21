@@ -42,7 +42,8 @@ Ext.define(
 					name: name + '-alt',
 					fieldLabel: me.translateText.alt,
 					labelStyle: labelStyleAllow,
-					plugins: 'fieldreplicator'
+					plugins: 'fieldreplicator',
+					cls: 'plugin-fieldreplicator'
 				}
 			];
 			me.callParent(arguments);
