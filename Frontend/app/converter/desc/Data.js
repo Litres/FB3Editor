@@ -23,6 +23,8 @@ Ext.define(
 			d = me.convertClassification(d);
 			d = me.convertWritten(d);
 			d = me.convertDocumentInfo(d);
+			d = me.convertPublishInfo(d);
+			d = me.convertCustomInfo(d);
 
 			return d;
 		},
@@ -83,24 +85,10 @@ Ext.define(
 		 */
 		convertSequence: function (data)
 		{
-			var d = data;
+			var me = this,
+				d = data;
 
-			d.sequence = d.sequence ? d.sequence : '';
-			d.sequence = d.sequence.id ? [d.sequence] : d.sequence;
-			Ext.Object.each(
-				d.sequence,
-				function (index, item)
-				{
-					d.sequence[index]['sequence-id'] = item.id;
-					d.sequence[index]['sequence-number'] = item.number ? item.number : '';
-					d.sequence[index]['sequence-title-main'] = item.title.main;
-					d.sequence[index]['sequence-title-sub'] = item.title.sub ? item.title.sub : '';
-					d.sequence[index]['sequence-title-alt'] = item.title.alt ? item.title.alt : '';
-					delete d.sequence[index].id;
-					delete d.sequence[index].number;
-					delete d.sequence[index].title;
-				}
-			);
+			d.sequence = me._convertPropertyName(d.sequence, 'sequence');
 
 			return d;
 		},
@@ -113,56 +101,17 @@ Ext.define(
 		 */
 		convertRelations: function (data)
 		{
-			var d = data;
+			var me = this,
+				d = data;
 
 			d.relations = {
-				subject: d['fb3-relations'].subject,
-				object: d['fb3-relations'].object ? d['fb3-relations'].object : ''
+				'relations-subject': d['fb3-relations'].subject,
+				'relations-object': d['fb3-relations'].object ? d['fb3-relations'].object : ''
 			};
-			d.relations.subject = d.relations.subject.id ? [d.relations.subject] : d.relations.subject;
-			d.relations.object = d.relations.object.id ? [d.relations.object] : d.relations.object;
-			Ext.Object.each(
-				d.relations.subject,
-				function (index, item)
-				{
-					d.relations.subject[index]['relations-subject-id'] = item.id;
-					d.relations.subject[index]['relations-subject-link'] = item.link;
-					d.relations.subject[index]['relations-subject-last-name'] = item['last-name'];
-					d.relations.subject[index]['relations-subject-first-name'] = item['first-name'] ?
-					                                                             item['first-name'] : '';
-					d.relations.subject[index]['relations-subject-middle-name'] = item['middle-name'] ?
-					                                                              item['middle-name'] : '';
-					d.relations.subject[index]['relations-subject-description'] = item.description ?
-					                                                              item.description : '';
-					d.relations.subject[index]['relations-subject-title-main'] = item.title.main;
-					d.relations.subject[index]['relations-subject-title-sub'] = item.title.sub ? item.title.sub : '';
-					d.relations.subject[index]['relations-subject-title-alt'] = item.title.alt ? item.title.alt : '';
-					delete d.relations.subject[index].id;
-					delete d.relations.subject[index].link;
-					delete d.relations.subject[index]['last-name'];
-					delete d.relations.subject[index]['first-name'];
-					delete d.relations.subject[index]['middle-name'];
-					delete d.relations.subject[index].description;
-					delete d.relations.subject[index].title;
-				}
-			);
-			Ext.Object.each(
-				d.relations.object,
-				function (index, item)
-				{
-					d.relations.object[index]['relations-object-id'] = item.id;
-					d.relations.object[index]['relations-object-link'] = item.link;
-					d.relations.object[index]['relations-object-description'] = item.description ?
-					                                                              item.description : '';
-					d.relations.object[index]['relations-object-title-main'] = item.title.main;
-					d.relations.object[index]['relations-object-title-sub'] = item.title.sub ? item.title.sub : '';
-					d.relations.object[index]['relations-object-title-alt'] = item.title.alt ? item.title.alt : '';
-					delete d.relations.object[index].id;
-					delete d.relations.object[index].link;
-					delete d.relations.object[index].description;
-					delete d.relations.object[index].title;
-				}
-			);
+			d.relations['relations-subject'] = me._convertPropertyName(d.relations['relations-subject'],
+			                                                           'relations-subject');
+			d.relations['relations-object'] = me._convertPropertyName(d.relations['relations-object'],
+			                                                           'relations-object');
 			delete d['fb3-relations'];
 
 			return d;
@@ -180,7 +129,16 @@ Ext.define(
 
 			d['classification-class-contents'] = d['fb3-classification'].class.contents;
 			d['classification-class-text'] = d['fb3-classification'].class.text;
-			d['classification-subject'] = d['fb3-classification'].subject;
+			d['classification-subject'] = {};
+			Ext.Object.each(
+				d['fb3-classification'].subject,
+			    function (index, value)
+			    {
+				    d['classification-subject'][index] = {
+					    'classification-subject': value
+				    };
+			    }
+			);
 			d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?
 			                                     d['fb3-classification']['custom-subject'] : '';
 			d['classification-udk'] = d['fb3-classification'].udk ? d['fb3-classification'].udk : '';
@@ -265,6 +223,83 @@ Ext.define(
 			d['document-info-ocr'] = d['document-info'].ocr ? d['document-info'].ocr : '';
 			d['document-info-editor'] = d['document-info'].editor ? d['document-info'].editor : '';
 			delete d['document-info'];
+
+			return d;
+		},
+
+		/**
+		 * @private
+		 * Пребразует данные для поля publish-info.
+		 * @param {Object} data Исходные данные.
+		 * @return {Object} Преобразованные данные.
+		 */
+		convertPublishInfo: function (data)
+		{
+			var me = this,
+				d = data;
+
+			d['publish-info'] = me._convertPropertyName(d['publish-info'], 'publish-info');
+
+			return d;
+		},
+
+		/**
+		 * @private
+		 * Пребразует данные для поля custom-info.
+		 * @param {Object} data Исходные данные.
+		 * @return {Object} Преобразованные данные.
+		 */
+		convertCustomInfo: function (data)
+		{
+			var me = this,
+				d = data;
+
+			d['custom-info'] = me._convertPropertyName(d['custom-info'], 'custom-info');
+
+			return d;
+		},
+
+		/**
+		 * @private
+		 * Преобразует названия свойств в объекте данных.
+		 * @param {Object} data Объект данных.
+		 * @param {String} propertyName Название объекта данных.
+		 * @return {Object} Преобразованный объект данных.
+		 */
+		_convertPropertyName: function (data, propertyName)
+		{
+			var d = data,
+				name = propertyName;
+
+			d = d ? d : '';
+			d = d['0'] ? d : {'0': d};
+			Ext.Object.each(
+				d,
+				function (index, item)
+				{
+					Ext.Object.each(
+						item,
+						function (key, val)
+						{
+							if (Ext.isObject(val) && !val['0'])
+							{
+								Ext.Object.each(
+									val,
+									function (k, v)
+									{
+										d[index][name + '-' + key + '-' + k] = v;
+									}
+								);
+							}
+							else
+							{
+								d[index][name + '-' + key] = val;
+							}
+							delete d[index][key];
+						}
+					);
+				}
+			);
 
 			return d;
 		}

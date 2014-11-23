@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.publishInfo.PublishInfo',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		id: 'form-desc-publishInfo',
 		xtype: 'form-desc-publishInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
@@ -94,25 +95,25 @@ Ext.define(
 					},
 					items: [
 						{
-							name: 'publishInfo-title',
+							name: 'publish-info-title',
 							allowBlank: false,
 							fieldLabel: me.translateText.title
 						},
 						{
-							name: 'publishInfo-publisher',
+							name: 'publish-info-publisher',
 							fieldLabel: me.translateText.publisher
 						},
 						{
-							name: 'publishInfo-city',
+							name: 'publish-info-city',
 							fieldLabel: me.translateText.city
 						},
 						{
 							xtype: 'numberfield',
-							name: 'publishInfo-year',
+							name: 'publish-info-year',
 							fieldLabel: me.translateText.year
 						},
 						{
-							name: 'publishInfo-isbn',
+							name: 'publish-info-isbn',
 							regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
 							regexText: me.translateText.isbnError,
 							fieldLabel: me.translateText.isbn

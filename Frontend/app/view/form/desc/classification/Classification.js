@@ -13,6 +13,7 @@ Ext.define(
 			'FBEditor.view.form.desc.classification.target.Target',
 			'FBEditor.view.form.desc.classification.coverage.Coverage'
 		],
+		id: 'form-desc-classification',
 		xtype: 'form-desc-classification',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 

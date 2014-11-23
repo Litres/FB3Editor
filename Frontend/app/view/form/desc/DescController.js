@@ -31,8 +31,11 @@ Ext.define(
 			view.fireEvent('reset');
 			form.setValues(data);
 			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
-			Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations.subject);
-			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations.object);
+			Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations['relations-subject']);
+			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
+			Ext.getCmp('form-desc-classification').fireEvent('loadData', data['classification-subject']);
+			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
+			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 		},
 
 		/**

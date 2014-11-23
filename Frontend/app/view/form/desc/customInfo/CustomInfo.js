@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.customInfo.CustomInfo',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		id: 'form-desc-customInfo',
 		xtype: 'form-desc-customInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
@@ -74,13 +75,13 @@ Ext.define(
 					},
 					items: [
 						{
-							name: 'customInfo-infoType',
+							name: 'custom-info-info-type',
 							allowBlank: false,
 							fieldLabel: me.translateText.infoType
 						},
 						{
 							xtype: 'textareafield',
-							name: 'customInfo-desc',
+							name: 'custom-info-text',
 							allowBlank: false,
 							fieldLabel: me.translateText.desc,
 							grow: true

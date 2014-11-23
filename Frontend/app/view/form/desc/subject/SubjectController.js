@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.form.desc.subject.SubjectController',
 	{
-		extend: 'Ext.app.ViewController',
+		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 		alias: 'controller.form.desc.subject',
 
 		/**
