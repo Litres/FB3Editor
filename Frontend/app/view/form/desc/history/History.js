@@ -10,7 +10,6 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		xtype: 'form-desc-history',
 		name: 'history',
-		fieldLabel: 'История',
-		labelAlign: 'top'
+		height: 100
 	}
 );

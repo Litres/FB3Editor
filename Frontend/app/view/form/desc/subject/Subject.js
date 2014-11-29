@@ -14,18 +14,21 @@ Ext.define(
 		],
 		xtype: 'form-desc-subject',
 		controller: 'form.desc.subject',
-		name: 'form-desc-plugin-fieldcontainerreplicator',
 		layout: 'hbox',
-		fieldLabel: 'Жанр',
-		plugins: 'fieldcontainerreplicator',
-		combineErrors: true,
-		msgTarget: 'side',
+		plugins: {
+			ptype: 'fieldcontainerreplicator',
+			groupName: 'classification-subject',
+			btnStyle: {
+				margin: '0 0 0 5px'
+			}
+		},
 		listeners: {
 			selectSubject: 'onSelectSubject',
 			showSubjectTree: 'onShowSubjectTree'
 		},
 
 		translateText: {
+			subject: 'Жанры',
 			select: 'Выбрать'
 		},
 
@@ -46,6 +49,9 @@ Ext.define(
 					flex: 1,
 					allowBlank: false,
 					editable: false,
+					fieldLabel: me.translateText.subject,
+					labelAlign: 'right',
+					labelWidth: 110,
 					listeners: {
 						click: {
 							element: 'el',
@@ -59,9 +65,10 @@ Ext.define(
 				},
 				{
 					xtype: 'button',
-					text: me.translateText.select,
-					margin: '0 0 0 2',
-					menu: [],
+					//text: me.translateText.select,
+					margin: '0 0 0 5',
+					//menu: [],
+					html: '<i class="fa fa-book"></i>',
 					scope: me,
 					handler: function ()
 					{

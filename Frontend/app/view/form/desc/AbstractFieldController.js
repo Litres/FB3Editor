@@ -82,7 +82,7 @@ Ext.define(
 						// удаляем все поля кроме первого контенейра
 						view.remove(item);
 					}
-					else
+					/*else
 					{
 						// удаляем вложенные контейнеры первого контенейра
 						childContainers = me.getContainersReplicator(item);
@@ -96,7 +96,7 @@ Ext.define(
 
 						// делаем неактивной кнопку удалить
 						item.query('button[name=fieldcontainerreplicator-btn-remove]')[0].disable();
-					}
+					}*/
 				}
 			);
 

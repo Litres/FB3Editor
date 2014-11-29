@@ -28,7 +28,7 @@
      * The name of the theme for this application.
      */
     
-    "theme": "ext-theme-neptune",//"ext-theme-crisp",
+    "theme": "fb3-theme-green",//"ext-theme-crisp",
     
     /**
      * The list of required packages (with optional versions; default is "latest").

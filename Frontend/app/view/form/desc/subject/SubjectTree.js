@@ -21,6 +21,7 @@ Ext.define(
 		closeAction: 'hide',
 		title: 'Выберите жанр',
 		width: 450,
+		height: 300,
 		minHeight: 200,
 		maxHeight: 500,
 		autoScroll: true,

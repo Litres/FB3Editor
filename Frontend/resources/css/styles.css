@@ -1,0 +1,142 @@
+@import 'font-awesome.css';
+
+.fb3 .form-desc .x-panel-body-default
+{
+	background-color: #F1F2F6;
+}
+
+.fb3 .form-desc .x-fieldset-default
+{
+	padding: 0;
+	margin: 0 0 20px;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 1px 0 #ccc;
+}
+
+.fb3 .form-desc .x-fieldset-body-default
+{
+	padding: 10px 10px 0 10px;
+}
+
+.fb3 .form-desc .x-fieldset-header-default
+{
+	width: 100%;
+	padding: 10px;
+	background-color: #E6E9ED;
+	border-radius: 8px 8px 0 0;
+}
+
+.fb3 .form-desc .x-fieldset-default.x-fieldset-collapsed
+{
+	border: none;
+}
+
+.fb3 .form-desc .x-fieldset-header-default > .x-fieldset-header-text
+{
+	font-family: tahoma;
+	font-weight: bold;
+}
+
+.fb3 .form-desc .x-fieldset-default.optional .x-fieldset-header-text
+{
+	color: #A89BA2;
+}
+
+.fb3 .form-desc .x-fieldset-header-tool-default > .x-tool-toggle
+{
+	background-image: url("../images/fieldset/collapse-tool.png");
+}
+
+.fb3 .form-desc .x-fieldset-default.optional .x-fieldset-header-tool-default > .x-tool-toggle
+{
+	background-image: url("../images/fieldset/collapse-tool-gray.png");
+}
+
+.fb3 .form-desc .x-fieldset-default.fieldset-small
+{
+	padding: 0;
+	margin: 0;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.fb3 .form-desc .fieldset-small .x-fieldset-body-default
+{
+	padding: 5px 0 0 0;
+}
+
+.fb3 .form-desc .fieldset-small .x-fieldset-header-default
+{
+	padding: 0;
+	background-color: #fff;
+	border-radius: 0;
+}
+
+.fb3 .form-desc .fieldset-small .x-fieldset-header-default > .x-fieldset-header-text
+{
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.fb3 .form-desc .x-field
+{
+	margin: 0 0 15px 0;
+}
+
+.fb3 .form-desc .x-form-item-body-default .after-body
+{
+	color: #A89BA2;
+	font-family: tahoma;
+	font-size: 10px;
+}
+
+.fb3 .form-desc .x-form-item-label-inner-default
+{
+	padding-right: 15px;
+	font-family: tahoma;
+	font-size: 11px;
+}
+
+.fb3 .btn-minus.x-btn-default-small,
+.fb3 .btn-minus.x-btn-over.x-btn-default-small,
+.fb3 .btn-minus.x-btn-focus.x-btn-default-small,
+.fb3 .btn-minus.x-btn.x-btn-pressed.x-btn-default-small
+{
+	background: #FBE0A8 none;
+	border-color: #EBD098;
+	border-width: 1px;
+}
+
+.fb3 .btn-minus.x-btn.x-btn-disabled.x-btn-default-small
+{
+	background-image: -moz-linear-gradient(center top , #FBE0A8, #FBE0A8 50%, #FBE0A8 51%, #FBE0A8);
+}
+
+.fb3 .x-form-trigger-wrap-invalid
+{
+	color: #cf4c35;
+}
+
+.fb3 .x-form-trigger-wrap-default
+{
+	border-radius: 3px;
+}
+
+.fb3 .textfieldrequire-trigger
+{
+	width: 18px;
+	padding-top: 10px;
+	font-size: 18px;
+	background: none;
+}
+
+.fb3 .textfieldrequire-trigger:before
+{
+	content: "\f00d";
+}
+
+.plugin-fieldcontainerreplicator .x-form-item-body
+{
+	vertical-align: top;
+}

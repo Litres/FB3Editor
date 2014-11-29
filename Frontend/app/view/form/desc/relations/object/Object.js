@@ -20,103 +20,79 @@ Ext.define(
 			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			link: 'Тип связи',
-			title: 'Общепринятое наименование',
 			desc: 'Написание'
 		},
 
 		initComponent: function ()
 		{
 			var me = this,
-				fieldStyleAllow = me.fieldDefaults.fieldStyle + '; color: ' +
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
 				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
-			me.items = [
+			me.items=  [
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
-					hideLabel: true,
-					margin: '0 0 0 0',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						xtype: 'displayfield',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
-					items: [
-						{
-							value: me.translateText.id + ':'
-						},
-						{
-							value: me.translateText.link + ':'
-						},
-						{
-							value: me.translateText.title + ':',
-							flex: 0,
-							width: 280
-						},
-						{
-							value: me.translateText.desc + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							flex: 0,
-							width: 140,
-							value: ''
-						}
-					]
-				},
-				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					hideLabel: true,
-					combineErrors: true,
-					msgTarget: 'side',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						labelAlign: 'top',
-						labelPad: '0',
-						xtype: 'textfield',
-						msgTarget: 'none',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'object',
 						btnPos: 'end',
 						btnStyle: {
-							margin: '0 0 0 2px'
+							margin: '0 0 0 5px',
+							width: '40px',
+							height: '65px'
 						}
 					},
 					items: [
 						{
-							fieldLabel: me.translateText.id,
-							name: 'relations-object-id',
-							allowBlank: false,
-							regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-							regexText: me.translateText.idError
-						},
-						{
-							xtype: 'form-desc-relations-object-link'
-						},
-						{
-							xtype: 'form-desc-title',
-							name: 'relations-object-title',
-							flex: 0,
-							width: 280,
-							layout: 'fit',
+							xtype: 'desc-fieldcontainer',
+							flex: 1,
+							layout: 'anchor',
 							defaults: {
-								labelWidth: 140,
+								anchor: '100%',
+								labelWidth: 160,
 								labelAlign: 'right',
-								margin: '0 0 2 0'
-							}
+								xtype: 'textfield'
+							},
+							items: [
+								{
+									xtype: 'hiddenfield',
+									fieldLabel: me.translateText.id,
+									name: 'relations-object-id',
+									allowBlank: false,
+									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+									regexText: me.translateText.idError
+								},
+								{
+									xtype: 'form-desc-relations-object-link'
+								},
+								{
+									fieldLabel: me.translateText.desc,
+									name: 'relations-object-description',
+									labelStyle: labelStyleAllow
+								}
+							]
 						},
 						{
-							fieldLabel: me.translateText.desc,
-							name: 'relations-object-description',
-							allowBlank: true
+							xtype: 'fieldcontainer',
+							width: 50
+						},
+						{
+							xtype: 'desc-fieldcontainer',
+							flex: 1,
+							layout: 'anchor',
+							items: [
+								{
+									xtype: 'form-desc-title',
+									name: 'relations-object-title',
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%',
+										labelWidth: 160,
+										labelAlign: 'right'
+									}
+								}
+							]
 						}
 					]
 				}

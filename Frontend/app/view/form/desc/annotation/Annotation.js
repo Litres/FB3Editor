@@ -10,7 +10,6 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		xtype: 'form-desc-annotation',
 		name: 'anotation',
-		fieldLabel: 'Аннотация',
-		labelAlign: 'top'
+		height: 100
 	}
 );

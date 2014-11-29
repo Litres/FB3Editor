@@ -9,59 +9,94 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		xtype: 'form-desc-classification-coverage',
-		fieldLabel: 'Привязка к месту и времени',
-		items: [
-			{
-				xtype: 'textfield',
-				name: 'classification-coverage-text',
-				fieldLabel: 'Описание',
-				emptyText: 'Описание',
-				hideLabel: true
-			},
-			{
-				xtype: 'countryfield',
-				name: 'classification-coverage-country',
-				fieldLabel: 'Страна',
-				emptyText: 'Страна',
-				forceSelection: false,
-				editable: false,
-				hideLabel: true
-			},
-			{
-				xtype: 'textfield',
-				name: 'classification-coverage-place',
-				fieldLabel: 'Место',
-				emptyText: 'Место',
-				hideLabel: true
-			},
-			{
-				xtype: 'datefield',
-				name: 'classification-coverage-date',
-				fieldLabel: 'Дата',
-				emptyText: 'Дата',
-				hideLabel: true
-			},
-			{
-				xtype: 'datefield',
-				name: 'classification-coverage-date-from',
-				fieldLabel: 'Дата начала',
-				emptyText: 'Дата начала',
-				hideLabel: true
-			},
-			{
-				xtype: 'datefield',
-				name: 'classification-coverage-date-to',
-				fieldLabel: 'Дата окончания',
-				emptyText: 'Дата окончания',
-				hideLabel: true
-			},
-			{
-				xtype: 'textfield',
-				name: 'classification-coverage-age',
-				fieldLabel: 'Век',
-				emptyText: 'Век',
-				hideLabel: true
-			}
-		]
+		layout: 'hbox',
+
+		translateText: {
+			desc: 'Описание',
+			country: 'Страна',
+			place: 'Место',
+			date: 'Дата',
+			dateFrom: 'Дата начала',
+			dateTo: 'Дата окончания',
+			age: 'Век'
+		},
+
+		initComponent: function ()
+		{
+			var me = this,
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
+				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+
+			me.items = [
+				{
+					xtype: 'desc-fieldcontainer',
+					flex: 1,
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelAlign: 'right',
+						labelWidth: 160,
+						labelStyle: labelStyleAllow
+					},
+					items: [
+						{
+							xtype: 'textfield',
+							name: 'classification-coverage-text',
+							fieldLabel: me.translateText.desc
+						},
+						{
+							xtype: 'countryfield',
+							name: 'classification-coverage-country',
+							fieldLabel: me.translateText.country,
+							forceSelection: false,
+							editable: false
+						},
+						{
+							xtype: 'textfield',
+							name: 'classification-coverage-place',
+							fieldLabel: me.translateText.place
+						}
+					]
+				},
+				{
+					xtype: 'fieldcontainer',
+					width: 50
+				},
+				{
+					xtype: 'desc-fieldcontainer',
+					flex: 1,
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelAlign: 'right',
+						labelWidth: 110,
+						labelStyle: labelStyleAllow
+					},
+					items: [
+						{
+							xtype: 'datefield',
+							name: 'classification-coverage-date',
+							fieldLabel: me.translateText.date
+						},
+						{
+							xtype: 'datefield',
+							name: 'classification-coverage-date-from',
+							fieldLabel: me.translateText.dateFrom
+						},
+						{
+							xtype: 'datefield',
+							name: 'classification-coverage-date-to',
+							fieldLabel: me.translateText.dateTo
+						},
+						{
+							xtype: 'textfield',
+							name: 'classification-coverage-age',
+							fieldLabel: me.translateText.age
+						}
+					]
+				}
+			];
+			me.callParent(arguments);
+		}
 	}
 );

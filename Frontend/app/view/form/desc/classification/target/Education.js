@@ -16,9 +16,7 @@ Ext.define(
 		displayField: 'value',
 		valueField: 'value',
 		fieldLabel: 'Образование',
-		emptyText: 'Образование',
 		editable: false,
-		hideLabel: true,
 
 		initComponent: function ()
 		{

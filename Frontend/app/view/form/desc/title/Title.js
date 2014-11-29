@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'form-desc-title',
 
 		translateText: {
-			main: 'Основная часть',
+			main: 'Основное название',
 			sub: 'Подзаголовок',
 			alt: 'Альтернативное название'
 		},
@@ -26,10 +26,9 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'textfield',
+					xtype: 'textfieldrequire',
 					name: name + '-main',
-					fieldLabel: me.translateText.main,
-					allowBlank: false
+					fieldLabel: me.translateText.main
 				},
 				{
 					xtype: 'textfield',
@@ -38,12 +37,29 @@ Ext.define(
 					labelStyle: labelStyleAllow
 				},
 				{
-					xtype: 'textfield',
-					name: name + '-alt',
-					fieldLabel: me.translateText.alt,
-					labelStyle: labelStyleAllow,
-					plugins: 'fieldreplicator',
-					cls: 'plugin-fieldreplicator'
+					xtype: 'desc-fieldcontainer',
+					layout: 'hbox',
+					defaults: {
+						anchor: '100%',
+						flex: 1,
+						labelWidth: 160,
+						labelAlign: 'right'
+					},
+					plugins: {
+						ptype: 'fieldcontainerreplicator',
+						groupName: name + '-alt',
+						btnStyle: {
+							margin: '0 0 0 5px'
+						}
+					},
+					items: [
+						{
+							xtype: 'textfield',
+							name: name + '-alt',
+							fieldLabel: me.translateText.alt,
+							labelStyle: labelStyleAllow
+						}
+					]
 				}
 			];
 			me.callParent(arguments);

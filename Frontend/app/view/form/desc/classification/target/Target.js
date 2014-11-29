@@ -12,47 +12,73 @@ Ext.define(
 			'FBEditor.view.form.desc.classification.target.Education'
 		],
 		xtype: 'form-desc-classification-target',
-		fieldLabel: 'Целевая аудитория',
+		layout: 'hbox',
 
 		translateText: {
 			desc: 'Описание',
-			minAge: 'Минимальный возраст',
-			maxAge: 'Максимальный возраст'
+			minAge: 'Мин возраст',
+			maxAge: 'Макс возраст'
 		},
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
+				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
 			me.items = [
 				{
-					xtype: 'textfield',
-					name: 'classification-target-audience-text',
-					fieldLabel: me.translateText.desc,
-					emptyText: me.translateText.desc,
-					hideLabel: true
+					xtype: 'desc-fieldcontainer',
+					flex: 1,
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelAlign: 'right',
+						labelWidth: 160,
+						labelStyle: labelStyleAllow
+					},
+					items: [
+						{
+							xtype: 'textfield',
+							name: 'classification-target-audience-text',
+							fieldLabel: me.translateText.desc
+						},
+						{
+							xtype: 'form-desc-classification-target-education',
+							name: 'classification-target-audience-education'
+						}
+					]
 				},
 				{
-					xtype: 'numberfield',
-					name: 'classification-target-audience-age-min',
-					fieldLabel: me.translateText.minAge,
-					emptyText: me.translateText.minAge,
-					hideLabel: true,
-					minValue: 2,
-					maxValue: 50
+					xtype: 'fieldcontainer',
+					width: 50
 				},
 				{
-					xtype: 'numberfield',
-					name: 'classification-target-audience-age-max',
-					fieldLabel: me.translateText.maxAge,
-					emptyText: me.translateText.maxAge,
-					hideLabel: true,
-					minValue: 2,
-					maxValue: 150
-				},
-				{
-					xtype: 'form-desc-classification-target-education',
-					name: 'classification-target-audience-education'
+					xtype: 'desc-fieldcontainer',
+					flex: 1,
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelAlign: 'right',
+						labelWidth: 110,
+						labelStyle: labelStyleAllow
+					},
+					items: [
+						{
+							xtype: 'numberfield',
+							name: 'classification-target-audience-age-min',
+							fieldLabel: me.translateText.minAge,
+							minValue: 2,
+							maxValue: 50
+						},
+						{
+							xtype: 'numberfield',
+							name: 'classification-target-audience-age-max',
+							fieldLabel: me.translateText.maxAge,
+							minValue: 2,
+							maxValue: 150
+						}
+					]
 				}
 			];
 			me.callParent(arguments);

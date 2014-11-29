@@ -22,6 +22,7 @@ Ext.define(
 	    layout: {
 	        type: 'border'
 	    },
+		cls: 'fb3',
 		listeners: {
 			closedetachpanels: 'onDetachPanel',
 			closeapplication: 'onCloseDetachPanels',

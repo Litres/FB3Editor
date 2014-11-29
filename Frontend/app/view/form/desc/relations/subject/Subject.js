@@ -20,7 +20,6 @@ Ext.define(
 			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			link: 'Тип связи',
-			title: 'Общепринятое наименование',
 			firstName: 'Имя',
 			middleName: 'Отчество (второе имя)',
 			lastName: 'Фамилия',
@@ -30,119 +29,88 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				fieldStyleAllow = me.fieldDefaults.fieldStyle + '; color: ' +
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
 				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
 			me.items=  [
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
-					hideLabel: true,
-					margin: '0 0 0 0',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						xtype: 'displayfield',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
-					items: [
-						{
-							value: me.translateText.id + ':'
-						},
-						{
-							value: me.translateText.link + ':'
-						},
-						{
-							value: me.translateText.title + ':',
-							flex: 0,
-							width: 210
-						},
-						{
-							value: me.translateText.firstName + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							value: me.translateText.middleName + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							value: me.translateText.lastName + ':'
-						},
-						{
-							value: me.translateText.desc + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							flex: 0,
-							width: 140,
-							value: ''
-						}
-					]
-				},
-				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					hideLabel: true,
-					combineErrors: true,
-					msgTarget: 'side',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						labelAlign: 'top',
-						labelPad: '0',
-						xtype: 'textfield',
-						msgTarget: 'none',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'subject',
 						btnPos: 'end',
 						btnStyle: {
-							margin: '0 0 0 2px'
+							margin: '0 0 0 5px',
+							width: '40px',
+							height: '65px'
 						}
 					},
 					items: [
 						{
-							fieldLabel: me.translateText.id,
-							name: 'relations-subject-id',
-							allowBlank: false,
-							regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-							regexText: me.translateText.idError
-						},
-						{
-							xtype: 'form-desc-relations-subject-link'
-						},
-						{
-							xtype: 'form-desc-title',
-							name: 'relations-subject-title',
-							flex: 0,
-							width: 210,
-							layout: 'fit',
+							xtype: 'desc-fieldcontainer',
+							flex: 1,
+							layout: 'anchor',
 							defaults: {
-								labelWidth: 90,
+								anchor: '100%',
+								labelWidth: 160,
 								labelAlign: 'right',
-								margin: '0 0 2 0'
-							}
+								xtype: 'textfield'
+							},
+							items: [
+								{
+									xtype: 'hiddenfield',
+									fieldLabel: me.translateText.id,
+									name: 'relations-subject-id',
+									allowBlank: false,
+									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+									regexText: me.translateText.idError
+								},
+								{
+									xtype: 'textfieldrequire',
+									fieldLabel: me.translateText.lastName,
+									name: 'relations-subject-last-name'
+								},
+								{
+									xtype: 'form-desc-relations-subject-link'
+								},
+								{
+									fieldLabel: me.translateText.firstName,
+									name: 'relations-subject-first-name',
+									labelStyle: labelStyleAllow
+								},
+								{
+									fieldLabel: me.translateText.middleName,
+									name: 'relations-subject-middle-name',
+									labelStyle: labelStyleAllow
+								},
+								{
+									fieldLabel: me.translateText.desc,
+									name: 'relations-subject-description',
+									labelStyle: labelStyleAllow
+								}
+							]
 						},
 						{
-							fieldLabel: me.translateText.firstName,
-							name: 'relations-subject-first-name'
+							xtype: 'fieldcontainer',
+							width: 50
 						},
 						{
-							fieldLabel: me.translateText.middleName,
-							name: 'relations-subject-middle-name'
-						},
-						{
-							fieldLabel: me.translateText.lastName,
-							name: 'relations-subject-last-name',
-							allowBlank: false
-						},
-						{
-							fieldLabel: me.translateText.desc,
-							name: 'relations-subject-description'
+							xtype: 'desc-fieldcontainer',
+							flex: 1,
+							layout: 'anchor',
+							items: [
+								{
+									xtype: 'form-desc-title',
+									name: 'relations-subject-title',
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%',
+										labelWidth: 160,
+										labelAlign: 'right'
+									}
+								}
+							]
 						}
 					]
 				}

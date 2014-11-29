@@ -49,7 +49,8 @@ Ext.define(
 		 * @property {Object} Конфиг кнопки добавления.
 		 */
 		btnAddCfg: {
-			text: 'Добавить'
+			//text: 'Добавить',
+			html: '<i class="fa fa-plus"></i>'
 		},
 
 		/**
@@ -57,7 +58,9 @@ Ext.define(
 		 * @property {Object} Конфиг кнопки удаления.
 		 */
 		btnRemoveCfg: {
-			text: 'Удалить'
+			//text: 'Удалить',
+			html: '<i class="fa fa-minus"></i>',
+			cls: 'btn-minus'
 		},
 
 		/**
@@ -65,7 +68,9 @@ Ext.define(
 		 * @property {Object} Конфиг кнопки вложения.
 		 */
 		btnPutCfg: {
-			text: 'Вложить'
+			//text: 'Вложить',
+			html: '<i class="fa fa-plus-square"></i>',
+			cls: 'btn-put'
 		},
 
 		/**
@@ -136,7 +141,7 @@ Ext.define(
 		{
 			var me = this;
 
-			return me.getCmp().query('[name=fieldcontainerreplicator-btn-add]')[0];
+			return me.getCmp().query('[name=fieldcontainerreplicator-btn-add-' + me.groupName + ']')[0];
 		},
 
 		/**
@@ -147,7 +152,7 @@ Ext.define(
 		{
 			var me = this;
 
-			return me.getCmp().query('[name=fieldcontainerreplicator-btn-remove]')[0];
+			return me.getCmp().query('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']')[0];
 		},
 
 		/**
@@ -158,7 +163,7 @@ Ext.define(
 		{
 			var me = this;
 
-			return me.getCmp().query('[name=fieldcontainerreplicator-btn-put]')[0];
+			return me.getCmp().query('[name=fieldcontainerreplicator-btn-put-' + me.groupName + ']')[0];
 		},
 
 		/**
@@ -182,7 +187,7 @@ Ext.define(
 				{
 					handler: me.putFields,
 					scope: me,
-					name: 'fieldcontainerreplicator-btn-put'
+					name: 'fieldcontainerreplicator-btn-put-' + me.groupName
 				}
 			);
 			btnAddCfg = Ext.apply(
@@ -190,7 +195,7 @@ Ext.define(
 				{
 					handler: me.addFields,
 					scope: me,
-					name: 'fieldcontainerreplicator-btn-add'
+					name: 'fieldcontainerreplicator-btn-add-' + me.groupName
 				}
 			);
 			btnRemoveCfg = Ext.apply(
@@ -198,7 +203,7 @@ Ext.define(
 				{
 					handler: me.removeFields,
 					scope: me,
-					name: 'fieldcontainerreplicator-btn-remove'
+					name: 'fieldcontainerreplicator-btn-remove-' + me.groupName
 				}
 			);
 			items.push(btnRemoveCfg);
@@ -210,6 +215,7 @@ Ext.define(
 			buttons = [
 				{
 					xtype: 'fieldcontainer',
+					cls: 'plugin-fieldcontainerreplicator',
 					hideLabel: true,
 					flex: 0,
 					height: '100%',
@@ -306,7 +312,8 @@ Ext.define(
 		 */
 		checkLastInGroup: function (ownerCt, replicatorId)
 		{
-			var siblings,
+			var me = this,
+				siblings,
 				isLastInGroup,
 				removeBtn;
 
@@ -314,7 +321,8 @@ Ext.define(
 			if (siblings.length)
 			{
 				isLastInGroup = siblings.length === 1;
-				removeBtn = siblings[siblings.length - 1].query('button[name=fieldcontainerreplicator-btn-remove]')[0];
+				removeBtn = siblings[siblings.length - 1].
+					query('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']')[0];
 				if (isLastInGroup)
 				{
 					removeBtn.disable();

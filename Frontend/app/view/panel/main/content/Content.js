@@ -21,6 +21,8 @@ Ext.define(
 		collapsible: false,
 		layout: 'card',
 		overflowX: true,
+		margin: '0 20px 0 20px',
+		bodyPadding: 0,
 		items: [
 			{
 				xtype: 'main-htmleditor'

@@ -18,17 +18,94 @@ Ext.define(
 			city: 'Город',
 			year: 'Год',
 			isbn: 'ISBN',
-			isbnError: 'Значение должно соответствовать шаблону ([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]. ' +
-			           'Например: 978-5-358-02523-3'
+			isbnError: 'По шаблону ([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]. Например 978-5-358-02523-3'
 		},
 
 		initComponent: function ()
 		{
 			var me = this,
-				fieldStyleAllow = me.fieldDefaults.fieldStyle + '; color: ' +
+				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
 				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
 
-			me.items = [
+			me.items=  [
+				{
+					xtype: 'desc-fieldcontainer',
+					layout: 'hbox',
+					plugins: {
+						ptype: 'fieldcontainerreplicator',
+						groupName: 'publishInfo',
+						btnPos: 'end',
+						btnStyle: {
+							margin: '0 0 0 5px',
+							width: '40px',
+							height: '65px'
+						}
+					},
+					items: [
+						{
+							xtype: 'desc-fieldcontainer',
+							flex: 1,
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%',
+								labelWidth: 160,
+								labelAlign: 'right'
+							},
+							items: [
+								{
+									xtype: 'textfieldrequire',
+									name: 'publish-info-title',
+									allowBlank: false,
+									fieldLabel: me.translateText.title
+								},
+								{
+									xtype: 'textfield',
+									name: 'publish-info-publisher',
+									fieldLabel: me.translateText.publisher,
+									labelStyle: labelStyleAllow
+								},
+								{
+									xtype: 'textfield',
+									name: 'publish-info-city',
+									fieldLabel: me.translateText.city,
+									labelStyle: labelStyleAllow
+								}
+							]
+						},
+						{
+							xtype: 'fieldcontainer',
+							width: 50
+						},
+						{
+							xtype: 'desc-fieldcontainer',
+							flex: 1,
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%',
+								labelWidth: 160,
+								labelAlign: 'right'
+							},
+							items: [
+								{
+									xtype: 'numberfield',
+									name: 'publish-info-year',
+									fieldLabel: me.translateText.year,
+									labelStyle: labelStyleAllow
+								},
+								{
+									xtype: 'textfield',
+									name: 'publish-info-isbn',
+									regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
+									regexText: me.translateText.isbnError,
+									fieldLabel: me.translateText.isbn,
+									labelStyle: labelStyleAllow
+								}
+							]
+						}
+					]
+				}
+			];
+			/*me.items = [
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
@@ -94,33 +171,9 @@ Ext.define(
 						}
 					},
 					items: [
-						{
-							name: 'publish-info-title',
-							allowBlank: false,
-							fieldLabel: me.translateText.title
-						},
-						{
-							name: 'publish-info-publisher',
-							fieldLabel: me.translateText.publisher
-						},
-						{
-							name: 'publish-info-city',
-							fieldLabel: me.translateText.city
-						},
-						{
-							xtype: 'numberfield',
-							name: 'publish-info-year',
-							fieldLabel: me.translateText.year
-						},
-						{
-							name: 'publish-info-isbn',
-							regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
-							regexText: me.translateText.isbnError,
-							fieldLabel: me.translateText.isbn
-						}
 					]
 				}
-			];
+			];*/
 			me.callParent(arguments);
 		}
 	}

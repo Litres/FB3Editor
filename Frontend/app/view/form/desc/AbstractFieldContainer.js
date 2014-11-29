@@ -14,12 +14,9 @@ Ext.define(
 		],
 		xtype: 'desc-fieldcontainer',
 		controller: 'form.desc.abstractField',
-		style: {
-			marginBottom: '0px'
-		},
 		fieldDefaults: {
-			labelStyle: 'font-size: 10px; line-height: 1',
-			fieldStyle: 'font-size: 10px; line-height: 1'
+			labelStyle: '',
+			fieldStyle: ''
 		},
 		listeners: {
 			resetFields: 'onResetFields',

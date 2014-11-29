@@ -15,8 +15,6 @@ Ext.define(
 		queryMode: 'local',
 		displayField: 'value',
 		valueField: 'value',
-		fieldLabel: 'Тип содержимого литературной формы',
-		emptyText: 'Тип содержимого литературной формы',
 		allowBlank: false,
 		editable: false,
 

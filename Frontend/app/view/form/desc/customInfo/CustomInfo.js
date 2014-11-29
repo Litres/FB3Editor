@@ -25,66 +25,34 @@ Ext.define(
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
-					hideLabel: true,
-					margin: '0',
 					defaults: {
 						anchor: '100%',
 						flex: 1,
-						xtype: 'displayfield',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
-					items: [
-						{
-							value: me.translateText.infoType + ':'
-						},
-						{
-							value: me.translateText.desc + ':'
-						},
-						{
-							flex: 0,
-							width: 140,
-							value: ''
-						}
-					]
-				},
-				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					hideLabel: true,
-					combineErrors: true,
-					msgTarget: 'side',
-					margin: '0 0 2',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						labelAlign: 'top',
-						labelPad: '0',
-						xtype: 'textfield',
-						msgTarget: 'none',
-						hideLabel: true,
-						margin: '0 2 0 0'
+						labelAlign: 'right'
 					},
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'customInfo',
 						btnPos: 'end',
 						btnStyle: {
-							margin: '0 0 0 2px'
+							margin: '0 0 0 5px'
 						}
 					},
 					items: [
 						{
+							xtype: 'textfieldrequire',
 							name: 'custom-info-info-type',
 							allowBlank: false,
+							labelWidth: 160,
 							fieldLabel: me.translateText.infoType
 						},
 						{
 							xtype: 'textareafield',
 							name: 'custom-info-text',
+							grow: true,
+							growMin: 1,
 							allowBlank: false,
-							fieldLabel: me.translateText.desc,
-							grow: true
+							fieldLabel: me.translateText.desc
 						}
 					]
 				}

@@ -10,21 +10,11 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		xtype: 'form-desc-written',
 		id: 'form-desc-written',
-		fieldLabel: 'Дата и место написания',
 		layout: 'hbox',
-		combineErrors: true,
-		msgTarget: 'side',
-		labelWidth: 140,
-		labelAlign: 'right',
-		defaults: {
-			labelAlign: 'top',
-			flex: 1,
-			msgTarget: 'none',
-			margin: '0 2 0 0'
-		},
 
 		translateText: {
 			lang: 'Язык',
+			writtenLang: 'Язык написания',
 			date: 'Дата',
 			dateText: 'Описание даты',
 			country: 'Страна'
@@ -38,31 +28,65 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'langfield',
-					name: 'written-lang',
-					fieldLabel: me.translateText.lang,
-					allowBlank: false,
-					forceSelection: true
+					xtype: 'desc-fieldcontainer',
+					flex: 1,
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelAlign: 'right',
+						labelWidth: 160
+					},
+					items: [
+						{
+							xtype: 'langfield',
+							name: 'lang',
+							fieldLabel: me.translateText.lang,
+							allowBlank: false,
+							forceSelection: true
+						},
+						{
+							xtype: 'langfield',
+							name: 'written-lang',
+							fieldLabel: me.translateText.writtenLang,
+							allowBlank: false,
+							forceSelection: true
+						},
+						{
+							xtype: 'countryfield',
+							name: 'written-country',
+							fieldLabel: me.translateText.country,
+							forceSelection: false,
+							editable: false,
+							labelStyle: labelStyleAllow
+						}
+					]
 				},
 				{
-					xtype: 'datefield',
-					name: 'written-date-value',
-					fieldLabel: me.translateText.date,
-					labelStyle: labelStyleAllow
+					xtype: 'fieldcontainer',
+					width: 50
 				},
 				{
-					xtype: 'textfield',
-					name: 'written-date-text',
-					fieldLabel: me.translateText.dateText,
-					labelStyle: labelStyleAllow
-				},
-				{
-					xtype: 'countryfield',
-					name: 'written-country',
-					fieldLabel: me.translateText.country,
-					forceSelection: false,
-					editable: false,
-					labelStyle: labelStyleAllow
+					xtype: 'desc-fieldcontainer',
+					flex: 1,
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelAlign: 'right',
+						labelWidth: 110,
+						labelStyle: labelStyleAllow
+					},
+					items: [
+						{
+							xtype: 'datefield',
+							name: 'written-date-value',
+							fieldLabel: me.translateText.date
+						},
+						{
+							xtype: 'textfield',
+							name: 'written-date-text',
+							fieldLabel: me.translateText.dateText
+						}
+					]
 				}
 			];
 			me.callParent(arguments);

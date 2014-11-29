@@ -9,20 +9,28 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.classification.class.Class',
+			'FBEditor.view.form.desc.classification.class.Contents',
+			'FBEditor.view.form.desc.classification.customSubject.CustomSubject',
 			'FBEditor.view.form.desc.classification.target.Target',
 			'FBEditor.view.form.desc.classification.coverage.Coverage'
 		],
-		id: 'form-desc-classification',
 		xtype: 'form-desc-classification',
-		name: 'form-desc-plugin-fieldcontainerreplicator',
+		layout: 'anchor',
 
 		translateText: {
-			customSubject: 'Новый жанр',
+			info: 'Общая информация',
+			bookClass: 'Литературная форма',
+			contents: 'Тип лит. формы',
+			target: 'Целевая аудитория',
+			coverage: 'Привязка к месту и времени',
+			codes: 'Коды',
 			udk: 'Код УДК',
 			bbk: 'Код ББК',
-			udkError: 'Значение должно соответсвовать шаблону \d+(\.\d+)+(:\d+)?. Например: 373.167.1:58',
-			bbkError: 'Значение должно соответсвовать шаблону \d+([\.а-я]\d+)+. Например: 28.5я72'
+			udkError: 'По шаблону \d+(\.\d+)+(:\d+)?. Например 373.167.1:58',
+			bbkError: 'По шаблону \d+([\.а-я]\d+)+. Например 28.5я72',
+			written: 'Дата и место написания',
+			keywords: 'Ключевые слова',
+			keywordsHelp: 'Перечислите через запятую. Например 1912, война, роман, отечественная, наполеон, кутузов'
 		},
 
 		initComponent: function ()
@@ -33,71 +41,189 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'form-desc-classification-class',
+					xtype: 'fieldset',
+					cls: 'fieldset-small',
+					title: me.translateText.info,
+					collapsible: true,
+					anchor: '100%',
+					items: [
+						{
+							xtype: 'desc-fieldcontainer',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'desc-fieldcontainer',
+									name: 'form-desc-plugin-fieldcontainerreplicator',
+									id: 'classification-custom-subject',
+									flex: 1,
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%',
+										labelAlign: 'right',
+										labelWidth: 160
+									},
+									items: [
+										{
+											xtype: 'form-desc-bookClass',
+											name: 'classification-class-text',
+											fieldLabel: me.translateText.bookClass
+										},
+										{
+											xtype: 'form-desc-classification-class-contents',
+											name: 'classification-class-contents',
+											fieldLabel: me.translateText.contents
+										},
+										{
+											xtype: 'classification-custom-subject'
+										}
+									]
+								},
+								{
+									xtype: 'fieldcontainer',
+									width: 50
+								},
+								{
+									xtype: 'desc-fieldcontainer',
+									name: 'form-desc-plugin-fieldcontainerreplicator',
+									id: 'form-desc-subject',
+									flex: 1,
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%'
+									},
+									items: [
+										{
+											xtype: 'form-desc-subject'
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					xtype: 'fieldset',
+					cls: 'fieldset-small optional',
+					title: me.translateText.target,
+					collapsible: true,
+					collapsed: true,
+					anchor: '100%',
+					items: [
+						{
+							xtype: 'form-desc-classification-target'
+						}
+					]
+				},
+				{
+					xtype: 'fieldset',
+					cls: 'fieldset-small optional',
+					title: me.translateText.coverage,
+					collapsible: true,
+					collapsed: true,
+					anchor: '100%',
+					items: [
+						{
+							xtype: 'form-desc-classification-coverage'
+						}
+					]
+				},
+				{
+					xtype: 'fieldset',
 					layout: 'hbox',
-					combineErrors: true,
-					msgTarget: 'side',
-					defaults: {
-						flex: 1,
-						labelAlign: 'right',
-						msgTarget: 'none',
-						margin: '0 2 0 0'
-					}
+					cls: 'fieldset-small optional',
+					title: me.translateText.codes,
+					collapsible: true,
+					collapsed: true,
+					anchor: '100%',
+					items: [
+						{
+							xtype: 'desc-fieldcontainer',
+							name: 'form-desc-plugin-fieldcontainerreplicator',
+							flex: 1,
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%',
+								labelAlign: 'right',
+								labelWidth: 160,
+								labelStyle: labelStyleAllow
+							},
+							items: [
+								{
+									xtype: 'textfield',
+									name: 'classification-udk',
+									cls: 'plugin-fieldreplicator',
+									fieldLabel: me.translateText.udk,
+									regex: /^\d+(\.\d+)+(:\d+)?$/,
+									regexText: me.translateText.udkError,
+									afterBodyEl:  '<span class="after-body">' + me.translateText.udkError + '</span>',
+									plugins: 'fieldreplicator'
+								}
+							]
+						},
+						{
+							xtype: 'fieldcontainer',
+							width: 50
+						},
+						{
+							xtype: 'desc-fieldcontainer',
+							name: 'form-desc-plugin-fieldcontainerreplicator',
+							flex: 1,
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%',
+								labelAlign: 'right',
+								labelWidth: 110,
+								labelStyle: labelStyleAllow
+							},
+							items: [
+								{
+									xtype: 'textfield',
+									name: 'classification-bbk',
+									cls: 'plugin-fieldreplicator',
+									fieldLabel: me.translateText.bbk,
+									regex: /^\d+([\.а-я]\d+)+$/,
+									regexText: me.translateText.bbkError,
+									afterBodyEl:  '<span class="after-body">' + me.translateText.bbkError + '</span>',
+									plugins: 'fieldreplicator'
+								}
+							]
+						}
+					]
 				},
 				{
-					xtype: 'form-desc-subject'
+					xtype: 'fieldset',
+					cls: 'fieldset-small',
+					title: me.translateText.written,
+					collapsible: true,
+					anchor: '100%',
+					items: [
+						{
+							xtype: 'form-desc-written'
+						}
+					]
 				},
 				{
-					name: 'classification-custom-subject',
-					fieldLabel: me.translateText.customSubject,
-					labelStyle: labelStyleAllow,
-					plugins: 'fieldreplicator',
-					cls: 'plugin-fieldreplicator'
-				},
-				{
-					xtype: 'form-desc-classification-target',
-					layout: 'hbox',
-					combineErrors: true,
-					msgTarget: 'side',
-					labelStyle: labelStyleAllow,
-					defaults: {
-						flex: 1,
-						labelAlign: 'right',
-						msgTarget: 'none',
-						margin: '0 2 0 0'
-					}
-				},
-				{
-					xtype: 'form-desc-classification-coverage',
-					layout: 'hbox',
-					combineErrors: true,
-					msgTarget: 'side',
-					labelStyle: labelStyleAllow,
-					defaults: {
-						flex: 1,
-						labelAlign: 'right',
-						msgTarget: 'none',
-						margin: '0 2 0 0'
-					}
-				},
-				{
-					name: 'classification-udk',
-					fieldLabel: me.translateText.udk,
-					labelStyle: labelStyleAllow,
-					regex: /^\d+(\.\d+)+(:\d+)?$/,
-					regexText: me.translateText.udkError,
-					emptyText: me.translateText.udkError,
-					plugins: 'fieldreplicator'
-				},
-				{
-					name: 'classification-bbk',
-					fieldLabel: me.translateText.bbk,
-					labelStyle: labelStyleAllow,
-					regex: /^\d+([\.а-я]\d+)+$/,
-					regexText: me.translateText.bbkError,
-					emptyText: me.translateText.bbkError,
-					plugins: 'fieldreplicator'
+					xtype: 'fieldset',
+					cls: 'fieldset-small optional',
+					title: me.translateText.keywords,
+					collapsible: true,
+					collapsed: true,
+					anchor: '100%',
+					items: [
+						{
+							xtype: 'textareafield',
+							name: 'keywords',
+							anchor: '100%',
+							grow: true,
+							growMin: 1,
+							fieldLabel: ' ',
+							labelSeparator: '',
+							labelWidth: 160,
+							afterBodyEl:  '<span class="after-body">' + me.translateText.keywordsHelp + '</span>'
+						}
+					]
 				}
+
 			];
 			me.callParent(arguments);
 		}

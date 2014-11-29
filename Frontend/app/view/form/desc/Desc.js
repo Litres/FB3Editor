@@ -16,12 +16,14 @@ Ext.define(
 			'FBEditor.view.field.country.Country',
 			'FBEditor.view.field.lang.Lang',
 			'FBEditor.view.field.datetime.Datetime',
+			'FBEditor.view.field.textfieldrequire.TextFieldRequire',
 			'FBEditor.view.form.desc.periodical.Periodical',
 			'FBEditor.view.form.desc.title.Title',
 			'FBEditor.view.form.desc.sequence.Sequence',
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
-			'FBEditor.view.form.desc.relations.Relations',
+			'FBEditor.view.form.desc.relations.subject.Subject',
+			'FBEditor.view.form.desc.relations.object.Object',
 			'FBEditor.view.form.desc.classification.Classification',
 			'FBEditor.view.form.desc.written.Written',
 			'FBEditor.view.form.desc.documentInfo.DocumentInfo',
@@ -36,15 +38,15 @@ Ext.define(
 		autoScroll: true,
 		minWidth: 800,
 		bodyPadding: 0,
+		cls: 'form-desc',
 		defaults: {
 			xtype: 'fieldset',
 			collapsible: true,
-			padding: '4',
 			anchor: '100%'
 		},
 		fieldDefaults: {
-			labelStyle: 'font-size: 10px; line-height: 1',
-			fieldStyle: 'font-size: 10px; line-height: 1'
+			labelStyle: '',
+			fieldStyle: ''
 		},
 		listeners: {
 			loadDesc: 'onLoadData',
@@ -55,13 +57,14 @@ Ext.define(
 			periodical: 'Периодическое издание',
 			title: 'Название произведения',
 			sequence: 'Серия, в которой выпущено произведение',
-			relations: 'Все связанные с данным документом персоны и объекты',
+			subjects: 'Связанные персоны (автор, переводчик и т.д.)',
+			objects: 'Связанные объекты',
 			classification: 'Классификация произведения',
-			lang: 'Язык',
 			documentInfo: 'Информация о файле',
-			keywords: 'Ключевые слова',
 			publishInfo: 'Информация о бумажной публикации',
-			customInfo: 'Пользовательская информация'
+			customInfo: 'Пользовательская информация',
+			history: 'История',
+			annotation: 'Аннотация'
 		},
 
 		statics: {
@@ -73,12 +76,12 @@ Ext.define(
 			/**
 			 * @const {String} Шаблон заголовка для наборов необязательных полей, заключенных в fieldset.
 			 */
-			TITLE_TPL: '<span style="font-size: 11px; color: gray">{%s}</span>',
+			TITLE_TPL: '{%s}',
 
 			/**
 			 * @const {String} Шаблон заголовка для наборов обязательных полей, заключенных в fieldset.
 			 */
-			TITLE_REQ_TPL: '<span style="font-size: 11px">* {%s}</span>'
+			TITLE_REQ_TPL: '{%s}'
 		},
 
 		initComponent: function ()
@@ -86,19 +89,6 @@ Ext.define(
 			var me = this;
 
 			me.items = [
-				{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.periodical),
-					collapsed: true,
-					items: [
-						{
-							xtype: 'form-desc-periodical',
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%'
-							}
-						}
-					]
-				},
 				{
 					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.title),
 					items: [
@@ -108,32 +98,17 @@ Ext.define(
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 140,
-								labelAlign: 'right',
-								msgTarget: 'side',
-								margin: '0 0 2 0'
+								labelWidth: 160,
+								labelAlign: 'right'
 							}
 						}
 					]
 				},
 				{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.sequence),
-					collapsed: true,
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.subjects),
 					items: [
 						{
-							xtype: 'form-desc-sequence',
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%'
-							}
-						}
-					]
-				},
-				{
-					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.relations),
-					items: [
-						{
-							xtype: 'form-desc-relations',
+							xtype: 'form-desc-relations-subject',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%'
@@ -145,35 +120,9 @@ Ext.define(
 					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.classification),
 					items: [
 						{
-							xtype: 'form-desc-classification',
-							layout: 'anchor',
-							defaults: {
-								xtype: 'textfield',
-								anchor: '100%',
-								labelWidth: 140,
-								labelAlign: 'right',
-								msgTarget: 'side',
-								margin: '0 0 2 0'
-							}
+							xtype: 'form-desc-classification'
 						}
 					]
-				},
-				{
-					xtype: 'langfield',
-					name: 'lang',
-					fieldLabel: '* ' + me.translateText.lang,
-					allowBlank: false,
-					forceSelection: true,
-					labelWidth: 140,
-					labelAlign: 'right',
-					msgTarget: 'side',
-					style: {
-						paddingBottom: '5px'
-					}
-				},
-				{
-					xtype: 'form-desc-written',
-					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
 				},
 				{
 					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.documentInfo),
@@ -186,30 +135,32 @@ Ext.define(
 								anchor: '100%',
 								labelWidth: 140,
 								labelAlign: 'right',
-								msgTarget: 'side',
 								margin: '0 0 2 0'
 							}
 						}
 					]
 				},
-				{
-					xtype: 'textfield',
-					name: 'keywords',
-					fieldLabel: me.translateText.keywords,
-					labelWidth: 140,
-					labelAlign: 'right',
-					msgTarget: 'side',
-					style: {
-						paddingBottom: '5px'
-					},
-					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
-				},
-				{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.publishInfo),
+				/*{
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.sequence),
 					collapsed: true,
+					cls: 'optional',
 					items: [
 						{
-							xtype: 'form-desc-publishInfo',
+							xtype: 'form-desc-sequence',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
+				},*/
+				{
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.periodical),
+					collapsed: true,
+					cls: 'optional',
+					items: [
+						{
+							xtype: 'form-desc-periodical',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%'
@@ -220,6 +171,7 @@ Ext.define(
 				{
 					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.customInfo),
 					collapsed: true,
+					cls: 'optional',
 					items: [
 						{
 							xtype: 'form-desc-customInfo',
@@ -231,12 +183,60 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'form-desc-history',
-					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.objects),
+					collapsed: true,
+					cls: 'optional',
+					items: [
+						{
+							xtype: 'form-desc-relations-object',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
 				},
 				{
-					xtype: 'form-desc-annotation',
-					labelStyle: me.fieldDefaults.labelStyle + '; color: ' + me.self.ALLOW_COLOR
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.publishInfo),
+					collapsed: true,
+					cls: 'optional',
+					items: [
+						{
+							xtype: 'form-desc-publishInfo',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
+				},
+				{
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.history),
+					collapsed: true,
+					cls: 'optional',
+					items: [
+						{
+							xtype: 'form-desc-history',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
+				},
+				{
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.annotation),
+					collapsed: true,
+					cls: 'optional',
+					items: [
+						{
+							xtype: 'form-desc-annotation',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
 				}
 			];
 			me.callParent(arguments);

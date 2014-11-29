@@ -96,8 +96,7 @@ Ext.define(
 								labelPad: '0',
 								xtype: 'textfield',
 								msgTarget: 'none',
-								hideLabel: true,
-								margin: '0 2 0 0'
+								hideLabel: true
 							},
 							items: [
 								{
