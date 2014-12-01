@@ -55,8 +55,6 @@ Ext.define(
 							xtype: 'countryfield',
 							name: 'written-country',
 							fieldLabel: me.translateText.country,
-							forceSelection: false,
-							editable: false,
 							labelStyle: labelStyleAllow
 						}
 					]

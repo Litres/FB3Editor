@@ -35,7 +35,10 @@ Ext.define(
 				        {
 					        var field = plugin.getCmp().query('[name=' + name + ']')[0];
 
-					        field.setValue(value);
+					        if (field)
+					        {
+						        field.setValue(value);
+					        }
 				        }
 				    );
 				    if (data[parseInt(index) + 1])

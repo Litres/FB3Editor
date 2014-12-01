@@ -9,13 +9,18 @@ Ext.define(
 	{
 		extend: 'Ext.form.field.ComboBox',
 		requires: [
-			'FBEditor.view.field.country.CountryStore'
+			'FBEditor.view.field.country.CountryStore',
+			'FBEditor.view.field.country.CountryController'
 		],
 		xtype: 'countryfield',
+		controller: 'countryfield',
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
-		editable: false,
+		editable: true,
+		listeners: {
+			change: 'onChange'
+		},
 
 		initComponent: function ()
 		{

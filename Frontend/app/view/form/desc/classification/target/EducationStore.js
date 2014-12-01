@@ -15,27 +15,27 @@ Ext.define(
 		data: [
 			{
 				value: 'none',
-				name: ''
+				name: 'none'
 			},
 			{
 				value: 'primary',
-				name: ''
+				name: 'primary'
 			},
 			{
 				value: 'high',
-				name: ''
+				name: 'high'
 			},
 			{
 				value: 'specialized_secondary',
-				name: ''
+				name: 'specialized_secondary'
 			},
 			{
 				value: 'higher',
-				name: ''
+				name: 'higher'
 			},
 			{
 				value: 'specialized_higher',
-				name: ''
+				name: 'specialized_higher'
 			}
 		]
 	}

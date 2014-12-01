@@ -47,9 +47,7 @@ Ext.define(
 						{
 							xtype: 'countryfield',
 							name: 'classification-coverage-country',
-							fieldLabel: me.translateText.country,
-							forceSelection: false,
-							editable: false
+							fieldLabel: me.translateText.country
 						},
 						{
 							xtype: 'textfield',

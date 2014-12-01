@@ -104,11 +104,41 @@ Ext.define(
 						}
 					]
 				},
+				/*{
+				 title: me.self.TITLE_TPL.replace('{%s}', me.translateText.sequence),
+				 collapsed: true,
+				 cls: 'optional',
+				 items: [
+				 {
+				 xtype: 'form-desc-sequence',
+				 layout: 'anchor',
+				 defaults: {
+				 anchor: '100%'
+				 }
+				 }
+				 ]
+				 },*/
 				{
-					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.subjects),
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.annotation),
+					collapsed: true,
+					cls: 'optional',
 					items: [
 						{
-							xtype: 'form-desc-relations-subject',
+							xtype: 'form-desc-annotation',
+							layout: 'anchor',
+							defaults: {
+								anchor: '100%'
+							}
+						}
+					]
+				},
+				{
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.periodical),
+					collapsed: true,
+					cls: 'optional',
+					items: [
+						{
+							xtype: 'form-desc-periodical',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%'
@@ -125,56 +155,10 @@ Ext.define(
 					]
 				},
 				{
-					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.documentInfo),
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.subjects),
 					items: [
 						{
-							xtype: 'form-desc-documentInfo',
-							layout: 'anchor',
-							defaults: {
-								xtype: 'textfield',
-								anchor: '100%',
-								labelWidth: 140,
-								labelAlign: 'right',
-								margin: '0 0 2 0'
-							}
-						}
-					]
-				},
-				/*{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.sequence),
-					collapsed: true,
-					cls: 'optional',
-					items: [
-						{
-							xtype: 'form-desc-sequence',
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%'
-							}
-						}
-					]
-				},*/
-				{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.periodical),
-					collapsed: true,
-					cls: 'optional',
-					items: [
-						{
-							xtype: 'form-desc-periodical',
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%'
-							}
-						}
-					]
-				},
-				{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.customInfo),
-					collapsed: true,
-					cls: 'optional',
-					items: [
-						{
-							xtype: 'form-desc-customInfo',
+							xtype: 'form-desc-relations-subject',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%'
@@ -225,15 +209,31 @@ Ext.define(
 					]
 				},
 				{
-					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.annotation),
+					title: me.self.TITLE_TPL.replace('{%s}', me.translateText.customInfo),
 					collapsed: true,
 					cls: 'optional',
 					items: [
 						{
-							xtype: 'form-desc-annotation',
+							xtype: 'form-desc-customInfo',
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%'
+							}
+						}
+					]
+				},
+				{
+					title: me.self.TITLE_REQ_TPL.replace('{%s}', me.translateText.documentInfo),
+					items: [
+						{
+							xtype: 'form-desc-documentInfo',
+							layout: 'anchor',
+							defaults: {
+								xtype: 'textfield',
+								anchor: '100%',
+								labelWidth: 140,
+								labelAlign: 'right',
+								margin: '0 0 2 0'
 							}
 						}
 					]

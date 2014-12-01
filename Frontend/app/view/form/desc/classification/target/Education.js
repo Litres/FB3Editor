@@ -9,14 +9,19 @@ Ext.define(
 	{
 		extend: 'Ext.form.field.ComboBox',
 		requires: [
-			'FBEditor.view.form.desc.classification.target.EducationStore'
+			'FBEditor.view.form.desc.classification.target.EducationStore',
+			'FBEditor.view.form.desc.classification.target.EducationController'
 		],
 		xtype: 'form-desc-classification-target-education',
+		controller: 'form.desc.classification.target.education',
 		queryMode: 'local',
-		displayField: 'value',
+		displayField: 'name',
 		valueField: 'value',
 		fieldLabel: 'Образование',
-		editable: false,
+		editable: true,
+		listeners: {
+			change: 'onChange'
+		},
 
 		initComponent: function ()
 		{

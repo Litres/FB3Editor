@@ -72,10 +72,10 @@ Ext.define(
 											xtype: 'form-desc-classification-class-contents',
 											name: 'classification-class-contents',
 											fieldLabel: me.translateText.contents
-										},
+										}/*,
 										{
 											xtype: 'classification-custom-subject'
-										}
+										}*/
 									]
 								},
 								{

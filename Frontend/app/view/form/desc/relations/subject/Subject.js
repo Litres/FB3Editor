@@ -23,7 +23,8 @@ Ext.define(
 			firstName: 'Имя',
 			middleName: 'Отчество (второе имя)',
 			lastName: 'Фамилия',
-			desc: 'Написание'
+			desc: 'Написание',
+			titleMain: 'Полное имя'
 		},
 
 		initComponent: function ()
@@ -101,14 +102,12 @@ Ext.define(
 							layout: 'anchor',
 							items: [
 								{
-									xtype: 'form-desc-title',
-									name: 'relations-subject-title',
-									layout: 'anchor',
-									defaults: {
-										anchor: '100%',
-										labelWidth: 160,
-										labelAlign: 'right'
-									}
+									xtype: 'textfieldrequire',
+									name: 'relations-subject-title-main',
+									anchor: '100%',
+									labelWidth: 150,
+									labelAlign: 'right',
+									fieldLabel: me.translateText.titleMain
 								}
 							]
 						}
