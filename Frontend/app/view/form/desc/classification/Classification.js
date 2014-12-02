@@ -9,13 +9,15 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.bookClass.BookClass',
+			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.classification.class.Contents',
-			'FBEditor.view.form.desc.classification.customSubject.CustomSubject',
+			//'FBEditor.view.form.desc.classification.customSubject.CustomSubject',
 			'FBEditor.view.form.desc.classification.target.Target',
-			'FBEditor.view.form.desc.classification.coverage.Coverage'
+			'FBEditor.view.form.desc.classification.coverage.Coverage',
+			'FBEditor.view.form.desc.written.Written'
 		],
 		xtype: 'form-desc-classification',
-		layout: 'anchor',
 
 		translateText: {
 			info: 'Общая информация',
