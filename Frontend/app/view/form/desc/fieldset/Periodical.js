@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.periodical.Periodical'
 		],
 		xtype: 'desc-fieldset-periodical',
+		id: 'desc-fieldset-periodical',
 		title: 'Периодическое издание',
 		xtypeChild: 'periodical'
 	}

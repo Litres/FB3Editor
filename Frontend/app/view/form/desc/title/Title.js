@@ -20,9 +20,7 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				name = me.name,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+				name = me.name;
 
 			me.items = [
 				{
@@ -33,8 +31,8 @@ Ext.define(
 				{
 					xtype: 'textfield',
 					name: name + '-sub',
-					fieldLabel: me.translateText.sub,
-					labelStyle: labelStyleAllow
+					cls: 'field-optional',
+					fieldLabel: me.translateText.sub
 				},
 				{
 					xtype: 'desc-fieldcontainer',
@@ -57,7 +55,7 @@ Ext.define(
 							xtype: 'textfield',
 							name: name + '-alt',
 							fieldLabel: me.translateText.alt,
-							labelStyle: labelStyleAllow
+							cls: 'field-optional'
 						}
 					]
 				}

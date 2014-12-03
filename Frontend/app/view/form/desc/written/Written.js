@@ -22,9 +22,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items = [
 				{
@@ -55,7 +53,7 @@ Ext.define(
 							xtype: 'countryfield',
 							name: 'written-country',
 							fieldLabel: me.translateText.country,
-							labelStyle: labelStyleAllow
+							cls: 'field-optional'
 						}
 					]
 				},
@@ -71,7 +69,7 @@ Ext.define(
 						anchor: '100%',
 						labelAlign: 'right',
 						labelWidth: 110,
-						labelStyle: labelStyleAllow
+						cls: 'field-optional'
 					},
 					items: [
 						{

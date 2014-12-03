@@ -37,17 +37,13 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items = [
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.info,
-					collapsible: true,
-					anchor: '100%',
+					require: true,
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -104,12 +100,8 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small optional',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.target,
-					collapsible: true,
-					collapsed: true,
-					anchor: '100%',
 					items: [
 						{
 							xtype: 'form-desc-classification-target'
@@ -117,12 +109,8 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small optional',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.coverage,
-					collapsible: true,
-					collapsed: true,
-					anchor: '100%',
 					items: [
 						{
 							xtype: 'form-desc-classification-coverage'
@@ -130,13 +118,9 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
+					xtype: 'desc-fieldsetinner',
 					layout: 'hbox',
-					cls: 'fieldset-small optional',
 					title: me.translateText.codes,
-					collapsible: true,
-					collapsed: true,
-					anchor: '100%',
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -147,7 +131,7 @@ Ext.define(
 								anchor: '100%',
 								labelAlign: 'right',
 								labelWidth: 160,
-								labelStyle: labelStyleAllow
+								cls: 'field-optional'
 							},
 							items: [
 								{
@@ -175,7 +159,7 @@ Ext.define(
 								anchor: '100%',
 								labelAlign: 'right',
 								labelWidth: 110,
-								labelStyle: labelStyleAllow
+								cls: 'field-optional'
 							},
 							items: [
 								{
@@ -193,11 +177,9 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.written,
-					collapsible: true,
-					anchor: '100%',
+					require: true,
 					items: [
 						{
 							xtype: 'form-desc-written'
@@ -205,12 +187,8 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small optional',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.keywords,
-					collapsible: true,
-					collapsed: true,
-					anchor: '100%',
 					items: [
 						{
 							xtype: 'textareafield',

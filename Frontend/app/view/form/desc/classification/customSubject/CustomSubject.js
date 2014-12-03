@@ -25,9 +25,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items = [
 				{
@@ -37,7 +35,7 @@ Ext.define(
 					fieldLabel: me.translateText.customSubject,
 					labelAlign: 'right',
 					labelWidth: 160,
-					labelStyle: labelStyleAllow
+					cls: 'field-optional'
 				}
 			];
 			me.callParent(arguments);

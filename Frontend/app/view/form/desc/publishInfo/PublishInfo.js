@@ -23,9 +23,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items=  [
 				{
@@ -62,13 +60,13 @@ Ext.define(
 									xtype: 'textfield',
 									name: 'publish-info-publisher',
 									fieldLabel: me.translateText.publisher,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfield',
 									name: 'publish-info-city',
 									fieldLabel: me.translateText.city,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								}
 							]
 						},
@@ -90,7 +88,7 @@ Ext.define(
 									xtype: 'numberfield',
 									name: 'publish-info-year',
 									fieldLabel: me.translateText.year,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfield',
@@ -98,7 +96,7 @@ Ext.define(
 									regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
 									regexText: me.translateText.isbnError,
 									fieldLabel: me.translateText.isbn,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								}
 							]
 						}

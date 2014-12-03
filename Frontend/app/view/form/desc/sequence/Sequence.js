@@ -29,9 +29,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				fieldStyleAllow = me.fieldDefaults.fieldStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items = [
 				{
@@ -56,8 +54,7 @@ Ext.define(
 							width: 280
 						},
 						{
-							value: me.translateText.number + ':',
-							fieldStyle: fieldStyleAllow
+							value: me.translateText.number + ':'
 						},
 						{
 							flex: 0,

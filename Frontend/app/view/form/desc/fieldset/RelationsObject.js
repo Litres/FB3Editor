@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.object.Object'
 		],
 		xtype: 'desc-fieldset-relations-object',
+		id: 'desc-fieldset-relations-object',
 		title: 'Связанные объекты',
 		xtypeChild: 'relations-object'
 	}

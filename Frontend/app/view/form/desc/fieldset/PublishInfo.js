@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.publishInfo.PublishInfo'
 		],
 		xtype: 'desc-fieldset-publishInfo',
+		id: 'desc-fieldset-publishInfo',
 		title: 'Информация о бумажной публикации',
 		xtypeChild: 'publishInfo'
 	}

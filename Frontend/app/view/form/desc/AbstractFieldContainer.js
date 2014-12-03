@@ -14,10 +14,6 @@ Ext.define(
 		],
 		xtype: 'desc-fieldcontainer',
 		controller: 'form.desc.abstractField',
-		fieldDefaults: {
-			labelStyle: '',
-			fieldStyle: ''
-		},
 		listeners: {
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData'

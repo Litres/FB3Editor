@@ -37,10 +37,11 @@ Ext.define(
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);
+			me.expandFieldset(data);
 		},
 
 		/**
-		 * Сбрасывает поля формы.
+		 * Сбрасывает поля и блоки формы.
 		 */
 		onReset:  function ()
 		{
@@ -49,9 +50,9 @@ Ext.define(
 				form = view.getForm(),
 				fieldContainers;
 
-			// сбрасываем все поля, которые имеют плагин fieldcontainerreplicator или fieldreplicator
+			// передаем событие resetFields всем необходимым компонентам
 			fieldContainers = view.query('[name=form-desc-plugin-fieldcontainerreplicator],' +
-			                             'form-desc-title');
+			                             'form-desc-title, fieldset');
 			Ext.each(
 				fieldContainers,
 			    function (item)
@@ -62,6 +63,26 @@ Ext.define(
 
 			// очищаем поля формы
 			form.reset();
+		},
+
+		/**
+		 * Разворачивает необязательные блоки fieldset, в которых есть данные.
+		 * @param {Object} data Данные.
+		 */
+		expandFieldset: function (data)
+		{
+			var me = this,
+				view = me.getView(),
+				fields;
+
+			fields = view.query('fieldset');
+			Ext.each(
+				fields,
+				function (item)
+				{
+					item.fireEvent('checkExpand');
+				}
+			);
 		}
 	}
 );

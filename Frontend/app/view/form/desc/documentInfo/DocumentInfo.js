@@ -24,17 +24,13 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items = [
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.created,
-					collapsible: true,
-					anchor: '100%',
+					require: true,
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -84,11 +80,9 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.updated,
-					collapsible: true,
-					anchor: '100%',
+					require: true,
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -138,12 +132,8 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'fieldset',
-					cls: 'fieldset-small optional',
+					xtype: 'desc-fieldsetinner',
 					title: me.translateText.otherInfo,
-					collapsible: true,
-					collapsed: true,
-					anchor: '100%',
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -158,7 +148,7 @@ Ext.define(
 										anchor: '100%',
 										labelAlign: 'right',
 										labelWidth: 160,
-										labelStyle: labelStyleAllow
+										cls: 'field-optional'
 									},
 									items: [
 										{
@@ -184,7 +174,7 @@ Ext.define(
 										anchor: '100%',
 										labelAlign: 'right',
 										labelWidth: 110,
-										labelStyle: labelStyleAllow
+										cls: 'field-optional'
 									},
 									items: [
 										{

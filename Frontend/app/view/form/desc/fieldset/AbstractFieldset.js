@@ -9,9 +9,17 @@ Ext.define(
 	'FBEditor.view.form.desc.fieldset.AbstractFieldset',
 	{
 		extend: 'Ext.form.FieldSet',
+		requires: [
+			'FBEditor.view.form.desc.fieldset.AbstractFieldsetController'
+		],
 		xtype: 'desc-fieldset',
+		controller: 'desc.fieldset',
 		collapsible: true,
 		anchor: '100%',
+		listeners: {
+			resetFields: 'onResetFields',
+			checkExpand: 'onCheckExpand'
+		},
 
 		/**
 		 * @property {String} Имя дочернего компонента.
@@ -30,7 +38,7 @@ Ext.define(
 				xtypeChild = me.xtypeChild;
 
 			me.collapsed = req ? false : true;
-			me.cls = req ? '' : 'optional';
+			me.cls = req ? '' : 'fieldset-optional';
 			if (!me.items)
 			{
 				me.items = [

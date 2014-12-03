@@ -27,9 +27,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items=  [
 				{
@@ -80,20 +78,20 @@ Ext.define(
 									xtype: 'datefield',
 									name: 'periodical-date',
 									fieldLabel: me.translateText.date,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								},
 								{
 									name: 'periodical-issn',
 									regex: /^\d{4}-\d{3}(\d|X)$/,
 									regexText: me.translateText.issnError,
 									fieldLabel: me.translateText.issn,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfield',
 									name: 'periodical-text',
 									fieldLabel: me.translateText.desc,
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								}
 							]
 						},

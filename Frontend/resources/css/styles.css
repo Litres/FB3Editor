@@ -38,7 +38,7 @@
 	font-weight: bold;
 }
 
-.fb3 .form-desc .x-fieldset-default.optional .x-fieldset-header-text
+.fb3 .form-desc .fieldset-optional .x-fieldset-header-text
 {
 	color: #A89BA2;
 }
@@ -48,12 +48,12 @@
 	background-image: url("../images/fieldset/collapse-tool.png");
 }
 
-.fb3 .form-desc .x-fieldset-default.optional .x-fieldset-header-tool-default > .x-tool-toggle
+.fb3 .form-desc .fieldset-optional .x-fieldset-header-tool-default > .x-tool-toggle
 {
 	background-image: url("../images/fieldset/collapse-tool-gray.png");
 }
 
-.fb3 .form-desc .x-fieldset-default.fieldset-small
+.fb3 .form-desc .x-fieldset-default.fieldset-inner
 {
 	padding: 0;
 	margin: 0;
@@ -61,19 +61,19 @@
 	box-shadow: none;
 }
 
-.fb3 .form-desc .fieldset-small .x-fieldset-body-default
+.fb3 .form-desc .fieldset-inner .x-fieldset-body-default
 {
 	padding: 5px 0 0 0;
 }
 
-.fb3 .form-desc .fieldset-small .x-fieldset-header-default
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-default
 {
 	padding: 0;
 	background-color: #fff;
 	border-radius: 0;
 }
 
-.fb3 .form-desc .fieldset-small .x-fieldset-header-default > .x-fieldset-header-text
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-default > .x-fieldset-header-text
 {
 	font-size: 11px;
 	font-weight: normal;
@@ -82,6 +82,11 @@
 .fb3 .form-desc .x-field
 {
 	margin: 0 0 15px 0;
+}
+
+.fb3 .form-desc .field-optional .x-form-item-label-default
+{
+	color: #A89BA2;
 }
 
 .fb3 .form-desc .x-form-item-body-default .after-body

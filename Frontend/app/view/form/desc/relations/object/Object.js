@@ -25,9 +25,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				labelStyleAllow = me.fieldDefaults.labelStyle + '; color: ' +
-				                  FBEditor.view.form.desc.Desc.ALLOW_COLOR;
+			var me = this;
 
 			me.items=  [
 				{
@@ -69,7 +67,7 @@ Ext.define(
 								{
 									fieldLabel: me.translateText.desc,
 									name: 'relations-object-description',
-									labelStyle: labelStyleAllow
+									cls: 'field-optional'
 								}
 							]
 						},
