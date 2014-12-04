@@ -25,7 +25,7 @@ Ext.define(
 			req = view.require;
 			if (!req)
 			{
-				field = view.down('component[allowBlank=false]');
+				field = view.down('component[allowBlank/="true|false"]');
 				if (field && field.getValue())
 				{
 					view.expand();

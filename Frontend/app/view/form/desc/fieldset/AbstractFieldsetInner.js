@@ -18,7 +18,8 @@ Ext.define(
 		anchor: '100%',
 		cls: 'fieldset-inner',
 		listeners: {
-			resetFields: 'onResetFields'
+			resetFields: 'onResetFields',
+			checkExpand: 'onCheckExpand'
 		},
 
 		/**
