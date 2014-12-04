@@ -55,14 +55,6 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'hiddenfield',
-									fieldLabel: me.translateText.id,
-									name: 'periodical-id',
-									allowBlank: false,
-									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-									regexText: me.translateText.idError
-								},
-								{
 									xtype: 'numberfield',
 									name: 'periodical-number',
 									allowBlank: false,

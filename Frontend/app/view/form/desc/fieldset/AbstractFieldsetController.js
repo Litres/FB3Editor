@@ -17,6 +17,20 @@ Ext.define(
 		 */
 		onCheckExpand: function ()
 		{
+			var me = this,
+				view = me.getView(),
+				field,
+				req;
+
+			req = view.require;
+			if (!req)
+			{
+				field = view.down('component[allowBlank=false]');
+				if (field && field.getValue())
+				{
+					view.expand();
+				}
+			}
 		},
 
 		/**
