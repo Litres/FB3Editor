@@ -128,7 +128,7 @@
 	border-radius: 3px;
 }
 
-.fb3 .textfieldrequire-trigger
+.fb3 .textfieldclear-trigger
 {
 	width: 18px;
 	padding-top: 10px;
@@ -136,7 +136,7 @@
 	background: none;
 }
 
-.fb3 .textfieldrequire-trigger:before
+.fb3 .x-form-trigger-wrap-invalid .textfieldclear-trigger:before
 {
 	content: "\f00d";
 }

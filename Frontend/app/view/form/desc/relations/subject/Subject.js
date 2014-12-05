@@ -66,7 +66,8 @@ Ext.define(
 									regexText: me.translateText.idError
 								},
 								{
-									xtype: 'textfieldrequire',
+									xtype: 'textfieldclear',
+									allowBlank: false,
 									fieldLabel: me.translateText.lastName,
 									name: 'relations-subject-last-name'
 								},
@@ -100,7 +101,8 @@ Ext.define(
 							layout: 'anchor',
 							items: [
 								{
-									xtype: 'textfieldrequire',
+									xtype: 'textfieldclear',
+									allowBlank: false,
 									name: 'relations-subject-title-main',
 									anchor: '100%',
 									labelWidth: 150,

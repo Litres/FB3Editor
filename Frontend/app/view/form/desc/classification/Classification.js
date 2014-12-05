@@ -135,7 +135,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfield',
+									xtype: 'textfieldclear',
 									name: 'classification-udk',
 									cls: 'plugin-fieldreplicator',
 									fieldLabel: me.translateText.udk,
@@ -163,7 +163,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfield',
+									xtype: 'textfieldclear',
 									name: 'classification-bbk',
 									cls: 'plugin-fieldreplicator',
 									fieldLabel: me.translateText.bbk,

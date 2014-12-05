@@ -40,7 +40,7 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'textfieldrequire',
+							xtype: 'textfieldclear',
 							name: 'custom-info-info-type',
 							allowBlank: false,
 							labelWidth: 160,

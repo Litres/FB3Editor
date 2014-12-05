@@ -51,7 +51,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfieldrequire',
+									xtype: 'textfieldclear',
 									name: 'publish-info-title',
 									allowBlank: false,
 									fieldLabel: me.translateText.title
@@ -91,7 +91,7 @@ Ext.define(
 									cls: 'field-optional'
 								},
 								{
-									xtype: 'textfield',
+									xtype: 'textfieldclear',
 									name: 'publish-info-isbn',
 									regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
 									regexText: me.translateText.isbnError,
@@ -103,75 +103,6 @@ Ext.define(
 					]
 				}
 			];
-			/*me.items = [
-				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					hideLabel: true,
-					margin: '0',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						xtype: 'displayfield',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
-					items: [
-						{
-							value: me.translateText.title + ':'
-						},
-						{
-							value: me.translateText.publisher + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							value: me.translateText.city + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							value: me.translateText.year + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							value: me.translateText.isbn + ':',
-							fieldStyle: fieldStyleAllow
-						},
-						{
-							flex: 0,
-							width: 140,
-							value: ''
-						}
-					]
-				},
-				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					hideLabel: true,
-					combineErrors: true,
-					msgTarget: 'side',
-					margin: '0 0 2',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						labelAlign: 'top',
-						labelPad: '0',
-						xtype: 'textfield',
-						msgTarget: 'none',
-						hideLabel: true,
-						margin: '0 2 0 0'
-					},
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: 'publishInfo',
-						btnPos: 'end',
-						btnStyle: {
-							margin: '0 0 0 2px'
-						}
-					},
-					items: [
-					]
-				}
-			];*/
 			me.callParent(arguments);
 		}
 	}

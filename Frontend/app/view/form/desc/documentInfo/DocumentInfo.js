@@ -178,6 +178,7 @@ Ext.define(
 									},
 									items: [
 										{
+											xtype: 'textfieldclear',
 											vtype: 'url',
 											name: 'document-info-src-url',
 											fieldLabel: me.translateText.srcUrl

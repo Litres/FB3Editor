@@ -24,7 +24,8 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'textfieldrequire',
+					xtype: 'textfieldclear',
+					allowBlank: false,
 					name: name + '-main',
 					fieldLabel: me.translateText.main
 				},

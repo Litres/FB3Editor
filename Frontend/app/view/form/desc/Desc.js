@@ -14,7 +14,7 @@ Ext.define(
 			'FBEditor.view.field.country.Country',
 			'FBEditor.view.field.lang.Lang',
 			'FBEditor.view.field.datetime.Datetime',
-			'FBEditor.view.field.textfieldrequire.TextFieldRequire',
+			'FBEditor.view.field.textfieldclear.TextFieldClear',
 			'FBEditor.view.form.desc.DescController',
 			'FBEditor.view.form.desc.AbstractFieldContainer',
 			'FBEditor.view.form.desc.fieldset.AbstractFieldsetInner',
