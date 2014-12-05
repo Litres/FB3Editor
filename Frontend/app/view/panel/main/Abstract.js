@@ -13,7 +13,8 @@ Ext.define(
 		    padding: 5
 	    },*/
 	    split: {
-		    size: 2
+		    size: 2,
+		    collapsible: false
 	    },
 	    bodyPadding: 5,
 	    stateful: true,

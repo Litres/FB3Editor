@@ -31,14 +31,20 @@ Ext.define(
 		 */
 		require: false,
 
+		/**
+		 * @property {Boolean} Разворачивать ли блок автоматически, если он заполнен информацией.
+		 */
+		autoExpand: true,
+
 		initComponent: function ()
 		{
 			var me = this,
 				req = me.require,
+				autoExpand = me.autoExpand,
 				xtypeChild = me.xtypeChild;
 
-			me.collapsed = req ? false : true;
-			me.cls = req ? '' : 'fieldset-optional';
+			me.collapsed = req && autoExpand ? false : true;
+			me.cls = req ? me.xtype : me.xtype + ' fieldset-optional';
 			if (!me.items)
 			{
 				me.items = [

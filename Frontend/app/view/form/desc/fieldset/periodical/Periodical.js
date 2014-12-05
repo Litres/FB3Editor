@@ -16,6 +16,7 @@ Ext.define(
 		id: 'desc-fieldset-periodical',
 		controller: 'desc.fieldset.periodical',
 		title: 'Периодическое издание',
+		cls: 'desc-fieldset-periodical',
 		xtypeChild: 'periodical'
 	}
 );

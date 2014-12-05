@@ -20,10 +20,12 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				field,
-				req;
+				req,
+				autoExpand;
 
 			req = view.require;
-			if (!req)
+			autoExpand = view.autoExpand;
+			if (!req && autoExpand)
 			{
 				field = view.down('component[allowBlank/="true|false"]');
 				if (field && field.getValue())
@@ -51,10 +53,12 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				req;
+				req,
+				autoExpand;
 
 			req = view.require;
-			if (req)
+			autoExpand = view.autoExpand;
+			if (req && autoExpand)
 			{
 				view.expand();
 			}

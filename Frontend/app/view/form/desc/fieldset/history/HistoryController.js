@@ -16,11 +16,11 @@ Ext.define(
 				view = me.getView(),
 				htmleditor;
 
-			htmleditor = view.items.first();
+			/*htmleditor = view.items.first();
 			if (htmleditor.getValue())
 			{
 				view.expand();
-			}
+			}*/
 		}
 	}
 );

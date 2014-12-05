@@ -27,6 +27,56 @@
 	border-radius: 8px 8px 0 0;
 }
 
+.fb3 .form-desc .desc-fieldset-title .x-fieldset-header-default
+{
+	background-color: #98C1CE;
+}
+
+.fb3 .form-desc .desc-fieldset-annotation .x-fieldset-header-default
+{
+	background-color: #D9D9D9;
+}
+
+.fb3 .form-desc .desc-fieldset-periodical .x-fieldset-header-default
+{
+	background-color: #C4BD97;
+}
+
+.fb3 .form-desc .desc-fieldset-classification .x-fieldset-header-default
+{
+	background-color: #76933C;
+}
+
+.fb3 .form-desc .desc-fieldset-relations-subject .x-fieldset-header-default
+{
+	background-color: #F7ABAB;
+}
+
+.fb3 .form-desc .desc-fieldset-relations-object .x-fieldset-header-default
+{
+	background-color: #FFFF8B;
+}
+
+.fb3 .form-desc .desc-fieldset-publishInfo .x-fieldset-header-default
+{
+	background-color: #9D7BD3;
+}
+
+.fb3 .form-desc .desc-fieldset-history .x-fieldset-header-default
+{
+	background-color: #D9D9D9;
+}
+
+.fb3 .form-desc .desc-fieldset-customInfo .x-fieldset-header-default
+{
+	background-color: #F2F2F2;
+}
+
+.fb3 .form-desc .desc-fieldset-documentInfo .x-fieldset-header-default
+{
+	background-color: #808080;
+}
+
 .fb3 .form-desc .x-fieldset-default.x-fieldset-collapsed
 {
 	border: none;
@@ -34,7 +84,7 @@
 
 .fb3 .form-desc .x-fieldset-header-default > .x-fieldset-header-text
 {
-	font-family: tahoma;
+	font-family: "Arial Narrow", arial;
 	font-weight: bold;
 }
 
@@ -92,14 +142,14 @@
 .fb3 .form-desc .x-form-item-body-default .after-body
 {
 	color: #A89BA2;
-	font-family: tahoma;
+	font-family: "Arial Narrow", arial;
 	font-size: 10px;
 }
 
 .fb3 .form-desc .x-form-item-label-inner-default
 {
 	padding-right: 15px;
-	font-family: tahoma;
+	font-family: "Arial Narrow", arial;
 	font-size: 11px;
 }
 

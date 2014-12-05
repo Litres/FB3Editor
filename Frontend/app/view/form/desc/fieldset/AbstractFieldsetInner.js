@@ -27,6 +27,11 @@ Ext.define(
 		 */
 		require: false,
 
+		/**
+		 * @property {Boolean} Разворачивать ли блок автоматически, если он заполнен информацией.
+		 */
+		autoExpand: true,
+
 		initComponent: function ()
 		{
 			var me = this,

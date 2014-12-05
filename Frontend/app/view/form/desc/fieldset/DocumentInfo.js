@@ -14,6 +14,7 @@ Ext.define(
 		xtype: 'desc-fieldset-documentInfo',
 		title: 'Информация о файле',
 		xtypeChild: 'documentInfo',
-		require: true
+		require: true,
+		autoExpand: false
 	}
 );
