@@ -74,13 +74,13 @@ Ext.define(
 					xtype: 'desc-fieldset-annotation'
 				},
 				{
-					xtype: 'desc-fieldset-periodical'
-				},
-				{
 					xtype: 'desc-fieldset-classification'
 				},
 				{
 					xtype: 'desc-fieldset-relations-subject'
+				},
+				{
+					xtype: 'desc-fieldset-periodical'
 				},
 				{
 					xtype: 'desc-fieldset-relations-object'
