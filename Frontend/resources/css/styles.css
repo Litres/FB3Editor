@@ -8,7 +8,7 @@
 .fb3 .form-desc .x-fieldset-default
 {
 	padding: 0;
-	margin: 0 0 20px;
+	margin: 0 0 6px;
 	background-color: #fff;
 	border-radius: 8px;
 	box-shadow: 0 1px 1px 0 #ccc;
@@ -82,6 +82,11 @@
 	border: none;
 }
 
+.fb3 .form-desc .x-fieldset-default.x-fieldset-collapsed .x-fieldset-header-default
+{
+	border-radius: 8px;
+}
+
 .fb3 .form-desc .x-fieldset-header-default > .x-fieldset-header-text
 {
 	font-family: Arial,Helvetica,sans-serif;
@@ -126,7 +131,7 @@
 
 .fb3 .form-desc .fieldset-inner .x-fieldset-header-default > .x-fieldset-header-text
 {
-	font-size: 13px;
+	font-size: 15px;
 	font-weight: normal;
 }
 
@@ -151,7 +156,7 @@
 {
 	padding-right: 15px;
 	font-family: Arial,Helvetica,sans-serif;
-	font-size: 13px;
+	font-size: 15px;
 }
 
 .fb3 .btn-minus.x-btn-default-small,
