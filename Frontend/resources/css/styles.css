@@ -84,8 +84,9 @@
 
 .fb3 .form-desc .x-fieldset-header-default > .x-fieldset-header-text
 {
-	font-family: "Arial Narrow", arial;
+	font-family: Arial,Helvetica,sans-serif;
 	font-weight: bold;
+	font-size:  16px;
 }
 
 .fb3 .form-desc .fieldset-optional .x-fieldset-header-text
@@ -125,7 +126,7 @@
 
 .fb3 .form-desc .fieldset-inner .x-fieldset-header-default > .x-fieldset-header-text
 {
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: normal;
 }
 
@@ -142,15 +143,15 @@
 .fb3 .form-desc .x-form-item-body-default .after-body
 {
 	color: #A89BA2;
-	font-family: "Arial Narrow", arial;
+	font-family: Arial,Helvetica,sans-serif;
 	font-size: 10px;
 }
 
 .fb3 .form-desc .x-form-item-label-inner-default
 {
 	padding-right: 15px;
-	font-family: "Arial Narrow", arial;
-	font-size: 11px;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 13px;
 }
 
 .fb3 .btn-minus.x-btn-default-small,

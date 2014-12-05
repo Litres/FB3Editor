@@ -16,7 +16,7 @@ Ext.define(
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
-			id: 'ID субъекта',
+			id: 'ID',
 			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			link: 'Тип связи',
@@ -58,10 +58,11 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'hiddenfield',
+									xtype: 'displayfield',
 									fieldLabel: me.translateText.id,
 									name: 'relations-subject-id',
 									allowBlank: false,
+									editable: false,
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
 									regexText: me.translateText.idError
 								},

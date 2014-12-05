@@ -158,7 +158,7 @@ Ext.define(
 							defaults: {
 								anchor: '100%',
 								labelAlign: 'right',
-								labelWidth: 110,
+								labelWidth: 120,
 								cls: 'field-optional'
 							},
 							items: [
