@@ -30,6 +30,9 @@ Ext.define(
 				subjectView.fireEvent('selectSubject', data);
 				view.close();
 			}
+
+			// останавливаем всплытие события, чтобы не допустить закрытия окна
+			evt.stopPropagation();
 		},
 
 		/**

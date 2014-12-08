@@ -13,8 +13,8 @@ Ext.define(
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
 		translateText: {
-			title: 'Заголовок',
-			publisher: 'Издатель',
+			title: 'Название',
+			publisher: 'Издательство',
 			city: 'Город',
 			year: 'Год',
 			isbn: 'ISBN',
@@ -33,6 +33,7 @@ Ext.define(
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'publishInfo',
 						btnPos: 'end',
+						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 						btnStyle: {
 							margin: '0 0 0 5px',
 							width: '40px',

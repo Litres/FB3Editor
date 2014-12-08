@@ -16,7 +16,7 @@
 
 .fb3 .form-desc .x-fieldset-body-default
 {
-	padding: 10px 10px 0 10px;
+	padding: 10px 10px 5px 10px;
 }
 
 .fb3 .form-desc .x-fieldset-header-default
@@ -155,6 +155,7 @@
 .fb3 .form-desc .x-form-item-label-inner-default
 {
 	padding-right: 15px;
+	line-height: 13px;
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 15px;
 }
@@ -172,6 +173,11 @@
 .fb3 .btn-minus.x-btn.x-btn-disabled.x-btn-default-small
 {
 	background-image: -moz-linear-gradient(center top , #FBE0A8, #FBE0A8 50%, #FBE0A8 51%, #FBE0A8);
+}
+
+.plugin-fieldcontainerreplicator-big-btn .fa
+{
+	font-size: 20px;
 }
 
 .fb3 .x-form-trigger-wrap-invalid

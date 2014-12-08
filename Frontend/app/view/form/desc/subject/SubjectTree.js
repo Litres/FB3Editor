@@ -37,6 +37,11 @@ Ext.define(
 		},
 
 		/**
+		 * @property {Boolean} Открыт ли список.
+		 */
+		isShow: false,
+
+		/**
 		 * @property {FBEditor.view.form.desc.subject.Subject} Поле жанра.
 		 */
 		subjectView: null,
@@ -57,6 +62,7 @@ Ext.define(
 
 			me.collapseAll();
 			me.callParent(arguments);
+			me.isShow = false;
 		},
 
 		afterShow: function()
@@ -64,7 +70,33 @@ Ext.define(
 			var me = this;
 
 			me.alignTo(me.subjectView, 'tr', [-me.getWidth(), -me.getHeight()]);
+			Ext.getBody().on('click', me.onClick, me);
 			me.callParent(arguments);
+		},
+
+		afterHide: function ()
+		{
+			var me = this;
+
+			Ext.getBody().un('click', me.onClick, me);
+			me.callParent(arguments);
+		},
+
+		/**
+		 * Закрывает список, если клик произошел не по области списка.
+		 */
+		onClick: function ()
+		{
+			var me = this;
+
+			if (!me.isShow)
+			{
+				me.isShow = true;
+			}
+			else
+			{
+				me.close();
+			}
 		}
 	}
 );

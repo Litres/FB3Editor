@@ -37,6 +37,7 @@ Ext.define(
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'periodical',
 						btnPos: 'end',
+						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 						btnStyle: {
 							margin: '0 0 0 5px',
 							width: '40px',

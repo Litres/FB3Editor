@@ -27,8 +27,7 @@ Ext.define(
 			'FBEditor.view.form.desc.fieldset.history.History',
 			'FBEditor.view.form.desc.fieldset.CustomInfo',
 			'FBEditor.view.form.desc.fieldset.PublishInfo',
-			'FBEditor.view.form.desc.fieldset.DocumentInfo',
-			'FBEditor.view.form.desc.sequence.Sequence'
+			'FBEditor.view.form.desc.fieldset.DocumentInfo'
 		],
 		id: 'form-desc',
 		xtype: 'form-desc',
@@ -42,10 +41,6 @@ Ext.define(
 			reset: 'onReset'
 		},
 
-		translateText: {
-			sequence: 'Серия, в которой выпущено произведение'
-		},
-
 		initComponent: function ()
 		{
 			var me = this;
@@ -54,22 +49,6 @@ Ext.define(
 				{
 					xtype: 'desc-fieldset-title'
 				},
-				/*
-				{
-					 title: me.self.TITLE_TPL.replace('{%s}', me.translateText.sequence),
-					 collapsed: true,
-					 cls: 'optional',
-					 items: [
-						 {
-							 xtype: 'form-desc-sequence',
-							 layout: 'anchor',
-							 defaults: {
-								 anchor: '100%'
-							 }
-						 }
-					 ]
-				 },
-				 */
 				{
 					xtype: 'desc-fieldset-annotation'
 				},

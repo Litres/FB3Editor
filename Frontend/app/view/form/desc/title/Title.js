@@ -11,6 +11,11 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		xtype: 'form-desc-title',
 
+		/**
+		 * @property {Boolean} Необходимо ли показывать подзаголовок.
+		 */
+		enableSub: true,
+
 		translateText: {
 			main: 'Основное название',
 			sub: 'Подзаголовок',
@@ -20,21 +25,29 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				name = me.name;
+				name = me.name,
+				items = [];
 
-			me.items = [
+			items.push(
 				{
 					xtype: 'textfieldclear',
 					allowBlank: false,
 					name: name + '-main',
 					fieldLabel: me.translateText.main
-				},
-				{
-					xtype: 'textfield',
-					name: name + '-sub',
-					cls: 'field-optional',
-					fieldLabel: me.translateText.sub
-				},
+				}
+			);
+			if (me.enableSub)
+			{
+				items.push(
+					{
+						xtype: 'textfield',
+						name: name + '-sub',
+						cls: 'field-optional',
+						fieldLabel: me.translateText.sub
+					}
+				);
+			}
+			items.push(
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
@@ -48,7 +61,7 @@ Ext.define(
 						ptype: 'fieldcontainerreplicator',
 						groupName: name + '-alt',
 						btnStyle: {
-							margin: '0 0 0 5px'
+							margin: '3px 0 0 5px'
 						}
 					},
 					items: [
@@ -60,7 +73,8 @@ Ext.define(
 						}
 					]
 				}
-			];
+			);
+			me.items = items;
 			me.callParent(arguments);
 		}
 	}

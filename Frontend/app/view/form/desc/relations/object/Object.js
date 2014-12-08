@@ -17,7 +17,7 @@ Ext.define(
 
 		translateText: {
 			id: 'ID',
-			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
+			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			link: 'Тип связи',
 			desc: 'Написание'
@@ -35,6 +35,7 @@ Ext.define(
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'object',
 						btnPos: 'end',
+						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 						btnStyle: {
 							margin: '0 0 0 5px',
 							width: '40px',

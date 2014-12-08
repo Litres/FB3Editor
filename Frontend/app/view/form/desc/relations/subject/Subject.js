@@ -17,14 +17,15 @@ Ext.define(
 
 		translateText: {
 			id: 'ID',
-			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
+			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			link: 'Тип связи',
 			firstName: 'Имя',
 			middleName: 'Отчество (второе имя)',
 			lastName: 'Фамилия',
 			desc: 'Написание',
-			titleMain: 'Полное имя'
+			titleMain: 'Написание',
+			titleAlt: 'Альтернативное написание'
 		},
 
 		initComponent: function ()
@@ -39,6 +40,7 @@ Ext.define(
 						ptype: 'fieldcontainerreplicator',
 						groupName: 'subject',
 						btnPos: 'end',
+						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 						btnStyle: {
 							margin: '0 0 0 5px',
 							width: '40px',
@@ -73,9 +75,6 @@ Ext.define(
 									name: 'relations-subject-last-name'
 								},
 								{
-									xtype: 'form-desc-relations-subject-link'
-								},
-								{
 									fieldLabel: me.translateText.firstName,
 									name: 'relations-subject-first-name',
 									cls: 'field-optional'
@@ -86,10 +85,13 @@ Ext.define(
 									cls: 'field-optional'
 								},
 								{
+									xtype: 'form-desc-relations-subject-link'
+								}/*,
+								{
 									fieldLabel: me.translateText.desc,
 									name: 'relations-subject-description',
 									cls: 'field-optional'
-								}
+								}*/
 							]
 						},
 						{
@@ -102,13 +104,19 @@ Ext.define(
 							layout: 'anchor',
 							items: [
 								{
-									xtype: 'textfieldclear',
-									allowBlank: false,
-									name: 'relations-subject-title-main',
-									anchor: '100%',
-									labelWidth: 150,
-									labelAlign: 'right',
-									fieldLabel: me.translateText.titleMain
+									xtype: 'form-desc-title',
+									name: 'relations-subject-title',
+									layout: 'anchor',
+									enableSub: false,
+									translateText: {
+										main: me.translateText.titleMain,
+										alt: me.translateText.titleAlt
+									},
+									defaults: {
+										anchor: '100%',
+										labelWidth: 160,
+										labelAlign: 'right'
+									}
 								}
 							]
 						}

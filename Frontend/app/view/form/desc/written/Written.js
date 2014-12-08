@@ -14,9 +14,9 @@ Ext.define(
 
 		translateText: {
 			lang: 'Язык',
-			writtenLang: 'Язык написания',
+			writtenLang: 'Язык оригинала',
 			date: 'Дата',
-			dateText: 'Описание даты',
+			dateText: 'Дата текстом',
 			country: 'Страна'
 		},
 

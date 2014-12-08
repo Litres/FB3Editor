@@ -39,8 +39,8 @@ Ext.define(
 					items: [
 						{
 							xtype: 'textfield',
-							name: 'classification-coverage-text',
-							fieldLabel: me.translateText.desc
+							name: 'classification-coverage-age',
+							fieldLabel: me.translateText.age
 						},
 						{
 							xtype: 'countryfield',
@@ -86,8 +86,8 @@ Ext.define(
 						},
 						{
 							xtype: 'textfield',
-							name: 'classification-coverage-age',
-							fieldLabel: me.translateText.age
+							name: 'classification-coverage-text',
+							fieldLabel: me.translateText.desc
 						}
 					]
 				}

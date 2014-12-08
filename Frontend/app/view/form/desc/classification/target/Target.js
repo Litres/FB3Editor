@@ -15,7 +15,7 @@ Ext.define(
 		layout: 'hbox',
 
 		translateText: {
-			desc: 'Описание',
+			desc: 'Написание',
 			minAge: 'Мин возраст',
 			maxAge: 'Макс возраст'
 		},
@@ -37,9 +37,11 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'textfield',
-							name: 'classification-target-audience-text',
-							fieldLabel: me.translateText.desc
+							xtype: 'numberfield',
+							name: 'classification-target-audience-age-min',
+							fieldLabel: me.translateText.minAge,
+							minValue: 2,
+							maxValue: 50
 						},
 						{
 							xtype: 'form-desc-classification-target-education',
@@ -64,17 +66,15 @@ Ext.define(
 					items: [
 						{
 							xtype: 'numberfield',
-							name: 'classification-target-audience-age-min',
-							fieldLabel: me.translateText.minAge,
-							minValue: 2,
-							maxValue: 50
-						},
-						{
-							xtype: 'numberfield',
 							name: 'classification-target-audience-age-max',
 							fieldLabel: me.translateText.maxAge,
 							minValue: 2,
 							maxValue: 150
+						},
+						{
+							xtype: 'textfield',
+							name: 'classification-target-audience-text',
+							fieldLabel: me.translateText.desc
 						}
 					]
 				}

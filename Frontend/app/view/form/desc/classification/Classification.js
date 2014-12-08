@@ -67,13 +67,23 @@ Ext.define(
 											fieldLabel: me.translateText.bookClass
 										},
 										{
+											xtype: 'hiddenfield',
+											name: 'classification-class-contents',
+											value: 'standalone',
+											fieldLabel: me.translateText.contents
+										}
+										/*
+										{
 											xtype: 'form-desc-classification-class-contents',
 											name: 'classification-class-contents',
 											fieldLabel: me.translateText.contents
-										}/*,
+										}
+										*/
+										/*
 										{
 											xtype: 'classification-custom-subject'
-										}*/
+										}
+										*/
 									]
 								},
 								{

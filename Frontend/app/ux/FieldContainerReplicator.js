@@ -32,6 +32,12 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {Object} Класс для группы кнопок.
+		 */
+		btnCls: '',
+
+		/**
+		 * @private
 		 * @property {Object} Стили для полей, которые вкладываются.
 		 */
 		putStyle: {
@@ -48,29 +54,24 @@ Ext.define(
 		 * @private
 		 * @property {Object} Конфиг кнопки добавления.
 		 */
-		btnAddCfg: {
-			//text: 'Добавить',
-			html: '<i class="fa fa-plus"></i>'
-		},
+		btnAddCfg: null,
 
 		/**
 		 * @private
 		 * @property {Object} Конфиг кнопки удаления.
 		 */
-		btnRemoveCfg: {
-			//text: 'Удалить',
-			html: '<i class="fa fa-minus"></i>',
-			cls: 'btn-minus'
-		},
+		btnRemoveCfg: null,
 
 		/**
 		 * @private
 		 * @property {Object} Конфиг кнопки вложения.
 		 */
-		btnPutCfg: {
-			//text: 'Вложить',
-			html: '<i class="fa fa-plus-square"></i>',
-			cls: 'btn-put'
+		btnPutCfg: null,
+
+		translateText: {
+			add: 'Добавить',
+			remove: 'Удалить',
+			put: 'Вложить'
 		},
 
 		/**
@@ -82,11 +83,24 @@ Ext.define(
 		 * @param {Object} config.btnStyle
 		 * @param {Boolean} config.enableBtnPut
 		 * @param {Object} config.btnPutCfg
+		 * @param {String} config.btnCls
 		 */
 		constructor: function(config)
 		{
 			var me = this;
 
+			me.btnAddCfg = {
+				html: '<i class="fa fa-plus" title="' + me.translateText.add + '"></i>',
+				cls: 'btn-plus'
+			};
+			me.btnRemoveCfg = {
+				html: '<i class="fa fa-minus" title="' + me.translateText.remove + '"></i>',
+				cls: 'btn-minus'
+			};
+			me.btnPutCfg = {
+				html: '<i class="fa fa-level-down" title="' + me.translateText.put + '"></i>',
+				cls: 'btn-put'
+			};
 			me.groupName = config.groupName || me.groupName;
 			me.btnPos = config.btnPos || me.btnPos;
 			me.btnAddCfg = config.btnAddCfg ? Ext.apply(me.btnAddCfg, config.btnAddCfg) : me.btnAddCfg;
@@ -95,6 +109,7 @@ Ext.define(
 			me.putStyle = config.putStyle ? Ext.apply(me.putStyle, config.putStyle) : me.putStyle;
 			me.enableBtnPut = config.enableBtnPut || me.enableBtnPut;
 			me.btnPutCfg = config.btnPutCfg ? Ext.apply(me.btnPutCfg, config.btnPutCfg) : me.btnPutCfg;
+			me.btnCls = config.btnCls || me.btnCls;
 			me.callParent(arguments);
 		},
 
@@ -179,6 +194,7 @@ Ext.define(
 				btnRemoveCfg = me.btnRemoveCfg,
 				enableBtnPut = me.enableBtnPut,
 				btnPutCfg = me.btnPutCfg,
+				btnCls = me.btnCls,
 				buttons,
 				items = [];
 
@@ -215,7 +231,7 @@ Ext.define(
 			buttons = [
 				{
 					xtype: 'fieldcontainer',
-					cls: 'plugin-fieldcontainerreplicator',
+					cls: 'plugin-fieldcontainerreplicator ' + btnCls,
 					hideLabel: true,
 					flex: 0,
 					height: '100%',
@@ -249,7 +265,7 @@ Ext.define(
 			removeBtn = btn.prev();
 			removeBtn.enable();
 			container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
-			replicatorId = container.replicatorId;
+			replicatorId =  container.replicatorId;
 			ownerCt = container.ownerCt;
 			clone = container.cloneConfig({replicatorId: replicatorId});
 			idx = ownerCt.items.indexOf(container);
@@ -271,7 +287,7 @@ Ext.define(
 				replicatorId,
 				clone;
 
-			replicatorId = container.replicatorId + '-' + Ext.id();
+			replicatorId = container.replicatorId + '-child';
 			clone = container.cloneConfig(
 				{
 					replicatorId: replicatorId,
@@ -279,7 +295,7 @@ Ext.define(
 				}
 			);
 			container.add(clone);
-			removeBtn = clone.query('button')[0];
+			removeBtn = clone.query('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']')[0];
 			removeBtn.enable();
 		},
 
@@ -300,7 +316,12 @@ Ext.define(
 			ownerCt = container.ownerCt;
 			replicatorId = container.replicatorId;
 			ownerCt.remove(container);
-			me.checkLastInGroup(ownerCt, replicatorId);
+
+			if (!/child/.test(replicatorId))
+			{
+				// если контейнер не является дочерним, то проверяем не является ли он последним
+				me.checkLastInGroup(ownerCt, replicatorId);
+			}
 		},
 
 		/**
