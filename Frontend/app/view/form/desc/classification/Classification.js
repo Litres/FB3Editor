@@ -135,25 +135,41 @@ Ext.define(
 						{
 							xtype: 'desc-fieldcontainer',
 							name: 'form-desc-plugin-fieldcontainerreplicator',
+							id: 'form-desc-classification-udk',
 							flex: 1,
 							layout: 'anchor',
-							defaults: {
-								anchor: '100%',
-								labelAlign: 'right',
-								labelWidth: 160,
-								cls: 'field-optional'
-							},
 							items: [
 								{
-									xtype: 'textfieldclear',
-									name: 'classification-udk',
-									cls: 'plugin-fieldreplicator',
-									fieldLabel: me.translateText.udk,
-									regex: /^\d+(\.\d+)+(:\d+)?$/,
-									regexText: me.translateText.udkError,
-									afterBodyEl:  '<span class="after-body">' + me.translateText.udkError + '</span>',
-									plugins: 'fieldreplicator'
+									xtype: 'desc-fieldcontainer',
+									layout: 'hbox',
+									anchor: '100%',
+									defaults: {
+										anchor: '100%',
+										labelAlign: 'right',
+										labelWidth: 160,
+										cls: 'field-optional'
+									},
+									plugins: {
+										ptype: 'fieldcontainerreplicator',
+										groupName: 'classification-udk',
+										btnStyle: {
+											margin: '0 0 0 5px'
+										}
+									},
+									items: [
+										{
+											xtype: 'textfieldclear',
+											name: 'classification-udk',
+											flex: 1,
+											fieldLabel: me.translateText.udk,
+											regex: /^\d+(\.\d+)+(:\d+)?$/,
+											regexText: me.translateText.udkError,
+											afterBodyEl:  '<span class="after-body">' + me.translateText.udkError +
+											              '</span>'
+										}
+									]
 								}
+
 							]
 						},
 						{
@@ -163,25 +179,41 @@ Ext.define(
 						{
 							xtype: 'desc-fieldcontainer',
 							name: 'form-desc-plugin-fieldcontainerreplicator',
+							id: 'form-desc-classification-bbk',
 							flex: 1,
 							layout: 'anchor',
-							defaults: {
-								anchor: '100%',
-								labelAlign: 'right',
-								labelWidth: 120,
-								cls: 'field-optional'
-							},
 							items: [
 								{
-									xtype: 'textfieldclear',
-									name: 'classification-bbk',
-									cls: 'plugin-fieldreplicator',
-									fieldLabel: me.translateText.bbk,
-									regex: /^\d+([\.а-я]\d+)+$/,
-									regexText: me.translateText.bbkError,
-									afterBodyEl:  '<span class="after-body">' + me.translateText.bbkError + '</span>',
-									plugins: 'fieldreplicator'
+									xtype: 'desc-fieldcontainer',
+									layout: 'hbox',
+									anchor: '100%',
+									defaults: {
+										anchor: '100%',
+										labelAlign: 'right',
+										labelWidth: 160,
+										cls: 'field-optional'
+									},
+									plugins: {
+										ptype: 'fieldcontainerreplicator',
+										groupName: 'classification-bbk',
+										btnStyle: {
+											margin: '0 0 0 5px'
+										}
+									},
+									items: [
+										{
+											xtype: 'textfieldclear',
+											name: 'classification-bbk',
+											flex: 1,
+											fieldLabel: me.translateText.bbk,
+											regex: /^\d+([\.а-я]\d+)+$/,
+											regexText: me.translateText.bbkError,
+											afterBodyEl:  '<span class="after-body">' + me.translateText.bbkError +
+											              '</span>'
+										}
+									]
 								}
+
 							]
 						}
 					]

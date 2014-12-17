@@ -11,53 +11,38 @@ Ext.define(
 		alias: 'controller.form.desc.subjectTree',
 
 		/**
-		 * @event selectSubject Выбрасывает событие по факту выбранного жанра.
-		 * Вызывается при клике на одном из элементов узла дерева.
+		 * Вызывается при клике на панели дерева.
 		 * @param {Object} evt Объект события.
 		 */
 		onClick: function (evt)
 		{
-			var me = this,
-				leaf = evt.target,
-				view = me.getView(),
-				subjectView,
-				data;
-
-			data = me.getDataLeaf(leaf);
-			if (data)
-			{
-				subjectView = view.subjectView;
-				subjectView.fireEvent('selectSubject', data);
-				view.close();
-			}
+			var me = this;
 
 			// останавливаем всплытие события, чтобы не допустить закрытия окна
 			evt.stopPropagation();
 		},
 
 		/**
-		 * Возвращает данные выбранного жанра.
-		 * @param {HTMLElement} leaf лист дерева жанров.
-		 * @return {Object} Возвращает данные жанра или null, если выбран некорректный узел дерева.
-		 * @return {String} Object.name Название жанра.
-		 * @return {String} Object.value Значение жанра.
+		 * @event selectSubject Выбрасывает событие по факту выбранного жанра.
+		 * Вызывается при клике на одном из элементов узла дерева.
+		 * @param {Ext.tree.View} node Узел дерева.
+		 * @param {Ext.data.TreeModel} record Модель узла.
 		 */
-		getDataLeaf: function (leaf)
+		onItemClick: function (node, record)
 		{
-			var data = null,
-				text = leaf.innerHTML,
-				tmp;
+			var me = this,
+				view = me.getView(),
+				subjectView,
+				data;
 
-			tmp = text.match(/^(.*?) \((.*?)\)$/);
-			if (tmp && tmp[1] && tmp[2])
+			node.toggle(record);
+			if (!record.isExpandable())
 			{
-				data = {
-					name: tmp[1],
-					value: tmp[2]
-				};
+				data = record.getData();
+				subjectView = view.subjectView;
+				subjectView.fireEvent('selectSubject', data);
+				view.close();
 			}
-
-			return data;
 		}
 	}
 );

@@ -18,7 +18,6 @@ Ext.define(
 			d = me.normalize(data);
 			d = me.convertPeriodical(d);
 			d = me.convertTitle(d);
-			d = me.convertSequence(d);
 			d = me.convertRelations(d);
 			d = me.convertClassification(d);
 			d = me.convertWritten(d);
@@ -67,28 +66,13 @@ Ext.define(
 		 */
 		convertTitle: function (data)
 		{
-			var d = data;
-
-			d['title-main'] = d.title.main;
-			d['title-sub'] = d.title.sub ? d.title.sub : '';
-			d['title-alt'] = d.title.alt ? d.title.alt : '';
-			delete d.title;
-
-			return d;
-		},
-
-		/**
-		 * @private
-		 * Пребразует данные для поля sequence.
-		 * @param {Object} data Исходные данные.
-		 * @return {Object} Преобразованные данные.
-		 */
-		convertSequence: function (data)
-		{
 			var me = this,
 				d = data;
 
-			d.sequence = me._convertPropertyName(d.sequence, 'sequence');
+			d['title-main'] = d.title.main;
+			d['title-sub'] = d.title.sub ? d.title.sub : '';
+			d['title-alt'] = d.title.alt;//me._convertValToObj(d.title.alt, 'title-alt');
+			delete d.title;
 
 			return d;
 		},
@@ -112,6 +96,23 @@ Ext.define(
 			                                                           'relations-subject');
 			d.relations['relations-object'] = me._convertPropertyName(d.relations['relations-object'],
 			                                                           'relations-object');
+
+			Ext.Object.each(
+				d.relations['relations-subject'],
+			    function (index, item)
+			    {
+				    // конвертируем данные для типа связи
+				    item['relations-subject-link-radio-' + index] = {};
+				    item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] =
+				        item['relations-subject-link'];
+				    if (item['relations-subject-link'] !== 'author' && item['relations-subject-link'] !== 'translator')
+				    {
+					    item['relations-subject-link-list'] = item['relations-subject-link'];
+					    item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] = 'other-list';
+				    }
+				    delete item['relations-subject-link'];
+			    }
+			);
 			delete d['fb3-relations'];
 
 			return d;
@@ -125,24 +126,17 @@ Ext.define(
 		 */
 		convertClassification: function (data)
 		{
-			var d = data;
+			var me = this,
+				d = data;
 
 			d['classification-class-contents'] = d['fb3-classification'].class.contents;
 			d['classification-class-text'] = d['fb3-classification'].class.text;
-			d['classification-subject'] = {};
-			Ext.Object.each(
-				d['fb3-classification'].subject,
-			    function (index, value)
-			    {
-				    d['classification-subject'][index] = {
-					    'classification-subject': value
-				    };
-			    }
-			);
+			d['classification-subject'] = me._convertValToObj(d['fb3-classification'].subject,
+			                                                  'classification-subject');
 			d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?
 			                                     d['fb3-classification']['custom-subject'] : '';
-			d['classification-udk'] = d['fb3-classification'].udk ? d['fb3-classification'].udk : '';
-			d['classification-bbk'] = d['fb3-classification'].bbk ? d['fb3-classification'].bbk : '';
+			d['classification-udk'] = me._convertValToObj(d['fb3-classification'].udk, 'classification-udk');
+			d['classification-bbk'] = me._convertValToObj(d['fb3-classification'].bbk, 'classification-bbk');
 			if (d['fb3-classification']['target-audience'])
 			{
 				d['classification-target-audience-text'] = d['fb3-classification']['target-audience'].text ?
@@ -214,8 +208,10 @@ Ext.define(
 		{
 			var d = data;
 
-			d['document-info-created'] = d['document-info'].created;
-			d['document-info-updated'] = d['document-info'].updated;
+			d['document-info-created-date'] = d['document-info'].created.split('T')[0];
+			d['document-info-created-time'] = d['document-info'].created.split('T')[1];
+			d['document-info-updated-date'] = d['document-info'].updated.split('T')[0];
+			d['document-info-updated-time'] = d['document-info'].updated.split('T')[1];
 			d['document-info-program-used'] = d['document-info']['program-used'] ?
 			                                  d['document-info']['program-used'] : '';
 			d['document-info-src-url'] = d['document-info']['src-url'] ?
@@ -302,6 +298,33 @@ Ext.define(
 			);
 
 			return d;
+		},
+
+		/**
+		 * @private
+		 * Преобразует данные объекта, заменяя все значения в объекте на поименнованные значения.
+		 * @param {Object} data Объект данных (псевдомассив в виде объекта).
+		 * @param {String} propertyName Название поименнованых значений.
+		 * @return {Object} Преобразованный объект данных.
+		 */
+		_convertValToObj: function (data, propertyName)
+		{
+			var d = data,
+				name = propertyName,
+				newData;
+
+			d = d ? (Ext.isString(d) ? [d] : d) : '';
+			newData = d ? {} : '';
+			Ext.Object.each(
+				d,
+				function (index, value)
+				{
+					newData[index]= {};
+					newData[index][name] = value;
+				}
+			);
+
+			return newData;
 		}
 	}
 );

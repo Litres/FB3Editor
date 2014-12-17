@@ -19,6 +19,11 @@ Ext.define(
 		controller: 'form.desc.sequence',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 		layout: 'anchor',
+		listeners: {
+			resetFields: 'onResetFields',
+			loadData: 'onLoadData',
+			putData: 'onPutData'
+		},
 
 		translateText: {
 			id: 'ID',
@@ -46,6 +51,12 @@ Ext.define(
 							margin: '0 0 0 5px',
 							width: '40px',
 							height: '65px'
+						}
+					},
+					listeners: {
+						putData: function (data)
+						{
+							me.fireEvent('putData', data, this);
 						}
 					},
 					items: [
@@ -109,68 +120,6 @@ Ext.define(
 						}
 					]
 				}
-				/*
-				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'anchor',
-					hideLabel: true,
-					anchor: '100%',
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: 'sequence',
-						btnPos: 'end',
-						enableBtnPut: true,
-						btnStyle: {
-							margin: '0 0 0 2px'
-						}
-					},
-					items: [
-						{
-							xtype: 'desc-fieldcontainer',
-							layout: 'hbox',
-							width: '100%',
-							hideLabel: true,
-							combineErrors: true,
-							msgTarget: 'side',
-							margin: '0 0 2',
-							defaults: {
-								anchor: '100%',
-								flex: 1,
-								labelAlign: 'top',
-								labelPad: '0',
-								xtype: 'textfield',
-								msgTarget: 'none',
-								hideLabel: true
-							},
-							items: [
-								{
-									name: 'sequence-id',
-									fieldLabel: me.translateText.id,
-									allowBlank: false,
-									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-									regexText: me.translateText.idError
-								},
-								{
-									xtype: 'form-desc-title',
-									name: 'sequence-title',
-									flex: 0,
-									width: 280,
-									layout: 'fit',
-									defaults: {
-										labelWidth: 140,
-										labelAlign: 'right',
-										margin: '0 0 2 0'
-									}
-								},
-								{
-									xtype: 'numberfield',
-									name: 'sequence-number',
-									fieldLabel: me.translateText.number
-								}
-							]
-						}
-				    ]
-				}*/
 			];
 			me.callParent(arguments);
 		}

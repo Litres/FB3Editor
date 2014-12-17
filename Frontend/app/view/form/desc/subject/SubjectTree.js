@@ -33,7 +33,8 @@ Ext.define(
 			click: {
 				element: 'el',
 				fn: 'onClick'
-			}
+			},
+			itemClick: 'onItemClick'
 		},
 
 		/**

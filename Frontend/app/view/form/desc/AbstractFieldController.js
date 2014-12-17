@@ -19,32 +19,39 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				nextContainer,
 				plugin;
 
-			console.log(data);
+			//console.log('>>>>>>', view, data);
 			plugin = me.getPluginContainerReplicator(view);
+			nextContainer = plugin.getCmp();
 			Ext.Object.each(
 				data,
 			    function (index, obj)
 			    {
-				    var nextContainer;
-
 				    Ext.Object.each(
 					    obj,
 				        function (name, value)
 				        {
-					        var field = plugin.getCmp().query('[name=' + name + ']')[0];
+					        var field = nextContainer.query('[name=' + name + ']')[0];
 
 					        if (field)
 					        {
-						        field.setValue(value);
+						        if (Ext.isObject(value))
+						        {
+							        field.fireEvent('loadData', value);
+						        }
+						        else
+						        {
+							        field.setValue(value);
+						        }
 					        }
 				        }
 				    );
 				    if (data[parseInt(index) + 1])
 				    {
 					    plugin.addFields();
-					    nextContainer = plugin.getCmp().nextSibling();
+					    nextContainer = nextContainer.nextSibling();
 					    plugin = nextContainer.getPlugin('fieldcontainerreplicator');
 				    }
 			    }
@@ -85,21 +92,21 @@ Ext.define(
 						// удаляем все поля кроме первого контенейра
 						view.remove(item);
 					}
-					/*else
+					else
 					{
 						// удаляем вложенные контейнеры первого контенейра
 						childContainers = me.getContainersReplicator(item);
 						Ext.each(
 							childContainers,
-							function (itemContainer, indexContainer)
+							function (itemContainer)
 							{
 								item.remove(itemContainer);
 							}
 						);
 
 						// делаем неактивной кнопку удалить
-						item.query('button[name=fieldcontainerreplicator-btn-remove]')[0].disable();
-					}*/
+						item.getPlugin('fieldcontainerreplicator').getBtnRemove().disable();
+					}
 				}
 			);
 
@@ -140,7 +147,9 @@ Ext.define(
 			var me = this,
 				plugin;
 
-			plugin = me.getContainersReplicator(container)[0].getPlugin('fieldcontainerreplicator');
+			plugin = me.getContainersReplicator(container).length ?
+			            me.getContainersReplicator(container)[0].getPlugin('fieldcontainerreplicator') :
+						null;
 
 			return plugin;
 		}

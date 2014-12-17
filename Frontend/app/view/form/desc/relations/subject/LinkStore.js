@@ -14,14 +14,6 @@ Ext.define(
 		],
 		data: [
 			{
-				value: 'author',
-				name: 'Автор'
-			},
-			{
-				value: 'translator',
-				name: 'Переводчик'
-			},
-			{
 				value: 'editor',
 				name: 'Редактор'
 			},

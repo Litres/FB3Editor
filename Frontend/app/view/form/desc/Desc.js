@@ -33,12 +33,39 @@ Ext.define(
 		xtype: 'form-desc',
 		controller: 'form.desc',
 		autoScroll: true,
-		minWidth: 800,
+		layout: {
+			type: 'anchor'
+		},
+		minWidth: 870,
 		bodyPadding: 0,
 		cls: 'form-desc',
 		listeners: {
 			loadDesc: 'onLoadData',
 			reset: 'onReset'
+		},
+
+		/**
+		 * @private
+		 * @property {Number} Позиция вертикального скрола до изменения размеров.
+		 */
+		_oldScrollY: 0,
+
+		beforeLayout: function ()
+		{
+			var me = this;
+
+			me._oldScrollY = me.getScrollY();
+			me.callParent(arguments);
+		},
+
+		afterLayout: function ()
+		{
+			var me = this;
+
+			me.callParent(arguments);
+
+			// исправляем баг с перемоткой скрола
+			me.setScrollY(me._oldScrollY);
 		},
 
 		initComponent: function ()

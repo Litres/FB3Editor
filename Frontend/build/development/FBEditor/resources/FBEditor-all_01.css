@@ -83,22 +83,6 @@
 /* including package fb3-theme-green */
 /* including package fb3-theme-green */
 /** @class Global_CSS */
-/** @class Ext.LoadMask */
-/** @class Ext.ProgressBar */
-/** @class Ext.panel.Tool */
-/** @class Ext.button.Button */
-/** @class Ext.resizer.Splitter */
-/** @class Ext.toolbar.Toolbar */
-/** @class Ext.panel.Panel */
-/**
- * @var {boolean}
- * True to include the "light" panel UI
- */
-/**
- * @var {boolean}
- * True to include the "light-framed" panel UI
- */
-/** @class Ext.tip.Tip */
 /** @class Ext.form.Labelable */
 /** @class Ext.form.field.Base */
 /**
@@ -113,6 +97,25 @@
  * images.  If this color is changed, you should also modify checkbox and radio button
  * background images to match
  */
+/** @class Ext.LoadMask */
+/** @class Ext.button.Button */
+/** @class Ext.resizer.Splitter */
+/** @class Ext.toolbar.Toolbar */
+/** @class Ext.toolbar.Paging */
+/** @class Ext.view.BoundList */
+/** @class Ext.panel.Tool */
+/** @class Ext.panel.Panel */
+/**
+ * @var {boolean}
+ * True to include the "light" panel UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "light-framed" panel UI
+ */
+/** @class Ext.tip.Tip */
+/** @class Ext.picker.Color */
+/** @class Ext.ProgressBar */
 /** @class Ext.form.field.Display */
 /** @class Ext.form.field.Checkbox */
 /** @class Ext.grid.header.Container */
@@ -123,10 +126,7 @@
 /** @class Ext.window.Window */
 /** @class Ext.container.ButtonGroup */
 /** @class Ext.form.FieldSet */
-/** @class Ext.toolbar.Paging */
-/** @class Ext.view.BoundList */
 /** @class Ext.picker.Date */
-/** @class Ext.picker.Color */
 /** @class Ext.grid.column.Action */
 /** @class Ext.grid.feature.Grouping */
 /** @class Ext.menu.Menu */
@@ -180,19 +180,735 @@
  * background-color style will be set on the body element.
  */
 /**
- * @class Ext.FocusManager
+ * @class Ext.form.field.Base
+ */
+/**
+ * @var {number} $form-field-height
+ * Height for form fields.
+ */
+/**
+ * @var {number} $form-toolbar-field-height
+ * Height for form fields in toolbar.
+ */
+/**
+ * @var {number} $form-field-padding
+ * Padding around form fields.
+ */
+/**
+ * @var {number} $form-field-font-size
+ * Font size for form fields.
+ */
+/**
+ * @var {string} $form-field-font-family
+ * Font family for form fields.
+ */
+/**
+ * @var {string} $form-field-font-weight
+ * Font weight for form fields.
+ */
+/**
+ * @var {number} $form-toolbar-field-font-size
+ * Font size for toolbar form fields.
+ */
+/**
+ * @var {string} $form-toolbar-field-font-family
+ * Font family for toolbar form fields.
+ */
+/**
+ * @var {string} $form-toolbar-field-font-weight
+ * Font weight for toolbar form fields.
+ */
+/**
+ * @var {color} $form-field-color
+ * Text color for form fields.
+ */
+/**
+ * @var {color} $form-field-empty-color
+ * Text color for empty form fields.
+ */
+/**
+ * @var {color} $form-field-border-color
+ * Border color for form fields.
+ */
+/**
+ * @var {number} $form-field-border-width
+ * Border width for form fields.
+ */
+/**
+ * @var {string} $form-field-border-style
+ * Border style for form fields.
+ */
+/**
+ * @var {color} $form-field-focus-border-color
+ * Border color for focused form fields.
+ */
+/**
+ * @var {color} $form-field-invalid-border-color
+ * Border color for invalid form fields.
+ */
+/**
+ * @var {color} $form-field-background-color
+ * Background color for form fields.
+ */
+/**
+ * @var {string} $form-field-background-image
+ * Background image for form fields.
+ */
+/**
+ * @var {color} $form-field-invalid-background-color
+ * Background color for invalid form fields.
+ */
+/**
+ * @var {string} $form-field-invalid-background-image
+ * Background image for invalid form fields.
+ */
+/**
+ * @var {string} $form-field-invalid-background-repeat
+ * Background repeat for invalid form fields.
+ */
+/**
+ * @var {string/list} $form-field-invalid-background-position
+ * Background position for invalid form fields.
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" field UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "toolbar" field UI
+ */
+/**
+ * @class Ext.form.Labelable
  */
 /**
  * @var {color}
- * The border-color of the focusFrame.  See {@link #method-enable}.
+ * The text color of form field labels
+ */
+/**
+ * @var {string}
+ * The font-weight of form field labels
+ */
+/**
+ * @var {number}
+ * The font-size of form field labels
+ */
+/**
+ * @var {string}
+ * The font-family of form field labels
+ */
+/**
+ * @var {number}
+ * The line-height of form field labels
+ */
+/**
+ * @var {number}
+ * Horizontal space between the label and the field body when the label is left-aligned.
+ */
+/**
+ * @var {number}
+ * Vertical space between the label and the field body when the label is top-aligned.
+ */
+/**
+ * @var {string}
+ * The background image for error icons
+ */
+/**
+ * @var {number}
+ * Width for form error icons.
+ */
+/**
+ * @var {number}
+ * Height for form error icons.
+ */
+/**
+ * @var {number/list}
+ * Margin for error icons that are aligned to the side of the field
+ */
+/**
+ * @var {number}
+ * The space between the icon and the message for errors that display under the field
+ */
+/**
+ * @var {number/list}
+ * The padding on errors that display under the form field
  */
 /**
  * @var {color}
- * The border-style of the focusFrame.  See {@link #method-enable}.
+ * The text color of form error messages
+ */
+/**
+ * @var {string}
+ * The font-weight of form error messages
+ */
+/**
+ * @var {number}
+ * The font-size of form error messages
+ */
+/**
+ * @var {string}
+ * The font-family of form error messages
+ */
+/**
+ * @var {number}
+ * The line-height of form error messages
+ */
+/**
+ * @var {number}
+ * The bottom margin to apply to form items when in auto, anchor, vbox, or table layout.
+ * This value is also used as the default border-spacing in a form-layout.
+ */
+/**
+ * @var {number}
+ * Opacity of disabled form fields
  */
 /**
  * @var {color}
- * The border-width of the focusFrame.  See {@link #method-enable}.
+ * The text color of toolbar form field labels
+ */
+/**
+ * @var {string}
+ * The font-weight of toolbar form field labels
+ */
+/**
+ * @var {number}
+ * The font-size of toolbar form field labels
+ */
+/**
+ * @var {string}
+ * The font-family of toolbar form field labels
+ */
+/**
+ * @var {number}
+ * The line-height of toolbar form field labels
+ */
+/**
+ * @var {number}
+ * Horizontal space between the toolbar field's label and the field body when the label is left-aligned.
+ */
+/**
+ * @var {number}
+ * Vertical space between the toolbar field's label and the field body when the label is top-aligned.
+ */
+/**
+ * @var {string}
+ * The background image for toolbar field error icons
+ */
+/**
+ * @var {number}
+ * Width for toolbar field error icons.
+ */
+/**
+ * @var {number}
+ * Height for toolbar field error icons.
+ */
+/**
+ * @var {number/list}
+ * Margin for toolbar field error icons that are aligned to the side of the field
+ */
+/**
+ * @var {number}
+ * The space between the icon and the message for errors that display under a toolbar field
+ */
+/**
+ * @var {number/list}
+ * The padding on errors that display under the toolbar form field
+ */
+/**
+ * @var {color}
+ * The text color of toolbar form error messages
+ */
+/**
+ * @var {string}
+ * The font-weight of toolbar form field error messages
+ */
+/**
+ * @var {number}
+ * The font-size of toolbar form field error messages
+ */
+/**
+ * @var {string}
+ * The font-family of toolbar form field error messages
+ */
+/**
+ * @var {number}
+ * The line-height of toolbar form field error messages
+ */
+/**
+ * @var {number}
+ * Opacity of disabled toolbar form fields
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" label UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" label UI
+ */
+/**
+ * @class Ext.form.field.Text
+ */
+/**
+ * @var {number}
+ * The height of text fields
+ */
+/**
+ * @var {number}
+ * Font size for text fields.
+ */
+/**
+ * @var {string}
+ * Font family for text fields.
+ */
+/**
+ * @var {string}
+ * Font weight for text fields.
+ */
+/**
+ * @var {color}
+ * The color of the text field's input element
+ */
+/**
+ * @var {color}
+ * The background color of the text field's input element
+ */
+/**
+ * @var {number/list}
+ * The border width of text fields
+ */
+/**
+ * @var {string/list}
+ * The border style of text fields
+ */
+/**
+ * @var {color/list}
+ * The border color of text fields
+ */
+/**
+ * @var {color/list}
+ * The border color of the focused text field
+ */
+/**
+ * @var {color}
+ * Border color for invalid text fields.
+ */
+/**
+ * @var {number/list}
+ * Border radius for text fields
+ */
+/**
+ * @var {string}
+ * The background image of the text field's input element
+ */
+/**
+ * @var {number/list}
+ * The padding of the text field's input element
+ */
+/**
+ * @var {color}
+ * Text color for empty text fields.
+ */
+/**
+ * @var {number}
+ * The default width of the text field's body element (the element that contains the input
+ * element and triggers) when the field is not sized explicitly using the {@link #width}
+ * config, or sized by it's containing layout.
+ */
+/**
+ * @var {color}
+ * Background color of the text field's input element when the field value is invalid.
+ */
+/**
+ * @var {string}
+ * Background image of the text field's input element when the field value is invalid.
+ */
+/**
+ * @var {string}
+ * Background repeat of the text field's input element when the field value is invalid.
+ */
+/**
+ * @var {string/list}
+ * Background position of the text field's input element when the field value is invalid.
+ */
+/**
+ * @var {boolean}
+ * `true` to use classic-theme styled border for text fields.
+ */
+/**
+ * @var {number} $form-textarea-line-height
+ * The line-height to use for the TextArea's text
+ */
+/**
+ * @var {number} $form-textarea-body-height
+ * The default width of the TextArea's body element (the element that contains the textarea
+ * html element when the field is not sized explicitly using the {@link #width}config, or
+ * sized by it's containing layout.
+ */
+/**
+ * @var {color}
+ * Text color for file fields
+ */
+/**
+ * @var {number}
+ * The width of the text field's trigger element
+ */
+/**
+ * @var {number/list}
+ * The width of the text field's trigger's border
+ */
+/**
+ * @var {color/list}
+ * The color of the text field's trigger's border
+ */
+/**
+ * @var {string/list}
+ * The style of the text field's trigger's border
+ */
+/**
+ * @var {color}
+ * The color of the text field's trigger's border when hovered
+ */
+/**
+ * @var {color}
+ * The color of the text field's trigger's border when the field is focused
+ */
+/**
+ * @var {color}
+ * The color of the text field's trigger's border when the field is focused and the trigger is hovered
+ */
+/**
+ * @var {string}
+ * The default background image for text field triggers
+ */
+/**
+ * @var {color}
+ * The background color of the text field's trigger element
+ */
+/**
+ * @var {number}
+ * The height of toolbar text fields
+ */
+/**
+ * @var {number}
+ * Font size for toolbar text fields.
+ */
+/**
+ * @var {string}
+ * Font family for toolbar text fields.
+ */
+/**
+ * @var {string}
+ * Font weight for toolbar text fields.
+ */
+/**
+ * @var {color}
+ * The color of the toolbar text field's input element
+ */
+/**
+ * @var {color}
+ * The background color of the toolbar text field's input element
+ */
+/**
+ * @var {number/list}
+ * The border width of toolbar text fields
+ */
+/**
+ * @var {string/list}
+ * The border style of toolbar text fields
+ */
+/**
+ * @var {color/list}
+ * The border color of toolbar text fields
+ */
+/**
+ * @var {color/list}
+ * The border color of the focused toolbar text field
+ */
+/**
+ * @var {color} $form-field-invalid-border-color
+ * Border color for invalid toolbar text fields.
+ */
+/**
+ * @var {number/list}
+ * Border radius for toolbar text fields
+ */
+/**
+ * @var {string}
+ * The background image of the toolbar text field's input element
+ */
+/**
+ * @var {number/list}
+ * The padding of the toolbar text field's input element
+ */
+/**
+ * @var {color}
+ * Text color for empty toolbar text fields.
+ */
+/**
+ * @var {number}
+ * The default width of the toolbar text field's body element (the element that contains the input
+ * element and triggers) when the field is not sized explicitly using the {@link #width}
+ * config, or sized by it's containing layout.
+ */
+/**
+ * @var {color}
+ * Background color of the toolbar text field's input element when the field value is invalid.
+ */
+/**
+ * @var {string}
+ * Background image of the toolbar text field's input element when the field value is invalid.
+ */
+/**
+ * @var {string}
+ * Background repeat of the toolbar text field's input element when the field value is invalid.
+ */
+/**
+ * @var {string/list}
+ * Background position of the toolbar text field's input element when the field value is invalid.
+ */
+/**
+ * @var {boolean}
+ * `true` to use classic-theme styled border for toolbar text fields.
+ */
+/**
+ * @var {number/string}
+ * The line-height to use for the toolbar TextArea's text
+ */
+/**
+ * @var {number}
+ * The default width of the toolbar TextArea's body element (the element that contains the
+ * textarea html element when the field is not sized explicitly using the {@link #width}
+ * config, or sized by it's containing layout.
+ */
+/**
+ * @var {color}
+ * Text color for toolbar file fields
+ */
+/**
+ * @var {number}
+ * The width of the toolbar text field's trigger element
+ */
+/**
+ * @var {number/list}
+ * The width of the toolbar text field's trigger's border
+ */
+/**
+ * @var {color/list}
+ * The color of the toolbar text field's trigger's border
+ */
+/**
+ * @var {string/list}
+ * The style of the toolbar text field's trigger's border
+ */
+/**
+ * @var {color}
+ * The color of the toolbar text field's trigger's border when hovered
+ */
+/**
+ * @var {color}
+ * The color of the toolbar text field's trigger's border when the field is focused
+ */
+/**
+ * @var {color}
+ * The color of the toolbar text field's trigger's border when the field is focused and the trigger is hovered
+ */
+/**
+ * @var {string}
+ * The default background image for toolbar text field triggers
+ */
+/**
+ * @var {color}
+ * The background color of the toolbar text field's trigger element
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" text field UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "toolbar" text field UI
+ */
+/**
+ * @class Ext.form.field.Spinner
+ */
+/**
+ * @var {boolean}
+ * True to use vertically oriented triggers. False to use horizontally oriented triggers.
+ * Themes that set this property to true must also override the {@link #triggerVertical}
+ * config to match. Defaults to true.  When 'vertical' orientation is used, the background image
+ * for both triggers is 'form/spinner'.  When 'horizontal' is used, the triggers use separate
+ * background images - 'form/spinner-up', and 'form/spinner-down'.
+ */
+/**
+ * @var {string}
+ * Background image for vertically oriented spinner triggers
+ */
+/**
+ * @var {string}
+ * Background image for the "up" trigger when trigger buttons are horizontally aligned
+ */
+/**
+ * @var {string}
+ * Background image for the "down" trigger when trigger buttons are horizontally aligned
+ */
+/**
+ * @var {boolean}
+ * `true` to use vertically oriented triggers for fields with the 'toolbar' UI.
+ */
+/**
+ * @var {string}
+ * Background image for vertically oriented toolbar spinner triggers
+ */
+/**
+ * @var {string}
+ * Background image for the "up" toolbar trigger when trigger buttons are horizontally aligned
+ */
+/**
+ * @var {string}
+ * Background image for the "down" toolbar trigger when trigger buttons are horizontally aligned
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" spinner UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "toolbar" spinner UI
+ */
+/**
+ * @class Ext.form.field.Checkbox
+ */
+/**
+ * @var {number}
+ * The size of the checkbox
+ */
+/**
+ * @var {string}
+ * The background-image of the checkbox
+ */
+/**
+ * @var {string}
+ * The background-image of the radio button
+ */
+/**
+ * @var {color}
+ * The color of the checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The font-weight of the checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The font-size of the checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The font-family of the checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The line-height of the checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {number}
+ * The space between the {@link #boxLabel} and the checkbox.
+ */
+/**
+ * @var {number}
+ * The size of the toolbar checkbox
+ */
+/**
+ * @var {string}
+ * The background-image of the toolbar checkbox
+ */
+/**
+ * @var {string}
+ * The background-image of the toolbar radio button
+ */
+/**
+ * @var {color}
+ * The color of the toolbar checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The font-weight of the toolbar checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The font-size of the toolbar checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The font-family of the toolbar checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {string}
+ * The line-height of the toolbar checkbox's {@link #boxLabel}
+ */
+/**
+ * @var {number}
+ * The space between the {@link #boxLabel} and the toolbar checkbox.
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" checkbox UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "toolbar" checkbox UI
+ */
+/**
+ * @class Ext.form.field.Display
+ */
+/**
+ * @var {color}
+ * The text color of display fields
+ */
+/**
+ * @var {number}
+ * The font-size of display fields
+ */
+/**
+ * @var {string}
+ * The font-family of display fields
+ */
+/**
+ * @var {string}
+ * The font-weight of display fields
+ */
+/**
+ * @var {number}
+ * The line-height of display fields
+ */
+/**
+ * @var {color}
+ * The text color of toolbar display fields
+ */
+/**
+ * @var {number}
+ * The font-size of toolbar display fields
+ */
+/**
+ * @var {string}
+ * The font-family of toolbar display fields
+ */
+/**
+ * @var {string}
+ * The font-weight of toolbar display fields
+ */
+/**
+ * @var {number}
+ * The line-height of toolbar display fields
+ */
+/**
+ * @var {boolean}
+ * True to include the "default" display field UI
+ */
+/**
+ * @var {boolean}
+ * True to include the "toolbar" display field UI
  */
 /**
  * @class Ext.LoadMask
@@ -287,100 +1003,6 @@
  * @var {number}
  * The border-radius of the message element
  */
-/**
- * @class Ext.ProgressBar
- */
-/**
- * @var {number}
- * The height of the ProgressBar
- */
-/**
- * @var {color}
- * The border-color of the ProgressBar
- */
-/**
- * @var {number}
- * The border-width of the ProgressBar
- */
-/**
- * @var {number}
- * The border-radius of the ProgressBar
- */
-/**
- * @var {color}
- * The background-color of the ProgressBar
- */
-/**
- * @var {color}
- * The background-color of the ProgressBar's moving element
- */
-/**
- * @var {string/list}
- * The background-gradient of the ProgressBar's moving element. Can be either the name of
- * a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- */
-/**
- * @var {color}
- * The color of the ProgressBar's text when in front of the ProgressBar's moving element
- */
-/**
- * @var {color}
- * The color of the ProgressBar's text when the ProgressBar's 'moving element is not under it
- */
-/**
- * @var {string}
- * The text-align of the ProgressBar's text
- */
-/**
- * @var {number}
- * The font-size of the ProgressBar's text
- */
-/**
- * @var {string}
- * The font-weight of the ProgressBar's text
- */
-/**
- * @var {string}
- * The font-family of the ProgressBar's text
- */
-/**
- * @var {boolean}
- * True to include the "default" ProgressBar UI
- */
-/**
- * @class Ext.panel.Tool
- */
-/**
- * @var {number}
- * The size of Tools
- */
-/**
- * @var {boolean}
- * True to change the background-position of the Tool on hover. Allows for a separate
- * hover state icon in the sprite.
- */
-/**
- * @var {string}
- * The cursor to display when the mouse cursor is over a Tool
- */
-/**
- * @var {number}
- * The opacity of Tools
- */
-/**
- * @var {number}
- * The opacity of hovered Tools
- */
-/**
- * @var {number}
- * The opacity of pressed Tools
- */
-/**
- * @var {string}
- * The sprite to use as the background-image for Tools
- */
-/** @class Ext.panel.Header */
 /** @class Ext.button.Button */
 /**
  * @var {number}
@@ -1918,6 +2540,113 @@
  * True to include the "footer" toolbar UI
  */
 /**
+ * @class Ext.toolbar.Paging
+ */
+/**
+ * @var {boolean}
+ * True to include different icons when the paging toolbar buttons are disabled.
+ */
+/**
+ * @class Ext.view.BoundList
+ */
+/**
+ * @var {color}
+ * The background-color of the BoundList
+ */
+/**
+ * @var {color}
+ * The border-color of the BoundList
+ */
+/**
+ * @var {number}
+ * The border-width of the BoundList
+ */
+/**
+ * @var {string}
+ * The border-style of the BoundList
+ */
+/**
+ * @var {number}
+ * The height of BoundList items
+ */
+/**
+ * @var {string}
+ * The font family of the BoundList items
+ */
+/**
+ * @var {number}
+ * The font size of the BoundList items
+ */
+/**
+ * @var {string}
+ * The font-weight of the BoundList items
+ */
+/**
+ * @var {number/list}
+ * The padding of BoundList items
+ */
+/**
+ * @var {number}
+ * The border-width of BoundList items
+ */
+/**
+ * @var {string}
+ * The border-style of BoundList items
+ */
+/**
+ * @var {color}
+ * The border-color of BoundList items
+ */
+/**
+ * @var {color}
+ * The border-color of hovered BoundList items
+ */
+/**
+ * @var {color}
+ * The border-color of selected BoundList items
+ */
+/**
+ * @var {color}
+ * The background-color of hovered BoundList items
+ */
+/**
+ * @var {color}
+ * The background-color of selected BoundList items
+ */
+/**
+ * @class Ext.panel.Tool
+ */
+/**
+ * @var {number}
+ * The size of Tools
+ */
+/**
+ * @var {boolean}
+ * True to change the background-position of the Tool on hover. Allows for a separate
+ * hover state icon in the sprite.
+ */
+/**
+ * @var {string}
+ * The cursor to display when the mouse cursor is over a Tool
+ */
+/**
+ * @var {number}
+ * The opacity of Tools
+ */
+/**
+ * @var {number}
+ * The opacity of hovered Tools
+ */
+/**
+ * @var {number}
+ * The opacity of pressed Tools
+ */
+/**
+ * @var {string}
+ * The sprite to use as the background-image for Tools
+ */
+/** @class Ext.panel.Header */
+/**
  * @class Ext.panel.Panel
  */
 /**
@@ -2306,735 +3035,194 @@
  * True to include the "form-invalid" tip UI
  */
 /**
- * @class Ext.form.field.Base
- */
-/**
- * @var {number} $form-field-height
- * Height for form fields.
- */
-/**
- * @var {number} $form-toolbar-field-height
- * Height for form fields in toolbar.
- */
-/**
- * @var {number} $form-field-padding
- * Padding around form fields.
- */
-/**
- * @var {number} $form-field-font-size
- * Font size for form fields.
- */
-/**
- * @var {string} $form-field-font-family
- * Font family for form fields.
- */
-/**
- * @var {string} $form-field-font-weight
- * Font weight for form fields.
- */
-/**
- * @var {number} $form-toolbar-field-font-size
- * Font size for toolbar form fields.
- */
-/**
- * @var {string} $form-toolbar-field-font-family
- * Font family for toolbar form fields.
- */
-/**
- * @var {string} $form-toolbar-field-font-weight
- * Font weight for toolbar form fields.
- */
-/**
- * @var {color} $form-field-color
- * Text color for form fields.
- */
-/**
- * @var {color} $form-field-empty-color
- * Text color for empty form fields.
- */
-/**
- * @var {color} $form-field-border-color
- * Border color for form fields.
- */
-/**
- * @var {number} $form-field-border-width
- * Border width for form fields.
- */
-/**
- * @var {string} $form-field-border-style
- * Border style for form fields.
- */
-/**
- * @var {color} $form-field-focus-border-color
- * Border color for focused form fields.
- */
-/**
- * @var {color} $form-field-invalid-border-color
- * Border color for invalid form fields.
- */
-/**
- * @var {color} $form-field-background-color
- * Background color for form fields.
- */
-/**
- * @var {string} $form-field-background-image
- * Background image for form fields.
- */
-/**
- * @var {color} $form-field-invalid-background-color
- * Background color for invalid form fields.
- */
-/**
- * @var {string} $form-field-invalid-background-image
- * Background image for invalid form fields.
- */
-/**
- * @var {string} $form-field-invalid-background-repeat
- * Background repeat for invalid form fields.
- */
-/**
- * @var {string/list} $form-field-invalid-background-position
- * Background position for invalid form fields.
- */
-/**
- * @var {boolean}
- * True to include the "default" field UI
- */
-/**
- * @var {boolean}
- * True to include the "toolbar" field UI
- */
-/**
- * @class Ext.form.Labelable
+ * @class Ext.picker.Color
  */
 /**
  * @var {color}
- * The text color of form field labels
- */
-/**
- * @var {string}
- * The font-weight of form field labels
- */
-/**
- * @var {number}
- * The font-size of form field labels
- */
-/**
- * @var {string}
- * The font-family of form field labels
- */
-/**
- * @var {number}
- * The line-height of form field labels
- */
-/**
- * @var {number}
- * Horizontal space between the label and the field body when the label is left-aligned.
- */
-/**
- * @var {number}
- * Vertical space between the label and the field body when the label is top-aligned.
- */
-/**
- * @var {string}
- * The background image for error icons
- */
-/**
- * @var {number}
- * Width for form error icons.
- */
-/**
- * @var {number}
- * Height for form error icons.
- */
-/**
- * @var {number/list}
- * Margin for error icons that are aligned to the side of the field
- */
-/**
- * @var {number}
- * The space between the icon and the message for errors that display under the field
- */
-/**
- * @var {number/list}
- * The padding on errors that display under the form field
+ * The background-color of Color Pickers
  */
 /**
  * @var {color}
- * The text color of form error messages
+ * The border-color of Color Pickers
+ */
+/**
+ * @var {number}
+ * The border-width of Color Pickers
  */
 /**
  * @var {string}
- * The font-weight of form error messages
+ * The border-style of Color Pickers
  */
 /**
  * @var {number}
- * The font-size of form error messages
+ * The number of columns to display in the Color Picker
+ */
+/**
+ * @var {number}
+ * The number of rows to display in the Color Picker
+ */
+/**
+ * @var {number}
+ * The height of each Color Picker item
+ */
+/**
+ * @var {number}
+ * The width of each Color Picker item
+ */
+/**
+ * @var {number}
+ * The padding of each Color Picker item
  */
 /**
  * @var {string}
- * The font-family of form error messages
- */
-/**
- * @var {number}
- * The line-height of form error messages
- */
-/**
- * @var {number}
- * The bottom margin to apply to form items when in auto, anchor, vbox, or table layout.
- * This value is also used as the default border-spacing in a form-layout.
- */
-/**
- * @var {number}
- * Opacity of disabled form fields
+ * The cursor to display when the mouse is over a Color Picker item
  */
 /**
  * @var {color}
- * The text color of toolbar form field labels
+ * The border-color of Color Picker items
+ */
+/**
+ * @var {number}
+ * The border-width of Color Picker items
  */
 /**
  * @var {string}
- * The font-weight of toolbar form field labels
- */
-/**
- * @var {number}
- * The font-size of toolbar form field labels
- */
-/**
- * @var {string}
- * The font-family of toolbar form field labels
- */
-/**
- * @var {number}
- * The line-height of toolbar form field labels
- */
-/**
- * @var {number}
- * Horizontal space between the toolbar field's label and the field body when the label is left-aligned.
- */
-/**
- * @var {number}
- * Vertical space between the toolbar field's label and the field body when the label is top-aligned.
- */
-/**
- * @var {string}
- * The background image for toolbar field error icons
- */
-/**
- * @var {number}
- * Width for toolbar field error icons.
- */
-/**
- * @var {number}
- * Height for toolbar field error icons.
- */
-/**
- * @var {number/list}
- * Margin for toolbar field error icons that are aligned to the side of the field
- */
-/**
- * @var {number}
- * The space between the icon and the message for errors that display under a toolbar field
- */
-/**
- * @var {number/list}
- * The padding on errors that display under the toolbar form field
+ * The border-style of Color Picker items
  */
 /**
  * @var {color}
- * The text color of toolbar form error messages
- */
-/**
- * @var {string}
- * The font-weight of toolbar form field error messages
- */
-/**
- * @var {number}
- * The font-size of toolbar form field error messages
- */
-/**
- * @var {string}
- * The font-family of toolbar form field error messages
- */
-/**
- * @var {number}
- * The line-height of toolbar form field error messages
- */
-/**
- * @var {number}
- * Opacity of disabled toolbar form fields
- */
-/**
- * @var {boolean}
- * True to include the "default" label UI
- */
-/**
- * @var {boolean}
- * True to include the "default" label UI
- */
-/**
- * @class Ext.form.field.Text
- */
-/**
- * @var {number}
- * The height of text fields
- */
-/**
- * @var {number}
- * Font size for text fields.
- */
-/**
- * @var {string}
- * Font family for text fields.
- */
-/**
- * @var {string}
- * Font weight for text fields.
+ * The border-color of hovered Color Picker items
  */
 /**
  * @var {color}
- * The color of the text field's input element
+ * The background-color of Color Picker items
  */
 /**
  * @var {color}
- * The background color of the text field's input element
+ * The background-color of hovered Color Picker items
  */
 /**
- * @var {number/list}
- * The border width of text fields
+ * @var {color}
+ * The border-color of the selected Color Picker item
+ */
+/**
+ * @var {color}
+ * The background-color of the selected Color Picker item
+ */
+/**
+ * @var {color}
+ * The inner border-color of Color Picker items
+ */
+/**
+ * @var {number}
+ * The inner border-width of Color Picker items
+ */
+/**
+ * @var {string}
+ * The inner border-style of Color Picker items
+ */
+/**
+ * @class Ext.form.field.HtmlEditor
+ */
+/**
+ * @var {number}
+ * The border-width of the HtmlEditor
+ */
+/**
+ * @var {color}
+ * The border-color of the HtmlEditor
+ */
+/**
+ * @var {color}
+ * The background-color of the HtmlEditor
+ */
+/**
+ * @var {number}
+ * The size of the HtmlEditor toolbar icons
+ */
+/**
+ * @var {number}
+ * The font-size of the HtmlEditor's font selection control
+ */
+/**
+ * @var {number}
+ * The font-family of the HtmlEditor's font selection control
+ */
+/**
+ * @class Ext.FocusManager
+ */
+/**
+ * @var {color}
+ * The border-color of the focusFrame.  See {@link #method-enable}.
+ */
+/**
+ * @var {color}
+ * The border-style of the focusFrame.  See {@link #method-enable}.
+ */
+/**
+ * @var {color}
+ * The border-width of the focusFrame.  See {@link #method-enable}.
+ */
+/**
+ * @class Ext.ProgressBar
+ */
+/**
+ * @var {number}
+ * The height of the ProgressBar
+ */
+/**
+ * @var {color}
+ * The border-color of the ProgressBar
+ */
+/**
+ * @var {number}
+ * The border-width of the ProgressBar
+ */
+/**
+ * @var {number}
+ * The border-radius of the ProgressBar
+ */
+/**
+ * @var {color}
+ * The background-color of the ProgressBar
+ */
+/**
+ * @var {color}
+ * The background-color of the ProgressBar's moving element
  */
 /**
  * @var {string/list}
- * The border style of text fields
- */
-/**
- * @var {color/list}
- * The border color of text fields
- */
-/**
- * @var {color/list}
- * The border color of the focused text field
+ * The background-gradient of the ProgressBar's moving element. Can be either the name of
+ * a predefined gradient or a list of color stops. Used as the `$type` parameter for
+ * {@link Global_CSS#background-gradient}.
  */
 /**
  * @var {color}
- * Border color for invalid text fields.
+ * The color of the ProgressBar's text when in front of the ProgressBar's moving element
  */
 /**
- * @var {number/list}
- * Border radius for text fields
+ * @var {color}
+ * The color of the ProgressBar's text when the ProgressBar's 'moving element is not under it
  */
 /**
  * @var {string}
- * The background image of the text field's input element
- */
-/**
- * @var {number/list}
- * The padding of the text field's input element
- */
-/**
- * @var {color}
- * Text color for empty text fields.
+ * The text-align of the ProgressBar's text
  */
 /**
  * @var {number}
- * The default width of the text field's body element (the element that contains the input
- * element and triggers) when the field is not sized explicitly using the {@link #width}
- * config, or sized by it's containing layout.
- */
-/**
- * @var {color}
- * Background color of the text field's input element when the field value is invalid.
+ * The font-size of the ProgressBar's text
  */
 /**
  * @var {string}
- * Background image of the text field's input element when the field value is invalid.
+ * The font-weight of the ProgressBar's text
  */
 /**
  * @var {string}
- * Background repeat of the text field's input element when the field value is invalid.
- */
-/**
- * @var {string/list}
- * Background position of the text field's input element when the field value is invalid.
+ * The font-family of the ProgressBar's text
  */
 /**
  * @var {boolean}
- * `true` to use classic-theme styled border for text fields.
- */
-/**
- * @var {number} $form-textarea-line-height
- * The line-height to use for the TextArea's text
- */
-/**
- * @var {number} $form-textarea-body-height
- * The default width of the TextArea's body element (the element that contains the textarea
- * html element when the field is not sized explicitly using the {@link #width}config, or
- * sized by it's containing layout.
- */
-/**
- * @var {color}
- * Text color for file fields
- */
-/**
- * @var {number}
- * The width of the text field's trigger element
- */
-/**
- * @var {number/list}
- * The width of the text field's trigger's border
- */
-/**
- * @var {color/list}
- * The color of the text field's trigger's border
- */
-/**
- * @var {string/list}
- * The style of the text field's trigger's border
- */
-/**
- * @var {color}
- * The color of the text field's trigger's border when hovered
- */
-/**
- * @var {color}
- * The color of the text field's trigger's border when the field is focused
- */
-/**
- * @var {color}
- * The color of the text field's trigger's border when the field is focused and the trigger is hovered
- */
-/**
- * @var {string}
- * The default background image for text field triggers
- */
-/**
- * @var {color}
- * The background color of the text field's trigger element
- */
-/**
- * @var {number}
- * The height of toolbar text fields
- */
-/**
- * @var {number}
- * Font size for toolbar text fields.
- */
-/**
- * @var {string}
- * Font family for toolbar text fields.
- */
-/**
- * @var {string}
- * Font weight for toolbar text fields.
- */
-/**
- * @var {color}
- * The color of the toolbar text field's input element
- */
-/**
- * @var {color}
- * The background color of the toolbar text field's input element
- */
-/**
- * @var {number/list}
- * The border width of toolbar text fields
- */
-/**
- * @var {string/list}
- * The border style of toolbar text fields
- */
-/**
- * @var {color/list}
- * The border color of toolbar text fields
- */
-/**
- * @var {color/list}
- * The border color of the focused toolbar text field
- */
-/**
- * @var {color} $form-field-invalid-border-color
- * Border color for invalid toolbar text fields.
- */
-/**
- * @var {number/list}
- * Border radius for toolbar text fields
- */
-/**
- * @var {string}
- * The background image of the toolbar text field's input element
- */
-/**
- * @var {number/list}
- * The padding of the toolbar text field's input element
- */
-/**
- * @var {color}
- * Text color for empty toolbar text fields.
- */
-/**
- * @var {number}
- * The default width of the toolbar text field's body element (the element that contains the input
- * element and triggers) when the field is not sized explicitly using the {@link #width}
- * config, or sized by it's containing layout.
- */
-/**
- * @var {color}
- * Background color of the toolbar text field's input element when the field value is invalid.
- */
-/**
- * @var {string}
- * Background image of the toolbar text field's input element when the field value is invalid.
- */
-/**
- * @var {string}
- * Background repeat of the toolbar text field's input element when the field value is invalid.
- */
-/**
- * @var {string/list}
- * Background position of the toolbar text field's input element when the field value is invalid.
- */
-/**
- * @var {boolean}
- * `true` to use classic-theme styled border for toolbar text fields.
- */
-/**
- * @var {number/string}
- * The line-height to use for the toolbar TextArea's text
- */
-/**
- * @var {number}
- * The default width of the toolbar TextArea's body element (the element that contains the
- * textarea html element when the field is not sized explicitly using the {@link #width}
- * config, or sized by it's containing layout.
- */
-/**
- * @var {color}
- * Text color for toolbar file fields
- */
-/**
- * @var {number}
- * The width of the toolbar text field's trigger element
- */
-/**
- * @var {number/list}
- * The width of the toolbar text field's trigger's border
- */
-/**
- * @var {color/list}
- * The color of the toolbar text field's trigger's border
- */
-/**
- * @var {string/list}
- * The style of the toolbar text field's trigger's border
- */
-/**
- * @var {color}
- * The color of the toolbar text field's trigger's border when hovered
- */
-/**
- * @var {color}
- * The color of the toolbar text field's trigger's border when the field is focused
- */
-/**
- * @var {color}
- * The color of the toolbar text field's trigger's border when the field is focused and the trigger is hovered
- */
-/**
- * @var {string}
- * The default background image for toolbar text field triggers
- */
-/**
- * @var {color}
- * The background color of the toolbar text field's trigger element
- */
-/**
- * @var {boolean}
- * True to include the "default" text field UI
- */
-/**
- * @var {boolean}
- * True to include the "toolbar" text field UI
- */
-/**
- * @class Ext.form.field.Spinner
- */
-/**
- * @var {boolean}
- * True to use vertically oriented triggers. False to use horizontally oriented triggers.
- * Themes that set this property to true must also override the {@link #triggerVertical}
- * config to match. Defaults to true.  When 'vertical' orientation is used, the background image
- * for both triggers is 'form/spinner'.  When 'horizontal' is used, the triggers use separate
- * background images - 'form/spinner-up', and 'form/spinner-down'.
- */
-/**
- * @var {string}
- * Background image for vertically oriented spinner triggers
- */
-/**
- * @var {string}
- * Background image for the "up" trigger when trigger buttons are horizontally aligned
- */
-/**
- * @var {string}
- * Background image for the "down" trigger when trigger buttons are horizontally aligned
- */
-/**
- * @var {boolean}
- * `true` to use vertically oriented triggers for fields with the 'toolbar' UI.
- */
-/**
- * @var {string}
- * Background image for vertically oriented toolbar spinner triggers
- */
-/**
- * @var {string}
- * Background image for the "up" toolbar trigger when trigger buttons are horizontally aligned
- */
-/**
- * @var {string}
- * Background image for the "down" toolbar trigger when trigger buttons are horizontally aligned
- */
-/**
- * @var {boolean}
- * True to include the "default" spinner UI
- */
-/**
- * @var {boolean}
- * True to include the "toolbar" spinner UI
- */
-/**
- * @class Ext.form.field.Checkbox
- */
-/**
- * @var {number}
- * The size of the checkbox
- */
-/**
- * @var {string}
- * The background-image of the checkbox
- */
-/**
- * @var {string}
- * The background-image of the radio button
- */
-/**
- * @var {color}
- * The color of the checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The font-weight of the checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The font-size of the checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The font-family of the checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The line-height of the checkbox's {@link #boxLabel}
- */
-/**
- * @var {number}
- * The space between the {@link #boxLabel} and the checkbox.
- */
-/**
- * @var {number}
- * The size of the toolbar checkbox
- */
-/**
- * @var {string}
- * The background-image of the toolbar checkbox
- */
-/**
- * @var {string}
- * The background-image of the toolbar radio button
- */
-/**
- * @var {color}
- * The color of the toolbar checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The font-weight of the toolbar checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The font-size of the toolbar checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The font-family of the toolbar checkbox's {@link #boxLabel}
- */
-/**
- * @var {string}
- * The line-height of the toolbar checkbox's {@link #boxLabel}
- */
-/**
- * @var {number}
- * The space between the {@link #boxLabel} and the toolbar checkbox.
- */
-/**
- * @var {boolean}
- * True to include the "default" checkbox UI
- */
-/**
- * @var {boolean}
- * True to include the "toolbar" checkbox UI
- */
-/**
- * @class Ext.form.field.Display
- */
-/**
- * @var {color}
- * The text color of display fields
- */
-/**
- * @var {number}
- * The font-size of display fields
- */
-/**
- * @var {string}
- * The font-family of display fields
- */
-/**
- * @var {string}
- * The font-weight of display fields
- */
-/**
- * @var {number}
- * The line-height of display fields
- */
-/**
- * @var {color}
- * The text color of toolbar display fields
- */
-/**
- * @var {number}
- * The font-size of toolbar display fields
- */
-/**
- * @var {string}
- * The font-family of toolbar display fields
- */
-/**
- * @var {string}
- * The font-weight of toolbar display fields
- */
-/**
- * @var {number}
- * The line-height of toolbar display fields
- */
-/**
- * @var {boolean}
- * True to include the "default" display field UI
- */
-/**
- * @var {boolean}
- * True to include the "toolbar" display field UI
+ * True to include the "default" ProgressBar UI
  */
 /**
  * @class Ext.view.Table
@@ -4461,80 +4649,6 @@
  * True to include the "default" fieldset UI
  */
 /**
- * @class Ext.toolbar.Paging
- */
-/**
- * @var {boolean}
- * True to include different icons when the paging toolbar buttons are disabled.
- */
-/**
- * @class Ext.view.BoundList
- */
-/**
- * @var {color}
- * The background-color of the BoundList
- */
-/**
- * @var {color}
- * The border-color of the BoundList
- */
-/**
- * @var {number}
- * The border-width of the BoundList
- */
-/**
- * @var {string}
- * The border-style of the BoundList
- */
-/**
- * @var {number}
- * The height of BoundList items
- */
-/**
- * @var {string}
- * The font family of the BoundList items
- */
-/**
- * @var {number}
- * The font size of the BoundList items
- */
-/**
- * @var {string}
- * The font-weight of the BoundList items
- */
-/**
- * @var {number/list}
- * The padding of BoundList items
- */
-/**
- * @var {number}
- * The border-width of BoundList items
- */
-/**
- * @var {string}
- * The border-style of BoundList items
- */
-/**
- * @var {color}
- * The border-color of BoundList items
- */
-/**
- * @var {color}
- * The border-color of hovered BoundList items
- */
-/**
- * @var {color}
- * The border-color of selected BoundList items
- */
-/**
- * @var {color}
- * The background-color of hovered BoundList items
- */
-/**
- * @var {color}
- * The background-color of selected BoundList items
- */
-/**
  * @class Ext.picker.Date
  */
 /**
@@ -4893,120 +5007,6 @@
 /**
  * @var {number}
  * The height of Month Picker items when the datepicker does not have footer buttons
- */
-/**
- * @class Ext.picker.Color
- */
-/**
- * @var {color}
- * The background-color of Color Pickers
- */
-/**
- * @var {color}
- * The border-color of Color Pickers
- */
-/**
- * @var {number}
- * The border-width of Color Pickers
- */
-/**
- * @var {string}
- * The border-style of Color Pickers
- */
-/**
- * @var {number}
- * The number of columns to display in the Color Picker
- */
-/**
- * @var {number}
- * The number of rows to display in the Color Picker
- */
-/**
- * @var {number}
- * The height of each Color Picker item
- */
-/**
- * @var {number}
- * The width of each Color Picker item
- */
-/**
- * @var {number}
- * The padding of each Color Picker item
- */
-/**
- * @var {string}
- * The cursor to display when the mouse is over a Color Picker item
- */
-/**
- * @var {color}
- * The border-color of Color Picker items
- */
-/**
- * @var {number}
- * The border-width of Color Picker items
- */
-/**
- * @var {string}
- * The border-style of Color Picker items
- */
-/**
- * @var {color}
- * The border-color of hovered Color Picker items
- */
-/**
- * @var {color}
- * The background-color of Color Picker items
- */
-/**
- * @var {color}
- * The background-color of hovered Color Picker items
- */
-/**
- * @var {color}
- * The border-color of the selected Color Picker item
- */
-/**
- * @var {color}
- * The background-color of the selected Color Picker item
- */
-/**
- * @var {color}
- * The inner border-color of Color Picker items
- */
-/**
- * @var {number}
- * The inner border-width of Color Picker items
- */
-/**
- * @var {string}
- * The inner border-style of Color Picker items
- */
-/**
- * @class Ext.form.field.HtmlEditor
- */
-/**
- * @var {number}
- * The border-width of the HtmlEditor
- */
-/**
- * @var {color}
- * The border-color of the HtmlEditor
- */
-/**
- * @var {color}
- * The background-color of the HtmlEditor
- */
-/**
- * @var {number}
- * The size of the HtmlEditor toolbar icons
- */
-/**
- * @var {number}
- * The font-size of the HtmlEditor's font selection control
- */
-/**
- * @var {number}
- * The font-family of the HtmlEditor's font selection control
  */
 /**
  * @class Ext.grid.column.Action
@@ -7708,35 +7708,166 @@ td.x-frame-br {
   outline: none;
 }
 
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/scroll/Scroller.scss */
-.x-touch-scroller {
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item {
   display: table;
-  min-width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: separate;
 }
 
-/* line 3, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Container.scss */
-.x-box-item {
-  position: absolute !important;
-  left: 0;
-  top: 0;
+/* line 10, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label {
+  overflow: hidden;
 }
 
-/* line 10, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Container.scss */
-.x-rtl > .x-box-item {
-  right: 0;
-  left: auto;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Auto.scss */
-.x-autocontainer-outerCt {
-  display: table;
-}
-
-/* line 5, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Auto.scss */
-.x-autocontainer-innerCt {
+/* line 15, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label,
+.x-form-item-body {
   display: table-cell;
+}
+
+/* line 19, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-body {
+  vertical-align: middle;
   height: 100%;
+}
+
+/* line 24, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label-inner {
+  display: inline-block;
+}
+
+/* line 28, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label-top {
+  display: table-row;
+  height: 1px;
+}
+/* line 31, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label-top > .x-form-item-label-inner {
+  display: table-cell;
+}
+
+/* line 35, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label-top-side-error:after {
+  display: table-cell;
+  content: '';
+}
+
+/* line 40, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-item-label-right {
+  text-align: right;
+}
+
+/* line 44, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-error-wrap-side {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* line 49, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-error-wrap-under {
+  display: table-row;
+  height: 1px;
+}
+/* line 52, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-error-wrap-under > .x-form-error-msg {
+  display: table-cell;
+}
+
+/* line 57, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-error-wrap-under-side-label:before {
+  display: table-cell;
+  content: '';
+}
+
+/* line 62, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-invalid-icon {
+  overflow: hidden;
+}
+/* line 64, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
+.x-form-invalid-icon ul {
+  display: none;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-trigger-wrap {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+/* line 14, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-gecko .x-form-trigger-wrap {
+  display: -moz-inline-box;
+  display: inline-flex;
   vertical-align: top;
+}
+
+/* line 22, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-text-wrap {
+  display: table-cell;
+  overflow: hidden;
+  height: 100%;
+}
+/* line 29, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-gecko .x-form-text-wrap {
+  display: block;
+  -moz-box-flex: 1;
+  flex: 1;
+}
+
+/* line 39, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-item-body.x-form-text-grow {
+  min-width: inherit;
+  max-width: inherit;
+}
+
+/* line 44, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-text {
+  border: 0;
+  margin: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  display: block;
+  background: repeat-x 0 0;
+  width: 100%;
+  height: 100%;
+}
+/* line 53, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-webkit .x-form-text {
+  height: calc(100% + 3px);
+}
+
+/* line 61, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-trigger {
+  display: table-cell;
+  vertical-align: top;
+  cursor: pointer;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  line-height: 0;
+  white-space: nowrap;
+}
+/* line 72, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-item-disabled .x-form-trigger {
+  cursor: default;
+}
+/* line 75, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-trigger.x-form-trigger-cmp {
+  background: none;
+  border: 0;
+}
+/* line 84, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-form-trigger.x-form-trigger-cmp.x-rtl {
+  background: none;
+  border: 0;
+}
+/* line 92, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
+.x-gecko .x-form-trigger {
+  display: block;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/LoadMask.scss */
@@ -7770,217 +7901,35 @@ td.x-frame-br {
   position: absolute;
 }
 
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/ProgressBar.scss */
-.x-progress {
-  position: relative;
-  border-style: solid;
-  overflow: hidden;
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/view/View.scss */
+.x-view-item-focused {
+  outline: 1px dashed #37bb9b !important;
+  outline-offset: -1px;
 }
 
-/* line 7, ../../../../ext/packages/ext-theme-base/sass/src/ProgressBar.scss */
-.x-progress-bar {
-  overflow: hidden;
-  position: absolute;
-  width: 0;
-  height: 100%;
+/* line 3, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Container.scss */
+.x-box-item {
+  position: absolute !important;
+  left: 0;
+  top: 0;
 }
 
-/* line 14, ../../../../ext/packages/ext-theme-base/sass/src/ProgressBar.scss */
-.x-progress-text {
-  overflow: hidden;
-  position: absolute;
+/* line 10, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Container.scss */
+.x-rtl > .x-box-item {
+  right: 0;
+  left: auto;
 }
 
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-icon {
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  vertical-align: middle;
-  text-align: center;
-}
-
-/* line 8, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title {
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Auto.scss */
+.x-autocontainer-outerCt {
   display: table;
-  table-layout: fixed;
 }
 
-/* line 14, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-rtl.x-title {
-  -o-text-overflow: clip;
-  text-overflow: clip;
-}
-
-/* line 20, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-text {
+/* line 5, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Auto.scss */
+.x-autocontainer-innerCt {
   display: table-cell;
-  overflow: hidden;
-  white-space: nowrap;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-  vertical-align: middle;
-}
-
-/* line 29, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-align-left {
-  text-align: left;
-}
-/* line 32, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-align-left.x-rtl {
-  text-align: right;
-}
-
-/* line 38, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-align-center {
-  text-align: center;
-}
-
-/* line 42, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-align-right {
-  text-align: right;
-}
-/* line 45, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-align-right.x-rtl {
-  text-align: left;
-}
-
-/* line 51, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-rotate-right {
-  -webkit-transform: rotate(90deg);
-  -webkit-transform-origin: 0 0;
-  -moz-transform: rotate(90deg);
-  -moz-transform-origin: 0 0;
-  -o-transform: rotate(90deg);
-  -o-transform-origin: 0 0;
-  -ms-transform: rotate(90deg);
-  -ms-transform-origin: 0 0;
-  transform: rotate(90deg);
-  transform-origin: 0 0;
-}
-/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie8 .x-title-rotate-right {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-}
-/* line 55, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-rotate-right.x-rtl {
-  -webkit-transform: rotate(270deg);
-  -webkit-transform-origin: 100% 0;
-  -moz-transform: rotate(270deg);
-  -moz-transform-origin: 100% 0;
-  -o-transform: rotate(270deg);
-  -o-transform-origin: 100% 0;
-  -ms-transform: rotate(270deg);
-  -ms-transform-origin: 100% 0;
-  transform: rotate(270deg);
-  transform-origin: 100% 0;
-}
-/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie8 .x-title-rotate-right.x-rtl {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-
-/* line 61, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-rotate-left {
-  -webkit-transform: rotate(270deg);
-  -webkit-transform-origin: 100% 0;
-  -moz-transform: rotate(270deg);
-  -moz-transform-origin: 100% 0;
-  -o-transform: rotate(270deg);
-  -o-transform-origin: 100% 0;
-  -ms-transform: rotate(270deg);
-  -ms-transform-origin: 100% 0;
-  transform: rotate(270deg);
-  transform-origin: 100% 0;
-}
-/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie8 .x-title-rotate-left {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-/* line 65, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-rotate-left.x-rtl {
-  -webkit-transform: rotate(90deg);
-  -webkit-transform-origin: 0 0;
-  -moz-transform: rotate(90deg);
-  -moz-transform-origin: 0 0;
-  -o-transform: rotate(90deg);
-  -o-transform-origin: 0 0;
-  -ms-transform: rotate(90deg);
-  -ms-transform-origin: 0 0;
-  transform: rotate(90deg);
-  transform-origin: 0 0;
-}
-/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie8 .x-title-rotate-left.x-rtl {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-}
-
-/* line 74, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-horizontal.x-header .x-title-rotate-right.x-title-align-left > .x-title-item {
-  vertical-align: bottom;
-}
-/* line 78, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-horizontal.x-header .x-title-rotate-right.x-title-align-center > .x-title-item {
-  vertical-align: middle;
-}
-/* line 82, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-horizontal.x-header .x-title-rotate-right.x-title-align-right > .x-title-item {
+  height: 100%;
   vertical-align: top;
-}
-/* line 88, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-horizontal.x-header .x-title-rotate-left.x-title-align-left > .x-title-item {
-  vertical-align: top;
-}
-/* line 92, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-horizontal.x-header .x-title-rotate-left.x-title-align-center > .x-title-item {
-  vertical-align: middle;
-}
-/* line 96, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-horizontal.x-header .x-title-rotate-left.x-title-align-right > .x-title-item {
-  vertical-align: bottom;
-}
-
-/* line 104, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-vertical.x-header .x-title-rotate-none.x-title-align-left > .x-title-item {
-  vertical-align: top;
-}
-/* line 108, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-vertical.x-header .x-title-rotate-none.x-title-align-center > .x-title-item {
-  vertical-align: middle;
-}
-/* line 112, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-vertical.x-header .x-title-rotate-none.x-title-align-right > .x-title-item {
-  vertical-align: bottom;
-}
-
-/* line 119, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-icon-wrap {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 0;
-}
-/* line 125, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-icon-wrap.x-title-icon-top, .x-title-icon-wrap.x-title-icon-bottom {
-  display: table-row;
-}
-
-/* line 130, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
-.x-title-icon {
-  display: inline-block;
-  vertical-align: middle;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/panel/Tool.scss */
-.x-tool {
-  font-size: 0;
-  line-height: 0;
-}
-
-/* line 3, ../../../../ext/packages/ext-theme-base/sass/src/panel/Header.scss */
-.x-header > .x-box-inner {
-  overflow: visible;
 }
 
 /**
@@ -8255,6 +8204,203 @@ td.x-frame-br {
   border: 0;
 }
 
+/* line 8, ../../../../ext/packages/ext-theme-base/sass/src/view/BoundList.scss */
+.x-ie9 .x-boundlist-list-ct {
+  min-height: 0\%;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-icon {
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* line 8, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title {
+  display: table;
+  table-layout: fixed;
+}
+
+/* line 14, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-rtl.x-title {
+  -o-text-overflow: clip;
+  text-overflow: clip;
+}
+
+/* line 20, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-text {
+  display: table-cell;
+  overflow: hidden;
+  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+/* line 29, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-align-left {
+  text-align: left;
+}
+/* line 32, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-align-left.x-rtl {
+  text-align: right;
+}
+
+/* line 38, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-align-center {
+  text-align: center;
+}
+
+/* line 42, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-align-right {
+  text-align: right;
+}
+/* line 45, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-align-right.x-rtl {
+  text-align: left;
+}
+
+/* line 51, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-rotate-right {
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 0 0;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 0 0;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 0 0;
+  -ms-transform: rotate(90deg);
+  -ms-transform-origin: 0 0;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie8 .x-title-rotate-right {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+/* line 55, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-rotate-right.x-rtl {
+  -webkit-transform: rotate(270deg);
+  -webkit-transform-origin: 100% 0;
+  -moz-transform: rotate(270deg);
+  -moz-transform-origin: 100% 0;
+  -o-transform: rotate(270deg);
+  -o-transform-origin: 100% 0;
+  -ms-transform: rotate(270deg);
+  -ms-transform-origin: 100% 0;
+  transform: rotate(270deg);
+  transform-origin: 100% 0;
+}
+/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie8 .x-title-rotate-right.x-rtl {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+/* line 61, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-rotate-left {
+  -webkit-transform: rotate(270deg);
+  -webkit-transform-origin: 100% 0;
+  -moz-transform: rotate(270deg);
+  -moz-transform-origin: 100% 0;
+  -o-transform: rotate(270deg);
+  -o-transform-origin: 100% 0;
+  -ms-transform: rotate(270deg);
+  -ms-transform-origin: 100% 0;
+  transform: rotate(270deg);
+  transform-origin: 100% 0;
+}
+/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie8 .x-title-rotate-left {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+/* line 65, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-rotate-left.x-rtl {
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 0 0;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 0 0;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 0 0;
+  -ms-transform: rotate(90deg);
+  -ms-transform-origin: 0 0;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+/* line 43, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie8 .x-title-rotate-left.x-rtl {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+/* line 74, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-horizontal.x-header .x-title-rotate-right.x-title-align-left > .x-title-item {
+  vertical-align: bottom;
+}
+/* line 78, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-horizontal.x-header .x-title-rotate-right.x-title-align-center > .x-title-item {
+  vertical-align: middle;
+}
+/* line 82, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-horizontal.x-header .x-title-rotate-right.x-title-align-right > .x-title-item {
+  vertical-align: top;
+}
+/* line 88, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-horizontal.x-header .x-title-rotate-left.x-title-align-left > .x-title-item {
+  vertical-align: top;
+}
+/* line 92, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-horizontal.x-header .x-title-rotate-left.x-title-align-center > .x-title-item {
+  vertical-align: middle;
+}
+/* line 96, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-horizontal.x-header .x-title-rotate-left.x-title-align-right > .x-title-item {
+  vertical-align: bottom;
+}
+
+/* line 104, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-vertical.x-header .x-title-rotate-none.x-title-align-left > .x-title-item {
+  vertical-align: top;
+}
+/* line 108, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-vertical.x-header .x-title-rotate-none.x-title-align-center > .x-title-item {
+  vertical-align: middle;
+}
+/* line 112, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-vertical.x-header .x-title-rotate-none.x-title-align-right > .x-title-item {
+  vertical-align: bottom;
+}
+
+/* line 119, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-icon-wrap {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 0;
+}
+/* line 125, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-icon-wrap.x-title-icon-top, .x-title-icon-wrap.x-title-icon-bottom {
+  display: table-row;
+}
+
+/* line 130, ../../../../ext/packages/ext-theme-base/sass/src/panel/Title.scss */
+.x-title-icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/panel/Tool.scss */
+.x-tool {
+  font-size: 0;
+  line-height: 0;
+}
+
+/* line 3, ../../../../ext/packages/ext-theme-base/sass/src/panel/Header.scss */
+.x-header > .x-box-inner {
+  overflow: visible;
+}
+
 /* line 4, ../../../../ext/packages/ext-theme-base/sass/src/dd/DD.scss */
 .x-dd-drag-proxy,
 .x-dd-drag-current {
@@ -8516,86 +8662,58 @@ td.x-frame-mc {
   border-style: solid;
 }
 
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item {
-  display: table;
-  table-layout: fixed;
-  border-spacing: 0;
-  border-collapse: separate;
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/picker/Color.scss */
+.x-color-picker-item {
+  float: left;
+  text-decoration: none;
 }
 
-/* line 10, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label {
+/* line 6, ../../../../ext/packages/ext-theme-base/sass/src/picker/Color.scss */
+.x-color-picker-item-inner {
+  display: block;
+  font-size: 1px;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-toolbar {
+  position: static !important;
+}
+
+/* line 6, ../../../../ext/packages/ext-theme-base/sass/src/form/field/HtmlEditor.scss */
+.x-htmleditor-iframe,
+.x-htmleditor-textarea {
+  display: block;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/scroll/Scroller.scss */
+.x-touch-scroller {
+  display: table;
+  min-width: 100%;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/ProgressBar.scss */
+.x-progress {
+  position: relative;
+  border-style: solid;
   overflow: hidden;
 }
 
-/* line 15, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label,
-.x-form-item-body {
-  display: table-cell;
-}
-
-/* line 19, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-body {
-  vertical-align: middle;
+/* line 7, ../../../../ext/packages/ext-theme-base/sass/src/ProgressBar.scss */
+.x-progress-bar {
+  overflow: hidden;
+  position: absolute;
+  width: 0;
   height: 100%;
 }
 
-/* line 24, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label-inner {
-  display: inline-block;
-}
-
-/* line 28, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label-top {
-  display: table-row;
-  height: 1px;
-}
-/* line 31, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label-top > .x-form-item-label-inner {
-  display: table-cell;
-}
-
-/* line 35, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label-top-side-error:after {
-  display: table-cell;
-  content: '';
-}
-
-/* line 40, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-item-label-right {
-  text-align: right;
-}
-
-/* line 44, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-error-wrap-side {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-/* line 49, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-error-wrap-under {
-  display: table-row;
-  height: 1px;
-}
-/* line 52, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-error-wrap-under > .x-form-error-msg {
-  display: table-cell;
-}
-
-/* line 57, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-error-wrap-under-side-label:before {
-  display: table-cell;
-  content: '';
-}
-
-/* line 62, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-invalid-icon {
+/* line 14, ../../../../ext/packages/ext-theme-base/sass/src/ProgressBar.scss */
+.x-progress-text {
   overflow: hidden;
-}
-/* line 64, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
-.x-form-invalid-icon ul {
-  display: none;
+  position: absolute;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Display.scss */
@@ -8662,12 +8780,6 @@ td.x-frame-mc {
   position: absolute;
   z-index: 5;
   top: 0;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/view/View.scss */
-.x-view-item-focused {
-  outline: 1px dashed #37bb9b !important;
-  outline-offset: -1px;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Checkbox.scss */
@@ -8847,86 +8959,6 @@ the height of a multi-line element */
 /* line 27, ../../../../ext/packages/ext-theme-base/sass/src/tree/Panel.scss */
 .x-tree-animator-wrap {
   overflow: hidden;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-trigger-wrap {
-  display: table;
-  width: 100%;
-  height: 100%;
-}
-/* line 14, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-gecko .x-form-trigger-wrap {
-  display: -moz-inline-box;
-  display: inline-flex;
-  vertical-align: top;
-}
-
-/* line 22, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-text-wrap {
-  display: table-cell;
-  overflow: hidden;
-  height: 100%;
-}
-/* line 29, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-gecko .x-form-text-wrap {
-  display: block;
-  -moz-box-flex: 1;
-  flex: 1;
-}
-
-/* line 39, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-item-body.x-form-text-grow {
-  min-width: inherit;
-  max-width: inherit;
-}
-
-/* line 44, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-text {
-  border: 0;
-  margin: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  display: block;
-  background: repeat-x 0 0;
-  width: 100%;
-  height: 100%;
-}
-/* line 53, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-webkit .x-form-text {
-  height: calc(100% + 3px);
-}
-
-/* line 61, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-trigger {
-  display: table-cell;
-  vertical-align: top;
-  cursor: pointer;
-  overflow: hidden;
-  background-repeat: no-repeat;
-  line-height: 0;
-  white-space: nowrap;
-}
-/* line 72, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-item-disabled .x-form-trigger {
-  cursor: default;
-}
-/* line 75, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-trigger.x-form-trigger-cmp {
-  background: none;
-  border: 0;
-}
-/* line 84, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-form-trigger.x-form-trigger-cmp.x-rtl {
-  background: none;
-  border: 0;
-}
-/* line 92, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Text.scss */
-.x-gecko .x-form-trigger {
-  display: block;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Border.scss */
@@ -9469,11 +9501,6 @@ div.x-form-text-grow .x-form-textarea {
   float: right;
 }
 
-/* line 8, ../../../../ext/packages/ext-theme-base/sass/src/view/BoundList.scss */
-.x-ie9 .x-boundlist-list-ct {
-  min-height: 0\%;
-}
-
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/picker/Date.scss */
 .x-datepicker {
   position: relative;
@@ -9613,33 +9640,6 @@ div.x-form-text-grow .x-form-textarea {
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Hidden.scss */
 .x-form-item-hidden {
   margin: 0;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/picker/Color.scss */
-.x-color-picker-item {
-  float: left;
-  text-decoration: none;
-}
-
-/* line 6, ../../../../ext/packages/ext-theme-base/sass/src/picker/Color.scss */
-.x-color-picker-item-inner {
-  display: block;
-  font-size: 1px;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-toolbar {
-  position: static !important;
-}
-
-/* line 6, ../../../../ext/packages/ext-theme-base/sass/src/form/field/HtmlEditor.scss */
-.x-htmleditor-iframe,
-.x-htmleditor-textarea {
-  display: block;
-  overflow: auto;
-  width: 100%;
-  height: 100%;
-  border: 0;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Tag.scss */
@@ -10053,52 +10053,366 @@ ul.x-tagfield-list.x-tagfield-singleselect {
   overflow: hidden!important;
 }
 
-/* line 2, ../../../../ext/packages/ext-theme-neutral/sass/src/Editor.scss */
-.x-editor .x-form-item-body {
-  padding-bottom: 0;
+/**
+ * Creates a visual theme for "labelable" form items.  Provides visual styling for the
+ * Label and error message that can be shared between many types of form fields.
+ *
+ * @param {string} $ui
+ * The name of the UI being created. Can not included spaces or special punctuation
+ * (used in CSS class names).
+ *
+ * @param {color} [$ui-font-color=$form-label-font-color]
+ * The text color the label
+ *
+ * @param {string} [$ui-font-weight=$form-label-font-weight]
+ * The font-weight of the label
+ *
+ * @param {number} [$ui-font-size=$form-label-font-size]
+ * The font-size of the label
+ *
+ * @param {string} [$ui-font-family=$form-label-font-family]
+ * The font-family the label
+ *
+ * @param {number} [$ui-height=$form-field-height]
+ * The height of the label.  This should be the same height as the height of fields that
+ * this label ui will be used with.  This does not actually set the height of the label
+ * but is used to ensure that the label is centered within the given height.
+ *
+ * @param {number} [$ui-line-height=$form-label-line-height]
+ * The line-height of the label
+ *
+ * @param {number} [$ui-horizontal-spacing: $form-label-horizontal-spacing]
+ * Horizontal space between the label and the field body when the label is left-aligned.
+ *
+ * @param {number} [$ui-vertical-spacing: $form-label-vertical-spacing]
+ * Vertical space between the label and the field body when the label is top-aligned.
+ *
+ * @param {number} [$ui-error-icon-background-image=$form-error-icon-background-image]
+ * The background-image of the error icon
+ *
+ * @param {number} [$ui-error-icon-width=$form-error-icon-width]
+ * The width of the error icon
+ *
+ * @param {number} [$ui-error-icon-height=$form-error-icon-height]
+ * The height of the error icon
+ *
+ * @param {number/list} [$ui-error-icon-side-margin=$form-error-icon-side-margin]
+ * Margin for error icons when aligned to the side of the field
+ *
+ * @param {number} [$ui-error-under-icon-spacing=$form-error-under-icon-spacing]
+ * The space between the icon and the message for errors that display under the field
+ *
+ * @param {number/list} [$ui-error-under-padding=$form-error-under-padding]
+ * The padding on errors that display under the form field
+ *
+ * @param {color} [$ui-error-msg-color=$form-error-msg-color]
+ * The text color of form error messages
+ *
+ * @param {string} [$ui-error-msg-font-weight=$form-error-msg-font-weight]
+ * The font-weight of form error messages
+ *
+ * @param {number} [$ui-error-msg-font-size=$form-error-msg-font-size]
+ * The font-size of form error messages
+ *
+ * @param {string} [$ui-error-msg-font-family=$form-error-msg-font-family]
+ * The font-family of form error messages
+ *
+ * @param {number} [$ui-error-msg-line-height=$form-error-msg-line-height]
+ * The line-height of form error messages
+ *
+ * @param {number} [$ui-disabled-opacity=$form-field-disabled-opacity]
+ * Opacity of disabled form fields
+ *
+ * @member Ext.form.Labelable
+ */
+/* line 97, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-item-label-default {
+  color: black;
+  font: normal 13px/17px helvetica, arial, verdana, sans-serif;
+  min-height: 24px;
+  padding-top: 4px;
+  padding-right: 5px;
+}
+/* line 107, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-ie8 .x-form-item-label-default {
+  min-height: 20px;
+}
+/* line 113, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-item-label-default.x-form-item-label-top {
+  height: 1px;
+}
+/* line 115, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-item-label-default.x-form-item-label-top > .x-form-item-label-inner {
+  padding-top: 4px;
+  padding-bottom: 5px;
+}
+/* line 121, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-item-label-default.x-form-item-label-top-side-error:after {
+  width: 26px;
 }
 
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
-.x-focus-element {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 0px;
-  height: 0px;
+/* line 126, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-item-body-default {
+  min-height: 24px;
 }
 
-/* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
-.x-focus-frame {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: 100000000;
-  width: 0px;
-  height: 0px;
+/* line 130, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-invalid-icon-default {
+  width: 16px;
+  height: 16px;
+  margin: 0 5px 0 5px;
+  background: url(images/form/exclamation.png) no-repeat;
 }
 
-/* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
-.x-focus-frame-top,
-.x-focus-frame-bottom,
-.x-focus-frame-left,
-.x-focus-frame-right {
-  position: absolute;
-  top: 0px;
-  left: 0px;
+/* line 137, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-invalid-under-default {
+  padding: 2px 2px 2px 20px;
+  color: #cf4c35;
+  font: normal 13px/16px helvetica, arial, verdana, sans-serif;
+  background: no-repeat 0 2px;
+  background-image: url(images/form/exclamation.png);
 }
 
-/* line 28, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
-.x-focus-frame-top,
-.x-focus-frame-bottom {
-  border-top: solid 2px #15428b;
-  height: 2px;
+/* line 145, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-error-wrap-default.x-form-error-wrap-side {
+  width: 26px;
 }
 
-/* line 34, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
-.x-focus-frame-left,
-.x-focus-frame-right {
-  border-left: solid 2px #15428b;
-  width: 2px;
+/* line 150, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-form-item-default.x-item-disabled {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.3;
+}
+
+/* line 191, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
+.x-autocontainer-form-item,
+.x-anchor-form-item,
+.x-vbox-form-item,
+.x-table-form-item {
+  margin-bottom: 5px;
+}
+
+/**
+ * Creates a visual theme for text fields.  Note this mixin only provides styling
+ * for the form field body, The label and error are styled by {@link #extjs-label-ui}.
+ *
+ * @param {string} $ui
+ * The name of the UI being created. Can not included spaces or special punctuation
+ * (used in CSS class names).
+ *
+ * @param {number} [$ui-height=$form-text-field-height]
+ * The height of the text field
+ *
+ * @param {number} [$ui-font-size=$form-text-field-font-size]
+ * The font-size of the text field
+ *
+ * @param {string} [$ui-font-family=$form-text-field-font-family]
+ * The font-family of the text field
+ *
+ * @param {string} [$ui-font-weight=$form-text-field-font-weight]
+ * The font-weight of the text field
+ *
+ * @param {color} [$ui-color=$form-text-field-color]
+ * The color of the text field's input element
+ *
+ * @param {color} [$ui-background-color=$form-text-field-background-color]
+ * The background color of the text field's input element
+ *
+ * @param {number/list} [$ui-border-width=$form-text-field-border-width]
+ * The border width of the text field
+ *
+ * @param {string/list} [$ui-border-style=$form-text-field-border-style]
+ * The border style of the text field
+ *
+ * @param {color/list} [$ui-border-color=$form-text-field-border-color]
+ * The border color of text fields
+ *
+ * @param {color/list} [$ui-focus-border-color=$form-text-field-focus-border-color]
+ * The border color of the text field when focused
+ *
+ * @param {color} [$ui-invalid-border-color=$form-text-field-invalid-border-color]
+ * The border color of the text field when the field value is invalid.
+ *
+ * @param {number/list} [$ui-border-radius=$form-text-field-border-radius]
+ * The border radius of the text field
+ *
+ * @param {string} [$ui-background-image=$form-text-field-background-image]
+ * The background image of the text field's input element
+ *
+ * @param {number/list} [$ui-padding=$form-text-field-padding]
+ * The padding of the text field's input element
+ *
+ * @param {color} [$ui-empty-color=$form-text-field-empty-color]
+ * Text color for of the text field when empty
+ *
+ * @param {number} [$ui-body-width=$form-text-field-body-width]
+ * The default width of the text field's body element (the element that contains the input
+ * element and triggers) when the field is not sized explicitly using the {@link #width}
+ * config, or sized by it's containing layout.
+ *
+ * @param {color} [$ui-invalid-background-color=$form-field-invalid-background-color]
+ * Background color of the input element when the field value is invalid.
+ *
+ * @param {string} [$ui-invalid-background-image=$form-field-invalid-background-image]
+ * Background image of the input element when the field value is invalid.
+ *
+ * @param {string} [$ui-invalid-background-repeat=$form-field-invalid-background-repeat]
+ * Background repeat of the input element when the field value is invalid.
+ *
+ * @param {string/list} [$ui-invalid-background-position=$form-field-invalid-background-position]
+ * Background position of the input element when the field value is invalid.
+ *
+ * @param {number} [$ui-trigger-width=$form-trigger-width]
+ * The width of the trigger element
+ *
+ * @param {number/list} [$ui-trigger-border-width=$form-trigger-border-width]
+ * The width of the trigger's border
+ *
+ * @param {color/list} [$ui-trigger-border-color=$form-trigger-border-color]
+ * The color of the trigger's border
+ *
+ * @param {string/list} [$ui-trigger-border-style=$form-trigger-border-style]
+ * The style of the trigger's border
+ *
+ * @param {color} [$ui-trigger-border-color-over=$form-trigger-border-color-over]
+ * The color of the trigger's border when hovered
+ *
+ * @param {color} [$ui-trigger-border-color-focus=$form-trigger-border-color-focus]
+ * The color of the trigger's border when the field is focused
+ *
+ * @param {color} [$ui-trigger-border-color-pressed=$form-trigger-border-color-pressed]
+ * The color of the trigger's border when the field is focused and the trigger is hovered
+ *
+ * @param {string} [$ui-trigger-background-image=$form-trigger-background-image]
+ * The default background image for the trigger
+ *
+ * @param {color} [$ui-trigger-background-color=$form-trigger-background-color]
+ * The background color of the trigger element
+ *
+ * @param {number} [$ui-textarea-line-height=$form-textarea-line-height]
+ * The line-height of the textarea element when this mixin is used to style a
+ * {@link Ext.form.field.TextArea TextArea}
+ *
+ * @param {number} [$ui-textarea-body-height=$form-textarea-body-height]
+ * The default width of the TextArea's body element (the element that contains the textarea
+ * html element when the field is not sized explicitly using the {@link #width}config, or
+ * sized by it's containing layout.
+ *
+ * @param {color} [$ui-file-field-color=$form-file-field-color] The text color of the
+ * input element when this mixin is used to style a {@link Ext.form.field.File File Field}
+ *
+ * @param {boolean} [$ui-classic-border=$form-text-field-classic-border]
+ * `true` to use classic-theme styled border.
+ *
+ * @member Ext.form.field.Text
+ */
+/* line 193, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-text-field-body-default {
+  min-width: 170px;
+  max-width: 170px;
+}
+
+/* line 213, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-wrap-default {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #cfd0d3 #e2e2e4 #e2e2e4;
+}
+/* line 221, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-wrap-default.x-form-trigger-wrap-focus {
+  border-color: #3892d3;
+}
+/* line 225, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-wrap-default.x-form-trigger-wrap-invalid {
+  border-color: #cf4c35;
+}
+
+/* line 250, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-text-default {
+  color: black;
+  padding: 4px 6px 3px 6px;
+  background-color: white;
+  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
+  min-height: 22px;
+}
+/* line 264, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-ie8 .x-form-text-default {
+  min-height: 15px;
+}
+/* line 270, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-text-default.x-form-textarea {
+  line-height: 15px;
+  min-height: 60px;
+}
+/* line 275, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-ie8 .x-form-text-default.x-form-textarea {
+  min-height: 53px;
+}
+/* line 282, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-text-default.x-form-text-file {
+  color: gray;
+}
+
+/* line 287, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-empty-field-default {
+  color: gray;
+}
+
+/* line 291, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-invalid-field-default {
+  background-color: white;
+}
+
+/* line 302, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-default {
+  background: white url(images/form/trigger.png) no-repeat;
+  background-position: 0 center;
+  width: 22px;
+}
+/* line 314, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-default.x-rtl {
+  background-image: url(images/form/trigger-rtl.png);
+}
+/* line 319, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-default.x-form-trigger-over {
+  background-position: -22px center;
+}
+/* line 325, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus {
+  background-position: -88px center;
+}
+/* line 330, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger-default.x-form-trigger-focus {
+  background-position: -66px center;
+}
+
+/* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-trigger.x-form-trigger-default.x-form-trigger-click {
+  background-position: -44px center;
+}
+
+/* line 348, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-textfield-default-cell > .x-grid-cell-inner {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+/* line 406, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-clear-trigger {
+  background-image: url(images/form/clear-trigger.png);
+}
+/* line 409, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-clear-trigger.x-rtl {
+  background-image: url(images/form/clear-trigger-rtl.png);
+}
+
+/* line 415, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-search-trigger {
+  background-image: url(images/form/search-trigger.png);
+}
+/* line 418, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
+.x-form-search-trigger.x-rtl {
+  background-image: url(images/form/search-trigger-rtl.png);
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/LoadMask.scss */
@@ -10139,297 +10453,6 @@ ul.x-tagfield-list.x-tagfield-singleselect {
 /* line 50, ../../../../ext/packages/ext-theme-neutral/sass/src/LoadMask.scss */
 .x-rtl.x-mask-msg-text {
   padding: 21px 0 0 0;
-}
-
-/**
- * Creates a visual theme for an Ext.ProgressBar
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {color} [$ui-border-color=$progress-border-color]
- * The border-color of the ProgressBar
- *
- * @param {color} [$ui-background-color=$progress-background-color]
- * The background-color of the ProgressBar
- *
- * @param {color} [$ui-bar-background-color=$progress-bar-background-color]
- * The background-color of the ProgressBar's moving element
- *
- * @param {string/list} [$ui-bar-background-gradient=$progress-bar-background-gradient]
- * The background-gradient of the ProgressBar's moving element. Can be either the name of
- * a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$ui-color-front=$progress-text-color-front]
- * The color of the ProgressBar's text when in front of the ProgressBar's moving element
- *
- * @param {color} [$ui-color-back=$progress-text-color-back]
- * The color of the ProgressBar's text when the ProgressBar's 'moving element is not under it
- *
- * @param {number} [$ui-height=$progress-height]
- * The height of the ProgressBar
- *
- * @param {number} [$ui-border-width=$progress-border-width]
- * The border-width of the ProgressBar
- *
- * @param {number} [$ui-border-radius=$progress-border-radius]
- * The border-radius of the ProgressBar
- *
- * @param {string} [$ui-text-text-align=$progress-text-text-align]
- * The text-align of the ProgressBar's text
- *
- * @param {number} [$ui-text-font-size=$progress-text-font-size]
- * The font-size of the ProgressBar's text
- *
- * @param {string} [$ui-text-font-weight=$progress-text-font-weight]
- * The font-weight of the ProgressBar's text
- *
- * @member Ext.ProgressBar
- */
-/* line 80, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
-.x-progress-default {
-  background-color: #fafafc;
-  border-width: 0;
-  height: 20px;
-  border-color: #37bb9b;
-}
-/* line 92, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
-.x-progress-default .x-progress-bar-default {
-  background-image: none;
-  background-color: #caede4;
-}
-/* line 107, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
-.x-progress-default .x-progress-text {
-  color: #666666;
-  font-weight: bold;
-  font-size: 13px;
-  font-family: helvetica, arial, verdana, sans-serif;
-  text-align: center;
-  line-height: 20px;
-}
-/* line 116, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
-.x-progress-default .x-progress-text-back {
-  color: #666666;
-  line-height: 20px;
-}
-
-/* */
-/* line 127, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
-.x-progressbar-default-cell > .x-grid-cell-inner,
-.x-progressbarwidget-default-cell > .x-grid-cell-inner {
-  padding-top: 2px;
-  padding-bottom: 2px;
-}
-/* line 130, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
-.x-progressbar-default-cell > .x-grid-cell-inner .x-progress-default,
-.x-progressbarwidget-default-cell > .x-grid-cell-inner .x-progress-default {
-  height: 20px;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool {
-  cursor: pointer;
-}
-
-/* line 5, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-img {
-  overflow: hidden;
-  width: 16px;
-  height: 16px;
-  background-image: url(images/tools/tool-sprites.png);
-  margin: 0;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
-}
-/* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-over .x-tool-img {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
-  opacity: 0.6;
-}
-/* line 20, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-pressed .x-tool-img {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
-  opacity: 0.7;
-}
-
-/* line 28, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-placeholder {
-  visibility: hidden;
-}
-
-/* line 32, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-close {
-  background-position: 0 0;
-}
-
-/* line 36, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-minimize {
-  background-position: 0 -16px;
-}
-
-/* line 40, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-maximize {
-  background-position: 0 -32px;
-}
-
-/* line 44, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-restore {
-  background-position: 0 -48px;
-}
-
-/* line 48, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-toggle {
-  background-position: 0 -64px;
-}
-/* line 51, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-panel-collapsed .x-tool-toggle {
-  background-position: 0 -80px;
-}
-
-/* line 56, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-gear {
-  background-position: 0 -96px;
-}
-
-/* line 60, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-prev {
-  background-position: 0 -112px;
-}
-
-/* line 64, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-next {
-  background-position: 0 -128px;
-}
-
-/* line 68, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-pin {
-  background-position: 0 -144px;
-}
-
-/* line 72, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-unpin {
-  background-position: 0 -160px;
-}
-
-/* line 76, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-right {
-  background-position: 0 -176px;
-}
-
-/* line 80, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-left {
-  background-position: 0 -192px;
-}
-
-/* line 84, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-down {
-  background-position: 0 -208px;
-}
-
-/* line 88, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-up {
-  background-position: 0 -224px;
-}
-
-/* line 92, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-refresh {
-  background-position: 0 -240px;
-}
-
-/* line 96, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-plus {
-  background-position: 0 -256px;
-}
-
-/* line 100, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-minus {
-  background-position: 0 -272px;
-}
-
-/* line 104, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-search {
-  background-position: 0 -288px;
-}
-
-/* line 108, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-save {
-  background-position: 0 -304px;
-}
-
-/* line 112, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-help {
-  background-position: 0 -320px;
-}
-
-/* line 116, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-print {
-  background-position: 0 -336px;
-}
-
-/* line 120, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-expand {
-  background-position: 0 -352px;
-}
-
-/* line 124, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-collapse {
-  background-position: 0 -368px;
-}
-
-/* line 128, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-resize {
-  background-position: 0 -384px;
-}
-
-/* line 132, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-move {
-  background-position: 0 -400px;
-}
-
-/* line 137, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-expand-bottom,
-.x-tool-collapse-bottom {
-  background-position: 0 -208px;
-}
-
-/* line 142, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-expand-top,
-.x-tool-collapse-top {
-  background-position: 0 -224px;
-}
-
-/* line 147, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-expand-left,
-.x-tool-collapse-left {
-  background-position: 0 -192px;
-}
-
-/* line 152, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-tool-expand-right,
-.x-tool-collapse-right {
-  background-position: 0 -176px;
-}
-
-/* line 159, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-rtl.x-tool-expand-left, .x-rtl.x-tool-collapse-left {
-  background-position: 0 -176px;
-}
-/* line 164, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
-.x-rtl.x-tool-expand-right, .x-rtl.x-tool-collapse-right {
-  background-position: 0 -192px;
-}
-
-/* line 2, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Header.scss */
-.x-header-draggable .x-header-body,
-.x-header-ghost {
-  cursor: move;
-}
-
-/* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Header.scss */
-.x-header-text {
-  white-space: nowrap;
 }
 
 /**
@@ -16649,6 +16672,404 @@ ul.x-tagfield-list.x-tagfield-singleselect {
 }
 
 /**
+ * Creates a visual theme for spinner field triggers.  Note this mixin only provides
+ * styling for the spinner trigger buttons. The text field portion of the styling must be
+ * created using {@link #extjs-text-field-ui}
+ *
+ * @param {string} $ui
+ * The name of the UI being created. Can not included spaces or special punctuation
+ * (used in CSS class names).
+ *
+ * @param {boolean} [$ui-trigger-vertical=$spinner-trigger-vertical]
+ * `true` to align the up/down triggers vertically.
+ *
+ * @param {number} [$ui-trigger-width=$form-trigger-width]
+ * The width of the triggers.
+ *
+ * @param {number} [$ui-field-height=$form-text-field-height]
+ * The height of the text field that the trigger must fit within.  This does not set the
+ * height of the field, only the height of the triggers.  When {@link #$ui-trigger-vertical}
+ * is true, the available height within the field borders is divided evenly between the
+ * two triggers.
+ *
+ * @param {number/list} [$ui-field-border-width=$form-text-field-border-width]
+ * The border width of the text field that the trigger must fit within.  This does not set
+ * the border of the field, it is only needed so that the border-width of the field can
+ * be subtracted from the trigger height.
+ *
+ * @param {string} [$ui-trigger-vertical-background-image=$spinner-trigger-vertical-background-image]
+ * The background image sprite for vertically aligned spinner triggers
+ *
+ * @param {string} [$ui-trigger-up-background-image='form/spinner-up']
+ * The background image for the "up" trigger when triggers are horizontally aligned
+ *
+ * @param {string} [$ui-trigger-down-background-image='form/spinner-down']
+ * The background image for the "down" trigger when triggers are horizontally aligned
+ *
+ * @param {color} [$ui-trigger-background-color=$form-text-field-background-color]
+ * The background color of the spinner triggers
+ *
+ * @param {boolean} [$ui-classic-border=$form-text-field-classic-border]
+ * `true` to use classic-theme styled border.
+ *
+ * @member Ext.form.trigger.Spinner
+ */
+/* line 59, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-trigger-spinner-default {
+  width: 22px;
+}
+
+/* line 66, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-default {
+  background-image: url(images/form/spinner.png);
+  background-color: white;
+  width: 22px;
+  height: 11px;
+}
+/* line 70, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-default.x-rtl {
+  background-image: url(images/form/spinner-rtl.png);
+}
+
+/* line 102, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-up-default {
+  background-position: 0 0;
+}
+/* line 105, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-up-default.x-form-spinner-over {
+  background-position: -22px 0;
+}
+/* line 107, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-up-default.x-form-spinner-over.x-form-spinner-focus {
+  background-position: -88px 0;
+}
+/* line 112, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-up-default.x-form-spinner-focus {
+  background-position: -66px 0;
+}
+/* line 117, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-up-default.x-form-spinner.x-form-spinner-click {
+  background-position: -44px 0;
+}
+
+/* line 122, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-down-default {
+  background-position: 0 -11px;
+}
+/* line 125, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-down-default.x-form-spinner-over {
+  background-position: -22px -11px;
+}
+/* line 127, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-down-default.x-form-spinner-over.x-form-spinner-focus {
+  background-position: -88px -11px;
+}
+/* line 132, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-down-default.x-form-spinner-focus {
+  background-position: -66px -11px;
+}
+/* line 137, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
+.x-form-spinner-down-default.x-form-spinner.x-form-spinner-click {
+  background-position: -44px -11px;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-tbar-page-number {
+  width: 30px;
+}
+
+/* line 5, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-tbar-page-first {
+  background-image: url(images/grid/page-first.png);
+}
+
+/* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-tbar-page-prev {
+  background-image: url(images/grid/page-prev.png);
+}
+
+/* line 13, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-tbar-page-next {
+  background-image: url(images/grid/page-next.png);
+}
+
+/* line 17, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-tbar-page-last {
+  background-image: url(images/grid/page-last.png);
+}
+
+/* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-tbar-loading {
+  background-image: url(images/grid/refresh.png);
+}
+
+/* line 51, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-rtl.x-tbar-page-first {
+  background-image: url(images/grid/page-last.png);
+}
+/* line 55, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-rtl.x-tbar-page-prev {
+  background-image: url(images/grid/page-next.png);
+}
+/* line 59, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-rtl.x-tbar-page-next {
+  background-image: url(images/grid/page-prev.png);
+}
+/* line 63, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
+.x-rtl.x-tbar-page-last {
+  background-image: url(images/grid/page-first.png);
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
+.x-boundlist {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #f1f2f6;
+  background: white;
+}
+
+/* line 8, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
+.x-boundlist-item {
+  padding: 0 6px;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
+  line-height: 22px;
+  cursor: pointer;
+  cursor: hand;
+  position: relative;
+  /*allow hover in IE on empty items*/
+  border-width: 1px;
+  border-style: dotted;
+  border-color: white;
+}
+
+/* line 24, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
+.x-boundlist-selected {
+  background: #caede4;
+  border-color: #caede4;
+}
+
+/* line 29, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
+.x-boundlist-item-over {
+  background: #dcf3ed;
+  border-color: #dcf3ed;
+}
+
+/* line 34, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
+.x-boundlist-floating {
+  border-top-width: 0;
+}
+
+/* line 38, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
+.x-boundlist-above {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool {
+  cursor: pointer;
+}
+
+/* line 5, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-img {
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  background-image: url(images/tools/tool-sprites.png);
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+}
+/* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-over .x-tool-img {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+}
+/* line 20, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-pressed .x-tool-img {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
+  opacity: 0.7;
+}
+
+/* line 28, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-placeholder {
+  visibility: hidden;
+}
+
+/* line 32, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-close {
+  background-position: 0 0;
+}
+
+/* line 36, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-minimize {
+  background-position: 0 -16px;
+}
+
+/* line 40, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-maximize {
+  background-position: 0 -32px;
+}
+
+/* line 44, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-restore {
+  background-position: 0 -48px;
+}
+
+/* line 48, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-toggle {
+  background-position: 0 -64px;
+}
+/* line 51, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-panel-collapsed .x-tool-toggle {
+  background-position: 0 -80px;
+}
+
+/* line 56, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-gear {
+  background-position: 0 -96px;
+}
+
+/* line 60, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-prev {
+  background-position: 0 -112px;
+}
+
+/* line 64, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-next {
+  background-position: 0 -128px;
+}
+
+/* line 68, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-pin {
+  background-position: 0 -144px;
+}
+
+/* line 72, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-unpin {
+  background-position: 0 -160px;
+}
+
+/* line 76, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-right {
+  background-position: 0 -176px;
+}
+
+/* line 80, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-left {
+  background-position: 0 -192px;
+}
+
+/* line 84, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-down {
+  background-position: 0 -208px;
+}
+
+/* line 88, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-up {
+  background-position: 0 -224px;
+}
+
+/* line 92, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-refresh {
+  background-position: 0 -240px;
+}
+
+/* line 96, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-plus {
+  background-position: 0 -256px;
+}
+
+/* line 100, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-minus {
+  background-position: 0 -272px;
+}
+
+/* line 104, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-search {
+  background-position: 0 -288px;
+}
+
+/* line 108, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-save {
+  background-position: 0 -304px;
+}
+
+/* line 112, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-help {
+  background-position: 0 -320px;
+}
+
+/* line 116, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-print {
+  background-position: 0 -336px;
+}
+
+/* line 120, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-expand {
+  background-position: 0 -352px;
+}
+
+/* line 124, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-collapse {
+  background-position: 0 -368px;
+}
+
+/* line 128, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-resize {
+  background-position: 0 -384px;
+}
+
+/* line 132, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-move {
+  background-position: 0 -400px;
+}
+
+/* line 137, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-expand-bottom,
+.x-tool-collapse-bottom {
+  background-position: 0 -208px;
+}
+
+/* line 142, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-expand-top,
+.x-tool-collapse-top {
+  background-position: 0 -224px;
+}
+
+/* line 147, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-expand-left,
+.x-tool-collapse-left {
+  background-position: 0 -192px;
+}
+
+/* line 152, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-tool-expand-right,
+.x-tool-collapse-right {
+  background-position: 0 -176px;
+}
+
+/* line 159, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-rtl.x-tool-expand-left, .x-rtl.x-tool-collapse-left {
+  background-position: 0 -176px;
+}
+/* line 164, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Tool.scss */
+.x-rtl.x-tool-expand-right, .x-rtl.x-tool-collapse-right {
+  background-position: 0 -192px;
+}
+
+/* line 2, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Header.scss */
+.x-header-draggable .x-header-body,
+.x-header-ghost {
+  cursor: move;
+}
+
+/* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Header.scss */
+.x-header-text {
+  white-space: nowrap;
+}
+
+/**
  * Creates a visual theme for a Panel
  *
  * @param {string} $ui
@@ -19266,143 +19687,304 @@ ul.x-tagfield-list.x-tagfield-singleselect {
   margin-bottom: 0;
 }
 
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
+.x-color-picker {
+  width: 192px;
+  height: 120px;
+  background-color: white;
+  border-color: white;
+  border-width: 0;
+  border-style: solid;
+}
+
+/* line 10, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
+.x-color-picker-item {
+  width: 24px;
+  height: 24px;
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
+  background-color: white;
+  cursor: pointer;
+  padding: 2px;
+}
+
+/* line 22, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
+a.x-color-picker-item:hover {
+  border-color: #8bb8f3;
+  background-color: #f3f4f7;
+}
+
+/* line 27, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
+.x-color-picker-selected {
+  border-color: #8bb8f3;
+  background-color: #f3f4f7;
+}
+
+/* line 32, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
+.x-color-picker-item-inner {
+  line-height: 16px;
+  border-color: #f1f2f6;
+  border-width: 1px;
+  border-style: solid;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-btn-text {
+  background: transparent no-repeat;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 7, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-bold,
+.x-menu-item div.x-edit-bold {
+  background-position: 0 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 13, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-italic,
+.x-menu-item div.x-edit-italic {
+  background-position: -16px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 19, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-underline,
+.x-menu-item div.x-edit-underline {
+  background-position: -32px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 25, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-forecolor,
+.x-menu-item div.x-edit-forecolor {
+  background-position: -160px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 31, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-backcolor,
+.x-menu-item div.x-edit-backcolor {
+  background-position: -176px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 37, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-justifyleft,
+.x-menu-item div.x-edit-justifyleft {
+  background-position: -112px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 43, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-justifyright,
+.x-menu-item div.x-edit-justifyright {
+  background-position: -128px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 49, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-justifycenter,
+.x-menu-item div.x-edit-justifycenter {
+  background-position: -144px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 55, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-insertorderedlist,
+.x-menu-item div.x-edit-insertorderedlist {
+  background-position: -80px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 61, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-insertunorderedlist,
+.x-menu-item div.x-edit-insertunorderedlist {
+  background-position: -96px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 67, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-increasefontsize,
+.x-menu-item div.x-edit-increasefontsize {
+  background-position: -48px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 73, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-decreasefontsize,
+.x-menu-item div.x-edit-decreasefontsize {
+  background-position: -64px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 79, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-sourceedit,
+.x-menu-item div.x-edit-sourceedit {
+  background-position: -192px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 85, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-edit-createlink,
+.x-menu-item div.x-edit-createlink {
+  background-position: -208px 0;
+  background-image: url(images/editor/tb-sprite.png);
+}
+
+/* line 90, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tip .x-tip-bd .x-tip-bd-inner {
+  padding: 5px;
+  padding-bottom: 1px;
+}
+
+/* line 95, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-tb .x-font-select {
+  font-size: 13px;
+  font-family: inherit;
+}
+
+/* line 100, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-wrap textarea {
+  font: normal 13px helvetica, arial, verdana, sans-serif;
+  background-color: white;
+  resize: none;
+}
+
+/* line 2, ../../../../ext/packages/ext-theme-neutral/sass/src/Editor.scss */
+.x-editor .x-form-item-body {
+  padding-bottom: 0;
+}
+
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
+.x-focus-element {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 0px;
+  height: 0px;
+}
+
+/* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
+.x-focus-frame {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 100000000;
+  width: 0px;
+  height: 0px;
+}
+
+/* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
+.x-focus-frame-top,
+.x-focus-frame-bottom,
+.x-focus-frame-left,
+.x-focus-frame-right {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+/* line 28, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
+.x-focus-frame-top,
+.x-focus-frame-bottom {
+  border-top: solid 2px #15428b;
+  height: 2px;
+}
+
+/* line 34, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
+.x-focus-frame-left,
+.x-focus-frame-right {
+  border-left: solid 2px #15428b;
+  width: 2px;
+}
+
 /**
- * Creates a visual theme for "labelable" form items.  Provides visual styling for the
- * Label and error message that can be shared between many types of form fields.
+ * Creates a visual theme for an Ext.ProgressBar
  *
  * @param {string} $ui
  * The name of the UI being created. Can not included spaces or special punctuation
  * (used in CSS class names).
  *
- * @param {color} [$ui-font-color=$form-label-font-color]
- * The text color the label
+ * @param {color} [$ui-border-color=$progress-border-color]
+ * The border-color of the ProgressBar
  *
- * @param {string} [$ui-font-weight=$form-label-font-weight]
- * The font-weight of the label
+ * @param {color} [$ui-background-color=$progress-background-color]
+ * The background-color of the ProgressBar
  *
- * @param {number} [$ui-font-size=$form-label-font-size]
- * The font-size of the label
+ * @param {color} [$ui-bar-background-color=$progress-bar-background-color]
+ * The background-color of the ProgressBar's moving element
  *
- * @param {string} [$ui-font-family=$form-label-font-family]
- * The font-family the label
+ * @param {string/list} [$ui-bar-background-gradient=$progress-bar-background-gradient]
+ * The background-gradient of the ProgressBar's moving element. Can be either the name of
+ * a predefined gradient or a list of color stops. Used as the `$type` parameter for
+ * {@link Global_CSS#background-gradient}.
  *
- * @param {number} [$ui-height=$form-field-height]
- * The height of the label.  This should be the same height as the height of fields that
- * this label ui will be used with.  This does not actually set the height of the label
- * but is used to ensure that the label is centered within the given height.
+ * @param {color} [$ui-color-front=$progress-text-color-front]
+ * The color of the ProgressBar's text when in front of the ProgressBar's moving element
  *
- * @param {number} [$ui-line-height=$form-label-line-height]
- * The line-height of the label
+ * @param {color} [$ui-color-back=$progress-text-color-back]
+ * The color of the ProgressBar's text when the ProgressBar's 'moving element is not under it
  *
- * @param {number} [$ui-horizontal-spacing: $form-label-horizontal-spacing]
- * Horizontal space between the label and the field body when the label is left-aligned.
+ * @param {number} [$ui-height=$progress-height]
+ * The height of the ProgressBar
  *
- * @param {number} [$ui-vertical-spacing: $form-label-vertical-spacing]
- * Vertical space between the label and the field body when the label is top-aligned.
+ * @param {number} [$ui-border-width=$progress-border-width]
+ * The border-width of the ProgressBar
  *
- * @param {number} [$ui-error-icon-background-image=$form-error-icon-background-image]
- * The background-image of the error icon
+ * @param {number} [$ui-border-radius=$progress-border-radius]
+ * The border-radius of the ProgressBar
  *
- * @param {number} [$ui-error-icon-width=$form-error-icon-width]
- * The width of the error icon
+ * @param {string} [$ui-text-text-align=$progress-text-text-align]
+ * The text-align of the ProgressBar's text
  *
- * @param {number} [$ui-error-icon-height=$form-error-icon-height]
- * The height of the error icon
+ * @param {number} [$ui-text-font-size=$progress-text-font-size]
+ * The font-size of the ProgressBar's text
  *
- * @param {number/list} [$ui-error-icon-side-margin=$form-error-icon-side-margin]
- * Margin for error icons when aligned to the side of the field
+ * @param {string} [$ui-text-font-weight=$progress-text-font-weight]
+ * The font-weight of the ProgressBar's text
  *
- * @param {number} [$ui-error-under-icon-spacing=$form-error-under-icon-spacing]
- * The space between the icon and the message for errors that display under the field
- *
- * @param {number/list} [$ui-error-under-padding=$form-error-under-padding]
- * The padding on errors that display under the form field
- *
- * @param {color} [$ui-error-msg-color=$form-error-msg-color]
- * The text color of form error messages
- *
- * @param {string} [$ui-error-msg-font-weight=$form-error-msg-font-weight]
- * The font-weight of form error messages
- *
- * @param {number} [$ui-error-msg-font-size=$form-error-msg-font-size]
- * The font-size of form error messages
- *
- * @param {string} [$ui-error-msg-font-family=$form-error-msg-font-family]
- * The font-family of form error messages
- *
- * @param {number} [$ui-error-msg-line-height=$form-error-msg-line-height]
- * The line-height of form error messages
- *
- * @param {number} [$ui-disabled-opacity=$form-field-disabled-opacity]
- * Opacity of disabled form fields
- *
- * @member Ext.form.Labelable
+ * @member Ext.ProgressBar
  */
-/* line 97, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-item-label-default {
-  color: black;
-  font: normal 13px/17px helvetica, arial, verdana, sans-serif;
-  min-height: 24px;
-  padding-top: 4px;
-  padding-right: 5px;
+/* line 80, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
+.x-progress-default {
+  background-color: #fafafc;
+  border-width: 0;
+  height: 20px;
+  border-color: #37bb9b;
 }
-/* line 107, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-ie8 .x-form-item-label-default {
-  min-height: 20px;
+/* line 92, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
+.x-progress-default .x-progress-bar-default {
+  background-image: none;
+  background-color: #caede4;
 }
-/* line 113, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-item-label-default.x-form-item-label-top {
-  height: 1px;
+/* line 107, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
+.x-progress-default .x-progress-text {
+  color: #666666;
+  font-weight: bold;
+  font-size: 13px;
+  font-family: helvetica, arial, verdana, sans-serif;
+  text-align: center;
+  line-height: 20px;
 }
-/* line 115, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-item-label-default.x-form-item-label-top > .x-form-item-label-inner {
-  padding-top: 4px;
-  padding-bottom: 5px;
-}
-/* line 121, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-item-label-default.x-form-item-label-top-side-error:after {
-  width: 26px;
-}
-
-/* line 126, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-item-body-default {
-  min-height: 24px;
+/* line 116, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
+.x-progress-default .x-progress-text-back {
+  color: #666666;
+  line-height: 20px;
 }
 
-/* line 130, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-invalid-icon-default {
-  width: 16px;
-  height: 16px;
-  margin: 0 5px 0 5px;
-  background: url(images/form/exclamation.png) no-repeat;
+/* */
+/* line 127, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
+.x-progressbar-default-cell > .x-grid-cell-inner,
+.x-progressbarwidget-default-cell > .x-grid-cell-inner {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
-
-/* line 137, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-invalid-under-default {
-  padding: 2px 2px 2px 20px;
-  color: #cf4c35;
-  font: normal 13px/16px helvetica, arial, verdana, sans-serif;
-  background: no-repeat 0 2px;
-  background-image: url(images/form/exclamation.png);
-}
-
-/* line 145, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-error-wrap-default.x-form-error-wrap-side {
-  width: 26px;
-}
-
-/* line 150, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-form-item-default.x-item-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-  opacity: 0.3;
-}
-
-/* line 191, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
-.x-autocontainer-form-item,
-.x-anchor-form-item,
-.x-vbox-form-item,
-.x-table-form-item {
-  margin-bottom: 5px;
+/* line 130, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
+.x-progressbar-default-cell > .x-grid-cell-inner .x-progress-default,
+.x-progressbarwidget-default-cell > .x-grid-cell-inner .x-progress-default {
+  height: 20px;
 }
 
 /**
@@ -20113,229 +20695,6 @@ ul.x-tagfield-list.x-tagfield-singleselect {
 /* line 166, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/column/Column.scss */
 .x-column-header-sort-DESC .x-column-header-text {
   background-image: url(images/grid/sort_desc.png);
-}
-
-/**
- * Creates a visual theme for text fields.  Note this mixin only provides styling
- * for the form field body, The label and error are styled by {@link #extjs-label-ui}.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$ui-height=$form-text-field-height]
- * The height of the text field
- *
- * @param {number} [$ui-font-size=$form-text-field-font-size]
- * The font-size of the text field
- *
- * @param {string} [$ui-font-family=$form-text-field-font-family]
- * The font-family of the text field
- *
- * @param {string} [$ui-font-weight=$form-text-field-font-weight]
- * The font-weight of the text field
- *
- * @param {color} [$ui-color=$form-text-field-color]
- * The color of the text field's input element
- *
- * @param {color} [$ui-background-color=$form-text-field-background-color]
- * The background color of the text field's input element
- *
- * @param {number/list} [$ui-border-width=$form-text-field-border-width]
- * The border width of the text field
- *
- * @param {string/list} [$ui-border-style=$form-text-field-border-style]
- * The border style of the text field
- *
- * @param {color/list} [$ui-border-color=$form-text-field-border-color]
- * The border color of text fields
- *
- * @param {color/list} [$ui-focus-border-color=$form-text-field-focus-border-color]
- * The border color of the text field when focused
- *
- * @param {color} [$ui-invalid-border-color=$form-text-field-invalid-border-color]
- * The border color of the text field when the field value is invalid.
- *
- * @param {number/list} [$ui-border-radius=$form-text-field-border-radius]
- * The border radius of the text field
- *
- * @param {string} [$ui-background-image=$form-text-field-background-image]
- * The background image of the text field's input element
- *
- * @param {number/list} [$ui-padding=$form-text-field-padding]
- * The padding of the text field's input element
- *
- * @param {color} [$ui-empty-color=$form-text-field-empty-color]
- * Text color for of the text field when empty
- *
- * @param {number} [$ui-body-width=$form-text-field-body-width]
- * The default width of the text field's body element (the element that contains the input
- * element and triggers) when the field is not sized explicitly using the {@link #width}
- * config, or sized by it's containing layout.
- *
- * @param {color} [$ui-invalid-background-color=$form-field-invalid-background-color]
- * Background color of the input element when the field value is invalid.
- *
- * @param {string} [$ui-invalid-background-image=$form-field-invalid-background-image]
- * Background image of the input element when the field value is invalid.
- *
- * @param {string} [$ui-invalid-background-repeat=$form-field-invalid-background-repeat]
- * Background repeat of the input element when the field value is invalid.
- *
- * @param {string/list} [$ui-invalid-background-position=$form-field-invalid-background-position]
- * Background position of the input element when the field value is invalid.
- *
- * @param {number} [$ui-trigger-width=$form-trigger-width]
- * The width of the trigger element
- *
- * @param {number/list} [$ui-trigger-border-width=$form-trigger-border-width]
- * The width of the trigger's border
- *
- * @param {color/list} [$ui-trigger-border-color=$form-trigger-border-color]
- * The color of the trigger's border
- *
- * @param {string/list} [$ui-trigger-border-style=$form-trigger-border-style]
- * The style of the trigger's border
- *
- * @param {color} [$ui-trigger-border-color-over=$form-trigger-border-color-over]
- * The color of the trigger's border when hovered
- *
- * @param {color} [$ui-trigger-border-color-focus=$form-trigger-border-color-focus]
- * The color of the trigger's border when the field is focused
- *
- * @param {color} [$ui-trigger-border-color-pressed=$form-trigger-border-color-pressed]
- * The color of the trigger's border when the field is focused and the trigger is hovered
- *
- * @param {string} [$ui-trigger-background-image=$form-trigger-background-image]
- * The default background image for the trigger
- *
- * @param {color} [$ui-trigger-background-color=$form-trigger-background-color]
- * The background color of the trigger element
- *
- * @param {number} [$ui-textarea-line-height=$form-textarea-line-height]
- * The line-height of the textarea element when this mixin is used to style a
- * {@link Ext.form.field.TextArea TextArea}
- *
- * @param {number} [$ui-textarea-body-height=$form-textarea-body-height]
- * The default width of the TextArea's body element (the element that contains the textarea
- * html element when the field is not sized explicitly using the {@link #width}config, or
- * sized by it's containing layout.
- *
- * @param {color} [$ui-file-field-color=$form-file-field-color] The text color of the
- * input element when this mixin is used to style a {@link Ext.form.field.File File Field}
- *
- * @param {boolean} [$ui-classic-border=$form-text-field-classic-border]
- * `true` to use classic-theme styled border.
- *
- * @member Ext.form.field.Text
- */
-/* line 193, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-text-field-body-default {
-  min-width: 170px;
-  max-width: 170px;
-}
-
-/* line 213, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-wrap-default {
-  border-width: 1px;
-  border-style: solid;
-  border-color: #cfd0d3 #e2e2e4 #e2e2e4;
-}
-/* line 221, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-wrap-default.x-form-trigger-wrap-focus {
-  border-color: #3892d3;
-}
-/* line 225, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-wrap-default.x-form-trigger-wrap-invalid {
-  border-color: #cf4c35;
-}
-
-/* line 250, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-text-default {
-  color: black;
-  padding: 4px 6px 3px 6px;
-  background-color: white;
-  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
-  min-height: 22px;
-}
-/* line 264, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-ie8 .x-form-text-default {
-  min-height: 15px;
-}
-/* line 270, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-text-default.x-form-textarea {
-  line-height: 15px;
-  min-height: 60px;
-}
-/* line 275, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-ie8 .x-form-text-default.x-form-textarea {
-  min-height: 53px;
-}
-/* line 282, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-text-default.x-form-text-file {
-  color: gray;
-}
-
-/* line 287, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-empty-field-default {
-  color: gray;
-}
-
-/* line 291, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-invalid-field-default {
-  background-color: white;
-}
-
-/* line 302, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-default {
-  background: white url(images/form/trigger.png) no-repeat;
-  background-position: 0 center;
-  width: 22px;
-}
-/* line 314, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-default.x-rtl {
-  background-image: url(images/form/trigger-rtl.png);
-}
-/* line 319, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-default.x-form-trigger-over {
-  background-position: -22px center;
-}
-/* line 325, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus {
-  background-position: -88px center;
-}
-/* line 330, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger-default.x-form-trigger-focus {
-  background-position: -66px center;
-}
-
-/* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-trigger.x-form-trigger-default.x-form-trigger-click {
-  background-position: -44px center;
-}
-
-/* line 348, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-textfield-default-cell > .x-grid-cell-inner {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-/* line 406, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-clear-trigger {
-  background-image: url(images/form/clear-trigger.png);
-}
-/* line 409, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-clear-trigger.x-rtl {
-  background-image: url(images/form/clear-trigger-rtl.png);
-}
-
-/* line 415, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-search-trigger {
-  background-image: url(images/form/search-trigger.png);
-}
-/* line 418, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
-.x-form-search-trigger.x-rtl {
-  background-image: url(images/form/search-trigger-rtl.png);
 }
 
 /* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/layout/container/Border.scss */
@@ -25631,200 +25990,6 @@ div.x-border-layout-ct {
   background-position: -15px -15px;
 }
 
-/**
- * Creates a visual theme for spinner field triggers.  Note this mixin only provides
- * styling for the spinner trigger buttons. The text field portion of the styling must be
- * created using {@link #extjs-text-field-ui}
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {boolean} [$ui-trigger-vertical=$spinner-trigger-vertical]
- * `true` to align the up/down triggers vertically.
- *
- * @param {number} [$ui-trigger-width=$form-trigger-width]
- * The width of the triggers.
- *
- * @param {number} [$ui-field-height=$form-text-field-height]
- * The height of the text field that the trigger must fit within.  This does not set the
- * height of the field, only the height of the triggers.  When {@link #$ui-trigger-vertical}
- * is true, the available height within the field borders is divided evenly between the
- * two triggers.
- *
- * @param {number/list} [$ui-field-border-width=$form-text-field-border-width]
- * The border width of the text field that the trigger must fit within.  This does not set
- * the border of the field, it is only needed so that the border-width of the field can
- * be subtracted from the trigger height.
- *
- * @param {string} [$ui-trigger-vertical-background-image=$spinner-trigger-vertical-background-image]
- * The background image sprite for vertically aligned spinner triggers
- *
- * @param {string} [$ui-trigger-up-background-image='form/spinner-up']
- * The background image for the "up" trigger when triggers are horizontally aligned
- *
- * @param {string} [$ui-trigger-down-background-image='form/spinner-down']
- * The background image for the "down" trigger when triggers are horizontally aligned
- *
- * @param {color} [$ui-trigger-background-color=$form-text-field-background-color]
- * The background color of the spinner triggers
- *
- * @param {boolean} [$ui-classic-border=$form-text-field-classic-border]
- * `true` to use classic-theme styled border.
- *
- * @member Ext.form.trigger.Spinner
- */
-/* line 59, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-trigger-spinner-default {
-  width: 22px;
-}
-
-/* line 66, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-default {
-  background-image: url(images/form/spinner.png);
-  background-color: white;
-  width: 22px;
-  height: 11px;
-}
-/* line 70, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-default.x-rtl {
-  background-image: url(images/form/spinner-rtl.png);
-}
-
-/* line 102, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-up-default {
-  background-position: 0 0;
-}
-/* line 105, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-up-default.x-form-spinner-over {
-  background-position: -22px 0;
-}
-/* line 107, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-up-default.x-form-spinner-over.x-form-spinner-focus {
-  background-position: -88px 0;
-}
-/* line 112, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-up-default.x-form-spinner-focus {
-  background-position: -66px 0;
-}
-/* line 117, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-up-default.x-form-spinner.x-form-spinner-click {
-  background-position: -44px 0;
-}
-
-/* line 122, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-down-default {
-  background-position: 0 -11px;
-}
-/* line 125, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-down-default.x-form-spinner-over {
-  background-position: -22px -11px;
-}
-/* line 127, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-down-default.x-form-spinner-over.x-form-spinner-focus {
-  background-position: -88px -11px;
-}
-/* line 132, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-down-default.x-form-spinner-focus {
-  background-position: -66px -11px;
-}
-/* line 137, ../../../../ext/packages/ext-theme-neutral/sass/src/form/trigger/Spinner.scss */
-.x-form-spinner-down-default.x-form-spinner.x-form-spinner-click {
-  background-position: -44px -11px;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-tbar-page-number {
-  width: 30px;
-}
-
-/* line 5, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-tbar-page-first {
-  background-image: url(images/grid/page-first.png);
-}
-
-/* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-tbar-page-prev {
-  background-image: url(images/grid/page-prev.png);
-}
-
-/* line 13, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-tbar-page-next {
-  background-image: url(images/grid/page-next.png);
-}
-
-/* line 17, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-tbar-page-last {
-  background-image: url(images/grid/page-last.png);
-}
-
-/* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-tbar-loading {
-  background-image: url(images/grid/refresh.png);
-}
-
-/* line 51, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-rtl.x-tbar-page-first {
-  background-image: url(images/grid/page-last.png);
-}
-/* line 55, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-rtl.x-tbar-page-prev {
-  background-image: url(images/grid/page-next.png);
-}
-/* line 59, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-rtl.x-tbar-page-next {
-  background-image: url(images/grid/page-prev.png);
-}
-/* line 63, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Paging.scss */
-.x-rtl.x-tbar-page-last {
-  background-image: url(images/grid/page-first.png);
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
-.x-boundlist {
-  border-width: 1px;
-  border-style: solid;
-  border-color: #f1f2f6;
-  background: white;
-}
-
-/* line 8, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
-.x-boundlist-item {
-  padding: 0 6px;
-  font: normal 13px helvetica, arial, verdana, sans-serif;
-  line-height: 22px;
-  cursor: pointer;
-  cursor: hand;
-  position: relative;
-  /*allow hover in IE on empty items*/
-  border-width: 1px;
-  border-style: dotted;
-  border-color: white;
-}
-
-/* line 24, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
-.x-boundlist-selected {
-  background: #caede4;
-  border-color: #caede4;
-}
-
-/* line 29, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
-.x-boundlist-item-over {
-  background: #dcf3ed;
-  border-color: #dcf3ed;
-}
-
-/* line 34, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
-.x-boundlist-floating {
-  border-top-width: 0;
-}
-
-/* line 38, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
-.x-boundlist-above {
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-}
-
 /* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 .x-datepicker {
   border-width: 1px;
@@ -26118,171 +26283,6 @@ a.x-monthpicker-yearnav-button:hover {
 /* line 5, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Date.scss */
 .x-form-date-trigger.x-rtl {
   background-image: url(images/form/date-trigger-rtl.png);
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
-.x-color-picker {
-  width: 192px;
-  height: 120px;
-  background-color: white;
-  border-color: white;
-  border-width: 0;
-  border-style: solid;
-}
-
-/* line 10, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
-.x-color-picker-item {
-  width: 24px;
-  height: 24px;
-  border-width: 1px;
-  border-color: white;
-  border-style: solid;
-  background-color: white;
-  cursor: pointer;
-  padding: 2px;
-}
-
-/* line 22, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
-a.x-color-picker-item:hover {
-  border-color: #8bb8f3;
-  background-color: #f3f4f7;
-}
-
-/* line 27, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
-.x-color-picker-selected {
-  border-color: #8bb8f3;
-  background-color: #f3f4f7;
-}
-
-/* line 32, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Color.scss */
-.x-color-picker-item-inner {
-  line-height: 16px;
-  border-color: #f1f2f6;
-  border-width: 1px;
-  border-style: solid;
-}
-
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-btn-text {
-  background: transparent no-repeat;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 7, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-bold,
-.x-menu-item div.x-edit-bold {
-  background-position: 0 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 13, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-italic,
-.x-menu-item div.x-edit-italic {
-  background-position: -16px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 19, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-underline,
-.x-menu-item div.x-edit-underline {
-  background-position: -32px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 25, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-forecolor,
-.x-menu-item div.x-edit-forecolor {
-  background-position: -160px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 31, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-backcolor,
-.x-menu-item div.x-edit-backcolor {
-  background-position: -176px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 37, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-justifyleft,
-.x-menu-item div.x-edit-justifyleft {
-  background-position: -112px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 43, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-justifyright,
-.x-menu-item div.x-edit-justifyright {
-  background-position: -128px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 49, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-justifycenter,
-.x-menu-item div.x-edit-justifycenter {
-  background-position: -144px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 55, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-insertorderedlist,
-.x-menu-item div.x-edit-insertorderedlist {
-  background-position: -80px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 61, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-insertunorderedlist,
-.x-menu-item div.x-edit-insertunorderedlist {
-  background-position: -96px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 67, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-increasefontsize,
-.x-menu-item div.x-edit-increasefontsize {
-  background-position: -48px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 73, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-decreasefontsize,
-.x-menu-item div.x-edit-decreasefontsize {
-  background-position: -64px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 79, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-sourceedit,
-.x-menu-item div.x-edit-sourceedit {
-  background-position: -192px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 85, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-edit-createlink,
-.x-menu-item div.x-edit-createlink {
-  background-position: -208px 0;
-  background-image: url(images/editor/tb-sprite.png);
-}
-
-/* line 90, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tip .x-tip-bd .x-tip-bd-inner {
-  padding: 5px;
-  padding-bottom: 1px;
-}
-
-/* line 95, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-tb .x-font-select {
-  font-size: 13px;
-  font-family: inherit;
-}
-
-/* line 100, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-wrap textarea {
-  font: normal 13px helvetica, arial, verdana, sans-serif;
-  background-color: white;
-  resize: none;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/view/DropZone.scss */

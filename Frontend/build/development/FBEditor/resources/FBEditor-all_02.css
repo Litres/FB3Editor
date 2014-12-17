@@ -3452,6 +3452,12 @@
   border-width: 5px !important;
 }
 
+/* line 1, ../../../../ext/packages/fb3-theme-green/sass/src/form/field/HtmlEditor.scss */
+.x-html-editor-container {
+  border: 1px solid;
+  border-color: #cfd0d3 #e2e2e4 #e2e2e4;
+}
+
 /* line 1, ../../../../ext/packages/fb3-theme-green/sass/src/grid/header/Container.scss */
 .x-grid-header-ct {
   border: 1px solid #cfd0d3;
@@ -3497,12 +3503,6 @@
   border: 1px solid;
   border-color: #cfd0d3 #e2e2e4 #e2e2e4;
   height: 24px;
-}
-
-/* line 1, ../../../../ext/packages/fb3-theme-green/sass/src/form/field/HtmlEditor.scss */
-.x-html-editor-container {
-  border: 1px solid;
-  border-color: #cfd0d3 #e2e2e4 #e2e2e4;
 }
 
 /* line 1, ../../../../ext/packages/fb3-theme-green/sass/src/resizer/Resizer.scss */

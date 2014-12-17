@@ -28,16 +28,23 @@ Ext.define(
 			converter = FBEditor.converter.desc.Data;
 			data = converter.toForm(df);
 			console.log(data);
+			Ext.suspendLayouts();
 			view.fireEvent('reset');
 			form.setValues(data);
-			//*Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
-			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
+			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
+			Ext.getCmp('form-desc-title').down('form-desc-title-alt').fireEvent('loadData', data['title-alt']);
+			Ext.getCmp('form-desc-periodical').down('form-desc-title-alt').
+				fireEvent('loadData', data['periodical-title-alt']);
 			Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations['relations-subject']);
+			Ext.getCmp('form-desc-classification-udk').fireEvent('loadData', data['classification-udk']);
+			Ext.getCmp('form-desc-classification-bbk').fireEvent('loadData', data['classification-bbk']);
+			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
 			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);
 			me.expandFieldset(data);
+			Ext.resumeLayouts(true);
 		},
 
 		/**
@@ -52,7 +59,7 @@ Ext.define(
 
 			// передаем событие resetFields всем необходимым компонентам
 			fieldContainers = view.query('[name=form-desc-plugin-fieldcontainerreplicator],' +
-			                             'form-desc-title, fieldset');
+			                             'form-desc-title, fieldset, form-desc-relations-subject-link');
 			Ext.each(
 				fieldContainers,
 			    function (item)

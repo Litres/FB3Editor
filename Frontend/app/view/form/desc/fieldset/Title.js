@@ -33,6 +33,7 @@ Ext.define(
 					items: [
 						{
 							xtype: 'form-desc-title',
+							id: 'form-desc-title',
 							name: 'title',
 							layout: 'anchor',
 							defaults: {

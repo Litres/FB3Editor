@@ -9,6 +9,9 @@ Ext.define(
 	'FBEditor.view.form.desc.title.Title',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		requires: [
+			'FBEditor.view.form.desc.title.alt.Alt'
+		],
 		xtype: 'form-desc-title',
 
 		/**
@@ -49,29 +52,9 @@ Ext.define(
 			}
 			items.push(
 				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					defaults: {
-						anchor: '100%',
-						flex: 1,
-						labelWidth: 160,
-						labelAlign: 'right'
-					},
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: name + '-alt',
-						btnStyle: {
-							margin: '3px 0 0 5px'
-						}
-					},
-					items: [
-						{
-							xtype: 'textfield',
-							name: name + '-alt',
-							fieldLabel: me.translateText.alt,
-							cls: 'field-optional'
-						}
-					]
+					xtype: 'form-desc-title-alt',
+					fieldName: name,
+					fieldLabelAlt: me.translateText.alt
 				}
 			);
 			me.items = items;

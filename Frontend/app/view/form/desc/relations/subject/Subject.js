@@ -19,7 +19,6 @@ Ext.define(
 			id: 'ID',
 			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
-			link: 'Тип связи',
 			firstName: 'Имя',
 			middleName: 'Отчество (второе имя)',
 			lastName: 'Фамилия',
@@ -50,73 +49,88 @@ Ext.define(
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
-							flex: 1,
 							layout: 'anchor',
-							defaults: {
-								anchor: '100%',
-								labelWidth: 160,
-								labelAlign: 'right',
-								xtype: 'textfield'
-							},
+							flex: 1,
 							items: [
 								{
-									xtype: 'displayfield',
-									fieldLabel: me.translateText.id,
-									name: 'relations-subject-id',
-									allowBlank: false,
-									editable: false,
-									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-									regexText: me.translateText.idError
+									xtype: 'desc-fieldcontainer',
+									layout: 'hbox',
+									items: [
+										{
+											xtype: 'desc-fieldcontainer',
+											flex: 1,
+											layout: 'anchor',
+											defaults: {
+												anchor: '100%',
+												labelWidth: 160,
+												labelAlign: 'right',
+												xtype: 'textfield'
+											},
+											items: [
+												{
+													xtype: 'displayfield',
+													fieldLabel: me.translateText.id,
+													name: 'relations-subject-id',
+													allowBlank: false,
+													editable: false,
+													regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+													regexText: me.translateText.idError
+												},
+												{
+													xtype: 'textfieldclear',
+													allowBlank: false,
+													fieldLabel: me.translateText.lastName,
+													name: 'relations-subject-last-name'
+												},
+												{
+													fieldLabel: me.translateText.firstName,
+													name: 'relations-subject-first-name',
+													cls: 'field-optional'
+												},
+												{
+													fieldLabel: me.translateText.middleName,
+													name: 'relations-subject-middle-name',
+													cls: 'field-optional'
+												}/*,
+												 {
+												 fieldLabel: me.translateText.desc,
+												 name: 'relations-subject-description',
+												 cls: 'field-optional'
+												 }*/
+											]
+										},
+										{
+											xtype: 'fieldcontainer',
+											width: 50
+										},
+										{
+											xtype: 'desc-fieldcontainer',
+											flex: 1,
+											layout: 'anchor',
+											items: [
+												{
+													xtype: 'form-desc-title',
+													name: 'relations-subject-title',
+													layout: 'anchor',
+													enableSub: false,
+													translateText: {
+														main: me.translateText.titleMain,
+														alt: me.translateText.titleAlt
+													},
+													defaults: {
+														anchor: '100%',
+														labelWidth: 160,
+														labelAlign: 'right'
+													}
+												}
+											]
+										}
+									]
 								},
 								{
-									xtype: 'textfieldclear',
-									allowBlank: false,
-									fieldLabel: me.translateText.lastName,
-									name: 'relations-subject-last-name'
-								},
-								{
-									fieldLabel: me.translateText.firstName,
-									name: 'relations-subject-first-name',
-									cls: 'field-optional'
-								},
-								{
-									fieldLabel: me.translateText.middleName,
-									name: 'relations-subject-middle-name',
-									cls: 'field-optional'
-								},
-								{
-									xtype: 'form-desc-relations-subject-link'
-								}/*,
-								{
-									fieldLabel: me.translateText.desc,
-									name: 'relations-subject-description',
-									cls: 'field-optional'
-								}*/
-							]
-						},
-						{
-							xtype: 'fieldcontainer',
-							width: 50
-						},
-						{
-							xtype: 'desc-fieldcontainer',
-							flex: 1,
-							layout: 'anchor',
-							items: [
-								{
-									xtype: 'form-desc-title',
-									name: 'relations-subject-title',
-									layout: 'anchor',
-									enableSub: false,
-									translateText: {
-										main: me.translateText.titleMain,
-										alt: me.translateText.titleAlt
-									},
-									defaults: {
-										anchor: '100%',
-										labelWidth: 160,
-										labelAlign: 'right'
-									}
+									xtype: 'form-desc-relations-subject-link',
+									labelWidth: 160,
+									labelAlign: 'right'
 								}
 							]
 						}

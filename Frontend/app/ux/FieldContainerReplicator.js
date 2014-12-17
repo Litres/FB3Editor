@@ -277,16 +277,19 @@ Ext.define(
 		 * @private
 		 * Вкладывает поля.
 		 * @param {Ext.button.Button} Кнопка вложения.
+		 * @return {Ext.container.Container} Возвращает вложенный контейнер.
 		 */
 		putFields: function (btn)
 		{
 			var me = this,
-				container = btn.ownerCt.ownerCt.ownerCt,
 				putStyle = me.putStyle,
+				container,
 				removeBtn,
 				replicatorId,
 				clone;
 
+			btn = btn || me.getBtnPut();
+			container = btn.ownerCt.ownerCt.ownerCt;
 			replicatorId = container.replicatorId + '-child';
 			clone = container.cloneConfig(
 				{
@@ -297,6 +300,8 @@ Ext.define(
 			container.add(clone);
 			removeBtn = clone.query('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']')[0];
 			removeBtn.enable();
+
+			return clone;
 		},
 
 		/**
