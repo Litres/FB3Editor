@@ -45,7 +45,7 @@ Ext.define(
 
 		/**
 		 * Возвращает описание книги.
-		 * @param {FBEditor.FB3.rels.Book} Книга.
+		 * @param {FBEditor.FB3.rels.Book} book Книга.
 		 * @return {Object} Описание книги.
 		 */
 		getDesc: function (book)
@@ -55,7 +55,7 @@ Ext.define(
 
 		/**
 		 * Возвращает список тел книги.
-		 * @param {FBEditor.FB3.rels.Book} Книга.
+		 * @param {FBEditor.FB3.rels.Book} book Книга.
 		 * @return {FBEditor.FB3.rels.Body[]} Список тел книги.
 		 */
 		getBodies: function (book)
@@ -65,7 +65,7 @@ Ext.define(
 
 		/**
 		 * Возвращает содержимое тела книги.
-		 * @param {FBEditor.FB3.rels.Body} Тело книги.
+		 * @param {FBEditor.FB3.rels.Body} body Тело книги.
 		 * @return {String} Содержимое тела книги.
 		 */
 		getContent: function (body)
@@ -75,12 +75,42 @@ Ext.define(
 
 		/**
 		 * Возвращает список изображений для тела книги.
-		 * @param {FBEditor.FB3.rels.Body} Тело книги.
+		 * @param {FBEditor.FB3.rels.Body} body Тело книги.
 		 * @return {FBEditor.FB3.rels.Image[]} Список изображений.
 		 */
 		getImages: function (body)
 		{
 			throw Error('Не реализован метод FB3.InterfaceStructure#getImages');
+		},
+
+		/**
+		 * Устанавливает описание книги.
+		 * @param {FBEditor.FB3.rels.Book} book Книга.
+		 * @param {String} data
+		 */
+		setDesc: function (book, data)
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#setDesc');
+		},
+
+		/**
+		 * Устанавливает содержимое тела книги.
+		 * @param {FBEditor.FB3.rels.Body} body Тело книги.
+		 * @param {String} Содержимое тела книги.
+		 */
+		setContent: function (body, data)
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#setContent');
+		},
+
+		/**
+		 * Устанавливает список изображений для тела книги.
+		 * @param {FBEditor.FB3.rels.Body} body Тело книги.
+		 * @param {FBEditor.FB3.rels.Image[]} Список изображений.
+		 */
+		setImages: function (body, data)
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#setImages');
 		}
 	}
 );

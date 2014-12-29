@@ -34,6 +34,19 @@ Ext.define(
 		},
 
 		/**
+		 * Преобразует объект json в строку xml.
+		 * @param {Object} json Объект json.
+		 * @return {String} Строка xml.
+		 */
+		jsonToXml: function (json)
+		{
+			var me = this,
+				x2js = me.x2js || me.createX2Js();
+
+			return x2js.json2xml_str(json);
+		},
+
+		/**
 		 * @private
 		 * Создает объект внешней библиотеки.
 		 * @return {X2JS} Внешня библиотека.

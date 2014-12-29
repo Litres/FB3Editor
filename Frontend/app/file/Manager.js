@@ -12,7 +12,9 @@ Ext.define(
 			'FBEditor.file.File',
 			'FBEditor.file.Zip',
 			'FBEditor.FB3.File',
-		    'FBEditor.FB3.Structure'
+		    'FBEditor.FB3.Structure',
+		    'FBEditor.util.xml.Jsxml',
+		    'FBEditor.xsl.Body'
 		],
 
 		/**
@@ -46,11 +48,12 @@ Ext.define(
 								bodies,
 								images,
 								contentBody,
-								contentTypes;
+								contentTypes,
+								xslBody;
 
 							try
 							{
-								me.fb3file = Ext.create('FBEditor.FB3.File', data);
+								me.fb3file = Ext.create('FBEditor.FB3.File', {file: file.file, content: data});
 								structure = me.fb3file.getStructure();
 								thumb = structure.getThumb();
 								contentTypes = structure.getContentTypes();
@@ -87,6 +90,11 @@ Ext.define(
 									}
 								);
 							}
+							xslBody = FBEditor.xsl.Body.getXmlToHtml();
+							contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
+							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
+							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
+							console.log(contentBody);
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
 						}
@@ -109,7 +117,34 @@ Ext.define(
 			file = evt.target.files.length ? Ext.create('FBEditor.file.File', evt.target.files[0]) : null;
 
 			return file;
-		}
+		},
 
+		/**
+		 * Сохраняет книгу FB3 в файле.
+		 * @param {Object} data Данные книги.
+		 * @param {Function} fn Функция обратного вызова.
+		 */
+		saveFB3: function (data, fn)
+		{
+			var me = this,
+				fb3file = me.fb3file,
+				blob,
+				fs;
+
+			if (fb3file)
+			{
+				fb3file.updateStructure(data);
+			}
+			else
+			{
+				fb3file = Ext.create('FBEditor.FB3.File', data);
+				fb3file.createStructure();
+			}
+			me.fb3file = fb3file;
+			blob = fb3file.generateBlob();
+			fs = window.saveAs(blob, fb3file.getName());
+			fs.onwriteend = fn;
+			fs.onabort = fn;
+		}
 	}
 );

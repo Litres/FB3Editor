@@ -9,6 +9,9 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 
+		defaultContent: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+			'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>',
+
 		/**
 		 * @private
 		 * @property {FBEditor.FB3.rels.Image[]} Изображения книги.
@@ -24,9 +27,12 @@ Ext.define(
 			if (!rels)
 			{
 				json = me.getJson();
-				rels = json.Relationships.Relationship;
-				rels = Ext.isArray(rels) ? rels : [rels];
-				rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+				rels = json.Relationships.Relationship || null;
+				if (rels)
+				{
+					rels = Ext.isArray(rels) ? rels : [rels];
+					rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+				}
 			}
 
 			return rels;
@@ -41,11 +47,10 @@ Ext.define(
 			var me = this,
 				images = me.images,
 				parentRelsDir = me.getParentRelsDir(),
-				rels;
-
-			if (!images)
-			{
 				rels = me.getRels();
+
+			if (!images && rels)
+			{
 				images = rels[FBEditor.FB3.rels.RelType.image];
 				images = Ext.isArray(images) ? images : [images];
 				Ext.each(

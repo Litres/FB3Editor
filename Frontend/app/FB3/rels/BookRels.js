@@ -9,6 +9,12 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 
+		defaultContent: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+			'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+                '<Relationship Id="rId1" Type="http://www.fictionbook.org/FictionBook3/relationships/body" ' +
+		                'Target="body.xml"/>' +
+            '</Relationships>',
+
 		/**
 		 * @private
 		 * @property {FBEditor.FB3.rels.Body[]} Содержимое книги (может быть подшивкой из нескольких книг).

@@ -105,6 +105,60 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает данные в виде строки xml.
+		 * @return {String} строка xml.
+		 */
+		getXml: function ()
+		{
+			var me = this,
+				xml,
+				data;
+
+			data = me.getValues();
+			data = {
+				'fb3-description': {
+					title: {
+						main: data['title-main'],
+						sub: data['title-sub']
+					},
+					'fb3-relations': [
+						{
+							subject: {
+								_id: '0dad1004-1430-102c-96f3-af3a14b75ca4',
+								_link: 'author',
+								title: {
+									main: ''
+								},
+								'last-name': ''
+							}
+						}
+					],
+					'fb3-classification': {
+						class: {
+							_contents: 'part',
+							__text: 'manual'
+						},
+						subject: 'sci_biology'
+					},
+					lang: 'ru',
+					'document-info': {
+						_created: '2008-12-05T15:10:00',
+						_updated: '2008-12-05T19:56:00'
+					}
+				}
+			};
+			data['fb3-description']['_xmlns'] = 'http://www.fictionbook.org/FictionBook3/description';
+			data['fb3-description']['_id'] = '';
+			data['fb3-description']['_version'] = '1.0';
+			console.log('desc data', data);
+			xml = FBEditor.util.xml.Json.jsonToXml(data);
+			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
+			console.log(xml);
+
+			return xml;
 		}
 	}
 );

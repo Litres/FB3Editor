@@ -46,25 +46,49 @@ Ext.define(
 		fb3file: null,
 
 		/**
-		 * Создает структуру архива.
 		 * @param {FBEditor.FB3.File} fb3file Файл FB3.
 		 */
 		constructor: function (fb3file)
+		{
+			var me = this;
+
+			me.fb3file = fb3file;
+		},
+
+		/**
+		 * Создает структуру новой книги.
+		 * @return {FBEditor.FB3.Structure}
+		 */
+		create: function ()
 		{
 			var me = this,
 				rels = me.rels,
 				contentTypes = me.contentTypes;
 
-			me.fb3file = fb3file;
+			contentTypes.rel = Ext.create('FBEditor.FB3.rels.ContentTypes', me, contentTypes.file);
+			rels.rel = Ext.create('FBEditor.FB3.rels.Rels', me, rels.file);
+
+			return me;
+		},
+
+		/**
+		 * Загружает структуру книги.
+		 * @return {FBEditor.FB3.Structure}
+		 */
+		load: function ()
+		{
+			var me = this;
+
 			if (me.valid())
 			{
-				contentTypes.rel = Ext.create('FBEditor.FB3.rels.ContentTypes', me, contentTypes.file);
-				rels.rel = Ext.create('FBEditor.FB3.rels.Rels', me, rels.file);
+				me.create();
 			}
 			else
 			{
 				throw Error('Ошибка структуры архива');
 			}
+
+			return me;
 		},
 
 		getContentTypes: function ()
@@ -113,6 +137,21 @@ Ext.define(
 		getImages: function (body)
 		{
 			return body.getRels().getImages();
+		},
+
+		setDesc: function (book, data)
+		{
+			book.setDesc(data);
+		},
+
+		setContent: function (body, data)
+		{
+			body.setContent(data);
+		},
+
+		setImages: function (body, data)
+		{
+			body.setImages(data);
 		},
 
 		/**

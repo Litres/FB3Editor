@@ -48,6 +48,31 @@ Ext.define(
 				zip = me.zip;
 
 			return zip.files;
+		},
+
+		/**
+		 * Генерирует архив в Blob.
+		 * @return {Blob} Данные Blob.
+		 */
+		generateBlob: function ()
+		{
+			var me = this,
+				zip = me.zip;
+
+			return zip.generate({type: 'blob'});
+		},
+
+		/**
+		 * Добавляет или обновляет файл в архиве.
+		 * @param {String} name Имя файла.
+		 * @param {String} data Содержимое файла
+		 */
+		file: function (name, data)
+		{
+			var me = this,
+				zip = me.zip;
+
+			zip.file(name, data);
 		}
 	}
 );

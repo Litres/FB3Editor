@@ -9,6 +9,10 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 
+		defaultContent: '<?xml version="1.0" encoding="UTF-8"?>' +
+			'<fb3-description xmlns="http://www.fictionbook.org/FictionBook3/description" ' +
+			'id="29f8c76a-141c-102c-a3bc-9f4786c95f7d" version="1.0"></fb3-description>',
+
 		/**
 		 * @private
 		 * @property {Object} Описание книги.
@@ -65,6 +69,17 @@ Ext.define(
 			}
 
 			return desc;
+		},
+
+		/**
+		 * Устанавливает описание книги.
+		 * @param {String} data
+		 */
+		setDesc: function (data)
+		{
+			var me = this;
+
+			me.setFileContent(data);
 		}
 	}
 );

@@ -17,6 +17,19 @@ Ext.define(
 		    'FBEditor.FB3.rels.BodyRels'
 		],
 
+		defaultContent: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+            '<Relationship Id="rId0" ' +
+	                'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" ' +
+	                'Target="cover.jpg"/>' +
+            '<Relationship Id="rId1" ' +
+	                'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" ' +
+	                'Target="meta/core.xml"/>' +
+            '<Relationship Id="rId2" ' +
+	                'Type="http://www.fictionbook.org/FictionBook3/relationships/Book" ' +
+	                'Target="fb3/description.xml"/>' +
+		    '</Relationships>',
+
 		/**
 		 * @private
 		 * @property {Object} Обложка.
@@ -44,6 +57,35 @@ Ext.define(
 
 			me.callParent(arguments);
 			me.books = me.getBooks();
+		},
+
+		create: function (structure, fileName)
+		{
+			var me = this,
+				fb3file = structure.getFb3file(),
+				zip;
+
+			// создаем необходимые пустые файлы для структуры
+			zip = fb3file.zip;
+			zip.file('meta/core.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\
+				<cp:coreProperties\
+					xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"\
+					xmlns:dc="http://purl.org/dc/elements/1.1/"\
+					xmlns:dcterms="http://purl.org/dc/terms/"\
+					xmlns:dcmitype="http://purl.org/dc/dcmitype/">\
+				    <dc:title></dc:title>\
+					<dc:subject></dc:subject>\
+				    <dc:creator></dc:creator>\
+					<dc:description></dc:description>\
+					<cp:revision></cp:revision>\
+					<cp:contentStatus></cp:contentStatus>\
+					<cp:category></cp:category>\
+					<dcterms:modified></dcterms:modified>\
+					<dcterms:created></dcterms:created>\
+				</cp:coreProperties>');
+			zip.file('fb3/body.xml');
+			zip.file('cover.jpg');
+			me.callParent(arguments);
 		},
 
 		getRels: function ()

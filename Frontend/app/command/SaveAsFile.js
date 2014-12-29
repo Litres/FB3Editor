@@ -12,15 +12,56 @@ Ext.define(
 		execute: function ()
 		{
 			var me = this,
-				data,
+				btn = me.data.btn,
+				content = me.data.content,
+				desc = me.data.desc,
+				fb3data,
 				result;
 
-			data = me.data;
-			var b = new Blob(["Содержиоме книги FB3"]);
-			console.log(b);
-			var fs = window.saveAs(b, "file_name");
-			console.log(fs);
-			//result = FBEditor.file.Manager.saveFB3(data.evt);
+			//btn.disable();
+			try
+			{
+				fb3data = {
+					books: [
+						{
+							desc: desc.getXml(),
+							bodies: [
+								{
+									content: content.getXml(),
+									images: []
+								}
+							]
+						}
+					]
+				};
+				result = FBEditor.file.Manager.saveFB3(
+					fb3data,
+				    function ()
+				    {
+					    btn.enable();
+				    }
+				);
+			}
+			catch (e)
+			{
+				btn.enable();
+				Ext.log(
+					{
+						level: 'error',
+						msg: e,
+						dump: e,
+						stack: true
+					}
+				);
+				Ext.Msg.show(
+					{
+						title: 'Ошибка',
+						message: 'Невозможно сохранить книгу',
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					}
+				);
+			}
 
 			return result;
 		},

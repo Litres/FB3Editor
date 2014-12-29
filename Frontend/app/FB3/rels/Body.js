@@ -43,6 +43,29 @@ Ext.define(
 			var me = this;
 
 			return me.getText();
+		},
+
+		/**
+		 * Устанавливает тело книги.
+		 * @param {String} data
+		 */
+		setContent: function (data)
+		{
+			var me = this;
+
+			me.setFileContent(data);
+		},
+
+		/**
+		 * Устанавливает тело книги.
+		 * @param {String} data
+		 */
+		setImages: function (data)
+		{
+			var me = this;
+
+			console.log('Установлены изображения', data);
+			//me.setFileContent(data);
 		}
 	}
 );

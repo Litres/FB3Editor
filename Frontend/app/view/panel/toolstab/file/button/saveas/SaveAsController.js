@@ -20,9 +20,15 @@ Ext.define(
 		 */
 		onClick: function (btn, evt)
 		{
-			var cmd;
+			var cmd,
+				cmdOpts;
 
-			cmd = Ext.create('FBEditor.command.SaveAsFile', {evt: evt});
+			cmdOpts = {
+				btn: btn,
+				content: Ext.getCmp('main-htmleditor'),
+				desc: Ext.getCmp('form-desc')
+			};
+			cmd = Ext.create('FBEditor.command.SaveAsFile', cmdOpts);
 			if (cmd.execute())
 			{
 				FBEditor.HistoryCommand.add(cmd);

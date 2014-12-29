@@ -23,9 +23,8 @@ Ext.define(
 		onLoadText: function (text)
 		{
 			var me = this,
-				view;
+				view = me.getView();
 
-			view = me.getView();
 			view.setValue(text);
 		}
     }

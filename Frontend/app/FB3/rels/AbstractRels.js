@@ -9,6 +9,11 @@ Ext.define(
 	'FBEditor.FB3.rels.AbstractRels',
 	{
 		/**
+		 * @property {String} Содержимое файла по умолчанию.
+		 */
+		defaultContent: '',
+
+		/**
 		 * @property {String} Префикс перед именем свойств в json, которые являлись аттрибутами в xml
 		 * (берется из FBEditor.util.xml.Json#prefix).
 		 */
@@ -63,8 +68,13 @@ Ext.define(
 		 */
 		constructor: function (structure, fileName, parentRelsDir)
 		{
-			var me = this;
+			var me = this,
+				fb3file = structure.getFb3file();
 
+			if (!fb3file.getFiles(fileName))
+			{
+				me.create(structure, fileName);
+			}
 			me.structure = structure;
 			me.fileName = fileName;
 			me.parentRelsDir = parentRelsDir ? parentRelsDir : null;
@@ -72,6 +82,22 @@ Ext.define(
 			me.file = me.structure.getFb3file().getFiles(fileName);
 			me.prefix = FBEditor.util.xml.Json.prefix;
 			me.rels = me.getRels();
+		},
+
+		/**
+		 * Создает файл по умолчанию.
+		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
+		 * @param {String} fileName Имя файла в архиве.
+		 */
+		create: function (structure, fileName)
+		{
+			var me = this,
+				fb3file = structure.getFb3file(),
+				zip;
+
+			zip = fb3file.zip;
+			zip.file(fileName, me.defaultContent);
+			fb3file.setFiles();
 		},
 
 		/**
@@ -194,6 +220,21 @@ Ext.define(
 			url = window.URL.createObjectURL(blob);
 
 			return url;
+		},
+
+		/**
+		 * Устанавливает содержимое файла.
+		 * @param {String} data Содержимое файла.
+		 */
+		setFileContent: function (data)
+		{
+			var me = this,
+				fb3file = me.structure.fb3file,
+				fileName = me.fileName,
+				zip;
+
+			zip = fb3file.zip;
+			zip.file(fileName, data);
 		}
 	}
 );
