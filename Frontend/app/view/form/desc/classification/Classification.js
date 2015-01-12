@@ -248,6 +248,24 @@ Ext.define(
 
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				data = d,
+				values = {
+					'class': {
+						_contents: me.down('[name=classification-class-contents]').getValue(),
+						__text: me.down('form-desc-bookClass').getValue()
+					},
+					'target-audience': me.down('form-desc-classification-target').getValues(),
+					coverage: me.down('form-desc-classification-coverage').getValues()
+				};
+
+			data['fb3-classification'] = me.removeEmptyValues(values);
+
+			return data;
 		}
 	}
 );

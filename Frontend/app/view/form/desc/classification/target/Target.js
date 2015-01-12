@@ -80,6 +80,22 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function ()
+		{
+			var me = this,
+				data,
+				values = {
+					__text: me.down('[name=classification-target-audience-text]').getValue(),
+					_education: me.down('[name=classification-target-audience-education]').getValue(),
+					'_age-min': me.down('[name=classification-target-audience-age-min]').getValue(),
+					'_age-max': me.down('[name=classification-target-audience-age-max]').getValue()
+				};
+
+			data = me.removeEmptyValues(values);
+
+			return data;
 		}
 	}
 );

@@ -40,6 +40,30 @@ Ext.define(
 			me.collapsed = req ? false : true;
 			me.cls += req ? '' : ' fieldset-optional';
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает новые данные формы.
+		 * @param {Object} d Старые данные формы.
+		 * @return {Object} Данные формы, к которым добавились данные из полей текущего компонента.
+		 */
+		getValues: function (d)
+		{
+			var me = this,
+				items = me.items,
+				data = d;
+
+			items.each(
+				function (item)
+				{
+					if (item.getValues)
+					{
+						data = item.getValues(data);
+					}
+				}
+			);
+
+			return data;
 		}
 	}
 );

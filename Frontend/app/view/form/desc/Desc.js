@@ -115,15 +115,16 @@ Ext.define(
 		{
 			var me = this,
 				xml,
-				data;
+				data,
+				isValid;
 
-			data = me.getValues();
+			isValid = me.valid();
+			console.log('is valid', isValid);
+			data = me.values();
+			console.log('data', data);
 			data = {
 				'fb3-description': {
-					title: {
-						main: data['title-main'],
-						sub: data['title-sub']
-					},
+					title: data.title,
 					'fb3-relations': [
 						{
 							subject: {
@@ -150,15 +151,49 @@ Ext.define(
 					}
 				}
 			};
-			data['fb3-description']['_xmlns'] = 'http://www.fictionbook.org/FictionBook3/description';
-			data['fb3-description']['_id'] = '';
-			data['fb3-description']['_version'] = '1.0';
+			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
+			data['fb3-description']._id = '';
+			data['fb3-description']._version = '1.0';
 			console.log('desc data', data);
 			xml = FBEditor.util.xml.Json.jsonToXml(data);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			console.log(xml);
 
 			return xml;
+		},
+
+		/**
+		 * Проверяет валидность формы.
+		 * @return {Boolean} Валидна ли форма.
+		 */
+		valid: function ()
+		{
+			var me = this;
+
+			return me.isValid();
+		},
+
+		/**
+		 * Возвращает данные формы  в виде объекта пригодного для преобразования в xml.
+		 * @return {Object} Объект данных.
+		 */
+		values: function ()
+		{
+			var me = this,
+				items = me.items,
+				data = {};
+
+			items.each(
+				function (item)
+				{
+					if (item.getValues)
+					{
+						data = item.getValues(data);
+					}
+				}
+			);
+
+			return data;
 		}
 	}
 );

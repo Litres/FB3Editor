@@ -93,6 +93,26 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function ()
+		{
+			var me = this,
+				data,
+				values = {
+					__text: me.down('[name=classification-coverage-text]').getValue(),
+					_country: me.down('[name=classification-coverage-country]').getValue(),
+					_place: me.down('[name=classification-coverage-place]').getValue(),
+					_age: me.down('[name=classification-coverage-age]').getValue(),
+					_date: Ext.Date.format(me.down('[name=classification-coverage-date]').getValue(), 'Y-m-d'),
+					'_date-from': Ext.Date.format(me.down('[name=classification-coverage-date-from]').getValue(),
+					                              'Y-m-d'),
+					'_date-to': Ext.Date.format(me.down('[name=classification-coverage-date-to]').getValue(), 'Y-m-d')
+				};
+
+			data = me.removeEmptyValues(values);
+
+			return data;
 		}
 	}
 );

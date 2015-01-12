@@ -58,6 +58,28 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function ()
+		{
+			var me = this,
+				name = me.fieldName + '-alt',
+				data = [],
+				items;
+
+			items = me.ownerCt.query('textfield[name=' + name + ']');
+			Ext.each(
+				items,
+				function (item)
+				{
+					if (item.getValue())
+					{
+						data.push(item.getValue());
+					}
+				}
+			);
+
+			return data;
 		}
 	}
 );
