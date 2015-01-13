@@ -254,16 +254,27 @@ Ext.define(
 		{
 			var me = this,
 				data = d,
-				values = {
-					'class': {
-						_contents: me.down('[name=classification-class-contents]').getValue(),
-						__text: me.down('form-desc-bookClass').getValue()
-					},
-					'target-audience': me.down('form-desc-classification-target').getValues(),
-					coverage: me.down('form-desc-classification-coverage').getValues()
-				};
+				keywords,
+				values;
 
+			values = {
+				subject: me.getDataFields(me.query('[name=classification-subject]')),
+				'class': {
+					_contents: me.down('[name=classification-class-contents]').getValue(),
+					__text: me.down('form-desc-bookClass').getValue()
+				},
+				'target-audience': me.down('form-desc-classification-target').getValues(),
+				coverage: me.down('form-desc-classification-coverage').getValues(),
+				udk: me.getDataFields(me.query('[name=classification-udk]')),
+				bbk: me.getDataFields(me.query('[name=classification-bbk]'))
+			};
 			data['fb3-classification'] = me.removeEmptyValues(values);
+			data = me.down('form-desc-written').getValues(data);
+			keywords = me.down('[name=keywords]').getValue();
+			if (keywords)
+			{
+				data.keywords = keywords;
+			}
 
 			return data;
 		}

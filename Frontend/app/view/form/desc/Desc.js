@@ -137,18 +137,10 @@ Ext.define(
 							}
 						}
 					],
-					'fb3-classification': {
-						class: {
-							_contents: 'part',
-							__text: 'manual'
-						},
-						subject: 'sci_biology'
-					},
-					lang: 'ru',
-					'document-info': {
-						_created: '2008-12-05T15:10:00',
-						_updated: '2008-12-05T19:56:00'
-					}
+					'fb3-classification': data['fb3-classification'],
+					lang: data.lang,
+					keywords: data.keywords,
+					'document-info': data['document-info']
 				}
 			};
 			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
@@ -157,7 +149,7 @@ Ext.define(
 			console.log('desc data', data);
 			xml = FBEditor.util.xml.Json.jsonToXml(data);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
-			console.log(xml);
+			//console.log(xml);
 
 			return xml;
 		},

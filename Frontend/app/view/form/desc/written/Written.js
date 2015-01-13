@@ -86,6 +86,32 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				data = d,
+				values;
+
+			values = {
+				_value: Ext.Date.format(me.down(me.down('[name=written-date-value]')).getValue(), 'Y-m-d'),
+				__text: me.down(me.down('[name=written-date-text]')).getValue()
+			};
+			values = me.removeEmptyValues(values);
+			values = {
+				lang: me.down(me.down('[name=written-lang]')).getValue(),
+				country: me.down(me.down('[name=written-country]')).getValue(),
+				date: values
+			};
+			values = me.removeEmptyValues(values);
+			if (values)
+			{
+				data.written = values;
+			}
+			data.lang = me.down(me.down('[name=lang]')).getValue();
+
+			return data;
 		}
 	}
 );

@@ -65,9 +65,7 @@ Ext.define(
 				},
 				{
 					xtype: 'button',
-					//text: me.translateText.select,
 					margin: '0 0 0 5',
-					//menu: [],
 					html: '<i class="fa fa-book"></i>',
 					scope: me,
 					handler: function ()

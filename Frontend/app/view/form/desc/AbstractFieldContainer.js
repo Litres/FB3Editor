@@ -69,10 +69,37 @@ Ext.define(
 				values,
 				function (key, item)
 				{
-					if (item)
+					if (!Ext.isEmpty(item))
 					{
 						data = data || {};
 						data[key] = item;
+					}
+				}
+			);
+
+			return data;
+		},
+
+		/**
+		 * Возвращает данные полей.
+		 * @param {Ext.form.Field[]} fields Поля.
+		 * @return {Array} Данные.
+		 */
+		getDataFields: function (fields)
+		{
+			var me = this,
+				data = null;
+
+			Ext.Object.each(
+				fields,
+				function (key, item)
+				{
+					var val = item.getValue();
+
+					if (val)
+					{
+						data = data || [];
+						data.push(val);
 					}
 				}
 			);

@@ -75,6 +75,7 @@ Ext.define(
 									cls: 'field-optional'
 								},
 								{
+									xtype: 'textfield',
 									name: 'periodical-issn',
 									regex: /^\d{4}-\d{3}(\d|X)$/,
 									regexText: me.translateText.issnError,
@@ -114,6 +115,45 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				items = me.items,
+				data = d,
+				values = null;
+
+			items.each(
+				function (item)
+				{
+					var val;
+
+					val = {
+						__text: item.down('[name=periodical-text]').getValue(),
+						_number: item.down('[name=periodical-number]').getValue(),
+						_year: item.down('[name=periodical-year]').getValue(),
+						_date: Ext.Date.format(item.down('[name=periodical-date]').getValue(), 'Y-m-d')
+					};
+					val = me.removeEmptyValues(val);
+					val = {
+						issn: item.down('[name=periodical-issn]').getValue(),
+						number: val
+					};
+					val = me.removeEmptyValues(val);
+					if (val)
+					{
+						values = values || [];
+						values.push(val);
+					}
+				}
+			);
+			if (values)
+			{
+				data.periodical = values;
+			}
+
+			return data;
 		}
 	}
 );

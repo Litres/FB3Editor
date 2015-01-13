@@ -195,6 +195,34 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				data = d,
+				created,
+				updated,
+				time,
+				values;
+
+			created = Ext.Date.format(me.down('[name=document-info-created-date]').getValue(), 'Y-m-d');
+			time = Ext.Date.format(me.down('[name=document-info-created-time]').getValue(), 'H:i:s');
+			created = created && time ? created + 'T' + time : null;
+			updated = Ext.Date.format(me.down('[name=document-info-updated-date]').getValue(), 'Y-m-d');
+			time = Ext.Date.format(me.down('[name=document-info-updated-time]').getValue(), 'H:i:s');
+			updated = updated && time ? updated + 'T' + time : null;
+			values = {
+				_created: created,
+				_updated: updated,
+				'_program-used': me.down('[name=document-info-program-used]').getValue(),
+				'_src-ur': me.down('[name=document-info-src-url]').getValue(),
+				_ocr: me.down('[name=document-info-ocr]').getValue(),
+				_editor: me.down('[name=document-info-editor]').getValue()
+			};
+			data['document-info'] = me.removeEmptyValues(values);
+
+			return data;
 		}
 	}
 );
