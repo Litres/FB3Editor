@@ -74,7 +74,7 @@ Ext.define(
 									layout: 'anchor',
 									defaults: {
 										anchor: '100%',
-										labelWidth: 160,
+										labelWidth: 80,
 										labelAlign: 'right',
 										xtype: 'textfield'
 									},
@@ -97,7 +97,7 @@ Ext.define(
 								},
 								{
 									xtype: 'fieldcontainer',
-									width: 50
+									width: 10
 								},
 								{
 									xtype: 'desc-fieldcontainer',

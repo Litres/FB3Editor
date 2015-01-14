@@ -16,42 +16,21 @@ Ext.define(
 		title: 'Название произведения',
 		require: true,
 
-		translateText: {
-			info: 'Общая информация',
-			sequence: 'Серия'
-		},
-
 		initComponent: function ()
 		{
 			var me = this;
 
 			me.items = [
 				{
-					xtype: 'desc-fieldsetinner',
-					title: me.translateText.info,
-					require: true,
-					items: [
-						{
-							xtype: 'form-desc-title',
-							id: 'form-desc-title',
-							name: 'title',
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%',
-								labelWidth: 160,
-								labelAlign: 'right'
-							}
-						}
-					]
-				},
-				{
-					xtype: 'desc-fieldsetinner',
-					title: me.translateText.sequence,
-					items: [
-						{
-							xtype: 'form-desc-sequence'
-						}
-					]
+					xtype: 'form-desc-title',
+					id: 'form-desc-title',
+					name: 'title',
+					layout: 'anchor',
+					defaults: {
+						anchor: '100%',
+						labelWidth: 160,
+						labelAlign: 'right'
+					}
 				}
 			];
 			me.callParent(arguments);

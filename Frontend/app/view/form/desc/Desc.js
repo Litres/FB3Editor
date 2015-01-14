@@ -19,6 +19,7 @@ Ext.define(
 			'FBEditor.view.form.desc.AbstractFieldContainer',
 			'FBEditor.view.form.desc.fieldset.AbstractFieldsetInner',
 			'FBEditor.view.form.desc.fieldset.Title',
+			'FBEditor.view.form.desc.fieldset.Sequence',
 			'FBEditor.view.form.desc.fieldset.annotation.Annotation',
 			'FBEditor.view.form.desc.fieldset.periodical.Periodical',
 			'FBEditor.view.form.desc.fieldset.Classification',
@@ -75,6 +76,9 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'desc-fieldset-title'
+				},
+				{
+					xtype: 'desc-fieldset-sequence'
 				},
 				{
 					xtype: 'desc-fieldset-annotation'
