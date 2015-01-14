@@ -146,7 +146,7 @@ Ext.define(
 									defaults: {
 										anchor: '100%',
 										labelAlign: 'right',
-										labelWidth: 160,
+										labelWidth: 100,
 										cls: 'field-optional'
 									},
 									plugins: {
@@ -174,7 +174,7 @@ Ext.define(
 						},
 						{
 							xtype: 'fieldcontainer',
-							width: 50
+							width: 10
 						},
 						{
 							xtype: 'desc-fieldcontainer',
@@ -190,7 +190,7 @@ Ext.define(
 									defaults: {
 										anchor: '100%',
 										labelAlign: 'right',
-										labelWidth: 160,
+										labelWidth: 100,
 										cls: 'field-optional'
 									},
 									plugins: {

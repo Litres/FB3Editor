@@ -20,6 +20,7 @@ Ext.define(
 		region: 'center',
 		collapsible: false,
 		layout: 'card',
+		minWidth: 730,
 		overflowX: true,
 		margin: '0 2px 0 2px',
 		bodyPadding: 0,

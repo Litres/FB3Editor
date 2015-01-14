@@ -36,7 +36,7 @@ Ext.define(
 		layout: {
 			type: 'anchor'
 		},
-		minWidth: 870,
+		//minWidth: 730,
 		bodyPadding: 0,
 		cls: 'form-desc',
 		listeners: {

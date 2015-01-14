@@ -101,7 +101,7 @@ Ext.define(
 										},
 										{
 											xtype: 'fieldcontainer',
-											width: 50
+											width: 10
 										},
 										{
 											xtype: 'desc-fieldcontainer',
