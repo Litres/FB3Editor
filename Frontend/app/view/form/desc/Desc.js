@@ -121,27 +121,20 @@ Ext.define(
 			isValid = me.valid();
 			console.log('is valid', isValid);
 			data = me.values();
-			console.log('data', data);
-			data = {
-				'fb3-description': {
-					title: data.title,
-					'fb3-relations': [
-						{
-							subject: {
-								_id: '0dad1004-1430-102c-96f3-af3a14b75ca4',
-								_link: 'author',
-								title: {
-									main: ''
-								},
-								'last-name': ''
-							}
-						}
-					],
-					'fb3-classification': data['fb3-classification'],
-					lang: data.lang,
-					keywords: data.keywords,
-					'document-info': data['document-info']
+			data['fb3-relations'] = [
+				{
+					subject: {
+						_id: '0dad1004-1430-102c-96f3-af3a14b75ca4',
+						_link: 'author',
+						title: {
+							main: ''
+						},
+						'last-name': ''
+					}
 				}
+			];
+			data = {
+				'fb3-description': data
 			};
 			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
 			data['fb3-description']._id = '';

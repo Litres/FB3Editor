@@ -15,7 +15,7 @@ Ext.define(
 
 		translateText: {
 			id: 'ID',
-			idError: 'Значение должно соответствовать шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
+			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 18ea4ccf-daa9-102b-9003-10751c2f945c',
 			title: 'Заголовок',
 			issn: 'ISSN',
@@ -56,6 +56,14 @@ Ext.define(
 								labelAlign: 'right'
 							},
 							items: [
+								{
+									xtype: 'textfieldclear',
+									fieldLabel: me.translateText.id,
+									name: 'periodical-id',
+									allowBlank: false,
+									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+									regexText: me.translateText.idError
+								},
 								{
 									xtype: 'numberfield',
 									name: 'periodical-number',
@@ -137,6 +145,8 @@ Ext.define(
 					};
 					val = me.removeEmptyValues(val);
 					val = {
+						_id: item.down('[name=periodical-id]').getValue(),
+						title: item.down('[name=periodical-title]').getValues(),
 						issn: item.down('[name=periodical-issn]').getValue(),
 						number: val
 					};

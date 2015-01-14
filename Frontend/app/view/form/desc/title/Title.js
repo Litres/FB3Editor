@@ -66,6 +66,7 @@ Ext.define(
 			var me = this,
 				data = d,
 				name = me.name,
+				val,
 				title,
 				sub,
 				alt;
@@ -75,16 +76,24 @@ Ext.define(
 			sub = sub ? sub.getValue() : null;
 			alt = me.down('form-desc-title-alt');
 			alt = alt ? alt.getValues() : null;
-			data[name] = {
+			val = {
 				main: title
 			};
 			if (sub)
 			{
-				data[name].sub = sub;
+				val.sub = sub;
 			}
 			if (!Ext.isEmpty(alt))
 			{
-				data[name].alt = alt;
+				val.alt = alt;
+			}
+			if (d)
+			{
+				data[name] = val;
+			}
+			else
+			{
+				data = val;
 			}
 
 			return data;
