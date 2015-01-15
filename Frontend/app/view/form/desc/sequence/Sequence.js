@@ -22,7 +22,9 @@ Ext.define(
 		listeners: {
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
-			putData: 'onPutData'
+			putData: 'onPutData',
+			putFields: 'onPutFields',
+			removeFields: 'onRemoveFields'
 		},
 
 		translateText: {
@@ -57,6 +59,14 @@ Ext.define(
 						putData: function (data)
 						{
 							me.fireEvent('putData', data, this);
+						},
+						putFields: function (btn)
+						{
+							me.fireEvent('putFields', this, btn);
+						},
+						removeFields: function ()
+						{
+							me.fireEvent('removeFields', this);
 						}
 					},
 					items: [

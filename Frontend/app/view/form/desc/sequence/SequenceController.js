@@ -10,6 +10,39 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 		alias: 'controller.form.desc.sequence',
 
+		/**
+		 * Делает актвиной кнопку вложения.
+		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} container Контейнер серии, из которой
+		 * удалена вложенная серия.
+		 */
+		onRemoveFields: function (container)
+		{
+			var plugin,
+				btn;
+
+			if (container.getPlugin)
+			{
+				plugin = container.getPlugin('fieldcontainerreplicator');
+				btn = plugin.getBtnPut();
+				btn.enable();
+			}
+		},
+
+		/**
+		 * Удаляет кнопку добавления полей у вложенной серии и деактивирует кнопку вложения у родительской серии.
+		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} container Контейнер вложенной серии.
+		 * @param {Ext.button.Button} ownerBtn Кнопка вложения родительской серии.
+		 */
+		onPutFields: function (container, ownerBtn)
+		{
+			var plugin = container.getPlugin('fieldcontainerreplicator'),
+				btn;
+
+			ownerBtn.disable();
+			btn = plugin.getBtnAdd();
+			btn.ownerCt.remove(btn);
+		},
+
 		onLoadData:  function (data)
 		{
 			var me = this,

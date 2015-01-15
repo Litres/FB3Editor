@@ -124,7 +124,7 @@ Ext.define(
 				containerAdd;
 
 			container.on(
-				'afterrender',
+				'added',
 			    function (container)
 			    {
 				    me.checkLastInGroup(container.ownerCt, container.replicatorId);
@@ -275,6 +275,7 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @event putFields
 		 * Вкладывает поля.
 		 * @param {Ext.button.Button} Кнопка вложения.
 		 * @return {Ext.container.Container} Возвращает вложенный контейнер.
@@ -297,15 +298,23 @@ Ext.define(
 					style: putStyle
 				}
 			);
+			removeBtn = clone.down('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']');
+			removeBtn.on(
+				'afterrender',
+				function ()
+				{
+					this.enable();
+				}
+			);
 			container.add(clone);
-			removeBtn = clone.query('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']')[0];
-			removeBtn.enable();
+			clone.fireEvent('putFields', btn);
 
 			return clone;
 		},
 
 		/**
 		 * @private
+		 * @event removeFields
 		 * Удаляет поля.
 		 * @param {Ext.button.Button} Кнопка удаления.
 		 */
@@ -321,6 +330,7 @@ Ext.define(
 			ownerCt = container.ownerCt;
 			replicatorId = container.replicatorId;
 			ownerCt.remove(container);
+			ownerCt.fireEvent('removeFields');
 
 			if (!/child/.test(replicatorId))
 			{
@@ -335,6 +345,7 @@ Ext.define(
 		 * Если контейнер последний, то кнопка удаления становится неактивной.
 		 * @param {Ext.container.Container} ownerCt Родительский контейнер группы контейнеров.
 		 * @param {String} replicatorId Уникальный id группы контейнеров.
+		 * @return {Boolean} Последний ли контейнер.
 		 */
 		checkLastInGroup: function (ownerCt, replicatorId)
 		{
@@ -358,6 +369,8 @@ Ext.define(
 					removeBtn.enable();
 				}
 			}
+
+			return isLastInGroup;
 		}
 	}
 );
