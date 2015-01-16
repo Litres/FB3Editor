@@ -138,6 +138,43 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				items = me.items,
+				data = d,
+				values = null;
+
+			items.each(
+				function (item)
+				{
+					var val;
+
+					val = {
+						_id: item.down('[name=relations-subject-id]').getValue(),
+						_link: item.down('form-desc-relations-subject-link').getValue(),
+						'last-name': item.down('[name=relations-subject-last-name]').getValue(),
+						'first-name': item.down('[name=relations-subject-first-name]').getValue(),
+						'middle-name': item.down('[name=relations-subject-middle-name]').getValue(),
+						title: item.down('[name=relations-subject-title]').getValues()
+					};
+					val = me.removeEmptyValues(val);
+					if (val)
+					{
+						values = values || [];
+						values.push(val);
+					}
+				}
+			);
+			if (values)
+			{
+				data['fb3-relations'] = data['fb3-relations'] || {};
+				data['fb3-relations'].subject = values;
+			}
+
+			return data;
 		}
 	}
 );

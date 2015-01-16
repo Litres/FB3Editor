@@ -69,6 +69,25 @@ Ext.define(
 							me.fireEvent('removeFields', this);
 						}
 					},
+					getValues: function ()
+					{
+						var me = this,
+							itemInner = me.items.getAt(1),
+							values;
+
+						values = {
+							_id: me.down('[name=sequence-id]').getValue(),
+							_number: me.down('[name=sequence-number]').getValue(),
+							title: me.down('[name=sequence-title]').getValues()
+						};
+						if (itemInner)
+						{
+							values.sequence = itemInner.getValues();
+						}
+						values = me.removeEmptyValues(values);
+
+						return values;
+					},
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -132,6 +151,34 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				data = d,
+				items = me.items,
+				values = null;
+
+			items.each(
+				function (item)
+				{
+					var val;
+
+					val = item.getValues();
+					if (val)
+					{
+						values = values || [];
+						values.push(val);
+					}
+				}
+			);
+			if (values)
+			{
+				data.sequence = values;
+			}
+
+			return data;
 		}
 	}
 );

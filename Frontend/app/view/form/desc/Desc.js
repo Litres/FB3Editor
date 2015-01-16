@@ -125,18 +125,6 @@ Ext.define(
 			isValid = me.valid();
 			console.log('is valid', isValid);
 			data = me.values();
-			data['fb3-relations'] = [
-				{
-					subject: {
-						_id: '0dad1004-1430-102c-96f3-af3a14b75ca4',
-						_link: 'author',
-						title: {
-							main: ''
-						},
-						'last-name': ''
-					}
-				}
-			];
 			data = {
 				'fb3-description': data
 			};

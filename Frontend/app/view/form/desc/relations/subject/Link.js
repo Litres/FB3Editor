@@ -44,6 +44,14 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValue: function ()
+		{
+			var me = this,
+				data = 'author';
+
+			return data;
 		}
 	}
 );
