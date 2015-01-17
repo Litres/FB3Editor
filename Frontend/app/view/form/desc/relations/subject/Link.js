@@ -49,7 +49,10 @@ Ext.define(
 		getValue: function ()
 		{
 			var me = this,
-				data = 'author';
+				data;
+
+			data = me.down('relations-subject-link-radio').getChecked()[0].getGroupValue();
+			data = data === 'other-list' ? me.down('form-desc-relations-subject-link-list').getValue() : data;
 
 			return data;
 		}
