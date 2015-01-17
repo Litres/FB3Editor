@@ -168,11 +168,8 @@ Ext.define(
 					}
 				}
 			);
-			if (values)
-			{
-				data['fb3-relations'] = data['fb3-relations'] || {};
-				data['fb3-relations'].subject = values;
-			}
+			data['fb3-relations'] = data['fb3-relations'] || {};
+			data['fb3-relations'].subject = values;
 
 			return data;
 		}
