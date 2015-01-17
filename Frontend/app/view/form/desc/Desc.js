@@ -124,14 +124,14 @@ Ext.define(
 
 			isValid = me.valid();
 			console.log('is valid', isValid);
-			data = me.values();
+			data = me.getValues();
 			data = {
 				'fb3-description': data
 			};
 			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
 			data['fb3-description']._id = '';
 			data['fb3-description']._version = '1.0';
-			console.log('desc data', data);
+			console.log('desc', data);
 			xml = FBEditor.util.xml.Json.jsonToXml(data);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			//console.log(xml);
@@ -154,7 +154,7 @@ Ext.define(
 		 * Возвращает данные формы  в виде объекта пригодного для преобразования в xml.
 		 * @return {Object} Объект данных.
 		 */
-		values: function ()
+		getValues: function ()
 		{
 			var me = this,
 				items = me.items,

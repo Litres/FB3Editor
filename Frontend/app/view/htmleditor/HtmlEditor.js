@@ -66,14 +66,14 @@ Ext.define(
 				    xml = xml.replace(pattern, item.replacement);
 			    }
 			);
-			console.log(xml);
+			//console.log(xml);
 			xml = '<?xml version="1.0" encoding="UTF-8"?><fb3-body xmlns:l="http://www.w3.org/1999/xlink" id=""\
 				xmlns="http://www.fictionbook.org/FictionBook3/body"\
 				xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description">' + xml + '</fb3-body>';
 			xsl = FBEditor.xsl.Body.getHtmlToXml();
 			xml = FBEditor.util.xml.Jsxml.trans(xml, xsl);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
-			console.log(xml);
+			//console.log(xml);
 
 			return xml;
 		}

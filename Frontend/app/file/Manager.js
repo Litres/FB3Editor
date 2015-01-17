@@ -94,7 +94,7 @@ Ext.define(
 							contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
 							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
 							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
-							console.log(contentBody);
+							//console.log(contentBody);
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
 						}

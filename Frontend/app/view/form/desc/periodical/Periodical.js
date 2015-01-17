@@ -146,13 +146,13 @@ Ext.define(
 					val = me.removeEmptyValues(val);
 					val = {
 						_id: item.down('[name=periodical-id]').getValue(),
-						title: item.down('[name=periodical-title]').getValues(),
 						issn: item.down('[name=periodical-issn]').getValue(),
 						number: val
 					};
 					val = me.removeEmptyValues(val);
 					if (val)
 					{
+						val.title = item.down('[name=periodical-title]').getValues();
 						values = values || [];
 						values.push(val);
 					}

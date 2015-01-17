@@ -105,6 +105,41 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		getValues: function (d)
+		{
+			var me = this,
+				items = me.items,
+				data = d,
+				values = null;
+
+			items.each(
+				function (item)
+				{
+					var val;
+
+					val = {
+						_publisher: item.down('[name=publish-info-publisher]').getValue(),
+						_city: item.down('[name=publish-info-city]').getValue(),
+						_year: item.down('[name=publish-info-year]').getValue(),
+						_isbn: item.down('[name=publish-info-isbn]').getValue(),
+						_title: item.down('[name=publish-info-title]').getValue()
+					};
+					val = me.removeEmptyValues(val);
+					if (val)
+					{
+						values = values || [];
+						values.push(val);
+					}
+				}
+			);
+			if (values)
+			{
+				data['publish-info'] = values;
+			}
+
+			return data;
 		}
 	}
 );
