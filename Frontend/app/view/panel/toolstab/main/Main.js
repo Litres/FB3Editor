@@ -10,6 +10,6 @@ Ext.define(
 		extend: 'Ext.panel.Panel',
 		id:'panel-toolstab-main',
 		xtype: 'panel-toolstab-main',
-		title: 'Главная'
+		title: 'Форматирование'
 	}
 );

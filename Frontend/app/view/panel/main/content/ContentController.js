@@ -19,6 +19,7 @@ Ext.define(
 				view = me.getView();
 
 			view.setActiveItem(0);
+			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-main');
 		},
 
 		/**
@@ -30,6 +31,7 @@ Ext.define(
 				view = me.getView();
 
 			view.setActiveItem(1);
+			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
 		}
     }
 );
