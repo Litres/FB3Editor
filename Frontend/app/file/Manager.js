@@ -77,8 +77,7 @@ Ext.define(
 									{
 										level: 'error',
 										msg: e,
-										dump: e,
-										stack: true
+										dump: e
 									}
 								);
 								Ext.Msg.show(

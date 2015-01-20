@@ -43,6 +43,29 @@ Ext.define(
 		},
 
 		/**
+		 * Проверяет валидность полей.
+		 * @return {Boolean} Валидны ли поля.
+		 */
+		isValid: function ()
+		{
+			var me = this,
+				items = me.items,
+				isValid = true;
+
+			items.each(
+				function (item)
+				{
+					if (item.isValid && !item.isValid())
+					{
+						isValid = false;
+					}
+				}
+			);
+
+			return isValid;
+		},
+
+		/**
 		 * Возвращает новые данные формы.
 		 * @param {Object} d Старые данные формы.
 		 * @return {Object} Данные формы, к которым добавились данные из полей текущего компонента.

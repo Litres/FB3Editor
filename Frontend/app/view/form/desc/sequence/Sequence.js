@@ -27,6 +27,8 @@ Ext.define(
 			removeFields: 'onRemoveFields'
 		},
 
+		prefixName: 'sequence',
+
 		translateText: {
 			id: 'ID',
 			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
@@ -36,7 +38,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				prefixName = me.prefixName;
 
 			me.items = [
 				{
@@ -45,7 +48,7 @@ Ext.define(
 					anchor: '100%',
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
-						groupName: 'sequence',
+						groupName: prefixName,
 						btnPos: 'end',
 						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 						enableBtnPut: true,
@@ -76,13 +79,13 @@ Ext.define(
 							values;
 
 						values = {
-							_id: me.down('[name=sequence-id]').getValue(),
-							_number: me.down('[name=sequence-number]').getValue(),
-							title: me.down('[name=sequence-title]').getValues()
+							_id: me.down('[name=' + prefixName + '-id]').getValue(),
+							_number: me.down('[name=' + prefixName + '-number]').getValue(),
+							title: me.down('[name=' + prefixName + '-title]').getValues()
 						};
 						if (itemInner)
 						{
-							values.sequence = itemInner.getValues();
+							values[prefixName] = itemInner.getValues();
 						}
 						values = me.removeEmptyValues(values);
 
@@ -111,14 +114,14 @@ Ext.define(
 										{
 											xtype: 'textfieldclear',
 											fieldLabel: me.translateText.id,
-											name: 'sequence-id',
+											name: prefixName + '-id',
 											allowBlank: false,
 											regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
 											regexText: me.translateText.idError
 										},
 										{
 											xtype: 'numberfield',
-											name: 'sequence-number',
+											name: prefixName + '-number',
 											fieldLabel: me.translateText.number,
 											cls: 'field-optional'
 										}
@@ -135,7 +138,7 @@ Ext.define(
 									items: [
 										{
 											xtype: 'form-desc-title',
-											name: 'sequence-title',
+											name: prefixName + '-title',
 											layout: 'anchor',
 											defaults: {
 												anchor: '100%',
@@ -156,7 +159,8 @@ Ext.define(
 		getValues: function (d)
 		{
 			var me = this,
-				data = d,
+				prefixName = me.prefixName,
+				data = d || null,
 				items = me.items,
 				values = null;
 
@@ -175,7 +179,8 @@ Ext.define(
 			);
 			if (values)
 			{
-				data.sequence = values;
+				data = data || {};
+				data[prefixName] = values;
 			}
 
 			return data;

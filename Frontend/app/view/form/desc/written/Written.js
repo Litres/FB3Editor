@@ -11,6 +11,7 @@ Ext.define(
 		xtype: 'form-desc-written',
 		id: 'form-desc-written',
 		layout: 'hbox',
+		prefixName: 'written',
 
 		translateText: {
 			lang: 'Язык',
@@ -22,7 +23,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				prefixName = me.prefixName;
 
 			me.items = [
 				{
@@ -44,14 +46,14 @@ Ext.define(
 						},
 						{
 							xtype: 'langfield',
-							name: 'written-lang',
+							name: prefixName + '-lang',
 							fieldLabel: me.translateText.writtenLang,
 							allowBlank: false,
 							forceSelection: true
 						},
 						{
 							xtype: 'countryfield',
-							name: 'written-country',
+							name: prefixName + '-country',
 							fieldLabel: me.translateText.country,
 							cls: 'field-optional'
 						}
@@ -74,12 +76,12 @@ Ext.define(
 					items: [
 						{
 							xtype: 'datefield',
-							name: 'written-date-value',
+							name: prefixName + '-date-value',
 							fieldLabel: me.translateText.date
 						},
 						{
 							xtype: 'textfield',
-							name: 'written-date-text',
+							name: prefixName + '-date-text',
 							fieldLabel: me.translateText.dateText
 						}
 					]
@@ -88,26 +90,38 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
+		isValid: function ()
+		{
+			var me = this,
+				isValid;
+
+			isValid = me.getValid(me.prefixName);
+			me.down('langfield').isValid();
+
+			return isValid;
+		},
+
 		getValues: function (d)
 		{
 			var me = this,
+				prefixName = me.prefixName,
 				data = d,
 				values;
 
 			values = {
-				_value: Ext.Date.format(me.down(me.down('[name=written-date-value]')).getValue(), 'Y-m-d'),
-				__text: me.down(me.down('[name=written-date-text]')).getValue()
+				_value: Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-value]')).getValue(), 'Y-m-d'),
+				__text: me.down(me.down('[name=' + prefixName + '-date-text]')).getValue()
 			};
 			values = me.removeEmptyValues(values);
 			values = {
-				lang: me.down(me.down('[name=written-lang]')).getValue(),
-				country: me.down(me.down('[name=written-country]')).getValue(),
+				lang: me.down(me.down('[name=' + prefixName + '-lang]')).getValue(),
+				country: me.down(me.down('[name=' + prefixName + '-country]')).getValue(),
 				date: values
 			};
 			values = me.removeEmptyValues(values);
 			if (values)
 			{
-				data.written = values;
+				data[prefixName] = values;
 			}
 			data.lang = me.down(me.down('[name=lang]')).getValue();
 

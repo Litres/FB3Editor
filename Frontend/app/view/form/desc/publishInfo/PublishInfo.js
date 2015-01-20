@@ -11,6 +11,7 @@ Ext.define(
 		id: 'form-desc-publishInfo',
 		xtype: 'form-desc-publishInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
+		prefixName: 'publish-info',
 
 		translateText: {
 			title: 'Название',
@@ -23,7 +24,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				prefixName = me.prefixName;
 
 			me.items=  [
 				{
@@ -53,19 +55,19 @@ Ext.define(
 							items: [
 								{
 									xtype: 'textfieldclear',
-									name: 'publish-info-title',
+									name: prefixName + '-title',
 									allowBlank: false,
 									fieldLabel: me.translateText.title
 								},
 								{
 									xtype: 'textfield',
-									name: 'publish-info-publisher',
+									name: prefixName + '-publisher',
 									fieldLabel: me.translateText.publisher,
 									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfield',
-									name: 'publish-info-city',
+									name: prefixName + '-city',
 									fieldLabel: me.translateText.city,
 									cls: 'field-optional'
 								}
@@ -87,13 +89,13 @@ Ext.define(
 							items: [
 								{
 									xtype: 'numberfield',
-									name: 'publish-info-year',
+									name: prefixName + '-year',
 									fieldLabel: me.translateText.year,
 									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfieldclear',
-									name: 'publish-info-isbn',
+									name: prefixName + '-isbn',
 									regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
 									regexText: me.translateText.isbnError,
 									fieldLabel: me.translateText.isbn,
@@ -110,6 +112,7 @@ Ext.define(
 		getValues: function (d)
 		{
 			var me = this,
+				prefixName = me.prefixName,
 				items = me.items,
 				data = d,
 				values = null;
@@ -120,11 +123,11 @@ Ext.define(
 					var val;
 
 					val = {
-						_publisher: item.down('[name=publish-info-publisher]').getValue(),
-						_city: item.down('[name=publish-info-city]').getValue(),
-						_year: item.down('[name=publish-info-year]').getValue(),
-						_isbn: item.down('[name=publish-info-isbn]').getValue(),
-						_title: item.down('[name=publish-info-title]').getValue()
+						_publisher: item.down('[name=' + prefixName + '-publisher]').getValue(),
+						_city: item.down('[name=' + prefixName + '-city]').getValue(),
+						_year: item.down('[name=' + prefixName + '-year]').getValue(),
+						_isbn: item.down('[name=' + prefixName + '-isbn]').getValue(),
+						_title: item.down('[name=' + prefixName + '-title]').getValue()
 					};
 					val = me.removeEmptyValues(val);
 					if (val)
@@ -136,7 +139,7 @@ Ext.define(
 			);
 			if (values)
 			{
-				data['publish-info'] = values;
+				data[prefixName] = values;
 			}
 
 			return data;

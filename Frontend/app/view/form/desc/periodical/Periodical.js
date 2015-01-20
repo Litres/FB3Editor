@@ -12,6 +12,7 @@ Ext.define(
 		xtype: 'form-desc-periodical',
 		id: 'form-desc-periodical',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
+		prefixName: 'periodical',
 
 		translateText: {
 			id: 'ID',
@@ -28,7 +29,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				prefixName = me.prefixName;
 
 			me.items=  [
 				{
@@ -36,7 +38,7 @@ Ext.define(
 					layout: 'hbox',
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
-						groupName: 'periodical',
+						groupName: prefixName,
 						btnPos: 'end',
 						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 						btnStyle: {
@@ -59,32 +61,32 @@ Ext.define(
 								{
 									xtype: 'textfieldclear',
 									fieldLabel: me.translateText.id,
-									name: 'periodical-id',
+									name: prefixName + '-id',
 									allowBlank: false,
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
 									regexText: me.translateText.idError
 								},
 								{
 									xtype: 'numberfield',
-									name: 'periodical-number',
+									name: prefixName + '-number',
 									allowBlank: false,
 									fieldLabel: me.translateText.number
 								},
 								{
 									xtype: 'numberfield',
-									name: 'periodical-year',
+									name: prefixName + '-year',
 									allowBlank: false,
 									fieldLabel: me.translateText.year
 								},
 								{
 									xtype: 'datefield',
-									name: 'periodical-date',
+									name: prefixName + '-date',
 									fieldLabel: me.translateText.date,
 									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfield',
-									name: 'periodical-issn',
+									name: prefixName + '-issn',
 									regex: /^\d{4}-\d{3}(\d|X)$/,
 									regexText: me.translateText.issnError,
 									fieldLabel: me.translateText.issn,
@@ -92,7 +94,7 @@ Ext.define(
 								},
 								{
 									xtype: 'textfield',
-									name: 'periodical-text',
+									name: prefixName + '-text',
 									fieldLabel: me.translateText.desc,
 									cls: 'field-optional'
 								}
@@ -109,7 +111,7 @@ Ext.define(
 							items: [
 								{
 									xtype: 'form-desc-title',
-									name: 'periodical-title',
+									name: prefixName + '-title',
 									layout: 'anchor',
 									defaults: {
 										anchor: '100%',
@@ -128,6 +130,7 @@ Ext.define(
 		getValues: function (d)
 		{
 			var me = this,
+				prefixName = me.prefixName,
 				items = me.items,
 				data = d,
 				values = null;
@@ -138,21 +141,21 @@ Ext.define(
 					var val;
 
 					val = {
-						__text: item.down('[name=periodical-text]').getValue(),
-						_number: item.down('[name=periodical-number]').getValue(),
-						_year: item.down('[name=periodical-year]').getValue(),
-						_date: Ext.Date.format(item.down('[name=periodical-date]').getValue(), 'Y-m-d')
+						__text: item.down('[name=' + prefixName + '-text]').getValue(),
+						_number: item.down('[name=' + prefixName + '-number]').getValue(),
+						_year: item.down('[name=' + prefixName + '-year]').getValue(),
+						_date: Ext.Date.format(item.down('[name=' + prefixName + '-date]').getValue(), 'Y-m-d')
 					};
 					val = me.removeEmptyValues(val);
 					val = {
-						_id: item.down('[name=periodical-id]').getValue(),
-						issn: item.down('[name=periodical-issn]').getValue(),
+						_id: item.down('[name=' + prefixName + '-id]').getValue(),
+						issn: item.down('[name=' + prefixName + '-issn]').getValue(),
 						number: val
 					};
 					val = me.removeEmptyValues(val);
 					if (val)
 					{
-						val.title = item.down('[name=periodical-title]').getValues();
+						val.title = item.down('[name=' + prefixName + '-title]').getValues();
 						values = values || [];
 						values.push(val);
 					}
@@ -160,7 +163,7 @@ Ext.define(
 			);
 			if (values)
 			{
-				data.periodical = values;
+				data[prefixName] = values;
 			}
 
 			return data;

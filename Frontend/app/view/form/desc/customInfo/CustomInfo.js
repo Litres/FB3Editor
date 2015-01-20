@@ -12,6 +12,7 @@ Ext.define(
 		xtype: 'form-desc-customInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
+		prefixName: 'custom-info',
 		translateText: {
 			infoType: 'Тип',
 			desc: 'Описание'
@@ -19,7 +20,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				prefixName = me.prefixName;
 
 			me.items = [
 				{
@@ -41,14 +43,14 @@ Ext.define(
 					items: [
 						{
 							xtype: 'textfieldclear',
-							name: 'custom-info-info-type',
+							name: prefixName + '-info-type',
 							allowBlank: false,
 							labelWidth: 160,
 							fieldLabel: me.translateText.infoType
 						},
 						{
 							xtype: 'textareafield',
-							name: 'custom-info-text',
+							name: prefixName + '-text',
 							grow: true,
 							growMin: 1,
 							allowBlank: false,
@@ -63,6 +65,7 @@ Ext.define(
 		getValues: function (d)
 		{
 			var me = this,
+				prefixName = me.prefixName,
 				items = me.items,
 				data = d,
 				values = null;
@@ -73,8 +76,8 @@ Ext.define(
 					var val;
 
 					val = {
-						__text: item.down('[name=custom-info-text]').getValue(),
-						'_info-type': item.down('[name=custom-info-info-type]').getValue()
+						__text: item.down('[name=' + prefixName + '-text]').getValue(),
+						'_info-type': item.down('[name=' + prefixName + '-info-type]').getValue()
 					};
 					val = me.removeEmptyValues(val);
 					if (val)
@@ -86,7 +89,7 @@ Ext.define(
 			);
 			if (values)
 			{
-				data['custom-info'] = values;
+				data[prefixName] = values;
 			}
 
 			return data;

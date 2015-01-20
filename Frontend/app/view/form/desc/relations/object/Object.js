@@ -99,6 +99,13 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
+		isValid: function ()
+		{
+			var me = this;
+
+			return me.getValid('fb3-relations');
+		},
+
 		getValues: function (d)
 		{
 			var me = this,
@@ -113,7 +120,7 @@ Ext.define(
 
 					val = {
 						_id: item.down('[name=relations-object-id]').getValue(),
-						_link: item.down('form-desc-relations-object-link').getValue(),
+						_link: item.down('form-desc-relations-object-link').getValue()
 					};
 					val = me.removeEmptyValues(val);
 					if (val)

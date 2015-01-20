@@ -49,14 +49,13 @@ Ext.define(
 					{
 						level: 'error',
 						msg: e,
-						dump: e,
-						stack: true
+						dump: e
 					}
 				);
 				Ext.Msg.show(
 					{
 						title: 'Ошибка',
-						message: 'Невозможно сохранить книгу',
+						message: e.message ? e.message : 'Невозможно сохранить книгу',
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.ERROR
 					}

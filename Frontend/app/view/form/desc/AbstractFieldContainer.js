@@ -14,6 +14,7 @@ Ext.define(
 		],
 		xtype: 'desc-fieldcontainer',
 		controller: 'form.desc.abstractField',
+
 		listeners: {
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData'
@@ -30,6 +31,85 @@ Ext.define(
 				me.name = 'plugin-fieldcontainerreplicator';
 			}
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Очищает стили и сообщения об ошибках заполнения полей.
+		 */
+		clearInvalid: function ()
+		{
+			var me = this,
+				items = me.items;
+
+			items.each(
+				function (item)
+				{
+					if (item.clearInvalid)
+					{
+						item.clearInvalid();
+					}
+				}
+			);
+		},
+
+		/**
+		 * Проверяет валидность полей.
+		 * @return {Boolean} Валидны ли поля.
+		 */
+		isValid: function ()
+		{
+			var me = this,
+				items = me.items,
+				isValid = true;
+
+			if (me.prefixName)
+			{
+				isValid = me.getValid(me.prefixName);
+			}
+			else
+			{
+				items.each(
+					function (item)
+					{
+						if (item.isValid && !item.isValid())
+						{
+							isValid = false;
+						}
+					}
+				);
+			}
+
+			return isValid;
+		},
+
+		/**
+		 * Возвращает валидность полей опрделенного контейнера.
+		 * @property {String} Имя контейнера.
+		 * @return {Boolean} Валидны ли поля.
+		 */
+		getValid: function (name)
+		{
+			var me = this,
+				items = me.items,
+				values = me.getValues({}),
+				isValid = true;
+
+			values = values[name] ? true : false;
+			items.each(
+				function (item)
+				{
+					if (item.isValid && !item.isValid() && values)
+					{
+						isValid = false;
+					}
+					if (!values && item.clearInvalid)
+					{
+						item.clearInvalid();
+					}
+				}
+			);
+
+			return isValid;
 		},
 
 		/**

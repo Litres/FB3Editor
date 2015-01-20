@@ -119,11 +119,12 @@ Ext.define(
 		{
 			var me = this,
 				xml,
-				data,
-				isValid;
+				data;
 
-			isValid = me.valid();
-			console.log('is valid', isValid);
+			if (!me.isValid())
+			{
+				throw Error('Некорректно заполнено описание книги');
+			}
 			data = me.getValues();
 			data = {
 				'fb3-description': data
@@ -143,11 +144,23 @@ Ext.define(
 		 * Проверяет валидность формы.
 		 * @return {Boolean} Валидна ли форма.
 		 */
-		valid: function ()
+		isValid: function ()
 		{
-			var me = this;
+			var me = this,
+				items = me.items,
+				isValid = true;
 
-			return me.isValid();
+			items.each(
+				function (item)
+				{
+					if (item.isValid && !item.isValid())
+					{
+						isValid = false;
+					}
+				}
+			);
+
+			return isValid;
 		},
 
 		/**
