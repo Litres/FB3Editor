@@ -24,3 +24,4 @@ Ext.Loader.loadScript('bower_components/FileSaver.js/FileSaver.min.js');
 Ext.Loader.loadScript('bower_components/jsxml/stand.js');
 Ext.Loader.loadScript('bower_components/jsxml/jsxml.js');
 Ext.Loader.loadScript('bower_components/x2js/xml2json.min.js');
+Ext.Loader.loadScript('bower_components/xmllint/index.js');
