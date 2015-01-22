@@ -122,6 +122,7 @@ Ext.define(
 		 * Сохраняет книгу FB3 в файле.
 		 * @param {Object} data Данные книги.
 		 * @param {Function} fn Функция обратного вызова.
+		 * @return {Boolean} Вызвано ли окно сохранения.
 		 */
 		saveFB3: function (data, fn)
 		{
@@ -144,6 +145,8 @@ Ext.define(
 			fs = window.saveAs(blob, fb3file.getName());
 			fs.onwriteend = fn;
 			fs.onabort = fn;
+
+			return fs ? true : false;
 		}
 	}
 );

@@ -33,8 +33,8 @@ Ext.define(
 			};
 
 			//and call function
-			var xmllint = validateXML(Module);
-			console.log(xmllint);
+			//var xmllint = validateXML(Module);
+			//console.log(xmllint);
 
 			// родительское окно
 			FBEditor.parentWindow = window.opener;

@@ -48,6 +48,7 @@ Ext.define(
 									items: [
 										{
 											xtype: 'datefield',
+											allowBlank: false,
 											name: 'document-info-created-date',
 											fieldLabel: me.translateText.date
 										}
@@ -58,7 +59,7 @@ Ext.define(
 									width: 50
 								},
 								{
-									xtype: 'fieldcontainer',
+									xtype: 'desc-fieldcontainer',
 									flex: 1,
 									layout: 'anchor',
 									defaults: {
@@ -69,6 +70,7 @@ Ext.define(
 									items: [
 										{
 											xtype: 'timefield',
+											allowBlank: false,
 											name: 'document-info-created-time',
 											format: 'H:i:s',
 											fieldLabel: me.translateText.time
@@ -100,6 +102,7 @@ Ext.define(
 									items: [
 										{
 											xtype: 'datefield',
+											allowBlank: false,
 											name: 'document-info-updated-date',
 											fieldLabel: me.translateText.date
 										}
@@ -110,7 +113,7 @@ Ext.define(
 									width: 50
 								},
 								{
-									xtype: 'fieldcontainer',
+									xtype: 'desc-fieldcontainer',
 									flex: 1,
 									layout: 'anchor',
 									defaults: {
@@ -121,6 +124,7 @@ Ext.define(
 									items: [
 										{
 											xtype: 'timefield',
+											allowBlank: false,
 											name: 'document-info-updated-time',
 											format: 'H:i:s',
 											fieldLabel: me.translateText.time
@@ -166,7 +170,7 @@ Ext.define(
 									width: 50
 								},
 								{
-									xtype: 'fieldcontainer',
+									xtype: 'desc-fieldcontainer',
 									flex: 1,
 									layout: 'anchor',
 									defaults: {

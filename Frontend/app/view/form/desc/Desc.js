@@ -118,10 +118,11 @@ Ext.define(
 		getXml: function ()
 		{
 			var me = this,
+				isValid = me.isValid(),
 				xml,
 				data;
 
-			if (!me.isValid())
+			if (!isValid)
 			{
 				throw Error('Некорректно заполнено описание книги');
 			}

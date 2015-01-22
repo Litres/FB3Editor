@@ -15,6 +15,6 @@ Ext.define(
 		title: 'Информация о файле',
 		xtypeChild: 'documentInfo',
 		require: true,
-		autoExpand: false
+		autoExpand: true
 	}
 );

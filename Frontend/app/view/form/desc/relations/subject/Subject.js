@@ -163,6 +163,7 @@ Ext.define(
 					val = me.removeEmptyValues(val);
 					if (val)
 					{
+						val._id = val._id ? val._id : '';
 						values = values || [];
 						values.push(val);
 					}

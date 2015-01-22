@@ -54,12 +54,13 @@ Ext.define(
 				);
 				Ext.Msg.show(
 					{
-						title: 'Ошибка',
+						title: 'Ошибка сохранения',
 						message: e.message ? e.message : 'Невозможно сохранить книгу',
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.ERROR
 					}
 				);
+				result = false;
 			}
 
 			return result;
