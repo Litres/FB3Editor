@@ -59,7 +59,8 @@ Ext.define(
 
 			x2js = new X2JS(
 				{
-					attributePrefix: prefix
+					attributePrefix: prefix,
+					escapeMode: false
 				}
 			);
 			me.x2js = x2js;
