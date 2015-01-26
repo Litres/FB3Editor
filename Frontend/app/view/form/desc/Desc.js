@@ -118,11 +118,12 @@ Ext.define(
 		getXml: function ()
 		{
 			var me = this,
-				isValid = me.isValid(),
+				valid = me.isValid(),
 				xml,
+				xsd,
 				data;
 
-			if (!isValid)
+			if (!valid)
 			{
 				throw Error('Некорректно заполнено описание книги');
 			}
@@ -137,6 +138,17 @@ Ext.define(
 			xml = FBEditor.util.xml.Json.jsonToXml(data);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			//console.log(xml);
+
+			// проверка xml по схеме отложена на будущее
+			/*xsd = FBEditor.xsd.Desc.getXsd();
+			data = {
+				xml: xml,
+				xsd: xsd,
+				xmlFileName: 'description.xml',
+				schemaFileName: 'description.xsd'
+			};
+			valid = FBEditor.util.xml.Jsxml.valid(data);
+			console.log('valid', valid);*/
 
 			return xml;
 		},

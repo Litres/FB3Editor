@@ -11,7 +11,10 @@ Ext.define(
 	    name: 'FBEditor',
 		requires: [
 			'FBEditor.file.Manager',
-			'FBEditor.command.HistoryCommand'
+			'FBEditor.command.HistoryCommand',
+			'FBEditor.util.xml.Jsxml',
+			'FBEditor.xsl.Body',
+			'FBEditor.xsd.Desc'
 		],
 	    stores: [],
 		listen: {
@@ -25,16 +28,6 @@ Ext.define(
 		init: function ()
 		{
 			var me = this;
-
-			var Module = {
-				xml: '<?xml version="1.0"?><coment><author>author</author><content>nothing</content></coment>',
-				schema: '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:element name="comment"><xs:complexType><xs:all><xs:element name="author" type="xs:string"/><xs:element name="content" type="xs:string"/></xs:all></xs:complexType></xs:element></xs:schema>',
-				arguments: ["--noout", "--schema", 'schemaFileName', 'xmlFileName']
-			};
-
-			//and call function
-			//var xmllint = validateXML(Module);
-			//console.log(xmllint);
 
 			// родительское окно
 			FBEditor.parentWindow = window.opener;

@@ -12,9 +12,7 @@ Ext.define(
 			'FBEditor.file.File',
 			'FBEditor.file.Zip',
 			'FBEditor.FB3.File',
-		    'FBEditor.FB3.Structure',
-		    'FBEditor.util.xml.Jsxml',
-		    'FBEditor.xsl.Body'
+		    'FBEditor.FB3.Structure'
 		],
 
 		/**
@@ -143,6 +141,8 @@ Ext.define(
 			me.fb3file = fb3file;
 			blob = fb3file.generateBlob();
 			fs = window.saveAs(blob, fb3file.getName());
+
+			// данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
 			fs.onwriteend = fn;
 			fs.onabort = fn;
 

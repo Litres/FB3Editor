@@ -18,7 +18,9 @@ Ext.define(
 				fb3data,
 				result;
 
+			// предусмотрено на будущее
 			//btn.disable();
+
 			try
 			{
 				fb3data = {
@@ -38,6 +40,8 @@ Ext.define(
 					fb3data,
 				    function ()
 				    {
+					    // предусмотрено на будущее
+					    console.log('*** ВНИМАНИЕ! Стали доступны методы FileSaver.onwriteend, FileSaver.onabort. ***');
 					    btn.enable();
 				    }
 				);
