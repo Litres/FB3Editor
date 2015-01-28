@@ -208,6 +208,32 @@ Ext.define(
 				rev,
 				metaData;
 
+			/**
+			 * Возвращает авторов.
+			 * @param {Array} subjects Список связанных персон.
+			 * @return {String} Авторы через запятую.
+			 */
+			function getCreator(subjects)
+			{
+				var authors = [];
+
+				Ext.each(
+					subjects,
+				    function (item)
+					{
+						var subject;
+
+						if (item._link === 'author')
+						{
+							subject = item.title ? item.title.main : item['last-name'];
+							authors.push(subject);
+						}
+					}
+				);
+
+				return authors.join(', ');
+			}
+
 			data = values || me.getValues();
 			rev = FBEditor.file.Manager.fb3file.getStructure().getMeta().revision.__text;
 			rev = Number(rev);
@@ -220,9 +246,7 @@ Ext.define(
 					'_xmlns:dcterms': 'http://purl.org/dc/terms/',
 					'_xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
 					'dc:title': data.title.main,
-					'dc:creator': data['fb3-relations'].subject[0].title ?
-					              data['fb3-relations'].subject[0].title.main :
-					              data['fb3-relations'].subject[0]['last-name'],
+					'dc:creator': getCreator(data['fb3-relations'].subject),
 					'cp:revision': rev,
 					'cp:contentStatus': data['fb3-classification'].class._contents,
 					'cp:category': data['fb3-classification'].class.__text,
