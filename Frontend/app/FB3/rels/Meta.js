@@ -23,6 +23,17 @@ Ext.define(
 			var me = this;
 
 			return me.getJson().coreProperties;
+		},
+
+		/**
+		 * Устанавливает мета-информацию.
+		 * @param {String} data
+		 */
+		setContent: function (data)
+		{
+			var me = this;
+
+			me.setFileContent(data);
 		}
 	}
 );

@@ -84,6 +84,15 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает мета-информацию.
+		 * @param {String} data
+		 */
+		setMeta: function ()
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#setMeta');
+		},
+
+		/**
 		 * Устанавливает описание книги.
 		 * @param {FBEditor.FB3.rels.Book} book Книга.
 		 * @param {String} data

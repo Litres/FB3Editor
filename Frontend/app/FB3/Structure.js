@@ -139,6 +139,13 @@ Ext.define(
 			return body.getRels().getImages();
 		},
 
+		setMeta: function (data)
+		{
+			var me = this;
+
+			me.getRels().getMeta().setContent(data);
+		},
+
 		setDesc: function (book, data)
 		{
 			book.setDesc(data);

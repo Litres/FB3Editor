@@ -78,9 +78,11 @@ Ext.define(
 		{
 			var me = this,
 				structure = me.structure,
+				meta,
 				books,
 				bodies;
 
+			structure.setMeta(data.meta);
 			books = structure.getBooks();
 			Ext.Object.each(
 				data.books,

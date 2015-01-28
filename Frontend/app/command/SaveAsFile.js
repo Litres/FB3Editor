@@ -15,6 +15,8 @@ Ext.define(
 				btn = me.data.btn,
 				content = me.data.content,
 				desc = me.data.desc,
+				descValues,
+				descXml,
 				fb3data,
 				result;
 
@@ -23,10 +25,17 @@ Ext.define(
 
 			try
 			{
+				if (!desc.isValid())
+				{
+					throw Error('Некорректно заполнено описание книги');
+				}
+				descValues = desc.getValues();
+				descXml = desc.getXml(descValues);
 				fb3data = {
+					meta: desc.getMetaXml(descValues),
 					books: [
 						{
-							desc: desc.getXml(),
+							desc: descXml,
 							bodies: [
 								{
 									content: content.getXml(),
@@ -41,7 +50,12 @@ Ext.define(
 				    function ()
 				    {
 					    // предусмотрено на будущее
-					    console.log('*** ВНИМАНИЕ! Стали доступны методы FileSaver.onwriteend, FileSaver.onabort. ***');
+					    Ext.log(
+						    {
+							    level: 'warn',
+							    msg: 'Стали доступны методы FileSaver.onwriteend, FileSaver.onabort'
+						    }
+					    );
 					    btn.enable();
 				    }
 				);

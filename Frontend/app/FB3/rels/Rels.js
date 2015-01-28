@@ -67,22 +67,7 @@ Ext.define(
 
 			// создаем необходимые пустые файлы для структуры
 			zip = fb3file.zip;
-			zip.file('meta/core.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\
-				<cp:coreProperties\
-					xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"\
-					xmlns:dc="http://purl.org/dc/elements/1.1/"\
-					xmlns:dcterms="http://purl.org/dc/terms/"\
-					xmlns:dcmitype="http://purl.org/dc/dcmitype/">\
-				    <dc:title></dc:title>\
-					<dc:subject></dc:subject>\
-				    <dc:creator></dc:creator>\
-					<dc:description></dc:description>\
-					<cp:revision></cp:revision>\
-					<cp:contentStatus></cp:contentStatus>\
-					<cp:category></cp:category>\
-					<dcterms:modified></dcterms:modified>\
-					<dcterms:created></dcterms:created>\
-				</cp:coreProperties>');
+			zip.file('meta/core.xml');
 			zip.file('fb3/body.xml');
 			zip.file('cover.jpg');
 			me.callParent(arguments);

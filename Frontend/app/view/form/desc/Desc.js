@@ -113,28 +113,24 @@ Ext.define(
 
 		/**
 		 * Возвращает данные в виде строки xml.
+		 * @param {Object} [values] Данные формы.
 		 * @return {String} строка xml.
 		 */
-		getXml: function ()
+		getXml: function (values)
 		{
 			var me = this,
-				valid = me.isValid(),
 				xml,
 				xsd,
 				data;
 
-			if (!valid)
-			{
-				throw Error('Некорректно заполнено описание книги');
-			}
-			data = me.getValues();
+			data = values || me.getValues();
 			data = {
 				'fb3-description': data
 			};
 			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
 			data['fb3-description']._id = '';
 			data['fb3-description']._version = '1.0';
-			console.log('desc', data);
+			console.log('save desc', data);
 			xml = FBEditor.util.xml.Json.jsonToXml(data);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			//console.log(xml);
@@ -197,6 +193,57 @@ Ext.define(
 			);
 
 			return data;
+		},
+
+		/**
+		 * Возвращает мета-данные в виде строки xml.
+		 * @param {Object} [values] Данные формы.
+		 * @return {String} Строка xml.
+		 */
+		getMetaXml: function (values)
+		{
+			var me = this,
+				xml,
+				data,
+				rev,
+				metaData;
+
+			data = values || me.getValues();
+			rev = FBEditor.file.Manager.fb3file.getStructure().getMeta().revision.__text;
+			rev = Number(rev);
+			rev = Ext.isNumber(rev) ? rev + 1 : 1;
+			metaData = {
+				coreProperties: {
+					__prefix: 'cp',
+					'_xmlns:cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
+					'_xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+					'_xmlns:dcterms': 'http://purl.org/dc/terms/',
+					'_xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
+					'dc:title': data.title.main,
+					'dc:creator': data['fb3-relations'].subject[0].title ?
+					              data['fb3-relations'].subject[0].title.main :
+					              data['fb3-relations'].subject[0]['last-name'],
+					'cp:revision': rev,
+					'cp:contentStatus': data['fb3-classification'].class._contents,
+					'cp:category': data['fb3-classification'].class.__text,
+					'dcterms:modified': data['document-info']._updated,
+					'dcterms:created': data['document-info']._created
+				}
+			};
+			if (data.title && data.title.sub)
+			{
+				metaData.coreProperties['dc:subject'] = data.title.sub;
+			}
+			if (data.anotation)
+			{
+				metaData.coreProperties['dc:description'] = Ext.util.Format.stripTags(data.anotation);
+			}
+			console.log('save meta', metaData);
+			xml = FBEditor.util.xml.Json.jsonToXml(metaData);
+			xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + xml;
+			//console.log(xml);
+
+			return xml;
 		}
 	}
 );
