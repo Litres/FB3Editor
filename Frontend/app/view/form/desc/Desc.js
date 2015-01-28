@@ -235,8 +235,8 @@ Ext.define(
 			}
 
 			data = values || me.getValues();
-			rev = FBEditor.file.Manager.fb3file.getStructure().getMeta().revision.__text;
-			rev = Number(rev);
+			rev = FBEditor.file.Manager.fb3file ?
+			      Number(FBEditor.file.Manager.fb3file.getStructure().getMeta().revision.__text) : 0;
 			rev = Ext.isNumber(rev) ? rev + 1 : 1;
 			metaData = {
 				coreProperties: {
