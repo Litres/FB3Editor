@@ -228,10 +228,12 @@ Ext.define(
 		{
 			var me = this,
 				buffer = me.file.asArrayBuffer(),
+				label,
 				blob,
 				url;
 
-			blob = new Blob([buffer]);
+			label = /\.svg$/.test(me.fileName) ? {type: 'image/svg+xml'} : {};
+			blob = new Blob([buffer], label);
 			url = window.URL.createObjectURL(blob);
 
 			return url;

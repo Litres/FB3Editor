@@ -227,7 +227,8 @@
 {
 	max-width: 320px;
 	height: 160px;
-	box-shadow: 2px 2px 4px 0px #ddd;
+	padding: 5px;
+	box-shadow: 2px 2px 4px 0px #ccc;
 }
 
 .resource-large-thumb .resource-thumb-name
