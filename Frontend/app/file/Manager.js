@@ -63,10 +63,10 @@ Ext.define(
 								contentBody = structure.getContent(bodies[0]);
 								console.log('contentTypes', contentTypes);
 								console.log('thumb', thumb);
-								console.log('meta', meta);
+								//console.log('meta', meta);
 								console.log('books', books);
 								//console.log('desc', desc);
-								console.log('images', images);
+								//console.log('images', images);
 								//console.log(content);
 							}
 							catch (e)
@@ -92,8 +92,11 @@ Ext.define(
 							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
 							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
 							//console.log(contentBody);
+							Ext.suspendLayouts();
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
+							Ext.getCmp('panel-resources').fireEvent('loadImages', images);
+							Ext.resumeLayouts(true);
 						}
 					}
 				);

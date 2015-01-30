@@ -133,6 +133,21 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает базовое имя файла без полного пути.
+		 * @return {String} Имя файла.
+		 */
+		getBaseFileName: function ()
+		{
+			var me = this,
+				fileName = me.fileName,
+				name;
+
+			name = fileName.replace(/.*\/(.*?\.\w+)$/, '$1');
+
+			return name;
+		},
+
+		/**
 		 * Возвращает имя файла, содержащицй связи для текущего файла.
 		 * @return {String} Имя файла.
 		 */

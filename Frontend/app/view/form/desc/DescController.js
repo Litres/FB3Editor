@@ -27,8 +27,7 @@ Ext.define(
 
 			converter = FBEditor.converter.desc.Data;
 			data = converter.toForm(df);
-			console.log(data);
-			Ext.suspendLayouts();
+			//console.log(data);
 			view.fireEvent('reset');
 			form.setValues(data);
 			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
@@ -44,7 +43,6 @@ Ext.define(
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);
 			me.expandFieldset(data);
-			Ext.resumeLayouts(true);
 		},
 
 		/**

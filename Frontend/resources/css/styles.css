@@ -212,3 +212,32 @@
 {
 	vertical-align: top;
 }
+
+.resource-large-thumb
+{
+	position: relative;
+	float: left;
+	oveflow: hidden;
+	margin: 10px;
+	padding: 5px;
+	text-align: center;
+}
+
+.resource-large-thumb .resource-thumb-img
+{
+	max-width: 320px;
+	height: 160px;
+	box-shadow: 2px 2px 4px 0px #ddd;
+}
+
+.resource-large-thumb .resource-thumb-name
+{
+	position: relative;
+	display: block;
+	overflow: hidden;
+	max-width: 320px;
+	white-space: nowrap;
+	padding-top: 4px;
+	text-align: center;
+	font-size: 12px;
+}

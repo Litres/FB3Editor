@@ -11,7 +11,8 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.content.ContentController',
 			'FBEditor.view.htmleditor.HtmlEditor',
-			'FBEditor.view.form.desc.Desc'
+			'FBEditor.view.form.desc.Desc',
+			'FBEditor.view.panel.resources.Resources'
 		],
 		id: 'panel-main-content',
 		xtype: 'panel-main-content',
@@ -30,11 +31,15 @@ Ext.define(
 			},
 			{
 				xtype: 'form-desc'
+			},
+			{
+				xtype: 'panel-resources'
 			}
 		],
 		listeners: {
 			contentEditor: 'onContentEditor',
-			contentDesc: 'onContentDesc'
+			contentDesc: 'onContentDesc',
+			contentResources: 'onContentResources'
 		}
     }
 );

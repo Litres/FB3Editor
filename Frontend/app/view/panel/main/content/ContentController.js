@@ -18,7 +18,7 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			view.setActiveItem(0);
+			view.setActiveItem('main-htmleditor');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-main');
 		},
 
@@ -30,7 +30,19 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			view.setActiveItem(1);
+			view.setActiveItem('form-desc');
+			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
+		},
+
+		/**
+		 * Переключает контент на ресурсы книги.
+		 */
+		onContentResources: function ()
+		{
+			var me = this,
+				view = me.getView();
+
+			view.setActiveItem('panel-resources');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
 		}
     }
