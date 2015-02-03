@@ -17,9 +17,6 @@ Ext.define(
 		controller: 'panel.resources',
 		autoScroll: true,
 		bodyPadding: 0,
-		listeners: {
-			loadImages: 'onLoadImages'
-		},
 
 		initComponent: function ()
 		{

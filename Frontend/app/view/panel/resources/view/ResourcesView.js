@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'view-resources',
 		id: 'view-resources',
 		itemSelector: 'div.resource-thumb-wrap',
-		emptyText: 'Нет доступных изображений',
+		emptyText: 'Нет доступных ресурсов',
 		deferEmptyText: false,
 
 		initComponent: function ()

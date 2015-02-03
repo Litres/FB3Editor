@@ -12,7 +12,8 @@ Ext.define(
 		    'FBEditor.view.panel.main.navigation.NavigationController',
 		    'FBEditor.view.button.Desc',
 		    'FBEditor.view.button.Resources',
-		    'FBEditor.view.button.Body'
+		    'FBEditor.view.button.Body',
+	        'FBEditor.view.panel.treenavigation.TreeNavigation'
 	    ],
 	    id: 'panel-main-navigation',
 	    xtype: 'panel-main-navigation',
@@ -33,6 +34,9 @@ Ext.define(
 			    },
 			    {
 				    xtype: 'button-body'
+			    },
+			    {
+				    xtype: 'panel-treenavigation'
 			    }
 		    ];
 		    me.callParent(arguments);

@@ -95,7 +95,7 @@ Ext.define(
 							Ext.suspendLayouts();
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
-							Ext.getCmp('panel-resources').fireEvent('loadImages', images);
+							FBEditor.resource.Manager.load(images);
 							Ext.resumeLayouts(true);
 						}
 					}
