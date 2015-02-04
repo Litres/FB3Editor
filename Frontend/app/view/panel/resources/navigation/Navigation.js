@@ -16,6 +16,9 @@ Ext.define(
 		xtype: 'panel-resources-navigation',
 		controller: 'panel.resources.navigation',
 		useArrows: true,
+		listeners: {
+			itemClick: 'onItemClick'
+		},
 
 		initComponent: function ()
 		{
@@ -48,7 +51,8 @@ Ext.define(
 		{
 			var me = this,
 				rootText,
-				treeData = [];
+				treeData = [],
+				rootTreeData;
 
 			console.log(data);
 			Ext.each(
@@ -57,57 +61,87 @@ Ext.define(
 			    {
 				    var val;
 
-				    val = me.parseNameResource(item.name, item.name);
-				    treeData.push(val);
+				    val = me.parseNameResource(item.name, {fullName: item.name, path: ''});
+				    if (val)
+				    {
+					    treeData.push(val);
+					    //treeData = me.groupTreeData(val, treeData);
+				    }
 			    }
 			);
-			//treeData = me.groupTreeData(treeData, treeData);
-			console.log(treeData);
 			rootText = me.store.getRoot().data.text;
-			treeData = [
+			rootTreeData = [
 				{
+					root: true,
 					text: rootText,
 					children: treeData
 				}
 			];
+			console.log(rootTreeData);
 
-			return treeData;
+			return rootTreeData;
 		},
 
 		/**
 		 * @private
 		 * Парсит имя файла ресурса и возвращает объект узла для дерева, который может содержать другие вложенные узлы,
 		 * соответствующие глубине вложенности файла, согласно его полного пути.
-		 * @param {String} name Полный путь файла в архиве, отсносительно корневой директории ресурсов.
-		 * @return {Object} Узел девера.
+		 * @param {String} name Директория узла.
+		 * @param {Object} parentNode Родительский узел дерева.
+		 * @return {Object} Дочерний узел дерева.
 		 */
-		parseNameResource: function (name, id)
+		parseNameResource: function (name, parentNode)
 		{
 			var me = this,
+				fileName = name,
+				pn = parentNode,
+				node = {},
 				pos,
 				partName,
-				node = {};
+				children;
 
-			pos = name.indexOf('/');
-			partName = pos !== -1 ? name.substring(0, pos) : name;
+			// получаем имя директории
+			pos = fileName.indexOf('/');
+			partName = pos !== -1 ? fileName.substring(0, pos) : name;
 			node.text = partName;
-			if (pos !== -1)
+
+			// скрываем файлы в узлах дерева
+			//node.visible = partName === pn.fullName ? false : true;
+			node.leaf = partName === pn.fullName ? true : false;
+
+			// полный путь директории
+			node.path = pn.path ? pn.path + '/' + partName : partName;
+
+			// полное имя файла в этой директории
+			node.fullName = pn.fullName;
+
+			// получаем последнею часть имени файла, которая следует за именем текущей директории
+			partName = fileName.slice(pos + 1);
+
+			if (partName.indexOf('/') !== -1)
 			{
-				partName = name.slice(pos + 1);
-				node.children = me.parseNameResource(partName, id);
+				// парсим последнюю часть имени файла
+				children = me.parseNameResource(partName, node);
+
+				if (children)
+				{
+					node.children = children;
+				}
 			}
 			else
 			{
-				node.leaf = true;
-				node.id = id;
+				// последняя директория в ветке дерева не должна открываться
+				node.expandable = false;
 			}
 
 			return node;
 		},
 
-		groupTreeData: function (data, fullData)
+		groupTreeData: function (node, data)
 		{
-			var treeData = [];
+			var me = this,
+				treeData = [],
+				isGroup = true;
 
 			Ext.each(
 				data,
@@ -115,11 +149,15 @@ Ext.define(
 				{
 					var val;
 
-					if (!item.leaf)
+					if (item.text === node.text)
 					{
-						val = item;
+						val = me.groupTreeData(node.children, item.children);
+						item.children.push(val);
 					}
-					treeData.push(val);
+					else
+					{
+						treeData.push(node);
+					}
 				}
 			);
 

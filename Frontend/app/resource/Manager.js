@@ -54,6 +54,9 @@ Ext.define(
 					name: 'sub/sub2/test.svg'
 				},
 				{
+					name: 'sub/sub2/himan.svg'
+				},
+				{
 					name: 'children/childB.png'
 				},
 				{

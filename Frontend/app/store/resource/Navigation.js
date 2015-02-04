@@ -11,11 +11,30 @@ Ext.define(
 		defaultRootText: 'Ресурсы',
 		rootVisible: true,
 		folderSort: true,
+		proxy: {
+			type: 'memory'
+		},
 		sorters: [
 			{
 				property: 'text',
 				direction: 'ASC'
 			}
-		]
+		],
+		root: {
+			expandable: false
+		},
+		listeners: {
+			datachanged: function (self)
+			{
+				//console.log(arguments);
+				Ext.defer(
+					function ()
+					{
+						console.log(self, self.getData(), self.getRoot());
+					},
+				    2000
+				);
+			}
+		}
 	}
 );
