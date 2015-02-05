@@ -37,32 +37,13 @@ Ext.define(
 				}
 			);
 			me.data = data;
-			/*data = [
-				{
-					name: 'picture.jpg'
-				},
-				{
-					name: 'sub/pictureG.jpg'
-				},
-				{
-					name: 'sub/pictureB.jpg'
-				},
-				{
-					name: 'sub/pictureA.jpg'
-				},
-				{
-					name: 'sub/sub2/test.svg'
-				},
-				{
-					name: 'sub/sub2/himan.svg'
-				},
-				{
-					name: 'children/childB.png'
-				},
-				{
-					name: 'aborts/abortF.gif'
-				}
-			];*/
+			Ext.Array.sort(
+				data,
+			    function (a, b)
+			    {
+				    return a.name > b.name;
+			    }
+			);
 			Ext.getCmp('panel-resources-navigation').loadData(data);
 			//Ext.getCmp('view-resources').setStoreData(data);
 		}

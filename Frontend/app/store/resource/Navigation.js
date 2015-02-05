@@ -26,14 +26,7 @@ Ext.define(
 		listeners: {
 			datachanged: function (self)
 			{
-				//console.log(arguments);
-				Ext.defer(
-					function ()
-					{
-						console.log(self, self.getData(), self.getRoot());
-					},
-				    2000
-				);
+				console.log(self.getData());
 			}
 		}
 	}

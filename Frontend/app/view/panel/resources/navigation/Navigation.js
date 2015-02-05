@@ -20,6 +20,11 @@ Ext.define(
 			itemClick: 'onItemClick'
 		},
 
+		/**
+		 * @property {Boolean} Отображать ли файлы в структуре.
+		 */
+		visibleFiles: true,
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -61,11 +66,18 @@ Ext.define(
 			    {
 				    var val;
 
-				    val = me.parseNameResource(item.name, {fullName: item.name, path: ''});
+				    val = me.parseNameResource(item.name, {path: ''});
 				    if (val)
 				    {
-					    treeData.push(val);
-					    //treeData = me.groupTreeData(val, treeData);
+					    //treeData.push(val);
+					    if (treeData.length && val.children)
+					    {
+						    treeData = me.groupTreeData(val, treeData);
+					    }
+					    else
+					    {
+						    treeData.push(val);
+					    }
 				    }
 			    }
 			);
@@ -77,7 +89,7 @@ Ext.define(
 					children: treeData
 				}
 			];
-			console.log(rootTreeData);
+			//console.log(rootTreeData);
 
 			return rootTreeData;
 		},
@@ -96,43 +108,43 @@ Ext.define(
 				fileName = name,
 				pn = parentNode,
 				node = {},
+				children = null,
 				pos,
 				partName,
-				children;
+				isLast;
 
 			// получаем имя директории
 			pos = fileName.indexOf('/');
-			partName = pos !== -1 ? fileName.substring(0, pos) : name;
+			isLast = pos === -1;
+			partName = isLast ? fileName : fileName.substring(0, pos);
 			node.text = partName;
 
-			// скрываем файлы в узлах дерева
-			//node.visible = partName === pn.fullName ? false : true;
-			node.leaf = partName === pn.fullName ? true : false;
+			if (!me.visibleFiles)
+			{
+				// скрываем файлы в узлах дерева
+				node.visible = isLast ? false : true;
+			}
+			node.leaf = isLast ? true : false;
 
 			// полный путь директории
 			node.path = pn.path ? pn.path + '/' + partName : partName;
 
 			// полное имя файла в этой директории
-			node.fullName = pn.fullName;
+			//node.fullName = pn.fullName;
 
 			// получаем последнею часть имени файла, которая следует за именем текущей директории
 			partName = fileName.slice(pos + 1);
 
-			if (partName.indexOf('/') !== -1)
-			{
-				// парсим последнюю часть имени файла
-				children = me.parseNameResource(partName, node);
+			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
+			node.expandable = partName.indexOf('/') === -1 ? false : true;
 
-				if (children)
-				{
-					node.children = children;
-				}
-			}
-			else
+			// парсим последнюю часть имени файла
+			if (!isLast)
 			{
-				// последняя директория в ветке дерева не должна открываться
-				node.expandable = false;
+				children = [];
+				children.push(me.parseNameResource(partName, node));
 			}
+			node.children = children;
 
 			return node;
 		},
@@ -140,21 +152,20 @@ Ext.define(
 		groupTreeData: function (node, data)
 		{
 			var me = this,
-				treeData = [],
-				isGroup = true;
+				treeData = data;
 
 			Ext.each(
-				data,
-				function (item)
+				treeData,
+				function (item, i)
 				{
 					var val;
 
-					if (item.text === node.text)
+					if (item.text === node.text && item.children && node.children)
 					{
-						val = me.groupTreeData(node.children, item.children);
-						item.children.push(val);
+						val = me.groupTreeData(node.children[0], item.children);
+						treeData[i].children = val;
 					}
-					else
+					else if (data.length === i + 1)
 					{
 						treeData.push(node);
 					}

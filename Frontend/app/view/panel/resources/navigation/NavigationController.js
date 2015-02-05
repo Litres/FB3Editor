@@ -20,22 +20,11 @@ Ext.define(
 			var me = this,
 				data;
 
-			//node.toggle(record);
+			node.toggle(record);
 			data = record.getData();
-			console.log(node, record, data);
-			if (data.expanded)
-			{
-				console.log('collapse');
-				node.collapse(record);
-			}
-			else
-			{
-				node.expand(record);
-			}
-			if (!record.isExpandable())
+			if (record.isLeaf())
 			{
 				//data = record.getData();
-				//console.log(data);
 			}
 		}
 	}
