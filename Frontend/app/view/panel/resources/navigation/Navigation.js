@@ -44,7 +44,6 @@ Ext.define(
 
 			treeData = me.getTreeData(data);
 			me.store.loadData(treeData);
-			Ext.getCmp('view-resources').setStoreData(data);
 		},
 
 		/**
@@ -69,7 +68,6 @@ Ext.define(
 				    val = me.parseNameResource(item.name, {path: ''});
 				    if (val)
 				    {
-					    //treeData.push(val);
 					    if (treeData.length && val.children)
 					    {
 						    treeData = me.groupTreeData(val, treeData);
@@ -89,7 +87,6 @@ Ext.define(
 					children: treeData
 				}
 			];
-			//console.log(rootTreeData);
 
 			return rootTreeData;
 		},
@@ -128,9 +125,7 @@ Ext.define(
 
 			// полный путь директории
 			node.path = pn.path ? pn.path + '/' + partName : partName;
-
-			// полное имя файла в этой директории
-			//node.fullName = pn.fullName;
+			node.id = node.path;
 
 			// получаем последнею часть имени файла, которая следует за именем текущей директории
 			partName = fileName.slice(pos + 1);

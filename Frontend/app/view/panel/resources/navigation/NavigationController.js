@@ -18,13 +18,19 @@ Ext.define(
 		onItemClick: function (node, record)
 		{
 			var me = this,
-				data;
+				data,
+				resources,
+				folder;
 
 			node.toggle(record);
-			data = record.getData();
-			if (record.isLeaf())
+			if (!record.isLeaf())
 			{
-				//data = record.getData();
+				data = record.getData();
+				folder = data.path ? data.path : '';
+				resources = FBEditor.resource.Manager.getDataFolder(folder);
+
+				// заполняем панель отображения ресурсов файлами из выбранной директории
+				Ext.getCmp('view-resources').setStoreData(resources);
 			}
 		}
 	}

@@ -16,7 +16,7 @@ Ext.define(
 			me.html = '<tpl for=".">' +
 				'<div class="resource-thumb-wrap resource-large-thumb">' +
 				'<img src="{url}" class="resource-thumb-img" />' +
-				'<br/><span class="resource-thumb-name" title="{name}">{name}</span>' +
+				'<br/><span class="resource-thumb-name" title="{name}">{baseName}</span>' +
 				'</div>' +
 				'</tpl>';
 		}

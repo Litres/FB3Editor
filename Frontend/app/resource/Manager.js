@@ -10,9 +10,14 @@ Ext.define(
 		singleton: true,
 
 		/**
-		 * @property {FBEditor.FB3.rels.Image[]} Изображения, полученные из архива открытой книги.
+		 * @property {Object[]} Ресурсы.
 		 */
 		data: null,
+
+		/**
+		 * @property {String} Корневая директория ресурсов в архиве.
+		 */
+		rootPath: 'fb3/img',
 
 		/**
 		 * Загружает данные ресурсов в редактор.
@@ -31,12 +36,12 @@ Ext.define(
 
 					imageData = {
 						url: item.getUrl(),
-						name: item.getBaseFileName()
+						name: item.getFileName().substring(me.rootPath.length + 1),
+						baseName: item.getBaseFileName()
 					};
 					data.push(imageData);
 				}
 			);
-			me.data = data;
 			Ext.Array.sort(
 				data,
 			    function (a, b)
@@ -44,8 +49,40 @@ Ext.define(
 				    return a.name > b.name;
 			    }
 			);
-			Ext.getCmp('panel-resources-navigation').loadData(data);
-			//Ext.getCmp('view-resources').setStoreData(data);
+			me.data = data;
+			Ext.getCmp('panel-resources-navigation').loadData(Ext.clone(data));
+		},
+
+		/**
+		 * Возвращает ресурсы для указанной директории.
+		 * @param {String} folder Директория.
+		 * @return {Object[]} Ресурсы.
+		 */
+		getDataFolder: function (folder)
+		{
+			var me = this,
+				data = me.data,
+				f = folder,
+				dataFolder = [];
+
+			Ext.each(
+				data,
+			    function (item)
+			    {
+				    var pos,
+					    name = item.name,
+					    last;
+
+				    pos = name.indexOf(f);
+				    last = pos === 0 ? name.substring(f.length + 1) : null;
+				    if (last && last.indexOf('/') === -1)
+				    {
+					    dataFolder.push(item);
+				    }
+			    }
+			);
+
+			return dataFolder;
 		}
 	}
 );

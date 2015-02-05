@@ -26,7 +26,7 @@ Ext.define(
 		listeners: {
 			datachanged: function (self)
 			{
-				console.log(self.getData());
+				//console.log(self.getData());
 			}
 		}
 	}
