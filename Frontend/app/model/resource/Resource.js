@@ -15,8 +15,33 @@ Ext.define(
 				type: 'string'
 			},
 			{
-				// название
+				// полное имя файла
 				name: 'name',
+				type: 'string'
+			},
+			{
+				// основное имя файла, без пути
+				name: 'baseName',
+				type: 'string'
+			},
+			{
+				// расширение файла
+				name: 'extension',
+				type: 'string'
+			},
+			{
+				// дата редактирования файла
+				name: 'date',
+				type: 'string'
+			},
+			{
+				// размер файла
+				name: 'size',
+				type: 'string'
+			},
+			{
+				// mime-тип
+				name: 'type',
 				type: 'string'
 			}
 		]

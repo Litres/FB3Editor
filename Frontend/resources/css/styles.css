@@ -213,17 +213,17 @@
 	vertical-align: top;
 }
 
-.resource-large-thumb
+.resource-great-thumb, .resource-large-thumb, .resource-normal-thumb
 {
 	position: relative;
 	float: left;
-	oveflow: hidden;
+	overflow: hidden;
 	margin: 10px;
 	padding: 5px;
 	text-align: center;
 }
 
-.resource-large-thumb .resource-thumb-img
+.resource-great-thumb .resource-thumb-img
 {
 	max-width: 320px;
 	height: 160px;
@@ -231,7 +231,7 @@
 	box-shadow: 2px 2px 4px 0px #ccc;
 }
 
-.resource-large-thumb .resource-thumb-name
+.resource-great-thumb .resource-thumb-name
 {
 	position: relative;
 	display: block;
@@ -241,4 +241,136 @@
 	padding-top: 4px;
 	text-align: center;
 	font-size: 12px;
+}
+
+.resource-large-thumb .resource-thumb-img
+{
+	max-width: 140px;
+	height: 70px;
+	padding: 3px;
+	box-shadow: 1px 1px 2px 0px #ccc;
+}
+
+.resource-large-thumb .resource-thumb-name
+{
+	position: relative;
+	display: block;
+	overflow: hidden;
+	max-width: 140px;
+	white-space: nowrap;
+	padding-top: 2px;
+	text-align: center;
+	font-size: 11px;
+}
+
+.resource-normal-thumb .resource-thumb-img
+{
+	max-width: 80px;
+	height: 40px;
+	padding: 0px;
+	box-shadow: 1px 1px 1px 0px #ccc;
+}
+
+.resource-normal-thumb .resource-thumb-name
+{
+	position: relative;
+	display: block;
+	overflow: hidden;
+	max-width: 80px;
+	white-space: nowrap;
+	padding-top: 1px;
+	text-align: center;
+	font-size: 11px;
+}
+
+.resource-thumb-img:before
+{
+	content: "\f016";
+}
+
+.resource-thumb-img-png:before,
+.resource-thumb-img-jpg:before,
+.resource-thumb-img-gif:before
+{
+	content: "\f1c5";
+}
+
+.resource-thumb-img-svg:before
+{
+	content: "\f1c9";
+}
+
+.resource-small-thumb
+{
+	position: relative;
+	float: left;
+	overflow: hidden;
+	width: 250px;
+	margin: 2px;
+	padding: 2px;
+	text-align: left;
+}
+
+.resource-small-thumb .resource-thumb-name
+{
+	position: relative;
+	white-space: nowrap;
+	padding-left: 2px;
+	font-size: 11px;
+}
+
+.resource-list-thumb
+{
+	position: relative;
+	margin: 2px;
+	padding: 2px;
+	text-align: left;
+}
+
+.resource-list-thumb .resource-thumb-name
+{
+	position: relative;
+	white-space: nowrap;
+	padding-left: 2px;
+	font-size: 12px;
+}
+
+.resource-table-thumb
+{
+	position: relative;
+	margin: 2px;
+	text-align: left;
+	font-size: 12px;
+}
+
+.resource-table-thumb .resource-thumb-img
+{
+	position: relative;
+	top: -3px;
+	margin: 2px;
+}
+
+.resource-table-thumb .resource-thumb-name
+{
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	top: 3px;
+	width: 300px;
+	white-space: nowrap;
+	padding-left: 2px;
+}
+
+.resource-table-thumb .resource-thumb-date
+{
+	position: relative;
+	display: inline-block;
+	width: 150px;
+	color: #999999;
+}
+
+.resource-table-thumb .resource-thumb-size
+{
+	position: relative;
+	color: #999999;
 }

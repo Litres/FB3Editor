@@ -62,6 +62,12 @@ Ext.define(
 		parentRelsDir: null,
 
 		/**
+		 * @private
+		 * @property {Blob} Исходные данные файла.
+		 */
+		blob: null,
+
+		/**
 		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
 		 * @param {String} fileName Имя файла в архиве.
 		 * @param {String} [parentRelsDir] Директория архива FB3, в которой находятися текущая директория _rels.
@@ -82,6 +88,7 @@ Ext.define(
 			me.file = me.structure.getFb3file().getFiles(fileName);
 			me.prefix = FBEditor.util.xml.Json.prefix;
 			me.rels = me.getRels();
+			me.blob = new Blob([me.file.asArrayBuffer()], {type: me.parseMimeType()});
 		},
 
 		/**
@@ -145,6 +152,35 @@ Ext.define(
 			name = fileName.replace(/.*\/(.*?\.\w+)$/, '$1');
 
 			return name;
+		},
+
+		/**
+		 * Возвращает расширение файла.
+		 * @return {String} Имя файла.
+		 */
+		getExtension: function ()
+		{
+			var me = this,
+				fileName = me.fileName,
+				ext;
+
+			ext = fileName.replace(/.*\/.*?\.(\w+)$/, '$1');
+
+			return ext;
+		},
+
+		/**
+		 * Возвращает дату последней модификации файла.
+		 * @return {Date} Объект даты.
+		 */
+		getDate: function ()
+		{
+			var me = this,
+				date;
+
+			date = me.file.date;
+
+			return date;
 		},
 
 		/**
@@ -227,16 +263,30 @@ Ext.define(
 		getUrl: function ()
 		{
 			var me = this,
-				buffer = me.file.asArrayBuffer(),
-				label,
-				blob,
+				blob = me.blob,
 				url;
 
-			label = /\.svg$/.test(me.fileName) ? {type: 'image/svg+xml'} : {};
-			blob = new Blob([buffer], label);
 			url = window.URL.createObjectURL(blob);
 
 			return url;
+		},
+
+		/**
+		 * Вовзращает размер файла в байтах.
+		 * @return {Number} Размер файла.
+		 */
+		getSize: function ()
+		{
+			return this.blob.size;
+		},
+
+		/**
+		 * Вовзращает mime-тип файла.
+		 * @return {String} Mime-тип.
+		 */
+		getType: function ()
+		{
+			return this.blob.type;
 		},
 
 		/**
@@ -252,6 +302,24 @@ Ext.define(
 
 			zip = fb3file.zip;
 			zip.file(fileName, data);
+		},
+
+		/**
+		 * @private
+		 * Парсит название файла и возвращает mime-тип.
+		 * @return {String} Mime-тип.
+		 */
+		parseMimeType: function ()
+		{
+			var me = this,
+				type = '';
+
+			type = /\.svg$/.test(me.fileName) ? 'image/svg+xml' : type;
+			type = /\.png$/.test(me.fileName) ? 'image/png' : type;
+			type = /\.jpg$/.test(me.fileName) ? 'image/jpeg' : type;
+			type = /\.gif$/.test(me.fileName) ? 'image/gif' : type;
+
+			return type;
 		}
 	}
 );

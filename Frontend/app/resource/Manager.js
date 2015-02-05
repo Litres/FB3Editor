@@ -20,6 +20,11 @@ Ext.define(
 		rootPath: 'fb3/img',
 
 		/**
+		 * @property {String} Формат даты.
+		 */
+		formatDate: 'd.m.Y H:i',
+
+		/**
 		 * Загружает данные ресурсов в редактор.
 		 * @param {FBEditor.FB3.rels.Image[]} images Изображения, полученные из архива открытой книги.
 		 */
@@ -37,7 +42,11 @@ Ext.define(
 					imageData = {
 						url: item.getUrl(),
 						name: item.getFileName().substring(me.rootPath.length + 1),
-						baseName: item.getBaseFileName()
+						baseName: item.getBaseFileName(),
+						extension: item.getExtension(),
+						date: Ext.Date.format(item.getDate(), me.formatDate),
+						size: item.getSize(),
+						type: item.getType()
 					};
 					data.push(imageData);
 				}
@@ -58,7 +67,7 @@ Ext.define(
 		 * @param {String} folder Директория.
 		 * @return {Object[]} Ресурсы.
 		 */
-		getDataFolder: function (folder)
+		getFolderData: function (folder)
 		{
 			var me = this,
 				data = me.data,

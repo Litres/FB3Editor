@@ -25,6 +25,11 @@ Ext.define(
 		 */
 		visibleFiles: true,
 
+		/**
+		 * @property {Boolean} Отображать ли иконку для открывавния у последней директории в ветке.
+		 */
+		expandableLastFolder: true,
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -130,8 +135,11 @@ Ext.define(
 			// получаем последнею часть имени файла, которая следует за именем текущей директории
 			partName = fileName.slice(pos + 1);
 
-			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
-			node.expandable = partName.indexOf('/') === -1 ? false : true;
+			if (!me.expandableLastFolder)
+			{
+				// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
+				node.expandable = partName.indexOf('/') === -1 ? false : true;
+			}
 
 			// парсим последнюю часть имени файла
 			if (!isLast)

@@ -10,7 +10,12 @@ Ext.define(
 		extend: 'Ext.view.View',
 		requires: [
 			'FBEditor.store.resource.Resource',
-			'FBEditor.view.panel.resources.tpl.LargeResource'
+			'FBEditor.view.panel.resources.tpl.GreatResource',
+			'FBEditor.view.panel.resources.tpl.LargeResource',
+			'FBEditor.view.panel.resources.tpl.NormalResource',
+			'FBEditor.view.panel.resources.tpl.SmallResource',
+			'FBEditor.view.panel.resources.tpl.ListResource',
+			'FBEditor.view.panel.resources.tpl.TableResource'
 		],
 		xtype: 'view-resources',
 		id: 'view-resources',
@@ -22,7 +27,7 @@ Ext.define(
 		{
 			var me = this;
 
-			me.tpl = Ext.create('FBEditor.view.panel.resources.tpl.LargeResource');
+			me.tpl = Ext.create('FBEditor.view.panel.resources.tpl.TableResource');
 			me.store = Ext.create('FBEditor.store.resource.Resource');
 			me.callParent(arguments);
 		},
