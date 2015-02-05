@@ -45,7 +45,7 @@ Ext.define(
 						baseName: item.getBaseFileName(),
 						extension: item.getExtension(),
 						date: Ext.Date.format(item.getDate(), me.formatDate),
-						size: item.getSize(),
+						size: FBEditor.util.Format.fileSize(item.getSize()),
 						type: item.getType()
 					};
 					data.push(imageData);

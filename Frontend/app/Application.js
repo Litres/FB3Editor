@@ -14,6 +14,7 @@ Ext.define(
 			'FBEditor.resource.Manager',
 			'FBEditor.command.HistoryCommand',
 			'FBEditor.util.xml.Jsxml',
+			'FBEditor.util.Format',
 			'FBEditor.xsl.Body',
 			'FBEditor.xsd.Desc'
 		],
