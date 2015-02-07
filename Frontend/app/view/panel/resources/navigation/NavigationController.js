@@ -28,7 +28,7 @@ Ext.define(
 			{
 				data = record.getData();
 				folder = data.path ? data.path : '';
-				resources = FBEditor.resource.Manager.getFolderData(folder);
+				resources = bridge.FBEditor.resource.Manager.getFolderData(folder);
 
 				// заполняем панель отображения ресурсов файлами из выбранной директории
 				bridge.Ext.getCmp('view-resources').setStoreData(resources);

@@ -31,7 +31,8 @@ Ext.define(
 		load: function (images)
 		{
 			var me = this,
-				data = [];
+				data = [],
+				bridgeNavigation = FBEditor.getBridgeNavigation();
 
 			Ext.each(
 				images,
@@ -59,7 +60,7 @@ Ext.define(
 			    }
 			);
 			me.data = data;
-			Ext.getCmp('panel-resources-navigation').loadData(Ext.clone(data));
+			bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(Ext.clone(data));
 		},
 
 		/**
