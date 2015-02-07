@@ -13,7 +13,7 @@ Ext.define(
 		/**
 		 * Переключает контент на текст книги.
 		 */
-		onContentEditor: function ()
+		onContentBody: function ()
 		{
 			var me = this,
 				view = me.getView();

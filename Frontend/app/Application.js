@@ -34,10 +34,32 @@ Ext.define(
 			// родительское окно
 			FBEditor.parentWindow = window.opener;
 
-			// мост для передачи событий нужному окну
+			// ссылки на дочернии окна
+			FBEditor.childWindow = {
+				navigation: null,
+				props: null
+			};
+
+			// мост для передачи событий панели контента
 			FBEditor.getBridgeWindow = function ()
 			{
 				return FBEditor.parentWindow || window;
+			};
+
+			// мост для передачи событий панели свойств
+			FBEditor.getBridgeProps = function ()
+			{
+				return FBEditor.parentWindow ?
+				       (FBEditor.parentWindow.FBEditor.childWindow.props || FBEditor.parentWindow) :
+				       (FBEditor.childWindow.props || window);
+			};
+
+			// мост для передачи событий панели навигации
+			FBEditor.getBridgeNavigation = function ()
+			{
+				return FBEditor.parentWindow ?
+				       (FBEditor.parentWindow.FBEditor.childWindow.navigation || FBEditor.parentWindow) :
+				       (FBEditor.childWindow.navigation || window);
 			};
 
 			// закрытие/обновление окна

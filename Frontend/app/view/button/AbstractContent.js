@@ -17,7 +17,7 @@ Ext.define(
 		{
 			var me = this;
 
-			me.syncPressed();
+			me.syncContent();
 			me.callParent(arguments);
 		},
 
@@ -36,7 +36,7 @@ Ext.define(
 		 * Синхронизирует состояние кнопки с панелью контента.
 		 * Для соответствующего контента должна быть нажата соответствующая кнопка.
 		 */
-		syncPressed: function ()
+		syncContent: function ()
 		{
 			var me = this,
 				contentId = me.getContentId(),

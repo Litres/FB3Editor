@@ -21,7 +21,7 @@ Ext.define(
 
 		getContentId: function ()
 		{
-			return '';
+			return 'panel-resources';
 		},
 
 		/**

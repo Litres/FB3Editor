@@ -23,11 +23,31 @@ Ext.define(
 		emptyText: 'Нет доступных ресурсов',
 		deferEmptyText: false,
 
+		/**
+		 * @property {Object} Типы шаблонов отображения.
+		 */
+		tplTypes: {
+			great: 'GreatResource',
+			large: 'LargeResource',
+			normal: 'NormalResource',
+			small: 'SmallResource',
+			list: 'ListResource',
+			table: 'TableResource'
+		},
+
+		/**
+		 * @property {String} Тип шаблона по умолчанию.
+		 */
+		tplDefaultType: 'great',
+
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				tplType = me.tplTypes[me.tplDefaultType],
+				tplName;
 
-			me.tpl = Ext.create('FBEditor.view.panel.resources.tpl.TableResource');
+			tplName = me.getTplName(tplType);
+			me.tpl = Ext.create(tplName);
 			me.store = Ext.create('FBEditor.store.resource.Resource');
 			me.callParent(arguments);
 		},
@@ -42,6 +62,36 @@ Ext.define(
 				store = me.store;
 
 			store.setData(data);
+		},
+
+		/**
+		 * Устанавливает новый шаблон отображения.
+		 * @param {String} type Тип шаблона.
+		 */
+		setTpl: function (type)
+		{
+			var me = this,
+				tplName = me.getTplName(type);
+
+			me.tpl = Ext.create(tplName);
+			me.refresh();
+		},
+
+		/**
+		 * Возвращает имя шаблона отображения.
+		 * @param {String} type Тип шаблона.
+		 * @return {String} Имя шаблона.
+		 */
+		getTplName: function (type)
+		{
+			var me = this,
+				types = me.tplTypes,
+				tplName;
+
+			tplName = types[type] ? types[type] : types[me.tplDefaultType];
+			tplName = 'FBEditor.view.panel.resources.tpl.' + tplName;
+
+			return tplName;
 		}
 	}
 );

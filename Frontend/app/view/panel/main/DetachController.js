@@ -16,17 +16,23 @@ Ext.define(
 	    onDetachPanel: function (panel)
 	    {
 		    var name,
-			    box;
+			    box,
+			    win;
 
 		    name = panel.panelName;
 		    box = panel.getBox();
-		    window.open('#panel/' + name, name,
+		    win = window.open('#panel/' + name, name,
 			    'width=' + box.width +
 				',height=' + box.height +
 			    ',top=' + box.top +
 				',left=' + box.left +
 				',toolbar=no' +
 				',location=no');
+		    if (win)
+		    {
+			    // сохраняем ссылку на дочернее окно
+			    FBEditor.childWindow[name] = win;
+		    }
 	    }
     }
 );

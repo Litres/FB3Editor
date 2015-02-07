@@ -11,21 +11,32 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Ext.Component} Активный компонент контента.
+		 * @property {Ext.panel.Panel} Активная панель контента.
 		 */
-		activeItem: null,
+		activePanelContent: null,
+
+		/**
+		 * @private
+		 * @property {Ext.panel.Panel} Активная панель свойств.
+		 */
+		activePanelProps: null,
 
 		execute: function ()
 		{
 			var me = this,
 				data = me.getData(),
 				bridgeWindow = me.getBridgeWindow(),
+				bridgeProps = FBEditor.getBridgeProps(),
 				result = true,
-				content;
+				content,
+				props;
 
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
-			me.activeItem = content.getLayout().getActiveItem();
+			me.activePanelContent = content.getLayout().getActiveItem();
 			content.fireEvent('contentResources');
+			props = bridgeProps.Ext.getCmp('panel-main-props-card');
+			me.activePanelProps = props.getLayout().getActiveItem();
+			props.fireEvent('activePanelResources');
 
 			return result;
 		},
@@ -34,12 +45,17 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				activeItem = me.activeItem,
+				activePanelContent = me.activePanelContent,
+				activePanelProps = me.activePanelProps,
 				bridgeWindow = me.getBridgeWindow(),
-				content;
+				bridgeProps = FBEditor.getBridgeProps(),
+				content,
+				props;
 
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
-			content.setActiveItem(activeItem);
+			content.setActiveItem(activePanelContent);
+			props = bridgeProps.Ext.getCmp('panel-main-props-card');
+			props.setActiveItem(activePanelProps);
 		}
 	}
 );

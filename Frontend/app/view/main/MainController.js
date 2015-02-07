@@ -68,7 +68,12 @@ Ext.define(
 				',toolbar=no' +
 				',location=no';
 			win = window.open('#panel/' + name, name, params);
-			if (!win)
+			if (win)
+			{
+				// сохраняем ссылку на дочернее окно
+				FBEditor.childWindow[name] = win;
+			}
+			else
 			{
 				// если окно было заблокировано браузером, то показываем панель в главном окне
 				me.getView().attachPanel(name);

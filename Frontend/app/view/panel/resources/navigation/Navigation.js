@@ -152,6 +152,12 @@ Ext.define(
 			return node;
 		},
 
+		/**
+		 * 
+		 * @param node
+		 * @param data
+		 * @returns {*}
+		 */
 		groupTreeData: function (node, data)
 		{
 			var me = this,

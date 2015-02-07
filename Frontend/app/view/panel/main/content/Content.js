@@ -37,7 +37,7 @@ Ext.define(
 			}
 		],
 		listeners: {
-			contentEditor: 'onContentEditor',
+			contentBody: 'onContentBody',
 			contentDesc: 'onContentDesc',
 			contentResources: 'onContentResources'
 		}
