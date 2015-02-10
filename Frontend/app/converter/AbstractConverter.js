@@ -9,18 +9,8 @@ Ext.define(
 	'FBEditor.converter.AbstractConverter',
 	{
 		/**
-		 * Преобразует данные для заполнения формы.
-		 * @param {Object} data Данные, полученные из книги.
-		 * @return {Object} Преобразованные данные.
-		 */
-		toForm: function (data)
-		{
-			throw Error('Не реализован метод converter.AbstractConverter#toForm');
-		},
-
-		/**
 		 * Нормализует данные полученные из книги.
-		 * Нормализация подразумевает удаление начальных подчеркиваний у всех свойств и
+		 * Нормализация подразумевает удаление начальных префиксов у всех свойств и
 		 * удаление ненужных свойств.
 		 * @param {Object} data Данные, полученные из книги.
 		 * @return {Object} Нормализованные данные.
@@ -28,11 +18,12 @@ Ext.define(
 		normalize: function (data)
 		{
 			var me= this,
+				prefix = FBEditor.util.xml.Json.prefix,
 				d;
 
-			delete data._id;
-			delete data._version;
-			delete data._xmlns;
+			delete data[prefix + 'id'];
+			delete data[prefix + 'version'];
+			delete data[prefix + 'xmlns'];
 			d = me._normalize(data);
 
 			return d;
@@ -40,22 +31,25 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Удаляет начальные подчеркивания у всех свойств.
+		 * Удаляет начальные префиксы у всех свойств.
 		 * @param {Object} data
 		 * @return {Object|String}
 		 */
 		_normalize: function (data)
 		{
 			var me= this,
-				d = {};
+				prefix = FBEditor.util.xml.Json.prefix,
+				d = {},
+				reg;
 
+			reg = new RegExp('^(' + prefix + ')+');
 			Ext.Object.each(
 				data,
 				function (key, item)
 				{
 					var k;
 
-					k = key.replace(/^(_)+/, '');
+					k = key.replace(reg, '');
 					if (Ext.isObject(item) || Ext.isArray(item))
 					{
 						d[k] = me._normalize(item);

@@ -40,7 +40,7 @@ Ext.define(
 
 		/**
 		 * Загружает в дерево ресурсы.
-		 * @param {Object} data Данные ресурсов.
+		 * @param {FBEditor.resource.Resource[]} data Данные ресурсов.
 		 */
 		loadData: function (data)
 		{
@@ -49,11 +49,12 @@ Ext.define(
 
 			treeData = me.getTreeData(data);
 			me.store.loadData(treeData);
+			me.restoreOpenNode();
 		},
 
 		/**
 		 * Возвращает струткуру дерева ресурсов по директориям.
-		 * @param {Object[]} data Данные ресурсов.
+		 * @param {FBEditor.resource.Resource[]} data Данные ресурсов.
 		 * @return {Array} Структура дерева.
 		 */
 		getTreeData: function (data)
@@ -63,7 +64,6 @@ Ext.define(
 				treeData = [],
 				rootTreeData;
 
-			console.log(data);
 			Ext.each(
 				data,
 			    function (item)
@@ -153,10 +153,10 @@ Ext.define(
 		},
 
 		/**
-		 * 
-		 * @param node
-		 * @param data
-		 * @returns {*}
+		 * Группирует узлы дерева по названиям.
+		 * @param {Object} node Узел.
+		 * @param {Object[]} data Узлы.
+		 * @return {Object[]} Сгруппированные узлы.
 		 */
 		groupTreeData: function (node, data)
 		{
@@ -182,6 +182,19 @@ Ext.define(
 			);
 
 			return treeData;
+		},
+
+		/**
+		 * Восстанвливает открытый узел дерева.
+		 */
+		restoreOpenNode: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				path;
+
+			path = '/' + bridge.FBEditor.resource.Manager.getActiveFolder();
+			me.expandPath(path);
 		}
 	}
 );

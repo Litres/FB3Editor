@@ -18,6 +18,7 @@ Ext.define(
 		onItemClick: function (node, record)
 		{
 			var me = this,
+				view = me.getView(),
 				bridge = FBEditor.getBridgeWindow(),
 				data,
 				resources,
@@ -28,6 +29,7 @@ Ext.define(
 			{
 				data = record.getData();
 				folder = data.path ? data.path : '';
+				bridge.FBEditor.resource.Manager.setActiveFolder(folder);
 				resources = bridge.FBEditor.resource.Manager.getFolderData(folder);
 
 				// заполняем панель отображения ресурсов файлами из выбранной директории

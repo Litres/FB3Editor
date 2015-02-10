@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.button.LoadResource',
 	{
 		extend: 'Ext.form.field.FileButton',
+		requires: [
+			'FBEditor.command.LoadResource'
+		],
 		id: 'button-load-resource',
 		xtype: 'button-load-resource',
 		text: 'Загрузить ресурс',
@@ -17,12 +20,11 @@ Ext.define(
 			{
 				var cmd;
 
-				console.log(evt);
-				/*cmd = Ext.create('FBEditor.command.OpenFile', {evt: evt});
+				cmd = Ext.create('FBEditor.command.LoadResource', {evt: evt});
 				if (cmd.execute())
 				{
 					FBEditor.HistoryCommand.add(cmd);
-				}*/
+				}
 			}
 		}
 	}

@@ -12,7 +12,8 @@ Ext.define(
 			'FBEditor.file.File',
 			'FBEditor.file.Zip',
 			'FBEditor.FB3.File',
-		    'FBEditor.FB3.Structure'
+		    'FBEditor.FB3.Structure',
+		    'FBEditor.converter.contentTypes.Data'
 		],
 
 		/**
@@ -55,6 +56,7 @@ Ext.define(
 								structure = me.fb3file.getStructure();
 								thumb = structure.getThumb();
 								contentTypes = structure.getContentTypes();
+								contentTypes = FBEditor.converter.contentTypes.Data.toNormalize(contentTypes);
 								meta = structure.getMeta();
 								books = structure.getBooks();
 								desc = structure.getDesc(books[0]);
@@ -64,7 +66,7 @@ Ext.define(
 								console.log('contentTypes', contentTypes);
 								console.log('thumb', thumb);
 								//console.log('meta', meta);
-								console.log('books', books);
+								//console.log('books', books);
 								//console.log('desc', desc);
 								//console.log('images', images);
 								//console.log(content);
@@ -96,6 +98,59 @@ Ext.define(
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
 							FBEditor.resource.Manager.load(images);
+							Ext.resumeLayouts(true);
+						}
+					}
+				);
+			}
+
+			return result;
+		},
+
+		/**
+		 * Открывает файл ресурса.
+		 * @param {Object} evt Событие открытие файла.
+		 * @return {Boolean} Успешно ли открытие.
+		 */
+		openResource: function (evt)
+		{
+			var me = this,
+				file = me.getFileFromEvent(evt),
+				result = false;
+
+			if (file)
+			{
+				result = file.read(
+					{
+						type: file.LOAD_TYPE_ARRAYBUFFER,
+						load: function (data)
+						{
+							try
+							{
+								FBEditor.resource.Manager.loadResource({file: file.file, content: data});
+							}
+							catch (e)
+							{
+								Ext.log(
+									{
+										level: 'error',
+										msg: e,
+										dump: e
+									}
+								);
+								Ext.Msg.show(
+									{
+										title: 'Ошибка',
+										message: 'Невозможно заугрузить ресурс ' + (e ? '(' + e + ')' : ''),
+										buttons: Ext.MessageBox.OK,
+										icon: Ext.MessageBox.ERROR
+									}
+								);
+							}
+							Ext.suspendLayouts();
+							//Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
+							//Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
+							//FBEditor.resource.Manager.load(images);
 							Ext.resumeLayouts(true);
 						}
 					}
