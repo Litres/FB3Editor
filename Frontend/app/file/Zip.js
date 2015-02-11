@@ -65,14 +65,27 @@ Ext.define(
 		/**
 		 * Добавляет или обновляет файл в архиве.
 		 * @param {String} name Имя файла.
-		 * @param {String} data Содержимое файла
+		 * @param {String/ArrayBuffer/Uint8Array/Buffer} data Содержимое файла
+		 * @param {Object} options Опции.
 		 */
-		file: function (name, data)
+		file: function (name, data, options)
 		{
 			var me = this,
 				zip = me.zip;
 
-			zip.file(name, data);
+			zip.file(name, data, options);
+		},
+
+		/**
+		 * Удаляет файл или директорию.
+		 * @param {String} name Имя файла или директории.
+		 */
+		remove: function (name)
+		{
+			var me = this,
+				zip = me.zip;
+
+			zip.remove(name);
 		}
 	}
 );

@@ -57,15 +57,28 @@ Ext.define(
 		},
 
 		/**
-		 * Устанавливает тело книги.
-		 * @param {String} data
+		 * Устанавливает ресурсы книги.
+		 * @param {FBEditor.resource.Resource[]} data Ресурсы.
 		 */
 		setImages: function (data)
 		{
-			var me = this;
+			var me = this,
+				rels = me.getRels(),
+				structure = me.getStructure(),
+				fb3file,
+				zip;
 
-			console.log('Установлены изображения', data);
-			//me.setFileContent(data);
+			fb3file = structure.getFb3file();
+			zip = fb3file.zip;
+			zip.remove('fb3/img');
+			Ext.each(
+				data,
+			    function (item)
+			    {
+				    zip.file(item.rootName, item.content, {createFolders: true});
+			    }
+			);
+			rels.setContent(data);
 		}
 	}
 );

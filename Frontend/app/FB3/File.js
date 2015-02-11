@@ -78,7 +78,6 @@ Ext.define(
 		{
 			var me = this,
 				structure = me.structure,
-				meta,
 				books,
 				bodies;
 

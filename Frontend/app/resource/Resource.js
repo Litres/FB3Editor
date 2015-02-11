@@ -7,14 +7,17 @@
 Ext.define(
 	'FBEditor.resource.Resource',
 	{
-		url: null,
-		name: null,
-		baseName: null,
-		modifiedDate: null,
-		size: null,
-		type: null,
-		date: null,
-		extension: null,
+		content: null, // содержимое файла ArrayBuffer
+		url: null, // адрес в памяти браузера
+		name: null, // полное имя файла относительно коренвой директории ресурсов в архиве
+		baseName: null, // базовое имя файла
+		rootName: null, // полное имя файла, включая корневую директории ресурсов в архиве
+		modifiedDate: null, // дата изменения файла Date
+		sizeBytes: null, // рамзер файла в байтах
+		size: null, // отформатированный размер файла
+		type: null, // mime-тип
+		date: null, // отформатированная дата изменения файла
+		extension: null, // разрешение файла
 
 		/**
 		 * @property {String} Формат даты.
@@ -29,16 +32,37 @@ Ext.define(
 		{
 			var me = this;
 
+			me.content = data.content;
 			me.url = data.url;
 			me.name = data.name;
 			me.baseName = data.baseName;
-			me.modifiedDate = data.date;
-			me.size = data.size;
+			me.rootName = data.rootName;
+			me.modifiedDate = data.modifiedDate;
+			me.sizeBytes = data.sizeBytes;
 			me.type = data.type;
+			me.size = me.getSizeFormat();
 			me.date = me.getDateFormat();
 			me.extension = me.getExtension();
 		},
 
+		/**
+		 * Возвращает отформатированный размер файла.
+		 * @return {String} Размер файла.
+		 */
+		getSizeFormat: function ()
+		{
+			var me = this,
+				size;
+
+			size = FBEditor.util.Format.fileSize(me.sizeBytes);
+
+			return size;
+		},
+
+		/**
+		 * Возвращает отформатированную дату.
+		 * @return {String} Дата.
+		 */
 		getDateFormat: function ()
 		{
 			var me = this,

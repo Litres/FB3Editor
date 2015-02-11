@@ -58,19 +58,24 @@ Ext.define(
 			{
 				throw Error('Недопустимый тип ресурса');
 			}
+			name = me._activeFolder + (me._activeFolder ? '/' : '') + file.name;
+			if (me.containsResource(name))
+			{
+				throw Error('Ресурс с именем ' + name + ' уже существует');
+			}
 			blob = new Blob([content], {type: file.type});
 			url = window.URL.createObjectURL(blob);
-			name = me._activeFolder + (me._activeFolder ? '/' : '') + file.name;
 			resData = {
+				content: content,
 				url: url,
 				name: name,
 				baseName: file.name,
-				date: file.lastModifiedDate,
-				size: file.size,
+				rootName: me.rootPath + '/' + name,
+				modifiedDate: file.lastModifiedDate,
+				sizeBytes: file.size,
 				type: file.type
 			};
 			res = Ext.create('FBEditor.resource.Resource', resData);
-			console.log(res);
 			me.data.push(res);
 			me.sortData();
 			bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(Ext.clone(me.data));
@@ -94,11 +99,13 @@ Ext.define(
 						resData;
 
 					resData = {
+						content: item.getArrayBuffer(),
 						url: item.getUrl(),
 						name: item.getFileName().substring(me.rootPath.length + 1),
 						baseName: item.getBaseFileName(),
-						date: item.getDate(),
-						size: FBEditor.util.Format.fileSize(item.getSize()),
+						rootName: item.getFileName(),
+						modifiedDate: item.getDate(),
+						sizeBytes: item.getSize(),
 						type: item.getType()
 					};
 					res = Ext.create('FBEditor.resource.Resource', resData);
@@ -147,6 +154,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает ресурсы.
+		 * @return {FBEditor.resource.Resource[]} Ресурсы.
+		 */
+		getData: function ()
+		{
+			return this.data;
+		},
+
+		/**
 		 * Возвращает ресурсы для указанной директории.
 		 * @param {String} folder Директория.
 		 * @return {FBEditor.resource.Resource[]} Ресурсы.
@@ -190,6 +206,33 @@ Ext.define(
 				res;
 
 			res = Ext.Array.contains(types, type);
+
+			return res;
+		},
+
+		/**
+		 * Проверяет содержится ли в редакторе ресурс с определенным именем.
+		 * @param {String} name Имя ресурса.
+		 * @return {Boolean}
+		 */
+		containsResource: function (name)
+		{
+			var me = this,
+				data = me.data,
+				res = false;
+
+			Ext.each(
+				data,
+			    function (item)
+			    {
+				    if (item.name === name)
+				    {
+					    res = true;
+
+					    return false;
+				    }
+			    }
+			);
 
 			return res;
 		}

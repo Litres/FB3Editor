@@ -65,6 +65,31 @@ Ext.define(
 			}
 
 			return images;
+		},
+
+		/**
+		 * Устанавливает содержимое xml-файла.
+		 * @param {FBEditor.resource.Resource[]} data Ресурсы.
+		 */
+		setContent: function (data)
+		{
+			var me = this,
+				xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+				      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
+
+			Ext.each(
+				data,
+				function (item)
+				{
+					var rel = '<Relationship Id="{%s}" ' +
+					          'Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/{%s}"/>';
+
+					rel = rel.replace(/{%s}/g, item.name);
+					xml += rel;
+				}
+			);
+			xml += '</Relationships>';
+			me.setFileContent(xml);
 		}
 
 	}

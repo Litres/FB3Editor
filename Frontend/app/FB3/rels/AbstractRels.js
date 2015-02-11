@@ -257,6 +257,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает содержимое файла в ArrayBuffer.
+		 * @return {ArrayBuffer} Содержимое файла.
+		 */
+		getArrayBuffer: function ()
+		{
+			return this.file.asArrayBuffer();
+		},
+
+		/**
 		 * Возвращает URL для доступа к ресурсу.
 		 * @return {String} Путь к картинке.
 		 */
