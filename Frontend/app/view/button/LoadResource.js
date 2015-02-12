@@ -14,7 +14,6 @@ Ext.define(
 		id: 'button-load-resource',
 		xtype: 'button-load-resource',
 		text: 'Загрузить ресурс',
-		width: '100%',
 		listeners: {
 			change: function (btn, evt)
 			{

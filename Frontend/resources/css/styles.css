@@ -374,3 +374,25 @@
 	position: relative;
 	color: #999999;
 }
+
+.resource-info
+{
+	position: relative;
+	padding: 5px;
+}
+
+.resource-info div
+{
+	position: relative;
+	margin: 0 0 5px 0;
+}
+
+.resource-info div span
+{
+	color: #666;
+}
+
+.resource-info-name
+{
+	font-weight: bold;
+}

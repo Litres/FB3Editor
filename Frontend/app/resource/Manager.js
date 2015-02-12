@@ -82,6 +82,40 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет ресурс из редактора.
+		 * @param {String} name Имя файла.
+		 * @return {Boolean} Успешно ли удален ресурс.
+		 */
+		deleteResource: function (name)
+		{
+			var me = this,
+				bridgeNavigation = FBEditor.getBridgeNavigation(),
+				data = me.data,
+				result = false;
+
+			Ext.each(
+				data,
+				function (item, index)
+				{
+					if (item.name === name)
+					{
+						result = true;
+						data.splice(index, 1);
+						bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(Ext.clone(me.data));
+
+						return false;
+					}
+				}
+			);
+			if (!result)
+			{
+				throw Error('Ресурс ' + name + ' не найден');
+			}
+
+			return result;
+		},
+
+		/**
 		 * Загружает данные ресурсов в редактор.
 		 * @param {FBEditor.FB3.rels.Image[]} images Изображения, полученные из архива открытой книги.
 		 */

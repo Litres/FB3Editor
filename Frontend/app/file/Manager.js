@@ -127,7 +127,9 @@ Ext.define(
 						{
 							try
 							{
+								Ext.suspendLayouts();
 								FBEditor.resource.Manager.loadResource({file: file.file, content: data});
+								Ext.resumeLayouts(true);
 							}
 							catch (e)
 							{
@@ -147,11 +149,6 @@ Ext.define(
 									}
 								);
 							}
-							Ext.suspendLayouts();
-							//Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
-							//Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
-							//FBEditor.resource.Manager.load(images);
-							Ext.resumeLayouts(true);
 						}
 					}
 				);

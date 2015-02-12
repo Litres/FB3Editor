@@ -9,10 +9,16 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.props.Abstract',
 		requires: [
-			'FBEditor.view.button.LoadResource'
+			'FBEditor.view.panel.main.props.resources.ResourcesController',
+			'FBEditor.view.panel.main.props.resources.Info',
+			'FBEditor.view.button.DeleteResource'
 		],
 		id: 'panel-props-resources',
 		xtype: 'panel-props-resources',
+		controller: 'panel.props.resources',
+		listeners: {
+			loadData: 'onLoadData'
+		},
 
 		initComponent: function ()
 		{
@@ -20,7 +26,11 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'button-load-resource'
+					xtype: 'props-resources-info'
+				},
+				{
+					xtype: 'button-delete-resource',
+					hidden: true
 				}
 			];
 			me.callParent(arguments);

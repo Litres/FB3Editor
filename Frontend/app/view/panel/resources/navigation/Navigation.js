@@ -23,12 +23,12 @@ Ext.define(
 		/**
 		 * @property {Boolean} Отображать ли файлы в структуре.
 		 */
-		visibleFiles: true,
+		visibleFiles: false,
 
 		/**
 		 * @property {Boolean} Отображать ли иконку для открывавния у последней директории в ветке.
 		 */
-		expandableLastFolder: true,
+		expandableLastFolder: false,
 
 		initComponent: function ()
 		{

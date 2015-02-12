@@ -1,5 +1,5 @@
 /**
- * Отображение списка ресурсов.
+ * Панель отображения ресурсов.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.view.View',
 		requires: [
+			'FBEditor.view.panel.resources.view.ResourcesViewController',
 			'FBEditor.store.resource.Resource',
 			'FBEditor.view.panel.resources.tpl.GreatResource',
 			'FBEditor.view.panel.resources.tpl.LargeResource',
@@ -19,9 +20,13 @@ Ext.define(
 		],
 		xtype: 'view-resources',
 		id: 'view-resources',
+		controller: 'view.resources',
 		itemSelector: 'div.resource-thumb-wrap',
 		emptyText: 'Нет доступных ресурсов',
 		deferEmptyText: false,
+		listeners: {
+			focuschange: 'onFocusChange'
+		},
 
 		/**
 		 * @property {Object} Типы шаблонов отображения.

@@ -8,16 +8,18 @@ Ext.define(
 	'FBEditor.resource.Resource',
 	{
 		content: null, // содержимое файла ArrayBuffer
-		url: null, // адрес в памяти браузера
-		name: null, // полное имя файла относительно коренвой директории ресурсов в архиве
-		baseName: null, // базовое имя файла
-		rootName: null, // полное имя файла, включая корневую директории ресурсов в архиве
+		url: '', // адрес в памяти браузера
+		name: '', // полное имя файла относительно коренвой директории ресурсов в архиве
+		baseName: '', // базовое имя файла
+		rootName: '', // полное имя файла, включая корневую директории ресурсов в архиве
 		modifiedDate: null, // дата изменения файла Date
 		sizeBytes: null, // рамзер файла в байтах
-		size: null, // отформатированный размер файла
-		type: null, // mime-тип
-		date: null, // отформатированная дата изменения файла
-		extension: null, // разрешение файла
+		size: '', // отформатированный размер файла
+		type: '', // mime-тип
+		date: '', // отформатированная дата изменения файла
+		extension: '', // разрешение файла
+		width: null,
+		height: null,
 
 		/**
 		 * @property {String} Формат даты.
@@ -30,7 +32,8 @@ Ext.define(
 		 */
 		constructor: function (data)
 		{
-			var me = this;
+			var me = this,
+				img = new Image();
 
 			me.content = data.content;
 			me.url = data.url;
@@ -43,6 +46,12 @@ Ext.define(
 			me.size = me.getSizeFormat();
 			me.date = me.getDateFormat();
 			me.extension = me.getExtension();
+			img.src = me.url;
+			img.onload = function ()
+			{
+				me.width = img.width;
+				me.height = img.height;
+			};
 		},
 
 		/**
