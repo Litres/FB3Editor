@@ -15,7 +15,8 @@ Ext.define(
 
 			me.html = '<tpl for=".">' +
 			          '<div class="resource-thumb-wrap resource-normal-thumb">' +
-			          '<img src="{url}" class="resource-thumb-img" />' +
+						'<tpl if="url"><img src="{url}" class="resource-thumb-img resource-thumb-img-{extension}" />' +
+						'<tpl else><span class="resource-thumb-img-folder fa"></span></tpl>' +
 			          '<br/><span class="resource-thumb-name" title="{name}">{baseName}</span>' +
 			          '</div>' +
 			          '</tpl>';

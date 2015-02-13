@@ -25,7 +25,8 @@ Ext.define(
 		emptyText: 'Нет доступных ресурсов',
 		deferEmptyText: false,
 		listeners: {
-			focuschange: 'onFocusChange'
+			focuschange: 'onFocusChange',
+			itemdblclick: 'onItemDblClick'
 		},
 
 		/**

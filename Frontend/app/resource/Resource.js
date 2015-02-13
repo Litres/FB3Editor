@@ -20,6 +20,7 @@ Ext.define(
 		extension: '', // разрешение файла
 		width: null,
 		height: null,
+		isFolder: false, // папка ли
 
 		/**
 		 * @property {String} Формат даты.

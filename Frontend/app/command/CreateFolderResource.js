@@ -14,9 +14,19 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
 				data = me.data,
-				result;
+				result = false;
 
-			result = false;
+			Ext.Msg.prompt(
+				'Новая папка',
+				'Имя:',
+				function(btn, name)
+				{
+					if (btn === 'ok' && !Ext.isEmpty(name))
+					{
+						result = bridge.FBEditor.resource.Manager.createFolder(name);
+					}
+				}
+			);
 
 			return result;
 		},

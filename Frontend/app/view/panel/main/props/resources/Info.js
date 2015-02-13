@@ -15,13 +15,14 @@ Ext.define(
 		{
 			var me = this;
 
-			me.tpl = new Ext.Template(
+			me.tpl = new Ext.XTemplate(
 				'<div class="resource-info">',
 					'<div class="resource-info-name">{baseName}</div>',
-					'<div><span>Размеры:</span> {width} x {height}</div>',
+					'<tpl if="!isFolder"><div><span>Размеры:</span> {width} x {height}</div></tpl>',
 					'<div><span>Дата:</span> {date}</div>',
 					'<div><span>Тип:</span> {type}</div>',
-					'<div><span>Размер:</span> {size}</div>',
+					'<tpl if="isFolder"><div><span>Ресурсов:</span> {total}</div>',
+					'<tpl else><div><span>Размер:</span> {size}</div></tpl>',
 			    '</div>'
 			);
 			me.callParent(arguments);

@@ -39,7 +39,7 @@ Ext.define(
 							bodies: [
 								{
 									content: content.getXml(),
-									images: FBEditor.resource.Manager.getData()
+									images: FBEditor.resource.Manager.getResources()
 								}
 							]
 						}
