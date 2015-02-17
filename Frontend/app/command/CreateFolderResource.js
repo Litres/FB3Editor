@@ -23,7 +23,28 @@ Ext.define(
 				{
 					if (btn === 'ok' && !Ext.isEmpty(name))
 					{
-						result = bridge.FBEditor.resource.Manager.createFolder(name);
+						try
+						{
+							result = bridge.FBEditor.resource.Manager.createFolder(name);
+						}
+						catch (e)
+						{
+							Ext.log(
+								{
+									level: 'error',
+									msg: e,
+									dump: e
+								}
+							);
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно создать папку ' + (e ? '(' + e + ')' : ''),
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
+						}
 					}
 				}
 			);

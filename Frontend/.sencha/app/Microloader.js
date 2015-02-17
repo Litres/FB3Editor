@@ -15,30 +15,16 @@ Ext.Microloader = Ext.Microloader || (function () {
     var Boot = Ext.Boot,
         _listeners = [],
         _loaded = false,
-        _tags = Boot.platformTags,
+
         Microloader = {
-
-            /**
-             * the global map of tags used
-             */
-            platformTags: _tags,
-
             detectPlatformTags: function () {
                 if (Ext.beforeLoad) {
-                    Ext.beforeLoad(_tags);
+                    Ext.beforeLoad(Ext.platformTags);
                 }
             },
 
             initPlatformTags: function () {
                 Microloader.detectPlatformTags();
-            },
-
-            getPlatformTags: function () {
-                return Boot.platformTags;
-            },
-
-            filterPlatform: function (platform) {
-                return Boot.filterPlatform(platform);
             },
 
             init: function () {
@@ -62,8 +48,8 @@ Ext.Microloader = Ext.Microloader || (function () {
                 if (typeof manifest === "string") {
                     var extension = ".json",
                         url = manifest.indexOf(extension) === manifest.length - extension.length
-                            ? Boot.baseUrl + manifest
-                            : Boot.baseUrl + manifest + ".json";
+                            ? manifest
+                            : manifest + ".json";
 
                     Boot.fetch(url, function(result){
                         manifest = Ext.manifest = JSON.parse(result.content);

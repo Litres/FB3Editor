@@ -129,8 +129,8 @@ Ext.define(
 			var me = this,
 				d = data;
 
-			d['classification-class-contents'] = d['fb3-classification'].class.contents;
-			d['classification-class-text'] = d['fb3-classification'].class.text;
+			d['classification-class-contents'] = d['fb3-classification']['class'].contents;
+			d['classification-class-text'] = d['fb3-classification']['class'].text;
 			d['classification-subject'] = me._convertValToObj(d['fb3-classification'].subject,
 			                                                  'classification-subject');
 			d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?

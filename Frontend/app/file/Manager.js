@@ -94,11 +94,11 @@ Ext.define(
 							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
 							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
 							//console.log(contentBody);
-							Ext.suspendLayouts();
+							//Ext.suspendLayouts();
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
 							FBEditor.resource.Manager.load(images);
-							Ext.resumeLayouts(true);
+							//Ext.resumeLayouts(true);
 						}
 					}
 				);
@@ -127,9 +127,9 @@ Ext.define(
 						{
 							try
 							{
-								Ext.suspendLayouts();
+								//Ext.suspendLayouts();
 								FBEditor.resource.Manager.loadResource({file: file.file, content: data});
-								Ext.resumeLayouts(true);
+								//Ext.resumeLayouts(true);
 							}
 							catch (e)
 							{

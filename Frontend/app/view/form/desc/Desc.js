@@ -248,8 +248,8 @@ Ext.define(
 					'dc:title': data.title.main,
 					'dc:creator': getCreator(data['fb3-relations'].subject),
 					'cp:revision': rev,
-					'cp:contentStatus': data['fb3-classification'].class._contents,
-					'cp:category': data['fb3-classification'].class.__text,
+					'cp:contentStatus': data['fb3-classification']['class']._contents,
+					'cp:category': data['fb3-classification']['class'].__text,
 					'dcterms:modified': data['document-info']._updated,
 					'dcterms:created': data['document-info']._created
 				}

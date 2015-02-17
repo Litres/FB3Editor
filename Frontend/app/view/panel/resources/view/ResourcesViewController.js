@@ -33,15 +33,11 @@ Ext.define(
 		{
 			var me = this,
 				data = record.getData(),
-				resources;
+				bridge = FBEditor.getBridgeWindow();
 
 			if (data.isFolder)
 			{
-				FBEditor.resource.Manager.setActiveFolder(data.name);
-				resources = FBEditor.resource.Manager.getFolderData(data.name);
-
-				// заполняем панель отображения ресурсов файлами из выбранной директории
-				view.setStoreData(resources);
+				bridge.FBEditor.resource.Manager.restoreActiveFolder(data.name);
 			}
 		}
 	}

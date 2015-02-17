@@ -17,7 +17,7 @@ Ext.define(
 		controller: 'panel.resources.navigation',
 		useArrows: true,
 		listeners: {
-			itemClick: 'onItemClick'
+			itemclick: 'onItemClick'
 		},
 
 		/**
@@ -47,9 +47,16 @@ Ext.define(
 			var me = this,
 				treeData;
 
+			//console.log(data);
 			treeData = me.getTreeData(data);
 			me.store.loadData(treeData);
-			me.restoreOpenNode();
+			Ext.defer(
+				function ()
+				{
+					me.restoreOpenNode();
+				},
+			    200
+			);
 		},
 
 		/**
@@ -71,6 +78,7 @@ Ext.define(
 				    var val;
 
 				    val = me.parseNameResource(item.name, {path: ''});
+				    //console.log('val', val);
 				    if (val)
 				    {
 					    if (treeData.length && val.children)
@@ -84,11 +92,13 @@ Ext.define(
 				    }
 			    }
 			);
+			//console.log(treeData);
 			rootText = me.store.getRoot().data.text;
 			rootTreeData = [
 				{
 					root: true,
 					text: rootText,
+					expandable: false,
 					children: treeData
 				}
 			];
@@ -113,7 +123,8 @@ Ext.define(
 				children = null,
 				pos,
 				partName,
-				isLast;
+				isLast,
+				isFile;
 
 			// получаем имя директории
 			pos = fileName.indexOf('/');
@@ -121,12 +132,20 @@ Ext.define(
 			partName = isLast ? fileName : fileName.substring(0, pos);
 			node.text = partName;
 
+			// файл ли
+			isFile = isLast && fileName.indexOf('.') !== -1 ? true : false;
+
 			if (!me.visibleFiles)
 			{
 				// скрываем файлы в узлах дерева
-				node.visible = isLast ? false : true;
+				node.visible = isFile ? false : true;
 			}
-			node.leaf = isLast ? true : false;
+			node.leaf = isFile ? true : false;
+			if (isLast && !isFile)
+			{
+				//node.loaded = true;
+				children = [];
+			}
 
 			// полный путь директории
 			node.path = pn.path ? pn.path + '/' + partName : partName;
@@ -137,6 +156,7 @@ Ext.define(
 
 			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
 			//node.expandable = partName.indexOf('/') === -1 ? false : true;
+			node.expandable = false;
 
 			// парсим последнюю часть имени файла
 			if (!isLast)
@@ -168,7 +188,14 @@ Ext.define(
 
 					if (item.text === node.text && item.children && node.children)
 					{
-						val = me.groupTreeData(node.children[0], item.children);
+						if (item.children.length === 0)
+						{
+							val = node.children;
+						}
+						else
+						{
+							val = me.groupTreeData(node.children[0], item.children);
+						}
 						treeData[i].children = val;
 					}
 					else if (data.length === i + 1)
@@ -182,16 +209,54 @@ Ext.define(
 		},
 
 		/**
-		 * Восстанвливает открытый узел дерева.
+		 * Восстанвливает открытый узел дерева и обновляет отображение ресурсов.
 		 */
 		restoreOpenNode: function ()
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
+				rootText = me.store.getRoot().data.text,
 				path;
 
-			path = '/' + bridge.FBEditor.resource.Manager.getActiveFolder();
-			me.expandPath(path);
+			me.collapseAll();
+			path = bridge.FBEditor.resource.Manager.getActiveFolder();
+			path = path ? '/' + path : '';
+			path = '/' + rootText + path;
+
+			// открываем ветку узла
+			me.expandPath(
+				path,
+				'text',
+				'/',
+				function (success, node)
+				{
+					var data,
+						folder;
+
+					if (success)
+					{
+						// отображаем активную папку
+						data = node.getData();
+						folder = data.path ? data.path : '';
+						bridge.FBEditor.resource.Manager.setActiveFolder(folder);
+					}
+				}
+			);
+		},
+
+		/**
+		 * Переписывает стандартный метод, возвращающий корневой узел.
+		 * @return {Ext.data.TreeModel} Корневой узел.
+		 */
+		getRootNode: function ()
+		{
+			var me = this,
+				store= me.store,
+				root;
+
+			root = store && store.first() ? store.first() : me.callParrent();
+
+			return root;
 		}
 	}
 );

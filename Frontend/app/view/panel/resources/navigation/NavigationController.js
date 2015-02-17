@@ -18,22 +18,23 @@ Ext.define(
 		onItemClick: function (node, record)
 		{
 			var me = this,
-				view = me.getView(),
 				bridge = FBEditor.getBridgeWindow(),
 				data,
-				resources,
 				folder;
 
-			node.toggle(record);
+			if (record.isExpanded())
+			{
+				record.collapse();
+			}
+			else
+			{
+				record.expand();
+			}
 			if (!record.isLeaf())
 			{
 				data = record.getData();
 				folder = data.path ? data.path : '';
 				bridge.FBEditor.resource.Manager.setActiveFolder(folder);
-				resources = bridge.FBEditor.resource.Manager.getFolderData(folder);
-
-				// заполняем панель отображения ресурсов файлами из выбранной директории
-				bridge.Ext.getCmp('view-resources').setStoreData(resources);
 			}
 		}
 	}

@@ -119,14 +119,35 @@
      *
      */
 
+
+    /**
+     *  "compressor": {
+     *      "type": "closure",
+     *      "languageIn": "ECMASCRIPT5"
+     *  }
+     *
+     */
+    "compressor": null,
+
     /**
      * override objects for setting build environment specific
      * settings.
      */
     "production": {
+        "compressor": {
+            "type": "yui"
+        }
     },
 
     "testing": {
+        "output": {
+            "deltas": {
+                "enable": false
+            },
+            "cache": {
+                "enable": false
+            }
+        }
     },
 
     "development": {

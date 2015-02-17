@@ -37,7 +37,7 @@ Ext.define(
 		 * @private
 		 * @property {String} Активная директория дерева навигации.
 		 */
-		_activeFolder: '',
+		activeFolder: '',
 
 		/**
 		 * Загружает данные ресурсов в редактор.
@@ -96,7 +96,7 @@ Ext.define(
 			{
 				throw Error('Недопустимый тип ресурса');
 			}
-			name = me._activeFolder + (me._activeFolder ? '/' : '') + file.name;
+			name = me.activeFolder + (me.activeFolder ? '/' : '') + file.name;
 			if (me.containsResource(name))
 			{
 				throw Error('Ресурс с именем ' + name + ' уже существует');
@@ -163,7 +163,7 @@ Ext.define(
 		createFolder: function (name)
 		{
 			var me = this,
-				activeFolder = me._activeFolder,
+				activeFolder = me.activeFolder,
 				nameFolder,
 				folderData,
 				res;
@@ -183,17 +183,44 @@ Ext.define(
 
 				return true;
 			}
+			else
+			{
+				throw Error('Папка с именем `' + name + '` уже существует');
+			}
 
 			return false;
 		},
 
 		/**
-		 * Устанавливает активную директорию дерева навигации.
+		 * Устанавливает активную директорию дерева навигации и обновляет отображение ресурсов.
 		 * @param {String} folder Директория.
 		 */
 		setActiveFolder: function (folder)
 		{
-			this._activeFolder = folder;
+			var me = this,
+				resources,
+				bridge = FBEditor.getBridgeWindow();
+
+			me.activeFolder = folder;
+			resources = me.getFolderData(folder);
+
+			// заполняем панель отображения ресурсов файлами из выбранной директории
+			bridge.Ext.getCmp('view-resources').setStoreData(resources);
+		},
+
+		/**
+		 * Восстанавливает активную директорию ресурсов.
+		 * @param {String} folder Директория.
+		 */
+		restoreActiveFolder: function (folder)
+		{
+			var me = this,
+				bridgeNavigation = FBEditor.getBridgeNavigation(),
+				panelNavigation;
+
+			me.activeFolder = folder;
+			panelNavigation = bridgeNavigation.Ext.getCmp('panel-resources-navigation');
+			panelNavigation.restoreOpenNode();
 		},
 
 		/**
@@ -202,7 +229,7 @@ Ext.define(
 		 */
 		getActiveFolder: function (folder)
 		{
-			return this._activeFolder;
+			return this.activeFolder;
 		},
 
 		/**
@@ -239,6 +266,30 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает данные папок.
+		 * @return {FBEditor.resource.Resource[]}
+		 */
+		getFolders: function ()
+		{
+			var me = this,
+				data = me.data,
+				resources = [];
+
+			Ext.each(
+				data,
+				function (item)
+				{
+					if (item.isFolder)
+					{
+						resources.push(item);
+					}
+				}
+			);
+
+			return resources;
+		},
+
+		/**
 		 * Возвращает ресурсы для указанной директории.
 		 * @param {String} folder Директория.
 		 * @return {FBEditor.resource.Resource[]} Ресурсы.
@@ -250,23 +301,28 @@ Ext.define(
 				f = folder,
 				dataFolder = [];
 
+			//console.log('folder', folder);
 			Ext.each(
 				data,
 			    function (item)
 			    {
 				    var pos,
 					    name = item.name,
-					    last;
+					    lastPart,
+					    isContains;
 
 				    pos = name.indexOf(f);
-				    last = pos === 0 ? name.substring(f.length + 1) : null;
-				    if (last && last.indexOf('/') === -1)
+				    isContains = pos === 0 ? true : false;
+				    lastPart = isContains ? name.substring(f.length + 1) : null;
+				    //console.log(name, lastPart, pos);
+				    if (isContains && lastPart && lastPart.indexOf('/') === -1 || !f && !lastPart)
 				    {
 					    dataFolder.push(item);
 				    }
 			    }
 			);
 
+			//console.log(dataFolder);
 			return dataFolder;
 		},
 
@@ -322,7 +378,7 @@ Ext.define(
 				bridgeNavigation = FBEditor.getBridgeNavigation(),
 				resources;
 
-			resources = me.getResources();
+			resources = me.getData();
 			bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(resources);
 
 		},

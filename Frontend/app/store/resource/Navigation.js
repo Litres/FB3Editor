@@ -9,25 +9,26 @@ Ext.define(
 	{
 		extend: 'Ext.data.TreeStore',
 		defaultRootText: 'Ресурсы',
-		rootVisible: true,
-		folderSort: true,
+		rootVisible: false,
 		proxy: {
 			type: 'memory'
 		},
+		/*folderSort: true,
 		sorters: [
 			{
-				property: 'text',
+				property: 'path',
 				direction: 'ASC'
 			}
-		],
+		],*/
+		filters: [],
 		root: {
 			expandable: false
-		},
+		}/*,
 		listeners: {
-			datachanged: function (self)
+			refresh: function (store)
 			{
-				//console.log(self.getData());
+
 			}
-		}
+		}*/
 	}
 );
