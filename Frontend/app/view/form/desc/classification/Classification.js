@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
-			'FBEditor.view.form.desc.classification.class.Contents',
+			'FBEditor.view.form.desc.classification.classContents.Contents',
 			//'FBEditor.view.form.desc.classification.customSubject.CustomSubject',
 			'FBEditor.view.form.desc.classification.target.Target',
 			'FBEditor.view.form.desc.classification.coverage.Coverage',
