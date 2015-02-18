@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.panel.resources.navigation.Navigation',
 	{
-		extend: 'Ext.tree.Panel',
+		extend: 'FBEditor.view.panel.treenavigation.AbstractTree',
 		requires: [
 			'FBEditor.view.panel.resources.navigation.NavigationController',
 			'FBEditor.store.resource.Navigation'
@@ -19,6 +19,8 @@ Ext.define(
 		listeners: {
 			itemclick: 'onItemClick'
 		},
+
+		syncContentId: 'panel-resources',
 
 		/**
 		 * @property {Boolean} Отображать ли файлы в структуре.
@@ -67,7 +69,7 @@ Ext.define(
 		getTreeData: function (data)
 		{
 			var me = this,
-				rootText,
+				rootData = me.store.getRoot().data,
 				treeData = [],
 				rootTreeData;
 
@@ -93,12 +95,14 @@ Ext.define(
 			    }
 			);
 			//console.log(treeData);
-			rootText = me.store.getRoot().data.text;
 			rootTreeData = [
 				{
 					root: true,
-					text: rootText,
-					expandable: false,
+					text: rootData.text,
+					expandable: rootData.expandable,
+					icon: rootData.icon,
+					cls: rootData.cls,
+					iconCls: rootData.iconCls,
 					children: treeData
 				}
 			];
@@ -157,6 +161,10 @@ Ext.define(
 			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
 			//node.expandable = partName.indexOf('/') === -1 ? false : true;
 			node.expandable = false;
+
+			node.icon = ' ';
+			node.cls = 'treenavigation-children treenavigation-children-resource';
+			node.iconCls = 'treenavigation-children-icon treenavigation-children-icon-resource fa';
 
 			// парсим последнюю часть имени файла
 			if (!isLast)

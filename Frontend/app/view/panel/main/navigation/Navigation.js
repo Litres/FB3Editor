@@ -10,9 +10,6 @@ Ext.define(
         extend: 'FBEditor.view.panel.main.AbstractDetach',
 	    requires: [
 		    'FBEditor.view.panel.main.navigation.NavigationController',
-		    'FBEditor.view.button.Desc',
-		    'FBEditor.view.button.Resources',
-		    'FBEditor.view.button.Body',
 	        'FBEditor.view.panel.treenavigation.TreeNavigation'
 	    ],
 	    id: 'panel-main-navigation',
@@ -20,21 +17,17 @@ Ext.define(
 	    controller: 'panel.main.navigation',
 	    title: 'Навигация',
 	    panelName: 'navigation',
+	    layout: 'anchor',
+	    defaults: {
+		    anchor: '100%'
+	    },
+
 
 	    initComponent: function ()
 	    {
 		    var me = this;
 
 		    me.items = [
-			    {
-				    xtype: 'button-desc'
-			    },
-			    {
-				    xtype: 'button-resources'
-			    },
-			    {
-				    xtype: 'button-body'
-			    },
 			    {
 				    xtype: 'panel-treenavigation'
 			    }

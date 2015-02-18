@@ -20,9 +20,12 @@ Ext.define(
 				direction: 'ASC'
 			}
 		],*/
-		filters: [],
+		filters: [], // обязательное свойство
 		root: {
-			expandable: false
+			expandable: false,
+			icon: ' ',
+			cls: 'treenavigation-root treenavigation-root-resource',
+			iconCls: 'treenavigation-root-icon treenavigation-root-icon-resource fa fa-lg'
 		}/*,
 		listeners: {
 			refresh: function (store)

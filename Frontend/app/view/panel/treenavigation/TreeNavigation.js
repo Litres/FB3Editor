@@ -11,18 +11,32 @@ Ext.define(
 		extend: 'Ext.panel.Panel',
 		requires: [
 			'FBEditor.view.panel.treenavigation.TreeNavigationController',
-			'FBEditor.view.panel.resources.navigation.Navigation'
+			'FBEditor.view.panel.resources.navigation.Navigation',
+			'FBEditor.view.panel.treenavigation.desc.Tree',
+			'FBEditor.view.panel.treenavigation.body.Tree'
 		],
 		id: 'panel-treenavigation',
 		xtype: 'panel-treenavigation',
 		controller: 'panel.treenavigation',
-		layout: 'card',
+		layout: 'anchor',
+		defaults: {
+			anchor: '100%'
+		},
+		listeners: {
+			clearSelection: 'onClearSelection'
+		},
 
 		initComponent: function ()
 		{
 			var me = this;
 
 			me.items = [
+				{
+					xtype: 'panel-desc-navigation'
+				},
+				{
+					xtype: 'panel-body-navigation'
+				},
 				{
 					xtype: 'panel-resources-navigation'
 				}

@@ -447,3 +447,75 @@
 {
 	font-weight: bold;
 }
+
+.treenavigation-root
+{
+	font-size: 15px;
+}
+
+.treenavigation-root-icon
+{
+	position: relative;
+	top: 6px;
+	left: -6px;
+}
+
+.treenavigation-children-icon
+{
+	position: relative;
+	top: 6px;
+}
+
+.treenavigation-root-desc span,
+.treenavigation-root-icon-desc,
+.treenavigation-children-desc span,
+.treenavigation-children-icon-desc
+{
+	color: #1d458a;
+}
+
+.treenavigation-root-icon-desc,
+.treenavigation-root-icon-desc:before
+{
+	content: "\f03a";
+}
+
+.treenavigation-children-icon-desc,
+.treenavigation-children-icon-desc:before
+{
+	content: "\f1dd";
+}
+
+.treenavigation-root-body span,
+.treenavigation-root-icon-body,
+.treenavigation-children-body span,
+.treenavigation-children-icon-body
+{
+	color: #3a7461;
+}
+
+.treenavigation-root-icon-body,
+.treenavigation-root-icon-body:before
+{
+	content: "\f044";
+}
+
+.treenavigation-root-resource span,
+.treenavigation-root-icon-resource,
+.treenavigation-children-resource span,
+.treenavigation-children-icon-resource
+{
+	color: #743e45;
+}
+
+.treenavigation-root-icon-resource,
+.treenavigation-root-icon-resource:before
+{
+	content: "\f1c0";
+}
+
+.treenavigation-children-icon-resource,
+.treenavigation-children-icon-resource:before
+{
+	content: "\f07b";
+}

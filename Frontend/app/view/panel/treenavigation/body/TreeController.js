@@ -1,17 +1,17 @@
 /**
- * Контроллер дерева навигации по ресурсам.
+ * Контроллер дерева навигации по тексту.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.resources.navigation.NavigationController',
+	'FBEditor.view.panel.treenavigation.body.TreeController',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTreeController',
 		requires: [
-			'FBEditor.command.OpenResources'
+			'FBEditor.command.OpenBody'
 		],
-		alias: 'controller.panel.resources.navigation',
+		alias: 'controller.panel.body.navigation',
 
 		/**
 		 * Вызывается при клике на одном из элементов узла дерева.
@@ -22,33 +22,31 @@ Ext.define(
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
-				data,
-				folder;
+				data;
 
-			if (record.isExpanded())
+			node.toggle(record);
+			/*if (record.isExpanded())
 			{
 				record.collapse();
 			}
 			else
 			{
 				record.expand();
-			}
+			}*/
 			if (!record.isLeaf())
 			{
 				data = record.getData();
-				folder = data.path ? data.path : '';
-				bridge.FBEditor.resource.Manager.setActiveFolder(folder);
 			}
 		},
 
 		/**
-		 * Открывает панель ресурсов.
+		 * Открывает панель текста.
 		 */
 		openContent: function ()
 		{
 			var cmd;
 
-			cmd = Ext.create('FBEditor.command.OpenResources');
+			cmd = Ext.create('FBEditor.command.OpenBody');
 			if (cmd.execute())
 			{
 				FBEditor.HistoryCommand.add(cmd);
