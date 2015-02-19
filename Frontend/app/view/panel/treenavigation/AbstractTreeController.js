@@ -20,6 +20,16 @@ Ext.define(
 		},
 
 		/**
+		 * Вызывается при двойном клике на одном из элементов узла дерева.
+		 * @param {Ext.tree.View} node Узел дерева.
+		 * @param {Ext.data.TreeModel} record Модель узла.
+		 */
+		onItemDblClick: function (node, record)
+		{
+
+		},
+
+		/**
 		 * Вызывается перед кликом по одному из узлов дерева.
 		 * @param {Ext.tree.View} node Узел дерева.
 		 * @param {Ext.data.TreeModel} record Модель узла.

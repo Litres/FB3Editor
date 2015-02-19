@@ -43,6 +43,9 @@ Ext.define(
 				autoExpand = me.autoExpand,
 				xtypeChild = me.xtypeChild;
 
+			// устанавливаем якорь в заголовок блока
+			me.title = me.title + '<a name="' + me.xtype + '"></a>';
+
 			me.collapsed = req && autoExpand ? false : true;
 			me.cls = req ? me.xtype : me.xtype + ' fieldset-optional';
 			if (!me.items)

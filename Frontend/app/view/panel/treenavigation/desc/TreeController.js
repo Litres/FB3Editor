@@ -22,13 +22,13 @@ Ext.define(
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
-				data;
-
-			node.toggle(record);
-			if (!record.isLeaf())
-			{
 				data = record.getData();
-			}
+
+				if (data.anchor)
+				{
+					// переходим к определенному блоку описания
+					window.location = '#' + data.anchor;
+				}
 		},
 
 		/**

@@ -16,9 +16,7 @@ Ext.define(
 		xtype: 'panel-desc-navigation',
 		controller: 'panel.desc.navigation',
 		useArrows: true,
-		listeners: {
-			itemclick: 'onItemClick'
-		},
+		animate: false,
 
 		syncContentId: 'form-desc',
 

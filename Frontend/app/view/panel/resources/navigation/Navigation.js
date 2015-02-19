@@ -16,9 +16,8 @@ Ext.define(
 		xtype: 'panel-resources-navigation',
 		controller: 'panel.resources.navigation',
 		useArrows: true,
-		listeners: {
-			itemclick: 'onItemClick'
-		},
+		animate: false,
+		manageHeight: false,
 
 		syncContentId: 'panel-resources',
 
@@ -160,11 +159,11 @@ Ext.define(
 
 			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
 			//node.expandable = partName.indexOf('/') === -1 ? false : true;
-			node.expandable = false;
+			//node.expandable = false;
 
 			node.icon = ' ';
 			node.cls = 'treenavigation-children treenavigation-children-resource';
-			node.iconCls = 'treenavigation-children-icon treenavigation-children-icon-resource fa';
+			//node.iconCls = 'treenavigation-children-icon treenavigation-children-icon-resource fa';
 
 			// парсим последнюю часть имени файла
 			if (!isLast)
@@ -226,7 +225,7 @@ Ext.define(
 				rootText = me.store.getRoot().data.text,
 				path;
 
-			me.collapseAll();
+			//me.collapseAll();
 			path = bridge.FBEditor.resource.Manager.getActiveFolder();
 			path = path ? '/' + path : '';
 			path = '/' + rootText + path;

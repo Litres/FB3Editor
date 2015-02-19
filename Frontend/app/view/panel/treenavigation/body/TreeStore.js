@@ -14,10 +14,10 @@ Ext.define(
 			type: 'memory'
 		},
 		root: {
-			expandable: false,
+			//expandable: false,
 			icon: ' ',
-			cls: 'treenavigation-root treenavigation-root-body',
-			iconCls: 'treenavigation-root-icon treenavigation-root-icon-body fa fa-lg'
+			cls: 'treenavigation-root treenavigation-root-body'//,
+			//iconCls: 'treenavigation-root-icon treenavigation-root-icon-body fa fa-lg'
 		}
 	}
 );

@@ -237,7 +237,7 @@
 
 .resource-great-thumb .resource-thumb-img-folder:before
 {
-	font-size: 14.5em;;
+	font-size: 14.4em;;
 }
 
 .resource-great-thumb .resource-thumb-name
@@ -278,7 +278,7 @@
 
 .resource-large-thumb .resource-thumb-img-folder:before
 {
-	font-size: 6.4em;;
+	font-size: 6.3em;;
 }
 
 .resource-normal-thumb .resource-thumb-img
@@ -307,7 +307,7 @@
 
 .resource-normal-thumb .resource-thumb-img-folder:before
 {
-	font-size: 3.7em;;
+	font-size: 3.6em;;
 }
 
 .resource-great-thumb .resource-thumb-img.resource-thumb-img-svg,
@@ -453,69 +453,80 @@
 	font-size: 15px;
 }
 
-.treenavigation-root-icon
+.treenavigation-root span,
+.treenavigation-children span
 {
 	position: relative;
-	top: 6px;
-	left: -6px;
+	left: -20px;
 }
 
-.treenavigation-children-icon
+.treenavigation-root span:before,
+.treenavigation-children span:before
 {
 	position: relative;
-	top: 6px;
+	width: 24px;
+	text-align: center;
+	left: -3px;
+
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate(0, 0);
+	line-height: 0.75em;
 }
 
-.treenavigation-root-desc span,
-.treenavigation-root-icon-desc,
-.treenavigation-children-desc span,
-.treenavigation-children-icon-desc
+.treenavigation-children span:before {
+	width: 18px;
+}
+
+.treenavigation-root-desc,
+.treenavigation-children-desc
 {
 	color: #1d458a;
 }
 
-.treenavigation-root-icon-desc,
-.treenavigation-root-icon-desc:before
+.treenavigation-root-desc span:before
 {
 	content: "\f03a";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
 }
 
-.treenavigation-children-icon-desc,
-.treenavigation-children-icon-desc:before
+.treenavigation-children-desc span:before
 {
 	content: "\f1dd";
 }
 
-.treenavigation-root-body span,
-.treenavigation-root-icon-body,
-.treenavigation-children-body span,
-.treenavigation-children-icon-body
+.treenavigation-root-body,
+.treenavigation-children-body
 {
 	color: #3a7461;
 }
 
-.treenavigation-root-icon-body,
-.treenavigation-root-icon-body:before
+.treenavigation-root-body span:before
 {
 	content: "\f044";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
 }
 
-.treenavigation-root-resource span,
-.treenavigation-root-icon-resource,
-.treenavigation-children-resource span,
-.treenavigation-children-icon-resource
+.treenavigation-root-resource,
+.treenavigation-children-resource
 {
 	color: #743e45;
 }
 
-.treenavigation-root-icon-resource,
-.treenavigation-root-icon-resource:before
+.treenavigation-root-resource span:before
 {
 	content: "\f1c0";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
 }
 
-.treenavigation-children-icon-resource,
-.treenavigation-children-icon-resource:before
+.treenavigation-children-resource span:before
 {
 	content: "\f07b";
 }

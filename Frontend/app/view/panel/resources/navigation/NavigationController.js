@@ -25,14 +25,14 @@ Ext.define(
 				data,
 				folder;
 
-			if (record.isExpanded())
+			/*if (record.isExpanded())
 			{
 				record.collapse();
 			}
 			else
 			{
 				record.expand();
-			}
+			}*/
 			if (!record.isLeaf())
 			{
 				data = record.getData();

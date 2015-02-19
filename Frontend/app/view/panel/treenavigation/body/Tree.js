@@ -16,9 +16,7 @@ Ext.define(
 		xtype: 'panel-body-navigation',
 		controller: 'panel.body.navigation',
 		useArrows: true,
-		listeners: {
-			itemclick: 'onItemClick'
-		},
+		animate: false,
 
 		syncContentId: 'main-htmleditor',
 

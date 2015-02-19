@@ -18,9 +18,8 @@ Ext.define(
 		id: 'panel-treenavigation',
 		xtype: 'panel-treenavigation',
 		controller: 'panel.treenavigation',
-		layout: 'anchor',
 		defaults: {
-			anchor: '100%'
+			width: '100%'
 		},
 		listeners: {
 			clearSelection: 'onClearSelection'
@@ -35,10 +34,10 @@ Ext.define(
 					xtype: 'panel-desc-navigation'
 				},
 				{
-					xtype: 'panel-body-navigation'
+					xtype: 'panel-resources-navigation'
 				},
 				{
-					xtype: 'panel-resources-navigation'
+					xtype: 'panel-body-navigation'
 				}
 			];
 			me.callParent(arguments);

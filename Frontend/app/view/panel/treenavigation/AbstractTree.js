@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'Ext.tree.Panel',
 		listeners: {
 			itemclick: 'onItemClick',
+			itemdblclick: 'onItemDblClick',
 			beforeitemclick: 'onBeforeItemClick'
 		},
 
@@ -24,16 +25,6 @@ Ext.define(
 
 			me.syncContent();
 			me.callParent(arguments);
-		},
-
-		/**
-		 * @abstract
-		 * Возвращает id панели контента, с которой связано дерево.
-		 * @return {String} Id панели контента.
-		 */
-		getContentId: function ()
-		{
-			return this.syncContentId;
 		},
 
 		/**
@@ -59,7 +50,7 @@ Ext.define(
 		syncContent: function ()
 		{
 			var me = this,
-				contentId = me.getContentId(),
+				contentId = me.syncContentId,
 				bridgeWindow = FBEditor.getBridgeWindow(),
 				content,
 				activeItem;
