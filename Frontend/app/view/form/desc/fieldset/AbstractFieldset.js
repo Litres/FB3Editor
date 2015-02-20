@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'desc-fieldset',
 		controller: 'desc.fieldset',
 		collapsible: true,
-		//anchor: '100%',
+		anchor: '100%',
 		listeners: {
 			resetFields: 'onResetFields',
 			checkExpand: 'onCheckExpand',
