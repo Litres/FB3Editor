@@ -42,8 +42,15 @@ Ext.define(
 		cls: 'form-desc',
 		listeners: {
 			loadDesc: 'onLoadData',
-			reset: 'onReset'
+			reset: 'onReset',
+			activate: 'onActivate'
 		},
+
+		/**
+		 * @private
+		 * @property {Boolean} Первая ли активация панели.
+		 */
+		_firstActivate: false,
 
 		/**
 		 * @private

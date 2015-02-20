@@ -15,10 +15,26 @@ Ext.define(
 		xtype: 'desc-fieldset',
 		controller: 'desc.fieldset',
 		collapsible: true,
-		anchor: '100%',
+		//anchor: '100%',
 		listeners: {
 			resetFields: 'onResetFields',
-			checkExpand: 'onCheckExpand'
+			checkExpand: 'onCheckExpand',
+			beforecollapse: function (self)
+			{
+				Ext.suspendLayouts();
+			},
+			collapse: function (self)
+			{
+				Ext.resumeLayouts();
+			},
+			beforeexpand: function (self)
+			{
+				Ext.suspendLayouts();
+			},
+			expand: function (self)
+			{
+				Ext.resumeLayouts();
+			}
 		},
 
 		/**
@@ -40,13 +56,11 @@ Ext.define(
 		{
 			var me = this,
 				req = me.require,
-				autoExpand = me.autoExpand,
 				xtypeChild = me.xtypeChild;
 
 			// устанавливаем якорь в заголовок блока
 			me.title = me.title + '<a name="' + me.xtype + '"></a>';
 
-			me.collapsed = req && autoExpand ? false : true;
 			me.cls = req ? me.xtype : me.xtype + ' fieldset-optional';
 			if (!me.items)
 			{

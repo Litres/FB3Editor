@@ -14,6 +14,35 @@ Ext.define(
 		alias: 'controller.form.desc',
 
 		/**
+		 * Выполняется после активации панели.
+		 * @param {FBEditor.view.form.desc.Desc} self
+		 */
+		onActivate: function (self)
+		{
+			var me = self,
+				items = me.items;
+
+			if (!me._firstActivate)
+			{
+				me._firstActivate = true;
+				items.each(
+					function (item)
+					{
+						var req = item.require,
+							autoExpand = item.autoExpand,
+							collapsed;
+
+						collapsed = req && autoExpand ? false : true;
+						if (collapsed)
+						{
+							item.collapse();
+						}
+					}
+				);
+			}
+		},
+
+		/**
 		 * Загружает данные в форму.
 		 * @param {Object} df Данные, полученные из книги.
 		 */

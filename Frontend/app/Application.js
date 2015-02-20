@@ -12,6 +12,7 @@ Ext.define(
 		requires: [
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
+			'FBEditor.cover.Manager',
 			'FBEditor.command.HistoryCommand',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',

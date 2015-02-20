@@ -10,9 +10,11 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.fieldset.AbstractFieldset',
 		requires: [
 			'FBEditor.view.form.desc.title.Title',
-			'FBEditor.view.form.desc.sequence.Sequence'
+			'FBEditor.view.form.desc.sequence.Sequence',
+		    'FBEditor.view.panel.cover.Cover'
 		],
 		xtype: 'desc-fieldset-title',
+		layout: 'hbox',
 		title: 'Название произведения',
 		require: true,
 
@@ -24,6 +26,7 @@ Ext.define(
 				{
 					xtype: 'form-desc-title',
 					id: 'form-desc-title',
+					flex: 1,
 					name: 'title',
 					layout: 'anchor',
 					defaults: {
@@ -31,6 +34,9 @@ Ext.define(
 						labelWidth: 160,
 						labelAlign: 'right'
 					}
+				},
+				{
+					xtype: 'panel-cover'
 				}
 			];
 			me.callParent(arguments);

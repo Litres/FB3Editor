@@ -94,11 +94,12 @@ Ext.define(
 							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
 							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
 							//console.log(contentBody);
-							//Ext.suspendLayouts();
+							Ext.suspendLayouts();
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
+							FBEditor.cover.Manager.load(thumb);
 							FBEditor.resource.Manager.load(images);
-							//Ext.resumeLayouts(true);
+							Ext.resumeLayouts(true);
 						}
 					}
 				);
