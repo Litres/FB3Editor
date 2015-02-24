@@ -12,12 +12,15 @@ Ext.define(
 		execute: function ()
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow(),
 				data = me.data,
-				result;
+				win,
+				result = false;
 
-			//result = bridge.FBEditor.file.Manager.openResource(data.evt);
-			console.log('Обложка');
+			win = data.win;
+			if (win.show)
+			{
+				result = win.show() ? true : false;
+			}
 
 			return result;
 		},

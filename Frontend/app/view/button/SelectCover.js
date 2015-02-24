@@ -17,9 +17,11 @@ Ext.define(
 
 		handler: function ()
 		{
-			var cmd;
+			var cmd,
+				data = {};
 
-			cmd = Ext.create('FBEditor.command.SelectCover');
+			data.win = FBEditor.resource.ExplorerManager.getWindow();
+			cmd = Ext.create('FBEditor.command.SelectCover', data);
 			if (cmd.execute())
 			{
 				FBEditor.HistoryCommand.add(cmd);

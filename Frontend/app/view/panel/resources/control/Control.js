@@ -14,6 +14,7 @@ Ext.define(
 			'FBEditor.view.panel.resources.control.selectview.SelectView'
 		],
 		xtype: 'panel-resources-control',
+		id: 'panel-resources-control',
 		layout: 'hbox',
 		defaults: {
 			margin: '5'

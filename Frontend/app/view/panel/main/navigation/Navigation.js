@@ -18,6 +18,7 @@ Ext.define(
 	    title: 'Навигация',
 	    panelName: 'navigation',
 	    layout: 'anchor',
+	    overflowY: 'auto',
 	    defaults: {
 		    anchor: '100%'
 	    },
