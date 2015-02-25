@@ -39,7 +39,8 @@ Ext.define(
 					id: 'window-panel-resources',
 					region: 'center',
 					bodyPadding: 5,
-					overflowY: 'auto'
+					overflowY: 'auto',
+					cls: 'window-panel-resources'
 				}
 			];
 			me.callParent(arguments);

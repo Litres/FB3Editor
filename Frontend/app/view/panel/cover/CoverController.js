@@ -17,7 +17,7 @@ Ext.define(
 
 		/**
 		 * Устанавливает обложку.
-		 * @param {FBEditor.cover.Cover} cover Данные обложки.
+		 * @param {FBEditor.resource.Resource} cover Данные обложки.
 		 */
 		onLoad: function (cover)
 		{
@@ -34,6 +34,18 @@ Ext.define(
 				},
 			    400
 			);
+		},
+
+		/**
+		 * Очищает обложку.
+		 */
+		onClear: function ()
+		{
+			var me = this,
+				img = me.getCover();
+
+			// стираем адрес картинки
+			img.setSrc('');
 		},
 
 		/**

@@ -84,6 +84,15 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает обложку.
+		 * @param {Object} data Данные обложки.
+		 */
+		setThumb: function (data)
+		{
+			throw Error('Не реализован метод FB3.InterfaceStructure#setThumb');
+		},
+
+		/**
 		 * Устанавливает мета-информацию.
 		 * @param {String} data
 		 */
@@ -115,7 +124,7 @@ Ext.define(
 		/**
 		 * Устанавливает список изображений для тела книги.
 		 * @param {FBEditor.FB3.rels.Body} body Тело книги.
-		 * @param {FBEditor.FB3.rels.Image[]} Список изображений.
+		 * @param {Object[]} Данные изображений.
 		 */
 		setImages: function (body, data)
 		{

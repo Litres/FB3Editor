@@ -39,6 +39,25 @@ Ext.define(
 			{
 				bridge.FBEditor.resource.Manager.restoreActiveFolder(data.name);
 			}
+		},
+
+		/**
+		 * Выбирает ресурс по клику.
+		 * @param {FBEditor.view.panel.resources.view.ResourcesView} view Панель отображения.
+		 * @param {Ext.data.Model} record Данные папки.
+		 */
+		onItemClick: function (view, record)
+		{
+			var me = this,
+				data = record.getData(),
+				bridge = FBEditor.getBridgeWindow(),
+				selectFunction;
+
+			if (!data.isFolder && (selectFunction = bridge.FBEditor.resource.Manager.getSelectFunction()))
+			{
+				// вызываем колбэк-функцию выбора ресурса
+				selectFunction(data);
+			}
 		}
 	}
 );

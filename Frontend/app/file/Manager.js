@@ -63,8 +63,8 @@ Ext.define(
 								bodies = structure.getBodies(books[0]);
 								images = structure.getImages(bodies[0]);
 								contentBody = structure.getContent(bodies[0]);
-								console.log('contentTypes', contentTypes);
-								console.log('thumb', thumb);
+								//console.log('contentTypes', contentTypes);
+								//console.log('thumb', thumb);
 								//console.log('meta', meta);
 								//console.log('books', books);
 								//console.log('desc', desc);
@@ -97,8 +97,14 @@ Ext.define(
 							Ext.suspendLayouts();
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
-							FBEditor.cover.Manager.load(thumb);
+							if (!FBEditor.resource.Manager.checkThumbInResources(thumb))
+							{
+								// если обложка находится не в директории ресурсов, то перемещаем ее туда
+								thumb.moveTo(FBEditor.resource.Manager.getDefaultThumbPath());
+								images.push(thumb);
+							}
 							FBEditor.resource.Manager.load(images);
+							FBEditor.resource.Manager.setCover(thumb.getFileName());
 							Ext.resumeLayouts(true);
 						}
 					}

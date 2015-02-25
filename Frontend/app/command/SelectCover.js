@@ -13,13 +13,17 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
+				bridge = FBEditor.getBridgeWindow(),
 				win,
+				fn,
 				result = false;
 
 			win = data.win;
 			if (win.show)
 			{
-				result = win.show() ? true : false;
+				result = true;
+				win.show();
+				bridge.FBEditor.resource.Manager.setSelectCoverFunction();
 			}
 
 			return result;

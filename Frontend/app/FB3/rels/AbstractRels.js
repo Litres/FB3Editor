@@ -314,6 +314,27 @@ Ext.define(
 		},
 
 		/**
+		 * Перемещает файл в новую директорию архива.
+		 * @param {String} folder Путь к директории.
+		 */
+		moveTo: function (folder)
+		{
+			var me = this,
+				fb3file = me.structure.fb3file,
+				fileName = me.fileName,
+				newFileName,
+				data,
+				zip;
+
+			zip = fb3file.zip;
+			newFileName = folder + '/' + me.getBaseFileName();
+			data = me.file.asArrayBuffer();
+			zip.file(newFileName, data);
+			zip.remove(fileName);
+			me.fileName = newFileName;
+		},
+
+		/**
 		 * @private
 		 * Парсит название файла и возвращает mime-тип.
 		 * @return {String} Mime-тип.

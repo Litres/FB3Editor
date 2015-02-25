@@ -18,6 +18,7 @@ Ext.define(
 			me.tpl = new Ext.XTemplate(
 				'<div class="resource-info">',
 					'<div class="resource-info-name">{baseName}</div>',
+					'<tpl if="isCover"><div class="resource-info-cover">Обложка книги</div></tpl>',
 					'<tpl if="!isFolder"><div><span>Размеры:</span> {width} x {height}</div></tpl>',
 					'<div><span>Дата:</span> {date}</div>',
 					'<div><span>Тип:</span> {type}</div>',

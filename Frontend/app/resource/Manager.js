@@ -24,6 +24,11 @@ Ext.define(
 		rootPath: 'fb3/img',
 
 		/**
+		 * @property {String} По умолчанию используемая директория обложки относительно директории ресурсов.
+		 */
+		defaultThumbPath: 'thumb',
+
+		/**
 		 * @property {String[]} Допустимые mime-типы.
 		 */
 		types: [
@@ -38,6 +43,12 @@ Ext.define(
 		 * @property {String} Активная директория дерева навигации.
 		 */
 		activeFolder: '',
+
+		/**
+		 * @private
+		 * @property {Function} Колбэк-функция, которая должна вызываться при выборе ресурса в окне прводника ресурсов.
+		 */
+		selectFn: null,
 
 		/**
 		 * Загружает данные ресурсов в редактор.
@@ -65,7 +76,8 @@ Ext.define(
 						rootName: item.getFileName(),
 						modifiedDate: item.getDate(),
 						sizeBytes: item.getSize(),
-						type: item.getType()
+						type: item.getType(),
+						isCover: item.getIsCover()
 					};
 					res = Ext.create('FBEditor.resource.Resource', resData);
 					data.push(res);
@@ -129,28 +141,39 @@ Ext.define(
 			var me = this,
 				data = me.data,
 				newData = [],
-				result = false;
+				resource,
+				resourceIndex,
+				result = true;
 
-			Ext.each(
+			resource = Ext.Array.findBy(
 				data,
 				function (item, index)
 				{
-					if (item.name.indexOf(name) === 0)
-					{
-						result = item.name === name ? true : result;
-					}
-					else
-					{
-						newData.push(item);
-					}
+					resourceIndex = index;
+
+					return item.name === name;
 				}
 			);
-			if (!result)
+			if (!resource)
 			{
 				throw Error('Ресурс ' + name + ' не найден');
 			}
-			me.data = newData;
-			me.updateNavigation();
+			if (resource.isCover)
+			{
+				Ext.Msg.confirm(
+					'Удаление ресурса',
+					'Данный ресурс является обложкой книги. Вы уверены, что хотите его удалить?',
+					function (btn)
+					{
+						if (btn === 'yes')
+						{
+							Ext.getCmp('panel-cover').fireEvent('clear');
+							data.splice(resourceIndex, 1);
+							me.updateNavigation();
+						}
+					}
+				);
+			}
 
 			return result;
 		},
@@ -209,6 +232,62 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает колбэк-функцию, которая должна вызываться при выборе ресурса в окне прводника ресурсов.
+		 * @param {Function} Функция.
+		 */
+		setSelectFunction: function (fn)
+		{
+			this.selectFn = fn;
+		},
+
+		/**
+		 * Устанавливает колбэк-функцию, которая должна вызываться при выборе обложке в окне прводника ресурсов.
+		 * @param {Function} Функция.
+		 */
+		setSelectCoverFunction: function ()
+		{
+			var me = this;
+
+			me.selectFn = function (data)
+			{
+				Ext.getCmp('window-resource').close();
+				Ext.getCmp('window-resource').close();
+				me.setCover(data.name);
+				me.selectFn = null;
+			};
+		},
+
+		/**
+		 * Устанавливает обложку.
+		 * @param {String} coverName Имя обложки.
+		 */
+		setCover: function (coverName)
+		{
+			var me = this,
+				data = me.data,
+				name,
+				cover = null;
+
+			name = coverName.indexOf(me.rootPath) === 0 ? coverName.substring(me.rootPath.length + 1) : coverName;
+			Ext.Array.each(
+				data,
+			    function (item)
+			    {
+				    item.isCover = false;
+				    if (item.name === name)
+				    {
+					    cover = item;
+				    }
+			    }
+			);
+			if (cover)
+			{
+				cover.isCover = true;
+				Ext.getCmp('panel-cover').fireEvent('load', cover);
+			}
+		},
+
+		/**
 		 * Восстанавливает активную директорию ресурсов.
 		 * @param {String} folder Директория.
 		 */
@@ -233,12 +312,42 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает колбэк-функцию, которая должна вызываться при выборе ресурса в окне прводника ресурсов.
+		 * @return {Function} Функция.
+		 */
+		getSelectFunction: function ()
+		{
+			return this.selectFn;
+		},
+
+		/**
 		 * Возвращает ресурсы.
 		 * @return {FBEditor.resource.Resource[]} Ресурсы.
 		 */
 		getData: function ()
 		{
 			return this.data;
+		},
+
+		/**
+		 * Возвращает данные обложки.
+		 * @return {FBEditor.resource.Resource}
+		 */
+		getCover: function ()
+		{
+			var me = this,
+				data = me.data,
+				cover = null;
+
+			cover = Ext.Array.findBy(
+				data,
+			    function (item)
+			    {
+				    return item.isCover;
+			    }
+			);
+
+			return cover;
 		},
 
 		/**
@@ -370,6 +479,21 @@ Ext.define(
 		},
 
 		/**
+		 * Проверяет находится ли обложка в директории с ресурсами.
+		 * @param {FBEditor.FB3.rels.Thumb} thumb Обложка.
+		 * @return {Boolean}
+		 */
+		checkThumbInResources: function (thumb)
+		{
+			var me = this,
+				result;
+
+			result = thumb.getFileName().indexOf(me.rootPath) === 0 ? true : false;
+
+			return result;
+		},
+
+		/**
 		 * Обновляет данные в дереве навигации.
 		 */
 		updateNavigation: function ()
@@ -483,6 +607,20 @@ Ext.define(
 				}
 			);
 			me.data = data;
+		},
+
+		/**
+		 * Возвращает корневой путь директории обложки, используемый по умолчанию.
+		 * @return {String} Корневая директория обложки.
+		 */
+		getDefaultThumbPath: function ()
+		{
+			var me = this,
+				path;
+
+			path = me.rootPath + (me.defaultThumbPath ? '/' + me.defaultThumbPath : '');
+
+			return path;
 		}
 	}
 );

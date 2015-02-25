@@ -139,6 +139,13 @@ Ext.define(
 			return body.getRels().getImages();
 		},
 
+		setThumb: function (data)
+		{
+			var me = this;
+
+			me.getRels().setThumb(data);
+		},
+
 		setMeta: function (data)
 		{
 			var me = this;

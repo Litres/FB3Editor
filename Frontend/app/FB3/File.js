@@ -81,6 +81,7 @@ Ext.define(
 				books,
 				bodies;
 
+			structure.setThumb(data.thumb);
 			structure.setMeta(data.meta);
 			books = structure.getBooks();
 			Ext.Object.each(

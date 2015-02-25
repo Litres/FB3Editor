@@ -78,8 +78,7 @@ Ext.define(
 			    {
 				    var val;
 
-				    val = me.parseNameResource(item.name, {path: ''});
-				    //console.log('val', val);
+				    val = Ext.clone(me.parseNameResource(item.name, {path: ''}));
 				    if (val)
 				    {
 					    if (treeData.length && val.children)
@@ -156,10 +155,14 @@ Ext.define(
 
 			// получаем последнею часть имени файла, которая следует за именем текущей директории
 			partName = fileName.slice(pos + 1);
+			node.childrenPath = partName;
 
 			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
-			//node.expandable = partName.indexOf('/') === -1 ? false : true;
-			//node.expandable = false;
+			node.expandable = partName.indexOf('/') === -1 ? false : true;
+			/*if (node.text === 'dio')
+			{
+				console.log(node);
+			}*/
 
 			node.icon = ' ';
 			node.cls = 'treenavigation-children treenavigation-children-resource';
@@ -169,9 +172,9 @@ Ext.define(
 			if (!isLast)
 			{
 				children = [];
-				children.push(me.parseNameResource(partName, node));
+				children.push(me.parseNameResource(partName, Ext.clone(node)));
 			}
-			node.children = children;
+			node.children = Ext.clone(children);
 
 			return node;
 		},
@@ -204,6 +207,7 @@ Ext.define(
 							val = me.groupTreeData(node.children[0], item.children);
 						}
 						treeData[i].children = val;
+						//treeData[i].expandable = true;
 					}
 					else if (data.length === i + 1)
 					{

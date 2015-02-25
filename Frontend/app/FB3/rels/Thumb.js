@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.Image',
 
+		isCover: true,
+
 		getRels: function ()
 		{
 			return null;

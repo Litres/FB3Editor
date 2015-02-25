@@ -9,9 +9,23 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 
+		/**
+		 * @property {Boolean} Обложка ли.
+		 */
+		isCover: false,
+
 		getRels: function ()
 		{
 			return null;
+		},
+
+		/**
+		 * Обложка ли.
+		 * @return {Boolean}
+		 */
+		getIsCover: function ()
+		{
+			return this.isCover;
 		}
 	}
 );

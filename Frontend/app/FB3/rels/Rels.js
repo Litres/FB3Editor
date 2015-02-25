@@ -158,6 +158,22 @@ Ext.define(
 			}
 
 			return meta;
+		},
+
+		/**
+		 * Устанавливает обложку.
+		 * @param {FBEditor.resource.Resource} Данные обложки.
+		 */
+		setThumb: function (data)
+		{
+			var me = this,
+				content = me.getText(),
+				target;
+
+			target = data.rootName;
+			content = content.replace(/thumbnail" Target="(.*?)"/, 'thumbnail" Target="' + target + '"');
+			me.setFileContent(content);
+			console.log('save thumb', data, content);
 		}
 	}
 );

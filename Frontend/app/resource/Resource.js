@@ -21,6 +21,7 @@ Ext.define(
 		width: null,
 		height: null,
 		isFolder: false, // папка ли
+		isCover: false, // обложка ли
 
 		/**
 		 * @property {String} Формат даты.
@@ -44,6 +45,7 @@ Ext.define(
 			me.modifiedDate = data.modifiedDate;
 			me.sizeBytes = data.sizeBytes;
 			me.type = data.type;
+			me.isCover = data.isCover;
 			me.size = me.getSizeFormat();
 			me.date = me.getDateFormat();
 			me.extension = me.getExtension();

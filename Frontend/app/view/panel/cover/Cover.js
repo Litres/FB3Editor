@@ -18,7 +18,8 @@ Ext.define(
 		controller: 'panel.cover',
 		margin: '0 0 0 40',
 		listeners: {
-			load: 'onLoad'
+			load: 'onLoad',
+			clear: 'onClear'
 		},
 
 		translateText: {

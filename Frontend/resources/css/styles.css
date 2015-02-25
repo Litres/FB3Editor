@@ -223,6 +223,16 @@
 	text-align: center;
 }
 
+.window-panel-resources .resource-thumb-img
+{
+	cursor: pointer;
+}
+
+.window-panel-resources .resource-thumb-img-folder
+{
+	cursor: default;
+}
+
 .resource-great-thumb .resource-thumb-img
 {
 	max-width: 320px;
@@ -446,6 +456,12 @@
 .resource-info-name
 {
 	font-weight: bold;
+}
+
+.resource-info-cover
+{
+	font-weight: bold;
+	color: #c26874;
 }
 
 .treenavigation-root

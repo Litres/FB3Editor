@@ -15,6 +15,7 @@ Ext.define(
 				btn = me.data.btn,
 				content = me.data.content,
 				desc = me.data.desc,
+				cover,
 				descValues,
 				descXml,
 				fb3data,
@@ -25,6 +26,10 @@ Ext.define(
 
 			try
 			{
+				if (!(cover = FBEditor.resource.Manager.getCover()))
+				{
+					throw Error('Загрузите обложку для книги');
+				}
 				if (!desc.isValid())
 				{
 					throw Error('Некорректно заполнено описание книги');
@@ -32,6 +37,7 @@ Ext.define(
 				descValues = desc.getValues();
 				descXml = desc.getXml(descValues);
 				fb3data = {
+					thumb: cover,
 					meta: desc.getMetaXml(descValues),
 					books: [
 						{

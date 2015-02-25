@@ -26,7 +26,8 @@ Ext.define(
 		deferEmptyText: false,
 		listeners: {
 			focuschange: 'onFocusChange',
-			itemdblclick: 'onItemDblClick'
+			itemdblclick: 'onItemDblClick',
+			itemclick: 'onItemClick'
 		},
 
 		/**
