@@ -33,9 +33,24 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				bridge = FBEditor.getBridgeWindow();
 
 			me.store = Ext.create('FBEditor.store.resource.Navigation');
+			me.callParent(arguments);
+		},
+
+		afterRender: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				resData;
+
+			resData = bridge.FBEditor.resource.Manager.getData();
+			if (resData.length)
+			{
+				me.loadData(resData);
+			}
 			me.callParent(arguments);
 		},
 
@@ -48,7 +63,6 @@ Ext.define(
 			var me = this,
 				treeData;
 
-			//console.log(data);
 			treeData = me.getTreeData(data);
 			me.store.loadData(treeData);
 			Ext.defer(

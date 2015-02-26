@@ -209,6 +209,30 @@ Ext.define(
 			fs.onabort = fn;
 
 			return fs ? true : false;
+		},
+
+		/**
+		 * Сохраняет ресурс в файле.
+		 * @param {FBEditor.resource.Resource} resource Данные ресурса.
+		 * @param {Function} [fn] Функция обратного вызова.
+		 * @return {Boolean} Вызвано ли окно сохранения.
+		 */
+		saveResource: function (resource, fn)
+		{
+			var data = resource,
+				blob,
+				fs;
+
+			blob = new Blob([data.content], {type: data.type});
+			fs = window.saveAs(blob, data.baseName);
+			if (fn)
+			{
+				// данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
+				fs.onwriteend = fn;
+				fs.onabort = fn;
+			}
+
+			return fs ? true : false;
 		}
 	}
 );

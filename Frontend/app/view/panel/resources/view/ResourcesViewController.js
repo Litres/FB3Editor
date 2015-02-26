@@ -19,9 +19,14 @@ Ext.define(
 		onFocusChange: function (model, oldFocused, newFocused)
 		{
 			var me = this,
-				bridgeProps = FBEditor.getBridgeProps();
+				bridgeProps = FBEditor.getBridgeProps(),
+				panel;
 
-			bridgeProps.Ext.getCmp('panel-props-resources').fireEvent('loadData', newFocused);
+			panel = bridgeProps.Ext.getCmp('panel-props-resources');
+			if (panel && panel.fireEvent)
+			{
+				panel.fireEvent('loadData', newFocused);
+			}
 		},
 
 		/**

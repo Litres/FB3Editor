@@ -35,8 +35,11 @@ Ext.define(
 			me.activePanelContent = content.getLayout().getActiveItem();
 			content.fireEvent('contentResources');
 			props = bridgeProps.Ext.getCmp('panel-main-props-card');
-			me.activePanelProps = props.getLayout().getActiveItem();
-			props.fireEvent('activePanelResources');
+			if (props)
+			{
+				me.activePanelProps = props.getLayout().getActiveItem();
+				props.fireEvent('activePanelResources');
+			}
 
 			return result;
 		},
@@ -55,7 +58,10 @@ Ext.define(
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
 			content.setActiveItem(activePanelContent);
 			props = bridgeProps.Ext.getCmp('panel-main-props-card');
-			props.setActiveItem(activePanelProps);
+			if (props)
+			{
+				props.setActiveItem(activePanelProps);
+			}
 		}
 	}
 );

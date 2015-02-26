@@ -140,20 +140,19 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				newData = [],
 				resource,
 				resourceIndex,
 				result = true;
 
-			resource = Ext.Array.findBy(
-				data,
-				function (item, index)
-				{
-					resourceIndex = index;
+			function _deleteResource (index)
+			{
+				Ext.getCmp('panel-cover').fireEvent('clear');
+				data.splice(index, 1);
+				me.updateNavigation();
+			}
 
-					return item.name === name;
-				}
-			);
+			resourceIndex = me.getResourceIndexByName(name);
+			resource = data.slice(resourceIndex, resourceIndex + 1)[0];
 			if (!resource)
 			{
 				throw Error('Ресурс ' + name + ' не найден');
@@ -167,15 +166,48 @@ Ext.define(
 					{
 						if (btn === 'yes')
 						{
-							Ext.getCmp('panel-cover').fireEvent('clear');
-							data.splice(resourceIndex, 1);
-							me.updateNavigation();
+							_deleteResource(resourceIndex);
 						}
 					}
 				);
 			}
+			else
+			{
+				_deleteResource(resourceIndex);
+			}
 
 			return result;
+		},
+
+		/**
+		 * Сохраняет ресурс.
+		 * @param {String} name Имя ресурса.
+		 * @return {Boolean} Успешность сохранения.
+		 */
+		saveResource: function (name)
+		{
+			var me = this,
+				data = me.data,
+				resourceIndex,
+				resource,
+				result;
+
+			resourceIndex = me.getResourceIndexByName(name);
+			resource = data.slice(resourceIndex, resourceIndex + 1)[0];
+			if (!resource)
+			{
+				throw Error('Ресурс ' + name + ' не найден');
+			}
+			result = FBEditor.file.Manager.saveResource(resource);
+
+			return result;
+		},
+
+		moveResource: function (name)
+		{
+			console.log('move', name);
+
+			return true;
 		},
 
 		/**
@@ -436,6 +468,20 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает корневой путь директории обложки, используемый по умолчанию.
+		 * @return {String} Корневая директория обложки.
+		 */
+		getDefaultThumbPath: function ()
+		{
+			var me = this,
+				path;
+
+			path = me.rootPath + (me.defaultThumbPath ? '/' + me.defaultThumbPath : '');
+
+			return path;
+		},
+
+		/**
 		 * Проверяет тип ресурса.
 		 * @param {String} type Mime-тип файла.
 		 * @return {Boolean} Допустимый ли тип.
@@ -610,17 +656,28 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает корневой путь директории обложки, используемый по умолчанию.
-		 * @return {String} Корневая директория обложки.
+		 * @private
+		 * Возвращает индекс ресурса из массив ресурсов.
+		 * @param {String} name Имя ресурса.
+		 * @return {Number|null} Индекс ресурса.
 		 */
-		getDefaultThumbPath: function ()
+		getResourceIndexByName: function (name)
 		{
 			var me = this,
-				path;
+				data = me.data,
+				resourceIndex = null;
 
-			path = me.rootPath + (me.defaultThumbPath ? '/' + me.defaultThumbPath : '');
+			Ext.Array.findBy(
+				data,
+				function (item, index)
+				{
+					resourceIndex = index;
 
-			return path;
+					return item.name === name;
+				}
+			);
+
+			return resourceIndex;
 		}
 	}
 );

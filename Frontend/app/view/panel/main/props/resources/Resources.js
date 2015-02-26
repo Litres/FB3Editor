@@ -11,13 +11,22 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.props.resources.ResourcesController',
 			'FBEditor.view.panel.main.props.resources.Info',
-			'FBEditor.view.button.DeleteResource'
+			'FBEditor.view.button.DeleteResource',
+			'FBEditor.view.button.SaveResource',
+			'FBEditor.view.button.MoveResource'
 		],
 		id: 'panel-props-resources',
 		xtype: 'panel-props-resources',
 		controller: 'panel.props.resources',
+		defaults: {
+			hidden: true
+		},
 		listeners: {
-			loadData: 'onLoadData'
+			loadData: 'onLoadData',
+			click: {
+				element: 'el',
+				fn: 'onClick'
+			}
 		},
 
 		initComponent: function ()
@@ -29,8 +38,13 @@ Ext.define(
 					xtype: 'props-resources-info'
 				},
 				{
-					xtype: 'button-delete-resource',
-					hidden: true
+					xtype: 'button-delete-resource'
+				},
+				{
+					xtype: 'button-save-resource'
+				},
+				{
+					xtype: 'button-move-resource'
 				}
 			];
 			me.callParent(arguments);

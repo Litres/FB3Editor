@@ -135,6 +135,7 @@ Ext.define(
 			id = 'panel-main-' + name;
 			if (!me.contains(Ext.getCmp(id)))
 			{
+				FBEditor.childWindow[name] = null;
 				me.add(me.panelConfig[name]);
 				me.windowPanels[name] = null;
 			}

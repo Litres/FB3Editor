@@ -50,9 +50,13 @@ Ext.define(
 			// мост для передачи событий панели свойств
 			FBEditor.getBridgeProps = function ()
 			{
-				return FBEditor.parentWindow ?
-				       (FBEditor.parentWindow.FBEditor.childWindow.props || FBEditor.parentWindow) :
-				       (FBEditor.childWindow.props || window);
+				var win;
+
+				win = FBEditor.parentWindow ?
+				      (FBEditor.parentWindow.FBEditor.childWindow.props || FBEditor.parentWindow) :
+				      (FBEditor.childWindow.props || window);
+
+				return win;
 			};
 
 			// мост для передачи событий панели навигации

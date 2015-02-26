@@ -27,7 +27,7 @@ Ext.define(
 				if (data.anchor)
 				{
 					// переходим к определенному блоку описания
-					window.location = '#' + data.anchor;
+					bridge.location = '#' + data.anchor;
 				}
 		},
 

@@ -106,6 +106,7 @@ Ext.define(
 						localStorage.setItem(key, Ext.Object.toQueryString(box, true));
 						
 						win.close();
+						FBEditor.childWindow[name] = null;
 					}
 				}
 			);
