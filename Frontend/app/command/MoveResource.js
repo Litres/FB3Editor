@@ -14,11 +14,20 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
 				data = me.data,
+				nameResource = data.nameResource,
+				win,
 				result = false;
 
 			try
 			{
-				result = bridge.FBEditor.resource.Manager.moveResource(data.nameResource);
+				win = bridge.FBEditor.resource.TreeManager.getWindow();
+				if (win.show)
+				{
+					result = true;
+					win.setNameResource(nameResource);
+					win.show();
+					bridge.FBEditor.resource.Manager.setSelectFolderFunction();
+				}
 			}
 			catch (e)
 			{

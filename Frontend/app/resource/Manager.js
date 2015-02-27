@@ -9,6 +9,8 @@ Ext.define(
 	{
 		singleton: true,
 		requires: [
+			'FBEditor.resource.ExplorerManager',
+			'FBEditor.resource.TreeManager',
 			'FBEditor.resource.Resource',
 			'FBEditor.resource.FolderResource'
 		],
@@ -152,7 +154,8 @@ Ext.define(
 			}
 
 			resourceIndex = me.getResourceIndexByName(name);
-			resource = data.slice(resourceIndex, resourceIndex + 1)[0];
+			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
+			resource = resource && resource[0] ? resource[0] : null;
 			if (!resource)
 			{
 				throw Error('Ресурс ' + name + ' не найден');
@@ -193,7 +196,8 @@ Ext.define(
 				result;
 
 			resourceIndex = me.getResourceIndexByName(name);
-			resource = data.slice(resourceIndex, resourceIndex + 1)[0];
+			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
+			resource = resource && resource[0] ? resource[0] : null;
 			if (!resource)
 			{
 				throw Error('Ресурс ' + name + ' не найден');
@@ -203,11 +207,50 @@ Ext.define(
 			return result;
 		},
 
-		moveResource: function (name)
+		/**
+		 * Перемещает ресурс.
+		 * @param {String} name Имя ресурса.
+		 * @param {String} folder Имя папки, в которую перемещается ресурс.
+		 * @return {Boolean} Успешность перемещения.
+		 */
+		moveResource: function (name, folder)
 		{
-			console.log('move', name);
+			var me = this,
+				data = me.data,
+				newFolder = folder === '/' ? '' : folder,
+				resourceIndex,
+				resource,
+				oldName,
+				newName,
+				result = false;
 
-			return true;
+			resourceIndex = me.getResourceIndexByName(name);
+			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
+			resource = resource && resource[0] ? resource[0] : null;
+			if (!resource)
+			{
+				throw Error('Ресурс ' + name + ' не найден');
+			}
+			if (name === newFolder)
+			{
+				throw Error('Невозможно переместить ресурс сам в себя');
+			}
+			oldName = resource.name;
+			if (oldName.indexOf(name) === 0)
+			{
+				newName = oldName.indexOf('/') !== -1 ?
+				          oldName.replace(/.*(\/.*?)$/, newFolder + '$1') :
+				          newFolder + '/' + oldName;
+				newName = newName.replace(/^[/]/, '');
+				if (newName !== oldName)
+				{
+					result = true;
+					resource.rename(newName);
+					me.setActiveFolder(newFolder);
+				}
+			}
+
+			return result;
 		},
 
 		/**
@@ -265,7 +308,7 @@ Ext.define(
 
 		/**
 		 * Устанавливает колбэк-функцию, которая должна вызываться при выборе ресурса в окне прводника ресурсов.
-		 * @param {Function} Функция.
+		 * @param {Function} fn Функция.
 		 */
 		setSelectFunction: function (fn)
 		{
@@ -273,8 +316,7 @@ Ext.define(
 		},
 
 		/**
-		 * Устанавливает колбэк-функцию, которая должна вызываться при выборе обложке в окне прводника ресурсов.
-		 * @param {Function} Функция.
+		 * Устанавливает колбэк-функцию, которая должна вызываться при выборе обложки в окне проводника ресурсов.
 		 */
 		setSelectCoverFunction: function ()
 		{
@@ -283,9 +325,21 @@ Ext.define(
 			me.selectFn = function (data)
 			{
 				Ext.getCmp('window-resource').close();
-				Ext.getCmp('window-resource').close();
 				me.setCover(data.name);
 				me.selectFn = null;
+			};
+		},
+
+		/**
+		 * Устанавливает колбэк-функцию, которая должна вызываться при выборе папки в окне дерева ресурсов.
+		 */
+		setSelectFolderFunction: function ()
+		{
+			var me = this;
+
+			me.selectFn = function (data)
+			{
+				Ext.getCmp('window-resource-tree').setFolder(data.path);
 			};
 		},
 

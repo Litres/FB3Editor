@@ -247,7 +247,7 @@
 
 .resource-great-thumb .resource-thumb-img-folder:before
 {
-	font-size: 14.4em;;
+	font-size: 14.3em;;
 }
 
 .resource-great-thumb .resource-thumb-name
@@ -288,7 +288,7 @@
 
 .resource-large-thumb .resource-thumb-img-folder:before
 {
-	font-size: 6.3em;;
+	font-size: 6.2em;;
 }
 
 .resource-normal-thumb .resource-thumb-img
@@ -317,7 +317,7 @@
 
 .resource-normal-thumb .resource-thumb-img-folder:before
 {
-	font-size: 3.6em;;
+	font-size: 3.5em;;
 }
 
 .resource-great-thumb .resource-thumb-img.resource-thumb-img-svg,
@@ -545,4 +545,15 @@
 .treenavigation-children-resource span:before
 {
 	content: "\f07b";
+}
+
+.window-panel-resources-tree-name
+{
+	padding: 10px;
+}
+
+.window-panel-resources-tree-name span
+{
+	font-weight: bold;
+	color: #743e45;
 }

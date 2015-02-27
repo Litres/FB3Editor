@@ -58,6 +58,18 @@ Ext.define(
 		},
 
 		/**
+		 * Переименовывает ресурс.
+		 * @param {String} name Новое имя.
+		 */
+		rename: function (name)
+		{
+			var me = this;
+
+			me.rootName = me.rootName.replace(me.name, name);
+			me.name = name;
+		},
+
+		/**
 		 * Возвращает отформатированный размер файла.
 		 * @return {String} Размер файла.
 		 */

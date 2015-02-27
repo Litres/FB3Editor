@@ -15,7 +15,6 @@ Ext.define(
 				data = me.data,
 				bridge = FBEditor.getBridgeWindow(),
 				win,
-				fn,
 				result = false;
 
 			win = data.win;

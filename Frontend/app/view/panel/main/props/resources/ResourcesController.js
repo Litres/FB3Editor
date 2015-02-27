@@ -21,11 +21,10 @@ Ext.define(
 		 */
 		onClick: function ()
 		{
-			var me = this,
-				bridge = FBEditor.getBridgeWindow();
+			var me = this;
 
 			// сбрасываем таймер отложенного скрытия элементов панели при клике по панели
-			bridge.clearTimeout(me._deferId);
+			clearTimeout(me._deferId);
 		},
 
 		/**
@@ -36,7 +35,6 @@ Ext.define(
 		{
 			var me = this,
 				data = record ? record.getData() : null,
-				bridge = FBEditor.getBridgeWindow(),
 				bridgeProps = FBEditor.getBridgeProps();
 
 			if (data)
@@ -46,20 +44,21 @@ Ext.define(
 				me.setVisibleItems(true);
 				if (data.isFolder)
 				{
-					// папки не могут иметь кнопку сохранения
+					// папки не могут иметь кнопку сохранения и пермещения
 					bridgeProps.Ext.getCmp('button-save-resource').setVisible(false);
+					bridgeProps.Ext.getCmp('button-move-resource').setVisible(false);
 				}
 			}
 			else
 			{
 				// устанавливаем таймер отложенного скрытия элементов панели
-				me._deferId = bridge.Ext.defer(
+				me._deferId = Ext.defer(
 					function ()
 					{
 						me.setVisibleItems(false);
 						me.setResourceButtons(null);
 					},
-					500
+					200
 				);
 			}
 		},

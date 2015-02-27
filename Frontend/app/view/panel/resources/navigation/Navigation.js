@@ -221,7 +221,7 @@ Ext.define(
 							val = me.groupTreeData(node.children[0], item.children);
 						}
 						treeData[i].children = val;
-						//treeData[i].expandable = true;
+						treeData[i].expandable = true;
 					}
 					else if (data.length === i + 1)
 					{

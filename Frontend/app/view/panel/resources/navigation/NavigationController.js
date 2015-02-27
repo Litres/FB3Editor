@@ -22,22 +22,21 @@ Ext.define(
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
-				data,
+				data = record.getData(),
+				manager,
+				selectFunction,
 				folder;
 
-			/*if (record.isExpanded())
+			manager = bridge.FBEditor.resource.Manager;
+			if ((selectFunction = manager.getSelectFunction()))
 			{
-				record.collapse();
+				// вызываем колбэк-функцию выбора папки
+				selectFunction(data);
 			}
-			else
+			else if (!record.isLeaf())
 			{
-				record.expand();
-			}*/
-			if (!record.isLeaf())
-			{
-				data = record.getData();
 				folder = data.path ? data.path : '';
-				bridge.FBEditor.resource.Manager.setActiveFolder(folder);
+				manager.setActiveFolder(folder);
 			}
 		},
 
