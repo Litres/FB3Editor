@@ -269,6 +269,17 @@ Ext.define(
 			);
 		},
 
+		selectPath: function (p)
+		{
+			var me = this,
+				rootText = me.store.getRoot().data.text,
+				path = p;
+
+			path = path.indexOf('/root') === 0 ? path : '/' + rootText + '/' + path;
+			//console.log('!select path', path);
+			me.callParent([path, 'text']);
+		},
+
 		/**
 		 * Переписывает стандартный метод, возвращающий корневой узел.
 		 * @return {Ext.data.TreeModel} Корневой узел.

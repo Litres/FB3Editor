@@ -20,7 +20,9 @@ Ext.define(
 		 */
 		onItemClick: function (node, record)
 		{
+			var me = this;
 
+			me.callParent(arguments);
 		},
 
 		/**

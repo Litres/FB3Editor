@@ -499,7 +499,9 @@
 }
 
 .treenavigation-root-desc,
-.treenavigation-children-desc
+.treenavigation-children-desc,
+.treenavigation-root-desc.x-grid-item-focused,
+.treenavigation-children-desc.x-grid-item-focused
 {
 	color: #1d458a;
 }
@@ -517,7 +519,9 @@
 }
 
 .treenavigation-root-body,
-.treenavigation-children-body
+.treenavigation-children-body,
+.treenavigation-root-body.x-grid-item-focused,
+.treenavigation-children-body.x-grid-item-focused
 {
 	color: #3a7461;
 }
@@ -530,7 +534,9 @@
 }
 
 .treenavigation-root-resource,
-.treenavigation-children-resource
+.treenavigation-children-resource,
+.treenavigation-root-resource.x-grid-item-focused,
+.treenavigation-children-resource.x-grid-item-focused
 {
 	color: #743e45;
 }
@@ -545,6 +551,11 @@
 .treenavigation-children-resource span:before
 {
 	content: "\f07b";
+}
+
+.panel-treenavigation .x-grid-item-focused .x-grid-cell-inner:before
+{
+	border: none;
 }
 
 .window-panel-resources-tree-name

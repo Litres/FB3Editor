@@ -16,7 +16,18 @@ Ext.define(
 		 */
 		onItemClick: function (node, record)
 		{
+			var me = this;
 
+			//console.log('onItemClick', arguments);
+			me.clearSelection();
+			if (me.openContent)
+			{
+				// открываем соответствующую панель контента
+				me.openContent();
+
+				Ext.getCmp('panel-treenavigation').saveSelectData({view: me.getView(), node: node, record: record});
+				Ext.getCmp('panel-treenavigation').restoreSelectData();
+			}
 		},
 
 		/**
@@ -26,7 +37,7 @@ Ext.define(
 		 */
 		onItemDblClick: function (node, record)
 		{
-
+			//console.log('onItemDblClick', arguments);
 		},
 
 		/**
@@ -38,12 +49,20 @@ Ext.define(
 		{
 			var me = this;
 
-			me.clearSelection();
-			if (me.openContent)
-			{
-				// открываем соответствующую панель контента
-				me.openContent();
-			}
+			//Ext.getCmp('panel-treenavigation').saveSelectData({view: me.getView(), node: node, record: record});
+			//console.log('onBeforeItemClick', arguments);
+			node.deselect(record, false);
+			Ext.getCmp('panel-treenavigation').restoreSelectData();
+		},
+
+		onSelect: function ()
+		{
+			//console.log('onSelect', arguments);
+		},
+
+		onSelectionChange: function ()
+		{
+
 		},
 
 		/**

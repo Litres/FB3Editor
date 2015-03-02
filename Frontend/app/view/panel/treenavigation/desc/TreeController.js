@@ -24,11 +24,12 @@ Ext.define(
 				bridge = FBEditor.getBridgeWindow(),
 				data = record.getData();
 
-				if (data.anchor)
-				{
-					// переходим к определенному блоку описания
-					bridge.location = '#' + data.anchor;
-				}
+			me.callParent(arguments);
+			if (data.anchor)
+			{
+				// переходим к определенному блоку описания
+				bridge.location = '#' + data.anchor;
+			}
 		},
 
 		/**

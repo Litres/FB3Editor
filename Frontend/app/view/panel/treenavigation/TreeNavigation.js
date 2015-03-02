@@ -25,6 +25,12 @@ Ext.define(
 			clearSelection: 'onClearSelection'
 		},
 
+		/**
+		 * @private
+		 * @property {Object} Хранит данные выделенного узла.
+		 */
+		_selectData: null,
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -41,6 +47,36 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		saveSelectData: function (data)
+		{
+			var me = this;
+
+			me._selectData = data;
+		},
+
+		restoreSelectData: function ()
+		{
+			var me = this,
+				data = me._selectData,
+				recordData;
+
+			if (data && data.view)
+			{
+				//data.node.focusNode(data.record);
+				//data.view.expandPath(data.record.getPath());
+				recordData = data.record.getData();
+				//console.log('restore data', data.record.getPath(), recordData);
+				if (recordData.path)
+				{
+					data.view.selectPath(recordData.path);
+				}
+				else
+				{
+					data.view.selectPath(data.record.getPath());
+				}
+			}
 		}
 	}
 );

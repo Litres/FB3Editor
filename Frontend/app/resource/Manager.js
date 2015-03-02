@@ -354,6 +354,10 @@ Ext.define(
 				name,
 				cover = null;
 
+			if (!coverName)
+			{
+				return false;
+			}
 			name = coverName.indexOf(me.rootPath) === 0 ? coverName.substring(me.rootPath.length + 1) : coverName;
 			Ext.Array.each(
 				data,

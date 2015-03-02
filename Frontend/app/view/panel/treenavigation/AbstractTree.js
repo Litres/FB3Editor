@@ -8,10 +8,13 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.AbstractTree',
 	{
 		extend: 'Ext.tree.Panel',
+		cls: 'panel-treenavigation',
 		listeners: {
 			itemclick: 'onItemClick',
 			itemdblclick: 'onItemDblClick',
-			beforeitemclick: 'onBeforeItemClick'
+			beforeitemclick: 'onBeforeItemClick',
+			selectionchange: 'onSelectionChange',
+			select: 'onSelect'
 		},
 
 		/**

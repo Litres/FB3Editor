@@ -27,8 +27,9 @@ Ext.define(
 				selectFunction,
 				folder;
 
+			me.callParent(arguments);
 			manager = bridge.FBEditor.resource.Manager;
-			if ((selectFunction = manager.getSelectFunction()))
+			if ((selectFunction = manager.getSelectFunction()) && record.isLeaf())
 			{
 				// вызываем колбэк-функцию выбора папки
 				selectFunction(data);
