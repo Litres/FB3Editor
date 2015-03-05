@@ -1,5 +1,11 @@
 @import 'font-awesome.css';
 
+.fb3 .form-desc .x-form-text-field-body-default
+{
+	max-width: none;
+	width: 100%;
+}
+
 .fb3 .form-desc .x-panel-body-default
 {
 	background-color: #F1F2F6;

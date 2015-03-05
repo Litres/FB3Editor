@@ -29,7 +29,6 @@ Ext.define(
 					layout: 'hbox',
 					defaults: {
 						anchor: '100%',
-						flex: 1,
 						labelAlign: 'right',
 						cls: 'field-required'
 					},
@@ -45,21 +44,38 @@ Ext.define(
 						{
 							xtype: 'textfieldclear',
 							name: prefixName + '-info-type',
+							flex: 1,
 							allowBlank: false,
 							labelWidth: 60,
 							fieldLabel: me.translateText.infoType
 						},
 						{
-							xtype: 'textareafield',
-							name: prefixName + '-text',
-							flex: 1.5,
-							grow: true,
-							growMin: 1,
-							allowBlank: false,
-							minHeight: 100,
-							//resizable: true,
-							labelWidth: 160,
-							fieldLabel: me.translateText.desc
+							xtype: 'desc-fieldcontainer',
+							layout: 'hbox',
+							flex: 3,
+							items: [
+								{
+									xtype: 'displayfield',
+									fieldLabel: me.translateText.desc,
+									labelAlign: 'right',
+									labelWidth: 160
+								},
+								{
+									xtype: 'textareafield',
+									name: prefixName + '-text',
+									flex: 1,
+									//grow: true,
+									//growMin: 1,
+									allowBlank: false,
+									//minHeight: 200,
+									height: 100,
+									resizable: {
+										handles: 's',
+										minHeight: 50,
+										pinned: true
+									}
+								}
+							]
 						}
 					]
 				}
