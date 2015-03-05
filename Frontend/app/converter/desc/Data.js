@@ -25,6 +25,8 @@ Ext.define(
 			d = me.convertPublishInfo(d);
 			d = me.convertCustomInfo(d);
 
+			//console.log('open desc', d);
+
 			return d;
 		},
 

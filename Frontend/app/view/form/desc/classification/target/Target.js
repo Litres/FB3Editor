@@ -15,7 +15,7 @@ Ext.define(
 		layout: 'hbox',
 
 		translateText: {
-			desc: 'Написание',
+			desc: 'Описание',
 			minAge: 'Мин возраст',
 			maxAge: 'Макс возраст'
 		},

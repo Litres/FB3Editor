@@ -50,7 +50,8 @@ Ext.define(
 											xtype: 'datefield',
 											allowBlank: false,
 											name: 'document-info-created-date',
-											fieldLabel: me.translateText.date
+											fieldLabel: me.translateText.date,
+											cls: 'field-required'
 										}
 									]
 								},
@@ -73,7 +74,8 @@ Ext.define(
 											allowBlank: false,
 											name: 'document-info-created-time',
 											format: 'H:i:s',
-											fieldLabel: me.translateText.time
+											fieldLabel: me.translateText.time,
+											cls: 'field-required'
 										}
 									]
 								}
@@ -104,7 +106,8 @@ Ext.define(
 											xtype: 'datefield',
 											allowBlank: false,
 											name: 'document-info-updated-date',
-											fieldLabel: me.translateText.date
+											fieldLabel: me.translateText.date,
+											cls: 'field-required'
 										}
 									]
 								},
@@ -127,7 +130,8 @@ Ext.define(
 											allowBlank: false,
 											name: 'document-info-updated-time',
 											format: 'H:i:s',
-											fieldLabel: me.translateText.time
+											fieldLabel: me.translateText.time,
+											cls: 'field-required'
 										}
 									]
 								}

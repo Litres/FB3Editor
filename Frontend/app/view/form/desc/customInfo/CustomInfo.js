@@ -30,7 +30,8 @@ Ext.define(
 					defaults: {
 						anchor: '100%',
 						flex: 1,
-						labelAlign: 'right'
+						labelAlign: 'right',
+						cls: 'field-required'
 					},
 					plugins: {
 						ptype: 'fieldcontainerreplicator',
@@ -45,15 +46,19 @@ Ext.define(
 							xtype: 'textfieldclear',
 							name: prefixName + '-info-type',
 							allowBlank: false,
-							labelWidth: 160,
+							labelWidth: 60,
 							fieldLabel: me.translateText.infoType
 						},
 						{
 							xtype: 'textareafield',
 							name: prefixName + '-text',
+							flex: 1.5,
 							grow: true,
 							growMin: 1,
 							allowBlank: false,
+							minHeight: 100,
+							//resizable: true,
+							labelWidth: 160,
 							fieldLabel: me.translateText.desc
 						}
 					]

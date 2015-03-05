@@ -64,7 +64,8 @@ Ext.define(
 										{
 											xtype: 'form-desc-bookClass',
 											name: 'classification-class-text',
-											fieldLabel: me.translateText.bookClass
+											fieldLabel: me.translateText.bookClass,
+											cls: 'field-required'
 										},
 										{
 											xtype: 'hiddenfield',
@@ -213,7 +214,6 @@ Ext.define(
 										}
 									]
 								}
-
 							]
 						}
 					]

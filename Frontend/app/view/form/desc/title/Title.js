@@ -36,7 +36,8 @@ Ext.define(
 					xtype: 'textfieldclear',
 					allowBlank: false,
 					name: name + '-main',
-					fieldLabel: me.translateText.main
+					fieldLabel: me.translateText.main,
+					cls: 'field-required'
 				}
 			);
 			if (me.enableSub)

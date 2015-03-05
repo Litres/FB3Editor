@@ -42,14 +42,16 @@ Ext.define(
 							name: 'lang',
 							fieldLabel: me.translateText.lang,
 							allowBlank: false,
-							forceSelection: true
+							forceSelection: true,
+							cls: 'field-required'
 						},
 						{
 							xtype: 'langfield',
 							name: prefixName + '-lang',
 							fieldLabel: me.translateText.writtenLang,
 							allowBlank: false,
-							forceSelection: true
+							forceSelection: true,
+							cls: 'field-required'
 						},
 						{
 							xtype: 'countryfield',

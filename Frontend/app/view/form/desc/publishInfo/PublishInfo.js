@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.form.desc.publishInfo.PublishInfo',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		requires: [
+			'FBEditor.view.form.desc.publishInfo.isbn.Isbn'
+		],
 		id: 'form-desc-publishInfo',
 		xtype: 'form-desc-publishInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
@@ -17,9 +20,7 @@ Ext.define(
 			title: 'Название',
 			publisher: 'Издательство',
 			city: 'Город',
-			year: 'Год',
-			isbn: 'ISBN',
-			isbnError: 'По шаблону ([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]. Например 978-5-358-02523-3'
+			year: 'Год'
 		},
 
 		initComponent: function ()
@@ -57,7 +58,8 @@ Ext.define(
 									xtype: 'textfieldclear',
 									name: prefixName + '-title',
 									allowBlank: false,
-									fieldLabel: me.translateText.title
+									fieldLabel: me.translateText.title,
+									cls: 'field-required'
 								},
 								{
 									xtype: 'textfield',
@@ -83,7 +85,7 @@ Ext.define(
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 160,
+								labelWidth: 100,
 								labelAlign: 'right'
 							},
 							items: [
@@ -94,12 +96,8 @@ Ext.define(
 									cls: 'field-optional'
 								},
 								{
-									xtype: 'textfieldclear',
-									name: prefixName + '-isbn',
-									regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
-									regexText: me.translateText.isbnError,
-									fieldLabel: me.translateText.isbn,
-									cls: 'field-optional'
+									xtype: 'form-desc-publishInfo-isbn',
+									fieldName: prefixName + '-isbn'
 								}
 							]
 						}
@@ -120,14 +118,16 @@ Ext.define(
 			items.each(
 				function (item)
 				{
-					var val;
+					var val,
+						isbn;
 
+					isbn = item.down('form-desc-publishInfo-isbn').getValues();
 					val = {
 						_publisher: item.down('[name=' + prefixName + '-publisher]').getValue(),
 						_city: item.down('[name=' + prefixName + '-city]').getValue(),
 						_year: item.down('[name=' + prefixName + '-year]').getValue(),
-						_isbn: item.down('[name=' + prefixName + '-isbn]').getValue(),
-						_title: item.down('[name=' + prefixName + '-title]').getValue()
+						_title: item.down('[name=' + prefixName + '-title]').getValue(),
+						isbn: isbn
 					};
 					val = me.removeEmptyValues(val);
 					if (val)

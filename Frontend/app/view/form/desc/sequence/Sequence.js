@@ -117,7 +117,8 @@ Ext.define(
 											name: prefixName + '-id',
 											allowBlank: false,
 											regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-											regexText: me.translateText.idError
+											regexText: me.translateText.idError,
+											cls: 'field-required'
 										},
 										{
 											xtype: 'numberfield',

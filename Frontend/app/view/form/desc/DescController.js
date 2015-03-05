@@ -67,9 +67,9 @@ Ext.define(
 			Ext.getCmp('form-desc-classification-udk').fireEvent('loadData', data['classification-udk']);
 			Ext.getCmp('form-desc-classification-bbk').fireEvent('loadData', data['classification-bbk']);
 			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
+			 Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
-			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);
 			me.expandFieldset(data);
 		},

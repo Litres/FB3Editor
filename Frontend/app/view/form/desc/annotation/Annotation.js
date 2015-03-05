@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		xtype: 'form-desc-annotation',
 		name: 'anotation',
-		height: 100,
+		height: 200,
 
 		getValues: function (d)
 		{

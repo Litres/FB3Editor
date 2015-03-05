@@ -52,6 +52,7 @@ Ext.define(
 					fieldLabel: me.translateText.subject,
 					labelAlign: 'right',
 					labelWidth: 110,
+					cls: 'field-required',
 					listeners: {
 						click: {
 							element: 'el',

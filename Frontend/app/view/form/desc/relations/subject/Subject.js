@@ -23,7 +23,7 @@ Ext.define(
 			middleName: 'Отчество (второе имя)',
 			lastName: 'Фамилия',
 			desc: 'Написание',
-			titleMain: 'Написание',
+			titleMain: 'Стандартное написание',
 			titleAlt: 'Альтернативное написание'
 		},
 
@@ -80,7 +80,8 @@ Ext.define(
 													xtype: 'textfieldclear',
 													allowBlank: false,
 													fieldLabel: me.translateText.lastName,
-													name: 'relations-subject-last-name'
+													name: 'relations-subject-last-name',
+													cls: 'field-required'
 												},
 												{
 													fieldLabel: me.translateText.firstName,
@@ -130,7 +131,8 @@ Ext.define(
 								{
 									xtype: 'form-desc-relations-subject-link',
 									labelWidth: 160,
-									labelAlign: 'right'
+									labelAlign: 'right',
+									cls: 'field-required'
 								}
 							]
 						}

@@ -22,7 +22,7 @@ Ext.define(
 				nextContainer,
 				plugin;
 
-			//console.log('>>>>>>', view, data);
+			//console.log('>>>>>>', view.name, view.id, view, data);
 			plugin = me.getPluginContainerReplicator(view);
 			nextContainer = plugin.getCmp();
 			Ext.Object.each(

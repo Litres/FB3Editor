@@ -22,9 +22,17 @@
 .fb3 .form-desc .x-fieldset-header-default
 {
 	width: 100%;
-	padding: 10px;
+	height: 40px;
+	padding: 0;
 	background-color: #E6E9ED;
 	border-radius: 8px 8px 0 0;
+}
+
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-default
+{
+	width: auto;
+	height: auto;
+	padding: 10px;
 }
 
 .fb3 .form-desc .desc-fieldset-title .x-fieldset-header-default
@@ -94,14 +102,32 @@
 
 .fb3 .form-desc .x-fieldset-header-default > .x-fieldset-header-text
 {
+	width: 95%;
+	padding: 12px 0;
 	font-family: Arial,Helvetica,sans-serif;
 	font-weight: bold;
 	font-size:  16px;
 }
 
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-default > .x-fieldset-header-text
+{
+	width: auto;
+	padding: 0;
+}
+
 .fb3 .form-desc .fieldset-optional .x-fieldset-header-text
 {
 	color: #A89BA2;
+}
+
+.fb3 .form-desc .x-fieldset-header-tool-default
+{
+	padding: 11px 0 0 10px;
+}
+
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-tool-default
+{
+	padding: 0px;
 }
 
 .fb3 .form-desc .x-fieldset-header-tool-default > .x-tool-toggle
@@ -193,6 +219,21 @@
 .fb3 .x-form-trigger-wrap-default
 {
 	border-radius: 3px;
+}
+
+.fb3 .field-required .x-form-trigger-wrap-default,
+.fb3 .field-required .x-form-trigger-default,
+.fb3 .field-required .x-form-text-default,
+.fb3 .field-required .x-form-radio-default,
+.fb3 .field-required .x-form-spinner-default
+{
+	background-color: #fbe4fa;
+}
+
+.fb3 .field-required .x-form-radio-default
+{
+	border-radius: 10px;
+	box-shadow: 0px 0px 1px 3px #fbe4fa;
 }
 
 .fb3 .textfieldclear-trigger
