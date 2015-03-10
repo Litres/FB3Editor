@@ -18,7 +18,7 @@ Ext.define(
 		displayField: 'name',
 		valueField: 'value',
 		fieldLabel: 'Образование',
-		editable: true,
+		editable: false,
 		listeners: {
 			change: 'onChange'
 		},

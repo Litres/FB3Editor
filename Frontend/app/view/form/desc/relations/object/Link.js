@@ -19,6 +19,9 @@ Ext.define(
 		name: 'relations-object-link',
 		allowBlank: false,
 		editable: false,
+		listConfig: {
+			maxHeight: 'auto'
+		},
 
 		initComponent: function ()
 		{

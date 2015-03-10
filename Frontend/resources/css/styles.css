@@ -1,5 +1,11 @@
 @import 'font-awesome.css';
 
+.desc-fieldcontainer:nth-child(even)
+{
+	padding: 10px 0 0 0;
+	background-color: #eee;
+}
+
 .fb3 .form-desc .x-form-text-field-body-default
 {
 	max-width: none;
@@ -180,6 +186,11 @@
 .fb3 .form-desc .field-optional .x-form-item-label-default
 {
 	color: #A89BA2;
+}
+
+.fb3 .form-desc .x-html-editor-wrap
+{
+	width: 100%;
 }
 
 .fb3 .form-desc .x-form-item-body-default .after-body

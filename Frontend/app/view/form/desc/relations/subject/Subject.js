@@ -34,6 +34,7 @@ Ext.define(
 			me.items=  [
 				{
 					xtype: 'desc-fieldcontainer',
+					cls: 'desc-fieldcontainer',
 					layout: 'hbox',
 					plugins: {
 						ptype: 'fieldcontainerreplicator',

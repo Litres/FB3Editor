@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.subject.SubjectController',
-			'FBEditor.view.form.desc.subject.SubjectTree'
+			'FBEditor.view.form.desc.subject.SubjectTree',
+			'FBEditor.view.form.desc.subject.field.SubjectField'
 		],
 		xtype: 'form-desc-subject',
 		controller: 'form.desc.subject',
@@ -44,25 +45,11 @@ Ext.define(
 			me.subjectTree = Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree');
 			me.items = [
 				{
-					xtype: 'textfield',
-					name: 'classification-subject',
+					xtype: 'form-desc-subject-field',
 					flex: 1,
-					allowBlank: false,
-					editable: false,
 					fieldLabel: me.translateText.subject,
 					labelAlign: 'right',
-					labelWidth: 110,
-					cls: 'field-required',
-					listeners: {
-						click: {
-							element: 'el',
-							scope: me,
-							fn: function ()
-							{
-								this.fireEvent('showSubjectTree');
-							}
-						}
-					}
+					labelWidth: 110
 				},
 				{
 					xtype: 'button',

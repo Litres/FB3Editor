@@ -44,6 +44,7 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'desc-fieldcontainer',
+					cls: 'desc-fieldcontainer',
 					layout: 'anchor',
 					anchor: '100%',
 					plugins: {

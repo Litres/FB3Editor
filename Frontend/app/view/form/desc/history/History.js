@@ -11,6 +11,11 @@ Ext.define(
 		xtype: 'form-desc-history',
 		name: 'history',
 		height: 200,
+		resizable: {
+			handles: 's',
+			minHeight: 100,
+			pinned: true
+		},
 
 		getValues: function (d)
 		{

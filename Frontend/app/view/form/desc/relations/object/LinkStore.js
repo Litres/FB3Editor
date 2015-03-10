@@ -8,6 +8,11 @@ Ext.define(
 	'FBEditor.view.form.desc.relations.object.LinkStore',
 	{
 		extend: 'Ext.data.Store',
+		sorters: [
+			{
+				property: 'name', direction: 'ASC'
+			}
+		],
 		fields: [
 			'value',
 			'name'

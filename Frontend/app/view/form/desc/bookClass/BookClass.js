@@ -18,6 +18,9 @@ Ext.define(
 		fieldLabel: 'Литературная форма',
 		allowBlank: false,
 		editable: false,
+		listConfig: {
+			maxHeight: 'auto'
+		},
 
 		initComponent: function ()
 		{

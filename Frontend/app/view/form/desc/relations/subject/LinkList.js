@@ -18,6 +18,9 @@ Ext.define(
 		valueField: 'value',
 		editable: false,
 		forceSelection: true,
+		listConfig: {
+			maxHeight: 'auto'
+		},
 		listeners: {
 			change: function ()
 			{

@@ -8,6 +8,11 @@ Ext.define(
 	'FBEditor.view.form.desc.relations.subject.LinkStore',
 	{
 		extend: 'Ext.data.Store',
+		sorters: [
+			{
+				property: 'name', direction: 'ASC'
+			}
+		],
 		fields: [
 			'value',
 		    'name'
@@ -32,6 +37,10 @@ Ext.define(
 			{
 				value: 'maker-up',
 				name: 'Верстальщик'
+			},
+			{
+				value: 'agent',
+				name: 'Агент'
 			},
 			{
 				value: 'adapter',

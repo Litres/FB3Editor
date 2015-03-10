@@ -17,7 +17,10 @@ Ext.define(
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
-		editable: true,
+		editable: false,
+		listConfig: {
+			maxHeight: 'auto'
+		},
 		listeners: {
 			change: 'onChange'
 		},

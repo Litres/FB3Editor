@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.classification.target.Education'
+			'FBEditor.view.form.desc.classification.target.Education',
+			'FBEditor.view.form.desc.classification.target.ageMin.AgeMin'
 		],
 		xtype: 'form-desc-classification-target',
 		layout: 'hbox',
@@ -37,11 +38,9 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'numberfield',
+							xtype: 'form-desc-classification-target-agemin',
 							name: 'classification-target-audience-age-min',
-							fieldLabel: me.translateText.minAge,
-							minValue: 2,
-							maxValue: 50
+							fieldLabel: me.translateText.minAge
 						},
 						{
 							xtype: 'form-desc-classification-target-education',

@@ -50,6 +50,7 @@ Ext.define(
 											xtype: 'datefield',
 											allowBlank: false,
 											name: 'document-info-created-date',
+											value: new Date(),
 											fieldLabel: me.translateText.date,
 											cls: 'field-required'
 										}
@@ -73,6 +74,7 @@ Ext.define(
 											xtype: 'timefield',
 											allowBlank: false,
 											name: 'document-info-created-time',
+											value: new Date(),
 											format: 'H:i:s',
 											fieldLabel: me.translateText.time,
 											cls: 'field-required'
@@ -103,11 +105,12 @@ Ext.define(
 									},
 									items: [
 										{
-											xtype: 'datefield',
-											allowBlank: false,
+											xtype: 'displayfield',
+											//allowBlank: false,
 											name: 'document-info-updated-date',
-											fieldLabel: me.translateText.date,
-											cls: 'field-required'
+											//disabled: true,
+											fieldLabel: me.translateText.date/*,
+											cls: 'field-required'*/
 										}
 									]
 								},
@@ -126,12 +129,13 @@ Ext.define(
 									},
 									items: [
 										{
-											xtype: 'timefield',
-											allowBlank: false,
+											xtype: 'displayfield',
+											//allowBlank: false,
 											name: 'document-info-updated-time',
 											format: 'H:i:s',
-											fieldLabel: me.translateText.time,
-											cls: 'field-required'
+											//disabled: true,
+											fieldLabel: me.translateText.time/*,
+											cls: 'field-required'*/
 										}
 									]
 								}
@@ -217,9 +221,12 @@ Ext.define(
 			created = Ext.Date.format(me.down('[name=document-info-created-date]').getValue(), 'Y-m-d');
 			time = Ext.Date.format(me.down('[name=document-info-created-time]').getValue(), 'H:i:s');
 			created = created && time ? created + 'T' + time : null;
-			updated = Ext.Date.format(me.down('[name=document-info-updated-date]').getValue(), 'Y-m-d');
-			time = Ext.Date.format(me.down('[name=document-info-updated-time]').getValue(), 'H:i:s');
+
+			// дата и время модификации формируются автоматически
+			updated = Ext.Date.format(new Date(), 'Y-m-d');
+			time = Ext.Date.format(new Date(), 'H:i:s');
 			updated = updated && time ? updated + 'T' + time : null;
+
 			values = {
 				_created: created,
 				_updated: updated,

@@ -68,11 +68,24 @@ Ext.define(
 
 		afterShow: function()
 		{
-			var me = this;
+			var me = this,
+				val,
+				item;
 
 			me.alignTo(me.subjectView, 'tr', [-me.getWidth(), -me.getHeight()]);
 			Ext.getBody().on('click', me.onClick, me);
 			me.callParent(arguments);
+			if (me.subjectView)
+			{
+				val = me.subjectView.down('form-desc-subject-field').getValue();
+				item = me.getItemByValue(val);
+				if (item)
+				{
+					//console.log(item);
+					me.expandPath('/root/' + item.parentId + '/' + item.id);
+					me.selectPath('/root/' + item.parentId + '/' + item.id);
+				}
+			}
 		},
 
 		afterHide: function ()
@@ -98,6 +111,66 @@ Ext.define(
 			{
 				me.close();
 			}
+		},
+
+		/**
+		 * Возвращает данные жанра по его значению.
+		 * @param {String} val Значение жанра.
+		 * @return {Object} Данные жанра.
+		 */
+		getItemByValue: function (val)
+		{
+			var me = this,
+				store,
+				itemStore = null;
+
+			store = me.getStore();
+			Ext.Array.findBy(
+				store.getData().items,
+				function (rec)
+				{
+					var v,
+						children;
+
+					children = rec.get('children');
+					v = Ext.Array.findBy(
+						children,
+						function (item)
+						{
+							if (item.value === val)
+							{
+								itemStore = item;
+
+								return true;
+							}
+						}
+					);
+
+					if (v)
+					{
+						return true;
+					}
+				}
+			);
+
+			return itemStore;
+		},
+
+		/**
+		 * Возвращает название жанра по его значению.
+		 * @param {String} val Значение жанра.
+		 * @return {String} Название жанра.
+		 */
+		getNameByValue: function (val)
+		{
+			var me = this,
+				name,
+				item;
+
+			item = me.getItemByValue(val);
+			name = item ? item.name : val;
+
+			return name;
 		}
 	}
 );

@@ -23,7 +23,7 @@ Ext.define(
 				textfield;
 
 			textfield = view.query('textfield')[0];
-			textfield.setValue(data.value);
+			textfield.setValue(data.name);
 		},
 
 		onShowSubjectTree: function ()
