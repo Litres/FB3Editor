@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'Ext.tree.Panel',
 		requires: [
 			'FBEditor.view.form.desc.subject.SubjectTreeController',
-			'FBEditor.view.form.desc.subject.SubjectStore'
+			'FBEditor.view.form.desc.subject.SubjectStore',
+			'FBEditor.view.form.desc.subject.filter.Filter'
 		],
 		id: 'form-desc-subjectTree',
 		xtype: 'form-desc-subjectTree',
@@ -29,6 +30,11 @@ Ext.define(
 		animate: false,
 		useArrows: true,
 		displayField: 'name',
+		tbar: [
+			{
+				xtype: 'form-desc-subject-filter'
+			}
+		],
 		listeners: {
 			click: {
 				element: 'el',
@@ -86,6 +92,8 @@ Ext.define(
 					me.selectPath('/root/' + item.parentId + '/' + item.id);
 				}
 			}
+			me.getStore().clearFilter(true);
+			me.down('form-desc-subject-filter').setValue('');
 		},
 
 		afterHide: function ()
@@ -171,6 +179,60 @@ Ext.define(
 			name = item ? item.name : val;
 
 			return name;
+		},
+
+		/**
+		 * Фильтрует дерево.
+		 * @param {String} value Значение для фильтрации.
+		 */
+		filter: function (value)
+		{
+			var me = this,
+				store = me.getStore(),
+				val = value.toLowerCase();
+
+			//console.log(val);
+			store.clearFilter(true);
+			store.filterBy(
+				function (record)
+				{
+					var name = record.getData().name,
+						children,
+						res = false;
+
+					if (record.isRoot())
+					{
+						return true;
+					}
+
+					// фильтруем узлы
+					if (!record.isLeaf())
+					{
+						children = record.get('children');
+						//console.log(children);
+						Ext.Array.each(
+							children,
+						    function (item)
+						    {
+							    var n = item.name.toLowerCase();
+
+							    if (n.indexOf(val) !== -1)
+							    {
+								    res = true;
+							    }
+						    }
+						);
+
+						return res;
+					}
+
+					// фильтруем листы
+					if (name && (name.toLowerCase().indexOf(val) !== -1))
+					{
+						return true;
+					}
+				}
+			);
 		}
 	}
 );

@@ -14,28 +14,37 @@ Ext.define(
 		],
 		data: [
 			{
-				value: 'none',
-				name: 'none'
+				value: 'none', name: 'без образования'
 			},
 			{
-				value: 'primary',
-				name: 'primary'
+				value: 'preschool_education', name: 'дошкольное образование'
 			},
 			{
-				value: 'high',
-				name: 'high'
+				value: 'primary_education', name: 'начальное общее образование'
 			},
 			{
-				value: 'specialized_secondary',
-				name: 'specialized_secondary'
+				value: 'basic_education', name: 'основное общее'
 			},
 			{
-				value: 'higher',
-				name: 'higher'
+				value: 'secondary_education', name: 'среднее (полное) общее'
 			},
 			{
-				value: 'specialized_higher',
-				name: 'specialized_higher'
+				value: 'technical_school_first_cycle', name: 'начальное профессиональное'
+			},
+			{
+				value: 'technical_school_second_cycle', name: 'среднее профессиональное'
+			},
+			{
+				value: 'higher_education', name: 'высшее профессиональное'
+			},
+			{
+				value: 'university_postgraduate', name: 'послевузовское профессиональное'
+			},
+			{
+				value: 'vocational_training', name: 'профессиональная подготовка'
+			},
+			{
+				value: 'additional_education', name: 'дополнительное образование'
 			}
 		]
 	}
