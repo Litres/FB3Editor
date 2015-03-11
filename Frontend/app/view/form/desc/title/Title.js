@@ -35,9 +35,16 @@ Ext.define(
 				{
 					xtype: 'textfieldclear',
 					allowBlank: false,
+					checkChangeBuffer: 500,
 					name: name + '-main',
 					fieldLabel: me.translateText.main,
-					cls: 'field-required'
+					cls: 'field-required',
+					listeners: {
+						change: function (field, newVal, oldVal)
+						{
+							this.ownerCt.fireEvent('changeTitle', field, newVal, oldVal);
+						}
+					}
 				}
 			);
 			if (me.enableSub)

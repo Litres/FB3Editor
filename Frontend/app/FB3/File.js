@@ -32,12 +32,6 @@ Ext.define(
 		data: null,
 
 		/**
-		 * @private
-		 * @property {String} Имя новой книги по умолчанию.
-		 */
-		defaultName: 'book.fb3.zip',
-
-		/**
 		 * @param {Object} data Данные книги.
 		 */
 		constructor: function (data)
@@ -153,10 +147,10 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				defaultName = me.defaultName,
+				defaultName = FBEditor.file.Manager.defaultFb3FileName,
 				name;
 
-			name = data.file ? data.file.name : defaultName;
+			name = data.file ? data.file.name.replace(/(\.fb3\.zip)$/, '') : defaultName;
 
 			return name;
 		},

@@ -33,6 +33,12 @@ Ext.define(
 						anchor: '100%',
 						labelWidth: 160,
 						labelAlign: 'right'
+					},
+					listeners: {
+						changeTitle: function ()
+						{
+							//console.log(arguments);
+						}
 					}
 				},
 				{

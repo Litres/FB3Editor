@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.tools.ToolsController',
-			'FBEditor.view.panel.main.tools.ToolsTab'
+			'FBEditor.view.panel.main.tools.ToolsTab',
+			'FBEditor.view.panel.filename.FileName'
 		],
 		id: 'panel-main-tools',
 		xtype: 'panel-main-tools',
@@ -23,6 +24,10 @@ Ext.define(
 		height: 75,
 		margin: '0 0 4px 0',
 		items: [
+			{
+				xtype: 'panel-filename'
+
+			},
 			{
 				xtype: 'panel-main-toolstab'
 			}

@@ -626,3 +626,24 @@
 	font-weight: bold;
 	color: #743e45;
 }
+
+.panel-filename-display .x-form-display-field-default
+{
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.panel-filename-field .x-form-text-default
+{
+	text-align: center;
+	font-size: 16px;
+	background-color: #B9E7DC;
+	color: #2e9577;
+}
+
+.panel-filename-field .x-form-trigger-wrap-focus
+{
+	border: none;
+}

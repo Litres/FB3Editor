@@ -22,6 +22,12 @@ Ext.define(
 		fb3file: null,
 
 		/**
+		 * @private
+		 * @property {String} Имя новой книги по умолчанию.
+		 */
+		defaultFb3FileName: 'Новая книга',
+
+		/**
 		 * Открывает файл FB3.
 		 * @param {Object} evt Событие открытие файла.
 		 * @return {Boolean} Успешно ли открытие.
@@ -48,12 +54,14 @@ Ext.define(
 								images,
 								contentBody,
 								contentTypes,
-								xslBody;
+								xslBody,
+								fileName;
 
 							try
 							{
 								me.fb3file = Ext.create('FBEditor.FB3.File', {file: file.file, content: data});
 								structure = me.fb3file.getStructure();
+								fileName = me.fb3file.getName();
 								thumb = structure.getThumb();
 								contentTypes = structure.getContentTypes();
 								contentTypes = FBEditor.converter.contentTypes.Data.toNormalize(contentTypes);
@@ -94,6 +102,7 @@ Ext.define(
 							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
 							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
 							//console.log(contentBody);
+							Ext.getCmp('panel-filename').fireEvent('setName', fileName);
 							Ext.suspendLayouts();
 							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
 							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
@@ -188,6 +197,7 @@ Ext.define(
 		{
 			var me = this,
 				fb3file = me.fb3file,
+				fileName,
 				blob,
 				fs;
 
@@ -202,7 +212,8 @@ Ext.define(
 			}
 			me.fb3file = fb3file;
 			blob = fb3file.generateBlob();
-			fs = window.saveAs(blob, fb3file.getName());
+			fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3.zip';
+			fs = window.saveAs(blob, fileName);
 
 			// данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
 			fs.onwriteend = fn;
