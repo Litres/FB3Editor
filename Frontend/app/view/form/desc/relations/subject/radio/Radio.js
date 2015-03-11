@@ -8,8 +8,15 @@ Ext.define(
 	'FBEditor.view.form.desc.relations.subject.radio.Radio',
 	{
 		extend: 'Ext.form.RadioGroup',
+		requires: [
+			'FBEditor.view.form.desc.relations.subject.radio.RadioController'
+		],
 		xtype: 'relations-subject-link-radio',
+		controller: 'form.desc.relations.subject.link.radio',
 		allowBlank: false,
+		listeners: {
+			change: 'onChange'
+		},
 
 		statics:
 		{

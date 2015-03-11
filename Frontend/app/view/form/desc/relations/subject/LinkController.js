@@ -27,7 +27,7 @@ Ext.define(
 				view = me.getView(),
 				radio;
 
-			radio = view.lookupReference('linkRadioOther');
+			radio = view.down('relations-subject-link-radio').child('[reference=linkRadioOther]');
 			radio.setValue(true);
 		}
 	}
