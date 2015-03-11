@@ -79,10 +79,10 @@ Ext.define(
 												},
 												{
 													xtype: 'textfieldclear',
-													allowBlank: false,
+													//allowBlank: false,
+													//cls: 'field-required',
 													fieldLabel: me.translateText.lastName,
-													name: 'relations-subject-last-name',
-													cls: 'field-required'
+													name: 'relations-subject-last-name'
 												},
 												{
 													fieldLabel: me.translateText.firstName,
