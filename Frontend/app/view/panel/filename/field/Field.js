@@ -17,6 +17,7 @@ Ext.define(
 		border: false,
 		allowBlank: false,
 		maxLength: 250,
+		enforceMaxLength: true,
 		width: '100%',
 		cls: 'panel-filename-field',
 		listeners: {
