@@ -13,6 +13,52 @@ Ext.define(
 		],
 		alias: 'controller.form.desc',
 
+		onAfterRender: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				el = view.body;
+
+			// регистрируем событие скролла
+			el.on(
+				'scroll',
+			    function (evt, el)
+			    {
+				    view.fireEvent('scroll', evt, el);
+			    }
+			);
+		},
+
+		/**
+		 * Выполняется при прокручивании скролла.
+		 * @param {Ext.event.Event} evt Объект события.
+		 * @param {HTMLElement} el Элемент.
+		 */
+		onScroll: function (evt, el)
+		{
+			var me = this;
+
+			// корректируем положение окна выбора жанра
+			Ext.getCmp('form-desc-subjectTree').fireEvent('alignTo');
+		},
+
+		/**
+		 * Вызывается при изменении размеров контейнера.
+		 * @param {FBEditor.view.form.desc.Desc} cmp Описание.
+		 * @param {Number} width
+		 * @param {Number} height
+		 * @param {Number} oldWidth
+		 * @param {Number} oldHeight
+		 */
+		onResize: function (cmp, width, height, oldWidth, oldHeight)
+		{
+			if (width !== oldWidth)
+			{
+				// корректируем положение окна выбора жанра
+				Ext.getCmp('form-desc-subjectTree').fireEvent('alignTo');
+			}
+		},
+
 		/**
 		 * Выполняется после активации панели.
 		 * @param {FBEditor.view.form.desc.Desc} self

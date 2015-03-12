@@ -40,7 +40,9 @@ Ext.define(
 				element: 'el',
 				fn: 'onClick'
 			},
-			itemClick: 'onItemClick'
+			itemClick: 'onItemClick',
+			alignTo: 'onAlignTo',
+			resize: 'onResize'
 		},
 
 		/**
@@ -78,7 +80,7 @@ Ext.define(
 				val,
 				item;
 
-			me.alignTo(me.subjectView, 'tr', [-me.getWidth(), -me.getHeight()]);
+			me.fireEvent('alignTo');
 			Ext.getBody().on('click', me.onClick, me);
 			me.callParent(arguments);
 			if (me.subjectView)

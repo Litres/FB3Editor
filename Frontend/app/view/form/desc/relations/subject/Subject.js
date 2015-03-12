@@ -78,7 +78,7 @@ Ext.define(
 													regexText: me.translateText.idError
 												},
 												{
-													xtype: 'textfieldclear',
+													xtype: 'textfield',
 													//allowBlank: false,
 													//cls: 'field-required',
 													fieldLabel: me.translateText.lastName,

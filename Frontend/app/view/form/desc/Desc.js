@@ -43,7 +43,10 @@ Ext.define(
 		listeners: {
 			loadDesc: 'onLoadData',
 			reset: 'onReset',
-			activate: 'onActivate'
+			activate: 'onActivate',
+			afterrender: 'onAfterRender',
+			scroll: 'onScroll',
+			resize: 'onResize'
 		},
 
 		/**

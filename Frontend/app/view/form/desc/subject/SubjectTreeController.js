@@ -43,6 +43,32 @@ Ext.define(
 				subjectView.fireEvent('selectSubject', data);
 				view.close();
 			}
+		},
+
+		/**
+		 * Позиционирует окно относительно поля ввода жанра.
+		 */
+		onAlignTo: function ()
+		{
+			var me = this,
+				view = me.getView();
+
+			if (view.isVisible())
+			{
+				view.alignTo(view.subjectView, 'tr', [-view.getWidth(), -view.getHeight()]);
+			}
+		},
+
+		/**
+		 * Вызывается при изменении размеров окна.
+		 */
+		onResize: function ()
+		{
+			var me = this,
+				view= me.getView();
+
+			// предотвращаем скрытие окна
+			view.isShow = false;
 		}
 	}
 );
