@@ -13,7 +13,7 @@ Ext.define(
 		],
 		xtype: 'desc-fieldset-customInfo',
 		title: 'Пользовательская информация',
-		xtypeChild: 'customInfo',
-		autoExpand: false
+		xtypeChild: 'customInfo'/*,
+		autoExpand: false*/
 	}
 );

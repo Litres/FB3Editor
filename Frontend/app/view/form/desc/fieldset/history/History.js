@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'desc-fieldset-history',
 		controller: 'desc.fieldset.history',
 		title: 'Комментарии редактора',
-		xtypeChild: 'history',
-		autoExpand: false
+		xtypeChild: 'history'/*,
+		autoExpand: false*/
 	}
 );

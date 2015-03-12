@@ -25,21 +25,37 @@ Ext.define(
 		overflowX: true,
 		margin: '0 2px 0 2px',
 		bodyPadding: 0,
+		//activeItem: 'main-htmleditor',
 		items: [
-			{
-				xtype: 'main-htmleditor'
-			},
 			{
 				xtype: 'form-desc'
 			},
 			{
 				xtype: 'panel-resources'
+			},
+			{
+				xtype: 'main-htmleditor'
 			}
 		],
 		listeners: {
 			contentBody: 'onContentBody',
 			contentDesc: 'onContentDesc',
 			contentResources: 'onContentResources'
+		},
+
+		afterRender: function ()
+		{
+			var me = this;
+
+			Ext.defer(
+				function ()
+				{
+					// переключаем контекст на текст
+					Ext.create('FBEditor.command.OpenBody').execute();
+				},
+			    2000
+			);
+			me.callParent(arguments);
 		}
     }
 );

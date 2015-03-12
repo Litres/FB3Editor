@@ -26,7 +26,13 @@ Ext.define(
 		{
 			var me = this;
 
-			me.syncContent();
+			Ext.defer(
+				function ()
+				{
+					me.syncContent();
+				},
+			    2500
+			);
 			me.callParent(arguments);
 		},
 

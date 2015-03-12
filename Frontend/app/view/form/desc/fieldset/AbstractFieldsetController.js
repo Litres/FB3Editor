@@ -25,9 +25,9 @@ Ext.define(
 
 			req = view.require;
 			autoExpand = view.autoExpand;
+			field = view.down('component[allowBlank/="true|false"]');
 			if (!req && autoExpand)
 			{
-				field = view.down('component[allowBlank/="true|false"]');
 				if (field && field.getValue())
 				{
 					view.expand();
@@ -58,14 +58,21 @@ Ext.define(
 
 			req = view.require;
 			autoExpand = view.autoExpand;
-			if (req && autoExpand)
-			{
-				view.expand();
-			}
+			/*if (view.getXType() === 'desc-fieldsetinner')
+			{*/
+				if (req && autoExpand)
+				{
+					view.expand();
+				}
+				else
+				{
+					view.collapse();
+				}
+			/*}
 			else
 			{
-				view.collapse();
-			}
+				view.expand();
+			}*/
 		}
 	}
 );

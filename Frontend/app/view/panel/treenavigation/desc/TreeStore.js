@@ -92,7 +92,7 @@ Ext.define(
 					//iconCls: 'treenavigation-children-icon treenavigation-children-icon-desc fa'
 				},
 				{
-					text: 'История',
+					text: 'Комментарии редактора',
 					expandable: false,
 					anchor: 'desc-fieldset-history',
 					icon: ' ',
