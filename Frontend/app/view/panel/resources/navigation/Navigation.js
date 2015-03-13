@@ -95,7 +95,7 @@ Ext.define(
 				    val = Ext.clone(me.parseNameResource(item.name, {path: ''}));
 				    if (val)
 				    {
-					    if (treeData.length && val.children)
+					    if (treeData.length && val.children && val.children.length)
 					    {
 						    treeData = me.groupTreeData(val, treeData);
 					    }
@@ -106,7 +106,6 @@ Ext.define(
 				    }
 			    }
 			);
-			//console.log(treeData);
 			rootTreeData = [
 				{
 					root: true,

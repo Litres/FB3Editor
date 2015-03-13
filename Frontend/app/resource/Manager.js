@@ -89,6 +89,7 @@ Ext.define(
 			me.sortData();
 			me.updateNavigation();
 			me.generateFolders();
+			me.setActiveFolder('');
 		},
 
 		/**
@@ -148,8 +149,27 @@ Ext.define(
 
 			function _deleteResource (index)
 			{
-				Ext.getCmp('panel-cover').fireEvent('clear');
 				data.splice(index, 1);
+				me.updateNavigation();
+			}
+
+			function _deleteFolder (index)
+			{
+				var name = data[index].name,
+					resources = [];
+
+				data.splice(index, 1);
+				Ext.each(
+					data,
+					function (item, i)
+					{
+						if (item.name.indexOf(name) !== 0)
+						{
+							resources.push(item);
+						}
+					}
+				);
+				me.data = resources;
 				me.updateNavigation();
 			}
 
@@ -160,23 +180,49 @@ Ext.define(
 			{
 				throw Error('Ресурс ' + name + ' не найден');
 			}
-			if (resource.isCover)
+			if (resource.isFolder)
 			{
-				Ext.Msg.confirm(
-					'Удаление ресурса',
-					'Данный ресурс является обложкой книги. Вы уверены, что хотите его удалить?',
-					function (btn)
-					{
-						if (btn === 'yes')
+				if (me.containsCover(resource))
+				{
+					Ext.Msg.confirm(
+						'Удаление папки',
+						'Данная папка содержит обложку книги. Вы уверены, что хотите её удалить?',
+						function (btn)
 						{
-							_deleteResource(resourceIndex);
+							if (btn === 'yes')
+							{
+								Ext.getCmp('panel-cover').fireEvent('clear');
+								_deleteFolder(resourceIndex);
+							}
 						}
-					}
-				);
+					);
+				}
+				else
+				{
+					_deleteFolder(resourceIndex);
+				}
 			}
 			else
 			{
-				_deleteResource(resourceIndex);
+				if (resource.isCover)
+				{
+					Ext.Msg.confirm(
+						'Удаление ресурса',
+						'Данный ресурс является обложкой книги. Вы уверены, что хотите его удалить?',
+						function (btn)
+						{
+							if (btn === 'yes')
+							{
+								Ext.getCmp('panel-cover').fireEvent('clear');
+								_deleteResource(resourceIndex);
+							}
+						}
+					);
+				}
+				else
+				{
+					_deleteResource(resourceIndex);
+				}
 			}
 
 			return result;
@@ -608,7 +654,6 @@ Ext.define(
 
 			resources = me.getData();
 			bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(resources);
-
 		},
 
 		/**
@@ -736,6 +781,32 @@ Ext.define(
 			);
 
 			return resourceIndex;
+		},
+
+		/**
+		 * Содержит ли папка ресурс обложки.
+		 * @param {FBEditor.resource.FolderResource} folder Ресурс папки.
+		 * @return {Boolean} Содержится ли обложка.
+		 */
+		containsCover: function (folder)
+		{
+			var me = this,
+				data = me.data,
+				name = folder.name,
+				res;
+
+			res = Ext.Array.findBy(
+				data,
+			    function (item)
+			    {
+				    if (item.name.indexOf(name) === 0 && item.isCover)
+				    {
+					    return true;
+				    }
+			    }
+			);
+
+			return res ? true : false;
 		}
 	}
 );
