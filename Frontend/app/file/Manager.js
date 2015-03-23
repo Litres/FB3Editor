@@ -78,6 +78,19 @@ Ext.define(
 								//console.log('desc', desc);
 								//console.log('images', images);
 								//console.log(content);
+								xslBody = FBEditor.xsl.Body.getXmlToHtml();
+								contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
+								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
+								Ext.suspendLayouts();
+								Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
+								if (!FBEditor.resource.Manager.checkThumbInResources(thumb))
+								{
+									// если обложка находится не в директории ресурсов, то перемещаем ее туда
+									thumb.moveTo(FBEditor.resource.Manager.getDefaultThumbPath());
+									images.push(thumb);
+								}
+								FBEditor.resource.Manager.load(images);
+								FBEditor.resource.Manager.setCover(thumb.getFileName());
 							}
 							catch (e)
 							{
@@ -97,23 +110,7 @@ Ext.define(
 									}
 								);
 							}
-							xslBody = FBEditor.xsl.Body.getXmlToHtml();
-							contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
-							contentBody = contentBody.replace(/<fb3-body (.*?)>/i, '');
-							contentBody = contentBody.replace(/<\/fb3-body>/i, '');
-							//console.log(contentBody);
-							Ext.getCmp('panel-filename').fireEvent('setName', fileName);
-							Ext.suspendLayouts();
-							Ext.getCmp('main-htmleditor').fireEvent('loadtext', contentBody);
-							Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
-							if (!FBEditor.resource.Manager.checkThumbInResources(thumb))
-							{
-								// если обложка находится не в директории ресурсов, то перемещаем ее туда
-								thumb.moveTo(FBEditor.resource.Manager.getDefaultThumbPath());
-								images.push(thumb);
-							}
-							FBEditor.resource.Manager.load(images);
-							FBEditor.resource.Manager.setCover(thumb.getFileName());
+							FBEditor.editor.Manager.createContent(contentBody);
 							Ext.resumeLayouts(true);
 						}
 					}

@@ -10,6 +10,7 @@ Ext.define(
 	    extend: 'Ext.app.Application',
 	    name: 'FBEditor',
 		requires: [
+			'FBEditor.editor.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
 			'FBEditor.command.HistoryCommand',
