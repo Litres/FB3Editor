@@ -25,7 +25,6 @@ Ext.define(
 
 			cmdOpts = {
 				btn: btn,
-				content: Ext.getCmp('main-htmleditor'),
 				desc: Ext.getCmp('form-desc')
 			};
 			cmd = Ext.create('FBEditor.command.SaveAsFile', cmdOpts);

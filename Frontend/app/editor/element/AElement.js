@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 
-		nameTag: 'a'
+		htmlTag: 'a',
+		xmlTag: 'a'
 	}
 );

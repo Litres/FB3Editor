@@ -9,11 +9,14 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 
+		htmlTag: 'undefined',
+		xmlTag: 'undefined',
+		cls: 'el-undefined',
+
 		constructor: function ()
 		{
 			var me = this;
 
-			me.style = 'border: 1px dashed red';
 			me.callParent(arguments);
 		}
 	}

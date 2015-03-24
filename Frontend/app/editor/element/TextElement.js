@@ -27,6 +27,11 @@ Ext.define(
 		getHtml: function ()
 		{
 			return this.text;
+		},
+
+		getXml: function ()
+		{
+			return this.text;
 		}
 	}
 );

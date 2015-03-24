@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 
-		nameTag: 'annotation'
+		htmlTag: 'annotation',
+		xmlTag: 'annotation'
 	}
 );

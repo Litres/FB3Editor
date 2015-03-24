@@ -34,48 +34,23 @@ Ext.define(
 			return toolbar;
 		},
 
-		/**
-		 * Возвращает данные в виде строки xml.
-		 * @return {String} строка xml.
-		 */
-		getXml: function ()
-		{
+		getDocMarkup: function() {
 			var me = this,
-				xml,
-				xsl,
-				patternMap;
+				h = me.iframeEl.getHeight() - me.iframePad * 2;
 
-			patternMap = [
-				{
-					pattern: '<(br.*?|img.*?)>',
-					replacement: '<$1/>'
-				},
-				{
-					pattern: '&nbsp;',
-					replacement: ' '
-				}
-			];
-			xml = me.getValue();
-			Ext.each(
-				patternMap,
-			    function (item)
-			    {
-				    var pattern;
-
-				    pattern = new RegExp(item.pattern, 'gi');
-				    xml = xml.replace(pattern, item.replacement);
-			    }
-			);
-			//console.log(xml);
-			xml = '<?xml version="1.0" encoding="UTF-8"?><fb3-body xmlns:l="http://www.w3.org/1999/xlink" id=""\
-				xmlns="http://www.fictionbook.org/FictionBook3/body"\
-				xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description">' + xml + '</fb3-body>';
-			xsl = FBEditor.xsl.Body.getHtmlToXml();
-			xml = FBEditor.util.xml.Jsxml.trans(xml, xsl);
-			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
-			//console.log(xml);
-
-			return xml;
+			// - IE9+ require a strict doctype otherwise text outside visible area can't be selected.
+			// - Opera inserts <P> tags on Return key, so P margins must be removed to avoid double line-height.
+			// - On browsers other than IE, the font is not inherited by the IFRAME so it must be specified.
+			return Ext.String.format(
+				'<!DOCTYPE html>'
+				+ '<html><head><link href="resources/css/editor.css" rel="stylesheet" type="text/css" /><style type="text/css">'
+				+ (Ext.isOpera ? 'p{margin:0;}' : '')
+				+ 'body{border:0;margin:0;padding:{0}px;direction:' + (me.rtl ? 'rtl;' : 'ltr;')
+				+ (Ext.isIE8 ? Ext.emptyString : 'min-')
+				+ 'height:{1}px;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:text;background-color:white;'
+				+ (Ext.isIE ? '' : 'font-size:12px;font-family:{2}')
+				+ '}</style></head><body></body></html>'
+				, me.iframePad, h, me.defaultFont);
 		}
 	}
 );

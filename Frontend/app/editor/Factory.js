@@ -16,10 +16,11 @@ Ext.define(
 		/**
 		 * Создает новый элемент.
 		 * @param {String} name Название элемента.
+		 * @param {Object} attributes Атрибуты элемента.
 		 * @param {FBEditor.editor.element.AbstractElement[]} [children] Дочерние элементы.
 		 * @return {FBEditor.editor.element.AbstractElement} Элемент.
 		 */
-		createElement: function (name, children)
+		createElement: function (name, attributes, children)
 		{
 			var me = this,
 				n = name,
@@ -35,11 +36,11 @@ Ext.define(
 				n = Ext.String.capitalize(n);
 				n = n.replace(/-([a-z])/g, '$1');
 				nameEl = 'FBEditor.editor.element.' + n + 'Element';
-				el = Ext.create(nameEl, children);
+				el = Ext.create(nameEl, attributes, children);
 			}
 			catch (e)
 			{
-				el = Ext.create('FBEditor.editor.element.UndefinedElement', children);
+				el = Ext.create('FBEditor.editor.element.UndefinedElement', attributes, children);
 				Ext.log(
 					{
 						level: 'warn',

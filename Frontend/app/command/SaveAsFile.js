@@ -13,7 +13,6 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.data.btn,
-				content = me.data.content,
 				desc = me.data.desc,
 				cover,
 				descValues,
@@ -44,7 +43,7 @@ Ext.define(
 							desc: descXml,
 							bodies: [
 								{
-									content: content.getXml(),
+									content: FBEditor.editor.Manager.getXml(),
 									images: FBEditor.resource.Manager.getResources()
 								}
 							]

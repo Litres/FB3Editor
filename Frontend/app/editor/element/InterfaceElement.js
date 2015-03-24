@@ -14,6 +14,15 @@ Ext.define(
 		getHtml: function ()
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#getHtml()');
+		},
+
+		/**
+		 * Возвращает элемент в виде строки xml для сохранения.
+		 * return {String} Строка xml.
+		 */
+		getXml: function ()
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#getXml()');
 		}
 	}
 );
