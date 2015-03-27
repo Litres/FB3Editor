@@ -61,7 +61,7 @@ Ext.define(
 			attr = me.getAttributesHtml();
 			html = '<' + nt;
 			html += attr ? ' ' + attr : '';
-			if (children.length)
+			if (children && children.length)
 			{
 				html += '>';
 				Ext.Array.each(
@@ -92,7 +92,7 @@ Ext.define(
 			attr = me.getAttributesXml();
 			xml = '<' + tag;
 			xml += attr ? ' ' + attr : '';
-			if (children.length)
+			if (children && children.length)
 			{
 				xml += '>';
 				Ext.Array.each(
@@ -113,30 +113,7 @@ Ext.define(
 		},
 
 		/**
-		 * @private
-		 * Возвращает строку атрибутов элементов для отображения в html.
-		 * @return {String} Строка атрибутов.
-		 */
-		getAttributesHtml: function ()
-		{
-			var me = this,
-				attr = '';
-
-			Ext.Object.each(
-				me.attributes,
-			    function (key, val)
-			    {
-				    attr += key + '="' + val + '" ';
-			    }
-			);
-			attr += me.style ? 'style="' + me.style + '"' : '';
-			attr += me.baseCls || me.cls ? 'class="' + me.baseCls + ' ' + me.cls + '"' : '';
-
-			return attr;
-		},
-
-		/**
-		 * @private
+		 * @protected
 		 * Возвращает строку атрибутов элементов для xml.
 		 * @return {String} Строка атрибутов.
 		 */
@@ -152,6 +129,30 @@ Ext.define(
 					attr += key + '="' + val + '" ';
 				}
 			);
+
+			return attr;
+		},
+
+		/**
+		 * @private
+		 * Возвращает строку атрибутов элементов для отображения в html.
+		 * @return {String} Строка атрибутов.
+		 */
+		getAttributesHtml: function ()
+		{
+			var me = this,
+				attr = '';
+
+			Ext.Object.each(
+				me.attributes,
+				function (key, val)
+				{
+					attr += key + '="' + val + '" ';
+				}
+			);
+			attr += me.style ? 'style="' + me.style + '" ' : '';
+			attr += me.baseCls || me.cls ? 'class="' + me.baseCls + ' ' + me.cls + '" ' : '';
+			attr += 'onclick="console.log(this)"';
 
 			return attr;
 		}

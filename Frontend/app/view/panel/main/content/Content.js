@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.content.ContentController',
-			'FBEditor.view.htmleditor.HtmlEditor',
+			'FBEditor.view.panel.editor.Editor',
 			'FBEditor.view.form.desc.Desc',
 			'FBEditor.view.panel.resources.Resources'
 		],
@@ -25,7 +25,7 @@ Ext.define(
 		overflowX: true,
 		margin: '0 2px 0 2px',
 		bodyPadding: 0,
-		//activeItem: 'main-htmleditor',
+		//activeItem: 'main-editor',
 		items: [
 			{
 				xtype: 'form-desc'
@@ -34,7 +34,7 @@ Ext.define(
 				xtype: 'panel-resources'
 			},
 			{
-				xtype: 'main-htmleditor'
+				xtype: 'main-editor'
 			}
 		],
 		listeners: {

@@ -18,7 +18,7 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			view.setActiveItem('main-htmleditor');
+			view.setActiveItem('main-editor');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-main');
 		},
 

@@ -647,3 +647,8 @@
 {
 	border: none;
 }
+
+.panel-editor-viewport
+{
+	background-color: #fff;
+}

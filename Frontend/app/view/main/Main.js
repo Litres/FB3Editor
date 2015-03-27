@@ -26,8 +26,7 @@ Ext.define(
 		listeners: {
 			closedetachpanels: 'onDetachPanel',
 			closeapplication: 'onCloseDetachPanels',
-			restoredetachpanel: 'onRestoreDetachPanel',
-			inithtmleditor: 'onAddToolbar'
+			restoredetachpanel: 'onRestoreDetachPanel'
 		},
 
 		/**

@@ -10,6 +10,22 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'a',
-		xmlTag: 'a'
+		xmlTag: 'a',
+
+		getAttributesXml: function ()
+		{
+			var me = this,
+				attr = '';
+
+			Ext.Object.each(
+				me.attributes,
+				function (key, val)
+				{
+					attr += (key === 'href' ? 'l:' : '') + key + '="' + val + '" ';
+				}
+			);
+
+			return attr;
+		}
 	}
 );

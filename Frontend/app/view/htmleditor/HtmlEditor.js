@@ -15,6 +15,7 @@ Ext.define(
 		xtype: 'main-htmleditor',
 		controller: 'view.htmleditor',
 		listeners: {
+			change: 'onChange',
 			initialize: 'onInitialize',
 			loadtext: 'onLoadText'
 		},
@@ -43,7 +44,8 @@ Ext.define(
 			// - On browsers other than IE, the font is not inherited by the IFRAME so it must be specified.
 			return Ext.String.format(
 				'<!DOCTYPE html>'
-				+ '<html><head><link href="resources/css/editor.css" rel="stylesheet" type="text/css" /><style type="text/css">'
+				+ '<html><head>'
+				+ '<link href="resources/css/editor.css" rel="stylesheet" type="text/css" /><style type="text/css">'
 				+ (Ext.isOpera ? 'p{margin:0;}' : '')
 				+ 'body{border:0;margin:0;padding:{0}px;direction:' + (me.rtl ? 'rtl;' : 'ltr;')
 				+ (Ext.isIE8 ? Ext.emptyString : 'min-')

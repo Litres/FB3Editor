@@ -12,7 +12,9 @@ Ext.define(
 			'FBEditor.view.panel.main.tools.ToolsTabController',
 			'FBEditor.view.htmleditor.toolbar.Toolbar',
 			'FBEditor.view.panel.toolstab.file.File',
-			'FBEditor.view.panel.toolstab.main.Main'
+			'FBEditor.view.panel.toolstab.main.Main',
+			'FBEditor.view.panel.toolstab.view.View',
+			'FBEditor.view.panel.toolstab.tools.Tools'
 		],
 		id: 'panel-main-toolstab',
 		xtype: 'panel-main-toolstab',
@@ -24,6 +26,12 @@ Ext.define(
 			},
 			{
 				xtype: 'panel-toolstab-main'
+			},
+			{
+				xtype: 'panel-toolstab-view'
+			},
+			{
+				xtype: 'panel-toolstab-tools'
 			}
 		]
 	}

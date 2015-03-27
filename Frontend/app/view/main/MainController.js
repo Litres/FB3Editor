@@ -110,18 +110,6 @@ Ext.define(
 					}
 				}
 			);
-		},
-
-		/**
-		 * Добавляет на вкладку панели инструментов тулбар редактора HTML.
-		 * @param {FBEditor.view.htmleditor.HtmlEditor} htmlEditor Html-редактор.
-		 */
-		onAddToolbar: function (htmlEditor)
-		{
-			var toolbar;
-
-			toolbar = htmlEditor.getToolbar();
-			Ext.getCmp('panel-toolstab-main').add(toolbar);
 		}
 	}
 );

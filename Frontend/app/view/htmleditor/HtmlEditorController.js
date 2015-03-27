@@ -10,6 +10,11 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.view.htmleditor',
 
+		onChange: function ()
+		{
+			console.log('change', arguments);
+		},
+
 		/**
 		 * @event inithtmleditor
 		 * Вброс события инициализации htmleditor в главный контейнер.

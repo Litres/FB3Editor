@@ -41,14 +41,14 @@ Ext.define(
 
 			content = content.replace(/\s+/g, ' ');
 			content = content.replace(/\), ?]/g, ')]');
-
 			//console.log(content);
+
 			// преобразование строки в объект
 			eval('me.content = ' + content);
 
 			html = me.content.getHtml();
 			//console.log(html);
-			Ext.getCmp('main-htmleditor').fireEvent('loadtext', html);
+			Ext.getCmp('main-editor').fireEvent('loadData', html);
 		},
 
 		/**

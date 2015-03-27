@@ -18,7 +18,7 @@ Ext.define(
 		useArrows: true,
 		animate: false,
 
-		syncContentId: 'main-htmleditor',
+		syncContentId: 'main-editor',
 
 		initComponent: function ()
 		{

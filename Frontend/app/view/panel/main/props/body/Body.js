@@ -14,7 +14,7 @@ Ext.define(
 
 		getContentId: function ()
 		{
-			return 'main-htmleditor';
+			return 'main-editor';
 		}
 	}
 );
