@@ -17,13 +17,20 @@ Ext.define(
 		onLoadData: function (data)
 		{
 			var me = this,
-				viewports = me.getViewports();
+				view = me.getView(),
+				viewports = me.getViewports(),
+				north;
 
+			north = view.viewports.north;
 			Ext.Array.each(
 				viewports,
 			    function (item)
 			    {
 				    item.loadData(data);
+				    if (item.id !== north.id)
+				    {
+					    item.fireEvent('syncScroll', north);
+				    }
 			    }
 			);
 		},
@@ -48,6 +55,31 @@ Ext.define(
 				view = me.getView();
 
 			view.removeSouthViewport();
+		},
+
+		/**
+		 * Синхронизирует данные между окнами редактирования.
+		 * @param viewport
+		 */
+		onSyncContent: function (viewport)
+		{
+			var me = this,
+				view = me.getView(),
+				viewports = me.getViewports();
+
+			Ext.Array.each(
+				viewports,
+				function (item)
+				{
+					var data;
+
+					if (item.id !== viewport.id)
+					{
+						data = viewport.getContent().getEl().dom.innerHTML;
+						item.loadData(data);
+					}
+				}
+			);
 		},
 
 		/**

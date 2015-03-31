@@ -15,6 +15,39 @@ Ext.define(
 		autoScroll: true,
 		cls: 'panel-editor-viewport-content',
 
+		/**
+		 * @private
+		 * @property {String} Содержимое элемента до изменений.
+		 */
+		oldContent: null,
+
+		afterRender: function ()
+		{
+			var me = this;
+
+			me.oldContent = me.getEl().dom.innerHTML;
+
+			// привязываем события input и change к элементу
+			me.getEl().on(
+				{
+					input: function (evt, html)
+					{
+						var content = this.getEl().dom.innerHTML;
+
+						this.fireEvent('input', this, this.oldContent, content);
+						if (content !== this.oldContent)
+						{
+							this.fireEvent('change', this, this.oldContent, content);
+							this.oldContent = content;
+						}
+					},
+					scope: me
+				}
+
+			);
+			me.callParent(arguments);
+		},
+
 		getElConfig: function()
 		{
 			var me = this,

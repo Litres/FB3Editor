@@ -19,7 +19,8 @@ Ext.define(
 		listeners: {
 			loadData: 'onLoadData',
 			split: 'onSplit',
-			unsplit: 'onUnsplit'
+			unsplit: 'onUnsplit',
+			syncContent: 'onSyncContent'
 		},
 
 		/**
@@ -67,11 +68,15 @@ Ext.define(
 		addSouthViewport: function ()
 		{
 			var me = this,
+				north,
 				south;
 
 			south = Ext.widget(me.southViewportConfig);
 			me.viewports.south = south;
 			me.add(south);
+			north = me.viewports.north;
+			me.fireEvent('syncContent', north);
+			south.fireEvent('syncScroll', north);
 		},
 
 		/**

@@ -22,17 +22,17 @@ Ext.define(
 		border: false,
 		monitorResize: true,
 		plain: true,
-		defaultAlign: 't-c',
+		x: 400,
 		y: 3,
 		layout: 'card',
-		width: '50%',
 		listeners: {
 			click: {
 				element: 'el',
 				fn: 'onClick'
 			},
 			setName: 'onSetName',
-			afterrender: 'onAfterRender'
+			afterrender: 'onAfterRender',
+			checkPosition: 'onCheckPosition'
 		},
 		items: [
 			{

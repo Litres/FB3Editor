@@ -9,11 +9,17 @@ Ext.define(
 	{
 		extend: 'Ext.container.Container',
 		requires: [
+			'FBEditor.view.panel.editor.viewport.ViewportController',
 			'FBEditor.view.panel.editor.viewport.content.Content'
 		],
 		xtype: 'panel-editor-viewport',
+		controller: 'panel.editor.viewport',
 		layout: 'fit',
 		cls: 'panel-editor-viewport',
+		listeners: {
+			change: 'onChange',
+			syncScroll: 'onSyncScroll'
+		},
 
 		initComponent: function ()
 		{
@@ -21,7 +27,14 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'panel-editor-viewport-content'
+					xtype: 'panel-editor-viewport-content',
+					listeners: {
+						change: function (el, oldContent, newContent, evt)
+						{
+							this.fireEvent('change', oldContent, newContent);
+						},
+						scope: me
+					}
 				}
 			];
 			me.callParent(this);
@@ -36,8 +49,17 @@ Ext.define(
 			var me = this,
 				content;
 
-			content = me.down('panel-editor-viewport-content');
+			content = me.getContent();
 			content.getEl().dom.innerHTML = data;
+		},
+
+		/**
+		 * Возвращает элемент контента.
+		 * @returns {FBEditor.view.panel.editor.viewport.content.Content}
+		 */
+		getContent: function ()
+		{
+			return this.down('panel-editor-viewport-content');
 		}
 	}
 );

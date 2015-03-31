@@ -24,6 +24,7 @@ Ext.define(
 				name = FBEditor.file.Manager.defaultFb3FileName;
 
 			me.onSetName(name);
+			me.onCheckPosition();
 		},
 
 		/**
@@ -43,6 +44,22 @@ Ext.define(
 				}
 			);
 			view.setActiveItem('panel-filename-display');
+		},
+
+		/**
+		 * Корректирует размеры и позицию панели имени файла.
+		 */
+		onCheckPosition: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				tools;
+
+			if (view.rendered)
+			{
+				tools = Ext.getCmp('panel-main-tools');
+				view.setWidth(tools.getWidth() - 440);
+			}
 		}
 	}
 );

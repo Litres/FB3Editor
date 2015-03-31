@@ -23,6 +23,9 @@ Ext.define(
 		split: false,
 		height: 75,
 		margin: '0 0 4px 0',
+		listeners: {
+			resize: 'onResize'
+		},
 		items: [
 			{
 				xtype: 'panel-filename'
