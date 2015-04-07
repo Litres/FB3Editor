@@ -12,13 +12,13 @@ Ext.define(
 
 		/**
 		 * Загружает данные тела книги в окна редактора.
-		 * @param {HTMLElement} data Тело книги.
 		 */
-		onLoadData: function (data)
+		onLoadData: function ()
 		{
 			var me = this,
 				view = me.getView(),
 				viewports = me.getViewports(),
+				data,
 				north;
 
 			north = view.viewports.north;
@@ -26,6 +26,7 @@ Ext.define(
 				viewports,
 			    function (item)
 			    {
+				    data = FBEditor.editor.Manager.getNode();
 				    item.loadData(data);
 				    if (item.id !== north.id)
 				    {
@@ -59,23 +60,23 @@ Ext.define(
 
 		/**
 		 * Синхронизирует данные между окнами редактирования.
-		 * @param viewport
+		 * @param {FBEditor.view.panel.editor.viewport.Viewport} viewport Исходное окно редактирования,
+		 * с которым необходимо синхронизировать остальные окна.
 		 */
 		onSyncContent: function (viewport)
 		{
 			var me = this,
 				view = me.getView(),
-				viewports = me.getViewports();
+				viewports = me.getViewports(),
+				data;
 
+			data = FBEditor.editor.Manager.getNode();
 			Ext.Array.each(
 				viewports,
 				function (item)
 				{
-					var data;
-
 					if (item.id !== viewport.id)
 					{
-						data = viewport.getContent().getEl().dom.innerHTML;
 						item.loadData(data);
 					}
 				}

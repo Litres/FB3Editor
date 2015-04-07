@@ -54,7 +54,8 @@ Ext.define(
 			north = Ext.widget(
 				{
 					xtype: 'panel-editor-viewport',
-					region: 'center'
+					region: 'center',
+					createRootElement: true
 				}
 			);
 			me.viewports.north = north;

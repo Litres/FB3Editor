@@ -25,6 +25,7 @@ Ext.define(
 			'FBEditor.editor.element.OlElement',
 			'FBEditor.editor.element.PElement',
 			'FBEditor.editor.element.SectionElement',
+			'FBEditor.editor.element.SpanElement',
 			'FBEditor.editor.element.StrikethroughElement',
 			'FBEditor.editor.element.StrongElement',
 			'FBEditor.editor.element.SubElement',
@@ -40,7 +41,7 @@ Ext.define(
 		/**
 		 * Создает новый элемент.
 		 * @param {String} name Название элемента.
-		 * @param {Object} attributes Атрибуты элемента.
+		 * @param {Object} [attributes] Атрибуты элемента.
 		 * @param {FBEditor.editor.element.AbstractElement[]} [children] Дочерние элементы.
 		 * @return {FBEditor.editor.element.AbstractElement} Элемент.
 		 */
@@ -60,6 +61,8 @@ Ext.define(
 				n = Ext.String.capitalize(n);
 				n = n.replace(/-([a-z])/g, '$1');
 				nameEl = 'FBEditor.editor.element.' + n + 'Element';
+				attributes = attributes || {};
+				children = children || [];
 				el = Ext.create(nameEl, attributes, children);
 			}
 			catch (e)
@@ -86,10 +89,7 @@ Ext.define(
 		{
 			var el;
 
-			if (Ext.isEmpty(text))
-			{
-				throw Error('Невозможно создать текстовый элемент. Передан пустой текст.');
-			}
+			text = Ext.isString(text) ? text : '';
 			try
 			{
 				el = Ext.create('FBEditor.editor.element.TextElement', text);

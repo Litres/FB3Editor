@@ -24,14 +24,45 @@ Ext.define(
 			me.text = Ext.isString(text) ? text : me.text;
 		},
 
-		getHtml: function ()
+		getNode: function ()
 		{
-			return this.text;
+			var me = this,
+				node = me.node || me.createNode();
+
+			me.node = node;
+
+			return node;
 		},
 
 		getXml: function ()
 		{
 			return this.text;
+		},
+
+		/**
+		 * Устанавливает текст элемента.
+		 * @param {String} text Текст.
+		 */
+		setText: function (text)
+		{
+			var me = this;
+
+			me.text = text;
+		},
+
+		/**
+		 * Создает текстовый узел.
+		 * @return {HTMLElement} Возвращает текстовый узел.
+		 */
+		createNode: function ()
+		{
+			var me = this,
+				node;
+
+			node = document.createTextNode(me.text);
+			me.setNode(node);
+
+			return node;
 		}
 	}
 );

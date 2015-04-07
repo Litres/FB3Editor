@@ -9,8 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.container.Container',
 		requires: [
-			'FBEditor.view.panel.editor.viewport.ViewportController',
-			'FBEditor.view.panel.editor.viewport.content.Content'
+			'FBEditor.view.panel.editor.viewport.ViewportController'
 		],
 		xtype: 'panel-editor-viewport',
 		controller: 'panel.editor.viewport',
@@ -21,23 +20,22 @@ Ext.define(
 			syncScroll: 'onSyncScroll'
 		},
 
-		initComponent: function ()
-		{
-			var me = this;
+		/**
+		 * @property {Boolean} Создать ли корневой элемент.
+		 */
+		createRootElement: false,
 
-			me.items = [
-				{
-					xtype: 'panel-editor-viewport-content',
-					listeners: {
-						change: function (el, oldContent, newContent, evt)
-						{
-							this.fireEvent('change', oldContent, newContent);
-						},
-						scope: me
-					}
-				}
-			];
+		afterRender: function ()
+		{
+			var me = this,
+				rootEl;
+
 			me.callParent(this);
+			if (me.createRootElement)
+			{
+				rootEl = FBEditor.editor.Manager.createRootElement();
+				me.loadData(rootEl.getNode());
+			}
 		},
 
 		/**
@@ -47,19 +45,26 @@ Ext.define(
 		loadData: function (data)
 		{
 			var me = this,
-				content;
+				dom = me.getEl().dom,
+				content = me.getContent();
 
-			content = me.getContent();
-			content.getEl().dom.innerHTML = data;
+			if (content)
+			{
+				dom.replaceChild(data, content);
+			}
+			else
+			{
+				dom.appendChild(data);
+			}
 		},
 
 		/**
-		 * Возвращает элемент контента.
-		 * @returns {FBEditor.view.panel.editor.viewport.content.Content}
+		 * Возвращает корневой элемент контента.
+		 * @return {FBEditor.editor.element.AbstractElement}
 		 */
 		getContent: function ()
 		{
-			return this.down('panel-editor-viewport-content');
+			return this.getEl().dom.firstChild;
 		}
 	}
 );

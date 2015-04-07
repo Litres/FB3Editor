@@ -34,12 +34,10 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				content = view.getContent(),
-				contentSource,
-				scrollY;
+				contentSource = viewport.getContent(),
+				scrollY = contentSource.scrollTop;
 
-			contentSource = viewport.getContent();
-			scrollY = contentSource.getScrollY();
-			content.setScrollY(scrollY + contentSource.getHeight());
+			content.scrollTop = scrollY + viewport.getHeight();
 		}
 	}
 );

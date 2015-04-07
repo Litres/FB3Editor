@@ -18,6 +18,17 @@ Ext.define(
 		content: null,
 
 		/**
+		 * @private
+		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
+		 */
+		focusElement: null,
+
+		/**
+		 * @property {Boolean} Заморозить ли события вставки узлов.
+		 */
+		suspendEvent: false,
+
+		/**
 		 * Создает контент из загруженной книги.
 		 * @param {String} content Исходный объект тела книги в виде строки, которую необходимо преобразовать
 		 * в настоящий объект.
@@ -46,9 +57,24 @@ Ext.define(
 			// преобразование строки в объект
 			eval('me.content = ' + content);
 
-			html = me.content.getHtml();
-			//console.log(html);
-			Ext.getCmp('main-editor').fireEvent('loadData', html);
+			Ext.getCmp('main-editor').fireEvent('loadData');
+		},
+
+		/**
+		 * Возвращает html тела книги.
+		 * @return {HTMLElement}
+		 */
+		getNode: function ()
+		{
+			var me = this,
+				content = me.content,
+				node;
+
+			FBEditor.editor.Manager.suspendEvent = true;
+			node = content.getNode();
+			FBEditor.editor.Manager.suspendEvent = false;
+
+			return node;
 		},
 
 		/**
@@ -66,6 +92,39 @@ Ext.define(
 			console.log(xml);
 
 			return xml;
+		},
+
+		/**
+		 * Создает корневой элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Корневой элемент.
+		 */
+		createRootElement: function ()
+		{
+			var me = this,
+				el;
+
+			el = FBEditor.editor.Factory.createElement('fb3-body');
+			me.content = el;
+
+			return el;
+		},
+
+		/**
+		 * Устанавливает текущий выделенный элемент в редакторе.
+		 * @param {FBEditor.editor.element.AbstractElement} el
+		 */
+		setFocusElement: function (el)
+		{
+			this.focusElement = el;
+		},
+
+		/**
+		 * Возвращает текущий выделенный элемент в редакторе.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getFocusElement: function ()
+		{
+			return this.focusElement;
 		}
 	}
 );

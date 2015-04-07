@@ -652,3 +652,15 @@
 {
 	background-color: #fff;
 }
+
+.panel-editor-viewport .el-undefined
+{
+	border: 1px dashed red;
+}
+
+.panel-editor-viewport .el-body
+{
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}

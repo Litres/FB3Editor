@@ -10,7 +10,6 @@ Ext.define(
 		extend: 'Ext.tab.Panel',
 		requires: [
 			'FBEditor.view.panel.main.tools.ToolsTabController',
-			'FBEditor.view.htmleditor.toolbar.Toolbar',
 			'FBEditor.view.panel.toolstab.file.File',
 			'FBEditor.view.panel.toolstab.main.Main',
 			'FBEditor.view.panel.toolstab.view.View',
