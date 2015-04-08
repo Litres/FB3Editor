@@ -28,13 +28,27 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				rootEl;
+				rootEl,
+				rootNode,
+				els = {};
 
 			me.callParent(this);
 			if (me.createRootElement)
 			{
 				rootEl = FBEditor.editor.Manager.createRootElement();
-				me.loadData(rootEl.getNode());
+				rootNode = rootEl.getNode(me.id);
+				me.loadData(rootNode);
+
+				// создаем содержимое книги по умолчанию
+				els.section = FBEditor.editor.Factory.createElement('section');
+				els.p = FBEditor.editor.Factory.createElement('p');
+				els.t = FBEditor.editor.Factory.createElementText('Текст книги');
+				els.p.add(els.t);
+				els.section.add(els.p);
+				rootEl.add(els.section);
+				FBEditor.editor.Manager.suspendEvent = true;
+				rootNode.appendChild(els.section.getNode(me.id));
+				FBEditor.editor.Manager.suspendEvent = false;
 			}
 		},
 

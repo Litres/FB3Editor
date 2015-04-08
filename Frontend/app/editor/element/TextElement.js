@@ -24,12 +24,12 @@ Ext.define(
 			me.text = Ext.isString(text) ? text : me.text;
 		},
 
-		getNode: function ()
+		getNode: function (viewportId)
 		{
 			var me = this,
-				node = me.node || me.createNode();
+				node;
 
-			me.node = node;
+			node = me.createNode(viewportId);
 
 			return node;
 		},
@@ -54,12 +54,13 @@ Ext.define(
 		 * Создает текстовый узел.
 		 * @return {HTMLElement} Возвращает текстовый узел.
 		 */
-		createNode: function ()
+		createNode: function (viewportId)
 		{
 			var me = this,
 				node;
 
 			node = document.createTextNode(me.text);
+			node.viewportId = viewportId;
 			me.setNode(node);
 
 			return node;

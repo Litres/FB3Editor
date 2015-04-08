@@ -71,6 +71,15 @@ Ext.define(
 		},
 
 		/**
+		 * Синхронизирует узлы элемента в окнах.
+		 * @param {String} viewportId Id окна источника.
+		 */
+		sync: function (viewportId)
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#sync()');
+		},
+
+		/**
 		 * Устанавливает события узла элемента.
 		 * @param {HTMLElement} element Узел элемента.
 		 * @return {HTMLElement} element Узел элемента.
@@ -78,14 +87,6 @@ Ext.define(
 		setEvents: function (element)
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#setEvents()');
-		},
-
-		/**
-		 * Синхронизирует элемент с отображением html.
-		 */
-		sync: function ()
-		{
-			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#sync()');
 		}
 	}
 );

@@ -39,6 +39,7 @@ Ext.define(
 				{
 					var node = e.target,
 						text = node.nodeValue,
+						viewportId = node.viewportId,
 						nextSibling = node.nextSibling,
 						previousSibling = node.previousSibling,
 						parentNode = node.parentNode,
@@ -49,17 +50,19 @@ Ext.define(
 					if (!nextSibling && !previousSibling)
 					{
 						el = FBEditor.editor.Factory.createElementText(text);
-						el.createNode();
+						el.createNode(viewportId);
 						parentEl = parentNode.getElement();
 						//console.log('el', el);
 						parentEl.removeAll();
 						parentEl.add(el);
+						parentEl.sync(viewportId);
 						FBEditor.editor.Manager.setFocusElement(el);
 					}
 					else
 					{
 						el = node.getElement();
 						el.setText(text);
+						el.sync(viewportId);
 						FBEditor.editor.Manager.setFocusElement(el);
 					}
 				},

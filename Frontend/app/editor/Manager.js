@@ -37,8 +37,7 @@ Ext.define(
 		{
 			var me = this,
 				ce,
-				ct,
-				html;
+				ct;
 
 			// сокращенные формы методов создания элементов
 			ce = function (el, attr, ch)
@@ -64,14 +63,14 @@ Ext.define(
 		 * Возвращает html тела книги.
 		 * @return {HTMLElement}
 		 */
-		getNode: function ()
+		getNode: function (viewportId)
 		{
 			var me = this,
 				content = me.content,
 				node;
 
 			FBEditor.editor.Manager.suspendEvent = true;
-			node = content.getNode();
+			node = content.getNode(viewportId);
 			FBEditor.editor.Manager.suspendEvent = false;
 
 			return node;
@@ -79,7 +78,7 @@ Ext.define(
 
 		/**
 		 * Возвращает xml тела книги.
-		 * @return {String} строка xml.
+		 * @return {String} Строка xml.
 		 */
 		getXml: function ()
 		{
@@ -101,12 +100,12 @@ Ext.define(
 		createRootElement: function ()
 		{
 			var me = this,
-				el;
+				root;
 
-			el = FBEditor.editor.Factory.createElement('fb3-body');
-			me.content = el;
+			root = FBEditor.editor.Factory.createElement('fb3-body');
+			me.content = root;
 
-			return el;
+			return root;
 		},
 
 		/**

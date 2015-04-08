@@ -17,6 +17,7 @@ Ext.define(
 			'FBEditor.editor.element.DivElement',
 			'FBEditor.editor.element.EmElement',
 			'FBEditor.editor.element.Fb3bodyElement',
+			'FBEditor.editor.element.HeaderElement',
 			'FBEditor.editor.element.ImgElement',
 			'FBEditor.editor.element.LiElement',
 			'FBEditor.editor.element.MarkerElement',

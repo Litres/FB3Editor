@@ -20,11 +20,6 @@ Ext.define(
 		attributes: {},
 
 		/**
-		 * @property {HTMLElement} Узел html.
-		 */
-		node: null,
-
-		/**
 		 * @property {String} Имя тега для отображения в html.
 		 */
 		htmlTag: 'div',
@@ -44,6 +39,13 @@ Ext.define(
 		cls: '',
 
 		/**
+		 * @private
+		 * @config {Object} Узлы html, привязанные к своим окнам.
+		 * Ключ каждого свойства представляет id окна, а значение - узел html.
+		 */
+		//nodes: {},
+
+		/**
 		 * @param {Object} attributes Атрибуты элемента.
 		 * @param {FBEditor.editor.element.AbstractElement[]|null} [children] Дочерние элементы.
 		 */
@@ -51,6 +53,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.initConfig();
 			me.children = children || me.children;
 			me.attributes = attributes || me.attributes;
 		},
@@ -93,14 +96,15 @@ Ext.define(
 		{
 			var me = this;
 
-			me.node = node;
-			me.node.getElement = function ()
+			node.getElement = function ()
 			{
 				return me;
 			};
+			me.nodes = me.nodes || {};
+			me.nodes[node.viewportId] = node;
 		},
 
-		getNode: function ()
+		getNode: function (viewportId)
 		{
 			var me = this,
 				children = me.children,
@@ -109,6 +113,7 @@ Ext.define(
 
 			node = document.createElement(tag);
 			node = me.setAttributesHtml(node);
+			node.viewportId = viewportId;
 			me.setNode(node);
 			node = me.setEvents(node);
 			if (children && children.length)
@@ -117,7 +122,7 @@ Ext.define(
 					children,
 					function (item)
 					{
-						node.appendChild(item.getNode());
+						node.appendChild(item.getNode(viewportId));
 					}
 				);
 			}
@@ -156,6 +161,29 @@ Ext.define(
 			return xml;
 		},
 
+		sync: function (viewportId)
+		{
+			var me = this,
+				newNode;
+
+			FBEditor.editor.Manager.suspendEvent = true;
+			console.log('sync start ' + viewportId, me.nodes);
+			Ext.Object.each(
+				me.nodes,
+			    function (id, oldNode)
+			    {
+				    if (id !== viewportId)
+				    {
+					    newNode = me.getNode(id);
+					    console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
+					    oldNode.parentNode.replaceChild(newNode, oldNode);
+				    }
+			    }
+			);
+			console.log('sync end');
+			FBEditor.editor.Manager.suspendEvent = false;
+		},
+
 		setEvents: function (element)
 		{
 			var me = this;
@@ -170,7 +198,7 @@ Ext.define(
 
 					focusNode = me.getFocusNode(e);
 					focusElement = focusNode.getElement();
-					//console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
+					console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
 					FBEditor.editor.Manager.setFocusElement(focusElement);
 					e.stopPropagation();
 
@@ -186,6 +214,7 @@ Ext.define(
 				{
 					var relNode = e.relatedNode,
 						node = e.target,
+						viewportId = relNode.viewportId,
 						newEl,
 						nextSibling,
 						previousSibling,
@@ -194,10 +223,9 @@ Ext.define(
 
 					// игнориуруется вставка корневого узла, так как он уже вставлен и
 					// игнорируется вставка при включенной заморозке
-					if (relNode.firstChild.localName !== FBEditor.editor.Manager.content.node.localName &&
-					    !FBEditor.editor.Manager.suspendEvent)
+					if (relNode.firstChild.localName !== 'main' && !FBEditor.editor.Manager.suspendEvent)
 					{
-						console.log('DOMNodeInserted:', e, me.node.getElement());
+						console.log('DOMNodeInserted:', e);
 						if (node.nodeType === Node.TEXT_NODE)
 						{
 							newEl = FBEditor.editor.Factory.createElementText(node.nodeValue);
@@ -206,6 +234,7 @@ Ext.define(
 						{
 							newEl = FBEditor.editor.Factory.createElement(node.localName);
 						}
+						node.viewportId = viewportId;
 						newEl.setNode(node);
 						nextSibling = node.nextSibling;
 						previousSibling = node.previousSibling;
@@ -213,19 +242,22 @@ Ext.define(
 						//console.log('newEl', newEl, nextSibling);
 						if (nextSibling)
 						{
-									nextSiblingEl = nextSibling.getElement();
-									parentEl.insertBefore(newEl, nextSiblingEl);
-									FBEditor.editor.Manager.setFocusElement(newEl);
+							nextSiblingEl = nextSibling.getElement();
+							parentEl.insertBefore(newEl, nextSiblingEl);
+							parentEl.sync(viewportId);
+							FBEditor.editor.Manager.setFocusElement(newEl);
 						}
 						else if (!nextSibling && !previousSibling)
 						{
 							parentEl.removeAll();
 							parentEl.add(newEl);
+							parentEl.sync(viewportId);
 							FBEditor.editor.Manager.setFocusElement(newEl);
 						}
 						else
 						{
 							parentEl.add(newEl);
+							parentEl.sync(viewportId);
 							FBEditor.editor.Manager.setFocusElement(newEl);
 						}
 					}
@@ -240,17 +272,18 @@ Ext.define(
 				{
 					var relNode = e.relatedNode,
 						target = e.target,
+						viewportId = relNode.viewportId,
 						parentEl,
 						el;
 
-					console.log('DOMNodeRemoved:', e, me);
-
 					// игнориуруется удаление корневого узла, так как он всегда необходим
-					if (relNode.firstChild.localName !== FBEditor.editor.Manager.content.node.localName)
+					if (relNode.firstChild.localName !== 'main' && !FBEditor.editor.Manager.suspendEvent)
 					{
+						console.log('DOMNodeRemoved:', e, me);
 						parentEl = relNode.getElement();
 						el = target.getElement();
 						parentEl.remove(el);
+						parentEl.sync(viewportId);
 					}
 				},
 				false
@@ -269,11 +302,6 @@ Ext.define(
 			);
 
 			return element;
-		},
-
-		sync: function ()
-		{
-
 		},
 
 		/**

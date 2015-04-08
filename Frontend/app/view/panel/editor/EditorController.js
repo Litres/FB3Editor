@@ -26,7 +26,7 @@ Ext.define(
 				viewports,
 			    function (item)
 			    {
-				    data = FBEditor.editor.Manager.getNode();
+				    data = FBEditor.editor.Manager.getNode(item.id);
 				    item.loadData(data);
 				    if (item.id !== north.id)
 				    {
@@ -70,13 +70,13 @@ Ext.define(
 				viewports = me.getViewports(),
 				data;
 
-			data = FBEditor.editor.Manager.getNode();
 			Ext.Array.each(
 				viewports,
 				function (item)
 				{
 					if (item.id !== viewport.id)
 					{
+						data = FBEditor.editor.Manager.getNode(item.id);
 						item.loadData(data);
 					}
 				}
