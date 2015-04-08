@@ -130,6 +130,24 @@ Ext.define(
 			return node;
 		},
 
+		removeNodes: function (viewportId)
+		{
+			var me = this,
+				children = me.children;
+
+			delete me.nodes[viewportId];
+			if (children.length)
+			{
+				Ext.Array.each(
+					children,
+					function (item)
+					{
+						item.removeNodes(viewportId);
+					}
+				);
+			}
+		},
+
 		getXml: function ()
 		{
 			var me = this,

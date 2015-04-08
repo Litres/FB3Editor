@@ -89,6 +89,7 @@ Ext.define(
 				south;
 
 			south = me.viewports.south;
+			FBEditor.editor.Manager.removeNodes(south.id);
 			me.remove(south);
 			me.viewports.south = null;
 		}

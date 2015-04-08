@@ -124,6 +124,18 @@ Ext.define(
 		getFocusElement: function ()
 		{
 			return this.focusElement;
+		},
+
+		/**
+		 * Удаляет все ссылки на узлы для конкретного окна.
+		 * @param {String} viewportId Id окна.
+		 */
+		removeNodes: function (viewportId)
+		{
+			var me = this,
+				rootEl = me.content;
+
+			rootEl.removeNodes(viewportId);
 		}
 	}
 );

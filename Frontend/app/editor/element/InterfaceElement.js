@@ -54,11 +54,21 @@ Ext.define(
 
 		/**
 		 * Возвращает узел html для отображения.
+		 * @param {String} viewportId Id окна.
 		 * @return {HTMLElement} Узел html.
 		 */
-		getNode: function ()
+		getNode: function (viewportId)
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#getNode()');
+		},
+
+		/**
+		 * Удаляет все ссылки на узлы окна.
+		 * @param {String} viewportId Id окна.
+		 */
+		removeNodes: function (viewportId)
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#removeNodes()');
 		},
 
 		/**
