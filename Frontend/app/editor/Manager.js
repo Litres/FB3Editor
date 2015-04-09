@@ -55,7 +55,6 @@ Ext.define(
 
 			// преобразование строки в объект
 			eval('me.content = ' + content);
-
 			Ext.getCmp('main-editor').fireEvent('loadData');
 		},
 

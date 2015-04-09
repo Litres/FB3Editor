@@ -112,6 +112,7 @@ Ext.define(
 				node;
 
 			node = document.createElement(tag);
+			me.setStyleHtml();
 			node = me.setAttributesHtml(node);
 			node.viewportId = viewportId;
 			me.setNode(node);
@@ -341,6 +342,16 @@ Ext.define(
 			);
 
 			return attr;
+		},
+
+		/**
+		 * @protected
+		 * Устанавливает стили для узла html.
+		 * @return {String} Строка стилей.
+		 */
+		setStyleHtml: function ()
+		{
+			return this.style;
 		},
 
 		/**

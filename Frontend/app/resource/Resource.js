@@ -29,6 +29,11 @@ Ext.define(
 		formatDate: 'd.m.Y H:i',
 
 		/**
+		 * @property {FBEditor.editor.element.ImgElement[]} Элементы изображения в теле книги, связанные с ресурсом.
+		 */
+		elements: [],
+
+		/**
 		 * Инициализирует ресурс.
 		 * @param {Object} data Данные ресурса.
 		 */
@@ -55,6 +60,17 @@ Ext.define(
 				me.width = img.width;
 				me.height = img.height;
 			};
+		},
+
+		/**
+		 * Добавляет элемент изображения тела книги в коллекцию, связывая с ресурсом.
+		 * @param {FBEditor.editor.element.ImgElement} el Элемент изображения, использующий ресурс.
+		 */
+		addElement: function (el)
+		{
+			var me = this;
+
+			me.elements.push(el);
 		},
 
 		/**

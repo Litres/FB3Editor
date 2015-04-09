@@ -511,6 +511,24 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает данные ресурса по его имени.
+		 * @return {FBEditor.resource.Resource} Ресурс.
+		 */
+		getResourceByName: function (name)
+		{
+			var me = this,
+				data = me.data,
+				resourceIndex,
+				resource;
+
+			resourceIndex = me.getResourceIndexByName(name);
+			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
+			resource = resource && resource[0] ? resource[0] : null;
+
+			return resource;
+		},
+
+		/**
 		 * Возвращает данные папок.
 		 * @return {FBEditor.resource.Resource[]}
 		 */
