@@ -24,6 +24,7 @@ Ext.define(
 					'<tpl if="isFolder"><div><span>Ресурсов:</span> {total}</div>',
 					'<tpl else><div><span>Объём:</span> {size}</div></tpl>',
 					'<div><span>Изменён:</span> {date}</div>',
+					'<tpl if="totalElements"><div><span>Использован в тексте:</span> {totalElements}</div></tpl>',
 			    '</div>'
 			);
 			me.callParent(arguments);

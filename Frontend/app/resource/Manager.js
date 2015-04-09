@@ -219,6 +219,21 @@ Ext.define(
 						}
 					);
 				}
+				else if (resource.elements.length)
+				{
+					Ext.Msg.confirm(
+						'Удаление ресурса',
+						'Данный ресурс используется в теле книги. Вы уверены, что хотите его удалить?',
+						function (btn)
+						{
+							if (btn === 'yes')
+							{
+								resource.clearElements();
+								_deleteResource(resourceIndex);
+							}
+						}
+					);
+				}
 				else
 				{
 					_deleteResource(resourceIndex);

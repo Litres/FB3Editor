@@ -59,9 +59,11 @@ Ext.define(
 		loadData: function (data)
 		{
 			var me = this,
-				dom = me.getEl().dom,
-				content = me.getContent();
+				dom,
+				content;
 
+			dom = me.getEl().dom;
+			content = me.getContent();
 			if (content)
 			{
 				dom.replaceChild(data, content);

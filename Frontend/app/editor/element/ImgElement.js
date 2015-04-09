@@ -44,6 +44,26 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет связь изображения с ресурсом.
+		 */
+		deleteLinkResource: function ()
+		{
+			var me = this,
+				nodes = me.nodes;
+
+			me.resource = null;
+			Ext.Object.each(
+				nodes,
+			    function (id, node)
+			    {
+				    me.attributes.src = 'undefined';
+				    node.setAttribute('src', 'undefined');
+				    //node.parentNode.removeChild(node);
+			    }
+			);
+		},
+
+		/**
 		 * @private
 		 * Связывает изображение с ресурсом.
 		 */
@@ -53,9 +73,9 @@ Ext.define(
 				attributes = me.attributes,
 				resource = me.resource;
 
-			resource = resource || FBEditor.resource.Manager.getResourceByName(attributes.src);
-			if (resource)
+			if (!resource)
 			{
+				resource = FBEditor.resource.Manager.getResourceByName(attributes.src);
 				attributes.src = resource.url;
 				resource.addElement(me);
 				me.resource = resource;

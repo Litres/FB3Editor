@@ -22,6 +22,7 @@ Ext.define(
 		height: null,
 		isFolder: false, // папка ли
 		isCover: false, // обложка ли
+		totalElements: 0, // количество ссылок на изображения в тексте книги
 
 		/**
 		 * @property {String} Формат даты.
@@ -31,7 +32,7 @@ Ext.define(
 		/**
 		 * @property {FBEditor.editor.element.ImgElement[]} Элементы изображения в теле книги, связанные с ресурсом.
 		 */
-		elements: [],
+		elements: null,
 
 		/**
 		 * Инициализирует ресурс.
@@ -54,6 +55,7 @@ Ext.define(
 			me.size = me.getSizeFormat();
 			me.date = me.getDateFormat();
 			me.extension = me.getExtension();
+			me.elements = [];
 			img.src = me.url;
 			img.onload = function ()
 			{
@@ -71,6 +73,26 @@ Ext.define(
 			var me = this;
 
 			me.elements.push(el);
+			me.totalElements = me.elements.length;
+		},
+
+		/**
+		 * Удаляет все ссылки на ресурс в используемых элементах.
+		 */
+		clearElements: function ()
+		{
+			var me = this,
+				elements = me.elements;
+
+			Ext.Array.each(
+				elements,
+			    function (el)
+			    {
+				    el.deleteLinkResource();
+			    }
+			);
+			me.elements = [];
+			me.totalElements = 0;
 		},
 
 		/**
