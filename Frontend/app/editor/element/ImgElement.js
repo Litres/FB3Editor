@@ -1,5 +1,5 @@
 /**
- * Элемент img.
+ * Элемент изображения.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -11,11 +11,32 @@ Ext.define(
 
 		htmlTag: 'img',
 		xmlTag: 'img',
+		cls: 'el-img',
+		attributes: {
+			tabindex: 0
+		},
 
 		/**
 		 * @property {FBEditor.resource.Resource} Ссылка на ресурс.
 		 */
 		resource: null,
+
+		constructor: function (attributes, children)
+		{
+			var me = this;
+
+			me.children = children || me.children;
+			me.attributes = Ext.apply(attributes, me.attributes);
+		},
+
+		clear: function ()
+		{
+			var me = this,
+				resource = me.resource;
+
+			resource.removeElement(me);
+			me.callParent();
+		},
 
 		getNode: function ()
 		{

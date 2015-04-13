@@ -81,15 +81,29 @@ Ext.define(
 				children = me.children,
 				pos = me.getChildPosition(el);
 
+			el.clear();
+			el.removeAll();
 			children.splice(pos, 1);
 			me.children = children;
 		},
 
 		removeAll: function ()
 		{
-			var me = this;
+			var me = this,
+				children = me.children;
 
-			me.children = [];
+			 Ext.Array.each(
+				 children,
+			     function (el)
+			     {
+				     me.remove(el);
+			     }
+			 );
+		},
+
+		clear: function ()
+		{
+			var me = this;
 		},
 
 		setNode: function (node)
@@ -180,13 +194,45 @@ Ext.define(
 			return xml;
 		},
 
+		getData: function ()
+		{
+			var me = this,
+				node,
+				htmlPath,
+				data;
+
+			function getHtmlPath (node, path)
+			{
+				var name = node.nodeName,
+					parentNode = node.parentNode,
+					newPath;
+
+				newPath = name + (path ? '>' + path : '');
+				if (name !== 'MAIN')
+				{
+					newPath = getHtmlPath(parentNode, newPath);
+				}
+
+				return newPath;
+			}
+
+			node = Ext.Object.getValues(me.nodes)[0];
+			htmlPath = getHtmlPath(node);
+			data = {
+				xmlName: me.xmlTag,
+				htmlPath: htmlPath
+			};
+
+			return data;
+		},
+
 		sync: function (viewportId)
 		{
 			var me = this,
 				newNode;
 
 			FBEditor.editor.Manager.suspendEvent = true;
-			console.log('sync start ' + viewportId, me.nodes);
+			console.log('sync ' + viewportId, me.nodes);
 			Ext.Object.each(
 				me.nodes,
 			    function (id, oldNode)
@@ -199,7 +245,6 @@ Ext.define(
 				    }
 			    }
 			);
-			console.log('sync end');
 			FBEditor.editor.Manager.suspendEvent = false;
 		},
 
@@ -421,14 +466,17 @@ Ext.define(
 		getFocusNode: function (e)
 		{
 			var sel = window.getSelection(),
-				range = sel.getRangeAt(0) || null,
-				target = e.target,
-				node = target;
+				node = e.target,
+				range;
 
-			if (range && sel.type === 'Range')
+			if (sel.type !== 'None')
 			{
-				node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
-				       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
+				range = sel.getRangeAt(0) || null;
+				if (range && sel.type === 'Range')
+				{
+					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
+					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
+				}
 			}
 
 			return node;

@@ -44,6 +44,14 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет все связи элемента на используемые объекты.
+		 */
+		clear: function ()
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#clear()');
+		},
+
+		/**
 		 * Устанавливает html-узел для элемента.
 		 * @param {HTMLElement} node Узел html.
 		 */
@@ -78,6 +86,15 @@ Ext.define(
 		getXml: function ()
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#getXml()');
+		},
+
+		/**
+		 * Возвращает данные об элементе.
+		 * @return {Object} Данные элемента.
+		 */
+		getData: function ()
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#getData()');
 		},
 
 		/**

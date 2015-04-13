@@ -77,6 +77,29 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет элемент изображения тела книги из коллекци ресурса.
+		 * @param {FBEditor.editor.element.ImgElement} el Элемент изображения, использующий ресурс.
+		 */
+		removeElement: function (el)
+		{
+			var me = this,
+				elements = me.elements;
+
+			Ext.Array.each(
+				elements,
+				function (item, index)
+				{
+					if (Ext.Object.equals(el, item))
+					{
+						elements.splice(index, 1);
+					}
+				}
+			);
+			me.totalElements = elements.length;
+			me.elements = elements;
+		},
+
+		/**
 		 * Удаляет все ссылки на ресурс в используемых элементах.
 		 */
 		clearElements: function ()

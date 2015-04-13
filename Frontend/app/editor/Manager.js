@@ -113,7 +113,14 @@ Ext.define(
 		 */
 		setFocusElement: function (el)
 		{
-			this.focusElement = el;
+			var me = this,
+				data;
+
+			me.focusElement = el;
+
+			// показываем информацию о выделенном элементе
+			data = el.getData();
+			Ext.getCmp('panel-props-body').fireEvent('loadData', data);
 		},
 
 		/**
