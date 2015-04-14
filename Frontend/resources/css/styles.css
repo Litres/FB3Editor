@@ -1,4 +1,5 @@
 @import 'font-awesome.css';
+@import 'editor.css';
 
 .desc-fieldcontainer:nth-child(even)
 {
@@ -646,39 +647,6 @@
 .panel-filename-field .x-form-trigger-wrap-focus
 {
 	border: none;
-}
-
-.panel-editor-viewport
-{
-	background-color: #fff;
-}
-
-.panel-editor-viewport .el-undefined
-{
-	border: 1px dashed red;
-}
-
-.panel-editor-viewport .el-body
-{
-	width: 100%;
-	height: 100%;
-	overflow-y: auto;
-}
-
-.panel-editor-viewport .el-img
-{
-	resize: none;
-}
-
-.panel-editor-viewport .el-img:hover
-{
-	cursor: default;
-}
-
-.panel-editor-viewport .el-img:focus
-{
-	outline: 1px dashed #37BB9B;
-	outline-offset: -1px;
 }
 
 .element-info

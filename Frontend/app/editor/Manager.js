@@ -114,13 +114,14 @@ Ext.define(
 		setFocusElement: function (el)
 		{
 			var me = this,
+				bridgeProps = FBEditor.getBridgeProps(),
 				data;
 
 			me.focusElement = el;
 
 			// показываем информацию о выделенном элементе
 			data = el.getData();
-			Ext.getCmp('panel-props-body').fireEvent('loadData', data);
+			bridgeProps.Ext.getCmp('panel-props-body').fireEvent('loadData', data);
 		},
 
 		/**

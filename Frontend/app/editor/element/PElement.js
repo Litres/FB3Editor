@@ -10,6 +10,23 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'p',
-		xmlTag: 'p'
+		xmlTag: 'p',
+		cls: 'el-p',
+
+		setAttributesHtml: function (element)
+		{
+			var me = this,
+				children = me.children,
+				first;
+
+			first = children.length ? children[0] : null;
+			if (first instanceof FBEditor.editor.element.ImgElement)
+			{
+				me.cls += ' el-parent-image';
+			}
+			element = me.callParent(arguments);
+
+			return element;
+		}
 	}
 );

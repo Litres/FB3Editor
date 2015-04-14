@@ -10,6 +10,22 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.panel.props.body',
 
+		onAfterRender: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				focusEl,
+				data;
+
+			// если есть активный элемент в тексте, то показываем его данные
+			focusEl = bridge.FBEditor.editor.Manager.getFocusElement();
+			if (focusEl)
+			{
+				data = focusEl.getData();
+				me.onLoadData(data);
+			}
+		},
+
 		/**
 		 * Показывает информацию об элементе редактора текста.
 		 * @param {Object} data Данные элемента.

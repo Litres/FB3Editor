@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'note',
-		xmlTag: 'note'
+		xmlTag: 'note',
+		cls: 'el-note'
 	}
 );

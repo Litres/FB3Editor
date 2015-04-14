@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'div',
-		xmlTag: 'div'
+		xmlTag: 'div',
+		cls: 'el-div'
 	}
 );

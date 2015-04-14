@@ -203,11 +203,11 @@ Ext.define(
 
 			function getHtmlPath (node, path)
 			{
-				var name = node.nodeName,
+				var name = node.nodeType !== Node.TEXT_NODE ? node.nodeName : '',
 					parentNode = node.parentNode,
 					newPath;
 
-				newPath = name + (path ? '>' + path : '');
+				newPath = name + (path ? ' > ' + path : '');
 				if (name !== 'MAIN')
 				{
 					newPath = getHtmlPath(parentNode, newPath);
@@ -252,120 +252,146 @@ Ext.define(
 		{
 			var me = this;
 
-			// отпускание кнопки мыши определяет элемент, на котором находится фокус
-			element.addEventListener(
-				'mouseup',
-				function (e)
-				{
-					var focusNode,
-						focusElement;
-
-					focusNode = me.getFocusNode(e);
-					focusElement = focusNode.getElement();
-					console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
-					FBEditor.editor.Manager.setFocusElement(focusElement);
-					e.stopPropagation();
-
-					return false;
-				},
-				false
-			);
-
-			// вставка нового узла
-			element.addEventListener(
-				'DOMNodeInserted',
-				function (e)
-				{
-					var relNode = e.relatedNode,
-						node = e.target,
-						viewportId = relNode.viewportId,
-						newEl,
-						nextSibling,
-						previousSibling,
-						parentEl,
-						nextSiblingEl;
-
-					// игнориуруется вставка корневого узла, так как он уже вставлен и
-					// игнорируется вставка при включенной заморозке
-					if (relNode.firstChild.localName !== 'main' && !FBEditor.editor.Manager.suspendEvent)
-					{
-						console.log('DOMNodeInserted:', e);
-						if (node.nodeType === Node.TEXT_NODE)
-						{
-							newEl = FBEditor.editor.Factory.createElementText(node.nodeValue);
-						}
-						else
-						{
-							newEl = FBEditor.editor.Factory.createElement(node.localName);
-						}
-						node.viewportId = viewportId;
-						newEl.setNode(node);
-						nextSibling = node.nextSibling;
-						previousSibling = node.previousSibling;
-						parentEl = relNode.getElement();
-						//console.log('newEl', newEl, nextSibling);
-						if (nextSibling)
-						{
-							nextSiblingEl = nextSibling.getElement();
-							parentEl.insertBefore(newEl, nextSiblingEl);
-							parentEl.sync(viewportId);
-							FBEditor.editor.Manager.setFocusElement(newEl);
-						}
-						else if (!nextSibling && !previousSibling)
-						{
-							parentEl.removeAll();
-							parentEl.add(newEl);
-							parentEl.sync(viewportId);
-							FBEditor.editor.Manager.setFocusElement(newEl);
-						}
-						else
-						{
-							parentEl.add(newEl);
-							parentEl.sync(viewportId);
-							FBEditor.editor.Manager.setFocusElement(newEl);
-						}
-					}
-				},
-				false
-			);
-
-			// удаление узла
-			element.addEventListener(
-				'DOMNodeRemoved',
-				function (e)
-				{
-					var relNode = e.relatedNode,
-						target = e.target,
-						viewportId = relNode.viewportId,
-						parentEl,
-						el;
-
-					// игнориуруется удаление корневого узла, так как он всегда необходим
-					if (relNode.firstChild.localName !== 'main' && !FBEditor.editor.Manager.suspendEvent)
-					{
-						console.log('DOMNodeRemoved:', e, me);
-						parentEl = relNode.getElement();
-						el = target.getElement();
-						parentEl.remove(el);
-						parentEl.sync(viewportId);
-					}
-				},
-				false
-			);
-
-			// дроп узла
-			element.addEventListener(
-				'drop',
-				function (e)
-				{
-					//console.log('drop:', e, me);
-
-					e.preventDefault();
-				},
-				false
-			);
+			element.addEventListener('keyup', function (e) {me.onKeyUp(e);}, false);
+			element.addEventListener('mouseup', function (e) {me.onMouseUp(e);}, false);
+			element.addEventListener('DOMNodeInserted', function (e) {me.onNodeInserted(e);}, false);
+			element.addEventListener('DOMNodeRemoved', function (e) {me.onNodeRemoved(e);}, false);
+			element.addEventListener('drop', function (e) {me.onDrop(e);}, false);
 
 			return element;
+		},
+
+		/**
+		 * @protected
+		 * Отпускание кнопки клавиатуры определяет элемент, на котором находится курсор.
+		 * @param {Event} e Объект события.
+		 */
+		onKeyUp: function (e)
+		{
+			var me = this,
+				focusNode,
+				focusElement;
+
+			focusNode = me.getFocusNode(e.target);
+			focusElement = focusNode.getElement();
+			console.log('keyup: focusNode, focusElement', e, focusNode, focusElement);
+			FBEditor.editor.Manager.setFocusElement(focusElement);
+		},
+
+		/**
+		 * @protected
+		 * Отпускание кнопки мыши определяет элемент, на котором находится фокус.
+		 * @param {Event} e Объект события.
+		 */
+		onMouseUp: function (e)
+		{
+			var me = this,
+				focusNode,
+				focusElement;
+
+			focusNode = me.getFocusNode(e.target);
+			focusElement = focusNode.getElement();
+			console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
+			FBEditor.editor.Manager.setFocusElement(focusElement);
+			e.stopPropagation();
+
+			return false;
+		},
+
+		/**
+		 * @protected
+		 * Вставка нового узла.
+		 * @param {Event} e Объект события.
+		 */
+		onNodeInserted: function (e)
+		{
+			var me = this,
+				relNode = e.relatedNode,
+				node = e.target,
+				viewportId = relNode.viewportId,
+				newEl,
+				nextSibling,
+				previousSibling,
+				parentEl,
+				nextSiblingEl;
+
+			// игнориуруется вставка корневого узла, так как он уже вставлен и
+			// игнорируется вставка при включенной заморозке
+			if (relNode.firstChild.nodeName !== 'MAIN' && !FBEditor.editor.Manager.suspendEvent)
+			{
+				console.log('DOMNodeInserted:', e);
+				if (node.nodeType === Node.TEXT_NODE)
+				{
+					newEl = FBEditor.editor.Factory.createElementText(node.nodeValue);
+				}
+				else
+				{
+					newEl = FBEditor.editor.Factory.createElement(node.localName);
+				}
+				node.viewportId = viewportId;
+				newEl.setNode(node);
+				nextSibling = node.nextSibling;
+				previousSibling = node.previousSibling;
+				parentEl = relNode.getElement();
+				//console.log('newEl', newEl, nextSibling);
+				if (nextSibling)
+				{
+					nextSiblingEl = nextSibling.getElement();
+					parentEl.insertBefore(newEl, nextSiblingEl);
+					parentEl.sync(viewportId);
+					FBEditor.editor.Manager.setFocusElement(newEl);
+				}
+				else if (!nextSibling && !previousSibling)
+				{
+					parentEl.removeAll();
+					parentEl.add(newEl);
+					parentEl.sync(viewportId);
+					FBEditor.editor.Manager.setFocusElement(newEl);
+				}
+				else
+				{
+					parentEl.add(newEl);
+					parentEl.sync(viewportId);
+					FBEditor.editor.Manager.setFocusElement(newEl);
+				}
+			}
+		},
+
+		/**
+		 * @protected
+		 * Удаление узла.
+		 * @param {Event} e Объект события.
+		 */
+		onNodeRemoved: function (e)
+		{
+			var me = this,
+				relNode = e.relatedNode,
+				target = e.target,
+				viewportId = relNode.viewportId,
+				parentEl,
+				el;
+
+			// игнориуруется удаление корневого узла, так как он всегда необходим
+			if (relNode.firstChild.localName !== 'main' && !FBEditor.editor.Manager.suspendEvent)
+			{
+				console.log('DOMNodeRemoved:', e, me);
+				parentEl = relNode.getElement();
+				el = target.getElement();
+				parentEl.remove(el);
+				parentEl.sync(viewportId);
+			}
+		},
+
+		/**
+		 * @protected
+		 * Дроп узла.
+		 * @param {Event} e Объект события.
+		 */
+		onDrop: function (e)
+		{
+			//console.log('drop:', e, me);
+
+			e.preventDefault();
 		},
 
 		/**
@@ -408,7 +434,8 @@ Ext.define(
 		setAttributesHtml: function (element)
 		{
 			var me = this,
-				el = element;
+				el = element,
+				cls;
 
 			Ext.Object.each(
 				me.attributes,
@@ -423,7 +450,9 @@ Ext.define(
 			}
 			if (me.baseCls || me.cls)
 			{
-				el.setAttribute('class', me.baseCls + ' ' + me.cls);
+				cls = me.baseCls ? me.baseCls : '';
+				cls += cls ? ' ' + me.cls : me.cls;
+				el.setAttribute('class', cls);
 			}
 
 			return el;
@@ -460,23 +489,34 @@ Ext.define(
 		/**
 		 * @protected
 		 * Возвращает выделенный узел html, на котором установлен фокус.
-		 * @param {MouseEvent} e Событие отпускания кнопки мыши.
+		 * @param {HTMLElement} target Узел html.
 		 * @return {HTMLElement}
 		 */
-		getFocusNode: function (e)
+		getFocusNode: function (target)
 		{
-			var sel = window.getSelection(),
-				node = e.target,
+			var me = this,
+				sel = window.getSelection(),
+				node = target,
 				range;
 
-			if (sel.type !== 'None')
+			range = sel && sel.type !== 'None' ? sel.getRangeAt(0) : null;
+			if (range)
 			{
-				range = sel.getRangeAt(0) || null;
-				if (range && sel.type === 'Range')
+				if (sel.type === 'Range')
 				{
 					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
 					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
 				}
+				else if (sel.type === 'Caret' && node.nodeName !== 'IMG')
+				{
+					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
+					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
+				}
+			}
+			console.log('sel, range, node', sel, range, node);
+			if (node.getElement === undefined)
+			{
+				node = me.getFocusNode(node.parentNode);
 			}
 
 			return node;

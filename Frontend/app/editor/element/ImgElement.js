@@ -49,6 +49,24 @@ Ext.define(
 			return node;
 		},
 
+		getAttributesXml: function ()
+		{
+			var me = this,
+				attributes = Ext.clone(me.attributes),
+				attr = '';
+
+			attributes.src = me.resource.name;
+			Ext.Object.each(
+				attributes,
+				function (key, val)
+				{
+					attr += key + '="' + val + '" ';
+				}
+			);
+
+			return attr;
+		},
+
 		setStyleHtml: function ()
 		{
 			var me = this,

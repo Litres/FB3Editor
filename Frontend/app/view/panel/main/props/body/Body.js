@@ -16,6 +16,7 @@ Ext.define(
 		id: 'panel-props-body',
 		xtype: 'panel-props-body',
 		listeners: {
+			afterRender: 'onAfterRender',
 			loadData: 'onLoadData'
 		},
 

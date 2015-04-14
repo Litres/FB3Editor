@@ -56,14 +56,14 @@ Ext.define(
 						parentEl.removeAll();
 						parentEl.add(el);
 						parentEl.sync(viewportId);
-						FBEditor.editor.Manager.setFocusElement(el);
+						//FBEditor.editor.Manager.setFocusElement(el);
 					}
 					else
 					{
 						el = node.getElement();
 						el.setText(text);
 						el.sync(viewportId);
-						FBEditor.editor.Manager.setFocusElement(el);
+						//FBEditor.editor.Manager.setFocusElement(el);
 					}
 				},
 				false

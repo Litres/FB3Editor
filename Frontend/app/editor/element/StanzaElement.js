@@ -1,16 +1,16 @@
 /**
- * Элемент title.
+ * Элемент stanza.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.TitleElement',
+	'FBEditor.editor.element.StanzaElement',
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 
-		htmlTag: 'header',
-		xmlTag: 'title',
-		cls: 'el-title'
+		htmlTag: 'stanza',
+		xmlTag: 'stanza',
+		cls: 'el-stanza'
 	}
 );

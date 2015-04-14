@@ -1,16 +1,16 @@
 /**
- * Элемент title.
+ * Элемент poem.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.TitleElement',
+	'FBEditor.editor.element.PoemElement',
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 
-		htmlTag: 'header',
-		xmlTag: 'title',
-		cls: 'el-title'
+		htmlTag: 'poem',
+		xmlTag: 'poem',
+		cls: 'el-poem'
 	}
 );

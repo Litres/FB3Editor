@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'subscription',
-		xmlTag: 'subscription'
+		xmlTag: 'subscription',
+		cls: 'el-subscription'
 	}
 );
