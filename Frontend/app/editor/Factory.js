@@ -9,34 +9,34 @@ Ext.define(
 	{
 		singleton: 'true',
 		requires: [
-			'FBEditor.editor.element.AElement',
-			'FBEditor.editor.element.AnnotationElement',
-			'FBEditor.editor.element.BElement',
-			'FBEditor.editor.element.BlockquoteElement',
-			'FBEditor.editor.element.BrElement',
-			'FBEditor.editor.element.DivElement',
-			'FBEditor.editor.element.EmElement',
-			'FBEditor.editor.element.Fb3bodyElement',
-			'FBEditor.editor.element.HeaderElement',
-			'FBEditor.editor.element.ImgElement',
-			'FBEditor.editor.element.LiElement',
-			'FBEditor.editor.element.MarkerElement',
-			'FBEditor.editor.element.NoteElement',
-			'FBEditor.editor.element.NotesElement',
-			'FBEditor.editor.element.OlElement',
-			'FBEditor.editor.element.PElement',
-			'FBEditor.editor.element.SectionElement',
-			'FBEditor.editor.element.SpanElement',
-			'FBEditor.editor.element.StrikethroughElement',
-			'FBEditor.editor.element.StrongElement',
-			'FBEditor.editor.element.SubElement',
-			'FBEditor.editor.element.SubscriptionElement',
-			'FBEditor.editor.element.SupElement',
-			'FBEditor.editor.element.TitleElement',
-			'FBEditor.editor.element.UElement',
-			'FBEditor.editor.element.UlElement',
-			'FBEditor.editor.element.TextElement',
-			'FBEditor.editor.element.UndefinedElement'
+			'FBEditor.editor.element.a.AElement',
+			'FBEditor.editor.element.annotation.AnnotationElement',
+			'FBEditor.editor.element.b.BElement',
+			'FBEditor.editor.element.blockquote.BlockquoteElement',
+			'FBEditor.editor.element.br.BrElement',
+			'FBEditor.editor.element.div.DivElement',
+			'FBEditor.editor.element.em.EmElement',
+			'FBEditor.editor.element.fb3body.Fb3bodyElement',
+			'FBEditor.editor.element.header.HeaderElement',
+			'FBEditor.editor.element.img.ImgElement',
+			'FBEditor.editor.element.li.LiElement',
+			'FBEditor.editor.element.marker.MarkerElement',
+			'FBEditor.editor.element.note.NoteElement',
+			'FBEditor.editor.element.notes.NotesElement',
+			'FBEditor.editor.element.ol.OlElement',
+			'FBEditor.editor.element.p.PElement',
+			'FBEditor.editor.element.section.SectionElement',
+			'FBEditor.editor.element.span.SpanElement',
+			'FBEditor.editor.element.strikethrough.StrikethroughElement',
+			'FBEditor.editor.element.strong.StrongElement',
+			'FBEditor.editor.element.sub.SubElement',
+			'FBEditor.editor.element.subscription.SubscriptionElement',
+			'FBEditor.editor.element.sup.SupElement',
+			'FBEditor.editor.element.title.TitleElement',
+			'FBEditor.editor.element.u.UElement',
+			'FBEditor.editor.element.ul.UlElement',
+			'FBEditor.editor.element.text.TextElement',
+			'FBEditor.editor.element.undefined.UndefinedElement'
 		],
 
 		/**
@@ -59,8 +59,8 @@ Ext.define(
 			}
 			try
 			{
-				n = Ext.String.capitalize(n);
 				n = n.replace(/-([a-z])/g, '$1');
+				n = n +'.' + Ext.String.capitalize(n);
 				nameEl = 'FBEditor.editor.element.' + n + 'Element';
 				attributes = attributes || {};
 				children = children || [];
@@ -68,7 +68,7 @@ Ext.define(
 			}
 			catch (e)
 			{
-				el = Ext.create('FBEditor.editor.element.UndefinedElement', attributes, children);
+				el = Ext.create('FBEditor.editor.element.undefined.UndefinedElement', attributes, children);
 				Ext.log(
 					{
 						level: 'warn',
@@ -93,7 +93,7 @@ Ext.define(
 			text = Ext.isString(text) ? text : '';
 			try
 			{
-				el = Ext.create('FBEditor.editor.element.TextElement', text);
+				el = Ext.create('FBEditor.editor.element.text.TextElement', text);
 			}
 			catch (e)
 			{

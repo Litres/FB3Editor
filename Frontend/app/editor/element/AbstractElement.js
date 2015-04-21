@@ -1,6 +1,7 @@
 /**
  * Класс абстрактого элемента.
  *
+ * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
@@ -8,6 +9,9 @@ Ext.define(
 	'FBEditor.editor.element.AbstractElement',
 	{
 		extend: 'FBEditor.editor.element.InterfaceElement',
+		requires: [
+			'FBEditor.editor.element.AbstractElementController'
+		],
 
 		/**
 		 * @property {FBEditor.editor.element.AbstractElement[]} [children] Дочерние элементы.
@@ -34,13 +38,43 @@ Ext.define(
 		 */
 		style: '',
 
+		/**
+		 * @property {String} Базовый css класс элемента.
+		 */
 		baseCls: '',
 
+		/**
+		 * @property {String} Сss класс элемента.
+		 */
 		cls: '',
 
 		/**
+		 * @property {String} Класс контроллера элемента.
+		 */
+		controllerClass: 'FBEditor.editor.element.AbstractElementController',
+
+		/**
+		 * @property {Object} Обработчики событий контроллера.
+		 */
+		listeners: {
+			keydown: 'onKeyDown',
+			keyup: 'onKeyUp',
+			mouseup: 'onMouseUp',
+			DOMNodeInserted: 'onNodeInserted',
+			DOMNodeRemoved: 'onNodeRemoved',
+			DOMCharacterDataModified: 'onTextModified',
+			drop: 'onDrop'
+		},
+
+		/**
 		 * @private
-		 * @config {Object} Узлы html, привязанные к своим окнам.
+		 * @property {FBEditor.editor.element.AbstractElementController} Контроллер элемента.
+		 */
+		//controller: null,
+
+		/**
+		 * @private
+		 * @property {Object} Узлы html, привязанные к своим окнам.
 		 * Ключ каждого свойства представляет id окна, а значение - узел html.
 		 */
 		//nodes: {},
@@ -53,9 +87,9 @@ Ext.define(
 		{
 			var me = this;
 
-			me.initConfig();
 			me.children = children || me.children;
 			me.attributes = attributes || me.attributes;
+			me.createController();
 		},
 
 		add: function (el)
@@ -110,6 +144,9 @@ Ext.define(
 		{
 			var me = this;
 
+			me.setStyleHtml();
+			node = me.setAttributesHtml(node);
+			node = me.setEvents(node);
 			node.getElement = function ()
 			{
 				return me;
@@ -126,11 +163,8 @@ Ext.define(
 				node;
 
 			node = document.createElement(tag);
-			me.setStyleHtml();
-			node = me.setAttributesHtml(node);
 			node.viewportId = viewportId;
 			me.setNode(node);
-			node = me.setEvents(node);
 			if (children && children.length)
 			{
 				Ext.Array.each(
@@ -232,7 +266,7 @@ Ext.define(
 				newNode;
 
 			FBEditor.editor.Manager.suspendEvent = true;
-			console.log('sync ' + viewportId, me.nodes);
+			//console.log('sync ' + viewportId, me.nodes);
 			Ext.Object.each(
 				me.nodes,
 			    function (id, oldNode)
@@ -248,150 +282,35 @@ Ext.define(
 			FBEditor.editor.Manager.suspendEvent = false;
 		},
 
+		/**
+		 * Устанавливает события узла элемента.
+		 * @param {HTMLElement} element Узел элемента.
+		 * @return {HTMLElement} element Узел элемента.
+		 */
 		setEvents: function (element)
 		{
-			var me = this;
+			var me = this,
+				listeners = me.listeners;
 
-			element.addEventListener('keyup', function (e) {me.onKeyUp(e);}, false);
-			element.addEventListener('mouseup', function (e) {me.onMouseUp(e);}, false);
-			element.addEventListener('DOMNodeInserted', function (e) {me.onNodeInserted(e);}, false);
-			element.addEventListener('DOMNodeRemoved', function (e) {me.onNodeRemoved(e);}, false);
-			element.addEventListener('drop', function (e) {me.onDrop(e);}, false);
+			Ext.Object.each(
+				listeners,
+			    function (eventName, funcName)
+			    {
+				    if (me.controller[funcName])
+				    {
+					    element.addEventListener(
+						    eventName,
+						    function (e)
+						    {
+							    me.controller[funcName](e);
+						    },
+						    false
+					    );
+				    }
+			    }
+			);
 
 			return element;
-		},
-
-		/**
-		 * @protected
-		 * Отпускание кнопки клавиатуры определяет элемент, на котором находится курсор.
-		 * @param {Event} e Объект события.
-		 */
-		onKeyUp: function (e)
-		{
-			var me = this,
-				focusNode,
-				focusElement;
-
-			focusNode = me.getFocusNode(e.target);
-			focusElement = focusNode.getElement();
-			console.log('keyup: focusNode, focusElement', e, focusNode, focusElement);
-			FBEditor.editor.Manager.setFocusElement(focusElement);
-		},
-
-		/**
-		 * @protected
-		 * Отпускание кнопки мыши определяет элемент, на котором находится фокус.
-		 * @param {Event} e Объект события.
-		 */
-		onMouseUp: function (e)
-		{
-			var me = this,
-				focusNode,
-				focusElement;
-
-			focusNode = me.getFocusNode(e.target);
-			focusElement = focusNode.getElement();
-			console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
-			FBEditor.editor.Manager.setFocusElement(focusElement);
-			e.stopPropagation();
-
-			return false;
-		},
-
-		/**
-		 * @protected
-		 * Вставка нового узла.
-		 * @param {Event} e Объект события.
-		 */
-		onNodeInserted: function (e)
-		{
-			var me = this,
-				relNode = e.relatedNode,
-				node = e.target,
-				viewportId = relNode.viewportId,
-				newEl,
-				nextSibling,
-				previousSibling,
-				parentEl,
-				nextSiblingEl;
-
-			// игнориуруется вставка корневого узла, так как он уже вставлен и
-			// игнорируется вставка при включенной заморозке
-			if (relNode.firstChild.nodeName !== 'MAIN' && !FBEditor.editor.Manager.suspendEvent)
-			{
-				console.log('DOMNodeInserted:', e);
-				if (node.nodeType === Node.TEXT_NODE)
-				{
-					newEl = FBEditor.editor.Factory.createElementText(node.nodeValue);
-				}
-				else
-				{
-					newEl = FBEditor.editor.Factory.createElement(node.localName);
-				}
-				node.viewportId = viewportId;
-				newEl.setNode(node);
-				nextSibling = node.nextSibling;
-				previousSibling = node.previousSibling;
-				parentEl = relNode.getElement();
-				//console.log('newEl', newEl, nextSibling);
-				if (nextSibling)
-				{
-					nextSiblingEl = nextSibling.getElement();
-					parentEl.insertBefore(newEl, nextSiblingEl);
-					parentEl.sync(viewportId);
-					FBEditor.editor.Manager.setFocusElement(newEl);
-				}
-				else if (!nextSibling && !previousSibling)
-				{
-					parentEl.removeAll();
-					parentEl.add(newEl);
-					parentEl.sync(viewportId);
-					FBEditor.editor.Manager.setFocusElement(newEl);
-				}
-				else
-				{
-					parentEl.add(newEl);
-					parentEl.sync(viewportId);
-					FBEditor.editor.Manager.setFocusElement(newEl);
-				}
-			}
-		},
-
-		/**
-		 * @protected
-		 * Удаление узла.
-		 * @param {Event} e Объект события.
-		 */
-		onNodeRemoved: function (e)
-		{
-			var me = this,
-				relNode = e.relatedNode,
-				target = e.target,
-				viewportId = relNode.viewportId,
-				parentEl,
-				el;
-
-			// игнориуруется удаление корневого узла, так как он всегда необходим
-			if (relNode.firstChild.localName !== 'main' && !FBEditor.editor.Manager.suspendEvent)
-			{
-				console.log('DOMNodeRemoved:', e, me);
-				parentEl = relNode.getElement();
-				el = target.getElement();
-				parentEl.remove(el);
-				parentEl.sync(viewportId);
-			}
-		},
-
-		/**
-		 * @protected
-		 * Дроп узла.
-		 * @param {Event} e Объект события.
-		 */
-		onDrop: function (e)
-		{
-			//console.log('drop:', e, me);
-
-			e.preventDefault();
 		},
 
 		/**
@@ -488,38 +407,14 @@ Ext.define(
 
 		/**
 		 * @protected
-		 * Возвращает выделенный узел html, на котором установлен фокус.
-		 * @param {HTMLElement} target Узел html.
-		 * @return {HTMLElement}
+		 * Создает контроллер элемента.
+		 * @param {FBEditor.editor.element.AbstractElement} scope Элемент, к которому привязан контроллер.
 		 */
-		getFocusNode: function (target)
+		createController: function (scope)
 		{
-			var me = this,
-				sel = window.getSelection(),
-				node = target,
-				range;
+			var me = this;
 
-			range = sel && sel.type !== 'None' ? sel.getRangeAt(0) : null;
-			if (range)
-			{
-				if (sel.type === 'Range')
-				{
-					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
-					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
-				}
-				else if (sel.type === 'Caret' && node.nodeName !== 'IMG')
-				{
-					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
-					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
-				}
-			}
-			console.log('sel, range, node', sel, range, node);
-			if (node.getElement === undefined)
-			{
-				node = me.getFocusNode(node.parentNode);
-			}
-
-			return node;
+			me.controller = Ext.create(me.controllerClass, scope || me);
 		}
 	}
 );

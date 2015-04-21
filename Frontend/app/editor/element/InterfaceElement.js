@@ -1,6 +1,7 @@
 /**
  * Интерфейс элемента.
  *
+ * @interface
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
@@ -104,16 +105,6 @@ Ext.define(
 		sync: function (viewportId)
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#sync()');
-		},
-
-		/**
-		 * Устанавливает события узла элемента.
-		 * @param {HTMLElement} element Узел элемента.
-		 * @return {HTMLElement} element Узел элемента.
-		 */
-		setEvents: function (element)
-		{
-			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#setEvents()');
 		}
 	}
 );

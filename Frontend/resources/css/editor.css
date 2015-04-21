@@ -12,6 +12,11 @@
 	text-align: justify;
 }
 
+.panel-editor-viewport .el-p-no-indent
+{
+	text-indent: 0; /* некоторые абзацы не должны иметь отступа  */
+}
+
 .panel-editor-viewport .el-div,
 .panel-editor-viewport .el-title,
 .panel-editor-viewport .el-section,
@@ -148,10 +153,45 @@
 	padding: 0.3em;
 }
 
+.panel-editor-viewport .el-ol .el-title
+{
+	display: inline-block;
+	margin-top: 0;
+	margin-left: -1em;
+	padding: 0.1em;
+	font-size: 120%;
+}
+
 .panel-editor-viewport .el-title p
 {
 	text-align: center;
 	text-indent: 0em;
+}
+
+.panel-editor-viewport .el-ol .el-title p
+{
+	text-align: left;
+}
+
+.panel-editor-viewport .el-marker
+{
+	float: left;
+}
+
+.panel-editor-viewport .el-marker + p
+{
+	padding-left: 1.7em;
+	text-indent: 0em; /* абзац следующий за маркером, имеет меньший отступ  */
+}
+
+.panel-editor-viewport .el-ol
+{
+	padding-left: 3em;
+}
+
+.panel-editor-viewport .el-notes
+{
+	font-size: 90%;
 }
 
 /*

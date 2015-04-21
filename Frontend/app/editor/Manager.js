@@ -17,6 +17,8 @@ Ext.define(
 		 */
 		content: null,
 
+		selection: null,
+
 		/**
 		 * @private
 		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
@@ -118,6 +120,7 @@ Ext.define(
 				data;
 
 			me.focusElement = el;
+			me.selection = window.getSelection();
 
 			// показываем информацию о выделенном элементе
 			data = el.getData();
@@ -143,6 +146,38 @@ Ext.define(
 				rootEl = me.content;
 
 			rootEl.removeNodes(viewportId);
+		},
+
+		/**
+		 * Вставляет новый элемент на место курсора.
+		 * @param {String} name Имя элемента.
+		 */
+		insertElement: function (name)
+		{
+			var me = this,
+				el,
+				sel = me.selection,
+				range,
+				node,
+				els = {};
+
+			if (sel)
+			{
+				range = sel.getRangeAt(0);
+				node = range.endContainer.parentNode.parentNode;
+				el = node.getElement();
+				console.log('insert title', node, el);
+				// создаем заголовок
+				els.title = FBEditor.editor.Factory.createElement('title');
+				els.p = FBEditor.editor.Factory.createElement('p');
+				els.t = FBEditor.editor.Factory.createElementText('Заголовок');
+				els.p.add(els.t);
+				els.title.add(els.p);
+				el.add(els.title);
+				FBEditor.editor.Manager.suspendEvent = true;
+				node.appendChild(els.title.getNode(me.id));
+				FBEditor.editor.Manager.suspendEvent = false;
+			}
 		}
 	}
 );
