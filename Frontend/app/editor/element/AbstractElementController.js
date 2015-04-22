@@ -198,8 +198,6 @@ Ext.define(
 			console.log('keyup: focusNode, focusElement', e, focusNode, focusElement);
 			FBEditor.editor.Manager.setFocusElement(focusElement);
 			e.stopPropagation();
-
-			return false;
 		},
 
 		/**

@@ -68,7 +68,7 @@ Ext.define(
 			}
 			catch (e)
 			{
-				el = Ext.create('FBEditor.editor.element.undefined.UndefinedElement', attributes, children);
+				el = Ext.create('FBEditor.editor.element.undefined.UndefinedElement', name, attributes, children);
 				Ext.log(
 					{
 						level: 'warn',

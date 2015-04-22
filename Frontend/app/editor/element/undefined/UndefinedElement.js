@@ -13,11 +13,21 @@ Ext.define(
 		xmlTag: 'undefined',
 		cls: 'el-undefined',
 
-		constructor: function ()
-		{
-			var me = this;
+		/**
+		 * @property {String} Реальное имя элемента.
+		 */
+		realName: '',
 
-			me.callParent(arguments);
+		constructor: function (realName, attributes, children)
+		{
+			var me = this,
+				n;
+
+			me.realName = realName;
+			n = realName.replace(/-([a-z])/g, '$1');
+			me.htmlTag = n;
+			me.xmlTag = n;
+			me.callParent([attributes, children]);
 		}
 	}
 );

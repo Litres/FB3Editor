@@ -20,6 +20,7 @@
 .panel-editor-viewport .el-div,
 .panel-editor-viewport .el-title,
 .panel-editor-viewport .el-section,
+.panel-editor-viewport .el-blockquote,
 .panel-editor-viewport .el-annotation,
 .panel-editor-viewport .el-epigraph,
 .panel-editor-viewport .el-poem,
@@ -99,7 +100,6 @@
 .panel-editor-viewport .el-em
 {
 	font-style: italic;
-	color: #3030AD; /*## Цвет курсивного текста*/
 }
 
 .panel-editor-viewport .el-epigraph
