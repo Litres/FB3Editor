@@ -25,7 +25,8 @@ Ext.define(
 				parentNode = node.parentNode,
 				parentEl,
 				el,
-				focusNode;
+				focusNode,
+				br;
 
 			focusNode = me.getFocusNode(e.target);
 			if (!parentNode.getElement)
@@ -34,7 +35,8 @@ Ext.define(
 
 				return;
 			}
-			console.log('DOMCharacterDataModified:', node, me);
+			el = node.getElement ? node.getElement() : null;
+			console.log('DOMCharacterDataModified:', node, nextSibling, previousSibling, me);
 			if (!nextSibling && !previousSibling)
 			{
 				el = FBEditor.editor.Factory.createElementText(text);
@@ -46,7 +48,6 @@ Ext.define(
 			}
 			else
 			{
-				el = node.getElement();
 				el.setText(text);
 				el.sync(viewportId);
 			}

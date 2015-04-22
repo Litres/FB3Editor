@@ -25,6 +25,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
 			me.attributes = Ext.apply(attributes, me.attributes);
 			me.createController();

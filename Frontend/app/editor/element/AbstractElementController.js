@@ -24,6 +24,37 @@ Ext.define(
 		},
 
 		/**
+		 * Вставляет новый элемент.
+		 * @param {Node} node Выделенный узел.
+		 */
+		onInsertElement: function (node)
+		{
+			var me = this,
+				el = me.getElement(),
+				isBlock = el.isBlock,
+				parent,
+				next,
+				newNode;
+
+			if (isBlock)
+			{
+				parent = node.parentNode;
+				next = node.nextSibling;
+				newNode = document.createElement(node.nodeName);
+				console.log('onInsertElement', node);
+				if (next)
+				{
+					parent.insertBefore(newNode, next);
+				}
+				else
+				{
+					parent.appendChild(newNode);
+				}
+
+			}
+		},
+
+		/**
 		 * Нажатие кнопки клавиатуры.
 		 * @param {Event} e Объект события.
 		 */
@@ -40,10 +71,11 @@ Ext.define(
 			{
 				el = focusNode.getElement ? focusNode.getElement() : null;
 				controller = el && el.controller ? el.controller : me;
+				console.log('keydown', e);
 				switch (e.keyCode)
 				{
 					case Ext.event.Event.ENTER:
-						return controller.onKeyDownEnter(e);
+						return e.ctrlKey ? controller.onKeyDownCtrlEnter(e) : controller.onKeyDownEnter(e);
 					case Ext.event.Event.DELETE:
 						return controller.onKeyDownDelete(e);
 					case Ext.event.Event.BACKSPACE:
@@ -53,133 +85,27 @@ Ext.define(
 
 		},
 
+		onKeyDownCtrlEnter: function (e)
+		{
+			var me = this;
+
+			return me.onKeyDownEnter(e);
+		},
+
 		onKeyDownEnter: function (e)
 		{
-			var me = this,
-				sel = window.getSelection(),
-				range,
-				node,
-				parent,
-				startText,
-				endText,
-				br;
+			e.preventDefault();
 
-			if (sel.type === 'Caret')
-			{
-				e.preventDefault();
-				range = sel.getRangeAt(0);
-				node = range.endContainer;
-				parent = node.parentNode;
-				br = document.createElement('br');
-				console.log(node);
-				if (node.nodeType === Node.TEXT_NODE)
-				{
-					startText = document.createTextNode(node.nodeValue.substring(0, range.startOffset));
-					endText = document.createTextNode(node.nodeValue.substring(range.startOffset));
-					parent.removeChild(node);
-					parent.appendChild(startText);
-					parent.appendChild(br);
-					parent.appendChild(endText);
-				}
-				else
-				{
-					parent.appendChild(br);
-				}
-
-				return false;
-			}
-
-			return true;
+			return false;
 		},
 
 		onKeyDownDelete: function (e)
 		{
-			var me = this,
-				sel = window.getSelection(),
-				range,
-				node,
-				parent,
-				next,
-				text,
-				offset;
-
-			if (sel.type === 'Caret')
-			{
-				range = sel.getRangeAt(0);
-				node = range.endContainer;
-				offset = range.endOffset;
-				if (node.length === offset)
-				{
-					e.preventDefault();
-					parent = node.parentNode;
-					next = parent.nextSibling;
-					if (next && parent.nodeType === next.nodeType)
-					{
-						if (next.firstChild.nodeType === Node.TEXT_NODE)
-						{
-							text = document.createTextNode(node.nodeValue + next.firstChild.nodeValue);
-							parent.parentNode.removeChild(parent);
-							next.replaceChild(text, next.firstChild);
-						}
-						else
-						{
-							parent.parentNode.removeChild(parent);
-							next.insertBefore(node, next.firstChild);
-						}
-						sel.extend(next.firstChild, offset);
-						sel.collapseToEnd();
-					}
-
-					return false;
-				}
-			}
-
 			return true;
 		},
 
 		onKeyDownBackspace: function (e)
 		{
-			var me = this,
-				sel = window.getSelection(),
-				range,
-				node,
-				parent,
-				prev,
-				text,
-				offset;
-
-			if (sel.type === 'Caret')
-			{
-				range = sel.getRangeAt(0);
-				node = range.startContainer;
-				if (range.startOffset === 0)
-				{
-					console.log('range', range);
-					parent = node.parentNode;
-					prev = parent.previousSibling;
-					if (prev && parent.nodeType === prev.nodeType)
-					{
-						e.preventDefault();
-						offset = prev.firstChild.length;
-						if (prev.firstChild.nodeType === Node.TEXT_NODE)
-						{
-							text = document.createTextNode(prev.firstChild.nodeValue + node.nodeValue);
-							prev.replaceChild(text, prev.firstChild);
-						}
-						else
-						{
-							prev.appendChild(node);
-						}
-						parent.parentNode.removeChild(parent);
-						console.log(prev.firstChild, offset);
-						sel.extend(prev.firstChild, offset);
-						sel.collapseToStart();
-					}
-
-					return false;
-				}
-			}
-
 			return true;
 		},
 
@@ -195,9 +121,11 @@ Ext.define(
 
 			focusNode = me.getFocusNode(e.target);
 			focusElement = focusNode.getElement();
-			console.log('keyup: focusNode, focusElement', e, focusNode, focusElement);
+			//console.log('keyup: focusNode, focusElement', e, focusNode, focusElement);
 			FBEditor.editor.Manager.setFocusElement(focusElement);
 			e.stopPropagation();
+
+			return false;
 		},
 
 		/**
@@ -267,7 +195,7 @@ Ext.define(
 				}
 				else
 				{
-					console.log('removeAll');
+					console.log('removeAll', node, node.parentNode);
 					parentEl.removeAll();
 					parentEl.add(newEl);
 				}

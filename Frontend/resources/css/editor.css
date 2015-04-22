@@ -1,6 +1,8 @@
 .panel-editor-viewport
 {
 	font-family: 'Arial Unicode MS';
+	font-size: 150%;
+	line-height: 150%;
 	background-color: #fff;
 }
 

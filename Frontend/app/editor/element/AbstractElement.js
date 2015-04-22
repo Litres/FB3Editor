@@ -12,16 +12,38 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.AbstractElementController'
 		],
+		mixins: {
+			observable: 'Ext.util.Observable'
+		},
+		listeners: {
+			insertElement: function ()
+			{
+				this.controller.onInsertElement.apply(this.controller, arguments);
+			}
+		},
 
 		/**
-		 * @property {FBEditor.editor.element.AbstractElement[]} [children] Дочерние элементы.
+		 * @property {String} Класс контроллера элемента.
 		 */
-		children: [],
+		controllerClass: 'FBEditor.editor.element.AbstractElementController',
 
 		/**
-		 * @property {Object} attributes Атрибуты элемента.
+		 * @property {Object} Обработчики событий контроллера.
 		 */
-		attributes: {},
+		customListeners: {
+			keydown: 'onKeyDown',
+			keyup: 'onKeyUp',
+			mouseup: 'onMouseUp',
+			DOMNodeInserted: 'onNodeInserted',
+			DOMNodeRemoved: 'onNodeRemoved',
+			DOMCharacterDataModified: 'onTextModified',
+			drop: 'onDrop'
+		},
+
+		/**
+		 * @property {Boolean} Блочный ли элемент.
+		 */
+		isBlock: false,
 
 		/**
 		 * @property {String} Имя тега для отображения в html.
@@ -49,22 +71,14 @@ Ext.define(
 		cls: '',
 
 		/**
-		 * @property {String} Класс контроллера элемента.
+		 * @property {FBEditor.editor.element.AbstractElement[]} [children] Дочерние элементы.
 		 */
-		controllerClass: 'FBEditor.editor.element.AbstractElementController',
+		children: [],
 
 		/**
-		 * @property {Object} Обработчики событий контроллера.
+		 * @property {Object} attributes Атрибуты элемента.
 		 */
-		listeners: {
-			keydown: 'onKeyDown',
-			keyup: 'onKeyUp',
-			mouseup: 'onMouseUp',
-			DOMNodeInserted: 'onNodeInserted',
-			DOMNodeRemoved: 'onNodeRemoved',
-			DOMCharacterDataModified: 'onTextModified',
-			drop: 'onDrop'
-		},
+		attributes: {},
 
 		/**
 		 * @private
@@ -87,6 +101,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
 			me.attributes = attributes || me.attributes;
 			me.createController();
@@ -290,7 +305,7 @@ Ext.define(
 		setEvents: function (element)
 		{
 			var me = this,
-				listeners = me.listeners;
+				listeners = me.customListeners;
 
 			Ext.Object.each(
 				listeners,

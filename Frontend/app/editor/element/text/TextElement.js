@@ -25,6 +25,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.mixins.observable.constructor.call(me, {});
 			me.text = Ext.isString(text) ? text : me.text;
 			me.createController();
 		},
