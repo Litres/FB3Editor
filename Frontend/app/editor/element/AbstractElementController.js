@@ -158,11 +158,14 @@ Ext.define(
 				focusNode,
 				focusElement;
 
-			focusNode = me.getFocusNode(e.target);
-			focusElement = focusNode.getElement();
-			//console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
-			FBEditor.editor.Manager.setFocusElement(focusElement);
 			e.stopPropagation();
+			focusNode = me.getFocusNode(e.target);
+			if (focusNode)
+			{
+				focusElement = focusNode.getElement();
+				//console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
+				FBEditor.editor.Manager.setFocusElement(focusElement);
+			}
 
 			return false;
 		},

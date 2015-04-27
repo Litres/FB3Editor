@@ -28,7 +28,8 @@ Ext.define(
 				nodes.text = nodes.node.firstChild;
 				nodes.prev = nodes.node.previousSibling;
 				els.prev = nodes.prev.getElement();
-				nodes.prevText = nodes.prev.firstChild;
+				nodes.prevText = nodes.prev.lastChild;
+				els.prevText = nodes.prevText.getElement();
 
 				// сохраняем смещение
 				data.offset = nodes.prevText.length;
@@ -36,23 +37,37 @@ Ext.define(
 				viewportId = nodes.node.viewportId;
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
-				els.newText = FBEditor.editor.Factory.createElementText(nodes.prevText.nodeValue +
-				                                                        nodes.text.nodeValue);
-				nodes.newText = els.newText.getNode(viewportId);
-				console.log('join text to prev node', nodes, els);
+				nodes.newTextValue = nodes.prevText.nodeValue + nodes.text.nodeValue;
+				nodes.prevText.nodeValue = nodes.newTextValue;
+				els.prevText.setText(nodes.newTextValue);
+				console.log('join text to prev node', data.offset, nodes, els);
+				nodes.nextText = nodes.node.firstChild;
+				while (nodes.nextText = nodes.nextText.nextSibling)
+				{
+					els.prev.add(nodes.nextText.getElement());
+					nodes.prev.appendChild(nodes.nextText);
+					nodes.nextText = nodes.node.firstChild;
+				}
 				els.parent.remove(els.node);
 				nodes.parent.removeChild(nodes.node);
-				els.prev.replace(els.newText, nodes.prevText.getElement());
-				nodes.prev.replaceChild(nodes.newText, nodes.prevText);
 				els.parent.sync(viewportId);
 				FBEditor.editor.Manager.suspendEvent = false;
 
+				// курсор
 				FBEditor.editor.Manager.setFocusElement(els.prev);
-				sel.collapse(nodes.newText);
-				sel.extend(nodes.newText, data.offset);
-				sel.collapseToEnd();
+				Ext.defer(
+					function ()
+					{
+						sel.collapse(nodes.prevText);
+						sel.extend(nodes.prevText, data.offset);
+						sel.collapseToEnd();
+					},
+				    1
+				);
 
+				// сохраняем ссылки
 				me.data.node = nodes.prev;
+				me.data.text = nodes.prevText;
 
 				res = true;
 			}
@@ -84,21 +99,21 @@ Ext.define(
 				FBEditor.editor.Manager.suspendEvent = true;
 				nodes.p = data.node;
 				els.p = nodes.p.getElement();
-				nodes.text = nodes.p.firstChild;
+				nodes.text = data.text;
 				nodes.textValue = nodes.text.nodeValue;
 				els.text = nodes.text.getElement();
 				viewportId = nodes.text.viewportId;
 				nodes.nextP = nodes.p.nextSibling;
 				nodes.parentP = nodes.p.parentNode;
 				els.parentP = nodes.parentP.getElement();
-				els.start = FBEditor.editor.Factory.createElementText(nodes.textValue.substring(0, offset));
-				nodes.start = els.start.getNode(viewportId);
+				nodes.text.nodeValue = nodes.textValue.substring(0, offset);
+				els.text.setText(nodes.text.nodeValue);
 				els.end = FBEditor.editor.Factory.createElementText(nodes.textValue.substring(offset));
 				nodes.end = els.end.getNode(viewportId);
 				els.newP = FBEditor.editor.Factory.createElement('p');
 				els.newP.add(els.end);
 				nodes.newP = els.newP.getNode(viewportId);
-				console.log('undo join text to prev node', nodes, els);
+				console.log('undo join text to prev node', data.offset, nodes, els);
 				if (nodes.nextP)
 				{
 					els.nextP = nodes.nextP.getElement();
@@ -110,8 +125,11 @@ Ext.define(
 					els.parentP.add(els.newP);
 					nodes.parentP.appendChild(nodes.newP);
 				}
-				els.p.replace(els.start, els.text);
-				nodes.p.replaceChild(nodes.start, nodes.text);
+				while (nodes.nextText = nodes.text.nextSibling)
+				{
+					els.newP.add(nodes.nextText.getElement());
+					nodes.newP.appendChild(nodes.nextText);
+				}
 				els.parentP.sync(viewportId);
 				FBEditor.editor.Manager.suspendEvent = false;
 
