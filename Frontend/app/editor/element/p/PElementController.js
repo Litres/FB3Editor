@@ -13,7 +13,8 @@ Ext.define(
 			'FBEditor.editor.command.p.AppendEmptyNodeCommand',
 			'FBEditor.editor.command.p.RemoveEmptyNodeCommand',
 			'FBEditor.editor.command.p.JoinTextToNextNodeCommand',
-			'FBEditor.editor.command.p.JoinTextToPrevNodeCommand'
+			'FBEditor.editor.command.p.JoinTextToPrevNodeCommand',
+			'FBEditor.editor.command.p.TextToNextNodeCommand'
 		],
 
 		/**
@@ -104,7 +105,7 @@ Ext.define(
 						}
 						else
 						{
-							me.moveTextToNextNode(node);
+							me.textToNextNode(node);
 						}
 					}
 				}
@@ -256,7 +257,7 @@ Ext.define(
 
 		/**
 		 * @protected
-		 * Перемещает текстовый узел абзаца в конец предыдущего абзаца и удаляет пустой абзац
+		 * Перемещает текстовый узел абзаца в конец предыдущего абзаца и удаляет пустой абзац.
 		 * @param {Node} node Узел p.
 		 */
 		moveTextToPrevNode: function (node)
@@ -270,16 +271,24 @@ Ext.define(
 
 		/**
 		 * @protected
-		 * Перемещает текстовый узел абзаца в начало следующего абзаца и удаляет пустой абзац
+		 * Перемещает текстовый узел абзаца в начало следующего абзаца и удаляет пустой абзац.
 		 * @param {Node} node Узел p.
 		 */
-		moveTextToNextNode: function (node)
+		textToNextNode: function (node)
 		{
-			var parent = node.parentNode,
+			var cmd;
+
+			cmd = Ext.create('FBEditor.editor.command.p.TextToNextNodeCommand', {node: node});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
+			/*var parent = node.parentNode,
 				next = parent.nextSibling;
 
+			console.log('moveTextToNextNode');
 			parent.removeChild(node);
-			next.insertBefore(node.firstChild, next.firstChild);
+			next.insertBefore(node.firstChild, next.firstChild);*/
 		},
 
 		/**
