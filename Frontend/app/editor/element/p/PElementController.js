@@ -75,12 +75,11 @@ Ext.define(
 				next,
 				offset;
 
-			range = sel.getRangeAt(0);
 			node = me.getSelectNode();
 			next = node.nextSibling;
 			next = next && next.nodeName === 'P' ? next : null;
-			offset = range.startOffset;
-			console.log('P del', node, next);
+			offset = sel.focusOffset;
+			console.log('P del', node, next, node.lastChild.length, offset);
 			if (next && me.isEmptyNode(node))
 			{
 				e.preventDefault();
@@ -88,7 +87,7 @@ Ext.define(
 
 				return false;
 			}
-			else if (node.firstChild.length === offset)
+			else if (node.lastChild.length === offset)
 			{
 				e.preventDefault();
 				if (next && next.nodeName === 'P')
@@ -107,8 +106,6 @@ Ext.define(
 						{
 							me.moveTextToNextNode(node);
 						}
-						sel.extend(next.firstChild, offset);
-						sel.collapseToEnd();
 					}
 				}
 
@@ -130,8 +127,7 @@ Ext.define(
 				sel = window.getSelection(),
 				range,
 				node,
-				prev,
-				offset;
+				prev;
 
 			range = sel.getRangeAt(0);
 			node = me.getSelectNode();
@@ -157,9 +153,6 @@ Ext.define(
 					}
 					else
 					{
-						// сохраняем необходимое смещение курсора
-						offset = prev.firstChild.length;
-
 						if (prev.firstChild.nodeType === Node.TEXT_NODE)
 						{
 							me.joinTextToPrevNode(node);
@@ -168,8 +161,6 @@ Ext.define(
 						{
 							me.moveTextToPrevNode(node);
 						}
-						sel.extend(prev.firstChild, offset);
-						sel.collapseToStart();
 					}
 				}
 
@@ -306,13 +297,6 @@ Ext.define(
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
 			}
-			/*var parent = node.parentNode,
-				prev = node.previousSibling,
-				text;
-
-			text = document.createTextNode(prev.firstChild.nodeValue + node.firstChild.nodeValue);
-			prev.replaceChild(text, prev.firstChild);
-			parent.removeChild(node);*/
 		},
 
 		/**

@@ -71,6 +71,7 @@ Ext.define(
 				while (nodes.nextText = nodes.start.nextSibling)
 				{
 					els.newP.add(nodes.nextText.getElement());
+					els.p.remove(nodes.nextText.getElement());
 					nodes.newP.appendChild(nodes.nextText);
 				}
 				els.parentP.sync(viewportId);

@@ -95,7 +95,7 @@ Ext.define(
 				parentEl = parent.getElement();
 
 				FBEditor.editor.Manager.suspendEvent = true;
-				console.log('undo remove empty node', node);
+				console.log('undo remove empty node', node, sibling);
 				els.p = FBEditor.editor.Factory.createElement('p');
 				els.br = FBEditor.editor.Factory.createElement('br');
 				els.p.add(els.br);

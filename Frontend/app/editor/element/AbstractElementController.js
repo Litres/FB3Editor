@@ -160,7 +160,7 @@ Ext.define(
 
 			e.stopPropagation();
 			focusNode = me.getFocusNode(e.target);
-			if (focusNode)
+			if (focusNode && focusNode.getElement)
 			{
 				focusElement = focusNode.getElement();
 				//console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
