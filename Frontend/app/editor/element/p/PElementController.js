@@ -8,7 +8,19 @@ Ext.define(
 	'FBEditor.editor.element.p.PElementController',
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
+		requires: [
+			'FBEditor.editor.command.p.SplitNodeCommand',
+			'FBEditor.editor.command.p.AppendEmptyNodeCommand',
+			'FBEditor.editor.command.p.RemoveEmptyNodeCommand',
+			'FBEditor.editor.command.p.JoinTextToNextNodeCommand',
+			'FBEditor.editor.command.p.JoinTextToPrevNodeCommand'
+		],
 
+		/**
+		 * Комбинация клавиш Ctrl+Enter вставляет новый родительский блок.
+		 * @param {Event} e Событие.
+		 * @return {Boolean} false
+		 */
 		onKeyDownCtrlEnter: function (e)
 		{
 			var me = this,
@@ -21,7 +33,7 @@ Ext.define(
 			parent = node.parentNode;
 			el = parent.getElement ? parent.getElement() : null;
 			console.log('P ctrl+enter', node, el);
-			if (el)
+			if (el && el.isBlock)
 			{
 				el.fireEvent('insertElement', parent);
 			}
@@ -40,17 +52,15 @@ Ext.define(
 			e.preventDefault();
 			range = sel.getRangeAt(0);
 			node = range.startContainer;
-			parent = node.parentNode;
+			node = node.nodeName === 'P' && node.firstChild.nodeType === Node.TEXT_NODE ? node.firstChild : node;
 			console.log('P enter', node, range.startOffset);
 			if (node.nodeType === Node.TEXT_NODE)
 			{
 				me.splitNode(node, range.startOffset);
-				sel.collapse(parent.nextSibling);
 			}
 			else
 			{
 				me.appendEmptyNode(node);
-				sel.collapse(node);
 			}
 
 			return false;
@@ -62,7 +72,6 @@ Ext.define(
 				sel = window.getSelection(),
 				range,
 				node,
-				parent,
 				next,
 				offset;
 
@@ -75,8 +84,7 @@ Ext.define(
 			if (next && me.isEmptyNode(node))
 			{
 				e.preventDefault();
-				me.removeEmptyNode(node);
-				sel.collapse(next);
+				me.removeEmptyNode(node, 'next');
 
 				return false;
 			}
@@ -87,13 +95,13 @@ Ext.define(
 				{
 					if (me.isEmptyNode(next))
 					{
-						me.removeEmptyNode(next);
+						me.removeEmptyNode(next, 'prev');
 					}
 					else
 					{
 						if (next.firstChild.nodeType === Node.TEXT_NODE)
 						{
-							me.moveJoinTextToNextNode(node);
+							me.joinTextToNextNode(node);
 						}
 						else
 						{
@@ -127,17 +135,14 @@ Ext.define(
 
 			range = sel.getRangeAt(0);
 			node = me.getSelectNode();
+			//node = range.startContainer;
 			prev = node.previousSibling;
 			prev = prev && prev.nodeName === 'P' ? prev : null;
 			console.log('P back', node, prev, me.isEmptyNode(node));
 			if (prev && me.isEmptyNode(node))
 			{
 				e.preventDefault();
-				offset = prev.firstChild.length;
-				me.removeEmptyNode(node);
-				sel.collapse(prev.firstChild);
-				sel.extend(prev.firstChild, offset);
-				sel.collapseToEnd();
+				me.removeEmptyNode(node, 'prev');
 
 				return false;
 			}
@@ -148,7 +153,7 @@ Ext.define(
 				{
 					if (me.isEmptyNode(prev))
 					{
-						me.removeEmptyNode(prev);
+						me.removeEmptyNode(prev, 'next');
 					}
 					else
 					{
@@ -157,7 +162,7 @@ Ext.define(
 
 						if (prev.firstChild.nodeType === Node.TEXT_NODE)
 						{
-							me.moveJoinTextToPrevNode(node);
+							me.joinTextToPrevNode(node);
 						}
 						else
 						{
@@ -205,41 +210,24 @@ Ext.define(
 		 */
 		isEmptyNode: function (node)
 		{
-			return node.firstChild.nodeName === 'BR' && node.childNodes.length === 1;
+			return node.nodeName === 'P' && node.firstChild.nodeName === 'BR' && node.childNodes.length === 1;
 		},
 
 		/**
 		 * @protected
 		 * Разбивает абзац на два.
-		 * @param {Node} node Узел p.
+		 * @param {Node} node Текстовый узел.
 		 * @param {Number} offset Позиция курсора, в которой происходит разделение текста.
 		 */
 		splitNode: function (node, offset)
 		{
-			var parent = node.parentNode,
-				next = parent.nextSibling,
-				start,
-				end,
-				p;
+			var cmd;
 
-			start = offset ?
-			        document.createTextNode(node.nodeValue.substring(0, offset)) :
-			        document.createElement('br');
-			end = offset !== node.length ?
-			      document.createTextNode(node.nodeValue.substring(offset)) :
-			      document.createElement('br');
-			console.log('split', node, parent, next, start, end);
-			p = document.createElement('p');
-			if (next)
+			cmd = Ext.create('FBEditor.editor.command.p.SplitNodeCommand', {node: node, offset: offset});
+			if (cmd.execute())
 			{
-				parent.parentNode.insertBefore(p, next);
+				FBEditor.editor.HistoryManager.add(cmd);
 			}
-			else
-			{
-				parent.parentNode.appendChild(p);
-			}
-			p.appendChild(end);
-			parent.replaceChild(start, node);
 		},
 
 		/**
@@ -249,25 +237,30 @@ Ext.define(
 		 */
 		appendEmptyNode: function (node)
 		{
-			var parent = node.parentNode,
-				els = {};
+			var cmd;
 
-			els.p = document.createElement('p');
-			parent.insertBefore(els.p, node);
-			els.br = document.createElement('br');
-			els.p.appendChild(els.br);
+			cmd = Ext.create('FBEditor.editor.command.p.AppendEmptyNodeCommand', {node: node});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		},
 
 		/**
 		 * @protected
 		 * Удаляет пустой абзац.
 		 * @param {Node} node Узел p.
+		 * @param {String} sibling Соседний узел p (prev, next).
 		 */
-		removeEmptyNode: function (node)
+		removeEmptyNode: function (node, sibling)
 		{
-			var parent = node.parentNode;
+			var cmd;
 
-			parent.removeChild(node);
+			cmd = Ext.create('FBEditor.editor.command.p.RemoveEmptyNodeCommand', {node: node, sibling: sibling});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		},
 
 		/**
@@ -304,15 +297,22 @@ Ext.define(
 		 * и удаляет пустой абзац.
 		 * @param {Node} node Узел p.
 		 */
-		moveJoinTextToPrevNode: function (node)
+		joinTextToPrevNode: function (node)
 		{
-			var parent = node.parentNode,
+			var cmd;
+
+			cmd = Ext.create('FBEditor.editor.command.p.JoinTextToPrevNodeCommand', {node: node});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
+			/*var parent = node.parentNode,
 				prev = node.previousSibling,
 				text;
 
 			text = document.createTextNode(prev.firstChild.nodeValue + node.firstChild.nodeValue);
 			prev.replaceChild(text, prev.firstChild);
-			parent.removeChild(node);
+			parent.removeChild(node);*/
 		},
 
 		/**
@@ -321,15 +321,15 @@ Ext.define(
 		 * и удаляет пустой абзац.
 		 * @param {Node} node Узел p.
 		 */
-		moveJoinTextToNextNode: function (node)
+		joinTextToNextNode: function (node)
 		{
-			var parent = node.parentNode,
-				next = parent.nextSibling,
-				text;
+			var cmd;
 
-			text = document.createTextNode(node.firstChild.nodeValue + next.firstChild.nodeValue);
-			parent.removeChild(node);
-			next.replaceChild(text, next.firstChild);
+			cmd = Ext.create('FBEditor.editor.command.p.JoinTextToNextNodeCommand', {node: node});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		}
 	}
 );

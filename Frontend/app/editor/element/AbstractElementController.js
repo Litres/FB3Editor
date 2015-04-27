@@ -24,34 +24,20 @@ Ext.define(
 		},
 
 		/**
+		 * Создаёт новый элемент.
+		 */
+		onCreateElement: function ()
+		{
+			//
+		},
+
+		/**
 		 * Вставляет новый элемент.
 		 * @param {Node} node Выделенный узел.
 		 */
 		onInsertElement: function (node)
 		{
-			var me = this,
-				el = me.getElement(),
-				isBlock = el.isBlock,
-				parent,
-				next,
-				newNode;
-
-			if (isBlock)
-			{
-				parent = node.parentNode;
-				next = node.nextSibling;
-				newNode = document.createElement(node.nodeName);
-				console.log('onInsertElement', node);
-				if (next)
-				{
-					parent.insertBefore(newNode, next);
-				}
-				else
-				{
-					parent.appendChild(newNode);
-				}
-
-			}
+			//
 		},
 
 		/**
@@ -71,7 +57,7 @@ Ext.define(
 			{
 				el = focusNode.getElement ? focusNode.getElement() : null;
 				controller = el && el.controller ? el.controller : me;
-				console.log('keydown', e);
+				//console.log('keydown', e);
 				switch (e.keyCode)
 				{
 					case Ext.event.Event.ENTER:
@@ -80,16 +66,24 @@ Ext.define(
 						return controller.onKeyDownDelete(e);
 					case Ext.event.Event.BACKSPACE:
 						return controller.onKeyDownBackspace(e);
+					case Ext.event.Event.Z:
+						if (e.ctrlKey && e.shiftKey)
+						{
+							return controller.onKeyDownCtrlShiftZ(e);
+						}
+						else if (e.ctrlKey)
+						{
+							return controller.onKeyDownCtrlZ(e);
+						}
+
+						return false;
 				}
 			}
-
 		},
 
 		onKeyDownCtrlEnter: function (e)
 		{
-			var me = this;
-
-			return me.onKeyDownEnter(e);
+			return this.onKeyDownEnter(e);
 		},
 
 		onKeyDownEnter: function (e)
@@ -109,6 +103,22 @@ Ext.define(
 			return true;
 		},
 
+		onKeyDownCtrlZ: function (e)
+		{
+			e.preventDefault();
+			FBEditor.editor.HistoryManager.undo();
+
+			return false;
+		},
+
+		onKeyDownCtrlShiftZ: function (e)
+		{
+			e.preventDefault();
+			FBEditor.editor.HistoryManager.redo();
+
+			return false;
+		},
+
 		/**
 		 * Отпускание кнопки клавиатуры определяет элемент, на котором находится курсор.
 		 * @param {Event} e Объект события.
@@ -117,13 +127,23 @@ Ext.define(
 		{
 			var me = this,
 				focusNode,
-				focusElement;
+				el,
+				controller;
 
-			focusNode = me.getFocusNode(e.target);
-			focusElement = focusNode.getElement();
-			//console.log('keyup: focusNode, focusElement', e, focusNode, focusElement);
-			FBEditor.editor.Manager.setFocusElement(focusElement);
 			e.stopPropagation();
+			focusNode = me.getFocusNode(e.target);
+			el = focusNode.getElement ? focusNode.getElement() : null;
+			if (el)
+			{
+				FBEditor.editor.Manager.setFocusElement(el);
+				controller = el && el.controller ? el.controller : me;
+				/*console.log('keyup', e);
+				switch (e.keyCode)
+				{
+					case Ext.event.Event.Z:
+						return e.ctrlKey ? true : false;
+				}*/
+			}
 
 			return false;
 		},
@@ -195,8 +215,9 @@ Ext.define(
 				}
 				else
 				{
-					console.log('removeAll', node, node.parentNode);
-					parentEl.removeAll();
+					//console.log('removeAll', node, node.parentNode);
+					console.log('add');
+					//parentEl.removeAll();
 					parentEl.add(newEl);
 				}
 				parentEl.sync(viewportId);
@@ -219,7 +240,7 @@ Ext.define(
 				el;
 
 			// игнориуруется удаление корневого узла, так как он всегда необходим
-			if (relNode.firstChild.nodeName !== 'MAIN' && !FBEditor.editor.Manager.suspendEvent)
+			if (relNode.firstChild && relNode.firstChild.nodeName !== 'MAIN' && !FBEditor.editor.Manager.suspendEvent)
 			{
 				console.log('DOMNodeRemoved:', target, relNode.outerHTML);
 				parentEl = relNode.getElement();
@@ -235,6 +256,17 @@ Ext.define(
 		 * @param {Event} e Объект события.
 		 */
 		onDrop: function (e)
+		{
+			//console.log('drop:', e, me);
+
+			e.preventDefault();
+		},
+
+		/**
+		 * Вставка.
+		 * @param {Event} e Объект события.
+		 */
+		onPaste: function (e)
 		{
 			//console.log('drop:', e, me);
 

@@ -20,11 +20,21 @@ Ext.define(
 		/**
 		 * Вставляет новый дочерний элемент перед другим дочерним элементом.
 		 * @param {FBEditor.editor.element.AbstractElement} el Вставляемый элемент.
-		 * @param {FBEditor.editor.element.AbstractElement} nextEl Элемент. перед которым происходит вставка.
+		 * @param {FBEditor.editor.element.AbstractElement} nextEl Элемент, перед которым происходит вставка.
 		 */
 		insertBefore: function (el, nextEl)
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#insertBefore()');
+		},
+
+		/**
+		 * Заменяет дочерний элемент на новый.
+		 * @param {FBEditor.editor.element.AbstractElement} el Новый элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} replacementEl Заменяемый элемент.
+		 */
+		replace: function (el, replacementEl)
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#replaceChild()');
 		},
 
 		/**

@@ -19,6 +19,10 @@ Ext.define(
 			insertElement: function ()
 			{
 				this.controller.onInsertElement.apply(this.controller, arguments);
+			},
+			createElement: function ()
+			{
+				this.controller.onCreateElement.apply(this.controller, arguments);
 			}
 		},
 
@@ -37,7 +41,8 @@ Ext.define(
 			DOMNodeInserted: 'onNodeInserted',
 			DOMNodeRemoved: 'onNodeRemoved',
 			DOMCharacterDataModified: 'onTextModified',
-			drop: 'onDrop'
+			drop: 'onDrop',
+			paste: 'onPaste'
 		},
 
 		/**
@@ -124,16 +129,29 @@ Ext.define(
 			me.children = children;
 		},
 
+		replace: function (el, replacementEl)
+		{
+			var me = this,
+				children = me.children,
+				pos = me.getChildPosition(replacementEl);
+
+			children.splice(pos, 1, el);
+			me.children = children;
+		},
+
 		remove: function (el)
 		{
 			var me = this,
 				children = me.children,
 				pos = me.getChildPosition(el);
 
-			el.clear();
-			el.removeAll();
-			children.splice(pos, 1);
-			me.children = children;
+			if (el)
+			{
+				el.clear();
+				el.removeAll();
+				children.splice(pos, 1);
+				me.children = children;
+			}
 		},
 
 		removeAll: function ()
@@ -281,7 +299,7 @@ Ext.define(
 				newNode;
 
 			FBEditor.editor.Manager.suspendEvent = true;
-			//console.log('sync ' + viewportId, me.nodes);
+			console.log('sync ' + viewportId, me.nodes);
 			Ext.Object.each(
 				me.nodes,
 			    function (id, oldNode)

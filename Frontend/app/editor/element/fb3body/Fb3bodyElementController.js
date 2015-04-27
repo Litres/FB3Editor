@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.editor.element.fb3body.Fb3bodyElementController',
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
+		requires: [
+			'FBEditor.editor.command.TextModifiedCommand'
+		],
 
 		/**
 		 * Редактирование текстового узла.
@@ -25,10 +28,12 @@ Ext.define(
 				parentNode = node.parentNode,
 				parentEl,
 				el,
-				focusNode,
-				br;
+				cmd;
 
-			focusNode = me.getFocusNode(e.target);
+			if (FBEditor.editor.Manager.suspendEvent)
+			{
+				return;
+			}
 			if (!parentNode.getElement)
 			{
 				Ext.defer(function () {me.onTextModified({target: node});}, 1);
@@ -36,7 +41,7 @@ Ext.define(
 				return;
 			}
 			el = node.getElement ? node.getElement() : null;
-			console.log('DOMCharacterDataModified:', node, nextSibling, previousSibling, me);
+			console.log('DOMCharacterDataModified:', e, me);
 			if (!nextSibling && !previousSibling)
 			{
 				el = FBEditor.editor.Factory.createElementText(text);
@@ -44,12 +49,12 @@ Ext.define(
 				parentEl = parentNode.getElement();
 				parentEl.removeAll();
 				parentEl.add(el);
-				parentEl.sync(viewportId);
 			}
-			else
+			cmd = Ext.create('FBEditor.editor.command.TextModifiedCommand',
+			                 {node: node, newValue: e.newValue, oldValue: e.prevValue});
+			if (cmd.execute())
 			{
-				el.setText(text);
-				el.sync(viewportId);
+				FBEditor.editor.HistoryManager.add(cmd);
 			}
 		}
 	}

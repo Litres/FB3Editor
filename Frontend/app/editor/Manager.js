@@ -9,7 +9,8 @@ Ext.define(
 	{
 		singleton: 'true',
 		requires: [
-			'FBEditor.editor.Factory'
+			'FBEditor.editor.Factory',
+			'FBEditor.editor.HistoryManager'
 		],
 
 		/**
@@ -17,18 +18,21 @@ Ext.define(
 		 */
 		content: null,
 
+		/**
+		 * @property {Selection} Текущее выделение в теле книги.
+		 */
 		selection: null,
+
+		/**
+		 * @property {Boolean} Заморозить ли события вставки узлов.
+		 */
+		suspendEvent: false,
 
 		/**
 		 * @private
 		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
 		 */
 		focusElement: null,
-
-		/**
-		 * @property {Boolean} Заморозить ли события вставки узлов.
-		 */
-		suspendEvent: false,
 
 		/**
 		 * Создает контент из загруженной книги.
@@ -57,6 +61,11 @@ Ext.define(
 
 			// преобразование строки в объект
 			eval('me.content = ' + content);
+
+			// сбрасываем историю
+			FBEditor.editor.HistoryManager.clear();
+
+			// загружаем контент
 			Ext.getCmp('main-editor').fireEvent('loadData');
 		},
 
@@ -113,14 +122,14 @@ Ext.define(
 		 * Устанавливает текущий выделенный элемент в редакторе.
 		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */
-		setFocusElement: function (el)
+		setFocusElement: function (el, sel)
 		{
 			var me = this,
 				bridgeProps = FBEditor.getBridgeProps(),
 				data;
 
 			me.focusElement = el;
-			me.selection = window.getSelection();
+			me.selection = sel || window.getSelection();
 
 			// показываем информацию о выделенном элементе
 			data = el.getData();
@@ -149,35 +158,25 @@ Ext.define(
 		},
 
 		/**
-		 * Вставляет новый элемент на место курсора.
+		 * Создает новый элемент в теле книги.
 		 * @param {String} name Имя элемента.
 		 */
 		insertElement: function (name)
 		{
 			var me = this,
-				el,
-				sel = me.selection,
-				range,
-				node,
-				els = {};
+				el;
 
-			if (sel)
-			{
-				range = sel.getRangeAt(0);
-				node = range.endContainer.parentNode.parentNode;
-				el = node.getElement();
-				console.log('insert title', node, el);
-				// создаем заголовок
-				els.title = FBEditor.editor.Factory.createElement('title');
-				els.p = FBEditor.editor.Factory.createElement('p');
-				els.t = FBEditor.editor.Factory.createElementText('Заголовок');
-				els.p.add(els.t);
-				els.title.add(els.p);
-				el.add(els.title);
-				FBEditor.editor.Manager.suspendEvent = true;
-				node.appendChild(els.title.getNode(me.id));
-				FBEditor.editor.Manager.suspendEvent = false;
-			}
+			el = FBEditor.editor.Factory.createElement(name);
+			el.fireEvent('createElement');
+		},
+
+		/**
+		 * Возвращает текущее выделение в теле книги.
+		 * @return {Selection} Текущее выделение в теле книги.
+		 */
+		getSelection: function ()
+		{
+			return this.selection;
 		}
 	}
 );

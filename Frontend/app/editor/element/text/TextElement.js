@@ -68,7 +68,6 @@ Ext.define(
 			node = document.createTextNode(me.text);
 			node.viewportId = viewportId;
 			me.setNode(node);
-			node = me.setEvents(node);
 
 			return node;
 		}

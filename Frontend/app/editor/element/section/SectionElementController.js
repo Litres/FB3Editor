@@ -9,13 +9,17 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 
+		/**
+		 * Вставляет новую секцию.
+		 * @param {Node} node Узел, после которого необходимо вставить секцию.
+		 */
 		onInsertElement: function (node)
 		{
-			var me = this,
-				viewportId = node.viewportId,
-				el = me.getElement(),
+			var viewportId = node.viewportId,
 				els = {},
+				sel,
 				parent,
+				parentEl,
 				next,
 				newNode;
 
@@ -30,20 +34,27 @@ Ext.define(
 			els.t2 = FBEditor.editor.Factory.createElementText('Текст');
 			els.p2.add(els.t2);
 			els.section.add(els.p2);
-			el.add(els.section);
+			parent = node.parentNode;
+			parentEl = parent.getElement();
+			next = node.nextSibling;
 			FBEditor.editor.Manager.suspendEvent = true;
 			newNode = els.section.getNode(viewportId);
-			parent = node.parentNode;
-			next = node.nextSibling;
 			if (next)
 			{
+				parentEl.insertBefore(els.section, next.getElement());
 				parent.insertBefore(newNode, next);
 			}
 			else
 			{
+				parentEl.add(els.section);
 				parent.appendChild(newNode);
 			}
 			FBEditor.editor.Manager.suspendEvent = false;
+
+			// устанавливаем курсор
+			sel = window.getSelection();
+			sel.collapse(els.p2.nodes[viewportId]);
+			FBEditor.editor.Manager.setFocusElement(els.p2);
 		}
 	}
 );
