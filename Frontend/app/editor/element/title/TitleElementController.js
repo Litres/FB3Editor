@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.editor.element.title.TitleElementController',
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
+		requires: [
+			'FBEditor.editor.command.title.CreateCommand'
+		],
 
 		/**
 		 * Создает новый заголовок.
@@ -15,48 +18,18 @@ Ext.define(
 		onCreateElement: function ()
 		{
 			var me = this,
-				title = me.getElement(),
-				els = {},
-				sel,
-				range,
-				node,
-				newNode,
-				parent,
-				next,
-				parentEl,
-				viewportId;
+				el = me.getElement(),
+				cmd,
+				sel;
 
 			sel = FBEditor.editor.Manager.getSelection();
 			if (sel)
 			{
-				range = sel.getRangeAt(0);
-				node = range.endContainer.parentNode;
-				node = node.parentNode.nodeName === 'HEADER' ? node.parentNode : node;
-				parent = node.parentNode;
-				next = node.nextSibling;
-				parentEl = parent.getElement();
-				viewportId = node.viewportId;
-				els.p = FBEditor.editor.Factory.createElement('p');
-				els.t = FBEditor.editor.Factory.createElementText('Заголовок');
-				els.p.add(els.t);
-				title.add(els.p);
-				FBEditor.editor.Manager.suspendEvent = true;
-				newNode = title.getNode(viewportId);
-				if (next)
+				cmd = Ext.create('FBEditor.editor.command.title.CreateCommand', {title: el, sel: sel});
+				if (cmd.execute())
 				{
-					parentEl.insertBefore(title, next.getElement());
-					parent.insertBefore(newNode, next);
+					FBEditor.editor.HistoryManager.add(cmd);
 				}
-				else
-				{
-					parentEl.add(title);
-					parent.appendChild(newNode);
-				}
-				FBEditor.editor.Manager.suspendEvent = false;
-
-				// устанавливаем курсор
-				sel.collapse(els.p.nodes[viewportId]);
-				FBEditor.editor.Manager.setFocusElement(els.p);
 			}
 		}
 	}
