@@ -86,6 +86,16 @@ Ext.define(
 		attributes: {},
 
 		/**
+		 * @property {String} Уникальный id элемента.
+		 */
+		elementId: '',
+
+		/**
+		 * @property {String} Префикс id элемента.
+		 */
+		prefixId: 'editor-el',
+
+		/**
 		 * @private
 		 * @property {FBEditor.editor.element.AbstractElementController} Контроллер элемента.
 		 */
@@ -106,6 +116,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.elementId = Ext.id({prefix: me.prefixId});
 			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
 			me.attributes = attributes || me.attributes;
@@ -143,14 +154,18 @@ Ext.define(
 		{
 			var me = this,
 				children = me.children,
-				pos = me.getChildPosition(el);
+				pos;
 
 			if (el)
 			{
-				el.clear();
-				el.removeAll();
-				children.splice(pos, 1);
-				me.children = children;
+				pos = me.getChildPosition(el);
+				if (pos !== null)
+				{
+					el.clear();
+					//el.removeAll();
+					children.splice(pos, 1);
+					me.children = children;
+				}
 			}
 		},
 
@@ -170,7 +185,16 @@ Ext.define(
 
 		clear: function ()
 		{
-			var me = this;
+			var me = this,
+				children = me.children;
+
+			Ext.Array.each(
+				children,
+				function (el)
+				{
+					el.clear(el);
+				}
+			);
 		},
 
 		setNode: function (node)
@@ -420,13 +444,19 @@ Ext.define(
 		{
 			var me = this,
 				children = me.children,
-				pos = 0;
+				pos = null;
 
+			if (!el.elementId)
+			{
+				console.error(el);
+
+				return null;
+			}
 			Ext.Array.each(
 				children,
 				function (item, index)
 				{
-					if (Ext.Object.equals(el, item))
+					if (el.elementId ===  item.elementId)
 					{
 						pos = index;
 

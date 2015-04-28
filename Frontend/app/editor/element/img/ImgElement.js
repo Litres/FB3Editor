@@ -28,6 +28,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.elementId = Ext.id({prefix: me.prefixId});
 			me.children = children || me.children;
 			me.attributes = Ext.apply(attributes, me.attributes);
 			me.createController();

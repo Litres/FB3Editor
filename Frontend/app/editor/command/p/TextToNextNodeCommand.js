@@ -87,7 +87,6 @@ Ext.define(
 				nodes.parentP.insertBefore(nodes.newP, nodes.p);
 				while (nodes.text.previousSibling)
 				{
-					console.log('nodes.text.previousSibling', nodes.text.previousSibling);
 					els.newP.add(nodes.p.firstChild.getElement());
 					els.p.remove(nodes.p.firstChild.getElement());
 					nodes.newP.appendChild(nodes.p.firstChild);
