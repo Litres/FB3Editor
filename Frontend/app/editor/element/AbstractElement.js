@@ -16,13 +16,17 @@ Ext.define(
 			observable: 'Ext.util.Observable'
 		},
 		listeners: {
-			insertElement: function ()
+			splitElement: function ()
 			{
-				this.controller.onInsertElement.apply(this.controller, arguments);
+				this.controller.onSplitElement.apply(this.controller, arguments);
 			},
 			createElement: function ()
 			{
 				this.controller.onCreateElement.apply(this.controller, arguments);
+			},
+			insertElement: function ()
+			{
+				this.controller.onInsertElement.apply(this.controller, arguments);
 			}
 		},
 
@@ -46,9 +50,17 @@ Ext.define(
 		},
 
 		/**
-		 * @property {Boolean} Блочный ли элемент.
+		 * @property {Object} Разрешения элемента. Перечисляются в самих элементах.
 		 */
-		isBlock: false,
+		//permit: {},
+
+		/**
+		 * @property {Object} Разрешения элемента по умолчанию.
+		 */
+		permitDefault:
+		{
+			splittable: false // разрешается ли разбивать элемент клавишами Ctrl+Enter
+		},
 
 		/**
 		 * @property {String} Имя тега для отображения в html.
@@ -120,6 +132,7 @@ Ext.define(
 			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
 			me.attributes = attributes || me.attributes;
+			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
 		},
 
@@ -323,7 +336,7 @@ Ext.define(
 				newNode;
 
 			FBEditor.editor.Manager.suspendEvent = true;
-			console.log('sync ' + viewportId, me.nodes);
+			//console.log('sync ' + viewportId, me.nodes);
 			Ext.Object.each(
 				me.nodes,
 			    function (id, oldNode)
@@ -331,7 +344,7 @@ Ext.define(
 				    if (id !== viewportId)
 				    {
 					    newNode = me.getNode(id);
-					    console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
+					    //console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
 					    oldNode.parentNode.replaceChild(newNode, oldNode);
 				    }
 			    }

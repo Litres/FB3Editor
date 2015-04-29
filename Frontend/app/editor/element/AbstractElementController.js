@@ -25,19 +25,46 @@ Ext.define(
 
 		/**
 		 * Создаёт новый элемент.
+		 * @param {Selection} sel Выделение, которое указывает где необхоидмо создать элемент.
 		 */
-		onCreateElement: function ()
+		onCreateElement: function (sel)
 		{
 			//
 		},
 
 		/**
 		 * Вставляет новый элемент.
-		 * @param {Node} node Выделенный узел.
 		 */
-		onInsertElement: function (node)
+		onInsertElement: function ()
 		{
 			//
+		},
+
+		/**
+		 * Разбивает элемент, вставляя новый элемент после текущего.
+		 * @param {Node} node Узел элемента.
+		 */
+		onSplitElement: function (node)
+		{
+			var el;
+
+			el = node.getElement();
+			//console.log('splittable', el.permit.splittable, node);
+			if (el.permit.splittable)
+			{
+				// вставляем новый элемент
+				el.fireEvent('insertElement', node);
+			}
+			else
+			{
+				// пытаемся разбить родительский элемент до тех пор пока не встретим корневой элемент
+				node = node.parentNode;
+				if (node.nodeName !== 'MAIN')
+				{
+					el = node.getElement();
+					el.fireEvent('splitElement', node);
+				}
+			}
 		},
 
 		/**
@@ -81,9 +108,24 @@ Ext.define(
 			}
 		},
 
+		/**
+		 * Комбинация клавиш Ctrl+Enter вставляет новый блок.
+		 * @param {Event} e Событие.
+		 * @return {Boolean} false
+		 */
 		onKeyDownCtrlEnter: function (e)
 		{
-			return this.onKeyDownEnter(e);
+			var me = this,
+				node,
+				el;
+
+			e.preventDefault();
+			node = me.getFocusNode(e.target);
+			el = node.getElement ? node.getElement() : null;
+			//console.log('ctrl+enter', node, el);
+			el.fireEvent('splitElement', node);
+
+			return false;
 		},
 
 		onKeyDownEnter: function (e)

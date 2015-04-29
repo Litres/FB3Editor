@@ -15,21 +15,14 @@ Ext.define(
 		/**
 		 * Создает новый заголовок.
 		 */
-		onCreateElement: function ()
+		onCreateElement: function (sel)
 		{
-			var me = this,
-				el = me.getElement(),
-				cmd,
-				sel;
+			var cmd;
 
-			sel = FBEditor.editor.Manager.getSelection();
-			if (sel)
+			cmd = Ext.create('FBEditor.editor.command.title.CreateCommand', {sel: sel});
+			if (cmd.execute())
 			{
-				cmd = Ext.create('FBEditor.editor.command.title.CreateCommand', {title: el, sel: sel});
-				if (cmd.execute())
-				{
-					FBEditor.editor.HistoryManager.add(cmd);
-				}
+				FBEditor.editor.HistoryManager.add(cmd);
 			}
 		}
 	}

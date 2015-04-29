@@ -14,7 +14,7 @@ Ext.define(
 		text: 'Заголовок',
 		handler: function ()
 		{
-			FBEditor.editor.Manager.insertElement('title');
+			FBEditor.editor.Manager.createElement('title');
 		}
 	}
 );

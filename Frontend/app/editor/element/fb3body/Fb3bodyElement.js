@@ -29,6 +29,7 @@ Ext.define(
 			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
 			me.attributes = Ext.apply(attributes, me.attributes);
+			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
 		},
 

@@ -121,6 +121,7 @@ Ext.define(
 		/**
 		 * Устанавливает текущий выделенный элемент в редакторе.
 		 * @param {FBEditor.editor.element.AbstractElement} el
+		 * @param {Selection} sel
 		 */
 		setFocusElement: function (el, sel)
 		{
@@ -161,13 +162,18 @@ Ext.define(
 		 * Создает новый элемент в теле книги.
 		 * @param {String} name Имя элемента.
 		 */
-		insertElement: function (name)
+		createElement: function (name)
 		{
 			var me = this,
-				el;
+				el,
+				sel;
 
-			el = FBEditor.editor.Factory.createElement(name);
-			el.fireEvent('createElement');
+			sel = me.getSelection();
+			if (sel)
+			{
+				el = FBEditor.editor.Factory.createElement(name);
+				el.fireEvent('createElement', sel);
+			}
 		},
 
 		/**

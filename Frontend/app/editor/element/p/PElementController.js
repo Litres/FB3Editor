@@ -18,31 +18,6 @@ Ext.define(
 			'FBEditor.editor.command.p.TextToPrevNodeCommand'
 		],
 
-		/**
-		 * Комбинация клавиш Ctrl+Enter вставляет новый родительский блок.
-		 * @param {Event} e Событие.
-		 * @return {Boolean} false
-		 */
-		onKeyDownCtrlEnter: function (e)
-		{
-			var me = this,
-				node,
-				parent,
-				el;
-
-			e.preventDefault();
-			node = me.getSelectNode();
-			parent = node.parentNode;
-			el = parent.getElement ? parent.getElement() : null;
-			console.log('P ctrl+enter', node, el);
-			if (el && el.isBlock)
-			{
-				el.fireEvent('insertElement', parent);
-			}
-
-			return false;
-		},
-
 		onKeyDownEnter: function (e)
 		{
 			var me = this,
