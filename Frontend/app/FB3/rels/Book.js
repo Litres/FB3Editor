@@ -54,7 +54,7 @@ Ext.define(
 			var me = this,
 				desc = me.desc,
 				text,
-				anotation,
+				annotation,
 				history;
 
 			if (!desc)
@@ -62,8 +62,8 @@ Ext.define(
 				desc = me.getJson()['fb3-description'];
 				text = me.getText();
 				text = text.replace(/[\n\r\t]/g, '');
-				anotation = text.match(/<anotation>(.*?)<\/anotation>/);
-				desc.anotation = anotation ? anotation[1] : '';
+				annotation = text.match(/<annotation>(.*?)<\/annotation>/);
+				desc.annotation = annotation ? annotation[1] : '';
 				history = text.match(/<history>(.*?)<\/history>/);
 				desc.history = history ? history[1] : '';
 			}

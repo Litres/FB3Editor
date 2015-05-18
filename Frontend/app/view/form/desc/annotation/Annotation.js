@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		xtype: 'form-desc-annotation',
-		name: 'anotation',
+		name: 'annotation',
 		height: 200,
 		resizable: {
 			handles: 's',
@@ -25,7 +25,7 @@ Ext.define(
 
 			if (val)
 			{
-				data.anotation = val;
+				data.annotation = val;
 			}
 
 			return data;

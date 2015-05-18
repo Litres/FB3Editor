@@ -268,9 +268,9 @@ Ext.define(
 			{
 				metaData.coreProperties['dc:subject'] = data.title.sub;
 			}
-			if (data.anotation)
+			if (data.annotation)
 			{
-				metaData.coreProperties['dc:description'] = Ext.util.Format.stripTags(data.anotation);
+				metaData.coreProperties['dc:description'] = Ext.util.Format.stripTags(data.annotation);
 			}
 			console.log('save meta', metaData);
 			xml = FBEditor.util.xml.Json.jsonToXml(metaData);

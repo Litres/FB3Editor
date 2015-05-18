@@ -76,6 +76,7 @@ Ext.define(
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 			FBEditor.command.HistoryCommand.init();
+			FBEditor.editor.Manager.init();
 		},
 
 	    launch: function ()

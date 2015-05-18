@@ -9,9 +9,15 @@ Ext.define(
 	{
 		singleton: 'true',
 		requires: [
+			'FBEditor.editor.schema.Schema',
 			'FBEditor.editor.Factory',
 			'FBEditor.editor.HistoryManager'
 		],
+
+		/**
+		 * @property {FBEditor.editor.schema.Schema} Правила проверки элементов.
+		 */
+		schema: null,
 
 		/**
 		 * @property {FBEditor.editor.element.AbstractElement} Корневой элемент тела книги.
@@ -33,6 +39,16 @@ Ext.define(
 		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
 		 */
 		focusElement: null,
+
+		/**
+		 * Инициализирует менеджер.
+		 */
+		init: function ()
+		{
+			var me = this;
+
+			me.schema = Ext.create('FBEditor.editor.schema.Schema');
+		},
 
 		/**
 		 * Создает контент из загруженной книги.
@@ -183,6 +199,15 @@ Ext.define(
 		getSelection: function ()
 		{
 			return this.selection;
+		},
+
+		/**
+		 * Возвращает правила проверки элементов.
+		 * @return {FBEditor.editor.schema.Schema}
+		 */
+		getSchema: function ()
+		{
+			return this.schema;
 		}
 	}
 );

@@ -78,7 +78,7 @@ Ext.define(
 								//console.log('desc', desc);
 								//console.log('images', images);
 								//console.log(content);
-								xslBody = FBEditor.xsl.Body.getXmlToHtml();
+								xslBody = FBEditor.xsl.Body.getXsl();
 								contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
 								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
 								Ext.suspendLayouts();
