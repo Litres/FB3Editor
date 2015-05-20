@@ -35,7 +35,7 @@ Ext.define(
 				xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
 
 				// преобразование строки в объект
-				//console.log(xsdJson);
+				console.log(xsdJson);
 				eval(xsdJson);
 				console.log(elements);
 			}
