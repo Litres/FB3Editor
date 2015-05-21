@@ -26,6 +26,7 @@ Ext.define(
 		elements = {\
 		<xsl:for-each select=".//element">\
 			<xsl:variable name="elementName" select="@name"/>\
+			<xsl:variable name="extAttrs" select="complexType/complexContent/extension/attribute" />\
 			<xsl:if test="not(preceding::element[@name=$elementName]) and $elementName">\
 				<xsl:if test="position()!=1">,</xsl:if>\
 				\'<xsl:value-of select="$elementName"/>\': cse(\'<xsl:value-of select="$elementName"/>\', {\
@@ -33,7 +34,10 @@ Ext.define(
 					<xsl:with-param name="typeName" select="@type"/>\
 					<xsl:with-param name="parentName" select="$elementName"/>\
 				</xsl:call-template>\
-				, attributes: {<xsl:if test="@*"><xsl:apply-templates select="@*"/></xsl:if>}\
+				, attributes: {\
+				<xsl:if test="@*"><xsl:apply-templates select="@*"/></xsl:if>\
+				<xsl:for-each select="$extAttrs"><xsl:if test="@*">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
+				}\
 				})\
 			</xsl:if>\
 		</xsl:for-each>};\
@@ -44,17 +48,12 @@ Ext.define(
 	<xsl:template name="elements">\
 		<xsl:param name="typeName"/>\
 		<xsl:param name="parentName"/>\
-		extend: \'<xsl:if test="$typeName">FBEditor.schema.body.</xsl:if><xsl:value-of select="substring-after($typeName, \'fb3b:\')"/><xsl:call-template name="extended"/>\'\
+		extend: \'<xsl:value-of select="$typeName"/><xsl:call-template name="extended"/>\'\
 		<xsl:if test="count(.//element)">\
 			, elements: {\
 			<xsl:for-each select=".//element">\
-				<xsl:variable name="elementName" select="@name"/>\
-				<xsl:if test="not($elementName=\'note\' and $parentName=\'fb3-body\')">\
-					<xsl:call-template name="element">\
-						<xsl:with-param name="attributes" select="@*"/>\
-						<xsl:with-param name="elementName" select="$elementName"/>\
-						<xsl:with-param name="pos" select="position()"/>\
-					</xsl:call-template>\
+				<xsl:if test="not(@name=\'note\' and $parentName=\'fb3-body\')">\
+					<xsl:call-template name="element"/>\
 				</xsl:if>\
 			</xsl:for-each>\
 			}\
@@ -75,41 +74,46 @@ Ext.define(
 	\
 	<xsl:template name="extended">\
 		<xsl:for-each select="descendant::extension">\
-			<xsl:if test="position()=1">FBEditor.schema.body.<xsl:value-of select="substring-after(@base, \'fb3b:\')"/></xsl:if>\
+			<xsl:if test="position()=1"><xsl:value-of select="@base"/></xsl:if>\
 		</xsl:for-each>\
 	</xsl:template>\
 	\
 	<xsl:template name="types">\
+		<xsl:for-each select="schema/simpleType">\
+			dse(\'<xsl:value-of select="@name"/>\', {\
+				<xsl:call-template name="restriction"><xsl:with-param name="rest" select="restriction"/></xsl:call-template>\
+			});\
+		</xsl:for-each>\
 		<xsl:for-each select="schema/complexType">\
 			<xsl:variable name="seqEls" select="sequence/element" />\
 			<xsl:variable name="extEls" select="complexContent/extension/sequence/element" />\
+			<xsl:variable name="seqChoice" select="sequence/choice" />\
+			<xsl:variable name="extChoice" select="complexContent/extension/sequence/choice" />\
 			<xsl:variable name="attrs" select="attribute" />\
 			<xsl:variable name="extAttrs" select="complexContent/extension/attribute" />\
-			Ext.define(\'FBEditor.schema.body.<xsl:value-of select="@name"/>\', {\
-				<xsl:if test="count(complexContent/extension)">\
-					extend: \'FBEditor.schema.body.<xsl:value-of select="substring-after(complexContent/extension/@base, \'fb3b:\')"/>\'\
+			dse(\'<xsl:value-of select="@name"/>\', {\
+				<xsl:if test="complexContent/extension">\
+					extend: \'<xsl:value-of select="complexContent/extension/@base"/>\'\
 				</xsl:if>\
-				<xsl:if test="count($extEls) or count($seqEls)">\
-					<xsl:if test="count(complexContent/extension)">,</xsl:if>\
+				<xsl:if test="$extEls or $seqEls">\
+					<xsl:if test="complexContent/extension">,</xsl:if>\
 					elements: {\
 					<xsl:for-each select="$extEls"><xsl:call-template name="element"/></xsl:for-each>\
 					<xsl:for-each select="$seqEls"><xsl:call-template name="element"/></xsl:for-each>\
 				}</xsl:if>\
-				<xsl:if test="count(sequence/choice)">\
-					<xsl:if test="count(complexContent/extension) or count($extEls) or count($seqEls)">,</xsl:if>\
-					choice: {<xsl:call-template name="choice"/>}\
-				</xsl:if>\
-				<xsl:if test="count($extAttrs) or count($attrs)">\
-					<xsl:if test="count(complexContent/extension) or count($extEls) or count($seqEls) or count(sequence/choice)">,</xsl:if>\
+				<xsl:if test="$seqChoice or $extChoice">\
+					<xsl:if test="complexContent/extension or $extEls or $seqEls">,</xsl:if>\
+					choice: {\
+					<xsl:if test="$extChoice"><xsl:call-template name="choice"><xsl:with-param name="choice" select="$extChoice"/></xsl:call-template></xsl:if>\
+					<xsl:if test="$extChoice and $seqChoice">,</xsl:if>\
+					<xsl:if test="$seqChoice"><xsl:call-template name="choice"><xsl:with-param name="choice" select="$seqChoice"/></xsl:call-template></xsl:if>\
+				}</xsl:if>\
+				<xsl:if test="$extAttrs or $attrs">\
+					<xsl:if test="complexContent/extension or $extEls or $seqEls or $seqChoice or $extChoice">,</xsl:if>\
 					attributes: {\
 					<xsl:for-each select="$extAttrs"><xsl:if test="position()!=1">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
-					<xsl:for-each select="$attrs"><xsl:if test="position()!=1 or count($extAttrs)">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
+					<xsl:for-each select="$attrs"><xsl:if test="position()!=1 or $extAttrs">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
 				}</xsl:if>\
-			});\
-		</xsl:for-each>\
-		<xsl:for-each select="schema/simpleType">\
-			Ext.define(\'FBEditor.schema.body.<xsl:value-of select="@name"/>\', {\
-				<xsl:call-template name="restriction"><xsl:with-param name="rest" select="restriction"/></xsl:call-template>\
 			});\
 		</xsl:for-each>\
 	</xsl:template>\
@@ -143,16 +147,43 @@ Ext.define(
 	</xsl:template>\
 	\
 	<xsl:template name="choice">\
-		<xsl:if test="sequence/choice/@*">attributes: {<xsl:apply-templates select="sequence/choice/@*"/>},</xsl:if>\
-		elements: {\
-		<xsl:for-each select="sequence/choice/element">\
-			<xsl:call-template name="element">\
-				<xsl:with-param name="attributes" select="@*"/>\
-				<xsl:with-param name="elementName" select="@name"/>\
-				<xsl:with-param name="pos" select="position()"/>\
-			</xsl:call-template>\
-		</xsl:for-each>\
-		}\
+		<xsl:param name="choice"/>\
+		<xsl:variable name="seq" select="$choice/sequence"/>\
+		<xsl:if test="$choice/@*">attributes: {<xsl:apply-templates select="$choice/@*"/>},</xsl:if>\
+		<xsl:if test="$choice/element">\
+			elements: {\
+			<xsl:for-each select="$choice/element">\
+				<xsl:call-template name="element">\
+					<xsl:with-param name="attributes" select="@*"/>\
+					<xsl:with-param name="elementName" select="@name"/>\
+					<xsl:with-param name="pos" select="position()"/>\
+				</xsl:call-template>\
+			</xsl:for-each>\
+		}</xsl:if>\
+		<xsl:if test="$seq">\
+			<xsl:if test="$choice/element">,</xsl:if>\
+			sequence: {<xsl:call-template name="sequence"><xsl:with-param name="seq" select="$seq"/></xsl:call-template>}\
+		</xsl:if>\
+	</xsl:template>\
+	\
+	<xsl:template name="sequence">\
+		<xsl:param name="seq"/>\
+		<xsl:variable name="seqChoice" select="$seq/choice"/>\
+		<xsl:variable name="seqEls" select="$seq/element"/>\
+		<xsl:if test="$seqEls">\
+			elements: {\
+			<xsl:for-each select="$seqEls">\
+				<xsl:call-template name="element">\
+					<xsl:with-param name="attributes" select="@*"/>\
+					<xsl:with-param name="elementName" select="@name"/>\
+					<xsl:with-param name="pos" select="position()"/>\
+				</xsl:call-template>\
+			</xsl:for-each>\
+		}</xsl:if>\
+		<xsl:if test="$seqChoice">\
+			<xsl:if test="$seqEls">,</xsl:if>\
+			choice: {<xsl:call-template name="choice"><xsl:with-param name="choice" select="$seqChoice"/></xsl:call-template>}\
+		</xsl:if>\
 	</xsl:template>\
 </xsl:stylesheet>\
 			';

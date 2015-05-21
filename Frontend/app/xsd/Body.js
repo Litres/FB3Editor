@@ -17,12 +17,11 @@ Ext.define(
 		{
 			var xsd;
 
-			xsd = '\
-<?xml version="1.0" encoding="UTF-8"?>\
+			xsd = '<?xml version="1.0" encoding="UTF-8"?>\
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->\
 <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->\
 <schema>\
 	<!-- See license.txt for licensing information -->\
-	<include schemaLocation="fb3_general.xsd"/>\
 	<import namespace="http://www.w3.org/1999/xlink" schemaLocation="fb3_links.xsd"/>\
 	<import namespace="http://www.fictionbook.org/FictionBook3/description" schemaLocation="fb3_descr.xsd"/>\
 	<element name="fb3-body">\
@@ -46,6 +45,7 @@ Ext.define(
 					</sequence>\
 					<attribute name="id" type="fb3b:UUIDType" use="required"/>\
 				</extension>\
+				<!-- OB: тип изменен с ID на  fb3b:UUIDType -->\
 			</complexContent>\
 		</complexType>\
 		<unique name="SectionID">\
@@ -109,18 +109,14 @@ Ext.define(
 								<element name="ol">\
 									<complexType>\
 										<complexContent>\
-											<extension base="fb3b:LiHolderType">\
-												<attribute name="id" type="ID" use="optional"/>\
-											</extension>\
+											<extension base="fb3b:LiHolderType"/>\
 										</complexContent>\
 									</complexType>\
 								</element>\
 								<element name="ul">\
 									<complexType>\
 										<complexContent>\
-											<extension base="fb3b:LiHolderType">\
-												<attribute name="id" type="ID" use="optional"/>\
-											</extension>\
+											<extension base="fb3b:LiHolderType"/>\
 										</complexContent>\
 									</complexType>\
 								</element>\
@@ -149,7 +145,7 @@ Ext.define(
 						</sequence>\
 					</choice>\
 				</sequence>\
-				<attribute name="id" type="ID" use="required"/>\
+				<attribute name="id" type="fb3d:UUIDType" use="required"/>\
 				<attribute name="article" type="boolean" use="optional"/>\
 			</extension>\
 		</complexContent>\
@@ -207,43 +203,15 @@ Ext.define(
 		<sequence>\
 			<choice>\
 				<element name="p" type="fb3b:StyleType"/>\
-				<element name="ol">\
-					<complexType>\
-						<complexContent>\
-							<extension base="fb3b:LiHolderType"/>\
-						</complexContent>\
-					</complexType>\
-				</element>\
-				<element name="ul">\
-					<complexType>\
-						<complexContent>\
-							<extension base="fb3b:LiHolderType"/>\
-						</complexContent>\
-					</complexType>\
-				</element>\
+				<element name="ol" type="fb3b:LiHolderType"/>\
+				<element name="ul" type="fb3b:LiHolderType"/>\
 				<element name="code" type="fb3b:PHolderType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
 			</choice>\
 			<choice minOccurs="0" maxOccurs="unbounded">\
 				<element name="p" type="fb3b:StyleType"/>\
-				<element name="ol">\
-					<complexType>\
-						<complexContent>\
-							<extension base="fb3b:LiHolderType">\
-								<attribute name="id" type="ID" use="optional"/>\
-							</extension>\
-						</complexContent>\
-					</complexType>\
-				</element>\
-				<element name="ul">\
-					<complexType>\
-						<complexContent>\
-							<extension base="fb3b:LiHolderType">\
-								<attribute name="id" type="ID" use="optional"/>\
-							</extension>\
-						</complexContent>\
-					</complexType>\
-				</element>\
+				<element name="ol" type="fb3b:LiHolderType"/>\
+				<element name="ul" type="fb3b:LiHolderType"/>\
 				<element name="code" type="fb3b:PHolderType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
 				<element name="br" type="fb3b:BRType"/>\
@@ -313,7 +281,6 @@ Ext.define(
 				</complexType>\
 			</element>\
 			<element name="a" type="fb3b:LinkType"/>\
-			<element name="note" type="fb3b:NoteType"/>\
 			<element name="img" type="fb3b:ImgType"/>\
 			<element name="paper-page-break" type="fb3b:PaperPageBreakType"/>\
 		</choice>\
@@ -370,6 +337,8 @@ Ext.define(
 			<extension base="fb3b:TitledType">\
 				<sequence maxOccurs="unbounded">\
 					<element name="p" type="fb3b:StyleType"/>\
+					<!--OB подписи в цитаты и прочее-->\
+					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
 				</sequence>\
 			</extension>\
 		</complexContent>\
@@ -385,7 +354,7 @@ Ext.define(
 						<element name="ul" type="fb3b:LiHolderType"/>\
 					</choice>\
 				</sequence>\
-				<attribute name="id" type="ID" use="prohibited"/>\
+				<attribute name="id" type="ID" use="optional"/>\
 			</extension>\
 		</complexContent>\
 	</complexType>\
@@ -407,18 +376,14 @@ Ext.define(
 				<element name="ol">\
 					<complexType>\
 						<complexContent>\
-							<extension base="fb3b:LiHolderType">\
-								<attribute name="id" type="ID" use="optional"/>\
-							</extension>\
+							<extension base="fb3b:LiHolderType"/>\
 						</complexContent>\
 					</complexType>\
 				</element>\
 				<element name="ul">\
 					<complexType>\
 						<complexContent>\
-							<extension base="fb3b:LiHolderType">\
-								<attribute name="id" type="ID" use="optional"/>\
-							</extension>\
+							<extension base="fb3b:LiHolderType"/>\
 						</complexContent>\
 					</complexType>\
 				</element>\
@@ -463,13 +428,18 @@ Ext.define(
 			<pattern value="\d+(\.\d+)?(em|ex|%|mm)"/>\
 		</restriction>\
 	</simpleType>\
+	<simpleType name="UUIDType">\
+		<restriction base="token">\
+			<pattern value="[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}"/>\
+		</restriction>\
+	</simpleType>\
 	<attributeGroup name="SizingAttributes">\
 		<attribute name="width" type="fb3b:ScreenSizeType" use="optional"/>\
 		<attribute name="min-width" type="fb3b:ScreenSizeType" use="optional"/>\
 		<attribute name="max-width" type="fb3b:ScreenSizeType" use="optional"/>\
 	</attributeGroup>\
 </schema>\
-			';
+';
 
 			return xsd;
 		}

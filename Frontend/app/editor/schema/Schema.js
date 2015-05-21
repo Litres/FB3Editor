@@ -20,6 +20,7 @@ Ext.define(
 				xsd,
 				xsdJson,
 				cse,
+				dse,
 				elements;
 
 			// сокращенная форма метода создания элемента схемы
@@ -28,14 +29,20 @@ Ext.define(
 				return FBEditor.editor.schema.Factory.createElement(name, options);
 			};
 
+			// сокращенная форма метода для определения типа схемы
+			dse = function (name, options)
+			{
+				return FBEditor.editor.schema.Factory.defineType(name, options);
+			};
+
 			try
 			{
 				xsd = FBEditor.xsd.Body.getXsd();
 				xsl = FBEditor.xsl.SchemaBody.getXsl();
 				xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
+				console.log(xsdJson);
 
 				// преобразование строки в объект
-				console.log(xsdJson);
 				eval(xsdJson);
 				console.log(elements);
 			}
