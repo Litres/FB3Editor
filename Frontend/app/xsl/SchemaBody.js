@@ -50,13 +50,13 @@ Ext.define(
 		<xsl:param name="parentName"/>\
 		extend: \'<xsl:value-of select="$typeName"/><xsl:call-template name="extended"/>\'\
 		<xsl:if test="count(.//element)">\
-			, elements: {\
+			, elements: [\
 			<xsl:for-each select=".//element">\
 				<xsl:if test="not(@name=\'note\' and $parentName=\'fb3-body\')">\
 					<xsl:call-template name="element"/>\
 				</xsl:if>\
 			</xsl:for-each>\
-			}\
+			]\
 		</xsl:if>\
 	</xsl:template>\
 	\
@@ -69,7 +69,7 @@ Ext.define(
 			</xsl:choose>\
 		</xsl:variable>\
 		<xsl:if test="position()!=1">,</xsl:if>\
-		\'<xsl:value-of select="$elementName"/>\': {<xsl:if test="@*"><xsl:apply-templates select="@*"/></xsl:if>}\
+		{\'<xsl:value-of select="$elementName"/>\': {<xsl:if test="@*"><xsl:apply-templates select="@*"/></xsl:if>}}\
 	</xsl:template>\
 	\
 	<xsl:template name="extended">\
@@ -97,10 +97,10 @@ Ext.define(
 				</xsl:if>\
 				<xsl:if test="$extEls or $seqEls">\
 					<xsl:if test="complexContent/extension">,</xsl:if>\
-					elements: {\
+					elements: [\
 					<xsl:for-each select="$extEls"><xsl:call-template name="element"/></xsl:for-each>\
 					<xsl:for-each select="$seqEls"><xsl:call-template name="element"/></xsl:for-each>\
-				}</xsl:if>\
+				]</xsl:if>\
 				<xsl:if test="$seqChoice or $extChoice">\
 					<xsl:if test="complexContent/extension or $extEls or $seqEls">,</xsl:if>\
 					choice: {\
@@ -108,11 +108,12 @@ Ext.define(
 					<xsl:if test="$extChoice and $seqChoice">,</xsl:if>\
 					<xsl:if test="$seqChoice"><xsl:call-template name="choice"><xsl:with-param name="choice" select="$seqChoice"/></xsl:call-template></xsl:if>\
 				}</xsl:if>\
-				<xsl:if test="$extAttrs or $attrs">\
+				<xsl:if test="$extAttrs or $attrs or attributeGroup">\
 					<xsl:if test="complexContent/extension or $extEls or $seqEls or $seqChoice or $extChoice">,</xsl:if>\
 					attributes: {\
 					<xsl:for-each select="$extAttrs"><xsl:if test="position()!=1">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
 					<xsl:for-each select="$attrs"><xsl:if test="position()!=1 or $extAttrs">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
+					<xsl:if test="$attrs or $extAttrs">,</xsl:if><xsl:call-template name="attributeGroup"/>\
 				}</xsl:if>\
 			});\
 		</xsl:for-each>\
@@ -128,6 +129,12 @@ Ext.define(
 		</xsl:variable>\
 		\'<xsl:value-of select="$attrName"/>\': {<xsl:apply-templates select="@*"/>}\
 		<xsl:if test="simpleType/restriction">, restriction: {<xsl:call-template name="restriction"><xsl:with-param name="rest" select="simpleType/restriction"/></xsl:call-template>}</xsl:if>\
+	</xsl:template>\
+	\
+	<xsl:template name="attributeGroup">\
+		<xsl:variable name="groupName" select="substring(attributeGroup/@ref, 6)" />\
+		<xsl:variable name="group" select="/schema/attributeGroup[@name=$groupName]/attribute" />\
+		<xsl:for-each select="$group"><xsl:if test="position()!=1">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
 	</xsl:template>\
 	\
 	<xsl:template name="restriction">\
@@ -150,16 +157,7 @@ Ext.define(
 		<xsl:param name="choice"/>\
 		<xsl:variable name="seq" select="$choice/sequence"/>\
 		<xsl:if test="$choice/@*">attributes: {<xsl:apply-templates select="$choice/@*"/>},</xsl:if>\
-		<xsl:if test="$choice/element">\
-			elements: {\
-			<xsl:for-each select="$choice/element">\
-				<xsl:call-template name="element">\
-					<xsl:with-param name="attributes" select="@*"/>\
-					<xsl:with-param name="elementName" select="@name"/>\
-					<xsl:with-param name="pos" select="position()"/>\
-				</xsl:call-template>\
-			</xsl:for-each>\
-		}</xsl:if>\
+		<xsl:if test="$choice/element">elements: [<xsl:for-each select="$choice/element"><xsl:call-template name="element"/></xsl:for-each>]</xsl:if>\
 		<xsl:if test="$seq">\
 			<xsl:if test="$choice/element">,</xsl:if>\
 			sequence: {<xsl:call-template name="sequence"><xsl:with-param name="seq" select="$seq"/></xsl:call-template>}\
@@ -170,16 +168,7 @@ Ext.define(
 		<xsl:param name="seq"/>\
 		<xsl:variable name="seqChoice" select="$seq/choice"/>\
 		<xsl:variable name="seqEls" select="$seq/element"/>\
-		<xsl:if test="$seqEls">\
-			elements: {\
-			<xsl:for-each select="$seqEls">\
-				<xsl:call-template name="element">\
-					<xsl:with-param name="attributes" select="@*"/>\
-					<xsl:with-param name="elementName" select="@name"/>\
-					<xsl:with-param name="pos" select="position()"/>\
-				</xsl:call-template>\
-			</xsl:for-each>\
-		}</xsl:if>\
+		<xsl:if test="$seqEls">elements: [<xsl:for-each select="$seqEls"><xsl:call-template name="element"/></xsl:for-each>]</xsl:if>\
 		<xsl:if test="$seqChoice">\
 			<xsl:if test="$seqEls">,</xsl:if>\
 			choice: {<xsl:call-template name="choice"><xsl:with-param name="choice" select="$seqChoice"/></xsl:call-template>}\

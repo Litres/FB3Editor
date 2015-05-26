@@ -208,6 +208,26 @@ Ext.define(
 		getSchema: function ()
 		{
 			return this.schema;
+		},
+
+		/**
+		 * Возвращает список имен дочерних элементов.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @return {Array} Имена дочерних элементов.
+		 */
+		getNamesElements: function (el)
+		{
+			var els = [];
+
+			Ext.Array.each(
+				el.children,
+			    function (item)
+			    {
+				    els.push(item.xmlTag);
+			    }
+			);
+
+			return els;
 		}
 	}
 );

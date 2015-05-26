@@ -384,6 +384,64 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает количество дочерних элементов с определенным значением свойства.
+		 * @param {String} nameProp Имя свойства элемента.
+		 * @param {String} valueProp Значение свойства элемента.
+		 * @return {Number}
+		 */
+		getChildrenCountByProp: function (nameProp, valueProp)
+		{
+			var me = this,
+				count = 0;
+
+			Ext.Array.each(
+				me.children,
+			    function (item)
+			    {
+				    if (item[nameProp] === valueProp)
+				    {
+					    count++;
+				    }
+			    }
+			);
+
+			return count;
+		},
+
+		/**
+		 * Возвращает позицию дочернего элемента, относительно родителя.
+		 * @param {FBEditor.editor.element.AbstractElement} el Дочерний элемент.
+		 * @return {Number} Позиция дочернего элемента.
+		 */
+		getChildPosition: function (el)
+		{
+			var me = this,
+				children = me.children,
+				pos = null;
+
+			if (!el.elementId)
+			{
+				console.error(el);
+
+				return null;
+			}
+			Ext.Array.each(
+				children,
+				function (item, index)
+				{
+					if (el.elementId ===  item.elementId)
+					{
+						pos = index;
+
+						return false;
+					}
+				}
+			);
+
+			return pos;
+		},
+
+		/**
 		 * @protected
 		 * Возвращает строку атрибутов элементов для xml.
 		 * @return {String} Строка атрибутов.
@@ -445,40 +503,6 @@ Ext.define(
 			}
 
 			return el;
-		},
-
-		/**
-		 * @protected
-		 * Возвращает позицию дочернего элемента, относительно родителя.
-		 * @param {FBEditor.editor.element.AbstractElement} el Дочерний элемент.
-		 * @return {Number} Позиция дочернего элемента.
-		 */
-		getChildPosition: function (el)
-		{
-			var me = this,
-				children = me.children,
-				pos = null;
-
-			if (!el.elementId)
-			{
-				console.error(el);
-
-				return null;
-			}
-			Ext.Array.each(
-				children,
-				function (item, index)
-				{
-					if (el.elementId ===  item.elementId)
-					{
-						pos = index;
-
-						return false;
-					}
-				}
-			);
-
-			return pos;
 		},
 
 		/**

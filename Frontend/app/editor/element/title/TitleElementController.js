@@ -17,12 +17,34 @@ Ext.define(
 		 */
 		onCreateElement: function (sel)
 		{
-			var cmd;
+			var me = this,
+				cmd,
+				sch,
+				name,
+				range,
+				node,
+				parentNode,
+				parentEl,
+				elements;
 
-			cmd = Ext.create('FBEditor.editor.command.title.CreateCommand', {sel: sel});
-			if (cmd.execute())
+			name = me.getElement().xmlTag;
+			sel = sel || window.getSelection();
+			range = sel.getRangeAt(0);
+			node = range.endContainer.parentNode;
+			parentNode = node.parentNode;
+			node = parentNode.nodeName === 'HEADER' ? parentNode : node;
+			parentNode = node.parentNode;
+			sch = FBEditor.editor.Manager.getSchema();
+			parentEl = parentNode.getElement();
+			elements = FBEditor.editor.Manager.getNamesElements(parentEl);
+			elements.unshift(name);
+			if (sch.verify(parentEl.xmlTag, elements))
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				cmd = Ext.create('FBEditor.editor.command.title.CreateCommand', {node: node});
+				if (cmd.execute())
+				{
+					FBEditor.editor.HistoryManager.add(cmd);
+				}
 			}
 		}
 	}

@@ -29,15 +29,33 @@ Ext.define(
 		 */
 		onCreateElement: function (sel)
 		{
-			//
+			var me = this,
+				cmd,
+				name;
+
+			name = me.getElement().xmlTag;
+			cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {sel: sel});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		},
 
 		/**
 		 * Вставляет новый элемент.
+		 * @param {Node} node Узел, после которого необходимо вставить элемент.
 		 */
-		onInsertElement: function ()
+		onInsertElement: function (node)
 		{
-			//
+			var cmd,
+				name;
+
+			name = node.getElement().xmlTag;
+			cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {node: node});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		},
 
 		/**
@@ -46,14 +64,32 @@ Ext.define(
 		 */
 		onSplitElement: function (node)
 		{
-			var el;
+			var el,
+				sch,
+				elements,
+				parentEl,
+				parentNode,
+				pos,
+				name;
 
 			el = node.getElement();
 			//console.log('splittable', el.permit.splittable, node);
+
+			// разрешена ли разбивка блока на два
 			if (el.permit.splittable)
 			{
-				// вставляем новый элемент
-				el.fireEvent('insertElement', node);
+				sch = FBEditor.editor.Manager.getSchema();
+				parentNode = node.parentNode;
+				parentEl = parentNode.getElement();
+				elements = FBEditor.editor.Manager.getNamesElements(parentEl);
+				name = el.xmlTag;
+				pos = parentEl.getChildPosition(el);
+				elements.splice(pos + 1, 0, name);
+				if (sch.verify(parentEl.xmlTag, elements))
+				{
+					// вставляем новый элемент
+					el.fireEvent('insertElement', node);
+				}
 			}
 			else
 			{

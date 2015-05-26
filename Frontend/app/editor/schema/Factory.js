@@ -63,8 +63,8 @@ Ext.define(
 						{
 							if (cls.elements)
 							{
-								me.elements = me.elements || {};
-								me.elements = Ext.applyIf(me.elements, cls.elements);
+								me.elements = me.elements || [];
+								me.elements = Ext.Array.merge(cls.elements, me.elements);
 							}
 							if (cls.choice)
 							{

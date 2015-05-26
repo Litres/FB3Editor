@@ -16,21 +16,18 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				sel,
-				range,
+				sel = window.getSelection(),
 				viewportId;
 
 			try
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
 				els.title = FBEditor.editor.Factory.createElement('title');
-				sel = data.sel || window.getSelection();
-				range = sel.getRangeAt(0);
-				nodes.node = range.endContainer.parentNode;
+				nodes.node = data.node;
 				nodes.parent = nodes.node.parentNode;
 				nodes.node = nodes.parent.nodeName === 'HEADER' ? nodes.parent : nodes.node;
 				nodes.parent = nodes.node.parentNode;
-				nodes.next = nodes.node.nextSibling;
+				nodes.first = nodes.parent.firstChild;
 				els.parent = nodes.parent.getElement();
 				viewportId = nodes.node.viewportId;
 				els.p = FBEditor.editor.Factory.createElement('p');
@@ -38,11 +35,11 @@ Ext.define(
 				els.p.add(els.t);
 				els.title.add(els.p);
 				nodes.title = els.title.getNode(viewportId);
-				if (nodes.next)
+				if (nodes.first)
 				{
-					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.title, els.next);
-					nodes.parent.insertBefore(nodes.title, nodes.next);
+					els.first = nodes.first.getElement();
+					els.parent.insertBefore(els.title, els.first);
+					nodes.parent.insertBefore(nodes.title, nodes.first);
 				}
 				else
 				{
@@ -87,7 +84,6 @@ Ext.define(
 			try
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
-				sel = data.sel;
 				nodes.title = data.title;
 				els.title = nodes.title.getElement();
 				viewportId = nodes.title.viewportId;
@@ -104,8 +100,6 @@ Ext.define(
 				els.cursor = nodes.cursor.getElement();
 				FBEditor.editor.Manager.setFocusElement(els.cursor);
 				sel.collapse(nodes.cursor, range.endOffset);
-
-				data.sel = sel;
 
 				res = true;
 			}
