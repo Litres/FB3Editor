@@ -92,37 +92,23 @@ Ext.define(
 			var me = this,
 				res = true,
 				srcEls = elements,
-				schEl,
-				schElements,
-				schChoice,
+				seq,
+				el,
 				nameEl;
 
-			schEl = me.getElement(name);
-			if (!schEl)
+			el = me.getElement(name);
+			if (!el)
 			{
 				return false;
 			}
-			schElements = schEl.elements ? Ext.clone(schEl.elements) : null;
-			schChoice = schEl.choice ? Ext.clone(schEl.choice) : null;
-			console.log('VERIFY name, elements, schEl', name, elements, schEl);
+			seq = el.sequence ? Ext.clone(el.sequence) : null;
+			console.log('VERIFY name, srcEls, el', name, srcEls, el);
 			while (srcEls.length)
 			{
 				nameEl = srcEls[0];
-				if (!schElements)
+				if (!me.checkSequence(nameEl, seq, srcEls))
 				{
-					res = false;
-				}
-				else if (res && schElements.length && !me.checkElement(nameEl, srcEls, schElements))
-				{
-					res = false;
-				}
-				if ((!schElements || schElements && !schElements.length) && schChoice)
-				{
-					res = true;
-					if (schChoice && !me.checkChoice(nameEl, schChoice))
-					{
-						return false;
-					}
+					return false;
 				}
 				srcEls.splice(0, 1);
 			}
@@ -131,192 +117,111 @@ Ext.define(
 		},
 
 		/**
-		 * Проверяет элемент по списку elements.
+		 * Проверяет элемент по sequence.
 		 * @param {String} name Имя элемента.
-		 * @param {Array} srcEls Список исходных элементов.
-		 * @param {Array} schElements Список элементов схемы.
+		 * @param {Array} seq Элементы sequence.
 		 * @return {Boolean} Успешность проверки элемента.
 		 */
-		checkElement: function (name, srcEls, schElements)
+		checkSequence: function (name, seq, srcEls)
 		{
-			var res = false,
-				pos = 0,
-				el;
+			var me = this,
+				res = false,
+				item;
 
-			console.log('name, srcEls, schElements', name, srcEls, schElements);
-			while (pos < schElements.length)
+			//console.log('name, seq', name, seq);
+			while (seq.length)
 			{
-				el = Ext.Object.getValues(schElements[pos])[0];
-				if (el.name === name)
+				item = seq[0];
+				res = item.element ? me.checkElement(name, item.element, seq, srcEls) : res;
+				if (item.choice)
 				{
-					// совпадающий элемент
-					console.log('ok el, pos', el, pos);
-					schElements.splice(pos, 1);
-
+					res = me.checkChoice(name, item.choice, seq, srcEls);
+				}
+				if (res)
+				{
 					return true;
 				}
-				if (el.minOccurs && Number(el.minOccurs) === 0)
+			}
+			console.log('ERROR VERIFY', name);
+
+			return res;
+		},
+
+		/**
+		 * Проверяет элемент по element.
+		 * @param {String} name Имя элемента.
+		 * @param {Object} element Элемент схемы.
+		 * @param {Array} items Элементы sequence.
+		 * @return {Boolean} Успешность проверки элемента.
+		 */
+		checkElement: function (name, element, items, srcEls)
+		{
+			var res = false,
+				el,
+				nextName;
+
+			el = Ext.Object.getValues(element)[0];
+			//console.log('name, el, items', name, el, items);
+			if (el.name === name)
+			{
+				// совпадающий элемент
+				nextName = srcEls[1] ? srcEls[1] : null;
+				//console.log('ok el, nextName', el, nextName);
+				res = true;
+				if (el.maxOccurs && el.maxOccurs === 'unbounded' && nextName === name)
 				{
-					// пропускаем проверку необязательного элемента
-					//console.log('cancel el, pos', el, pos);
-					schElements.splice(pos, 1);
+					// бесконечное количество элементов
 				}
 				else
 				{
-					pos++;
+					items.splice(0, 1);
 				}
 			}
-
-			return res;
-		},
-
-		/**
-		 * Проверяет элемент по выбору choice.
-		 * @param {String} name Имя элемента.
-		 * @param {Object} schChoice Элементы choice.
-		 * @return {Boolean} Успешность проверки элемента.
-		 */
-		checkChoice: function (name, schChoice)
-		{
-			var me = this,
-				res,
-				el;
-
-			console.log('name, schChoice', name, schChoice);
-			el = Ext.Array.findBy(
-				schChoice.elements,
-			    function (item)
-			    {
-				    return item[name];
-			    }
-			);
-			res = el ? true : false;
-			if (!res && schChoice.sequence && me.checkSequence(name, schChoice.sequence))
+			else if (el.minOccurs && Number(el.minOccurs) === 0)
 			{
-				res = true;
+				// пропускаем проверку необязательного элемента
+				//console.log('cancel el', el);
+				items.splice(0, 1);
+			}
+			else
+			{
+				items.splice(0, 1);
 			}
 
 			return res;
 		},
 
 		/**
-		 * Проверяет элемент по sequence.
+		 * Проверяет элемент по choice.
 		 * @param {String} name Имя элемента.
-		 * @param {Object} schSequence Элементы sequence.
+		 * @param {Object} choice Элементы choice.
 		 * @return {Boolean} Успешность проверки элемента.
 		 */
-		checkSequence: function (name, schSequence)
+		checkChoice: function (name, choice, items, srcEls)
 		{
 			var me = this,
-				res = false;
-
-			console.log('name, schSequence', name, schSequence);
-			if (schSequence.choice && me.checkChoice(name, schSequence.choice))
-			{
-				res = true;
-			}
-
-			return res;
-		},
-
-		/**
-		 * Проверяет предыдущий элемент.
-		 * @param {String} name Имя элемента.
-		 * @param {String} prevName Имя предыдущего элемента.
-		 * @param {Node} node Узел после которого необходимо вставить элемент.
-		 * @return {Boolean} Соответствует ли схеме предыдущий элемент.
-		 */
-		checkPrevious: function (name, prevName, node)
-		{
-			var me = this,
-				sch,
+				res = false,
 				els,
-				el,
-				parentName,
-				parentEl,
-				count,
-				index,
-				res = false;
+				item;
 
-			parentEl = node.parentNode.getElement();
-			parentName = parentEl.xmlTag;
-			sch = me.getElement(parentName);
-			els = sch.elements;
-			if (els.length)
+			//console.log('name, choice', name, choice);
+			els = choice.elements;
+			while (els.length)
 			{
-				el = Ext.Array.findBy(
-					els,
-					function (item, i)
-					{
-						index = i;
-
-						return item[name];
-					}
-				);
-				if (el)
+				item = els[0];
+				res = me.checkElement(name, item, els, srcEls);
+				if (res)
 				{
-					console.log(els, el, index);
-					// если элемент такой же как и предыдущий
-					if (name === prevName)
-					{
-						if (el[prevName].maxOccurs && el[prevName].maxOccurs === 'unbounded')
-						{
-							// бесконечное количество элементов
-							res = true;
-						}
-						else if (el[prevName].maxOccurs)
-						{
-							// ограниченное количество элементов
-							count = 1 + me.getPrevCount(prevName, node) + me.getNextCount(prevName, node);
-							res = count < Number(el[prevName].maxOccurs) ? true : false;
-						}
-					}
+					return true;
 				}
 			}
+			if (!res && choice.sequence && me.checkSequence(name, choice.sequence, srcEls))
+			{
+				res = true;
+			}
+			items.splice(0, 1);
 
 			return res;
-		},
-
-		/**
-		 * @private
-		 * Возвращает количество предыдущих элементов.
-		 * @param {String} name Имя элемента.
-		 * @param {Node} node Узел элемента.
-		 * @return {Number} Количество предыдущих элементов.
-		 */
-		getPrevCount: function (name, node)
-		{
-			var count = 0,
-				prev = node.previousSibling;
-
-			while (prev && prev.getElement().xmlTag === name)
-			{
-				count++;
-				prev = prev.previousSibling;
-			}
-
-			return count;
-		},
-
-		/**
-		 * @private
-		 * Возвращает количество следующих элементов.
-		 * @param {String} name Имя элемента.
-		 * @param {Node} node Узел элемента.
-		 * @return {Number} Количество следующих элементов.
-		 */
-		getNextCount: function (name, node)
-		{
-			var count = 0,
-				next = node.nextSibling;
-
-			while (next && next.getElement().xmlTag === name)
-			{
-				count++;
-				next = next.nextSibling;
-			}
-
-			return count;
 		}
 	}
 );

@@ -59,17 +59,12 @@ Ext.define(
 						var me = this,
 							cls = me.superclass;
 
+						me.sequence = me.sequence || [];
 						while (cls)
 						{
-							if (cls.elements)
+							if (cls.sequence)
 							{
-								me.elements = me.elements || [];
-								me.elements = Ext.Array.merge(cls.elements, me.elements);
-							}
-							if (cls.choice)
-							{
-								me.choice = me.choice || {};
-								me.choice = Ext.applyIf(me.choice, cls.choice);
+								me.sequence = Ext.Array.merge(cls.sequence, me.sequence);
 							}
 							if (cls.attributes)
 							{
