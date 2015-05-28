@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
+			'FBEditor.editor.command.title.CreateCommand',
 			'FBEditor.editor.element.title.TitleElementController'
 		],
 		controllerClass: 'FBEditor.editor.element.title.TitleElementController',

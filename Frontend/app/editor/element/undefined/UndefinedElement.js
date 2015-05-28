@@ -24,7 +24,7 @@ Ext.define(
 				n;
 
 			me.realName = realName;
-			n = realName.replace(/-([a-z])/g, '$1');
+			n = realName;//realName.replace(/-([a-z])/g, '$1');
 			me.htmlTag = n;
 			me.xmlTag = n;
 			me.callParent([attributes, children]);

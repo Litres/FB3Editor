@@ -106,8 +106,10 @@ Ext.define(
 			while (srcEls.length)
 			{
 				nameEl = srcEls[0];
+				console.log('============================= (nameEl, seq, srcEls)', nameEl, seq, srcEls);
 				if (!me.checkSequence(nameEl, seq, srcEls))
 				{
+					console.log('ERROR VERIFY', nameEl, seq, srcEls);
 					return false;
 				}
 				srcEls.splice(0, 1);
@@ -126,23 +128,36 @@ Ext.define(
 		{
 			var me = this,
 				res = false,
-				item;
+				item,
+				pos = 0;
 
-			//console.log('name, seq', name, seq);
+			console.log('--- SEQUENCE --- (name, seq, srcEls)', name, seq, srcEls);
 			while (seq.length)
 			{
-				item = seq[0];
-				res = item.element ? me.checkElement(name, item.element, seq, srcEls) : res;
-				if (item.choice)
+				item = seq[pos];
+				res = item && item.element ? me.checkElement(name, item.element, seq, srcEls) : res;
+				if (item && item.choice)
 				{
 					res = me.checkChoice(name, item.choice, seq, srcEls);
+					if (seq[pos + 1])
+					{
+						pos++;
+					}
+					else
+					{
+						return res;
+					}
 				}
 				if (res)
 				{
 					return true;
 				}
+				if (!item)
+				{
+					console.log('RETURN!!! (res, name, seq, srcEls)', res, name, seq, srcEls);
+					return srcEls.length ? true : res;
+				}
 			}
-			console.log('ERROR VERIFY', name);
 
 			return res;
 		},
@@ -161,16 +176,21 @@ Ext.define(
 				nextName;
 
 			el = Ext.Object.getValues(element)[0];
-			//console.log('name, el, items', name, el, items);
-			if (el.name === name)
+			console.log('+++ ELEMENT +++ (name, el, element, items, srcEls)', name, el, element, items, srcEls);
+			if (el.name === name || el.ref === name)
 			{
 				// совпадающий элемент
 				nextName = srcEls[1] ? srcEls[1] : null;
-				//console.log('ok el, nextName', el, nextName);
+				console.log('<OK> (el, nextName)', el, nextName);
 				res = true;
 				if (el.maxOccurs && el.maxOccurs === 'unbounded' && nextName === name)
 				{
 					// бесконечное количество элементов
+				}
+				else if (el.maxOccurs && Number(el.maxOccurs) > 1 && nextName === name)
+				{
+					// ограниченное количество элементов
+					el.maxOccurs = Number(el.maxOccurs) - 1;
 				}
 				else
 				{
@@ -194,7 +214,7 @@ Ext.define(
 		/**
 		 * Проверяет элемент по choice.
 		 * @param {String} name Имя элемента.
-		 * @param {Object} choice Элементы choice.
+		 * @param {Object} choice Элемент с choice.
 		 * @return {Boolean} Успешность проверки элемента.
 		 */
 		checkChoice: function (name, choice, items, srcEls)
@@ -202,24 +222,47 @@ Ext.define(
 			var me = this,
 				res = false,
 				els,
-				item;
+				item,
+				el,
+				attrs,
+				nextName;
 
-			//console.log('name, choice', name, choice);
+			console.log('___ CHOICE ____ (name, choice, items, srcEls)', name, choice, items, srcEls);
+			nextName = srcEls[1] ? srcEls[1] : null;
 			els = choice.elements;
-			while (els.length)
+			attrs = choice.attributes || {};
+			while (!res && els.length)
 			{
 				item = els[0];
+				el = Ext.Object.getValues(item)[0];
+				el = Ext.apply(el, attrs);
 				res = me.checkElement(name, item, els, srcEls);
-				if (res)
+			}
+			if (!res && choice.sequence)
+			{
+				res = me.checkSequence(name, choice.sequence, srcEls);
+			}
+			/*if (res)
+			{
+				console.log('<<<OK choice>>> (name, choice, items, srcEls, nextName)', name, choice, items, srcEls, nextName);
+				if (attrs.maxOccurs && attrs.maxOccurs === 'unbounded' && nextName === name)
 				{
-					return true;
+					// бесконечное количество элементов
+				}
+				else if (attrs.maxOccurs && Number(attrs.maxOccurs) > 1 && nextName === name)
+				{
+					// ограниченное количество элементов
+					attrs.maxOccurs = Number(attrs.maxOccurs) - 1;
+				}
+				else if (nextName !== name)
+				{
+					items.splice(0, 1);
 				}
 			}
-			if (!res && choice.sequence && me.checkSequence(name, choice.sequence, srcEls))
+			else
 			{
-				res = true;
-			}
-			items.splice(0, 1);
+				items.splice(0, 1);
+			}*/
 
 			return res;
 		}

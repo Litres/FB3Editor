@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
-			'FBEditor.view.panel.toolstab.main.button.title.Title'
+			'FBEditor.view.panel.toolstab.main.button.title.Title',
+			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph'
 		],
 		id:'panel-toolstab-main',
 		xtype: 'panel-toolstab-main',
@@ -22,6 +23,9 @@ Ext.define(
 			me.tbar = [
 				{
 					xtype: 'panel-toolstab-main-button-title'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-epigraph'
 				}
 			];
 			me.callParent(arguments);

@@ -45,6 +45,13 @@ Ext.define(
 	\
 	<xsl:template match="@*">\'<xsl:value-of select="local-name()"/>\': \'<xsl:value-of select="."/>\'<xsl:if test="position()!=last()">, </xsl:if></xsl:template>\
 	\
+	<xsl:template name="attrs">\
+		<xsl:param name="attrs"/>\
+		<xsl:for-each select="$attrs">\
+			\'<xsl:value-of select="name()"/>\': \'<xsl:value-of select="."/>\'<xsl:if test="position()!=last()">, </xsl:if>\
+		</xsl:for-each>\
+	</xsl:template>\
+	\
 	<xsl:template name="elements">\
 		<xsl:param name="typeName"/>\
 		<xsl:param name="parentName"/>\
@@ -62,6 +69,7 @@ Ext.define(
 	</xsl:template>\
 	\
 	<xsl:template name="element">\
+		<xsl:param name="attrs"/>\
 		<xsl:variable name="elementName">\
 			<xsl:choose>\
 				<xsl:when test="@name"><xsl:value-of select="@name"/></xsl:when>\
@@ -69,7 +77,13 @@ Ext.define(
 				<xsl:otherwise><xsl:text>undefined</xsl:text></xsl:otherwise>\
 			</xsl:choose>\
 		</xsl:variable>\
-		{\'<xsl:value-of select="$elementName"/>\': {<xsl:if test="@*"><xsl:apply-templates select="@*"/></xsl:if>}}\
+		{\'<xsl:value-of select="$elementName"/>\': {\
+			<xsl:if test="@*"><xsl:apply-templates select="@*"/></xsl:if>\
+			<xsl:if test="$attrs">\
+				<xsl:if test="@*">,</xsl:if>\
+				<xsl:call-template name="attrs"><xsl:with-param name="attrs" select="$attrs"/></xsl:call-template>\
+			</xsl:if>\
+		}}\
 	</xsl:template>\
 	\
 	<xsl:template name="extended">\
@@ -165,7 +179,7 @@ Ext.define(
 		<xsl:param name="seq"/>\
 		<xsl:for-each select="$seq/*">\
 			<xsl:if test="position()!=1">,</xsl:if>\
-			<xsl:if test="name()=\'element\'">{element: <xsl:call-template name="element"/>}</xsl:if>\
+			<xsl:if test="name()=\'element\'">{element: <xsl:call-template name="element"><xsl:with-param name="attrs" select="$seq/@*"/></xsl:call-template>}</xsl:if>\
 			<xsl:if test="name()=\'choice\'">{choice: {<xsl:call-template name="choice"><xsl:with-param name="choice" select="."/></xsl:call-template>}}</xsl:if>\
 		</xsl:for-each>\
 	</xsl:template>\
