@@ -96,20 +96,23 @@ Ext.define(
 				el,
 				nameEl;
 
+			// отладочные сообщения
+			me.disableDebug = true;
+
 			el = me.getElement(name);
 			if (!el)
 			{
 				return false;
 			}
 			seq = el.sequence ? Ext.clone(el.sequence) : null;
-			console.log('VERIFY name, srcEls, el', name, srcEls, el);
+			me.disableDebug || console.log('VERIFY name, srcEls, el', name, srcEls, el);
 			while (srcEls.length)
 			{
 				nameEl = srcEls[0];
-				console.log('============================= (nameEl, seq, srcEls)', nameEl, seq, srcEls);
+				me.disableDebug || console.log('======================== (nameEl, seq, srcEls)', nameEl, seq, srcEls);
 				if (!me.checkSequence(seq, srcEls))
 				{
-					console.log('=== ERROR VERIFY === (nameEl, seq, srcEls)', nameEl, seq, srcEls);
+					me.disableDebug || console.log('=== ERROR VERIFY === (nameEl, seq, srcEls)', nameEl, seq, srcEls);
 					return false;
 				}
 			}
@@ -131,7 +134,7 @@ Ext.define(
 				name,
 				nextName;
 
-			console.log('--- SEQUENCE --- (name, seq, srcEls)', srcEls[0], seq, srcEls);
+			me.disableDebug || console.log('--- SEQUENCE --- (name, seq, srcEls)', srcEls[0], seq, srcEls);
 
 			// перебираем всю последовательность sequence
 			while (seq.length)
@@ -157,7 +160,7 @@ Ext.define(
 						while (name && (res = me.checkChoice(name, item.choice)))
 						{
 							// если имя элемента совпало, то удаляем его из списка и проверяем следующее
-							console.log('< OK > sequence choice (name, choice)', name, item.choice);
+							me.disableDebug || console.log('< OK > sequence choice (name, choice)', name, item.choice);
 							srcEls.splice(0, 1);
 							name = srcEls.length ? srcEls[0] : false;
 						}
@@ -181,17 +184,18 @@ Ext.define(
 		 */
 		checkElement: function (name, nextName, element, items)
 		{
-			var res = false,
+			var me = this,
+				res = false,
 				el;
 
 			// данные проверяемого элемента element
 			el = Ext.Object.getValues(element)[0];
-			console.log('--- ELEMENT --- (name, nextName, el, items)', name, nextName, el, items);
+			me.disableDebug || console.log('--- ELEMENT --- (name, nextName, el, items)', name, nextName, el, items);
 
 			if (el.name === name || el.ref === name)
 			{
 				// совпадающее имя элемента
-				console.log('< OK > sequence element (el, nextName)', el, nextName);
+				me.disableDebug || console.log('< OK > sequence element (el, nextName)', el, nextName);
 				res = true;
 				if (el.maxOccurs && el.maxOccurs === 'unbounded' && nextName === name)
 				{
@@ -214,7 +218,6 @@ Ext.define(
 			{
 				// пропускаем проверку необязательного элемента
 				// убираем из последовательности element
-				//console.log('cancel el', el);
 				items.splice(0, 1);
 			}
 			else
@@ -238,8 +241,8 @@ Ext.define(
 				res = false,
 				attrs;
 
-			console.log('+++ CHOICE +++ (name, choice)', name, choice);
-			attrs = choice.attributes || {};
+			me.disableDebug || console.log('+++ CHOICE +++ (name, choice)', name, choice);
+			//attrs = choice.attributes || {};
 
 			// проверяем имя элемента на совпадение с choice.elements
 			res = Ext.Array.findBy(
@@ -261,27 +264,6 @@ Ext.define(
 				// проверяем имя элемента на совпадение в последовательности choice.sequence
 				res = me.checkChoiceSequence(name, choice.sequence);
 			}
-			/*if (res)
-			{
-				console.log('<<<OK choice>>> (name, choice, items, srcEls, nextName)', name, choice, items, srcEls, nextName);
-				if (attrs.maxOccurs && attrs.maxOccurs === 'unbounded' && nextName === name)
-				{
-					// бесконечное количество элементов
-				}
-				else if (attrs.maxOccurs && Number(attrs.maxOccurs) > 1 && nextName === name)
-				{
-					// ограниченное количество элементов
-					attrs.maxOccurs = Number(attrs.maxOccurs) - 1;
-				}
-				else if (nextName !== name)
-				{
-					items.splice(0, 1);
-				}
-			}
-			else
-			{
-				items.splice(0, 1);
-			}*/
 
 			return res;
 		},
@@ -297,7 +279,7 @@ Ext.define(
 			var me = this,
 				res = false;
 
-			console.log('+++ CHOICE SEQUENCE +++ (name, choiceSeq)', name, choiceSeq);
+			me.disableDebug || console.log('+++ CHOICE SEQUENCE +++ (name, choiceSeq)', name, choiceSeq);
 
 			// ищем любое совпадение в choice.sequence
 			res = Ext.Array.findBy(
@@ -309,7 +291,7 @@ Ext.define(
 					    // проверяем имя элемента на прямое совпадение с element
 					    if (item.element[name])
 					    {
-						    console.log('-< OK >- choice sequence element (name, element)', name, item.element);
+						    me.disableDebug || console.log('-< OK >- choice sequence element (name, element)', name, item.element);
 						    return true;
 					    }
 				    }
@@ -318,7 +300,7 @@ Ext.define(
 					    // проверяем имя элемента в choice
 					    if (me.checkChoice(name, item.choice))
 					    {
-						    console.log('+< OK >+ choice sequence choice (name, choice)', name, item.choice);
+						    me.disableDebug || console.log('+< OK >+ choice sequence choice (name, choice)', name, item.choice);
 						    return true;
 					    }
 				    }

@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
+			'FBEditor.view.panel.toolstab.main.button.annotation.Annotation',
 			'FBEditor.view.panel.toolstab.main.button.div.Div',
 			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
 			'FBEditor.view.panel.toolstab.main.button.title.Title'
@@ -27,6 +28,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-epigraph'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-annotation'
 				},
 				{
 					xtype: 'panel-toolstab-main-button-div'

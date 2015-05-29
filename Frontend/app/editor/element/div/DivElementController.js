@@ -9,44 +9,22 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 
-		/**
-		 * Создает новый блок.
-		 */
-		onCreateElement: function (sel)
+		getNameElementsVerify: function (nodes)
 		{
 			var me = this,
-				cmd,
-				sch,
-				name,
-				range,
-				node,
-				el,
-				parentNode,
-				parentEl,
-				elements,
-				pos;
+				els = {},
+				nameElements,
+				name;
 
-			name = me.getElement().xmlTag;
-			sel = sel || window.getSelection();
-			range = sel.getRangeAt(0);
-			node = range.endContainer.parentNode;
-			parentNode = node.parentNode;
-			node = parentNode.getElement().xmlTag === name ? parentNode : node;
-			el = node.getElement();
-			parentNode = node.parentNode;
-			sch = FBEditor.editor.Manager.getSchema();
-			parentEl = parentNode.getElement();
-			elements = FBEditor.editor.Manager.getNamesElements(parentEl);
-			pos = parentEl.getChildPosition(el);
-			elements.splice(pos + 1, 0, name);
-			if (sch.verify(parentEl.xmlTag, elements))
-			{
-				cmd = Ext.create('FBEditor.editor.command.div.CreateCommand', {node: node});
-				if (cmd.execute())
-				{
-					FBEditor.editor.HistoryManager.add(cmd);
-				}
-			}
+			name = me.getNameElement();
+			nodes.node = nodes.parent.getElement().xmlTag === name ? nodes.parent : nodes.node;
+			nodes.parent = nodes.node.parentNode;
+			els.node = nodes.node.getElement();
+			els.parent = nodes.parent.getElement();
+			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
+			nameElements.splice(els.parent.getChildPosition(els.node) + 1, 0, name);
+
+			return nameElements;
 		}
 	}
 );

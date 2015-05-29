@@ -31,13 +31,21 @@ Ext.define(
 		{
 			var me = this,
 				cmd,
-				name;
+				name,
+				node;
 
-			name = me.getElement().xmlTag;
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {sel: sel});
-			if (cmd.execute())
+			// получаем узел из выделения и одновременно проверяем элемент по схеме
+			node = me.getNodeVerify(sel);
+
+			if (node)
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				// если элемент прошел проверку, то создаем его
+				name = me.getNameElement();
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {node: node});
+				if (cmd.execute())
+				{
+					FBEditor.editor.HistoryManager.add(cmd);
+				}
 			}
 		},
 
@@ -362,6 +370,76 @@ Ext.define(
 		getElement: function ()
 		{
 			return this.el;
+		},
+
+		/**
+		 * @protected
+		 * Возвращает имя элемента.
+		 * @return {String} Имя элемента.
+		 */
+		getNameElement: function ()
+		{
+			var me = this;
+
+			return me.getElement().xmlTag;
+		},
+
+		/**
+		 * @protected
+		 * Проверяет элемент по схеме и возвращает узел в случае успеха.
+		 * @param {Selection} sel Выделение.
+		 * @return {Node|Boolean} Узел.
+		 */
+		getNodeVerify: function (sel)
+		{
+			var me = this,
+				els = {},
+				nodes = {},
+				res,
+				sch,
+				name,
+				range,
+				nameElements;
+
+			// получаем узел из выделения
+			sel = sel || window.getSelection();
+			range = sel.getRangeAt(0);
+			nodes.node = range.endContainer.parentNode;
+			nodes.parent = nodes.node.parentNode;
+
+			// получаем дочерние имена элементов для проверки по схеме
+			nameElements = me.getNameElementsVerify(nodes);
+
+			// проверяем элемент по схеме
+			sch = FBEditor.editor.Manager.getSchema();
+			els.parent = nodes.parent.getElement();
+			name = els.parent.xmlTag;
+			res = sch.verify(name, nameElements) ? nodes.node : false;
+
+			return res;
+		},
+
+		/**
+		 * @protected
+		 * Возвращает список имен дочерних элементов.
+		 * @param {Object} nodes Данные узла.
+		 * @returns {Array} Список имен дочерних элементов.
+		 */
+		getNameElementsVerify: function (nodes)
+		{
+			var me = this,
+				els = {},
+				nameElements,
+				name;
+
+			name = me.getNameElement();
+			nodes.node = nodes.parent.getElement().xmlTag === name ? nodes.parent : nodes.node;
+			nodes.parent = nodes.node.parentNode;
+			els.parent = nodes.parent.getElement();
+			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
+			nameElements.unshift(name);
+
+			return nameElements;
 		},
 
 		/**
