@@ -7,28 +7,20 @@
 Ext.define(
 	'FBEditor.editor.command.section.CreateCommand',
 	{
-		extend: 'FBEditor.editor.command.AbstractCommand',
+		extend: 'FBEditor.editor.command.annotation.CreateCommand',
 
 		createElement: function (els, nodes)
 		{
 			var me = this,
-				data = me.getData();
+				data = me.getData(),
+				el;
 
 			nodes.node = data.node || data.prevNode;
 
 			data.viewportId = nodes.node.viewportId;
 
-			els.node = FBEditor.editor.Factory.createElement('section');
-			els.title = FBEditor.editor.Factory.createElement('title');
-			els.pT = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Заголовок');
-			els.pT.add(els.t);
-			els.title.add(els.pT);
-			els.node.add(els.title);
-			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t2 = FBEditor.editor.Factory.createElementText('Текст');
-			els.p.add(els.t2);
-			els.node.add(els.p);
+			el = FBEditor.editor.Factory.createElement('section');
+			els = Ext.apply(els, el.createScaffold());
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 			nodes.next = nodes.node.nextSibling;

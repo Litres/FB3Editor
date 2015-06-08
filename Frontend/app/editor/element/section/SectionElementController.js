@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 		requires: [
-			'FBEditor.editor.command.section.CreateCommand'
+			'FBEditor.editor.command.section.CreateCommand',
+			'FBEditor.editor.command.section.SplitCommand'
 		]
 	}
 );

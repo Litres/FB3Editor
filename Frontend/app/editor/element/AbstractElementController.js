@@ -52,14 +52,24 @@ Ext.define(
 		/**
 		 * Вставляет новый элемент.
 		 * @param {Node} node Узел, после которого необходимо вставить элемент.
+		 * @param {Boolean} isEmpty true - создает пустой новый элемент,
+		 * false - создает заполненный новый элемент с частью содержимого из текущего элемента.
 		 */
-		onInsertElement: function (node)
+		onInsertElement: function (node, isEmpty)
 		{
 			var cmd,
 				name;
 
+			isEmpty = isEmpty || false;
 			name = node.getElement().xmlTag;
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {prevNode: node});
+			if (!isEmpty)
+			{
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.SplitCommand', {node: node});
+			}
+			else
+			{
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {prevNode: node});
+			}
 			if (cmd.execute())
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
@@ -69,8 +79,10 @@ Ext.define(
 		/**
 		 * Разбивает элемент, вставляя новый элемент после текущего.
 		 * @param {Node} node Узел элемента.
+		 * @param {Boolean} isEmpty true - создает пустой новый элемент,
+		 * false - создает заполненный новый элемент с частью содержимого из текущего элемента.
 		 */
-		onSplitElement: function (node)
+		onSplitElement: function (node, isEmpty)
 		{
 			var el,
 				sch,
@@ -80,6 +92,7 @@ Ext.define(
 				pos,
 				name;
 
+			isEmpty = isEmpty || false;
 			el = node.getElement();
 			//console.log('splittable', el.permit.splittable, node);
 
@@ -96,7 +109,7 @@ Ext.define(
 				if (sch.verify(parentEl.xmlTag, elements))
 				{
 					// вставляем новый элемент
-					el.fireEvent('insertElement', node);
+					el.fireEvent('insertElement', node, isEmpty);
 				}
 			}
 			else
@@ -106,7 +119,7 @@ Ext.define(
 				if (node.nodeName !== 'MAIN')
 				{
 					el = node.getElement();
-					el.fireEvent('splitElement', node);
+					el.fireEvent('splitElement', node, isEmpty);
 				}
 			}
 		},
@@ -132,11 +145,23 @@ Ext.define(
 				switch (e.keyCode)
 				{
 					case Ext.event.Event.ENTER:
-						return e.ctrlKey ? controller.onKeyDownCtrlEnter(e) : controller.onKeyDownEnter(e);
+						if (e.shiftKey)
+						{
+							return controller.onKeyDownShiftEnter(e);
+						}
+						else if (e.ctrlKey)
+						{
+							return controller.onKeyDownCtrlEnter(e);
+						}
+
+						return controller.onKeyDownEnter(e);
+
 					case Ext.event.Event.DELETE:
 						return controller.onKeyDownDelete(e);
+
 					case Ext.event.Event.BACKSPACE:
 						return controller.onKeyDownBackspace(e);
+
 					case Ext.event.Event.Z:
 						if (e.ctrlKey && e.shiftKey)
 						{
@@ -150,6 +175,26 @@ Ext.define(
 						return false;
 				}
 			}
+		},
+
+		/**
+		 * Комбинация клавиш Shift+Enter разделяет контейнер на две части.
+		 * @param {Event} e Событие.
+		 * @return {Boolean} false
+		 */
+		onKeyDownShiftEnter: function (e)
+		{
+			var me = this,
+				node,
+				el;
+
+			e.preventDefault();
+			node = me.getFocusNode(e.target);
+			el = node.getElement ? node.getElement() : null;
+			//console.log('shift+enter', node, el);
+			el.fireEvent('splitElement', node, false);
+
+			return false;
 		},
 
 		/**
@@ -167,7 +212,7 @@ Ext.define(
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
 			//console.log('ctrl+enter', node, el);
-			el.fireEvent('splitElement', node);
+			el.fireEvent('splitElement', node, true);
 
 			return false;
 		},

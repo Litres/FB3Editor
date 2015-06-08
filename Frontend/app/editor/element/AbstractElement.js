@@ -159,22 +159,27 @@ Ext.define(
 				children = me.children,
 				pos = me.getChildPosition(replacementEl);
 
+			me.remove(replacementEl);
 			children.splice(pos, 1, el);
 			me.children = children;
 		},
 
-		remove: function (el)
+		remove: function (el, opts)
 		{
 			var me = this,
 				children = me.children,
-				pos;
+				pos,
+				ignoredClear;
 
 			if (el)
 			{
 				pos = me.getChildPosition(el);
 				if (pos !== null)
 				{
-					el.clear();
+					if (!ignoredClear)
+					{
+						el.clear();
+					}
 					//el.removeAll();
 					children.splice(pos, 1);
 					me.children = children;
@@ -208,6 +213,41 @@ Ext.define(
 					el.clear(el);
 				}
 			);
+		},
+
+		clone: function (opts)
+		{
+			var me = this,
+				children = me.children,
+				newEl,
+				ignoredText,
+				ignoredDeep;
+
+			ignoredText = opts && opts.ignoredText ? true : false;
+			ignoredDeep = opts && opts.ignoredDeep ? true : false;
+			if (me.isText && ignoredText)
+			{
+				return null;
+			}
+			newEl = me.isText ? FBEditor.editor.Factory.createElementText(me.text) :
+			        FBEditor.editor.Factory.createElement(me.xmlTag);
+			if (!ignoredDeep)
+			{
+				Ext.Array.each(
+					children,
+					function (el)
+					{
+						var cloneEl = el.clone(opts);
+
+						if (cloneEl)
+						{
+							newEl.children.push(cloneEl);
+						}
+					}
+				);
+			}
+
+			return newEl;
 		},
 
 		setNode: function (node)
@@ -439,6 +479,20 @@ Ext.define(
 			);
 
 			return pos;
+		},
+
+		/**
+		 * Создает внутренне содержимое элемента.
+		 * @return {Object} Элементы.
+		 */
+		createScaffold: function ()
+		{
+			var me = this,
+				els = {};
+
+			els.node = me;
+
+			return els;
 		},
 
 		/**

@@ -63,6 +63,16 @@ Ext.define(
 		},
 
 		/**
+		 * Клонирует элемент.
+		 * @param {Object} opts Опции клонирования..
+		 * @return {FBEditor.editor.element.AbstractElement} Клонированный элемент.
+		 */
+		clone: function (opts)
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#clone()');
+		},
+
+		/**
 		 * Устанавливает html-узел для элемента.
 		 * @param {HTMLElement} node Узел html.
 		 */

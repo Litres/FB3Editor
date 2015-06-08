@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.editor.command.epigraph.CreateCommand',
 	{
-		extend: 'FBEditor.editor.command.AbstractCommand',
+		extend: 'FBEditor.editor.command.annotation.CreateCommand',
 
 		createElement: function (els, nodes)
 		{

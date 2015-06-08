@@ -19,6 +19,11 @@ Ext.define(
 		text: '',
 
 		/**
+		 * @property {Boolean} Текстовый ли элемент.
+		 */
+		isText: true,
+
+		/**
 		 * @param {String} text Текст.
 		 */
 		constructor: function (text)
@@ -46,6 +51,28 @@ Ext.define(
 		{
 			return this.text;
 		},
+
+		/*sync: function (viewportId)
+		{
+			var me = this,
+				text;
+
+			FBEditor.editor.Manager.suspendEvent = true;
+			text = me.nodes[viewportId].nodeValue;
+			console.log('sync ' + viewportId, me.nodes, text);
+			Ext.Object.each(
+				me.nodes,
+				function (id, node)
+				{
+					if (id !== viewportId)
+					{
+						console.log('sync node', node);
+						node.nodeValue = text;
+					}
+				}
+			);
+			FBEditor.editor.Manager.suspendEvent = false;
+		},*/
 
 		/**
 		 * Устанавливает текст элемента.
