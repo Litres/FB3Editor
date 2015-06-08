@@ -95,18 +95,19 @@ Ext.define(
 					// переносим элементы, которые выделены, из старой секции в заголовок
 					nodes.next = nodes.startContainer;
 					els.next = nodes.next ? nodes.next.getElement() : null;
+					els.next = nodes.next.getElement();
 					nodes.parentNext = nodes.next.parentNode;
 					els.parentNext = nodes.parentNext.getElement();
 					while (nodes.next && els.next.elementId !== els.endContainer.elementId)
 					{
 						nodes.buf = nodes.next.nextSibling;
-						els.next = nodes.next.getElement();
 
 						els.title.add(els.next);
 						nodes.title.appendChild(nodes.next);
 						els.parentNext.remove(els.next);
 
 						nodes.next = nodes.buf;
+						els.next = nodes.next.getElement();
 					}
 				}
 
