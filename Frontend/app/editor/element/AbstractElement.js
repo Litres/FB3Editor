@@ -59,7 +59,7 @@ Ext.define(
 		 */
 		permitDefault:
 		{
-			splittable: false // разрешается ли разбивать элемент клавишами Ctrl+Enter
+			splittable: false // разрешается ли разбивать элемент клавишами Ctrl/Shift+Enter
 		},
 
 		/**
@@ -482,7 +482,7 @@ Ext.define(
 		},
 
 		/**
-		 * Создает внутренне содержимое элемента.
+		 * Создает внутреннее содержимое элемента.
 		 * @return {Object} Элементы.
 		 */
 		createScaffold: function ()

@@ -7,10 +7,6 @@
 Ext.define(
 	'FBEditor.editor.element.section.SectionElementController',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController',
-		requires: [
-			'FBEditor.editor.command.section.CreateCommand',
-			'FBEditor.editor.command.section.SplitCommand'
-		]
+		extend: 'FBEditor.editor.element.AbstractElementController'
 	}
 );

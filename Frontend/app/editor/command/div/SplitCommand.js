@@ -1,11 +1,11 @@
 /**
- * Команда разделения секции на две.
+ * Команда разделения блока.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.command.section.SplitCommand',
+	'FBEditor.editor.command.div.SplitCommand',
 	{
 		extend: 'FBEditor.editor.command.AbstractCommand',
 
@@ -61,22 +61,22 @@ Ext.define(
 				els.startContainer = nodes.startContainer.getElement();
 				els.endContainer = nodes.endContainer.getElement();
 
-				// создаем новую секцию
-				els.node = FBEditor.editor.Factory.createElement('section');
+				// создаем новый блок
+				els.node = FBEditor.editor.Factory.createElement('div');
 
 				console.log('nodes', nodes);
 				console.log('els', els);
 
-				// вставляем новую секцию
+				// вставляем новый блок
 				nodes.parent = nodes.prevNode.parentNode;
 				els.parent = nodes.parent.getElement();
-				nodes.next = nodes.prevNode.nextSibling;
+				nodes.nextPrevNode = nodes.prevNode.nextSibling;
 				nodes.node = els.node.getNode(data.viewportId);
-				if (nodes.next)
+				if (nodes.nextPrevNode)
 				{
-					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.node, els.next);
-					nodes.parent.insertBefore(nodes.node, nodes.next);
+					els.nextPrevNode = nodes.nextPrevNode.getElement();
+					els.parent.insertBefore(els.node, els.nextPrevNode);
+					nodes.parent.insertBefore(nodes.node, nodes.nextPrevNode);
 				}
 				else
 				{
@@ -84,35 +84,42 @@ Ext.define(
 					nodes.parent.appendChild(nodes.node);
 				}
 
-				// формируем заголовок новой секции
+				// переносим элементы, которые находятся в текущем выделении, из старого блока в новый
 				if (!collapsed)
 				{
-					// создаем заголовок
-					els.title = FBEditor.editor.Factory.createElement('title');
-					els.node.add(els.title);
-					nodes.title = els.title.getNode(data.viewportId);
-					nodes.node.appendChild(nodes.title);
-
-					// переносим элементы, которые выделены, из старой секции в заголовок
 					nodes.next = nodes.startContainer;
 					els.next = nodes.next ? nodes.next.getElement() : null;
-					els.next = nodes.next.getElement();
 					nodes.parentNext = nodes.next.parentNode;
 					els.parentNext = nodes.parentNext.getElement();
 					while (nodes.next && els.next.elementId !== els.endContainer.elementId)
 					{
 						nodes.buf = nodes.next.nextSibling;
 
-						els.title.add(els.next);
-						nodes.title.appendChild(nodes.next);
+						els.node.add(els.next);
+						nodes.node.appendChild(nodes.next);
 						els.parentNext.remove(els.next);
 
 						nodes.next = nodes.buf;
 						els.next = nodes.next.getElement();
 					}
+
+					// создаем новый блок
+					els.node = FBEditor.editor.Factory.createElement('div');
+					nodes.node = els.node.getNode(data.viewportId);
+					if (nodes.nextPrevNode)
+					{
+						els.nextPrevNode = nodes.nextPrevNode.getElement();
+						els.parent.insertBefore(els.node, els.nextPrevNode);
+						nodes.parent.insertBefore(nodes.node, nodes.nextPrevNode);
+					}
+					else
+					{
+						els.parent.add(els.node);
+						nodes.parent.appendChild(nodes.node);
+					}
 				}
 
-				// переносим элементы, которые находятся после текущего выделения, из старой секции в новую
+				// переносим элементы, которые находятся после текущего выделения, из старого блока в новый
 				nodes.next = nodes.endContainer;
 				nodes.parentNext = nodes.next.parentNode;
 				els.parentNext = nodes.parentNext.getElement();
@@ -130,7 +137,7 @@ Ext.define(
 
 				if (!nodes.parentNext.firstChild)
 				{
-					// добавляем пустой параграф в старую секцию
+					// добавляем пустой параграф в старый элемент
 					els.p = FBEditor.editor.Factory.createElement('p');
 					els.empty = FBEditor.editor.Manager.createEmptyElement();
 					els.p.add(els.empty);
@@ -164,44 +171,7 @@ Ext.define(
 
 		unExecute: function ()
 		{
-			var me = this,
-				data = me.getData(),
-				res = false,
-				els = {},
-				nodes = {},
-				sel = window.getSelection(),
-				range,
-				viewportId;
-
-			/*try
-			{
-				FBEditor.editor.Manager.suspendEvent = true;
-				nodes.node = data.saveNode;
-				els.node = nodes.node.getElement();
-				viewportId = nodes.node.viewportId;
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
-				els.parent.sync(viewportId);
-				FBEditor.editor.Manager.suspendEvent = false;
-
-				// устанавливаем курсор
-				range = data.oldRange;
-				nodes.cursor = range.endContainer;
-				els.cursor = nodes.cursor.getElement();
-				FBEditor.editor.Manager.setFocusElement(els.cursor);
-				sel.collapse(nodes.cursor, range.endOffset);
-
-				res = true;
-			}
-			catch (e)
-			{
-				Ext.log({level: 'warn', msg: e, dump: e});
-				FBEditor.editor.HistoryManager.remove();
-			}*/
-
-			return res;
+			return false;
 		},
 
 		/**
@@ -218,8 +188,6 @@ Ext.define(
 			data.oldRange = sel.getRangeAt(0);
 			FBEditor.editor.Manager.setFocusElement(els.cursor);
 			sel.collapse(nodes.cursor);
-			//sel.extend(nodes.p.firstChild, nodes.cursor.firstChild.length);
-			//sel.collapseToEnd();
 		}
 	}
 );

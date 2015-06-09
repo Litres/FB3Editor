@@ -223,11 +223,173 @@ Ext.define(
 				el.children,
 			    function (item)
 			    {
-				    els.push(item.xmlTag);
+				    if (!item.isText)
+				    {
+					    els.push(item.xmlTag);
+				    }
 			    }
 			);
 
 			return els;
+		},
+
+		/**
+		 * Возвращает пустой элемент, для заполнения элементов без содержимого.
+		 * @return {FBEditor.editor.element.AbstractElement} Пустой элемент.
+		 */
+		createEmptyElement: function ()
+		{
+			var el;
+
+			el = FBEditor.editor.Factory.createElement('br');
+
+			return el;
+		},
+
+		/**
+		 * Разбивает узел на два.
+		 * @param els Элементы.
+		 * @param els.common Верхний родительский элемент,
+		 * отсносительно которого происходит разбивка текущего узла.
+		 * @param {Object} nodes Узлы.
+		 * @param {Number} offset Смещение курсора относительно текущего узла.
+		 * @return {Node} Новый узел, получившийся в результате разбивки.
+		 */
+		splitNode: function (els, nodes, offset)
+		{
+			var me = this,
+				viewportId;
+
+			nodes.parentContainer = nodes.container.parentNode;
+			viewportId = nodes.parentContainer.viewportId;
+			els.parentContainer = nodes.parentContainer.getElement();
+			els.container = nodes.container.getElement();
+
+			while (els.parentContainer.elementId !== els.common.elementId)
+			{
+				nodes.next = nodes.parentContainer.nextSibling;
+				nodes.parent = nodes.parentContainer.parentNode;
+				els.parent = nodes.parent.getElement();
+				nodes.nextContainer = nodes.container.nextSibling;
+
+				// клонируем узел
+				els.cloneContainer = els.parentContainer.clone({ignoredDeep: true});
+
+				if (els.container.isText)
+				{
+					// часть текста после курсора
+					els.endTextValue = nodes.container.nodeValue.substring(offset);
+
+					// часть текста перед курсором
+					els.startTextValue = nodes.container.nodeValue.substring(0, offset);
+
+					if (!els.startTextValue)
+					{
+						if (!nodes.parentContainer.previousSibling)
+						{
+							// вставляем пустое содержимое вместо текущего узла
+							els.empty = me.createEmptyElement();
+							els.parentContainer.replace(els.empty, els.container);
+							nodes.parentContainer.replaceChild(els.empty.getNode(viewportId), nodes.container);
+						}
+						else
+						{
+							// удаляем пустой текущий узел
+							els.parentContainer.remove(els.container);
+							nodes.parentContainer.removeChild(nodes.container);
+						}
+					}
+					else
+					{
+						// изменяем текст текущего узла
+						nodes.container.nodeValue = els.startTextValue;
+						els.container.setText(els.startTextValue);
+					}
+
+					if (els.endTextValue.trim())
+					{
+						// добавляем текст
+						els.t = FBEditor.editor.Factory.createElementText(els.endTextValue);
+						els.cloneContainer.add(els.t);
+					}
+
+					nodes.cloneContainer = els.cloneContainer.getNode(viewportId);
+
+					if (nodes.next)
+					{
+						els.next = nodes.next.getElement();
+						els.parent.insertBefore(els.cloneContainer, els.next);
+						nodes.parent.insertBefore(nodes.cloneContainer, nodes.next);
+					}
+					else
+					{
+						els.parent.add(els.cloneContainer);
+						nodes.parent.appendChild(nodes.cloneContainer);
+					}
+				}
+				else
+				{
+					nodes.cloneContainer = els.cloneContainer.getNode(viewportId);
+
+					if (nodes.next)
+					{
+						els.next = nodes.next.getElement();
+						els.parent.insertBefore(els.cloneContainer, els.next);
+						nodes.parent.insertBefore(nodes.cloneContainer, nodes.next);
+					}
+					else
+					{
+						els.parent.add(els.cloneContainer);
+						nodes.parent.appendChild(nodes.cloneContainer);
+					}
+
+					if (nodes.container.firstChild)
+					{
+						// если элемент не пустой, то переносим его в клонированный элемент
+						els.cloneContainer.add(els.container);
+						nodes.cloneContainer.appendChild(nodes.container);
+					}
+					else
+					{
+						// или просто удаляем
+						nodes.parentContainer.removeChild(nodes.container);
+					}
+					els.parentContainer.remove(els.container);
+				}
+
+				// переносим все узлы после курсора
+				nodes.parent = nodes.cloneContainer;
+				els.parent = nodes.parent.getElement();
+				while (nodes.nextContainer)
+				{
+					els.nextContainer = nodes.nextContainer.getElement();
+					nodes.buf = nodes.nextContainer.nextSibling;
+
+					els.parent.add(els.nextContainer);
+					nodes.parent.appendChild(nodes.nextContainer);
+					els.parentContainer.remove(els.nextContainer);
+
+					nodes.nextContainer = nodes.buf;
+				}
+
+				if (!nodes.parent.firstChild && els.parent.xmlTag === 'p' && !nodes.parent.nextSibling)
+				{
+					// добавляем пустое содержимое в параграф
+					els.empty = me.createEmptyElement();
+					els.parent.add(els.empty);
+					nodes.parent.appendChild(els.empty.getNode(viewportId));
+				}
+
+				// переносим указатель
+				nodes.container = nodes.cloneContainer;
+				els.container = nodes.container.getElement();
+
+				nodes.parentContainer = nodes.container.parentNode;
+				els.parentContainer = nodes.parentContainer.getElement();
+
+			}
+
+			return nodes.container;
 		}
 	}
 );

@@ -34,17 +34,25 @@ Ext.define(
 				name,
 				node;
 
-			// получаем узел из выделения и одновременно проверяем элемент по схеме
-			node = me.getNodeVerify(sel);
-
-			if (node)
+			if (!sel.getRangeAt(0).collapsed && me.onCreateRangeElement)
 			{
-				// если элемент прошел проверку, то создаем его
-				name = me.getNameElement();
-				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {node: node});
-				if (cmd.execute())
+				// создаем элемент из выделения
+				me.onCreateRangeElement(sel);
+			}
+			else
+			{
+				// получаем узел из выделения и одновременно проверяем элемент по схеме
+				node = me.getNodeVerify(sel);
+
+				if (node)
 				{
-					FBEditor.editor.HistoryManager.add(cmd);
+					// если элемент прошел проверку, то создаем его
+					name = me.getNameElement();
+					cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {node: node});
+					if (cmd.execute())
+					{
+						FBEditor.editor.HistoryManager.add(cmd);
+					}
 				}
 			}
 		},
@@ -468,7 +476,7 @@ Ext.define(
 		 * @protected
 		 * Возвращает список имен дочерних элементов.
 		 * @param {Object} nodes Данные узла.
-		 * @returns {Array} Список имен дочерних элементов.
+		 * @return {Array} Список имен дочерних элементов.
 		 */
 		getNameElementsVerify: function (nodes)
 		{
