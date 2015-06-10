@@ -35,6 +35,11 @@ Ext.define(
 		suspendEvent: false,
 
 		/**
+		 * @property {String} Имя пустого элемента.
+		 */
+		emptyElement: 'br',
+
+		/**
 		 * @private
 		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
 		 */
@@ -239,9 +244,10 @@ Ext.define(
 		 */
 		createEmptyElement: function ()
 		{
-			var el;
+			var me= this,
+				el;
 
-			el = FBEditor.editor.Factory.createElement('br');
+			el = FBEditor.editor.Factory.createElement(me.emptyElement);
 
 			return el;
 		},
@@ -390,6 +396,82 @@ Ext.define(
 			}
 
 			return nodes.container;
+		},
+
+		/**
+		 * Соединяет переданный узел с предыдущим узлом.
+		 * @param {Node} node Узел, который необходимо объединить с предыдущим.
+		 */
+		joinNode: function (node)
+		{
+			var me = this,
+				nodes = {},
+				els = {};
+
+			nodes.node = node;
+			els.node = node.getElement();
+			nodes.prev = node.previousSibling;
+			els.prev = nodes.prev.getElement();
+
+			// переносим все элементы в предыдущий узел
+			nodes.first = nodes.node.firstChild;
+			els.first = nodes.first ? nodes.first.getElement() : null;
+			nodes.prevLast = nodes.prev;
+			els.prevLast = els.prev;
+			nodes.last = nodes.prevLast.lastChild;
+			els.last = nodes.last ? nodes.last.getElement() : null;
+			//console.log('join nodes, els', nodes, els);
+			while (els.first)
+			{
+				nodes.firstChild = nodes.first.firstChild;
+				nodes.next = nodes.first;
+				//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first, nodes.last, nodes.prevLast);
+				while (nodes.next)
+				{
+					nodes.buf = nodes.next.nextSibling;
+					els.next = nodes.next.getElement();
+					if (els.last && els.last.isText && els.next.isText)
+					{
+						// объединяем текстовые узлы
+						els.nodeValue = nodes.last.nodeValue + nodes.next.nodeValue;
+						nodes.last.nodeValue = els.nodeValue;
+						els.last.setText(els.nodeValue);
+					}
+					else
+					{
+						// переносим узел
+						els.prevLast.add(els.next);
+						nodes.next.parentNode.getElement().remove(els.next);
+						nodes.prevLast.appendChild(nodes.next);
+					}
+					nodes.next = nodes.buf;
+				}
+
+				if (els.last.isText)
+				{
+					// удаляем узел
+					nodes.first.parentNode.getElement().remove(els.first);
+					nodes.first.parentNode.removeChild(nodes.first);
+				}
+
+				if (nodes.prevLast.firstChild.getElement().xmlTag === me.emptyElement)
+				{
+					// удаляем пустой узел
+					els.prevLast.remove(nodes.prevLast.firstChild.getElement());
+					nodes.prevLast.removeChild(nodes.prevLast.firstChild);
+				}
+
+				nodes.first = nodes.firstChild;
+				els.first = nodes.first ? nodes.first.getElement() : null;
+				nodes.prevLast = nodes.last;
+				els.prevLast = els.last;
+				nodes.last = nodes.prevLast.lastChild;
+				els.last = nodes.last ? nodes.last.getElement() : null;
+			}
+
+			// удаляем узел
+			nodes.node.parentNode.getElement().remove(els.node);
+			nodes.node.parentNode.removeChild(nodes.node);
 		}
 	}
 );

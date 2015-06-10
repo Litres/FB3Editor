@@ -31,11 +31,18 @@ Ext.define(
 
 				range = sel.getRangeAt(0);
 				collapsed = range.collapsed;
-				console.log('range', range);
-
-				offset.start = range.startOffset;
-				offset.end = range.endOffset;
-				console.log('offset', offset);
+				offset = {
+					start: range.startOffset,
+					end: range.endOffset
+				};
+				data.range = {
+					common: range.commonAncestorContainer,
+					start: range.startContainer,
+					end: range.endContainer,
+					collapsed: collapsed,
+					offset: offset
+				};
+				//console.log('range', data.range);
 
 				nodes.startContainer = range.startContainer;
 				nodes.endContainer = range.endContainer;
@@ -63,9 +70,8 @@ Ext.define(
 
 				// создаем новую секцию
 				els.node = FBEditor.editor.Factory.createElement('section');
-
-				console.log('nodes', nodes);
-				console.log('els', els);
+				//console.log('nodes', nodes);
+				//console.log('els', els);
 
 				// вставляем новую секцию
 				nodes.parent = nodes.prevNode.parentNode;
@@ -148,8 +154,8 @@ Ext.define(
 				els.cursor = nodes.cursor.getElement();
 				me.setCursor(els, nodes);
 
-				// сохраянем узел
-				//data.node = nodes.start;
+				// сохраянем узлы
+				data.saveNodes = nodes;
 
 				res = true;
 			}
@@ -170,28 +176,73 @@ Ext.define(
 				els = {},
 				nodes = {},
 				sel = window.getSelection(),
+				offset,
 				range,
 				viewportId;
 
-			/*try
+			try
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
-				nodes.node = data.saveNode;
-				els.node = nodes.node.getElement();
+
+				offset = data.offset;
+				range = data.range;
+				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
+				console.log('undo split section', offset, range, nodes);
+
+				els.node = nodes.node.getElement();
+				els.prevNode = nodes.prevNode.getElement();
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
-				els.parent.remove(els.node);
+
+				// переносим все элементы из новой секции в старую
+
+				if (nodes.title)
+				{
+					// переносим элементы из заголовка
+					els.title = nodes.title.getElement();
+					nodes.first = nodes.title.firstChild;
+					while (nodes.first)
+					{
+						els.first = nodes.first.getElement();
+						nodes.prevNode.appendChild(nodes.first);
+						els.prevNode.add(els.first);
+						els.title.remove(els.first);
+						nodes.first = nodes.title.firstChild;
+					}
+
+					// удаляем заголовок
+					nodes.node.removeChild(nodes.title);
+					els.node.remove(els.title);
+				}
+
+				nodes.first = nodes.node.firstChild;
+				while (nodes.first)
+				{
+					els.first = nodes.first.getElement();
+					nodes.prevNode.appendChild(nodes.first);
+					els.prevNode.add(els.first);
+					els.node.remove(els.first);
+					nodes.first = nodes.node.firstChild;
+				}
+
+				// удаляем новую секцию
 				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.node);
+
+				// объединяем элементы в точках разделения
+				FBEditor.editor.Manager.joinNode(nodes.startContainer);
+				FBEditor.editor.Manager.joinNode(nodes.endContainer);
+
+				// синхронизируем
 				els.parent.sync(viewportId);
+
 				FBEditor.editor.Manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				range = data.oldRange;
-				nodes.cursor = range.endContainer;
-				els.cursor = nodes.cursor.getElement();
-				FBEditor.editor.Manager.setFocusElement(els.cursor);
-				sel.collapse(nodes.cursor, range.endOffset);
+				sel.collapse(range.start, range.offset.start);
+				sel.extend(range.end, range.offset.end);
+				FBEditor.editor.Manager.setFocusElement(range.common.getElement(), sel);
 
 				res = true;
 			}
@@ -199,7 +250,7 @@ Ext.define(
 			{
 				Ext.log({level: 'warn', msg: e, dump: e});
 				FBEditor.editor.HistoryManager.remove();
-			}*/
+			}
 
 			return res;
 		},
@@ -215,11 +266,8 @@ Ext.define(
 				sel = window.getSelection(),
 				data = me.getData();
 
-			data.oldRange = sel.getRangeAt(0);
 			FBEditor.editor.Manager.setFocusElement(els.cursor);
 			sel.collapse(nodes.cursor);
-			//sel.extend(nodes.p.firstChild, nodes.cursor.firstChild.length);
-			//sel.collapseToEnd();
 		}
 	}
 );
