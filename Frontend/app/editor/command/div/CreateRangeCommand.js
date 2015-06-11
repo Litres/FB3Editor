@@ -19,23 +19,16 @@ Ext.define(
 				offset = {},
 				sel,
 				collapsed,
-				range;
+				range,
+				joinStartContainer;
 
 			try
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
 
-				sel = data.sel;
-
 				// получаем данные из выделения
-				sel = sel || window.getSelection();
+				sel = data.sel || window.getSelection();
 				range = sel.getRangeAt(0);
-				collapsed = range.collapsed;
-				offset.start = range.startOffset;
-				offset.end = range.endOffset;
-
-				console.log('range', range);
-				console.log('offset', offset);
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
@@ -53,6 +46,24 @@ Ext.define(
 
 				data.viewportId = nodes.common.viewportId;
 
+				collapsed = range.collapsed;
+				offset = {
+					start: range.startOffset,
+					end: range.endOffset
+				};
+				joinStartContainer = range.startOffset === 0 ?
+				                     me.isFirstContainer(nodes.common, range.startContainer) : true;
+				data.range = {
+					common: range.commonAncestorContainer,
+					start: range.startContainer,
+					end: range.endContainer,
+					prevParentStart: range.startContainer.parentNode.previousSibling,
+					collapsed: collapsed,
+					offset: offset,
+					joinStartContainer: joinStartContainer
+				};
+
+				//console.log('range', data.range);
 				nodes.startContainer = range.startContainer;
 				nodes.endContainer = range.endContainer;
 
@@ -111,8 +122,8 @@ Ext.define(
 				els.cursor = nodes.cursor.getElement();
 				me.setCursor(els, nodes);
 
-				// сохраянем узел
-				//data.node = nodes.start;
+				// сохраянем узлы
+				data.saveNodes = nodes;
 
 				res = true;
 			}
@@ -127,7 +138,86 @@ Ext.define(
 
 		unExecute: function ()
 		{
-			return false;
+			var me = this,
+				data = me.getData(),
+				res = false,
+				els = {},
+				nodes = {},
+				sel = window.getSelection(),
+				range,
+				viewportId;
+
+			try
+			{
+				FBEditor.editor.Manager.suspendEvent = true;
+
+				range = data.range;
+				nodes = data.saveNodes;
+				viewportId = nodes.node.viewportId;
+				console.log('undo create range DIV', range, nodes);
+
+				els.node = nodes.node.getElement();
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				// переносим все элементы из блока обратно в исходный контейнер
+				nodes.first = nodes.node.firstChild;
+				while (nodes.first)
+				{
+					els.first = nodes.first.getElement();
+					els.parent.insertBefore(els.first, els.node);
+					//els.node.remove(els.first);
+					nodes.parent.insertBefore(nodes.first, nodes.node);
+					nodes.first = nodes.node.firstChild;
+				}
+
+				// удаляем новый блок
+				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.node);
+
+				// объединяем элементы в точках разделения
+				if (range.joinStartContainer)
+				{
+					FBEditor.editor.Manager.joinNode(nodes.startContainer);
+				}
+				if (!range.collapsed)
+				{
+					FBEditor.editor.Manager.joinNode(nodes.endContainer);
+				}
+
+				// синхронизируем
+				els.parent.sync(viewportId);
+
+				FBEditor.editor.Manager.suspendEvent = false;
+
+				// устанавливаем выделение
+				if (!range.joinStartContainer)
+				{
+					range.start = nodes.startContainer;
+					range.common = range.start.getElement().isText ? range.start.parentNode : range.start;
+				}
+				else
+				{
+					range.common = range.common.getElement().isText ? range.common.parentNode : range.common;
+				}
+				range.common = range.common ? range.common : range.prevParentStart.parentNode;
+				range.start = range.start.parentNode ? range.start : range.prevParentStart.nextSibling;
+				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
+				range.end = !range.collapsed && range.end.firstChild ? range.end.firstChild : range.end;
+				console.log('cursor range', range);
+				sel.collapse(range.start, range.offset.start);
+				sel.extend(range.end, range.offset.end);
+				FBEditor.editor.Manager.setFocusElement(range.common.getElement(), sel);
+
+				res = true;
+			}
+			catch (e)
+			{
+				Ext.log({level: 'warn', msg: e, dump: e});
+				FBEditor.editor.HistoryManager.remove();
+			}
+
+			return res;
 		},
 
 		/**
