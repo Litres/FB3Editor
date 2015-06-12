@@ -52,7 +52,7 @@ Ext.define(
 					end: range.endOffset
 				};
 				joinStartContainer = range.startOffset === 0 ?
-				                     me.isFirstContainer(nodes.common, range.startContainer) : true;
+				                     !FBEditor.editor.Manager.isFirstNode(nodes.common, range.startContainer) : true;
 				data.range = {
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
@@ -64,6 +64,7 @@ Ext.define(
 				};
 
 				//console.log('range', data.range);
+
 				nodes.startContainer = range.startContainer;
 				nodes.endContainer = range.endContainer;
 
@@ -90,8 +91,7 @@ Ext.define(
 				els.node = FBEditor.editor.Factory.createElement('div');
 				nodes.node = els.node.getNode(data.viewportId);
 
-				console.log('nodes', nodes);
-				console.log('els', els);
+				//console.log('nodes', nodes);
 
 				// вставляем новый блок
 				els.common.insertBefore(els.node, els.startContainer);
@@ -118,9 +118,15 @@ Ext.define(
 				FBEditor.editor.Manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				nodes.cursor = nodes.node.firstChild;
-				els.cursor = nodes.cursor.getElement();
-				me.setCursor(els, nodes);
+				FBEditor.editor.Manager.setCursor(
+					{
+						startNode: nodes.node.firstChild,
+						startOffset: 0,
+						endNode: nodes.node.firstChild,
+						endOffset: 0,
+						focusElement: nodes.node.firstChild.getElement()
+					}
+				);
 
 				// сохраянем узлы
 				data.saveNodes = nodes;
@@ -204,10 +210,18 @@ Ext.define(
 				range.start = range.start.parentNode ? range.start : range.prevParentStart.nextSibling;
 				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
 				range.end = !range.collapsed && range.end.firstChild ? range.end.firstChild : range.end;
-				console.log('cursor range', range);
-				sel.collapse(range.start, range.offset.start);
-				sel.extend(range.end, range.offset.end);
-				FBEditor.editor.Manager.setFocusElement(range.common.getElement(), sel);
+
+				//console.log('cursor range', range);
+
+				FBEditor.editor.Manager.setCursor(
+					{
+						startNode: range.start,
+						endNode: range.end,
+						startOffset: range.offset.start,
+						endOffset: range.offset.end,
+						focusElement: range.common.getElement()
+					}
+				);
 
 				res = true;
 			}
@@ -218,22 +232,6 @@ Ext.define(
 			}
 
 			return res;
-		},
-
-		/**
-		 * Устанавливает курсор.
-		 * @param {Object} els Элементы.
-		 * @param {Object} nodes Узлы.
-		 */
-		setCursor: function (els, nodes)
-		{
-			var me = this,
-				sel = window.getSelection(),
-				data = me.getData();
-
-			data.oldRange = sel.getRangeAt(0);
-			FBEditor.editor.Manager.setFocusElement(els.cursor);
-			sel.collapse(nodes.cursor);
 		}
 	}
 );

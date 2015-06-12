@@ -159,6 +159,20 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает курсор или выделение.
+		 * @param {Object} data Данные курсора/выделения.
+		 */
+		setCursor: function (data)
+		{
+			var me = this,
+				sel = window.getSelection();
+
+			sel.collapse(data.startNode, data.startOffset);
+			sel.extend(data.endNode, data.endOffset);
+			me.setFocusElement(data.focusElement, sel);
+		},
+
+		/**
 		 * Возвращает текущий выделенный элемент в редакторе.
 		 * @return {FBEditor.editor.element.AbstractElement}
 		 */
@@ -507,6 +521,45 @@ Ext.define(
 			// удаляем узел
 			nodes.node.parentNode.getElement().remove(els.node);
 			nodes.node.parentNode.removeChild(nodes.node);
+		},
+
+		/**
+		 * В первом ли узле находится начальное выделение.
+		 * @param {Node} common Самый верхний узел относительно которого происходит разделение дочернего узла.
+		 * @param {Node} start Начальный узел выделения.
+		 * @returns {Boolean} Первый ли узел.
+		 */
+		isFirstNode: function (common, start)
+		{
+			var nodes = {},
+				els = {};
+
+			els.common = common.getElement();
+			nodes.node = start;
+			els.node = nodes.node.getElement();
+			//console.log('common, nodes', common, nodes);
+			do
+			{
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+				nodes.parentParent = nodes.parent.parentNode;
+				els.parentParent = nodes.parentParent.getElement();
+				nodes.first = nodes.parent.firstChild;
+				els.first = nodes.first.getElement();
+				//console.log('first, parent, parentParent', nodes.first, nodes.parent, nodes.parentParent, [els.first.elementId, els.node.elementId]);
+
+				if (els.first.elementId !== els.node.elementId)
+				{
+					// узел не является первым потомком
+					return false;
+				}
+
+				nodes.node = nodes.parent;
+				els.node = nodes.node.getElement();
+			}
+			while (els.parentParent.elementId !== els.common.elementId);
+
+			return true;
 		}
 	}
 );
