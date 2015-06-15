@@ -88,9 +88,14 @@ Ext.define(
 		cls: '',
 
 		/**
-		 * @property {FBEditor.editor.element.AbstractElement[]} [children] Дочерние элементы.
+		 * @property {FBEditor.editor.element.AbstractElement[]} Дочерние элементы.
 		 */
 		children: [],
+
+		/**
+		 * @property {FBEditor.editor.element.AbstractElement} Родительский элемент.
+		 */
+		parent: null,
 
 		/**
 		 * @property {Object} attributes Атрибуты элемента.
@@ -106,6 +111,16 @@ Ext.define(
 		 * @property {String} Префикс id элемента.
 		 */
 		prefixId: 'editor-el',
+
+		/**
+		 * @property {Boolean} Отображать ли в дереве навигации.
+		 */
+		showedOnTree: true,
+
+		/**
+		 * @property {String} Полный путь элемента в дереве навигации.
+		 */
+		treePath: '',
 
 		/**
 		 * @private
@@ -131,6 +146,13 @@ Ext.define(
 			me.elementId = Ext.id({prefix: me.prefixId});
 			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
+			Ext.Array.each(
+				me.children,
+			    function (item)
+			    {
+				    item.parent = me;
+			    }
+			);
 			me.attributes = attributes || me.attributes;
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
@@ -140,6 +162,7 @@ Ext.define(
 		{
 			var me = this;
 
+			el.parent = me;
 			me.children.push(el);
 		},
 
@@ -149,6 +172,7 @@ Ext.define(
 				children = me.children,
 				pos = me.getChildPosition(nextEl);
 
+			el.parent = me;
 			children.splice(pos, 0, el);
 			me.children = children;
 		},
@@ -159,6 +183,7 @@ Ext.define(
 				children = me.children,
 				pos = me.getChildPosition(replacementEl);
 
+			el.parent = me;
 			me.remove(replacementEl);
 			children.splice(pos, 1, el);
 			me.children = children;
@@ -241,7 +266,7 @@ Ext.define(
 
 						if (cloneEl)
 						{
-							newEl.children.push(cloneEl);
+							newEl.add(cloneEl);
 						}
 					}
 				);
@@ -390,6 +415,12 @@ Ext.define(
 			    }
 			);
 			FBEditor.editor.Manager.suspendEvent = false;
+
+			if (!me.isText)
+			{
+				// обновляем дерево навигации по тексту
+				FBEditor.editor.Manager.updateTree();
+			}
 		},
 
 		/**
@@ -493,6 +524,39 @@ Ext.define(
 			els.node = me;
 
 			return els;
+		},
+
+		/**
+		 * Возвращает текстовое содержимое элемента.
+		 * @return {String} Текст.
+		 */
+		getText: function ()
+		{
+			var me = this,
+				text;
+
+			text = Ext.Object.getValues(me.nodes)[0].innerText;
+
+			return text;
+		},
+
+		/**
+		 * Возвращает название элемента для отображения в узле дерева навигации по тексту.
+		 * @return {String} Название.
+		 */
+		getNameTree: function ()
+		{
+			var me = this,
+				name;
+
+			name = '&lt;' + me.xmlTag + '&gt;';
+
+			if (me.children.length && me.children[0].xmlTag === 'title')
+			{
+				name += ' ' + me.children[0].getText();
+			}
+
+			return name;
 		},
 
 		/**

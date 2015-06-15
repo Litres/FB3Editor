@@ -106,8 +106,6 @@ Ext.define(
 		 */
 		onbeforeunload: function (scope)
 		{
-			var me = scope;
-
 			if (FBEditor.parentWindow && !FBEditor.closingWindow)
 			{
 				// процесс закрытия отсоединенной панели
@@ -117,6 +115,11 @@ Ext.define(
 
 				if (!FBEditor.parentWindow.FBEditor.closingWindow)
 				{
+					if (window.name === 'navigation')
+					{
+						Ext.getCmp('panel-body-navigation').destroy();
+					}
+
 					// присоединяем отсоединенную панель обратно в главное окно редактора
 					FBEditor.parentWindow.Ext.getCmp('main').attachPanel(window.name);
 

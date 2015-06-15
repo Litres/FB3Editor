@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'br',
-		xmlTag: 'br'
+		xmlTag: 'br',
+		showedOnTree: false
 	}
 );

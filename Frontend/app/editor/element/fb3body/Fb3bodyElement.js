@@ -28,6 +28,13 @@ Ext.define(
 			me.elementId = Ext.id({prefix: me.prefixId});
 			me.mixins.observable.constructor.call(me, {});
 			me.children = children || me.children;
+			Ext.Array.each(
+				me.children,
+				function (item)
+				{
+					item.parent = me;
+				}
+			);
 			me.attributes = Ext.apply(attributes, me.attributes);
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
@@ -42,6 +49,21 @@ Ext.define(
 			el.setAttribute('contentEditable', true);
 
 			return el;
+		},
+
+		createScaffold: function ()
+		{
+			var me = this,
+				els = {};
+
+			els.section = FBEditor.editor.Factory.createElement('section');
+			els.p = FBEditor.editor.Factory.createElement('p');
+			els.t = FBEditor.editor.Factory.createElementText('Текст книги');
+			els.p.add(els.t);
+			els.section.add(els.p);
+			me.add(els.section);
+
+			return els;
 		}
 	}
 );

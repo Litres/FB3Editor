@@ -11,6 +11,7 @@ Ext.define(
 
 		htmlTag: 'a',
 		xmlTag: 'a',
+		showedOnTree: false,
 
 		getAttributesXml: function ()
 		{

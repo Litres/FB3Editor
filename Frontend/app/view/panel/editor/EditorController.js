@@ -66,7 +66,6 @@ Ext.define(
 		onSyncContent: function (viewport)
 		{
 			var me = this,
-				view = me.getView(),
 				viewports = me.getViewports(),
 				data;
 

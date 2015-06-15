@@ -294,6 +294,7 @@ Ext.define(
 		onMouseUp: function (e)
 		{
 			var me = this,
+				bridgeNav = FBEditor.getBridgeNavigation(),
 				focusNode,
 				focusElement;
 
@@ -302,8 +303,12 @@ Ext.define(
 			if (focusNode && focusNode.getElement)
 			{
 				focusElement = focusNode.getElement();
-				//console.log('mouseup: focusNode, focusElement', e, focusNode, focusElement);
+
+				// фокус на элементе
 				FBEditor.editor.Manager.setFocusElement(focusElement);
+
+				// разворачиваем узел элемента в дереве навигации по тексту
+				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(focusElement);
 			}
 
 			return false;

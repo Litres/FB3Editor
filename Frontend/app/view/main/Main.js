@@ -25,7 +25,7 @@ Ext.define(
 		cls: 'fb3',
 		listeners: {
 			closedetachpanels: 'onDetachPanel',
-			closeapplication: 'onCloseDetachPanels',
+			closeapplication: 'onCloseApplication',
 			restoredetachpanel: 'onRestoreDetachPanel'
 		},
 

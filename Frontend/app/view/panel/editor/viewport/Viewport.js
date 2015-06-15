@@ -28,27 +28,35 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				rootEl,
-				rootNode,
-				els = {};
+				root,
+				rootNode;
 
 			me.callParent(this);
 			if (me.createRootElement)
 			{
-				rootEl = FBEditor.editor.Manager.createRootElement();
-				rootNode = rootEl.getNode(me.id);
+				// инициализируем корневой узел
+				root = FBEditor.editor.Manager.createRootElement();
+				rootNode = root.getNode(me.id);
 				me.loadData(rootNode);
 
-				// создаем содержимое книги по умолчанию
-				els.section = FBEditor.editor.Factory.createElement('section');
-				els.p = FBEditor.editor.Factory.createElement('p');
-				els.t = FBEditor.editor.Factory.createElementText('Текст книги');
-				els.p.add(els.t);
-				els.section.add(els.p);
-				rootEl.add(els.section);
+				// создаем элементы корневого узла по умолчанию
+				root.createScaffold();
+
 				FBEditor.editor.Manager.suspendEvent = true;
-				rootNode.appendChild(els.section.getNode(me.id));
+
+				// добавляем узлы в корневой
+				Ext.Array.each(
+					root.children,
+					function (item)
+					{
+						rootNode.appendChild(item.getNode(me.id));
+					}
+				);
+
 				FBEditor.editor.Manager.suspendEvent = false;
+
+				// обновляем дерево навигации по тексту
+				FBEditor.editor.Manager.updateTree();
 			}
 		},
 

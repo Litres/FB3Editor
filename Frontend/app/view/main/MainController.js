@@ -49,6 +49,16 @@ Ext.define(
 		},
 
 		/**
+		 * Вызывается перед закрытием главного окна.
+		 */
+		onCloseApplication: function ()
+		{
+			var me = this;
+
+			me.closeDetachPanels();
+		},
+
+		/**
 		 * Восстанавливает отсоединенную панель.
 		 * @param {String} name Имя панели.
 		 */
@@ -83,7 +93,7 @@ Ext.define(
 		/**
 		 * Закрывает все отсоединеные панели.
 		 */
-		onCloseDetachPanels: function ()
+		closeDetachPanels: function ()
 		{
 			var me = this,
 				view,

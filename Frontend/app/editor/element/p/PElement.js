@@ -15,6 +15,7 @@ Ext.define(
 		htmlTag: 'p',
 		xmlTag: 'p',
 		cls: 'el-p',
+		showedOnTree: false,
 
 		setAttributesHtml: function (element)
 		{

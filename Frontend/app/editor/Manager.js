@@ -46,6 +46,11 @@ Ext.define(
 		focusElement: null,
 
 		/**
+		 * @property {Object} Хранит id развернутых узлов дерева навигации по тексту.
+		 */
+		stateExpandedNodesTree: {},
+
+		/**
 		 * Инициализирует менеджер.
 		 */
 		init: function ()
@@ -53,6 +58,15 @@ Ext.define(
 			var me = this;
 
 			me.schema = Ext.create('FBEditor.editor.schema.Schema');
+		},
+
+		/**
+		 * Возвращает контент.
+		 * @return {FBEditor.editor.element.AbstractElement} Корневой элемент тела книги.
+		 */
+		getContent: function ()
+		{
+			return this.content;
 		},
 
 		/**
@@ -88,6 +102,9 @@ Ext.define(
 
 			// загружаем контент
 			Ext.getCmp('main-editor').fireEvent('loadData');
+
+			// обновляем дерево навигации по тексту
+			me.updateTree();
 		},
 
 		/**
@@ -168,7 +185,10 @@ Ext.define(
 				sel = window.getSelection();
 
 			sel.collapse(data.startNode, data.startOffset);
-			sel.extend(data.endNode, data.endOffset);
+			if (data.endNode)
+			{
+				sel.extend(data.endNode, data.endOffset);
+			}
 			me.setFocusElement(data.focusElement, sel);
 		},
 
@@ -227,6 +247,62 @@ Ext.define(
 		getSchema: function ()
 		{
 			return this.schema;
+		},
+
+		/**
+		 * Обновляет дерево навигации по тексту.
+		 */
+		updateTree: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeNavigation();
+
+			if (bridge.Ext.getCmp('panel-body-navigation'))
+			{
+				bridge.Ext.getCmp('panel-body-navigation').loadData(me.content);
+			}
+			else
+			{
+				Ext.defer(
+					function ()
+					{
+						me.updateTree();
+					},
+				    200
+				);
+			}
+		},
+
+		/**
+		 * Возвращает элемент по его id.
+		 * @param {Number} id Id элемента.
+		 * @param {FBEditor.editor.element.AbstractElement} [el] Элемент относительно которого происходит поиск,
+		 * по умолчанию - это корневой элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Элемент.
+		 */
+		getElementById: function (id, el)
+		{
+			var me = this,
+				res = null;
+
+			el = el || me.getContent();
+			if (el.elementId === id)
+			{
+				return el;
+			}
+			Ext.Array.each(
+				el.children,
+				function (item)
+				{
+					res = me.getElementById(id, item);
+					if (res)
+					{
+						return false;
+					}
+				}
+			);
+
+			return res;
 		},
 
 		/**

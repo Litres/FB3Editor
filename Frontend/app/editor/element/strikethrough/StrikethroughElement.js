@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 
 		htmlTag: 'strikethrough',
-		xmlTag: 'strikethrough'
+		xmlTag: 'strikethrough',
+		showedOnTree: false
 	}
 );

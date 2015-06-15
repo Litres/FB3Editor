@@ -13,6 +13,8 @@ Ext.define(
 		],
 		controllerClass: 'FBEditor.editor.element.text.TextElementController',
 
+		showedOnTree: false,
+
 		/**
 		 * @property {String} Текст.
 		 */

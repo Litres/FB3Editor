@@ -11,6 +11,7 @@ Ext.define(
 
 		htmlTag: 'em',
 		xmlTag: 'em',
-		cls: 'el-em'
+		cls: 'el-em',
+		showedOnTree: false
 	}
 );

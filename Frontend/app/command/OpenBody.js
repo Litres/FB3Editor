@@ -34,9 +34,12 @@ Ext.define(
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
 			me.activePanelContent = content.getLayout().getActiveItem();
 			content.fireEvent('contentBody');
-			props = bridgeProps.Ext.getCmp('panel-main-props-card');
-			me.activePanelProps = props.getLayout().getActiveItem();
-			props.fireEvent('activePanelBody');
+			props = bridgeProps.Ext.getCmp ? bridgeProps.Ext.getCmp('panel-main-props-card') : null;
+			if (props)
+			{
+				me.activePanelProps = props.getLayout().getActiveItem();
+				props.fireEvent('activePanelBody');
+			}
 
 			return result;
 		},

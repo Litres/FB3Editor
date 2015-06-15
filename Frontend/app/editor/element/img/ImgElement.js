@@ -124,6 +124,21 @@ Ext.define(
 				resource.addElement(me);
 				me.resource = resource;
 			}
+		},
+
+		getNameTree: function ()
+		{
+			var me = this,
+				name;
+
+			name = me.callParent(arguments);
+
+			if (me.resource)
+			{
+				name += ' ' + me.resource.name;
+			}
+
+			return name;
 		}
 	}
 );
