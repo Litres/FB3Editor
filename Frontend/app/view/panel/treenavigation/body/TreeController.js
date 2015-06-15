@@ -23,37 +23,51 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
 				data = record.getData(),
-				manager,
-				el,
-				nodes;
+				els = {},
+				nodes = {},
+				manager;
 
 			me.callParent(arguments);
 
 			manager = bridge.FBEditor.editor.Manager;
 
 			// получаем элемент по его id
-			el = manager.getElementById(data.elementId);
+			els.node = manager.getElementById(data.elementId);
 
-			if (el)
+			if (els.node)
 			{
+				// устанавливаем фокус на корневом узле главного окна
+				Ext.Object.getValues(FBEditor.editor.Manager.getContent().nodes)[0].focus();
+
 				// узлы элемента
-				nodes = Ext.Object.getValues(el.nodes);
+				nodes.nodes = Ext.Object.getValues(els.node.nodes);
 
 				// перематываем скролл во всех окнах
 				Ext.Array.each(
-					nodes,
+					nodes.nodes,
 				    function (item)
 				    {
 					    item.scrollIntoView();
 				    }
 				);
 
+				// получаем самый вложенный первый элемент
+				nodes.first = nodes.nodes[0];
+				while (nodes.first.firstChild)
+				{
+					nodes.first = nodes.first.firstChild;
+				}
+
+				els.first = nodes.first.getElement();
+
 				// устанавливаем курсор на соответствующем элементе в главном окне
 				manager.setCursor(
 					{
-						startNode: nodes[0],
+						startNode: nodes.first,
 						startOffset: 0,
-						focusElement: el
+						endNode: nodes.first,
+						endOffset: 0,
+						focusElement: els.first
 					}
 				);
 			}

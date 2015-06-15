@@ -416,11 +416,12 @@ Ext.define(
 			);
 			FBEditor.editor.Manager.suspendEvent = false;
 
-			if (!me.isText)
+			// обновляем дерево навигации по тексту
+			/*if (!me.isText)
 			{
-				// обновляем дерево навигации по тексту
 				FBEditor.editor.Manager.updateTree();
-			}
+			}*/
+			FBEditor.editor.Manager.updateTree();
 		},
 
 		/**
