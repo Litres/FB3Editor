@@ -17,7 +17,7 @@ Ext.define(
 		defaults: {
 			anchor: '100%',
 			flex: 1,
-			labelWidth: 100,
+			labelWidth: 60,
 			labelAlign: 'right'
 		},
 

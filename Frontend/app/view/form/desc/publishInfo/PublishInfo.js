@@ -51,7 +51,7 @@ Ext.define(
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 160,
+								labelWidth: 130,
 								labelAlign: 'right'
 							},
 							items: [
@@ -78,7 +78,7 @@ Ext.define(
 						},
 						{
 							xtype: 'fieldcontainer',
-							width: 50
+							width: 20
 						},
 						{
 							xtype: 'desc-fieldcontainer',
@@ -86,7 +86,7 @@ Ext.define(
 							layout: 'anchor',
 							defaults: {
 								anchor: '100%',
-								labelWidth: 100,
+								labelWidth: 60,
 								labelAlign: 'right'
 							},
 							items: [
