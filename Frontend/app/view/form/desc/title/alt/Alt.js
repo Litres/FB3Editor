@@ -53,6 +53,35 @@ Ext.define(
 						loadData: function (data)
 						{
 							me.fireEvent('loadData', data);
+						},
+						resize: function (self, width)
+						{
+							var label,
+								span;
+
+							label = self.labelEl;
+							span = label.first();
+
+							// исходные параметры метки
+							self._label = self._label ? self._label : {width: null, fontSize: null};
+
+							// настраиваем отображение метки в зависимости от ширины поля
+
+							if (width < 300)
+							{
+								self._label.width = self._label.width || label.getWidth();
+								self._label.fontSize = self._label.fontSize || span.getStyle('fontSize');
+								//console.log(self._label);
+								label.setWidth(100);
+								span.setWidth(100);
+								span.setStyle('fontSize', '11px');
+							}
+							else if (self._label.width)
+							{
+								label.setWidth(self._label.width);
+								span.setWidth(self._label.width);
+								span.setStyle('fontSize', self._label.fontSize);
+							}
 						}
 					}
 				}

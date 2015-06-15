@@ -11,6 +11,27 @@ Ext.define(
 		alias: 'controller.panel.main.content',
 
 		/**
+		 * Вызывается при изменении размеров контейнера.
+		 * @param {FBEditor.view.panel.main.content.Content} cmp Центральная панель.
+		 * @param {Number} width
+		 * @param {Number} height
+		 * @param {Number} oldWidth
+		 * @param {Number} oldHeight
+		 */
+		onResize: function (cmp, width, height, oldWidth, oldHeight)
+		{
+			if (width !== oldWidth)
+			{
+				//console.log('resize', width, cmp.getMinWidth());
+				if (width < cmp.getMinWidth())
+				{
+					// ширина панели не может быть меньше минимальной
+					cmp.setWidth(cmp.getMinWidth());
+				}
+			}
+		},
+
+		/**
 		 * Переключает контент на текст книги.
 		 */
 		onContentBody: function ()

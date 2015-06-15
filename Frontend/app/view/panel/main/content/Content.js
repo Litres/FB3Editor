@@ -21,7 +21,7 @@ Ext.define(
 		region: 'center',
 		collapsible: false,
 		layout: 'card',
-		minWidth: 730,
+		minWidth: 610,
 		overflowX: true,
 		margin: '0 2px 0 2px',
 		bodyPadding: 0,
@@ -38,6 +38,7 @@ Ext.define(
 			}
 		],
 		listeners: {
+			resize: 'onResize',
 			contentBody: 'onContentBody',
 			contentDesc: 'onContentDesc',
 			contentResources: 'onContentResources'

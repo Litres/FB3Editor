@@ -10,6 +10,7 @@ Ext.define(
     {
         extend: 'FBEditor.view.panel.main.Abstract',
 	    listeners: {
+		    resize: 'onResize',
 			detachpanel: 'onDetachPanel'
 	    },
 

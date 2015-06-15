@@ -9,13 +9,13 @@ Ext.define(
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
+			'FBEditor.view.form.desc.DescController',
 			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.view.field.country.Country',
 			'FBEditor.view.field.lang.Lang',
 			'FBEditor.view.field.datetime.Datetime',
 			'FBEditor.view.field.textfieldclear.TextFieldClear',
-			'FBEditor.view.form.desc.DescController',
 			'FBEditor.view.form.desc.AbstractFieldContainer',
 			'FBEditor.view.form.desc.fieldset.AbstractFieldsetInner',
 			'FBEditor.view.form.desc.fieldset.Title',

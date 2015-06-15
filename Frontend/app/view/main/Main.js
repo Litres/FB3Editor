@@ -24,6 +24,8 @@ Ext.define(
 	    },
 		cls: 'fb3',
 		listeners: {
+			resize: 'onResize',
+			checkWidthPanels: 'onCheckWidthPanels',
 			closedetachpanels: 'onDetachPanel',
 			closeapplication: 'onCloseApplication',
 			restoredetachpanel: 'onRestoreDetachPanel'

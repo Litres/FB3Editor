@@ -49,6 +49,25 @@ Ext.define(
 		},
 
 		/**
+		 * Вызывается при изменении размеров панели.
+		 * @param {FBEditor.view.main.Main} cmp Главная панель.
+		 * @param {Number} width
+		 * @param {Number} height
+		 * @param {Number} oldWidth
+		 * @param {Number} oldHeight
+		 */
+		onResize: function (cmp, width, height, oldWidth, oldHeight)
+		{
+			var me = this;
+
+			// проверка изменения ширины
+			if (width !== oldWidth)
+			{
+				me.onCheckWidthPanels();
+			}
+		},
+
+		/**
 		 * Вызывается перед закрытием главного окна.
 		 */
 		onCloseApplication: function ()
@@ -120,6 +139,42 @@ Ext.define(
 					}
 				}
 			);
+		},
+
+		/**
+		 * Проверяет ширину отсоединяемых панелей, и если они перекрывают центральную панель,
+		 * то корректирует их ширину.
+		 */
+		onCheckWidthPanels: function ()
+		{
+			var panels = {},
+				widthPanels = {};
+
+			panels.content = Ext.getCmp('panel-main-content');
+
+			// если панель не отсоединена, то проверяем ширину панелей, чтобы они не перекрывали центральную часть
+			if (panels.content)
+			{
+				panels.props = Ext.getCmp('panel-main-props');
+				panels.nav = Ext.getCmp('panel-main-navigation');
+
+				widthPanels.main = Ext.getCmp('main').getWidth();
+				widthPanels.content = panels.content.getMinWidth();
+				widthPanels.props = panels.props ? panels.props.getWidth() : 0;
+				widthPanels.nav = panels.nav ? panels.nav.getWidth() : 0;
+
+				widthPanels.sum = widthPanels.props + widthPanels.nav + widthPanels.content;
+				//console.log('widthPanels', widthPanels);
+
+				// панели перекрывают центральную часть
+				if (widthPanels.main - widthPanels.sum < 0)
+				{
+
+					// устанавливаем ширину обеих панелей поровну
+					panels.props.setWidth((widthPanels.main - widthPanels.content) / 2);
+					panels.nav.setWidth((widthPanels.main - widthPanels.content) / 2);
+				}
+			}
 		}
 	}
 );

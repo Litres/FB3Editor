@@ -10,6 +10,23 @@ Ext.define(
         extend: 'Ext.app.ViewController',
 
 	    /**
+	     * Вызывается при изменении размеров панели.
+	     * @param {FBEditor.view.panel.main.AbstractDetach} cmp Отсоединяемая панель.
+	     * @param {Number} width
+	     * @param {Number} height
+	     * @param {Number} oldWidth
+	     * @param {Number} oldHeight
+	     */
+	    onResize: function (cmp, width, height, oldWidth, oldHeight)
+	    {
+		    // проверка изменения ширины
+		    if (width !== oldWidth)
+		    {
+			    Ext.getCmp('main').fireEvent('checkWidthPanels');
+		    }
+	    },
+
+	    /**
 	     * Открывает панель в отдельном окне.
 	     * @param {FBEditor.view.panel.main.Abstract} panel Панель.
 	     */

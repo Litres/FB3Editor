@@ -23,7 +23,6 @@ Ext.define(
 		    anchor: '100%'
 	    },
 
-
 	    initComponent: function ()
 	    {
 		    var me = this;
