@@ -184,6 +184,7 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection();
 
+			//console.log('set cursor', data);
 			sel.collapse(data.startNode, data.startOffset);
 			if (data.endNode)
 			{

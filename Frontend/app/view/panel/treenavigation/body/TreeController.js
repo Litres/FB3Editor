@@ -37,7 +37,7 @@ Ext.define(
 			if (els.node)
 			{
 				// устанавливаем фокус на корневом узле главного окна
-				Ext.Object.getValues(FBEditor.editor.Manager.getContent().nodes)[0].focus();
+				bridge.Ext.Object.getValues(manager.getContent().nodes)[0].focus();
 
 				// узлы элемента
 				nodes.nodes = Ext.Object.getValues(els.node.nodes);
