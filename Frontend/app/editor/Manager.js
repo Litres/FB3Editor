@@ -257,7 +257,7 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeNavigation();
 
-			if (bridge.Ext.getCmp('panel-body-navigation'))
+			if (bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation'))
 			{
 				bridge.Ext.getCmp('panel-body-navigation').loadData(me.content);
 			}

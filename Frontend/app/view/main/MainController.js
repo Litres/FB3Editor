@@ -110,38 +110,6 @@ Ext.define(
 		},
 
 		/**
-		 * Закрывает все отсоединеные панели.
-		 */
-		closeDetachPanels: function ()
-		{
-			var me = this,
-				view,
-				box;
-
-			view = me.getView();
-			Ext.Object.each(
-				view.windowPanels,
-				function (key, win)
-				{
-					if (win)
-					{
-						// сохраняем состояние отсоединенной панели
-						box = {
-							width: win.innerWidth,
-							height: win.innerHeight,
-							left: win.screenX,
-							top: win.screenY
-						};
-						localStorage.setItem(key, Ext.Object.toQueryString(box, true));
-						
-						win.close();
-						FBEditor.childWindow[name] = null;
-					}
-				}
-			);
-		},
-
-		/**
 		 * Проверяет ширину отсоединяемых панелей, и если они перекрывают центральную панель,
 		 * то корректирует их ширину.
 		 */
@@ -171,10 +139,74 @@ Ext.define(
 				{
 
 					// устанавливаем ширину обеих панелей поровну
-					panels.props.setWidth((widthPanels.main - widthPanels.content) / 2);
-					panels.nav.setWidth((widthPanels.main - widthPanels.content) / 2);
+					if (panels.props)
+					{
+						panels.props.setWidth((widthPanels.main - widthPanels.content) / 2);
+					}
+					if (panels.nav)
+					{
+						panels.nav.setWidth((widthPanels.main - widthPanels.content) / 2);
+					}
 				}
 			}
+		},
+
+		/**
+		 * Передает фокус отсоединенным панелям, поднимая их наверх.
+		 */
+		onFocusDetachPanels: function ()
+		{
+			var me = this,
+				view;
+
+			view = me.getView();
+			Ext.Object.each(
+				view.windowPanels,
+				function (key, win)
+				{
+					if (win)
+					{
+						win.focus();
+						if (!Ext.isIE)
+						{
+							// для всех браузеров, кроме IE
+							win.alert('Панель найдена');
+						}
+					}
+				}
+			);
+		},
+
+		/**
+		 * Закрывает все отсоединеные панели.
+		 */
+		closeDetachPanels: function ()
+		{
+			var me = this,
+				view,
+				box;
+
+			view = me.getView();
+			Ext.Object.each(
+				view.windowPanels,
+				function (key, win)
+				{
+					if (win)
+					{
+						// сохраняем состояние отсоединенной панели
+						box = {
+							width: win.innerWidth,
+							height: win.innerHeight,
+							left: win.screenX,
+							top: win.screenY
+						};
+						localStorage.setItem(key, Ext.Object.toQueryString(box, true));
+						
+						win.close();
+						FBEditor.childWindow[name] = null;
+					}
+				}
+			);
 		}
 	}
 );

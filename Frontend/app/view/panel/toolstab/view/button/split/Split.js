@@ -25,8 +25,8 @@ Ext.define(
 		splited: false,
 
 		translateText: {
-			split: 'Разделить',
-			unsplit: 'Снять разделение'
+			split: 'Разделить окно текста',
+			unsplit: 'Снять разделение '
 		},
 
 		initComponent: function ()

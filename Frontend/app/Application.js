@@ -73,6 +73,11 @@ Ext.define(
 				me.onbeforeunload(me);
 			};
 
+			window.onfocus = function ()
+			{
+				me.onfocus();
+			};
+
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 			FBEditor.command.HistoryCommand.init();
@@ -136,6 +141,18 @@ Ext.define(
 
 				FBEditor.closingWindow = true;
 				Ext.getCmp('main').fireEvent('closeapplication');
+			}
+		},
+
+		/**
+		 * Вызывается при получении фокуса окном.
+		 */
+		onfocus: function ()
+		{
+			//фокус на главном окне
+			if (!window.name)
+			{
+				//
 			}
 		}
 	}

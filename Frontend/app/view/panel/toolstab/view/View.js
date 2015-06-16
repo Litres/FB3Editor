@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
-			'FBEditor.view.panel.toolstab.view.button.split.Split'
+			'FBEditor.view.panel.toolstab.view.button.split.Split',
+			'FBEditor.view.panel.toolstab.view.button.focusdetachpanels.FocusDetachPanels'
 		],
 		id:'panel-toolstab-view',
 		xtype: 'panel-toolstab-view',
@@ -22,6 +23,9 @@ Ext.define(
 			me.tbar = [
 				{
 					xtype: 'panel-toolstab-view-button-split'
+				},
+				{
+					xtype: 'panel-toolstab-view-button-focusdetachpanels'
 				}
 			];
 			me.callParent(this);
