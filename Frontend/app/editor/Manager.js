@@ -159,7 +159,7 @@ Ext.define(
 		/**
 		 * Устанавливает текущий выделенный элемент в редакторе.
 		 * @param {FBEditor.editor.element.AbstractElement} el
-		 * @param {Selection} sel
+		 * @param {Selection} [sel]
 		 */
 		setFocusElement: function (el, sel)
 		{
@@ -191,6 +191,7 @@ Ext.define(
 				sel.extend(data.endNode, data.endOffset);
 			}
 			me.setFocusElement(data.focusElement, sel);
+			me.content.nodes[data.startNode.viewportId].focus();
 		},
 
 		/**
@@ -348,7 +349,8 @@ Ext.define(
 		 * @param els Элементы.
 		 * @param els.common Верхний родительский элемент,
 		 * отсносительно которого происходит разбивка текущего узла.
-		 * @param {Object} nodes Узлы.
+		 * @param nodes Узлы.
+		 * @param nodes.container Текущий узел, который необходимо разделить.
 		 * @param {Number} offset Смещение курсора относительно текущего узла.
 		 * @return {Node} Новый узел, получившийся в результате разбивки.
 		 */
@@ -362,135 +364,173 @@ Ext.define(
 			els.parentContainer = nodes.parentContainer.getElement();
 			els.container = nodes.container.getElement();
 
-			while (els.parentContainer.elementId !== els.common.elementId)
+			if (els.parentContainer.elementId === els.common.elementId && els.container.isText)
 			{
-				nodes.next = nodes.parentContainer.nextSibling;
-				nodes.parent = nodes.parentContainer.parentNode;
-				els.parent = nodes.parent.getElement();
-				nodes.nextContainer = nodes.container.nextSibling;
+				// простая разбивка текстового узла на два
 
-				// клонируем узел
-				els.cloneContainer = els.parentContainer.clone({ignoredDeep: true});
+				nodes.next = nodes.container.nextSibling;
 
-				if (els.container.isText)
+				// части текста
+				els.endTextValue = nodes.container.nodeValue.substring(offset);
+				els.startTextValue = nodes.container.nodeValue.substring(0, offset);
+
+				if (els.startTextValue)
 				{
-					// часть текста после курсора
-					els.endTextValue = nodes.container.nodeValue.substring(offset);
+					// изменяем текст текущего узла
+					nodes.container.nodeValue = els.startTextValue;
+					els.container.setText(els.startTextValue);
+				}
 
-					// часть текста перед курсором
-					els.startTextValue = nodes.container.nodeValue.substring(0, offset);
+				if (els.startTextValue && els.endTextValue.trim())
+				{
+					// добавляем текст после текущего узла
+					els.container = FBEditor.editor.Factory.createElementText(els.endTextValue);
+					nodes.container = els.container.getNode(viewportId);
 
-					if (!els.startTextValue)
+					if (nodes.next)
 					{
-						if (!nodes.parentContainer.previousSibling)
+						els.next = nodes.next.getElement();
+						els.parentContainer.insertBefore(els.container, els.next);
+						nodes.parentContainer.insertBefore(nodes.container, nodes.next);
+					}
+					else
+					{
+						els.parentContainer.add(els.container);
+						nodes.parentContainer.appendChild(nodes.container);
+					}
+				}
+			}
+			else
+			{
+				while (els.parentContainer.elementId !== els.common.elementId)
+				{
+					nodes.next = nodes.parentContainer.nextSibling;
+					nodes.parent = nodes.parentContainer.parentNode;
+					els.parent = nodes.parent.getElement();
+					nodes.nextContainer = nodes.container.nextSibling;
+
+					// клонируем узел
+					els.cloneContainer = els.parentContainer.clone({ignoredDeep: true});
+
+					if (els.container.isText)
+					{
+						// часть текста после курсора
+						els.endTextValue = nodes.container.nodeValue.substring(offset);
+
+						// часть текста перед курсором
+						els.startTextValue = nodes.container.nodeValue.substring(0, offset);
+
+						if (!els.startTextValue)
 						{
-							// вставляем пустое содержимое вместо текущего узла
-							els.empty = me.createEmptyElement();
-							els.parentContainer.replace(els.empty, els.container);
-							nodes.parentContainer.replaceChild(els.empty.getNode(viewportId), nodes.container);
+							if (!nodes.parentContainer.previousSibling)
+							{
+								// вставляем пустое содержимое вместо текущего узла
+								els.empty = me.createEmptyElement();
+								els.parentContainer.replace(els.empty, els.container);
+								nodes.parentContainer.replaceChild(els.empty.getNode(viewportId), nodes.container);
+							}
+							else
+							{
+								// удаляем пустой текущий узел
+								els.parentContainer.remove(els.container);
+								nodes.parentContainer.removeChild(nodes.container);
+							}
 						}
 						else
 						{
-							// удаляем пустой текущий узел
-							els.parentContainer.remove(els.container);
-							nodes.parentContainer.removeChild(nodes.container);
+							// изменяем текст текущего узла
+							nodes.container.nodeValue = els.startTextValue;
+							els.container.setText(els.startTextValue);
+						}
+
+						if (els.endTextValue.trim())
+						{
+							// добавляем текст
+							els.t = FBEditor.editor.Factory.createElementText(els.endTextValue);
+							els.cloneContainer.add(els.t);
+						}
+
+						nodes.cloneContainer = els.cloneContainer.getNode(viewportId);
+
+						if (nodes.next)
+						{
+							els.next = nodes.next.getElement();
+							els.parent.insertBefore(els.cloneContainer, els.next);
+							nodes.parent.insertBefore(nodes.cloneContainer, nodes.next);
+						}
+						else
+						{
+							els.parent.add(els.cloneContainer);
+							nodes.parent.appendChild(nodes.cloneContainer);
 						}
 					}
 					else
 					{
-						// изменяем текст текущего узла
-						nodes.container.nodeValue = els.startTextValue;
-						els.container.setText(els.startTextValue);
+						nodes.cloneContainer = els.cloneContainer.getNode(viewportId);
+
+						if (nodes.next)
+						{
+							els.next = nodes.next.getElement();
+							els.parent.insertBefore(els.cloneContainer, els.next);
+							nodes.parent.insertBefore(nodes.cloneContainer, nodes.next);
+						}
+						else
+						{
+							els.parent.add(els.cloneContainer);
+							nodes.parent.appendChild(nodes.cloneContainer);
+						}
+
+						if (nodes.container.firstChild)
+						{
+							// если элемент не пустой, то переносим его в клонированный элемент
+							els.cloneContainer.add(els.container);
+							nodes.cloneContainer.appendChild(nodes.container);
+						}
+						else
+						{
+							// или просто удаляем
+							nodes.parentContainer.removeChild(nodes.container);
+						}
+						els.parentContainer.remove(els.container);
 					}
 
-					if (els.endTextValue.trim())
+					// переносим все узлы после курсора
+					nodes.parent = nodes.cloneContainer;
+					els.parent = nodes.parent.getElement();
+					while (nodes.nextContainer)
 					{
-						// добавляем текст
-						els.t = FBEditor.editor.Factory.createElementText(els.endTextValue);
-						els.cloneContainer.add(els.t);
+						els.nextContainer = nodes.nextContainer.getElement();
+						nodes.buf = nodes.nextContainer.nextSibling;
+
+						els.parent.add(els.nextContainer);
+						nodes.parent.appendChild(nodes.nextContainer);
+						els.parentContainer.remove(els.nextContainer);
+
+						nodes.nextContainer = nodes.buf;
 					}
 
-					nodes.cloneContainer = els.cloneContainer.getNode(viewportId);
+					if (!nodes.parent.firstChild && els.parent.xmlTag === 'p' && !nodes.parent.nextSibling)
+					{
+						// добавляем пустое содержимое в параграф
+						els.empty = me.createEmptyElement();
+						els.parent.add(els.empty);
+						nodes.parent.appendChild(els.empty.getNode(viewportId));
+					}
 
-					if (nodes.next)
+					// переносим указатель
+					nodes.container = nodes.cloneContainer;
+					els.container = nodes.container.getElement();
+
+					if (!nodes.parentContainer.firstChild)
 					{
-						els.next = nodes.next.getElement();
-						els.parent.insertBefore(els.cloneContainer, els.next);
-						nodes.parent.insertBefore(nodes.cloneContainer, nodes.next);
+						// удаляем пустой контейнер
+						nodes.parentContainer.parentNode.getElement().remove(els.parentContainer);
+						nodes.parentContainer.parentNode.removeChild(nodes.parentContainer);
 					}
-					else
-					{
-						els.parent.add(els.cloneContainer);
-						nodes.parent.appendChild(nodes.cloneContainer);
-					}
+
+					nodes.parentContainer = nodes.container.parentNode;
+					els.parentContainer = nodes.parentContainer.getElement();
 				}
-				else
-				{
-					nodes.cloneContainer = els.cloneContainer.getNode(viewportId);
-
-					if (nodes.next)
-					{
-						els.next = nodes.next.getElement();
-						els.parent.insertBefore(els.cloneContainer, els.next);
-						nodes.parent.insertBefore(nodes.cloneContainer, nodes.next);
-					}
-					else
-					{
-						els.parent.add(els.cloneContainer);
-						nodes.parent.appendChild(nodes.cloneContainer);
-					}
-
-					if (nodes.container.firstChild)
-					{
-						// если элемент не пустой, то переносим его в клонированный элемент
-						els.cloneContainer.add(els.container);
-						nodes.cloneContainer.appendChild(nodes.container);
-					}
-					else
-					{
-						// или просто удаляем
-						nodes.parentContainer.removeChild(nodes.container);
-					}
-					els.parentContainer.remove(els.container);
-				}
-
-				// переносим все узлы после курсора
-				nodes.parent = nodes.cloneContainer;
-				els.parent = nodes.parent.getElement();
-				while (nodes.nextContainer)
-				{
-					els.nextContainer = nodes.nextContainer.getElement();
-					nodes.buf = nodes.nextContainer.nextSibling;
-
-					els.parent.add(els.nextContainer);
-					nodes.parent.appendChild(nodes.nextContainer);
-					els.parentContainer.remove(els.nextContainer);
-
-					nodes.nextContainer = nodes.buf;
-				}
-
-				if (!nodes.parent.firstChild && els.parent.xmlTag === 'p' && !nodes.parent.nextSibling)
-				{
-					// добавляем пустое содержимое в параграф
-					els.empty = me.createEmptyElement();
-					els.parent.add(els.empty);
-					nodes.parent.appendChild(els.empty.getNode(viewportId));
-				}
-
-				// переносим указатель
-				nodes.container = nodes.cloneContainer;
-				els.container = nodes.container.getElement();
-
-				if (!nodes.parentContainer.firstChild)
-				{
-					// удаляем пустой контейнер
-					nodes.parentContainer.parentNode.getElement().remove(els.parentContainer);
-					nodes.parentContainer.parentNode.removeChild(nodes.parentContainer);
-				}
-
-				nodes.parentContainer = nodes.container.parentNode;
-				els.parentContainer = nodes.parentContainer.getElement();
-
 			}
 
 			return nodes.container;

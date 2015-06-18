@@ -14,6 +14,11 @@ Ext.define(
 		el: null,
 
 		/**
+		 * @property {Boolean} Может ли элемент быть создан из выделения.
+		 */
+		createFromRange: false,
+
+		/**
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент контроллера.
 		 */
 		constructor: function (el)
@@ -34,10 +39,10 @@ Ext.define(
 				name,
 				node;
 
-			if (!sel.getRangeAt(0).collapsed && me.onCreateRangeElement)
+			if (!sel.getRangeAt(0).collapsed && me.createFromRange)
 			{
 				// создаем элемент из выделения
-				me.onCreateRangeElement(sel);
+				me.createRangeElement(sel);
 			}
 			else
 			{
@@ -53,6 +58,26 @@ Ext.define(
 					{
 						FBEditor.editor.HistoryManager.add(cmd);
 					}
+				}
+			}
+		},
+
+		createRangeElement: function (sel)
+		{
+			var me = this,
+				node,
+				name,
+				cmd;
+
+			// проверяем элемент по схеме
+			if (me.checkRangeVerify(sel))
+			{
+				// если элемент прошел проверку, то создаем его
+				name = me.getNameElement();
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateRangeCommand', {sel: sel});
+				if (cmd.execute())
+				{
+					FBEditor.editor.HistoryManager.add(cmd);
 				}
 			}
 		},

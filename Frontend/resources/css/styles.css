@@ -667,6 +667,11 @@
 	content: "\f10e";
 }
 
+.treenavigation-children-el-epigraph span:before
+{
+	content: "\f231";
+}
+
 .treenavigation-children-el-undefined span:before
 {
 	content: "\f128";

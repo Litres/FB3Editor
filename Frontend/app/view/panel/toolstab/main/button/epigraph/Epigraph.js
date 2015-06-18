@@ -11,7 +11,8 @@ Ext.define(
 		id: 'panel-toolstab-main-button-epigraph',
 		xtype: 'panel-toolstab-main-button-epigraph',
 		//controller: 'panel.toolstab.main.button.epigraph',
-		text: 'Эпиграф',
+		html: '<i class="fa fa-pinterest-p"></i>',
+		tooltip: 'Эпиграф',
 		handler: function ()
 		{
 			FBEditor.editor.Manager.createElement('epigraph');

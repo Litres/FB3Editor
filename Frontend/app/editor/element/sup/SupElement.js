@@ -7,10 +7,13 @@
 Ext.define(
 	'FBEditor.editor.element.sup.SupElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
-
+		extend: 'FBEditor.editor.element.AbstractStyleElement',
+		requires: [
+			'FBEditor.editor.element.sup.SupElementController',
+			'FBEditor.editor.command.sup.CreateRangeCommand'
+		],
 		htmlTag: 'sup',
 		xmlTag: 'sup',
-		showedOnTree: false
+		cls: 'el-sup'
 	}
 );

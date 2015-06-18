@@ -1,11 +1,12 @@
 /**
- * Кнотроллер элемента div.
+ * Абстрактный контроллер элементов форматирования текста.
  *
+ * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.div.DivElementController',
+	'FBEditor.editor.element.AbstractStyleElementController',
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 
@@ -29,6 +30,8 @@ Ext.define(
 				name,
 				range;
 
+			return true;
+
 			name = me.getNameElement();
 
 			// получаем данные из выделения
@@ -42,15 +45,17 @@ Ext.define(
 			els.endContainer = nodes.endContainer.getElement();
 
 			// ищем самый верхниий элемент, который может делиться на несколько
-			while (!els.common.permit.splittable)
-			{
-				nodes.common = nodes.common.parentNode;
-				els.common = nodes.common.getElement();
-				if (els.common.xmlTag === 'fb3-body')
-				{
-					return false;
-				}
-			}
+			/*while (els.common.xmlTag !== 'p')
+			 {
+			 nodes.common = nodes.common.parentNode;
+			 els.common = nodes.common.getElement();
+			 if (els.common.xmlTag === 'fb3-body')
+			 {
+			 return false;
+			 }
+			 }*/
+
+			console.log('nodes', nodes);
 
 			// получаем позицию первого элемента из выделения
 			nodes.start = range.startContainer;
@@ -98,7 +103,7 @@ Ext.define(
 			// получаем имена элементов, которые станут дочерними для элемента, для проверки по схеме
 			names.el = names.common.slice(pos.start, pos.end + 1);
 
-			//console.log('names.el', names.el);
+			console.log('names.el', names.el);
 
 			// проверяем элемент по схеме
 			sch = FBEditor.editor.Manager.getSchema();
@@ -120,36 +125,18 @@ Ext.define(
 					names.common.splice(pos.start + 1, 0, names.common[pos.start - 1]);
 				}
 
-				//console.log('names.common', names.common);
+				console.log('names.common', names.common);
 
 				name = els.common.xmlTag;
 				res = sch.verify(name, names.common);
 			}
 
-			/*console.log('range', range, range.toString());
+			console.log('range', range, range.toString());
 			console.log('nodes', nodes);
 			console.log('els', els);
-			console.log('pos', pos);*/
+			console.log('pos', pos);
 
 			return res;
-		},
-
-		getNameElementsVerify: function (nodes)
-		{
-			var me = this,
-				els = {},
-				nameElements,
-				name;
-
-			name = me.getNameElement();
-			nodes.node = nodes.parent.getElement().xmlTag === name ? nodes.parent : nodes.node;
-			nodes.parent = nodes.node.parentNode;
-			els.node = nodes.node.getElement();
-			els.parent = nodes.parent.getElement();
-			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
-			nameElements.splice(els.parent.getChildPosition(els.node) + 1, 0, name);
-
-			return nameElements;
 		}
 	}
 );

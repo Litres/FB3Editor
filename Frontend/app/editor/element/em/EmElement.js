@@ -7,11 +7,14 @@
 Ext.define(
 	'FBEditor.editor.element.em.EmElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
-
+		extend: 'FBEditor.editor.element.AbstractStyleElement',
+		requires: [
+			'FBEditor.editor.element.em.EmElementController',
+			'FBEditor.editor.command.em.CreateRangeCommand'
+		],
+		controllerClass: 'FBEditor.editor.element.em.EmElementController',
 		htmlTag: 'em',
 		xmlTag: 'em',
-		cls: 'el-em',
-		showedOnTree: false
+		cls: 'el-em'
 	}
 );

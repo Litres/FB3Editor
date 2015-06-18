@@ -11,7 +11,8 @@ Ext.define(
 		id: 'panel-toolstab-main-button-annotation',
 		xtype: 'panel-toolstab-main-button-annotation',
 		//controller: 'panel.toolstab.main.button.annotation',
-		text: 'Аннотация',
+		html: '<i class="fa fa-font"></i>',
+		tooltip: 'Аннотация',
 		handler: function ()
 		{
 			FBEditor.editor.Manager.createElement('annotation');

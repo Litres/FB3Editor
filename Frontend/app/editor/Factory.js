@@ -11,9 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.a.AElement',
 			'FBEditor.editor.element.annotation.AnnotationElement',
-			'FBEditor.editor.element.b.BElement',
 			'FBEditor.editor.element.blockquote.BlockquoteElement',
 			'FBEditor.editor.element.br.BrElement',
+			'FBEditor.editor.element.code.CodeElement',
 			'FBEditor.editor.element.div.DivElement',
 			'FBEditor.editor.element.em.EmElement',
 			'FBEditor.editor.element.epigraph.EpigraphElement',
@@ -27,6 +27,7 @@ Ext.define(
 			'FBEditor.editor.element.ol.OlElement',
 			'FBEditor.editor.element.p.PElement',
 			'FBEditor.editor.element.section.SectionElement',
+			'FBEditor.editor.element.spacing.SpacingElement',
 			'FBEditor.editor.element.span.SpanElement',
 			'FBEditor.editor.element.strikethrough.StrikethroughElement',
 			'FBEditor.editor.element.strong.StrongElement',
@@ -37,7 +38,8 @@ Ext.define(
 			'FBEditor.editor.element.u.UElement',
 			'FBEditor.editor.element.ul.UlElement',
 			'FBEditor.editor.element.text.TextElement',
-			'FBEditor.editor.element.undefined.UndefinedElement'
+			'FBEditor.editor.element.undefined.UndefinedElement',
+			'FBEditor.editor.element.underline.UnderlineElement'
 		],
 
 		/**

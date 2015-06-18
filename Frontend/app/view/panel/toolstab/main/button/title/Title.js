@@ -11,7 +11,8 @@ Ext.define(
 		id: 'panel-toolstab-main-button-title',
 		xtype: 'panel-toolstab-main-button-title',
 		//controller: 'panel.toolstab.main.button.title',
-		text: 'Заголовок',
+		html: '<i class="fa fa-header"></i>',
+		tooltip: 'Заголовок',
 		handler: function ()
 		{
 			FBEditor.editor.Manager.createElement('title');

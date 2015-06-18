@@ -104,6 +104,21 @@
 	font-style: italic;
 }
 
+.panel-editor-viewport .el-spacing
+{
+	letter-spacing: 0.05em;
+}
+
+.panel-editor-viewport .el-strikethrough
+{
+	text-decoration: line-through;
+}
+
+.panel-editor-viewport .el-underline
+{
+	text-decoration: underline;
+}
+
 .panel-editor-viewport .el-epigraph
 {
 	font-size: 80%;

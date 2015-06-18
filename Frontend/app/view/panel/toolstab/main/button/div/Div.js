@@ -11,7 +11,8 @@ Ext.define(
 		id: 'panel-toolstab-main-button-div',
 		xtype: 'panel-toolstab-main-button-div',
 		//controller: 'panel.toolstab.main.button.div',
-		text: 'Блок',
+		html: '<i class="fa fa-cubes"></i>',
+		tooltip: 'Блок',
 		handler: function ()
 		{
 			FBEditor.editor.Manager.createElement('div');
