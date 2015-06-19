@@ -551,88 +551,99 @@ Ext.define(
 			nodes.prev = node.previousSibling;
 			els.prev = nodes.prev.getElement();
 
-			// переносим все элементы в предыдущий узел
-			nodes.first = nodes.node.firstChild;
-			els.first = nodes.first ? nodes.first.getElement() : null;
-			nodes.prevLast = nodes.prev;
-			els.prevLast = els.prev;
-			nodes.last = nodes.prevLast.lastChild;
-			els.last = nodes.last ? nodes.last.getElement() : null;
-			//console.log('join nodes, els', nodes, els);
-			while (els.first && els.last)
+			if (els.node.isText && els.prev.isText)
 			{
-				nodes.firstChild = nodes.first.firstChild;
-				nodes.next = nodes.first;
-				//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first, nodes.last, nodes.prevLast);
-				if (els.last.isText && !els.first.isText)
-				{
-					// перенос узлов без возможности объединения текста
-					while (nodes.next)
-					{
-						//console.log('(1) nodes.next, nodes.last', nodes.next, nodes.last);
-						nodes.buf = nodes.next.nextSibling;
-						els.next = nodes.next.getElement();
+				// соединяем текстовые узлы
+				els.text = els.prev.text + els.node.text;
+				els.prev.setText(els.text);
+				nodes.prev.nodeValue = els.text;
+			}
+			else
+			{
+				// переносим все элементы в предыдущий узел
 
-						// переносим узел
-						els.prevLast.add(els.next);
-						nodes.next.parentNode.getElement().remove(els.next);
-						nodes.prevLast.appendChild(nodes.next);
-
-						nodes.next = nodes.buf;
-					}
-				}
-				else
+				nodes.first = nodes.node.firstChild;
+				els.first = nodes.first ? nodes.first.getElement() : null;
+				nodes.prevLast = nodes.prev;
+				els.prevLast = els.prev;
+				nodes.last = nodes.prevLast.lastChild;
+				els.last = nodes.last ? nodes.last.getElement() : null;
+				//console.log('join nodes, els', nodes, els);
+				while (els.first && els.last)
 				{
-					// перенос узлов с возможностью объединения текста
-					while (nodes.next)
+					nodes.firstChild = nodes.first.firstChild;
+					nodes.next = nodes.first;
+					//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first, nodes.last, nodes.prevLast);
+					if (els.last.isText && !els.first.isText)
 					{
-						//console.log('(2) nodes.next, nodes.last', nodes.next, nodes.last);
-						nodes.buf = nodes.next.nextSibling;
-						els.next = nodes.next.getElement();
-						if (els.last && els.last.isText && els.next.isText)
+						// перенос узлов без возможности объединения текста
+						while (nodes.next)
 						{
-							// объединяем текстовые узлы
-							els.nodeValue = nodes.last.nodeValue + nodes.next.nodeValue;
-							nodes.last.nodeValue = els.nodeValue;
-							els.last.setText(els.nodeValue);
-						}
-						else
-						{
+							//console.log('(1) nodes.next, nodes.last', nodes.next, nodes.last);
+							nodes.buf = nodes.next.nextSibling;
+							els.next = nodes.next.getElement();
+
 							// переносим узел
 							els.prevLast.add(els.next);
 							nodes.next.parentNode.getElement().remove(els.next);
 							nodes.prevLast.appendChild(nodes.next);
 
-							if (els.last.isText)
-							{
-								nodes.last = nodes.prevLast.lastChild;
-								els.last = nodes.last ? nodes.last.getElement() : null;
-							}
+							nodes.next = nodes.buf;
 						}
-						nodes.next = nodes.buf;
 					}
-
-					if (els.last.isText)
+					else
 					{
-						// удаляем узел
-						nodes.first.parentNode.getElement().remove(els.first);
-						nodes.first.parentNode.removeChild(nodes.first);
+						// перенос узлов с возможностью объединения текста
+						while (nodes.next)
+						{
+							//console.log('(2) nodes.next, nodes.last', nodes.next, nodes.last);
+							nodes.buf = nodes.next.nextSibling;
+							els.next = nodes.next.getElement();
+							if (els.last && els.last.isText && els.next.isText)
+							{
+								// объединяем текстовые узлы
+								els.nodeValue = nodes.last.nodeValue + nodes.next.nodeValue;
+								nodes.last.nodeValue = els.nodeValue;
+								els.last.setText(els.nodeValue);
+							}
+							else
+							{
+								// переносим узел
+								els.prevLast.add(els.next);
+								nodes.next.parentNode.getElement().remove(els.next);
+								nodes.prevLast.appendChild(nodes.next);
+
+								if (els.last.isText)
+								{
+									nodes.last = nodes.prevLast.lastChild;
+									els.last = nodes.last ? nodes.last.getElement() : null;
+								}
+							}
+							nodes.next = nodes.buf;
+						}
+
+						if (els.last.isText)
+						{
+							// удаляем узел
+							nodes.first.parentNode.getElement().remove(els.first);
+							nodes.first.parentNode.removeChild(nodes.first);
+						}
 					}
-				}
 
-				if (nodes.prevLast.firstChild.getElement().xmlTag === me.emptyElement)
-				{
-					// удаляем пустой узел
-					els.prevLast.remove(nodes.prevLast.firstChild.getElement());
-					nodes.prevLast.removeChild(nodes.prevLast.firstChild);
-				}
+					if (nodes.prevLast.firstChild.getElement().xmlTag === me.emptyElement)
+					{
+						// удаляем пустой узел
+						els.prevLast.remove(nodes.prevLast.firstChild.getElement());
+						nodes.prevLast.removeChild(nodes.prevLast.firstChild);
+					}
 
-				nodes.first = nodes.firstChild;
-				els.first = nodes.first ? nodes.first.getElement() : null;
-				nodes.prevLast = nodes.last;
-				els.prevLast = els.last;
-				nodes.last = nodes.prevLast.lastChild;
-				els.last = nodes.last ? nodes.last.getElement() : null;
+					nodes.first = nodes.firstChild;
+					els.first = nodes.first ? nodes.first.getElement() : null;
+					nodes.prevLast = nodes.last;
+					els.prevLast = els.last;
+					nodes.last = nodes.prevLast.lastChild;
+					els.last = nodes.last ? nodes.last.getElement() : null;
+				}
 			}
 
 			// удаляем узел

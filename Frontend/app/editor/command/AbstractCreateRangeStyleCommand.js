@@ -33,9 +33,20 @@ Ext.define(
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
 
+				if (data.saveRange)
+				{
+					// восстанваливаем выделение
+					FBEditor.editor.Manager.setCursor(data.saveRange);
+				}
+
 				// получаем данные из выделения
 				sel = data.sel || window.getSelection();
 				range = sel.getRangeAt(0);
+
+				if (range.collapsed)
+				{
+					return false;
+				}
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
@@ -49,7 +60,7 @@ Ext.define(
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
 					end: range.endContainer,
-					prevParentStart: range.startContainer.parentNode.previousSibling,
+					parentStart: range.startContainer.parentNode,
 					collapsed: range.collapsed,
 					offset: offset
 				};
@@ -57,6 +68,8 @@ Ext.define(
 				if (els.common.elementId === range.startContainer.getElement().elementId)
 				{
 					// выделен только текстовый узел
+
+					data.range.oldValue = nodes.common.nodeValue;
 
 					nodes.parent = nodes.common.parentNode;
 					els.parent = nodes.parent.getElement();
@@ -152,15 +165,14 @@ Ext.define(
 					reg.end = new RegExp(Ext.String.escapeRegex(range.toString()) + '$');
 					reg.end2 = new RegExp(Ext.String.escapeRegex(nodes.lastP.innerText) + '$');
 
-					// позиции выделения относительно затронутых элементов
-
 					// находится ли начальная точка выделения в начале первого параграфа
 					pos.isStart = reg.start.test(nodes.firstP.innerText) || reg.start2.test(range.toString());
 
 					// находится ли конечная точка выделения в конце первого параграфа
 					pos.isEnd = reg.end.test(nodes.lastP.innerText) || reg.end2.test(range.toString());
 
-					console.log('pos, range', pos, range.toString());
+					data.range.pos = pos;
+					//console.log('pos', pos);
 
 					if (pos.isStart)
 					{
@@ -181,11 +193,24 @@ Ext.define(
 					nodes.parentStart = nodes.startContainer.parentNode;
 					els.parentStart = nodes.parentStart.getElement();
 
+					els.endContainer = range.endContainer.getElement();
+					nodes.parentEnd = range.endContainer.parentNode;
+					els.parentEnd = nodes.parentEnd.getElement();
+
 					if (pos.isEnd)
 					{
 						// конечная точка выделения находится в конце параграфа, разделение узла не требуется
 						nodes.endContainer = nodes.lastP.lastChild;
-						els.endContainer = nodes.endContainer.getElement();
+					}
+					else if (els.endContainer.isText && els.parentEnd.elementId === els.lastP.elementId &&
+					         data.range.offset.end === els.endContainer.text.length)
+					{
+						// конечная точка выделения находится в конце текстового узла,
+						// который является прямым потомком параграфа
+
+						// указатель на элемент в конечной точке выделения
+						nodes.endContainer = range.endContainer.nextSibling ?
+						                     range.endContainer.nextSibling : range.endContainer;
 					}
 					else
 					{
@@ -194,8 +219,9 @@ Ext.define(
 						els.common = els.lastP;
 						nodes.container = range.endContainer;
 						nodes.endContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.end);
-						els.endContainer = nodes.endContainer.getElement();
 					}
+					els.endContainer = nodes.endContainer.getElement();
+
 
 					nodes.parentEnd = nodes.endContainer.parentNode;
 					els.parentEnd = nodes.parentEnd.getElement();
@@ -312,7 +338,7 @@ Ext.define(
 					}
 				}
 
-				console.log('nodes, els', nodes, els);
+				//console.log('nodes, els', nodes, els);
 
 				// синхронизируем
 				els.parent.sync(data.viewportId);
@@ -349,11 +375,8 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				sel = window.getSelection(),
 				range,
 				viewportId;
-
-			return false;
 
 			try
 			{
@@ -362,35 +385,128 @@ Ext.define(
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
-				console.log('undo create range ' + me.elementName, range, nodes);
 
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
+				nodes.common = range.common;
+				els.common = nodes.common.getElement();
 
-				// переносим все элементы из блока обратно в исходный контейнер
-				nodes.first = nodes.node.firstChild;
-				while (nodes.first)
+				console.log('undo create ' + me.elementName, range, nodes);
+
+				if (els.common.elementId === range.start.getElement().elementId)
 				{
-					els.first = nodes.first.getElement();
-					els.parent.insertBefore(els.first, els.node);
-					//els.node.remove(els.first);
-					nodes.parent.insertBefore(nodes.first, nodes.node);
-					nodes.first = nodes.node.firstChild;
+					// был выделен только текстовый узел
+
+					nodes.parent = nodes.common.parentNode;
+					els.parent = nodes.parent.getElement();
+
+					// меняем текст исходного элемента
+					els.common.setText(range.oldValue);
+					nodes.common.nodeValue = range.oldValue;
+
+					// удаляем новые узлы
+					nodes.next = nodes.common.nextSibling;
+					els.next = nodes.next.getElement();
+					els.parent.remove(els.next);
+					nodes.parent.removeChild(nodes.next);
+					if (range.offset.end < range.oldValue.length)
+					{
+						nodes.next = nodes.common.nextSibling;
+						els.next = nodes.next.getElement();
+						els.parent.remove(els.next);
+						nodes.parent.removeChild(nodes.next);
+					}
 				}
-
-				// удаляем новый блок
-				nodes.parent.removeChild(nodes.node);
-				els.parent.remove(els.node);
-
-				// объединяем элементы в точках разделения
-				if (range.joinStartContainer)
+				else
 				{
-					FBEditor.editor.Manager.joinNode(nodes.startContainer);
-				}
-				if (!range.collapsed)
-				{
-					FBEditor.editor.Manager.joinNode(nodes.endContainer);
+					// переносим элементы в первом параграфе
+					els.firstP = nodes.firstP.getElement();
+					nodes.parent = nodes.startContainer.parentNode;
+					els.parent = nodes.parent.getElement();
+					nodes.first = nodes.parent.firstChild;
+					while (nodes.first)
+					{
+						// выполняется до тех пор, пока не закончатся элементы
+						els.first = nodes.first.getElement();
+						els.firstP.insertBefore(els.first, els.parent);
+						nodes.firstP.insertBefore(nodes.first, nodes.parent);
+						els.parent.remove(els.first);
+						nodes.first = nodes.parent.firstChild;
+					}
+
+					// удаляем новый элемент из первого параграфа
+					els.firstP.remove(els.parent);
+					nodes.firstP.removeChild(nodes.parent);
+
+					if (range.offset.start)
+					{
+						// соединяем узлы первого параграфа
+						FBEditor.editor.Manager.joinNode(nodes.startContainer);
+					}
+
+					els.lastP = nodes.lastP.getElement();
+					if (els.firstP.elementId !== els.lastP.elementId)
+					{
+						// начальные и конечные точки выделения находятся в разных параграфах
+
+						// переносим элементы в последнем параграфе
+						els.lastP = nodes.lastP.getElement();
+						nodes.parent = nodes.lastP.firstChild;
+						els.parent = nodes.parent.getElement();
+						nodes.first = nodes.parent.firstChild;
+						while (nodes.first)
+						{
+							// выполняется до тех пор, пока не закончатся элементы
+							els.first = nodes.first.getElement();
+							els.lastP.insertBefore(els.first, els.parent);
+							nodes.lastP.insertBefore(nodes.first, nodes.parent);
+							els.parent.remove(els.first);
+							nodes.first = nodes.parent.firstChild;
+						}
+
+						// удаляем новый элемент из последнего параграфа
+						els.lastP.remove(els.parent);
+						nodes.lastP.removeChild(nodes.parent);
+					}
+
+					if (range.offset.end < range.end.length)
+					{
+						// соединяем узлы последнего параграфа
+						FBEditor.editor.Manager.joinNode(nodes.endContainer);
+					}
+
+					// перебираем все параграфы, которые входят в выделение между первым и последним параграфами
+					// и изменяем их содержимое
+					Ext.Array.each(
+						nodes.pp,
+						function (p)
+						{
+							var elsP = {},
+								nodesP = {};
+
+							nodesP.p = p;
+							elsP.p = nodesP.p.getElement();
+
+							// переносим все дочерние элементы из нового элемента
+							nodesP.parent = nodesP.p.firstChild;
+							elsP.parent = nodesP.parent.getElement();
+							nodesP.first = nodesP.parent.firstChild;
+							while (nodesP.first)
+							{
+								// выполняется до тех пор, пока не закончатся элементы
+								elsP.first = nodesP.first.getElement();
+								elsP.p.add(elsP.first);
+								nodesP.p.appendChild(nodesP.first);
+								elsP.parent.remove(elsP.first);
+								nodesP.first = nodesP.parent.firstChild;
+							}
+
+							// удаляем новый элемент
+							elsP.p.remove(elsP.parent);
+							nodesP.p.removeChild(nodesP.parent);
+						}
+					);
+
+					// для синхронизации и курсора
+					els.parent = els.common;
 				}
 
 				// синхронизируем
@@ -398,32 +514,14 @@ Ext.define(
 
 				FBEditor.editor.Manager.suspendEvent = false;
 
-				// устанавливаем выделение
-				if (!range.joinStartContainer)
-				{
-					range.start = nodes.startContainer;
-					range.common = range.start.getElement().isText ? range.start.parentNode : range.start;
-				}
-				else
-				{
-					range.common = range.common.getElement().isText ? range.common.parentNode : range.common;
-				}
-				range.common = range.common ? range.common : range.prevParentStart.parentNode;
-				range.start = range.start.parentNode ? range.start : range.prevParentStart.nextSibling;
-				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
-				range.end = !range.collapsed && range.end.firstChild ? range.end.firstChild : range.end;
-
-				//console.log('cursor range', range);
-
-				FBEditor.editor.Manager.setCursor(
-					{
-						startNode: range.start,
-						endNode: range.end,
-						startOffset: range.offset.start,
-						endOffset: range.offset.end,
-						focusElement: range.common.getElement()
-					}
-				);
+				data.saveRange = {
+					startNode: range.start,
+					endNode: range.end,
+					startOffset: range.offset.start,
+					endOffset: range.offset.end,
+					focusElement: els.parent
+				};
+				FBEditor.editor.Manager.setCursor(data.saveRange);
 
 				res = true;
 			}
