@@ -26,6 +26,12 @@ Ext.define(
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
 
+				if (data.saveRange)
+				{
+					// восстанваливаем выделение
+					FBEditor.editor.Manager.setCursor(data.saveRange);
+				}
+
 				// получаем данные из выделения
 				sel = data.sel || window.getSelection();
 				range = sel.getRangeAt(0);
@@ -211,17 +217,14 @@ Ext.define(
 				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
 				range.end = !range.collapsed && range.end.firstChild ? range.end.firstChild : range.end;
 
-				//console.log('cursor range', range);
-
-				FBEditor.editor.Manager.setCursor(
-					{
-						startNode: range.start,
-						endNode: range.end,
-						startOffset: range.offset.start,
-						endOffset: range.offset.end,
-						focusElement: range.common.getElement()
-					}
-				);
+				data.saveRange = {
+					startNode: range.start,
+					endNode: range.end,
+					startOffset: range.offset.start,
+					endOffset: range.offset.end,
+					focusElement: range.common.getElement()
+				};
+				FBEditor.editor.Manager.setCursor(data.saveRange);
 
 				res = true;
 			}
