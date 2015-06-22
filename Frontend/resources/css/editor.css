@@ -135,7 +135,8 @@
 	margin: 0 1em 0.5em 25%;
 }
 
-.panel-editor-viewport .el-img
+.panel-editor-viewport .el-img,
+.panel-editor-viewport .el-img-marker
 {
 	resize: none;
 }
@@ -152,7 +153,8 @@
 	background-color: #DBD1FF; /*## Фоновый цвет аннотации*/
 }
 
-.panel-editor-viewport .el-img:hover
+.panel-editor-viewport .el-img:hover,
+.panel-editor-viewport .el-img-marker:hover
 {
 	cursor: default;
 }

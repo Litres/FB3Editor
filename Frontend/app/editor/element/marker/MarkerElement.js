@@ -8,24 +8,59 @@ Ext.define(
 	'FBEditor.editor.element.marker.MarkerElement',
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
-
+		requires: [
+			'FBEditor.editor.element.marker.img.ImgElement'
+		],
 		htmlTag: 'marker',
 		xmlTag: 'marker',
 		cls: 'el-marker',
 
-		getNameTree: function ()
+		/**
+		 * @property {FBEditor.editor.element.marker.img.ImgElement} Изображение маркера.
+		 */
+		img: null,
+
+		/**
+		 * @property {Boolean} Маркер ли.
+		 */
+		isMarker: true,
+
+		constructor: function ()
 		{
 			var me = this,
-				name;
+				img;
 
-			name = me.callParent(arguments);
+			me.callParent(arguments);
+			img = me.children[0];
+			me.children = [];
+			me.img = Ext.create('FBEditor.editor.element.marker.img.ImgElement', img.attributes);
+			me.img.parent = me;
+		},
 
-			if (me.children.length && me.children[0].xmlTag === 'img' && me.children[0].resource)
+		getNode: function (viewportId)
+		{
+			var me = this,
+				tag = me.htmlTag,
+				node;
+
+			node = document.createElement(tag);
+			node.viewportId = viewportId;
+			me.setNode(node);
+			node.appendChild(me.img.getNode(viewportId));
+
+			return node;
+		},
+
+		setNode: function (node)
+		{
+			var me = this;
+
+			me.callParent(arguments);
+			node.getElement = function ()
 			{
-				name += ' ' + me.children[0].resource.name;
-			}
-
-			return name;
+				// ссылается на элемент, который содержит маркер
+				return me.parent;
+			};
 		}
 	}
 );

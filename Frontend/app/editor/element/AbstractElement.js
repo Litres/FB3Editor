@@ -98,6 +98,11 @@ Ext.define(
 		parent: null,
 
 		/**
+		 * @property {FBEditor.editor.element.marker.MarkerElement} Маркер.
+		 */
+		marker: null,
+
+		/**
 		 * @property {Object} attributes Атрибуты элемента.
 		 */
 		attributes: {},
@@ -141,18 +146,30 @@ Ext.define(
 		 */
 		constructor: function (attributes, children)
 		{
-			var me = this;
+			var me = this,
+				ch = [];
 
+			children = children || me.children;
 			me.elementId = Ext.id({prefix: me.prefixId});
 			me.mixins.observable.constructor.call(me, {});
-			me.children = children || me.children;
+
 			Ext.Array.each(
-				me.children,
-			    function (item)
+				children,
+			    function (item, i)
 			    {
 				    item.parent = me;
+				    if (item.isMarker)
+				    {
+					    me.marker = item;
+				    }
+				    else
+				    {
+					    ch.push(item);
+				    }
 			    }
 			);
+
+			me.children = ch;
 			me.attributes = attributes || me.attributes;
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
@@ -163,7 +180,14 @@ Ext.define(
 			var me = this;
 
 			el.parent = me;
-			me.children.push(el);
+			if (el.isMarker)
+			{
+				me.marker = el;
+			}
+			else
+			{
+				me.children.push(el);
+			}
 		},
 
 		insertBefore: function (el, nextEl)
@@ -300,6 +324,10 @@ Ext.define(
 			node = document.createElement(tag);
 			node.viewportId = viewportId;
 			me.setNode(node);
+			if (me.marker)
+			{
+				node.appendChild(me.marker.getNode(viewportId));
+			}
 			if (children && children.length)
 			{
 				Ext.Array.each(

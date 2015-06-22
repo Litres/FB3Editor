@@ -526,9 +526,9 @@ Ext.define(
 
 		/**
 		 * @protected
-		 * Возвращает выделенный узел html, на котором установлен фокус.
-		 * @param {HTMLElement} target Узел html.
-		 * @return {HTMLElement}
+		 * Возвращает выделенный узел, на котором установлен фокус.
+		 * @param {Node} target Узел.
+		 * @return {Node} Активный узел.
 		 */
 		getFocusNode: function (target)
 		{
