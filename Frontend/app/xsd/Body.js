@@ -265,7 +265,7 @@ Ext.define(
 			</element>\
 			<element name="sup" type="fb3b:StyleType">\
 			</element>\
-			<element name="code" type="fb3b:StyleType">\
+			<element name="pre" type="fb3b:StyleType">\
 			</element>\
 			<element name="underline" type="fb3b:StyleType">\
 			</element>\

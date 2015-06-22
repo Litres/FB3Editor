@@ -26,6 +26,7 @@ Ext.define(
 			'FBEditor.editor.element.notes.NotesElement',
 			'FBEditor.editor.element.ol.OlElement',
 			'FBEditor.editor.element.p.PElement',
+			'FBEditor.editor.element.pre.PreElement',
 			'FBEditor.editor.element.section.SectionElement',
 			'FBEditor.editor.element.spacing.SpacingElement',
 			'FBEditor.editor.element.span.SpanElement',

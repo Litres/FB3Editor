@@ -161,8 +161,6 @@ Ext.define(
 						nodes.pp = me.getNodesPP(nodes.cur.nextSibling, nodes, els);
 					}
 
-					console.log('nodes', nodes);
-
 					// регулярные выражения для определения позиции выделения
 					reg.start = new RegExp('^' + Ext.String.escapeRegex(range.toString()));
 					reg.start2 = new RegExp('^' + Ext.String.escapeRegex(nodes.firstP.innerText));

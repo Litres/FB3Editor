@@ -18,7 +18,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
 			'FBEditor.view.panel.toolstab.main.button.sub.Sub',
 			'FBEditor.view.panel.toolstab.main.button.sup.Sup',
-			'FBEditor.view.panel.toolstab.main.button.code.Code',
+			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.underline.Underline',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing'
 		],
@@ -69,7 +69,7 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-sup'
 				},
 				{
-					xtype: 'panel-toolstab-main-button-code'
+					xtype: 'panel-toolstab-main-button-pre'
 				}
 			];
 			me.callParent(arguments);

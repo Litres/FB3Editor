@@ -53,7 +53,7 @@
 	background-color: #F4EEE3; /*## Основной фоновый цвет тела книги в редакторе*/
 }
 
-.panel-editor-viewport .el-code
+.panel-editor-viewport .el-pre
 {
 	font-family: monospace;
 	font-style: normal;
