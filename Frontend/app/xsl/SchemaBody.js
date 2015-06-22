@@ -114,7 +114,8 @@ Ext.define(
 					<xsl:if test="$extSeq">,</xsl:if>\
 					<xsl:call-template name="sequence"><xsl:with-param name="seq" select="sequence"/></xsl:call-template>\
 				</xsl:if>\
-				]\
+				],\
+				choice: {<xsl:call-template name="choice"><xsl:with-param name="choice" select="choice"/></xsl:call-template>}\
 				<xsl:if test="$extAttrs or $attrs or attributeGroup">\
 					, attributes: {\
 					<xsl:for-each select="$extAttrs"><xsl:if test="position()!=1">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\

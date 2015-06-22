@@ -66,6 +66,11 @@ Ext.define(
 							{
 								me.sequence = Ext.Array.merge(cls.sequence, me.sequence);
 							}
+							if (cls.choice)
+							{
+								me.choice = me.choice || {};
+								me.choice = Ext.applyIf(me.choice, cls.choice);
+							}
 							if (cls.attributes)
 							{
 								me.attributes = me.attributes || {};

@@ -65,7 +65,6 @@ Ext.define(
 		createRangeElement: function (sel)
 		{
 			var me = this,
-				node,
 				name,
 				cmd;
 
