@@ -55,6 +55,8 @@
 
 .panel-editor-viewport .el-pre
 {
+	display: inline;
+	margin: 0;
 	font-family: monospace;
 	font-style: normal;
 	background: rgb(238,238,238);
