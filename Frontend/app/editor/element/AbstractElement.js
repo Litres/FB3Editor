@@ -371,9 +371,13 @@ Ext.define(
 			attr = me.getAttributesXml();
 			xml = '<' + tag;
 			xml += attr ? ' ' + attr : '';
+			if (me.marker)
+			{
+				xml += '>' + me.marker.getXml();
+			}
 			if (children && children.length)
 			{
-				xml += '>';
+				xml += me.marker ? '' : '>';
 				Ext.Array.each(
 					children,
 					function (item)
@@ -385,7 +389,7 @@ Ext.define(
 			}
 			else
 			{
-				xml += '/>';
+				xml += me.marker ? '</' + tag + '>' : '/>';
 			}
 
 			return xml;

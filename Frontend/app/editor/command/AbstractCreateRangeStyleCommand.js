@@ -11,11 +11,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.AbstractCommand',
 
-		/**
-		 * @property {Array} Список элементов, которые могу содержать элементы форматирования.
-		 */
-		containers: ['p', 'li', 'subtitle'],
-
 		execute: function ()
 		{
 			var me = this,
@@ -26,6 +21,7 @@ Ext.define(
 				offset = {},
 				reg = {},
 				pos = {},
+				containers,
 				sel,
 				range;
 
@@ -47,6 +43,8 @@ Ext.define(
 				{
 					return false;
 				}
+
+				containers = FBEditor.editor.Manager.getStyleContainers();
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
@@ -134,7 +132,7 @@ Ext.define(
 					// первый параграф
 					nodes.firstP = range.startContainer;
 					els.firstP = nodes.firstP.getElement();
-					while (!Ext.Array.contains(me.containers, els.firstP.xmlTag))
+					while (!Ext.Array.contains(containers, els.firstP.xmlTag))
 					{
 						nodes.firstP = nodes.firstP.parentNode;
 						els.firstP = nodes.firstP.getElement();
@@ -143,7 +141,7 @@ Ext.define(
 					// последний параграф
 					nodes.lastP = range.endContainer;
 					els.lastP = nodes.lastP.getElement();
-					while (!Ext.Array.contains(me.containers, els.lastP.xmlTag))
+					while (!Ext.Array.contains(containers, els.lastP.xmlTag))
 					{
 						nodes.lastP = nodes.lastP.parentNode;
 						els.lastP = nodes.lastP.getElement();
@@ -540,7 +538,8 @@ Ext.define(
 		{
 			var me = this,
 				pp = [],
-				p = [];
+				p = [],
+				containers;
 
 			//console.log('cur', cur);
 
@@ -559,7 +558,9 @@ Ext.define(
 				return pp;
 			}
 
-			if (!Ext.Array.contains(me.containers, els.cur.xmlTag))
+			containers = FBEditor.editor.Manager.getStyleContainers();
+
+			if (!Ext.Array.contains(containers, els.cur.xmlTag))
 			{
 				// если элемент не параграф, ищем в нем все вложенные параграфы
 

@@ -793,7 +793,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает индекс ресурса из массив ресурсов.
+		 * Возвращает индекс ресурса из массива ресурсов.
 		 * @param {String} name Имя ресурса.
 		 * @return {Number|null} Индекс ресурса.
 		 */
@@ -801,9 +801,10 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				resourceIndex = null;
+				resourceIndex,
+				res;
 
-			Ext.Array.findBy(
+			res = Ext.Array.findBy(
 				data,
 				function (item, index)
 				{
@@ -812,6 +813,7 @@ Ext.define(
 					return item.name === name;
 				}
 			);
+			resourceIndex = res ? resourceIndex : null;
 
 			return resourceIndex;
 		},

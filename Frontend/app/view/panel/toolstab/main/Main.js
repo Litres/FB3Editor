@@ -20,7 +20,8 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.sup.Sup',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.underline.Underline',
-			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing'
+			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
+			'FBEditor.view.panel.toolstab.main.button.img.Img'
 		],
 		id:'panel-toolstab-main',
 		xtype: 'panel-toolstab-main',
@@ -42,6 +43,13 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-div'
+				},
+				{
+					xtype: 'tbspacer',
+					width: 20
+				},
+				{
+					xtype: 'panel-toolstab-main-button-img'
 				},
 				{
 					xtype: 'tbspacer',

@@ -31,29 +31,32 @@ Ext.define(
 		/**
 		 * Создаёт новый элемент.
 		 * @param {Selection} sel Выделение, которое указывает где необхоидмо создать элемент.
+		 * @param [opts] Дополнительные данные.
+		 * @param {Object} opts.range Данные выделения.
 		 */
-		onCreateElement: function (sel)
+		onCreateElement: function (sel, opts)
 		{
 			var me = this,
 				cmd,
 				name,
 				node;
 
-			if (!sel.getRangeAt(0).collapsed && me.createFromRange)
+			if (sel && !sel.getRangeAt(0).collapsed && me.createFromRange)
 			{
 				// создаем элемент из выделения
-				me.createRangeElement(sel);
+				me.createRangeElement(sel, opts);
 			}
 			else
 			{
 				// получаем узел из выделения и одновременно проверяем элемент по схеме
-				node = me.getNodeVerify(sel);
+				node = me.getNodeVerify(sel, opts);
 
 				if (node)
 				{
 					// если элемент прошел проверку, то создаем его
 					name = me.getNameElement();
-					cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {node: node});
+					cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand',
+					                 {node: node, sel: sel, opts: opts});
 					if (cmd.execute())
 					{
 						FBEditor.editor.HistoryManager.add(cmd);
@@ -62,7 +65,12 @@ Ext.define(
 			}
 		},
 
-		createRangeElement: function (sel)
+		/**
+		 * Создаёт элемент из выделения.
+		 * @param {Selection} sel Выделение, которое указывает где необхоидмо создать элемент.
+		 * @param {Object} opts Дополнительные данные.
+		 */
+		createRangeElement: function (sel, opts)
 		{
 			var me = this,
 				name,
@@ -73,7 +81,7 @@ Ext.define(
 			{
 				// если элемент прошел проверку, то создаем его
 				name = me.getNameElement();
-				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateRangeCommand', {sel: sel});
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateRangeCommand', {sel: sel, opts: opts});
 				if (cmd.execute())
 				{
 					FBEditor.editor.HistoryManager.add(cmd);

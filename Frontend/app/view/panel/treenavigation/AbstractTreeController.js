@@ -16,14 +16,18 @@ Ext.define(
 		 */
 		onItemClick: function (node, record)
 		{
-			var me = this;
+			var me = this,
+				view = me.getView();
 
 			//console.log('onItemClick', arguments);
 			me.clearSelection();
 			if (me.openContent)
 			{
-				// открываем соответствующую панель контента
-				me.openContent();
+				if (!view.inWindow)
+				{
+					// открываем соответствующую панель контента
+					me.openContent();
+				}
 
 				Ext.getCmp('panel-treenavigation').saveSelectData({view: me.getView(), node: node, record: record});
 				Ext.getCmp('panel-treenavigation').restoreSelectData();

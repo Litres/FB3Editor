@@ -51,6 +51,11 @@ Ext.define(
 		stateExpandedNodesTree: {},
 
 		/**
+		 * @property {Array} Список имен элементов, которые могу содержать стилевые элементы форматирования.
+		 */
+		styleContainers: ['p', 'li', 'subtitle'],
+
+		/**
 		 * Инициализирует менеджер.
 		 */
 		init: function ()
@@ -182,16 +187,22 @@ Ext.define(
 		setCursor: function (data)
 		{
 			var me = this,
-				sel = window.getSelection();
+				sel = window.getSelection(),
+				viewportId;
 
-			//console.log('set cursor', data);
+			// устанавливаем фокус браузера в окно текста
+			viewportId = data.startNode.viewportId;
+			me.content.nodes[viewportId].focus();
+
+			// выделение
 			sel.collapse(data.startNode, data.startOffset);
 			if (data.endNode)
 			{
 				sel.extend(data.endNode, data.endOffset);
 			}
+
+			// сохраняем фокусный элемент
 			me.setFocusElement(data.focusElement, sel);
-			me.content.nodes[data.startNode.viewportId].focus();
 		},
 
 		/**
@@ -218,8 +229,9 @@ Ext.define(
 		/**
 		 * Создает новый элемент в теле книги.
 		 * @param {String} name Имя элемента.
+		 * @param {Object} opts Дополнительные данные.
 		 */
-		createElement: function (name)
+		createElement: function (name, opts)
 		{
 			var me = this,
 				el,
@@ -229,7 +241,7 @@ Ext.define(
 			if (sel)
 			{
 				el = FBEditor.editor.Factory.createElement(name);
-				el.fireEvent('createElement', sel);
+				el.fireEvent('createElement', sel, opts);
 			}
 		},
 
@@ -249,6 +261,15 @@ Ext.define(
 		getSchema: function ()
 		{
 			return this.schema;
+		},
+
+		/**
+		 * Возвращает список имен элементов, которые могу содержать стилевые элементы форматирования.
+		 * @return {Array}
+		 */
+		getStyleContainers: function ()
+		{
+			return this.styleContainers;
 		},
 
 		/**

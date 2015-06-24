@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			'FBEditor.editor.element.img.ImgElementController'
+			'FBEditor.editor.element.img.ImgElementController',
+			'FBEditor.editor.command.img.CreateCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.img.ImgElementController',
 		htmlTag: 'img',
@@ -18,6 +19,8 @@ Ext.define(
 		attributes: {
 			tabindex: 0
 		},
+
+		createFromRange: true,
 
 		/**
 		 * @property {FBEditor.resource.Resource} Ссылка на ресурс.
@@ -28,6 +31,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.mixins.observable.constructor.call(me, {});
 			me.elementId = Ext.id({prefix: me.prefixId});
 			me.children = children || me.children;
 			me.attributes = Ext.apply(attributes, me.attributes);
@@ -39,11 +43,14 @@ Ext.define(
 			var me = this,
 				resource = me.resource;
 
-			resource.removeElement(me);
+			if (resource)
+			{
+				resource.removeElement(me);
+			}
 			me.callParent();
 		},
 
-		getNode: function ()
+		getNode: function (viewportId)
 		{
 			var me = this,
 				node;
@@ -115,11 +122,12 @@ Ext.define(
 		{
 			var me = this,
 				attributes = me.attributes,
-				resource = me.resource;
+				resource;
 
-			if (!resource)
+			attributes.src = attributes.src || 'undefined';
+			resource = FBEditor.resource.Manager.getResourceByName(attributes.src);
+			if (resource)
 			{
-				resource = FBEditor.resource.Manager.getResourceByName(attributes.src);
 				attributes.src = resource.url;
 				resource.addElement(me);
 				me.resource = resource;

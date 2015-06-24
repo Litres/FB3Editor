@@ -55,6 +55,9 @@ Ext.define(
 				panelResourcesControl = me.getPanelResourcesControl(),
 				viewResources = me.getViewResources();
 
+			// указываем, что панель находится в окне, чтобы избежать переключения центральной части
+			panelResourcesNavigation.inWindow = true;
+
 			// перемещаем панели ресурсов в окно
 			windowPanelResourcesNavigation.add(panelResourcesNavigation);
 			windowPanelResources.add(panelResourcesControl, viewResources);
@@ -70,6 +73,8 @@ Ext.define(
 				panelResources = me.getPanelResources(),
 				panelResourcesControl = me.getPanelResourcesControl(),
 				viewResources = me.getViewResources();
+
+			panelResourcesNavigation.inWindow = false;
 
 			// возвращаем панели ресурсов в центральную часть
 			panelTreenavigation.insert(1, panelResourcesNavigation);

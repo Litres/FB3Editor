@@ -93,6 +93,7 @@ Ext.define(
 				res = true,
 				srcEls = elements,
 				seq,
+				choice,
 				el,
 				nameEl;
 
@@ -104,16 +105,29 @@ Ext.define(
 			{
 				return false;
 			}
-			seq = el.sequence ? Ext.clone(el.sequence) : null;
+
+			seq = el.sequence.length ? Ext.clone(el.sequence) : null;
+			choice = el.choice.elements && el.choice.elements.length ? Ext.clone(el.choice) : null;
+
 			me.disableDebug || console.log('VERIFY name, srcEls, el', name, srcEls, el);
+
 			while (srcEls.length)
 			{
 				nameEl = srcEls[0];
 				me.disableDebug || console.log('======================== (nameEl, seq, srcEls)', nameEl, seq, srcEls);
-				if (!me.checkSequence(seq, srcEls))
+				if (seq && !me.checkSequence(seq, srcEls))
 				{
-					me.disableDebug || console.log('=== ERROR VERIFY === (nameEl, seq, srcEls)', nameEl, seq, srcEls);
+					me.disableDebug || console.log('=== ERROR VERIFY SEQ === (nameEl, seq, srcEls)', nameEl, seq, srcEls);
 					return false;
+				}
+				if (choice)
+				{
+					if (!me.checkChoice(nameEl, choice))
+					{
+						me.disableDebug || console.log('=== ERROR VERIFY CHOICE === (nameEl, choice, srcEls)', nameEl, choice, srcEls);
+						return false;
+					}
+					srcEls.splice(0, 1);
 				}
 			}
 

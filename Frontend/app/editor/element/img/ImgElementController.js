@@ -25,6 +25,34 @@ Ext.define(
 			e.stopPropagation();
 
 			return false;
+		},
+
+		getNodeVerify: function (sel, opts)
+		{
+			var me = this,
+				els = {},
+				nodes = {},
+				res,
+				sch,
+				name,
+				range,
+				nameElements;
+
+			// данные выделения
+			range = opts.range;
+			nodes.node = range.start;
+			nodes.parent = nodes.node.parentNode;
+
+			// получаем дочерние имена элементов для проверки по схеме
+			nameElements = ['img'];//me.getNameElementsVerify(nodes);
+
+			// проверяем элемент по схеме
+			sch = FBEditor.editor.Manager.getSchema();
+			els.parent = nodes.parent.getElement();
+			name = els.parent.xmlTag;
+			res = sch.verify(name, nameElements) ? nodes.node : false;
+
+			return res;
 		}
 	}
 );

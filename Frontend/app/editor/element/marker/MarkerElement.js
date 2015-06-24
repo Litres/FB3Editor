@@ -51,6 +51,28 @@ Ext.define(
 			return node;
 		},
 
+		getXml: function ()
+		{
+			var me = this,
+				tag = me.xmlTag,
+				xml,
+				attr;
+
+			attr = me.getAttributesXml();
+			xml = '<' + tag;
+			xml += attr ? ' ' + attr : '';
+			if (me.img)
+			{
+				xml += '>' + me.img.getXml() + '</' + tag + '>';
+			}
+			else
+			{
+				xml += '/>';
+			}
+
+			return xml;
+		},
+
 		setNode: function (node)
 		{
 			var me = this;

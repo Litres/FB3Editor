@@ -14,9 +14,10 @@
 	text-align: justify;
 }
 
-.panel-editor-viewport .el-p-no-indent
+.panel-editor-viewport .el-p-no-indent,
+.panel-editor-viewport p .el-img
 {
-	text-indent: 0; /* некоторые абзацы не должны иметь отступа  */
+	text-indent: 0; /* некоторые параграфы не должны иметь отступа  */
 }
 
 .panel-editor-viewport .el-div,

@@ -31,6 +31,11 @@ Ext.define(
 		 */
 		expandableLastFolder: false,
 
+		/**
+		 * @property {Boolean} Находится ли панель в окне.
+		 */
+		inWindow: false,
+
 		initComponent: function ()
 		{
 			var me = this,
