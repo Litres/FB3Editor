@@ -15,6 +15,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.em.Em',
 			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
 			'FBEditor.view.panel.toolstab.main.button.img.Img',
+			'FBEditor.view.panel.toolstab.main.button.notes.Notes',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.section.Section',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
@@ -36,7 +37,14 @@ Ext.define(
 
 			me.tbar = [
 				{
+					xtype: 'panel-toolstab-main-button-notes'
+				},
+				{
 					xtype: 'panel-toolstab-main-button-section'
+				},
+				{
+					xtype: 'tbspacer',
+					width: 20
 				},
 				{
 					xtype: 'panel-toolstab-main-button-title'

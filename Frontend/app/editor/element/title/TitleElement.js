@@ -15,6 +15,19 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.title.TitleElementController',
 		htmlTag: 'header',
 		xmlTag: 'title',
-		cls: 'el-title'
+		cls: 'el-title',
+
+		createScaffold: function ()
+		{
+			var me = this,
+				els = {};
+
+			els.p = FBEditor.editor.Factory.createElement('p');
+			els.t = FBEditor.editor.Factory.createElementText('Заголовок');
+			els.p.add(els.t);
+			me.add(els.p);
+
+			return els;
+		}
 	}
 );

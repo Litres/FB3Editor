@@ -490,7 +490,7 @@ Ext.define(
 		/**
 		 * Возвращает количество дочерних элементов с определенным значением свойства.
 		 * @param {String} nameProp Имя свойства элемента.
-		 * @param {String} valueProp Значение свойства элемента.
+		 * @param {*} valueProp Значение свойства элемента.
 		 * @return {Number}
 		 */
 		getChildrenCountByProp: function (nameProp, valueProp)
