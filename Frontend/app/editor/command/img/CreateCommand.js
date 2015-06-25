@@ -123,7 +123,6 @@ Ext.define(
 				FBEditor.editor.Manager.suspendEvent = true;
 
 				range = data.opts.range;
-				console.log(data);
 
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();

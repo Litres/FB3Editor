@@ -21,6 +21,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.underline.Underline',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
+			'FBEditor.view.panel.toolstab.main.button.subscription.Subscription',
 			'FBEditor.view.panel.toolstab.main.button.img.Img'
 		],
 		id:'panel-toolstab-main',
@@ -40,6 +41,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-annotation'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-subscription'
 				},
 				{
 					xtype: 'panel-toolstab-main-button-div'

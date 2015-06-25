@@ -229,7 +229,7 @@ Ext.define(
 		/**
 		 * Создает новый элемент в теле книги.
 		 * @param {String} name Имя элемента.
-		 * @param {Object} opts Дополнительные данные.
+		 * @param {Object} [opts] Дополнительные данные.
 		 */
 		createElement: function (name, opts)
 		{
