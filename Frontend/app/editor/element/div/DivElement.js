@@ -20,6 +20,19 @@ Ext.define(
 		cls: 'el-div',
 		permit: {
 			splittable: true
+		},
+
+		createScaffold: function ()
+		{
+			var me = this,
+				els = {};
+
+			els.p = FBEditor.editor.Factory.createElement('p');
+			els.t = FBEditor.editor.Factory.createElementText('Блок');
+			els.p.add(els.t);
+			me.add(els.p);
+
+			return els;
 		}
 	}
 );

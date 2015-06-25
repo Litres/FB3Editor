@@ -1,5 +1,5 @@
 /**
- * Кнопка вставки аннотации subscription.
+ * Кнопка вставки subscription.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */

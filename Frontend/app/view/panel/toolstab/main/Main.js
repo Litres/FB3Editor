@@ -10,19 +10,20 @@ Ext.define(
 		extend: 'Ext.panel.Panel',
 		requires: [
 			'FBEditor.view.panel.toolstab.main.button.annotation.Annotation',
+			'FBEditor.view.panel.toolstab.main.button.blockquote.Blockquote',
 			'FBEditor.view.panel.toolstab.main.button.div.Div',
-			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
-			'FBEditor.view.panel.toolstab.main.button.title.Title',
-			'FBEditor.view.panel.toolstab.main.button.strong.Strong',
 			'FBEditor.view.panel.toolstab.main.button.em.Em',
-			'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
-			'FBEditor.view.panel.toolstab.main.button.sub.Sub',
-			'FBEditor.view.panel.toolstab.main.button.sup.Sup',
+			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
+			'FBEditor.view.panel.toolstab.main.button.img.Img',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
-			'FBEditor.view.panel.toolstab.main.button.underline.Underline',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
+			'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
+			'FBEditor.view.panel.toolstab.main.button.strong.Strong',
+			'FBEditor.view.panel.toolstab.main.button.sub.Sub',
 			'FBEditor.view.panel.toolstab.main.button.subscription.Subscription',
-			'FBEditor.view.panel.toolstab.main.button.img.Img'
+			'FBEditor.view.panel.toolstab.main.button.sup.Sup',
+			'FBEditor.view.panel.toolstab.main.button.title.Title',
+			'FBEditor.view.panel.toolstab.main.button.underline.Underline'
 		],
 		id:'panel-toolstab-main',
 		xtype: 'panel-toolstab-main',
@@ -46,7 +47,14 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-subscription'
 				},
 				{
+					xtype: 'tbspacer',
+					width: 20
+				},
+				{
 					xtype: 'panel-toolstab-main-button-div'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-blockquote'
 				},
 				{
 					xtype: 'tbspacer',

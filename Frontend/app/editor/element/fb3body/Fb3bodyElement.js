@@ -21,6 +21,11 @@ Ext.define(
 		},
 		cls: 'el-body',
 
+		/**
+		 * @property {Boolean} Признан корневого элемента.
+		 */
+		isRoot: true,
+
 		constructor: function (attributes, children)
 		{
 			var me = this;

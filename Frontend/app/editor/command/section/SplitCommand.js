@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.AbstractSplitCommand',
 
-		nameElement: 'section',
+		elementName: 'section',
 
 		createElement: function (nodes, els)
 		{

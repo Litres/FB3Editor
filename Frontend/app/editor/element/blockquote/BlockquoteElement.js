@@ -8,9 +8,31 @@ Ext.define(
 	'FBEditor.editor.element.blockquote.BlockquoteElement',
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
-
+		requires: [
+			'FBEditor.editor.command.blockquote.SplitCommand',
+			'FBEditor.editor.command.blockquote.CreateCommand',
+			'FBEditor.editor.command.blockquote.CreateRangeCommand',
+			'FBEditor.editor.element.blockquote.BlockquoteElementController'
+		],
+		controllerClass: 'FBEditor.editor.element.blockquote.BlockquoteElementController',
 		htmlTag: 'blockquote',
 		xmlTag: 'blockquote',
-		cls: 'el-blockquote'
+		cls: 'el-blockquote',
+		permit: {
+			splittable: true
+		},
+
+		createScaffold: function ()
+		{
+			var me = this,
+				els = {};
+
+			els.p = FBEditor.editor.Factory.createElement('p');
+			els.t = FBEditor.editor.Factory.createElementText('Цитата');
+			els.p.add(els.t);
+			me.add(els.p);
+
+			return els;
+		}
 	}
 );
