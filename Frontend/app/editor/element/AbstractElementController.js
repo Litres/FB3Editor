@@ -478,9 +478,10 @@ Ext.define(
 		 * @protected
 		 * Проверяет элемент по схеме и возвращает узел в случае успеха.
 		 * @param {Selection} sel Выделение.
+		 * @param {Object} [opts] Дополнительные данные.
 		 * @return {Node|Boolean} Узел.
 		 */
-		getNodeVerify: function (sel)
+		getNodeVerify: function (sel, opts)
 		{
 			var me = this,
 				els = {},

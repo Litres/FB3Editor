@@ -16,6 +16,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
 			'FBEditor.view.panel.toolstab.main.button.img.Img',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
+			'FBEditor.view.panel.toolstab.main.button.section.Section',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
 			'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
 			'FBEditor.view.panel.toolstab.main.button.strong.Strong',
@@ -34,6 +35,9 @@ Ext.define(
 			var me = this;
 
 			me.tbar = [
+				{
+					xtype: 'panel-toolstab-main-button-section'
+				},
 				{
 					xtype: 'panel-toolstab-main-button-title'
 				},

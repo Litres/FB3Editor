@@ -11,6 +11,8 @@ Ext.define(
 
 		htmlTag: 'notes',
 		xmlTag: 'notes',
-		cls: 'el-notes'
+		cls: 'el-notes',
+
+		isNotes: true
 	}
 );

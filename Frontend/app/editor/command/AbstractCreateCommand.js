@@ -15,10 +15,26 @@ Ext.define(
 				data = me.getData(),
 				res = false,
 				els = {},
-				nodes = {};
+				nodes = {},
+				sel,
+				range;
 
 			try
 			{
+				sel = data.sel || window.getSelection();
+				range = sel.getRangeAt(0);
+				data.range = {
+					common: range.commonAncestorContainer,
+					start: range.startContainer,
+					end: range.endContainer,
+					parentStart: range.startContainer.parentNode,
+					collapsed: range.collapsed,
+					offset: {
+						start: range.startOffset,
+						end: range.endOffset
+					}
+				};
+
 				FBEditor.editor.Manager.suspendEvent = true;
 
 				// создаем элемент
@@ -59,6 +75,7 @@ Ext.define(
 			try
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
+
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
 				viewportId = nodes.node.viewportId;
@@ -109,11 +126,13 @@ Ext.define(
 				data = me.getData();
 
 			data.oldRange = sel.getRangeAt(0);
-			FBEditor.editor.Manager.setFocusElement(els.p);
 			nodes.p = els.p.nodes[data.viewportId];
-			sel.collapse(nodes.p);
-			sel.extend(nodes.p.firstChild, nodes.p.firstChild.length);
-			sel.collapseToEnd();
+			data.saveRange = {
+				startNode: nodes.p.firstChild,
+				startOffset: nodes.p.firstChild.length,
+				focusElement: els.p
+			};
+			FBEditor.editor.Manager.setCursor(data.saveRange);
 		}
 	}
 );

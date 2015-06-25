@@ -21,22 +21,23 @@ Ext.define(
 			splittable: true
 		},
 
+		isSection: true,
+
 		createScaffold: function ()
 		{
 			var me = this,
 				els = {};
 
-			els.node = me;
 			els.title = FBEditor.editor.Factory.createElement('title');
 			els.pT = FBEditor.editor.Factory.createElement('p');
 			els.t = FBEditor.editor.Factory.createElementText('Заголовок');
 			els.pT.add(els.t);
 			els.title.add(els.pT);
-			els.node.add(els.title);
+			me.add(els.title);
 			els.p = FBEditor.editor.Factory.createElement('p');
 			els.t2 = FBEditor.editor.Factory.createElementText('Текст');
 			els.p.add(els.t2);
-			els.node.add(els.p);
+			me.add(els.p);
 
 			return els;
 		}
