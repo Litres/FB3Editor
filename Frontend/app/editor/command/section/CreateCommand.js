@@ -20,9 +20,6 @@ Ext.define(
 			// вложенная ли секция
 			inner = data.opts && data.opts.inner;
 
-			nodes.node = data.node || data.prevNode;
-			data.viewportId = nodes.node.viewportId;
-
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 			nodes.next = nodes.node.nextSibling;

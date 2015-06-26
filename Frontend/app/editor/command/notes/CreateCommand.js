@@ -20,8 +20,6 @@ Ext.define(
 			nodes.parent = data.node;
 			els.parent = nodes.parent.getElement();
 
-			data.viewportId = data.node.viewportId;
-
 			// создаем элемент
 			els.node = FBEditor.editor.Factory.createElement(me.elementName);
 			els = Ext.apply(els, els.node.createScaffold());

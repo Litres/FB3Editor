@@ -14,9 +14,6 @@ Ext.define(
 			var me = this,
 				data = me.getData();
 
-			nodes.node = data.node || data.prevNode;
-			data.viewportId = nodes.node.viewportId;
-
 			els.node = FBEditor.editor.Factory.createElement('epigraph');
 			nodes.parent = nodes.node.parentNode;
 			nodes.node = nodes.parent.getElement().xmlTag === els.node.xmlTag ? nodes.parent : nodes.node;

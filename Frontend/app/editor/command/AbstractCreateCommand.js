@@ -21,6 +21,7 @@ Ext.define(
 
 			try
 			{
+				// получаем данные из выделения
 				sel = data.sel || window.getSelection();
 				range = sel.getRangeAt(0);
 				data.range = {
@@ -36,6 +37,24 @@ Ext.define(
 				};
 
 				FBEditor.editor.Manager.suspendEvent = true;
+
+				nodes.node = data.node || data.prevNode;
+
+				if (!nodes.node.parentNode)
+				{
+					// если ссылка на элемент была потеряна в результате многократного использования ctrl+z,
+					// то пытаемся восстановить ссылку из текущего выделения
+					nodes.parent = data.range.parentStart;
+					els.parent = nodes.parent.getElement();
+					while (els.parent.xmlTag !== nodes.node.getElement().xmlTag)
+					{
+						nodes.parent = nodes.parent.parentNode;
+						els.parent = nodes.parent.getElement();
+					}
+					nodes.node = nodes.parent;
+				}
+
+				data.viewportId = nodes.node.viewportId;
 
 				// создаем элемент
 				me.createElement(els, nodes);
@@ -68,7 +87,6 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				sel = window.getSelection(),
 				range,
 				viewportId;
 
@@ -76,22 +94,28 @@ Ext.define(
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
 
+				range = data.range;
+
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
 				viewportId = nodes.node.viewportId;
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
+
 				els.parent.remove(els.node);
 				nodes.parent.removeChild(nodes.node);
+
 				els.parent.sync(viewportId);
+
 				FBEditor.editor.Manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				range = data.oldRange;
-				nodes.cursor = range.endContainer;
-				els.cursor = nodes.cursor.getElement();
-				FBEditor.editor.Manager.setFocusElement(els.cursor);
-				sel.collapse(nodes.cursor, range.endOffset);
+				data.saveRange = {
+					startNode: range.start,
+					startOffset: range.offset.start,
+					focusElement: range.parentStart.getElement()
+				};
+				FBEditor.editor.Manager.setCursor(data.saveRange);
 
 				res = true;
 			}

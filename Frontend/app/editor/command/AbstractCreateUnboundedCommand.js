@@ -20,9 +20,6 @@ Ext.define(
 			var me = this,
 				data = me.getData();
 
-			nodes.node = data.node || data.prevNode;
-			data.viewportId = nodes.node.viewportId;
-
 			nodes.parent = nodes.node.parentNode;
 			nodes.node = nodes.parent.getElement().xmlTag === me.elementName ? nodes.parent : nodes.node;
 			nodes.parent = nodes.node.parentNode;

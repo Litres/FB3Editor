@@ -14,10 +14,6 @@ Ext.define(
 			var me = this,
 				data = me.getData();
 
-			nodes.node = data.node;
-
-			data.viewportId = nodes.node.viewportId;
-
 			els.node = FBEditor.editor.Factory.createElement('title');
 			nodes.parent = nodes.node.parentNode;
 			nodes.node = nodes.parent.getElement().xmlTag === els.node.xmlTag ? nodes.parent : nodes.node;
