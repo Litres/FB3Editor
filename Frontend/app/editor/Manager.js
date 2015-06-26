@@ -194,6 +194,12 @@ Ext.define(
 			viewportId = data.startNode.viewportId;
 			me.content.nodes[viewportId].focus();
 
+			// перематываем скролл
+			if (data.focusElement.nodes[viewportId].scrollIntoView)
+			{
+				data.focusElement.nodes[viewportId].scrollIntoView();
+			}
+
 			// выделение
 			sel.collapse(data.startNode, data.startOffset);
 			if (data.endNode)

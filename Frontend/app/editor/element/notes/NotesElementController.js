@@ -1,4 +1,5 @@
 /**
+ * Контроллер элемента notes.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */

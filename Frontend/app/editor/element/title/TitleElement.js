@@ -17,6 +17,8 @@ Ext.define(
 		xmlTag: 'title',
 		cls: 'el-title',
 
+		isTitle: true,
+
 		createScaffold: function ()
 		{
 			var me = this,
