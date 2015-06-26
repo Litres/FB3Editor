@@ -175,6 +175,7 @@
 	padding: 0.3em;
 }
 
+/*
 .panel-editor-viewport .el-ol .el-title
 {
 	display: inline-block;
@@ -184,15 +185,16 @@
 	font-size: 120%;
 }
 
+.panel-editor-viewport .el-ol .el-title p
+{
+	text-align: left;
+}
+*/
+
 .panel-editor-viewport .el-title p
 {
 	text-align: center;
 	text-indent: 0em;
-}
-
-.panel-editor-viewport .el-ol .el-title p
-{
-	text-align: left;
 }
 
 .panel-editor-viewport .el-marker

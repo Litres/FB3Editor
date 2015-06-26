@@ -17,6 +17,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.img.Img',
 			'FBEditor.view.panel.toolstab.main.button.note.Note',
 			'FBEditor.view.panel.toolstab.main.button.notes.Notes',
+			'FBEditor.view.panel.toolstab.main.button.ol.Ol',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.section.Section',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
@@ -26,6 +27,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.subscription.Subscription',
 			'FBEditor.view.panel.toolstab.main.button.sup.Sup',
 			'FBEditor.view.panel.toolstab.main.button.title.Title',
+			'FBEditor.view.panel.toolstab.main.button.ul.Ul',
 			'FBEditor.view.panel.toolstab.main.button.underline.Underline'
 		],
 		id:'panel-toolstab-main',
@@ -75,6 +77,12 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-blockquote'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-ul'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-ol'
 				},
 				{
 					xtype: 'tbspacer',

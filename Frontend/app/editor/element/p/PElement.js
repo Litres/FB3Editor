@@ -17,6 +17,8 @@ Ext.define(
 		cls: 'el-p',
 		showedOnTree: false,
 
+		isP: true,
+
 		setAttributesHtml: function (element)
 		{
 			var me = this,

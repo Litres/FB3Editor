@@ -715,6 +715,94 @@ Ext.define(
 			while (els.parentParent.elementId !== els.common.elementId);
 
 			return true;
+		},
+
+		/**
+		 * Рекурсивно возвращает список параграфов начиная с узла cur до элемента els.lastP.
+		 * @param {Node} cur Узел, с которого начинается поиск параграфов в тексте.
+		 * @param {Object} nodes
+		 * @param els
+		 * @param {FBEditor.editor.element.AbstractElement} els.lastP Последний параграф,
+		 * перед которым поиск должен завершиться.
+		 * @return {Array} Список параграфов (p/li/subtitle).
+		 */
+		getNodesPP: function (cur, nodes, els)
+		{
+			var me = this,
+				pp = [],
+				p = [],
+				containers;
+
+			//console.log('cur', cur);
+
+			if (!cur)
+			{
+				return pp;
+			}
+
+			els.cur = cur.getElement();
+
+			if (els.cur.elementId === els.lastP.elementId)
+			{
+				// сигнал остановить рекурсию
+				nodes.ppStop = true;
+
+				return pp;
+			}
+
+			containers = me.getStyleContainers();
+
+			if (!Ext.Array.contains(containers, els.cur.xmlTag))
+			{
+				// если элемент не параграф, ищем в нем все вложенные параграфы
+
+				nodes.first = cur.firstChild;
+				els.first = nodes.first ? nodes.first.getElement() : null;
+				if (els.first && !els.first.isText)
+				{
+					//console.log('first');
+					p = me.getNodesPP(nodes.first, nodes, els);
+					Ext.Array.push(pp, p);
+				}
+			}
+			else
+			{
+				pp = [cur];
+			}
+
+			if (cur.nextSibling && !nodes.ppStop)
+			{
+				// ищем в следующем элементе
+				cur = cur.nextSibling;
+				//console.log('next');
+				p = me.getNodesPP(cur, nodes, els);
+				Ext.Array.push(pp, p);
+			}
+
+			if (!nodes.ppStop)
+			{
+				// ищем в следующем по отношению к родительскому
+
+				nodes.parent = cur.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				while (!nodes.parent.nextSibling && els.parent.elementId !== els.common.elementId)
+				{
+					nodes.parent = nodes.parent.parentNode;
+					els.parent = nodes.parent.getElement();
+				}
+
+				nodes.parentNext = nodes.parent.nextSibling;
+
+				if (nodes.parentNext && els.parent.elementId !== els.common.elementId)
+				{
+					//console.log('parent next');
+					p = me.getNodesPP(nodes.parentNext, nodes, els);
+					Ext.Array.push(pp, p);
+				}
+			}
+
+			return pp;
 		}
 	}
 );
