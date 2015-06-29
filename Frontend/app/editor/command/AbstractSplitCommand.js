@@ -146,13 +146,14 @@ Ext.define(
 				FBEditor.editor.Manager.suspendEvent = false;
 
 				// устанавливаем курсор
+				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.node;
 				FBEditor.editor.Manager.setCursor(
 					{
-						startNode: nodes.node.firstChild,
+						startNode: nodes.cursor.firstChild,
 						startOffset: 0,
-						endNode: nodes.node.firstChild,
+						endNode: nodes.cursor.firstChild,
 						endOffset: 0,
-						focusElement: nodes.node.firstChild.getElement()
+						focusElement: nodes.cursor.firstChild.getElement()
 					}
 				);
 

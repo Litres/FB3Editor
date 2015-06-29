@@ -156,7 +156,7 @@ Ext.define(
 			{
 				// пытаемся разбить родительский элемент до тех пор пока не встретим корневой элемент
 				node = node.parentNode;
-				if (node.nodeName !== 'MAIN')
+				if (node && node.getElement && !node.getElement().isRoot)
 				{
 					el = node.getElement();
 					el.fireEvent('splitElement', node, isEmpty);
@@ -177,6 +177,7 @@ Ext.define(
 
 			e.stopPropagation();
 			focusNode = me.getFocusNode(e.target);
+			//console.log('keydown', e.target, focusNode);
 			if (focusNode)
 			{
 				el = focusNode.getElement ? focusNode.getElement() : null;
@@ -303,6 +304,7 @@ Ext.define(
 
 			e.stopPropagation();
 			focusNode = me.getFocusNode(e.target);
+			//console.log('keyup', e.target, focusNode);
 			el = focusNode.getElement ? focusNode.getElement() : null;
 			if (el)
 			{
@@ -546,15 +548,15 @@ Ext.define(
 				node = target,
 				range;
 
-			range = sel && sel.type !== 'None' ? sel.getRangeAt(0) : null;
+			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
 			if (range)
 			{
-				if (sel.type === 'Range')
+				if (!sel.isCollapsed)
 				{
 					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
 					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
 				}
-				else if (sel.type === 'Caret' && node.nodeName !== 'IMG')
+				else if (node.nodeName !== 'IMG')
 				{
 					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
 					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;

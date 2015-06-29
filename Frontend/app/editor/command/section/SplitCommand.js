@@ -42,6 +42,8 @@ Ext.define(
 					nodes.next = nodes.buf;
 					els.next = nodes.next.getElement();
 				}
+
+				nodes.cursor = nodes.title;
 			}
 		},
 
