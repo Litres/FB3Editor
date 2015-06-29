@@ -549,18 +549,11 @@ Ext.define(
 				range;
 
 			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
-			if (range)
+			//console.log('node', node);
+			if (range && node.nodeName !== 'IMG')
 			{
-				if (!sel.isCollapsed)
-				{
-					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
-					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
-				}
-				else if (node.nodeName !== 'IMG')
-				{
-					node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
-					       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
-				}
+				node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
+				       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
 			}
 			//console.log('sel, range, node', sel, range, node);
 			/*if (node.getElement === undefined)
