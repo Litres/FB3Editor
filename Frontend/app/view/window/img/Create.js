@@ -47,7 +47,8 @@ Ext.define(
 							xtype: 'image-editor-picture'
 						},
 						{
-							xtype: 'button-editor-select-img'
+							xtype: 'button-editor-select-img',
+							scope: me
 						},
 						/*{
 							xtype: 'checkbox',
@@ -81,6 +82,7 @@ Ext.define(
 								form = me.down('form');
 								values = form.getValues();
 								values.range = me.selectionRange;
+								values.name = values.name === me.translateText.emptyImg ? '' : values.name;
 
 								// окно закрываем до выполнения команды, чтобы не потерять фокус в тексте
 								me.close();

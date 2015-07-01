@@ -11,6 +11,11 @@ Ext.define(
 
 		htmlTag: 'li',
 		xmlTag: 'li',
-		showedOnTree: false
+		showedOnTree: false,
+
+		/**
+		 * @property {Boolean} Стилевой ли элемент.
+		 */
+		isStyleType: true
 	}
 );

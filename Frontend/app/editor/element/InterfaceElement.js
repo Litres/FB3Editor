@@ -125,6 +125,15 @@ Ext.define(
 		sync: function (viewportId)
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#sync()');
+		},
+
+		/**
+		 * Обновляет данные элемента и его отображение.
+		 * @param {Object} data Новые данные для элемента.
+		 */
+		update: function (data)
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#update()');
 		}
 	}
 );

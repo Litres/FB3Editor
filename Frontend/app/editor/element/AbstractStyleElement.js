@@ -15,6 +15,11 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.AbstractStyleElementController',
 		showedOnTree: false,
 
+		/**
+		 * @property {Boolean} Стилевой ли элемент.
+		 */
+		isStyleType: true,
+
 		createScaffold: function ()
 		{
 			var me = this,

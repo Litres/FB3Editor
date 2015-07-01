@@ -17,6 +17,11 @@ Ext.define(
 		cls: 'el-p',
 		showedOnTree: false,
 
+		/**
+		 * @property {Boolean} Стилевой ли элемент.
+		 */
+		isStyleType: true,
+
 		isP: true,
 
 		setAttributesHtml: function (element)
@@ -26,8 +31,9 @@ Ext.define(
 				first;
 
 			first = children.length ? children[0] : null;
-			if (first instanceof FBEditor.editor.element.img.ImgElement)
+			if (first && first.isImg)
 			{
+				// не должно быть отсупа
 				me.cls += ' el-p-no-indent';
 			}
 			element = me.callParent(arguments);

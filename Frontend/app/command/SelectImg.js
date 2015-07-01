@@ -13,6 +13,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
+				scope,
 				win,
 				result = false;
 
@@ -22,12 +23,16 @@ Ext.define(
 				var res,
 					resourceManager = FBEditor.resource.Manager;
 
-				Ext.getCmp('window-resource').close();
+				win.close();
 				res = resourceManager.getResourceByName(data.name);
-				Ext.getCmp('window-img-create').updateData({url: res.url, name: res.name});
+
+				// отправляем данные в необходимый компонент
+				scope.updateData({url: res.url, name: res.name});
+
 				resourceManager.setSelectFunction(null);
 			}
 
+			scope = data.scope;
 			win = data.win;
 			if (win.show)
 			{
@@ -42,6 +47,7 @@ Ext.define(
 		unExecute: function ()
 		{
 			// закрывает открытый ресурс
+			return true;
 		}
 	}
 );

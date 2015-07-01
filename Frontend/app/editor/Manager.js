@@ -30,6 +30,11 @@ Ext.define(
 		selection: null,
 
 		/**
+		 * @property {Object} Данные текущего выделения в теле книги.
+		 */
+		range: null,
+
+		/**
 		 * @property {Boolean} Заморозить ли события вставки узлов.
 		 */
 		suspendEvent: false,
@@ -163,17 +168,45 @@ Ext.define(
 
 		/**
 		 * Устанавливает текущий выделенный элемент в редакторе.
-		 * @param {FBEditor.editor.element.AbstractElement} el
+		 * @param {FBEditor.editor.element.AbstractElement|Node} elOrNode Элемент или узел.
 		 * @param {Selection} [sel]
 		 */
-		setFocusElement: function (el, sel)
+		setFocusElement: function (elOrNode, sel)
 		{
 			var me = this,
 				bridgeProps = FBEditor.getBridgeProps(),
-				data;
+				el,
+				data,
+				range;
 
+			el = elOrNode.getElement ? elOrNode.getElement() : elOrNode;
 			me.focusElement = el;
 			me.selection = sel || window.getSelection();
+			range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
+			if (range)
+			{
+				me.range = {
+					common: range.commonAncestorContainer,
+					start: range.startContainer,
+					end: range.endContainer,
+					offset: {
+						start: range.startOffset,
+						end: range.endOffset
+					}
+				};
+			}
+			else
+			{
+				me.range = {
+					common: elOrNode,
+					start: elOrNode,
+					end: elOrNode,
+					offset: {
+						start: 0,
+						end: 0
+					}
+				};
+			}
 
 			// показываем информацию о выделенном элементе
 			data = el.getData();
@@ -258,6 +291,15 @@ Ext.define(
 		getSelection: function ()
 		{
 			return this.selection;
+		},
+
+		/**
+		 * Возвращает данные текущего выделения в теле книги.
+		 * @return {Object}
+		 */
+		getRange: function ()
+		{
+			return this.range;
 		},
 
 		/**
@@ -369,6 +411,22 @@ Ext.define(
 			el = FBEditor.editor.Factory.createElement(me.emptyElement);
 
 			return el;
+		},
+
+		/**
+		 * Создает пустой параграф, для заполнения элементов без содержимого.
+		 * @return {FBEditor.editor.element.AbstractElement} Пустой элемент.
+		 */
+		createEmptyP: function ()
+		{
+			var me= this,
+				els = {};
+
+			els.empty = FBEditor.editor.Factory.createElement(me.emptyElement);
+			els.p = FBEditor.editor.Factory.createElement('p');
+			els.p.add(els.empty);
+
+			return els.p;
 		},
 
 		/**

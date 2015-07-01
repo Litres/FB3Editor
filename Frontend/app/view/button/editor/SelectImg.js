@@ -11,20 +11,27 @@ Ext.define(
 		requires: [
 			'FBEditor.command.SelectImg'
 		],
-		id: 'button-editor-select-img',
 		xtype: 'button-editor-select-img',
 		text: 'Выбрать',
 
-		handler: function ()
+		/**
+		 * @property {Ext.Component} Компонент, из которого вызывается окно выбора ресурса,
+		 * и которому отправятся данные после выбора ресурса.
+		 */
+		scope: null,
+
+		handler: function (btn)
 		{
 			var cmd,
-				data = {};
+				data = {},
+				bridge = FBEditor.getBridgeWindow();
 
-			data.win = FBEditor.resource.ExplorerManager.getWindow();
-			cmd = Ext.create('FBEditor.command.SelectImg', data);
+			data.win = bridge.FBEditor.resource.ExplorerManager.getWindow();
+			data.scope = btn.scope;
+			cmd = bridge.Ext.create('FBEditor.command.SelectImg', data);
 			if (cmd.execute())
 			{
-				FBEditor.HistoryCommand.add(cmd);
+				bridge.FBEditor.HistoryCommand.add(cmd);
 			}
 		}
 	}

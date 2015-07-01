@@ -27,6 +27,8 @@ Ext.define(
 		 */
 		resource: null,
 
+		isImg: true,
+
 		constructor: function (attributes, children)
 		{
 			var me = this;
@@ -89,9 +91,64 @@ Ext.define(
 			style += style ? ' ' : '';
 			style += attributes.width ? 'width: ' + attributes.width + '; ' : '';
 			style += attributes['min-width'] ? 'min-width: ' + attributes['min-width'] + '; ' : '';
+			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
 			me.style = style;
 
 			return style;
+		},
+
+		getData: function ()
+		{
+			var me = this,
+				data,
+				imgData;
+
+			data= me.callParent(arguments);
+			imgData = {
+				url: me.attributes.src ? me.attributes.src : 'undefined',
+				name: me.resource ? me.resource.name : null,
+				id: me.attributes.id ? me.attributes.id : '',
+				alt: me.attributes.id ? me.attributes.alt : '',
+				width: me.attributes.width ? me.attributes.width : '',
+				'min-width': me.attributes['min-width'] ? me.attributes['min-width'] : '',
+				'max-width': me.attributes['max-width'] ? me.attributes['max-width'] : ''
+			};
+			data = Ext.apply(data, imgData);
+
+			return data;
+		},
+
+		update: function (data)
+		{
+			var me = this;
+
+			//  удаляем ссылку на старый ресурс
+			if (me.resource)
+			{
+				me.resource.removeElement(me);
+				me.resource = null;
+			}
+
+			// аттрибуты
+			me.attributes = {
+				tabindex: 0
+			};
+			Ext.Object.each(
+				data,
+			    function (key, val)
+			    {
+				    if (val)
+				    {
+					    me.attributes[key] = val;
+				    }
+			    }
+			);
+
+			// создаем ссылку на новый ресурс
+			me.linkResource();
+
+			// отображение
+			me.callParent(arguments);
 		},
 
 		/**
@@ -100,18 +157,25 @@ Ext.define(
 		deleteLinkResource: function ()
 		{
 			var me = this,
-				nodes = me.nodes;
+				nodes = me.nodes,
+				resource = me.resource;
 
+			if (resource)
+			{
+				resource.removeElement(me);
+			}
 			me.resource = null;
+
+			FBEditor.editor.Manager.suspendEvent = true;
 			Ext.Object.each(
 				nodes,
 			    function (id, node)
 			    {
 				    me.attributes.src = 'undefined';
 				    node.setAttribute('src', 'undefined');
-				    //node.parentNode.removeChild(node);
 			    }
 			);
+			FBEditor.editor.Manager.suspendEvent = false;
 		},
 
 		/**

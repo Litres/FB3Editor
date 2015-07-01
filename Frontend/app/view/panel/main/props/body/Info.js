@@ -17,8 +17,8 @@ Ext.define(
 
 			me.tpl = new Ext.XTemplate(
 				'<div class="element-info">',
-				'<div class="element-info-name">{xmlName}</div>',
-				'<div><span>Путь html:</span> {htmlPath}</div>',
+				'<div class="element-info-name">{elementName}</div>',
+				'<div><tpl if="htmlPath"><span>Путь html:</span> {htmlPath}</tpl></div>',
 				'</div>'
 			);
 			me.callParent(arguments);

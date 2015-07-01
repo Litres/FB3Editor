@@ -339,7 +339,7 @@ Ext.define(
 				focusElement = focusNode.getElement();
 
 				// фокус на элементе
-				FBEditor.editor.Manager.setFocusElement(focusElement);
+				FBEditor.editor.Manager.setFocusElement(focusNode);
 
 				// разворачиваем узел элемента в дереве навигации по тексту
 				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(focusElement);

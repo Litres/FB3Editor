@@ -65,12 +65,12 @@ Ext.define(
 		/**
 		 * @property {String} Имя тега для отображения в html.
 		 */
-		htmlTag: 'div',
+		htmlTag: '',
 
 		/**
 		 * @property {String} Имя тега в xml.
 		 */
-		xmlTag: 'div',
+		xmlTag: '',
 
 		/**
 		 * @property {String} Строка стилей.
@@ -399,29 +399,15 @@ Ext.define(
 		{
 			var me = this,
 				node,
-				htmlPath,
-				data;
-
-			function getHtmlPath (node, path)
-			{
-				var name = node.nodeType !== Node.TEXT_NODE ? node.nodeName : '',
-					parentNode = node.parentNode,
-					newPath;
-
-				newPath = name + (path ? ' > ' + path : '');
-				if (name !== 'MAIN')
-				{
-					newPath = getHtmlPath(parentNode, newPath);
-				}
-
-				return newPath;
-			}
+				data,
+				el;
 
 			node = Ext.Object.getValues(me.nodes)[0];
-			htmlPath = getHtmlPath(node);
+			el = me.getBlock();
 			data = {
-				xmlName: me.xmlTag,
-				htmlPath: htmlPath
+				el: el,
+				elementName: el.xmlTag,
+				htmlPath: me.getHtmlPath(node)
 			};
 
 			return data;
@@ -449,17 +435,32 @@ Ext.define(
 			FBEditor.editor.Manager.suspendEvent = false;
 
 			// обновляем дерево навигации по тексту
-			/*if (!me.isText)
-			{
-				FBEditor.editor.Manager.updateTree();
-			}*/
 			FBEditor.editor.Manager.updateTree();
+		},
+
+		update: function (data)
+		{
+			var me = this,
+				viewportId,
+				oldNode,
+				newNode;
+
+			me.style = '';
+
+			// обновляем узлы элемента
+			viewportId = Ext.Object.getKeys(me.nodes)[0];
+			oldNode = me.nodes[viewportId];
+			FBEditor.editor.Manager.suspendEvent = true;
+			newNode = me.getNode(viewportId);
+			oldNode.parentNode.replaceChild(newNode, oldNode);
+			me.sync(viewportId);
+			FBEditor.editor.Manager.suspendEvent = false;
 		},
 
 		/**
 		 * Устанавливает события узла элемента.
-		 * @param {HTMLElement} element Узел элемента.
-		 * @return {HTMLElement} element Узел элемента.
+		 * @param {Node} element Узел элемента.
+		 * @return {Node} element Узел элемента.
 		 */
 		setEvents: function (element)
 		{
@@ -485,6 +486,44 @@ Ext.define(
 			);
 
 			return element;
+		},
+
+		/**
+		 * Возвращает блочный элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getBlock: function ()
+		{
+			var el = this;
+
+			while (el.isStyleType || el.isText)
+			{
+				el = el.parent;
+			}
+
+			return el;
+		},
+
+		/**
+		 * Рекурсивно возвращает путь html элемента от текущего до корневого элемента.
+		 * @param {Node} node Узел текущего элемента.
+		 * @param {String} [path] Данный параметр не указывается, он необходим для рекурсии.
+		 * @return {String} Путь html.
+		 */
+		getHtmlPath: function (node, path)
+		{
+			var me = this,
+				name = node.nodeType !== Node.TEXT_NODE ? node.nodeName : '',
+				parentNode = node.parentNode,
+				newPath;
+
+			newPath = name + (path ? ' > ' + path : '');
+			if (name !== 'MAIN')
+			{
+				newPath = me.getHtmlPath(parentNode, newPath);
+			}
+
+			return newPath;
 		},
 
 		/**

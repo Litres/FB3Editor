@@ -105,16 +105,21 @@ Ext.define(
 		clearElements: function ()
 		{
 			var me = this,
+				el,
 				elements = me.elements;
 
-			Ext.Array.each(
-				elements,
-			    function (el)
-			    {
-				    el.deleteLinkResource();
-			    }
-			);
-			me.elements = [];
+			while (elements.length)
+			{
+				el = elements[0];
+				if (el)
+				{
+					el.deleteLinkResource();
+				}
+				else
+				{
+					elements.splice(0, 1);
+				}
+			}
 			me.totalElements = 0;
 		},
 

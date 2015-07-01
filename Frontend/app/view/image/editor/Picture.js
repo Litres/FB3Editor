@@ -9,7 +9,6 @@ Ext.define(
 	{
 		extend: 'Ext.Img',
 		xtype: 'image-editor-picture',
-		id: 'image-editor-picture',
 		style: {
 			maxWidth: '150px',
 			maxHeight: '200px'
@@ -17,6 +16,7 @@ Ext.define(
 		src: 'undefined',
 
 		/**
+		 * @event changeSrc
 		 * Обновляет картинку.
 		 * @param {Object} data Данные изображения.
 		 */
@@ -25,7 +25,11 @@ Ext.define(
 			var me = this,
 				img = data;
 
-			me.setSrc(img.url);
+			if (img.url !== me.src)
+			{
+				me.setSrc(img.url);
+				me.fireEvent('changeSrc', me);
+			}
 		}
 	}
 );

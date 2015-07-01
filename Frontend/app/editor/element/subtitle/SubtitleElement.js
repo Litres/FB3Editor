@@ -11,6 +11,12 @@ Ext.define(
 
 		htmlTag: 'subtitle',
 		xmlTag: 'subtitle',
-		cls: 'el-subtitle'
+		cls: 'el-subtitle',
+
+		/**
+		 * @property {Boolean} Стилевой ли элемент.
+		 */
+		isStyleType: true
+
 	}
 );
