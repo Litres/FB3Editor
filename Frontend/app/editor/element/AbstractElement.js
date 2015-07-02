@@ -605,9 +605,11 @@ Ext.define(
 		getText: function ()
 		{
 			var me = this,
+				node,
 				text;
 
-			text = Ext.Object.getValues(me.nodes)[0].innerText;
+			node = Ext.Object.getValues(me.nodes)[0];
+			text = node.textContent || node.innerText;
 
 			return text;
 		},

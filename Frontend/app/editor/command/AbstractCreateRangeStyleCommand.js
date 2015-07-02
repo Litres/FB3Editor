@@ -63,7 +63,9 @@ Ext.define(
 					offset: offset
 				};
 
-				if (els.common.elementId === range.startContainer.getElement().elementId)
+				//console.log('range', range);
+
+				if (els.common.isText)
 				{
 					// выделен только текстовый узел
 
@@ -132,19 +134,20 @@ Ext.define(
 					// первый параграф
 					nodes.firstP = range.startContainer;
 					els.firstP = nodes.firstP.getElement();
-					while (!Ext.Array.contains(containers, els.firstP.xmlTag))
+					els.isRoot = els.firstP.isRoot;
+					while (els.firstP && !Ext.Array.contains(containers, els.firstP.xmlTag))
 					{
-						nodes.firstP = nodes.firstP.parentNode;
-						els.firstP = nodes.firstP.getElement();
+						nodes.firstP = els.isRoot ? nodes.firstP.firstChild : nodes.firstP.parentNode;
+						els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
 					}
 
 					// последний параграф
 					nodes.lastP = range.endContainer;
 					els.lastP = nodes.lastP.getElement();
-					while (!Ext.Array.contains(containers, els.lastP.xmlTag))
+					while (els.lastP && !Ext.Array.contains(containers, els.lastP.xmlTag))
 					{
-						nodes.lastP = nodes.lastP.parentNode;
-						els.lastP = nodes.lastP.getElement();
+						nodes.lastP = els.isRoot ? nodes.lastP.lastChild : nodes.lastP.parentNode;
+						els.lastP = nodes.lastP ? nodes.lastP.getElement() : null;
 					}
 
 					// находим список параграфов между первым и последним
@@ -161,15 +164,15 @@ Ext.define(
 
 					// регулярные выражения для определения позиции выделения
 					reg.start = new RegExp('^' + Ext.String.escapeRegex(range.toString()));
-					reg.start2 = new RegExp('^' + Ext.String.escapeRegex(nodes.firstP.innerText));
+					reg.start2 = new RegExp('^' + Ext.String.escapeRegex(els.firstP.getText()));
 					reg.end = new RegExp(Ext.String.escapeRegex(range.toString()) + '$');
-					reg.end2 = new RegExp(Ext.String.escapeRegex(nodes.lastP.innerText) + '$');
+					reg.end2 = new RegExp(Ext.String.escapeRegex(els.lastP.getText()) + '$');
 
 					// находится ли начальная точка выделения в начале первого параграфа
-					pos.isStart = reg.start.test(nodes.firstP.innerText) || reg.start2.test(range.toString());
+					pos.isStart = reg.start.test(els.firstP.getText()) || reg.start2.test(range.toString());
 
 					// находится ли конечная точка выделения в конце первого параграфа
-					pos.isEnd = reg.end.test(nodes.lastP.innerText) || reg.end2.test(range.toString());
+					pos.isEnd = reg.end.test(els.lastP.getText()) || reg.end2.test(range.toString());
 
 					data.range.pos = pos;
 					//console.log('pos', pos);
@@ -193,8 +196,9 @@ Ext.define(
 					nodes.parentStart = nodes.startContainer.parentNode;
 					els.parentStart = nodes.parentStart.getElement();
 
-					els.endContainer = range.endContainer.getElement();
-					nodes.parentEnd = range.endContainer.parentNode;
+					nodes.endContainer = els.isRoot ? nodes.lastP.lastChild : range.endContainer;
+					els.endContainer = nodes.endContainer.getElement();
+					nodes.parentEnd = nodes.endContainer.parentNode;
 					els.parentEnd = nodes.parentEnd.getElement();
 
 					if (pos.isEnd)
@@ -209,15 +213,15 @@ Ext.define(
 						// который является прямым потомком параграфа
 
 						// указатель на элемент в конечной точке выделения
-						nodes.endContainer = range.endContainer.nextSibling ?
-						                     range.endContainer.nextSibling : range.endContainer;
+						nodes.endContainer = nodes.endContainer.nextSibling ?
+						                     nodes.endContainer.nextSibling : nodes.endContainer;
 					}
 					else
 					{
 						// разбиваем последний узел на два в точке конечного выделения
 						nodes.common = nodes.lastP;
 						els.common = els.lastP;
-						nodes.container = range.endContainer;
+						nodes.container = nodes.endContainer;
 						nodes.endContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.end);
 					}
 					els.endContainer = nodes.endContainer.getElement();

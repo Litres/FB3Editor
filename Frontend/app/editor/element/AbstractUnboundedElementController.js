@@ -88,13 +88,13 @@ Ext.define(
 			pos.count = pos.end - pos.start;
 
 			reg.start = new RegExp('^' + range.toString());
-			reg.start2 = new RegExp('^' + nodes.start.innerText);
+			reg.start2 = new RegExp('^' + els.start.getText());
 			reg.end = new RegExp(range.toString() + '$');
-			reg.end2 = new RegExp(nodes.end.innerText + '$');
+			reg.end2 = new RegExp(els.end.getText() + '$');
 
 			// позиция выделения относительно затронутых элементов
-			pos.isStart = reg.start.test(nodes.start.innerText) || reg.start2.test(range.toString());
-			pos.isEnd = reg.end.test(nodes.end.innerText) || reg.end2.test(range.toString());
+			pos.isStart = reg.start.test(els.start.getText()) || reg.start2.test(range.toString());
+			pos.isEnd = reg.end.test(els.end.getText()) || reg.end2.test(range.toString());
 
 			// получаем имена элементов, которые станут дочерними для элемента, для проверки по схеме
 			names.el = names.common.slice(pos.start, pos.end + 1);
