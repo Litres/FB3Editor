@@ -18,13 +18,14 @@ Ext.define(
 		handler: function ()
 		{
 			var cmd,
-				data = {};
+				data = {},
+				bridge = FBEditor.getBridgeWindow();
 
-			data.win = FBEditor.resource.ExplorerManager.getWindow();
-			cmd = Ext.create('FBEditor.command.SelectCover', data);
+			data.win = bridge.FBEditor.resource.ExplorerManager.getWindow();
+			cmd = bridge.Ext.create('FBEditor.command.SelectCover', data);
 			if (cmd.execute())
 			{
-				FBEditor.HistoryCommand.add(cmd);
+				bridge.FBEditor.HistoryCommand.add(cmd);
 			}
 		}
 	}

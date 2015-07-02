@@ -40,12 +40,28 @@ Ext.define(
 					xtype: 'panel-desc-navigation'
 				},
 				{
-					xtype: 'panel-resources-navigation'
-				},
-				{
 					xtype: 'panel-body-navigation'
 				}
 			];
+			me.callParent(arguments);
+		},
+
+		afterRender: function ()
+		{
+			var me = this,
+				winRes;
+
+			winRes = Ext.getCmp('window-resource');
+			if (winRes && !winRes.isHidden())
+			{
+				// вставляем панель навигации ресурсов в открытое окно выбора ресурсов
+				winRes.getWindowPanelResourcesNavigation().add({xtype: 'panel-resources-navigation'});
+			}
+			else
+			{
+				me.insert(1, {xtype: 'panel-resources-navigation'});
+			}
+
 			me.callParent(arguments);
 		},
 

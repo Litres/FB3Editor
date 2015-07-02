@@ -128,8 +128,9 @@ Ext.define(
 		/**
 		 * Присоеденияет отсоединенную панель обратно.
 		 * @param {String} name Имя панели.
+		 * @param {Window} [win] Окно отсоединенной панели.
 		 */
-		attachPanel: function (name)
+		attachPanel: function (name, win)
 		{
 			var me = this,
 				id;

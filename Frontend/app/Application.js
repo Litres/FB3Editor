@@ -122,11 +122,12 @@ Ext.define(
 				{
 					if (window.name === 'navigation')
 					{
+						Ext.getCmp('panel-resources-navigation').destroy();
 						Ext.getCmp('panel-body-navigation').destroy();
 					}
 
 					// присоединяем отсоединенную панель обратно в главное окно редактора
-					FBEditor.parentWindow.Ext.getCmp('main').attachPanel(window.name);
+					FBEditor.parentWindow.Ext.getCmp('main').attachPanel(window.name, window);
 
 					// удаляем сохраненное состояние отсоединенной панели
 					localStorage.removeItem(window.name);

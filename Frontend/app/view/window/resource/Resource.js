@@ -76,8 +76,10 @@ Ext.define(
 
 			panelResourcesNavigation.inWindow = false;
 
-			// возвращаем панели ресурсов в центральную часть
+			// возвращаем панель навигации ресурсов в панель навигации
 			panelTreenavigation.insert(1, panelResourcesNavigation);
+
+			// возвращаем панель управления ресурсов в центральную часть
 			panelResources.add(panelResourcesControl, viewResources);
 
 			me.callParent(arguments);
@@ -85,37 +87,51 @@ Ext.define(
 
 		getWindowPanelResourcesNavigation: function ()
 		{
-			return Ext.getCmp('window-panel-resources-navigation');
+			var bridge = FBEditor.getBridgeWindow();
+
+			return bridge.Ext.getCmp('window-panel-resources-navigation');
 		},
 
 		getWindowPanelResources: function ()
 		{
-			return Ext.getCmp('window-panel-resources');
+			var bridge = FBEditor.getBridgeWindow();
+
+			return bridge.Ext.getCmp('window-panel-resources');
 		},
 
 		getPanelTreenavigation: function ()
 		{
-			return Ext.getCmp('panel-treenavigation');
-		},
+			var bridgeNav = FBEditor.getBridgeNavigation();
 
-		getPanelResources: function ()
-		{
-			return Ext.getCmp('panel-resources');
+			return bridgeNav.Ext.getCmp('panel-treenavigation');
 		},
 
 		getPanelResourcesNavigation: function ()
 		{
-			return Ext.getCmp('panel-resources-navigation');
+			var bridgeNav = FBEditor.getBridgeNavigation();
+
+			return bridgeNav.Ext.getCmp('panel-resources-navigation');
+		},
+
+		getPanelResources: function ()
+		{
+			var bridge = FBEditor.getBridgeWindow();
+
+			return bridge.Ext.getCmp('panel-resources');
 		},
 
 		getPanelResourcesControl: function ()
 		{
-			return Ext.getCmp('panel-resources-control');
+			var bridge = FBEditor.getBridgeWindow();
+
+			return bridge.Ext.getCmp('panel-resources-control');
 		},
 
 		getViewResources: function ()
 		{
-			return Ext.getCmp('view-resources');
+			var bridge = FBEditor.getBridgeWindow();
+
+			return bridge.Ext.getCmp('view-resources');
 		}
 	}
 );

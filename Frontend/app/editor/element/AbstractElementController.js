@@ -165,6 +165,36 @@ Ext.define(
 		},
 
 		/**
+		 * Отпускание кнопки клавиатуры определяет элемент, на котором находится курсор.
+		 * @param {Event} e Объект события.
+		 */
+		onKeyUp: function (e)
+		{
+			var me = this,
+				focusNode,
+				el,
+				controller;
+
+			e.stopPropagation();
+			focusNode = me.getFocusNode(e.target);
+			//console.log('keyup', e.target, focusNode);
+			el = focusNode.getElement ? focusNode.getElement() : null;
+			if (el)
+			{
+				FBEditor.editor.Manager.setFocusElement(el);
+				controller = el && el.controller ? el.controller : me;
+				/*console.log('keyup', e);
+				 switch (e.keyCode)
+				 {
+				 case Ext.event.Event.Z:
+				 return e.ctrlKey ? true : false;
+				 }*/
+			}
+
+			return false;
+		},
+
+		/**
 		 * Нажатие кнопки клавиатуры.
 		 * @param {Event} e Объект события.
 		 */
@@ -287,36 +317,6 @@ Ext.define(
 		{
 			e.preventDefault();
 			FBEditor.editor.HistoryManager.redo();
-
-			return false;
-		},
-
-		/**
-		 * Отпускание кнопки клавиатуры определяет элемент, на котором находится курсор.
-		 * @param {Event} e Объект события.
-		 */
-		onKeyUp: function (e)
-		{
-			var me = this,
-				focusNode,
-				el,
-				controller;
-
-			e.stopPropagation();
-			focusNode = me.getFocusNode(e.target);
-			//console.log('keyup', e.target, focusNode);
-			el = focusNode.getElement ? focusNode.getElement() : null;
-			if (el)
-			{
-				FBEditor.editor.Manager.setFocusElement(el);
-				controller = el && el.controller ? el.controller : me;
-				/*console.log('keyup', e);
-				switch (e.keyCode)
-				{
-					case Ext.event.Event.Z:
-						return e.ctrlKey ? true : false;
-				}*/
-			}
 
 			return false;
 		},
