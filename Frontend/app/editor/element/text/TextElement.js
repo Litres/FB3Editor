@@ -89,7 +89,7 @@ Ext.define(
 
 		/**
 		 * Создает текстовый узел.
-		 * @return {HTMLElement} Возвращает текстовый узел.
+		 * @return {Node} Возвращает текстовый узел.
 		 */
 		createNode: function (viewportId)
 		{
@@ -101,6 +101,11 @@ Ext.define(
 			me.setNode(node);
 
 			return node;
+		},
+
+		isEmpty: function ()
+		{
+			return Ext.isEmpty(this.text);
 		}
 	}
 );

@@ -179,7 +179,14 @@ Ext.define(
 		{
 			var me = this;
 
+			if (el.parent)
+			{
+				// удаляем ссылку на добавляемый элемент из старого родителя
+				el.parent.remove(el);
+			}
+
 			el.parent = me;
+
 			if (el.isMarker)
 			{
 				me.marker = el;
@@ -196,6 +203,12 @@ Ext.define(
 				children = me.children,
 				pos = me.getChildPosition(nextEl);
 
+			if (el.parent)
+			{
+				// удаляем ссылку на вставляемый элемент из старого родителя
+				el.parent.remove(el);
+			}
+
 			el.parent = me;
 			children.splice(pos, 0, el);
 			me.children = children;
@@ -206,6 +219,12 @@ Ext.define(
 			var me = this,
 				children = me.children,
 				pos = me.getChildPosition(replacementEl);
+
+			if (el.parent)
+			{
+				// удаляем ссылку на заменяющий элемент из старого родителя
+				el.parent.remove(el);
+			}
 
 			el.parent = me;
 			me.remove(replacementEl);
@@ -631,6 +650,67 @@ Ext.define(
 			}
 
 			return name;
+		},
+
+		/**
+		 * Проверяет имя элемента.
+		 * @param {String} name Проверочное имя для элемента.
+		 * @return {Boolean} Соответствует ли переданное имя элементу.
+		 */
+		hisName: function (name)
+		{
+			var me = this,
+				res;
+
+			res = me.xmlTag === name;
+
+			return res;
+		},
+
+		/**
+		 * Пустой ли элемент.
+		 * @return {Boolean}
+		 */
+		isEmpty: function ()
+		{
+			var me = this,
+				first,
+				res;
+
+			me.removeEmptyText();
+			res = me.children.length === 0;
+			if (me.children.length === 1)
+			{
+				first = me.children[0];
+				res = first.hisName(FBEditor.editor.Manager.emptyElement);
+			}
+
+			return res;
+		},
+
+		/**
+		 * Удаляет все пустые текстовые узлы в элементе.
+		 */
+		removeEmptyText: function ()
+		{
+			var me = this,
+				children = me.children,
+				pos = 0,
+				child;
+
+			while (pos < children.length)
+			{
+				child = children[pos];
+				if (child.isText && Ext.isEmpty(child.text))
+				{
+					me.remove(child);
+				}
+				else
+				{
+					child.removeEmptyText();
+					pos++;
+				}
+			}
 		},
 
 		/**

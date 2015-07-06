@@ -171,11 +171,11 @@ Ext.define(
 					// находится ли начальная точка выделения в начале первого параграфа
 					pos.isStart = reg.start.test(els.firstP.getText()) || reg.start2.test(range.toString());
 
-					// находится ли конечная точка выделения в конце первого параграфа
+					// находится ли конечная точка выделения в конце последнего параграфа
 					pos.isEnd = reg.end.test(els.lastP.getText()) || reg.end2.test(range.toString());
 
 					data.range.pos = pos;
-					//console.log('pos', pos);
+					//console.log('pos', pos, range.toString());
 
 					if (pos.isStart)
 					{
@@ -358,7 +358,7 @@ Ext.define(
 					}
 				);
 
-				// сохраянем узлы
+				// сохраняем узлы
 				data.saveNodes = nodes;
 
 				res = true;

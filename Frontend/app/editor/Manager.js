@@ -230,11 +230,19 @@ Ext.define(
 			// перематываем скролл
 			if (data.focusElement.nodes[viewportId].scrollIntoView)
 			{
-				data.focusElement.nodes[viewportId].scrollIntoView();
+				//TODO сделать прокрутку только, если элемент не виден
+				//data.focusElement.nodes[viewportId].scrollIntoView();
 			}
 
 			// выделение
-			sel.collapse(data.startNode, data.startOffset);
+			if (data.startNode.getElement().isText)
+			{
+				sel.collapse(data.startNode, data.startOffset);
+			}
+			else
+			{
+				sel.collapse(data.startNode);
+			}
 			if (data.endNode)
 			{
 				sel.extend(data.endNode, data.endOffset);
@@ -737,18 +745,18 @@ Ext.define(
 		},
 
 		/**
-		 * В первом ли узле находится начальное выделение.
-		 * @param {Node} common Самый верхний узел относительно которого происходит разделение дочернего узла.
-		 * @param {Node} start Начальный узел выделения.
-		 * @returns {Boolean} Первый ли узел.
+		 * Является ли первым узел node, относителя предка common.
+		 * @param {Node} common Предок относительно которого происходит определение.
+		 * @param {Node} node Определяемый узел.
+		 * @return {Boolean} Первый ли узел.
 		 */
-		isFirstNode: function (common, start)
+		isFirstNode: function (common, node)
 		{
 			var nodes = {},
 				els = {};
 
 			els.common = common.getElement();
-			nodes.node = start;
+			nodes.node = node;
 			els.node = nodes.node.getElement();
 			//console.log('common, nodes', common, nodes);
 			do
@@ -759,7 +767,8 @@ Ext.define(
 				els.parentParent = nodes.parentParent.getElement();
 				nodes.first = nodes.parent.firstChild;
 				els.first = nodes.first.getElement();
-				//console.log('first, parent, parentParent', nodes.first, nodes.parent, nodes.parentParent, [els.first.elementId, els.node.elementId]);
+				//console.log('first, parent, parentParent', nodes.first, nodes.parent, nodes.parentParent,
+				// [els.first.elementId, els.node.elementId]);
 
 				if (els.first.elementId !== els.node.elementId)
 				{
@@ -770,7 +779,47 @@ Ext.define(
 				nodes.node = nodes.parent;
 				els.node = nodes.node.getElement();
 			}
-			while (els.parentParent.elementId !== els.common.elementId);
+			while (els.parentParent.elementId !== els.common.elementId && els.parent.elementId !== els.common.elementId && !els.parentParent.isRoot);
+
+			return true;
+		},
+
+		/**
+		 * Является ли последним узел node, относителя предка common.
+		 * @param {Node} common Предок относительно которого происходит определение.
+		 * @param {Node} node Определяемый узел.
+		 * @return {Boolean} Последний ли узел.
+		 */
+		isLastNode: function (common, node)
+		{
+			var nodes = {},
+				els = {};
+
+			els.common = common.getElement();
+			nodes.node = node;
+			els.node = nodes.node.getElement();
+			//console.log('common, nodes', common, nodes);
+			do
+			{
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+				nodes.parentParent = nodes.parent.parentNode;
+				els.parentParent = nodes.parentParent.getElement();
+				nodes.last = nodes.parent.lastChild;
+				els.last = nodes.last.getElement();
+				//console.log('last, parent, parentParent', nodes.last, nodes.parent, nodes.parentParent,
+				// [els.last.elementId, els.node.elementId]);
+
+				if (els.last.elementId !== els.node.elementId)
+				{
+					// узел не является последним
+					return false;
+				}
+
+				nodes.node = nodes.parent;
+				els.node = nodes.node.getElement();
+			}
+			while (els.parentParent.elementId !== els.common.elementId && els.parent.elementId !== els.common.elementId && !els.parentParent.isRoot);
 
 			return true;
 		},

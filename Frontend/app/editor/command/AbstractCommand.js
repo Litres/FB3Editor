@@ -1,6 +1,7 @@
 /**
  * Абстрактная команда редактора тела книги.
  *
+ * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
@@ -21,7 +22,7 @@ Ext.define(
 		{
 			var me = this;
 
-			me.data = opts;
+			me.data = opts || {};
 		},
 
 		/**

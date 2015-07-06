@@ -1,5 +1,5 @@
 /**
- * Элемент абзаца.
+ * Элемент p.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -9,7 +9,15 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			'FBEditor.editor.element.p.PElementController'
+			'FBEditor.editor.element.p.PElementController',
+			'FBEditor.editor.command.p.SplitNodeCommand',
+			'FBEditor.editor.command.p.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.p.AppendEmptyNodeCommand',
+			'FBEditor.editor.command.p.RemoveEmptyNodeCommand',
+			'FBEditor.editor.command.p.JoinTextToNextNodeCommand',
+			'FBEditor.editor.command.p.JoinTextToPrevNodeCommand',
+			'FBEditor.editor.command.p.TextToNextNodeCommand',
+			'FBEditor.editor.command.p.TextToPrevNodeCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.p.PElementController',
 		htmlTag: 'p',

@@ -1,14 +1,14 @@
 /**
- * Разбивает p на два.
+ * Разбивает li на два.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.command.p.SplitNodeCommand',
+	'FBEditor.editor.command.li.SplitNodeCommand',
 	{
 		extend: 'FBEditor.editor.command.styleholder.AbstractSplitNodeCommand',
 
-		elementName: 'p'
+		elementName: 'li'
 	}
 );
