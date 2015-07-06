@@ -31,6 +31,10 @@ Ext.define(
 			keyDownEnter: function ()
 			{
 				this.controller.onKeyDownEnter.apply(this.controller, arguments);
+			},
+			keyDownDelete: function ()
+			{
+				this.controller.onKeyDownDelete.apply(this.controller, arguments);
 			}
 		},
 
@@ -702,19 +706,23 @@ Ext.define(
 		 */
 		isEmpty: function ()
 		{
-			var me = this,
-				first,
-				res;
+			var me = this;
 
-			me.removeEmptyText();
-			res = me.children.length === 0;
-			if (me.children.length === 1)
+			if (!me.children.length)
 			{
-				first = me.children[0];
-				res = first.hisName(FBEditor.editor.Manager.emptyElement);
+				return true;
 			}
 
-			return res;
+			//me.removeEmptyText();
+
+			if (me.children.length === 1)
+			{
+				return me.children[0].isEmpty();
+			}
+			else
+			{
+				return false;
+			}
 		},
 
 		/**
@@ -732,6 +740,7 @@ Ext.define(
 				child = children[pos];
 				if (child.isText && child.isEmpty())
 				{
+					//console.log('remove view', child);
 					me.remove(child);
 					child.removeView();
 				}

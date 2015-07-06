@@ -214,14 +214,22 @@ Ext.define(
 		},
 
 		/**
-		 * Устанавливает курсор или выделение.
-		 * @param {Object} data Данные курсора/выделения.
+		 * Устанавливает выделение.
+		 * @param data Данные выделения.
+		 * @param {Node} data.startNode Начальный узел.
+		 * @param {Number} [data.startOffset] Начальное смещение.
+		 * @param {Node} [data.endNode] Конечный узел.
+		 * @param {Number} [data.endOffset] Конечное смещение.
+		 * @param {FBEditor.editor.element.AbstractElement} [data.focusElement] Фокусный элемент.
 		 */
 		setCursor: function (data)
 		{
 			var me = this,
 				sel = window.getSelection(),
 				viewportId;
+
+			data.focusElement = data.focusElement || data.startNode.getElement();
+			data.startOffset = data.startOffset || 0;
 
 			// устанавливаем фокус браузера в окно текста
 			viewportId = data.startNode.viewportId;
@@ -245,6 +253,7 @@ Ext.define(
 			}
 			if (data.endNode)
 			{
+				data.endOffset = data.endOffset || 0;
 				sel.extend(data.endNode, data.endOffset);
 			}
 
@@ -913,6 +922,42 @@ Ext.define(
 			}
 
 			return pp;
+		},
+
+		/**
+		 * Возвращает самый вложенный первый дочерний узел.
+		 * @param {Node} node Узел.
+		 * @return {Node}
+		 */
+		getDeepFirst: function (node)
+		{
+			if (node)
+			{
+				while (node.firstChild)
+				{
+					node = node.firstChild;
+				}
+			}
+
+			return node;
+		},
+
+		/**
+		 * Возвращает самый вложенный последний дочерний узел.
+		 * @param {Node} node Узел.
+		 * @return {Node}
+		 */
+		getDeepLast: function (node)
+		{
+			if (node)
+			{
+				while (node.lastChild)
+				{
+					node = node.lastChild;
+				}
+			}
+
+			return node;
 		}
 	}
 );

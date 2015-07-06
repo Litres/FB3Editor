@@ -15,7 +15,7 @@ Ext.define(
 		/**
 		 * Редактирование текстового узла.
 		 * @param {Object} e Событие.
-		 * @param {HTMLElement} e.target Редактируемый узел.
+		 * @param {Node} e.target Редактируемый узел.
 		 */
 		onTextModified: function (e)
 		{

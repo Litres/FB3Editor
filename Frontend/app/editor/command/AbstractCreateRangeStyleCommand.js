@@ -62,6 +62,7 @@ Ext.define(
 					collapsed: range.collapsed,
 					offset: offset
 				};
+				data.links = {};
 
 				//console.log('range', range);
 
@@ -73,6 +74,9 @@ Ext.define(
 
 					nodes.parent = nodes.common.parentNode;
 					els.parent = nodes.parent.getElement();
+
+					data.links.parent = nodes.parent;
+
 					nodes.next = nodes.common.nextSibling;
 
 					// получаем части текста
@@ -80,9 +84,18 @@ Ext.define(
 					els.selValue = nodes.common.nodeValue.substring(offset.start, offset.end);
 					els.endValue = nodes.common.nodeValue.substring(offset.end);
 
-					// меняем текст исходного элемента
-					els.common.setText(els.startValue);
-					nodes.common.nodeValue = els.startValue;
+					if (els.startValue)
+					{
+						// меняем текст исходного элемента
+						els.common.setText(els.startValue);
+						nodes.common.nodeValue = els.startValue;
+					}
+					else
+					{
+						// удаляем пустой элемент
+						els.parent.remove(els.common);
+						nodes.parent.removeChild(nodes.common);
+					}
 
 					// новый элемент c выделенной частью текста
 					els.node = FBEditor.editor.Factory.createElement(me.elementName);
@@ -101,6 +114,8 @@ Ext.define(
 						els.parent.add(els.node);
 						nodes.parent.appendChild(nodes.node);
 					}
+
+					data.links.newNode = nodes.node;
 
 					// курсор
 					nodes.cursor = nodes.node.firstChild;
@@ -191,6 +206,7 @@ Ext.define(
 						nodes.container = range.startContainer;
 						nodes.startContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.start);
 						els.startContainer = nodes.startContainer.getElement();
+						els.common.removeEmptyText();
 					}
 
 					nodes.parentStart = nodes.startContainer.parentNode;
@@ -223,6 +239,7 @@ Ext.define(
 						els.common = els.lastP;
 						nodes.container = nodes.endContainer;
 						nodes.endContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.end);
+						els.common.removeEmptyText();
 					}
 					els.endContainer = nodes.endContainer.getElement();
 
@@ -342,7 +359,7 @@ Ext.define(
 					}
 				}
 
-				//console.log('nodes, els', nodes, els);
+				//console.log('nodes, els', nodes, els, data.links);
 
 				// синхронизируем
 				els.parent.sync(data.viewportId);
@@ -379,12 +396,14 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				range,
 				viewportId;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				range = data.range;
 				nodes = data.saveNodes;
@@ -393,18 +412,35 @@ Ext.define(
 				nodes.common = range.common;
 				els.common = nodes.common.getElement();
 
-				console.log('undo create ' + me.elementName, range, nodes);
+				console.log('undo create ' + me.elementName, data, nodes);
 
 				if (els.common.elementId === range.start.getElement().elementId)
 				{
 					// был выделен только текстовый узел
 
-					nodes.parent = nodes.common.parentNode;
+					nodes.parent = nodes.common.parentNode || data.links.parent;
 					els.parent = nodes.parent.getElement();
 
-					// меняем текст исходного элемента
-					els.common.setText(range.oldValue);
-					nodes.common.nodeValue = range.oldValue;
+					if (nodes.common.parentNode)
+					{
+						// меняем текст исходного элемента
+						els.common.setText(range.oldValue);
+						nodes.common.nodeValue = range.oldValue;
+					}
+					else
+					{
+						// создаем текстовый узел
+						els.common = factory.createElementText(range.oldValue);
+						nodes.common = els.common.getNode(data.viewportId);
+
+						nodes.newNode = data.links.newNode;
+						els.newNode = nodes.newNode.getElement();
+						els.parent.insertBefore(els.common, els.newNode);
+						nodes.parent.insertBefore(nodes.common, nodes.newNode);
+
+						range.start = nodes.common;
+						range.end = nodes.common;
+					}
 
 					// удаляем новые узлы
 					nodes.next = nodes.common.nextSibling;

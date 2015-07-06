@@ -48,55 +48,78 @@ Ext.define(
 		{
 			var me = this,
 				sel = window.getSelection(),
+				name = me.getNameElement(),
+				nodes = {},
+				els = {},
+				manager = FBEditor.editor.Manager,
+				cmd,
 				range,
-				node,
-				next,
-				offset;
+				isEnd;
 
-			node = me.getSelectNode();
-			next = node.nextSibling;
-			next = next && next.nodeName === 'P' ? next : null;
-			offset = sel.focusOffset;
-			console.log('P del', node, next, node.lastChild.length, offset);
-			if (next && me.isEmptyNode(node))
+			e.preventDefault();
+
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+
+			// курсор в конце элемента?
+			isEnd = range.startOffset === els.node.getText().length;
+
+			// текущий контейнер в параграфе
+			nodes.p = nodes.node.parentNode;
+			els.p = nodes.p.getElement();
+			while (!els.p.hisName(name))
 			{
-				e.preventDefault();
-				me.removeEmptyNode(node, 'next');
-
-				return false;
+				nodes.node = nodes.p;
+				els.node = nodes.node.getElement();
+				nodes.p = nodes.node.parentNode;
+				els.p = nodes.p.getElement();
 			}
-			else if (node.lastChild.length === offset)
+
+			// следующий за текущим
+			nodes.next = nodes.node.nextSibling;
+
+			//console.log('range, isEnd, nodes', range, isEnd, nodes);
+
+			if (!range.collapsed)
 			{
-				e.preventDefault();
-				if (next && next.nodeName === 'P')
+				// удаляем выделенную часть текста
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.RemoveRangeNodesCommand');
+				if (cmd.execute())
 				{
-					if (me.isEmptyNode(next))
-					{
-						me.removeEmptyNode(next, 'prev');
-					}
-					else
-					{
-						if (next.firstChild.nodeType === Node.TEXT_NODE)
-						{
-							me.joinTextToNextNode(node);
-						}
-						else
-						{
-							me.textToNextNode(node);
-						}
-					}
+					FBEditor.editor.HistoryManager.add(cmd);
 				}
-
-				return false;
 			}
-			else if (me.isEmptyNode(node))
+			else if (isEnd && !nodes.next)
 			{
-				e.preventDefault();
+				// курсор в конце параграфа
 
-				return false;
+				// соединяем параграф со следующим
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinNextNodeCommand');
+				if (cmd.execute())
+				{
+					FBEditor.editor.HistoryManager.add(cmd);
+				}
 			}
+			else
+			{
+				// редактируем текстовый элемент
 
-			return true;
+				nodes.text = isEnd ? nodes.next : nodes.node;
+				nodes.text = manager.getDeepFirst(nodes.text);
+
+				// ставим курсор в текст
+				manager.setCursor(
+					{
+						startNode: nodes.text,
+						startOffset: isEnd ? 0 : range.startOffset
+					}
+				);
+
+				// передаем событие текстовому элементу
+				nodes.text.getElement().fireEvent('keyDownDelete', e);
+			}
 		},
 
 		onKeyDownBackspace: function (e)
@@ -180,41 +203,6 @@ Ext.define(
 		isEmptyNode: function (node)
 		{
 			return node.nodeName === 'P' && node.firstChild.nodeName === 'BR' && node.childNodes.length === 1;
-		},
-
-		/**
-		 * @protected
-		 * Удаляет выделенную часть текста.
-		 */
-		removeRangeNodes: function ()
-		{
-			var me = this,
-				name = me.getNameElement(),
-				cmd;
-
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.RemoveRangeNodesCommand');
-			if (cmd.execute())
-			{
-				FBEditor.editor.HistoryManager.add(cmd);
-			}
-		},
-
-		/**
-		 * @protected
-		 * Добавляет пустой абзац.
-		 * @param {Node} node Узел, после которого добавится пустой абзац.
-		 */
-		appendEmptyNode: function (node)
-		{
-			var me = this,
-				name = me.getNameElement(),
-				cmd;
-
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.AppendEmptyNodeCommand', {node: node});
-			if (cmd.execute())
-			{
-				FBEditor.editor.HistoryManager.add(cmd);
-			}
 		},
 
 		/**

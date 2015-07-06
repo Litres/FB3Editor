@@ -17,16 +17,16 @@ Ext.define(
 				nodes = {},
 				els = {},
 				range,
-				manager,
-				sel;
+				manager = FBEditor.editor.Manager;
 
 			try
 			{
-				manager = FBEditor.editor.Manager;
 				manager.suspendEvent = true;
 
 				range = data.range || manager.getRange();
 				data.viewportId = range.start.viewportId;
+
+				console.log('del el', data, range);
 
 				els.node = data.el;
 				nodes.node = els.node.nodes[data.viewportId];
@@ -117,6 +117,8 @@ Ext.define(
 				nodes.node = els.node.nodes[data.viewportId];
 				nodes.parent = els.parent.nodes[data.viewportId];
 
+				console.log('undo del el', nodes, els, range);
+
 				if (els.new)
 				{
 					// заменяем новый элемент на старый
@@ -151,7 +153,6 @@ Ext.define(
 				FBEditor.editor.Manager.setCursor(data.saveRange);
 
 				res = true;
-				//console.log('undo del', nodes, els, range);
 			}
 			catch (e)
 			{

@@ -82,9 +82,12 @@ Ext.define(
 		 */
 		setText: function (text)
 		{
-			var me = this;
+			this.text = text;
+		},
 
-			me.text = text;
+		getText: function ()
+		{
+			return this.text;
 		},
 
 		/**
@@ -105,7 +108,7 @@ Ext.define(
 
 		isEmpty: function ()
 		{
-			return Ext.isEmpty(this.text);
+			return this.text ? false : true;
 		}
 	}
 );

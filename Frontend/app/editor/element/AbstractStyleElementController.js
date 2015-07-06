@@ -21,9 +21,17 @@ Ext.define(
 
 			// передаем событие родительскому элементу
 			el.parent.fireEvent('keyDownEnter', e);
+		},
 
-			return false;
+		onKeyDownDelete: function (e)
+		{
+			var me = this,
+				el = me.getElement();
 
+			e.preventDefault();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownDelete', e);
 		},
 
 		/**

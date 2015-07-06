@@ -16,6 +16,11 @@ Ext.define(
 		xmlTag: 'br',
 		showedOnTree: false,
 
-		isStyleType: true
+		isStyleType: true,
+
+		isEmpty: function ()
+		{
+			return true;
+		}
 	}
 );

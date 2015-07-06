@@ -40,6 +40,11 @@ Ext.define(
 			me.createController();
 		},
 
+		isEmpty: function ()
+		{
+			return false;
+		},
+
 		clear: function ()
 		{
 			var me = this,
