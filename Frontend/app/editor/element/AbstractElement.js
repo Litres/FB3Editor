@@ -27,6 +27,10 @@ Ext.define(
 			insertElement: function ()
 			{
 				this.controller.onInsertElement.apply(this.controller, arguments);
+			},
+			keyDownEnter: function ()
+			{
+				this.controller.onKeyDownEnter.apply(this.controller, arguments);
 			}
 		},
 
@@ -532,12 +536,15 @@ Ext.define(
 		getHtmlPath: function (node, path)
 		{
 			var me = this,
-				name = node.nodeType !== Node.TEXT_NODE ? node.nodeName : '',
-				parentNode = node.parentNode,
+				name,
+				parentNode,
 				newPath;
 
+			parentNode = node && node.parentNode ? node.parentNode : null;
+			name = node && node.nodeType !== Node.TEXT_NODE ? node.nodeName : '';
 			newPath = name + (path ? ' > ' + path : '');
-			if (name !== 'MAIN')
+			//console.log(node, name, parentNode.parentNode, path, newPath);
+			if (name !== 'MAIN' && parentNode)
 			{
 				newPath = me.getHtmlPath(parentNode, newPath);
 			}
@@ -653,6 +660,28 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет отображение элемента из html.
+		 */
+		removeView: function ()
+		{
+			var me = this;
+
+			Ext.Object.each(
+				me.nodes,
+			    function (id, node)
+			    {
+				    var parent = node.parentNode;
+
+				    if (parent)
+				    {
+					    parent.removeChild(node);
+				    }
+			    }
+			);
+			me.nodes = {};
+		},
+
+		/**
 		 * Проверяет имя элемента.
 		 * @param {String} name Проверочное имя для элемента.
 		 * @return {Boolean} Соответствует ли переданное имя элементу.
@@ -701,9 +730,10 @@ Ext.define(
 			while (pos < children.length)
 			{
 				child = children[pos];
-				if (child.isText && Ext.isEmpty(child.text))
+				if (child.isText && child.isEmpty())
 				{
 					me.remove(child);
+					child.removeView();
 				}
 				else
 				{

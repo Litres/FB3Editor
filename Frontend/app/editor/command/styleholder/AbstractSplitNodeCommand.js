@@ -19,6 +19,7 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				pos = {},
 				sel = window.getSelection(),
 				range,
 				manager = FBEditor.editor.Manager,
@@ -64,6 +65,15 @@ Ext.define(
 				nodes.p = nodes.node.parentNode;
 				els.p = nodes.p.getElement();
 
+				// ищем самый верхний контейнер
+				while (!els.p.hisName(me.elementName))
+				{
+					nodes.node = nodes.p;
+					els.node = nodes.node.getElement();
+					nodes.p = nodes.p.parentNode;
+					els.p = nodes.p.getElement();
+				}
+
 				nodes.parentP = nodes.p.parentNode;
 				els.parentP = nodes.parentP.getElement();
 
@@ -84,65 +94,70 @@ Ext.define(
 					nodes.parentP.appendChild(nodes.newP);
 				}
 
-				if (els.node.isText)
+				pos.isEnd = data.range.end.nodeValue && data.range.offset.end === data.range.end.nodeValue.length ?
+				            manager.isLastNode(nodes.p, data.range.end) : false;
+				pos.isStart = data.range.offset.start === 0 ?
+				              manager.isFirstNode(nodes.p, data.range.start) : false;
+
+				data.range.pos = pos;
+				//console.log('pos', pos, range.toString());
+
+				if (!pos.isStart && !pos.isEnd)
 				{
-					nodes.next = nodes.node.nextSibling;
-
-					// разбиваем текстовый узел на два
-
-					els.textValue = nodes.node.nodeValue;
-
-					// сохраняем текст узла для отмены команды
-					data.oldValue = els.textValue;
-
-					els.startValue = els.textValue.substring(0, data.range.offset.start);
-					els.endValue = els.textValue.substring(data.range.offset.start);
-
-					if (els.startValue)
+					// делим узел
+					nodes.common = nodes.p;
+					els.common = els.p;
+					nodes.container = data.range.start;
+					nodes.start = manager.splitNode(els, nodes, data.range.offset.start);
+					els.common.removeEmptyText();
+					els.start = nodes.start.getElement();
+					nodes.prev = nodes.start.previousSibling;
+					els.prev = nodes.prev ? nodes.prev.getElement() : null;
+					if (els.prev && els.prev.isEmpty())
 					{
-						// изменяем старый текст
-						els.node.setText(els.startValue);
-						nodes.node.nodeValue = els.startValue;
+						// удаляем пустой начальный элемент
+						els.p.remove(els.prev);
+						nodes.p.removeChild(nodes.prev);
 					}
-					else
+					if (els.start.isEmpty())
 					{
-						// удаляем пустой текстовый узел
-						els.p.remove(els.node);
-						nodes.p.removeChild(nodes.node);
+						// удаляем пустой конечный элемент
+						els.p.remove(els.start);
+						nodes.p.removeChild(nodes.start);
+						nodes.start = null;
 					}
-
-					if (els.endValue)
-					{
-						// создаем новый текст
-						els.newText = factory.createElementText(els.endValue);
-						nodes.newText = els.newText.getNode(data.viewportId);
-
-						els.newP.add(els.newText);
-						nodes.newP.appendChild(nodes.newText);
-					}
+				}
+				else if (data.range.offset.start === 0)
+				{
+					nodes.start = nodes.node;
 				}
 				else
 				{
-					nodes.next = nodes.node.nextSibling ? nodes.node.nextSibling : nodes.node;
+					nodes.start = nodes.node.nextSibling;
+				}
 
-					if (els.p.isEmpty())
-					{
-						// удаляем пустой элемент из исходного
-						nodes.empty = nodes.p.firstChild;
-						els.empty = nodes.empty.getElement();
-						els.p.remove(els.empty);
-						nodes.p.removeChild(nodes.empty);
-						nodes.next = null;
-					}
+				nodes.next = nodes.start;
+
+				//console.log('nodes', nodes); return false;
+
+				if (els.p.isEmpty())
+				{
+					// удаляем пустой элемент из исходного
+					nodes.empty = nodes.p.firstChild;
+					els.empty = nodes.empty.getElement();
+					els.p.remove(els.empty);
+					nodes.p.removeChild(nodes.empty);
+					nodes.next = null;
 				}
 
 				// переносим все элементы из старого в новый
 				while (nodes.next)
 				{
+					nodes.buf = nodes.next.nextSibling;
 					els.next = nodes.next.getElement();
 					els.newP.add(els.next);
 					nodes.newP.appendChild(nodes.next);
-					nodes.next = nodes.node.nextSibling;
+					nodes.next = nodes.buf;
 				}
 
 				if (els.p.isEmpty())
@@ -166,7 +181,7 @@ Ext.define(
 					nodes.newP.appendChild(nodes.empty);
 				}
 
-				console.log('nodes, els', nodes, els);
+				//console.log('nodes, els', nodes, els);
 
 				els.parentP.sync(data.viewportId);
 
@@ -202,9 +217,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				range,
-				manager;
-
-			manager = FBEditor.editor.Manager;
+				manager = FBEditor.editor.Manager;
 
 			try
 			{
@@ -220,9 +233,11 @@ Ext.define(
 				els.node = nodes.node.getElement();
 				els.newP = nodes.newP.getElement();
 				els.parentP = nodes.parentP.getElement();
+				els.prev = nodes.prev ? nodes.prev.getElement() : null;
+				els.start = nodes.start ? nodes.start.getElement() : null;
 
 				// курсор
-				nodes.cursor = nodes.node;
+				nodes.cursor = range.start;// nodes.node;
 
 				if (els.p.isEmpty() && els.newP.isEmpty())
 				{
@@ -236,24 +251,6 @@ Ext.define(
 						// удаляем пустой элемент из старого
 						els.p.remove(els.node);
 						nodes.p.removeChild(nodes.node);
-					}
-					else if (!els.newP.isEmpty())
-					{
-						nodes.first = nodes.newP.firstChild;
-						els.first = nodes.first ? nodes.first.getElement() : null;
-						nodes.last = nodes.p.lastChild;
-						els.last = nodes.last ? nodes.last.getElement() : null;
-
-						if (els.first && els.last && els.first.isText && els.last.isText)
-						{
-							// изменяем исходный текстовый элемент
-							els.node.setText(data.oldValue);
-							nodes.node.nodeValue = data.oldValue;
-
-							// удаляем первый текстовый элемент из нового
-							els.newP.remove(els.first);
-							nodes.newP.removeChild(nodes.first);
-						}
 					}
 
 					if (!els.newP.isEmpty())
@@ -270,6 +267,14 @@ Ext.define(
 
 						// курсор
 						nodes.cursor = nodes.cursor.parentNode ? nodes.cursor : nodes.p.firstChild;
+					}
+
+					if (els.prev && els.prev.hisName(els.start.xmlTag))
+					{
+						// объединяем узлы
+						manager.joinNode(nodes.start);
+						//range.start = node.prev;
+						els.parentP.removeEmptyText();
 					}
 				}
 

@@ -450,6 +450,7 @@ Ext.define(
 		splitNode: function (els, nodes, offset)
 		{
 			var me = this,
+				containers = me.getStyleContainers(),
 				viewportId;
 
 			nodes.parentContainer = nodes.container.parentNode;
@@ -515,7 +516,8 @@ Ext.define(
 
 						if (!els.startTextValue)
 						{
-							if (!nodes.parentContainer.previousSibling)
+							if (!nodes.parentContainer.previousSibling &&
+							    Ext.Array.contains(containers, els.parentContainer.xmlTag))
 							{
 								// вставляем пустое содержимое вместо текущего узла
 								els.empty = me.createEmptyElement();
@@ -602,7 +604,8 @@ Ext.define(
 						nodes.nextContainer = nodes.buf;
 					}
 
-					if (!nodes.parent.firstChild && els.parent.xmlTag === 'p' && !nodes.parent.nextSibling)
+					if (!nodes.parent.firstChild && Ext.Array.contains(containers, els.parent.xmlTag) &&
+					    !nodes.parent.nextSibling)
 					{
 						// добавляем пустое содержимое в параграф
 						els.empty = me.createEmptyElement();

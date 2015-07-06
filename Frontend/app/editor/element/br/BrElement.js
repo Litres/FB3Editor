@@ -8,7 +8,10 @@ Ext.define(
 	'FBEditor.editor.element.br.BrElement',
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
-
+		requires: [
+			'FBEditor.editor.element.br.BrElementController'
+		],
+		controllerClass: 'FBEditor.editor.element.br.BrElementController',
 		htmlTag: 'br',
 		xmlTag: 'br',
 		showedOnTree: false,

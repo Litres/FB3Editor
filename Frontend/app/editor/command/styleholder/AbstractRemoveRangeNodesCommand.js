@@ -267,7 +267,7 @@ Ext.define(
 					nodes.cursor = nodes.empty;
 				}
 
-				console.log('nodes, els', nodes, els);
+				//console.log('nodes, els', nodes, els);
 
 				// синхронизируем
 				els.parent.sync(data.viewportId);
@@ -461,6 +461,7 @@ Ext.define(
 					{
 						manager.joinNode(nodes.removed[0]);
 					}
+					els.parent.removeEmptyText();
 				}
 
 				els.parent.sync(data.viewportId);
