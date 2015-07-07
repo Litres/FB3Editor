@@ -239,7 +239,7 @@ Ext.define(
 			// перематываем скролл
 			if (data.focusElement.nodes[viewportId].scrollIntoView)
 			{
-				//TODO сделать прокрутку только, если элемент не виден
+				//TODO сделать прокрутку только, если элемент не виден, иначе прокрутка не требуется
 				//data.focusElement.nodes[viewportId].scrollIntoView();
 			}
 
