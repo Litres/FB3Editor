@@ -62,13 +62,24 @@ Ext.define(
 
 			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
+			nodes.p = nodes.node.parentNode;
+			els.p = nodes.p.getElement();
+
+			if (els.node.isEmpty() && nodes.node.firstChild)
+			{
+				// пустой элемент
+				nodes.node = nodes.node.firstChild;
+				els.node = nodes.node.getElement();
+				nodes.p = nodes.node;
+				els.p = nodes.p.getElement();
+			}
 
 			// курсор в конце элемента?
 			isEnd = range.startOffset === els.node.getText().length;
 
+			console.log('range, isEnd, nodes', range, isEnd, nodes);
+
 			// текущий контейнер в параграфе
-			nodes.p = nodes.node.parentNode;
-			els.p = nodes.p.getElement();
 			while (!els.p.hisName(name))
 			{
 				nodes.node = nodes.p;

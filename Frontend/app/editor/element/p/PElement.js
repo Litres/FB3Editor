@@ -12,6 +12,8 @@ Ext.define(
 			'FBEditor.editor.element.p.PElementController',
 			'FBEditor.editor.command.p.SplitNodeCommand',
 			'FBEditor.editor.command.p.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.p.JoinNextNodeCommand',
+
 			'FBEditor.editor.command.p.AppendEmptyNodeCommand',
 			'FBEditor.editor.command.p.RemoveEmptyNodeCommand',
 			'FBEditor.editor.command.p.JoinTextToNextNodeCommand',

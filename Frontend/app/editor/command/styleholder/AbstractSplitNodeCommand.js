@@ -38,15 +38,7 @@ Ext.define(
 				// получаем данные из выделения
 				range = sel.getRangeAt(0);
 
-				if (!range.collapsed)
-				{
-					throw Error('Выделение недопустимо');
-				}
-
-				nodes.node = range.commonAncestorContainer;
-				els.node = nodes.node.getElement();
-
-				data.viewportId = nodes.node.viewportId;
+				data.viewportId = range.startContainer.viewportId;
 
 				data.range = {
 					common: range.commonAncestorContainer,
@@ -62,8 +54,19 @@ Ext.define(
 
 				console.log('split ' + me.elementName, data.range);
 
+				nodes.node = range.startContainer;
+				els.node = nodes.node.getElement();
 				nodes.p = nodes.node.parentNode;
 				els.p = nodes.p.getElement();
+
+				if (els.node.isEmpty() && nodes.node.firstChild)
+				{
+					// пустой элемент
+					nodes.node = nodes.node.firstChild;
+					els.node = nodes.node.getElement();
+					nodes.p = nodes.node;
+					els.p = nodes.p.getElement();
+				}
 
 				// ищем самый верхний контейнер
 				while (!els.p.hisName(me.elementName))
@@ -94,81 +97,87 @@ Ext.define(
 					nodes.parentP.appendChild(nodes.newP);
 				}
 
-				pos.isEnd = data.range.end.nodeValue && data.range.offset.end === data.range.end.nodeValue.length ?
-				            manager.isLastNode(nodes.p, data.range.end) : false;
-				pos.isStart = data.range.offset.start === 0 ?
-				              manager.isFirstNode(nodes.p, data.range.start) : false;
-
-				data.range.pos = pos;
-				//console.log('pos', pos, range.toString());
-
-				if (!pos.isStart && !pos.isEnd)
+				if (!els.p.isEmpty())
 				{
-					// делим узел
+					pos.isEnd = data.range.end.nodeValue && data.range.offset.end === data.range.end.nodeValue.length ?
+					            manager.isLastNode(nodes.p, data.range.end) : false;
+					pos.isStart = data.range.offset.start === 0 ?
+					              manager.isFirstNode(nodes.p, data.range.start) : false;
+
 					nodes.common = nodes.p;
 					els.common = els.p;
 					nodes.container = data.range.start;
-					nodes.start = manager.splitNode(els, nodes, data.range.offset.start);
-					els.common.removeEmptyText();
-					els.start = nodes.start.getElement();
-					nodes.prev = nodes.start.previousSibling;
-					els.prev = nodes.prev ? nodes.prev.getElement() : null;
-					if (els.prev && els.prev.isEmpty())
+					nodes.parentContainer = nodes.container.parentNode;
+					els.parentContainer = nodes.parentContainer.getElement();
+
+					pos.needSplit = !pos.isStart && !pos.isEnd;
+					pos.needSplit = els.parentContainer.elementId === els.p.elementId &&
+					                data.range.end.nodeValue &&
+					                data.range.offset.end === data.range.end.nodeValue.length ?
+					                false : pos.needSplit;
+
+					data.range.pos = pos;
+					console.log('pos', pos, range.toString());
+
+					if (pos.needSplit)
 					{
-						// удаляем пустой начальный элемент
-						els.p.remove(els.prev);
-						nodes.p.removeChild(nodes.prev);
+						// делим узел
+						nodes.start = manager.splitNode(els, nodes, data.range.offset.start);
+
+						els.common.removeEmptyText();
+
+						els.start = nodes.start.getElement();
+
+						nodes.prev = nodes.start.previousSibling;
+						els.prev = nodes.prev ? nodes.prev.getElement() : null;
+
+						if (els.prev && els.prev.isEmpty())
+						{
+							// удаляем пустой начальный элемент
+							els.p.remove(els.prev);
+							nodes.p.removeChild(nodes.prev);
+						}
+						if (els.start.isEmpty())
+						{
+							// удаляем пустой конечный элемент
+							els.p.remove(els.start);
+							nodes.p.removeChild(nodes.start);
+							nodes.start = null;
+						}
 					}
-					if (els.start.isEmpty())
+					else if (data.range.offset.start === 0)
 					{
-						// удаляем пустой конечный элемент
-						els.p.remove(els.start);
-						nodes.p.removeChild(nodes.start);
-						nodes.start = null;
+						nodes.start = nodes.node;
 					}
-				}
-				else if (data.range.offset.start === 0)
-				{
-					nodes.start = nodes.node;
-				}
-				else
-				{
-					nodes.start = nodes.node.nextSibling;
-				}
+					else
+					{
+						nodes.start = nodes.node.nextSibling;
+					}
 
-				nodes.next = nodes.start;
+					nodes.next = nodes.start;
 
-				//console.log('nodes', nodes); return false;
+					//console.log('nodes', nodes, els); return false;
 
-				if (els.p.isEmpty())
-				{
-					// удаляем пустой элемент из исходного
-					nodes.empty = nodes.p.firstChild;
-					els.empty = nodes.empty.getElement();
-					els.p.remove(els.empty);
-					nodes.p.removeChild(nodes.empty);
-					nodes.next = null;
-				}
+					// переносим все элементы из старого в новый
+					while (nodes.next)
+					{
+						nodes.buf = nodes.next.nextSibling;
+						els.next = nodes.next.getElement();
+						els.newP.add(els.next);
+						nodes.newP.appendChild(nodes.next);
+						nodes.next = nodes.buf;
+					}
 
-				// переносим все элементы из старого в новый
-				while (nodes.next)
-				{
-					nodes.buf = nodes.next.nextSibling;
-					els.next = nodes.next.getElement();
-					els.newP.add(els.next);
-					nodes.newP.appendChild(nodes.next);
-					nodes.next = nodes.buf;
-				}
+					if (els.p.isEmpty())
+					{
+						// вставляем пустой элемент в исходный
+						els.empty = manager.createEmptyElement();
+						nodes.empty = els.empty.getNode(data.viewportId);
 
-				if (els.p.isEmpty())
-				{
-					// вставляем пустой элемент в исходный
-					els.empty = manager.createEmptyElement();
-					nodes.empty = els.empty.getNode(data.viewportId);
-
-					els.p.add(els.empty);
-					nodes.p.appendChild(nodes.empty);
-					nodes.node = nodes.empty;
+						els.p.add(els.empty);
+						nodes.p.appendChild(nodes.empty);
+						nodes.node = nodes.empty;
+					}
 				}
 
 				if (els.newP.isEmpty())
@@ -188,12 +197,12 @@ Ext.define(
 				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				data.saveRange = {
-					startNode: nodes.newP.firstChild,
-					startOffset: 0,
-					focusElement: els.newP
-				};
-				manager.setCursor(data.saveRange);
+				nodes.cursor = manager.getDeepFirst(nodes.newP);
+				manager.setCursor(
+					{
+						startNode: nodes.cursor
+					}
+				);
 
 				// сохраняем ссылки
 				me.data.nodes = nodes;

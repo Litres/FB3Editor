@@ -11,7 +11,8 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.li.LiElementController',
 			'FBEditor.editor.command.li.SplitNodeCommand',
-			'FBEditor.editor.command.li.RemoveRangeNodesCommand'
+			'FBEditor.editor.command.li.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.p.JoinNextNodeCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.li.LiElementController',
 		htmlTag: 'li',

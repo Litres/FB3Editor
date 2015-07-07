@@ -397,7 +397,7 @@ Ext.define(
 					if (range.needSplit)
 					{
 						// разбиваем текстовый узел
-						nodes.common = range.common;
+						els.common = range.common.getElement();
 						nodes.container = nodes.cursor;
 						nodes.nextCursor = manager.splitNode(els, nodes, range.offset.start);
 					}
