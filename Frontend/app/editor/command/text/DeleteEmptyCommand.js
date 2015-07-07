@@ -307,7 +307,7 @@ Ext.define(
 
 				data.saveRange = {
 					startNode: nodes.cursor,
-					startOffset: 0
+					startOffset: data.isBackspace ? 1 : 0
 				};
 				manager.setCursor(data.saveRange);
 

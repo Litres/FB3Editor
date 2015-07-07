@@ -35,6 +35,10 @@ Ext.define(
 			keyDownDelete: function ()
 			{
 				this.controller.onKeyDownDelete.apply(this.controller, arguments);
+			},
+			keyDownBackspace: function ()
+			{
+				this.controller.onKeyDownBackspace.apply(this.controller, arguments);
 			}
 		},
 

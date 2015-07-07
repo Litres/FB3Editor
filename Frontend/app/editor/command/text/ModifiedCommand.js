@@ -129,9 +129,11 @@ Ext.define(
 
 				manager.suspendEvent = false;
 
+				// курсор
+				nodes.startCursor = data.isBackspace ? range.offset.start + 1 : range.offset.start;
 				data.saveRange = {
 					startNode: nodes.node,
-					startOffset: range.offset.start,
+					startOffset: nodes.startCursor,
 					focusElement: els.node
 				};
 				manager.setCursor(data.saveRange);

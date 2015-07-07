@@ -34,6 +34,17 @@ Ext.define(
 			el.parent.fireEvent('keyDownDelete', e);
 		},
 
+		onKeyDownBackspace: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			e.preventDefault();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownBackspace', e);
+		},
+
 		/**
 		 * Проверяет создание нового элемента форматирования из выделения.
 		 * @param {Selection} sel Выделение.

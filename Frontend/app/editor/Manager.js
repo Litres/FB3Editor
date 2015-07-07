@@ -230,6 +230,7 @@ Ext.define(
 
 			data.focusElement = data.focusElement || data.startNode.getElement();
 			data.startOffset = data.startOffset || 0;
+			data.startOffset = data.startOffset > data.startNode.length ? data.startNode.length : data.startOffset;
 
 			// устанавливаем фокус браузера в окно текста
 			viewportId = data.startNode.viewportId;
