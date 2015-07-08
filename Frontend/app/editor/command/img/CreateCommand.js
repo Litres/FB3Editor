@@ -25,6 +25,9 @@ Ext.define(
 				FBEditor.editor.Manager.suspendEvent = true;
 
 				range = data.opts.range;
+
+				console.log('create img', range);
+
 				data.viewportId = range.start.viewportId;
 				data.oldValue = range.start.nodeValue;
 
@@ -39,16 +42,28 @@ Ext.define(
 
 				nodes.parent = nodes.start.parentNode;
 				els.parent = nodes.parent.getElement();
-				nodes.next = nodes.start.nextSibling;
-				els.next = nodes.next ? nodes.next.getElement() : null;
 
-				// получаем части текста
-				els.startValue = nodes.start.nodeValue.substring(0, range.offset);
-				els.endValue = nodes.start.nodeValue.substring(range.offset);
+				if (!els.parent.isEmpty())
+				{
+					nodes.next = nodes.start.nextSibling;
+					els.next = nodes.next ? nodes.next.getElement() : null;
 
-				// меняем текст исходного элемента
-				els.start.setText(els.startValue);
-				nodes.start.nodeValue = els.startValue;
+					// получаем части текста
+					els.startValue = nodes.start.nodeValue.substring(0, range.offset);
+					els.endValue = nodes.start.nodeValue.substring(range.offset);
+
+					// меняем текст исходного элемента
+					els.start.setText(els.startValue);
+					nodes.start.nodeValue = els.startValue;
+				}
+				else
+				{
+					// удаляем пустой
+					els.parent.remove(els.start);
+					nodes.parent.removeChild(nodes.start);
+
+					data.isEmpty = true;
+				}
 
 				// вставляем изображение
 				if (els.next)
@@ -88,12 +103,11 @@ Ext.define(
 				FBEditor.editor.Manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				data.saveRange = {
-					startNode: range.start,
-					startOffset: range.offset,
-					focusElement: els.node
-				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
+				FBEditor.editor.Manager.setCursor(
+					{
+						startNode: nodes.node
+					}
+				);
 
 				// сохраняем узел
 				data.saveNode = nodes.node;
@@ -116,13 +130,16 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				manager = FBEditor.editor.Manager,
 				range;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				range = data.opts.range;
+
+				console.log('undo create img', data);
 
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
@@ -134,30 +151,46 @@ Ext.define(
 				els.parent.remove(els.node);
 				nodes.parent.removeChild(nodes.node);
 
-				// возвращаем старый текст
-				els.start = nodes.start.getElement();
-				els.start.setText(data.oldValue);
-				nodes.start.nodeValue = data.oldValue;
+				nodes.cursor = range.start;
 
-				nodes.next = nodes.start.nextSibling;
-				if (range.offset < nodes.start.nodeValue.length && nodes.next)
+				if (data.isEmpty)
 				{
-					// удаляем новый текстовый узел
-					els.next = nodes.next.getElement();
-					els.parent.remove(els.next);
-					nodes.parent.removeChild(nodes.next);
+					// вставляем пустой
+					els.empty = manager.createEmptyElement();
+					nodes.empty = els.empty.getNode(data.viewportId);
+
+					els.parent.add(els.empty);
+					nodes.parent.appendChild(nodes.empty);
+
+					nodes.cursor = nodes.empty;
+					range.start = nodes.empty;
+				}
+				else
+				{
+					// возвращаем старый текст
+					els.start = nodes.start.getElement();
+					els.start.setText(data.oldValue);
+					nodes.start.nodeValue = data.oldValue;
+
+					nodes.next = nodes.start.nextSibling;
+					if (range.offset < nodes.start.nodeValue.length && nodes.next)
+					{
+						// удаляем новый текстовый узел
+						els.next = nodes.next.getElement();
+						els.parent.remove(els.next);
+						nodes.parent.removeChild(nodes.next);
+					}
 				}
 
 				els.parent.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				FBEditor.editor.Manager.setCursor(
+				manager.setCursor(
 					{
-						startNode: range.start,
-						startOffset: range.offset,
-						focusElement: els.start
+						startNode: nodes.cursor,
+						startOffset: range.offset
 					}
 				);
 
