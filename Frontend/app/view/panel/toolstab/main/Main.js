@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
+			'FBEditor.view.panel.toolstab.main.button.a.A',
 			'FBEditor.view.panel.toolstab.main.button.annotation.Annotation',
 			'FBEditor.view.panel.toolstab.main.button.blockquote.Blockquote',
 			'FBEditor.view.panel.toolstab.main.button.div.Div',
@@ -90,6 +91,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-img'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-a'
 				},
 				{
 					xtype: 'tbspacer',
