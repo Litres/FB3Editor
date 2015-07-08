@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 
-		onKeyDown: function (e)
+		_onKeyDown: function (e)
 		{
 			var me = this,
 				node = e.target,
@@ -25,6 +25,39 @@ Ext.define(
 			e.stopPropagation();
 
 			return false;
+		},
+
+		onKeyDownDelete: function (e)
+		{
+			var me = this;
+
+			e.preventDefault();
+
+			me.remove();
+		},
+
+		onKeyDownBackspace: function (e)
+		{
+			var me = this;
+
+			e.preventDefault();
+
+			me.remove();
+		},
+
+		/**
+		 * Удаляет изображение.
+		 */
+		remove: function ()
+		{
+			var me = this,
+				cmd;
+
+			cmd = Ext.create('FBEditor.editor.command.DeleteCommand', {el: me.getElement()});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		},
 
 		getNodeVerify: function (sel, opts)
