@@ -45,8 +45,8 @@ Ext.define(
 				state;
 
 			range = manager.getRange();
-			start = range.start.getElement();
-			end = range.end.getElement();
+			start = range.start.getElement ? range.start.getElement() : manager.getFocusElement();
+			end = range.end.getElement ? range.end.getElement() : start;
 			name = btn.elementName;
 
 			// состояние кнопки зависит от текущего выделения и его родителей

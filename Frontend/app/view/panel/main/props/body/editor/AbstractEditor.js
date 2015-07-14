@@ -18,6 +18,17 @@ Ext.define(
 		listeners: {
 			change: 'onChange'
 		},
+		defaults: {
+			xtype: 'textfield',
+			labelAlign: 'top',
+			checkChangeBuffer: 1000,
+			listeners: {
+				change: function ()
+				{
+					this.up('form').fireEvent('change');
+				}
+			}
+		},
 
 		/**
 		 * @property {String} Имя элемента.

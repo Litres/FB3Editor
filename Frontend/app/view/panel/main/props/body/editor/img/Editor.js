@@ -8,17 +8,6 @@ Ext.define(
 	'FBEditor.view.panel.main.props.body.editor.img.Editor',
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
-		defaults: {
-			xtype: 'textfield',
-			labelAlign: 'top',
-			checkChangeBuffer: 1000,
-			listeners: {
-				change: function ()
-				{
-					this.up('form').fireEvent('change');
-				}
-			}
-		},
 
 		translateText: {
 			emptyImg: 'Пустое изображение',

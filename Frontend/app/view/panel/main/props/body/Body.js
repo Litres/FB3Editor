@@ -13,9 +13,10 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.Info',
 			'FBEditor.view.button.editor.ConvertElement',
 			'FBEditor.view.button.editor.DeleteElement',
-			'FBEditor.view.panel.main.props.body.editor.section.Editor',
+			'FBEditor.view.panel.main.props.body.editor.a.Editor',
+			'FBEditor.view.panel.main.props.body.editor.img.Editor',
 			'FBEditor.view.panel.main.props.body.editor.p.Editor',
-			'FBEditor.view.panel.main.props.body.editor.img.Editor'
+			'FBEditor.view.panel.main.props.body.editor.section.Editor'
 		],
 		controller: 'panel.props.body',
 		id: 'panel-props-body',

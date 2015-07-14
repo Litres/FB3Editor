@@ -43,6 +43,46 @@ Ext.define(
 			);
 
 			return attr;
+		},
+
+		getBlock: function ()
+		{
+			return this;
+		},
+
+		getData: function ()
+		{
+			var me = this,
+				resData,
+				data;
+
+			data = me.callParent(arguments);
+			resData = {
+				href: me.attributes.href ? me.attributes.href : '',
+				id: me.attributes.id ? me.attributes.id : ''
+			};
+			data = Ext.apply(data, resData);
+
+			return data;
+		},
+
+		update: function (data)
+		{
+			var me = this;
+
+			Ext.Object.each(
+				data,
+				function (key, val)
+				{
+					if (val)
+					{
+						me.attributes[key] = val;
+					}
+				}
+			);
+
+			// отображение
+			me.callParent(arguments);
 		}
 	}
 );

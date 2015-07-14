@@ -108,7 +108,7 @@ Ext.define(
 				data,
 				imgData;
 
-			data= me.callParent(arguments);
+			data = me.callParent(arguments);
 			imgData = {
 				url: me.attributes.src ? me.attributes.src : 'undefined',
 				name: me.resource ? me.resource.name : null,
