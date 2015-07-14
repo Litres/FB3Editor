@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
 			'FBEditor.editor.element.strikethrough.StrikethroughElementController',
-			'FBEditor.editor.command.strikethrough.CreateRangeCommand'
+			'FBEditor.editor.command.strikethrough.CreateRangeCommand',
+			'FBEditor.editor.command.strikethrough.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.strikethrough.StrikethroughElementController',
 		htmlTag: 'strikethrough',

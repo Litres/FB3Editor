@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-spacing',
 		xtype: 'panel-toolstab-main-button-spacing',
 		//controller: 'panel.toolstab.main.button.spacing',
 		html: '<i class="fa fa-text-width"></i>',
 		tooltip: 'Межбуквенный интервал',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('spacing');
-		}
+		elementName: 'spacing'
 	}
 );

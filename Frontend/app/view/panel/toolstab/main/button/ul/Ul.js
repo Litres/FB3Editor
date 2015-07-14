@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.ul.Ul',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-ul',
 		xtype: 'panel-toolstab-main-button-ul',
 		//controller: 'panel.toolstab.main.button.ul',
 		html: '<i class="fa fa-list-ul"></i>',
 		tooltip: 'Маркированный список',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('ul');
-		}
+		elementName: 'ul'
 	}
 );

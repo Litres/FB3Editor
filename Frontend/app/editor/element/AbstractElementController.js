@@ -550,7 +550,7 @@ Ext.define(
 
 			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
 			//console.log('node', node);
-			if (range && node.nodeName !== 'IMG' || range && node.nodeName === 'IMG' && !range.collapsed)
+			if (range && node.nodeName !== 'IMG'/* || range && node.nodeName === 'IMG' && !range.collapsed*/)
 			{
 				node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
 				       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;

@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
 			'FBEditor.editor.element.em.EmElementController',
-			'FBEditor.editor.command.em.CreateRangeCommand'
+			'FBEditor.editor.command.em.CreateRangeCommand',
+			'FBEditor.editor.command.em.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.em.EmElementController',
 		htmlTag: 'em',

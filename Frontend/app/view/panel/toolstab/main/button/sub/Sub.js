@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.sub.Sub',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-sub',
 		xtype: 'panel-toolstab-main-button-sub',
 		//controller: 'panel.toolstab.main.button.sub',
 		html: '<i class="fa fa-subscript"></i>',
 		tooltip: 'Нижний индекс',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('sub');
-		}
+		elementName: 'sub'
 	}
 );

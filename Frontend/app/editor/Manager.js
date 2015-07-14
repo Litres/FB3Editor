@@ -40,6 +40,11 @@ Ext.define(
 		suspendEvent: false,
 
 		/**
+		 * @property {Ext.button.Button[]} Кнопки элементов.
+		 */
+		buttons: [],
+
+		/**
 		 * @property {String} Имя пустого элемента.
 		 */
 		emptyElement: 'br',
@@ -186,6 +191,7 @@ Ext.define(
 			if (range)
 			{
 				me.range = {
+					collapsed: range.collapsed,
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
 					end: range.endContainer,
@@ -198,6 +204,7 @@ Ext.define(
 			else
 			{
 				me.range = {
+					collapsed: true,
 					common: elOrNode,
 					start: elOrNode,
 					end: elOrNode,
@@ -207,6 +214,9 @@ Ext.define(
 					}
 				};
 			}
+
+			// синхронизируем кнопки элементов с текущим выделением
+			me.syncButtons();
 
 			// показываем информацию о выделенном элементе
 			data = el.getData();
@@ -272,6 +282,32 @@ Ext.define(
 		},
 
 		/**
+		 * Синхронизирует кнопки элементов с текущим выделением.
+		 */
+		syncButtons: function ()
+		{
+			var me = this,
+				buttons = me.buttons;
+
+			Ext.Array.each(
+				buttons,
+			    function (btn)
+			    {
+				    btn.fireEvent('sync');
+			    }
+			);
+		},
+
+		/**
+		 * Добавляет кнопку элемента в список для синхронизации с текцщим выделением.
+		 * @param btn
+		 */
+		addButtons: function (btn)
+		{
+			this.buttons.push(btn);
+		},
+
+		/**
 		 * Удаляет все ссылки на узлы для конкретного окна.
 		 * @param {String} viewportId Id окна.
 		 */
@@ -299,6 +335,22 @@ Ext.define(
 			{
 				el = FBEditor.editor.Factory.createElement(name);
 				el.fireEvent('createElement', sel, opts);
+			}
+		},
+
+		/**
+		 * Удаляет элемент, сохраняя всех потомков элемента на его месте.
+		 * @param {String} name Имя элемента.
+		 * @param {Object} [opts] Дополнительные данные.
+		 */
+		deleteWrapper: function (name, opts)
+		{
+			var cmd;
+
+			cmd = Ext.create('FBEditor.editor.command.' + name + '.DeleteWrapperCommand', {opts: opts});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
 			}
 		},
 

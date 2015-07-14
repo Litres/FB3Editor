@@ -13,14 +13,7 @@ Ext.define(
 			'FBEditor.editor.command.p.SplitNodeCommand',
 			'FBEditor.editor.command.p.RemoveRangeNodesCommand',
 			'FBEditor.editor.command.p.JoinNextNodeCommand',
-			'FBEditor.editor.command.p.JoinPrevNodeCommand'/*,
-
-			'FBEditor.editor.command.p.AppendEmptyNodeCommand',
-			'FBEditor.editor.command.p.RemoveEmptyNodeCommand',
-			'FBEditor.editor.command.p.JoinTextToNextNodeCommand',
-			'FBEditor.editor.command.p.JoinTextToPrevNodeCommand',
-			'FBEditor.editor.command.p.TextToNextNodeCommand',
-			'FBEditor.editor.command.p.TextToPrevNodeCommand'*/
+			'FBEditor.editor.command.p.JoinPrevNodeCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.p.PElementController',
 		htmlTag: 'p',

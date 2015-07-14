@@ -9,10 +9,11 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
+			'FBEditor.editor.element.blockquote.BlockquoteElementController',
 			'FBEditor.editor.command.blockquote.SplitCommand',
 			'FBEditor.editor.command.blockquote.CreateCommand',
 			'FBEditor.editor.command.blockquote.CreateRangeCommand',
-			'FBEditor.editor.element.blockquote.BlockquoteElementController'
+			'FBEditor.editor.command.blockquote.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.blockquote.BlockquoteElementController',
 		htmlTag: 'blockquote',

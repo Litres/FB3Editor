@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.em.Em',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-em',
 		xtype: 'panel-toolstab-main-button-em',
 		//controller: 'panel.toolstab.main.button.em',
 		html: '<i class="fa fa-italic"></i>',
 		tooltip: 'Курсив',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('em');
-		}
+		elementName: 'em'
 	}
 );

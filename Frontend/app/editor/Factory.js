@@ -36,7 +36,6 @@ Ext.define(
 			'FBEditor.editor.element.subscription.SubscriptionElement',
 			'FBEditor.editor.element.sup.SupElement',
 			'FBEditor.editor.element.title.TitleElement',
-			'FBEditor.editor.element.u.UElement',
 			'FBEditor.editor.element.ul.UlElement',
 			'FBEditor.editor.element.text.TextElement',
 			'FBEditor.editor.element.undefined.UndefinedElement',

@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.strong.Strong',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-strong',
 		xtype: 'panel-toolstab-main-button-strong',
 		//controller: 'panel.toolstab.main.button.strong',
 		html: '<i class="fa fa-bold"></i>',
 		tooltip: 'Полужирный',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('strong');
-		}
+		elementName: 'strong'
 	}
 );

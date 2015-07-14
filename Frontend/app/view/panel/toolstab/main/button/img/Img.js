@@ -7,43 +7,20 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.img.Img',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractButton',
 		requires: [
-			'FBEditor.view.window.img.Create'
+			'FBEditor.view.panel.toolstab.main.button.img.ImgController'
 		],
 		id: 'panel-toolstab-main-button-img',
 		xtype: 'panel-toolstab-main-button-img',
-		//controller: 'panel.toolstab.main.button.img',
+		controller: 'panel.toolstab.main.button.img',
 		html: '<i class="fa fa-picture-o"></i>',
 		tooltip: 'Изображение',
+		elementName: 'img',
 
 		/**
 		 * @property {FBEditor.view.window.img.Create} Окно выбора изображения.
 		 */
-		win: null,
-
-		handler: function ()
-		{
-			var win,
-				sel,
-				range;
-
-			sel = FBEditor.editor.Manager.getSelection();
-			if (sel)
-			{
-				win = this.win || Ext.create('FBEditor.view.window.img.Create');
-
-				// сохраняем данные текущего выделения
-				range = sel.getRangeAt(0);
-				win.selectionRange = {
-					start: range.startContainer,
-					offset: range.startOffset,
-					oldValue: range.startContainer.nodeValue
-				};
-
-				this.win = win;
-				win.show();
-			}
-		}
+		win: null
 	}
 );

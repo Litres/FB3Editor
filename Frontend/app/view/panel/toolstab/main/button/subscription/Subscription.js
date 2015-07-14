@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.subscription.Subscription',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-subscription',
 		xtype: 'panel-toolstab-main-button-subscription',
 		//controller: 'panel.toolstab.main.button.subscription',
 		html: '<i class="fa fa-thumb-tack"></i>',
 		tooltip: 'Подпись',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('subscription');
-		}
+		elementName: 'subscription'
 	}
 );

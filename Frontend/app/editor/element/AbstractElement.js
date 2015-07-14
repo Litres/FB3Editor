@@ -705,6 +705,29 @@ Ext.define(
 		},
 
 		/**
+		 * Имеет ли элемент родителя с именем name. Поиск происходит по всем родителям, вплоть до корня.
+		 * @param {String} name Имя родительского элемента.
+		 * @returns {Boolean}
+		 */
+		hasParentName: function (name)
+		{
+			var me = this,
+				el = me.parent;
+
+			while (el)
+			{
+				if (el.hisName(name))
+				{
+					return true;
+				}
+
+				el = el.parent;
+			}
+
+			return false;
+		},
+
+		/**
 		 * Пустой ли элемент.
 		 * @return {Boolean}
 		 */

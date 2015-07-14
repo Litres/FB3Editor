@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
 			'FBEditor.editor.element.spacing.SpacingElementController',
-			'FBEditor.editor.command.spacing.CreateRangeCommand'
+			'FBEditor.editor.command.spacing.CreateRangeCommand',
+			'FBEditor.editor.command.spacing.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.spacing.SpacingElementController',
 		htmlTag: 'spacing',

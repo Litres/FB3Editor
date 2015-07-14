@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 		id: 'panel-toolstab-main-button-strikethrough',
 		xtype: 'panel-toolstab-main-button-strikethrough',
 		//controller: 'panel.toolstab.main.button.strikethrough',
 		html: '<i class="fa fa-strikethrough"></i>',
 		tooltip: 'Зачёркнутый',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('strikethrough');
-		}
+		elementName: 'strikethrough'
 	}
 );

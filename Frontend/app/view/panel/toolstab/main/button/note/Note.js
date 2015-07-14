@@ -7,15 +7,12 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.note.Note',
 	{
-		extend: 'Ext.button.Button',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractButton',
 		id: 'panel-toolstab-main-button-note',
 		xtype: 'panel-toolstab-main-button-note',
 		//controller: 'panel.toolstab.main.button.note',
 		html: '<i class="fa fa-comment"></i>',
 		tooltip: 'Сноска',
-		handler: function ()
-		{
-			FBEditor.editor.Manager.createElement('note');
-		}
+		elementName: 'note'
 	}
 );

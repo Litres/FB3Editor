@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
 			'FBEditor.editor.element.underline.UnderlineElementController',
-			'FBEditor.editor.command.underline.CreateRangeCommand'
+			'FBEditor.editor.command.underline.CreateRangeCommand',
+			'FBEditor.editor.command.underline.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.underline.UnderlineElementController',
 		htmlTag: 'underline',
