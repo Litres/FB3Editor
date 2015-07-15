@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 
 		translateText: {
-			href: 'URL'
+			href: 'Ссылка'
 		},
 
 		initComponent: function ()

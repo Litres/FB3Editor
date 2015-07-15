@@ -106,19 +106,21 @@ Ext.define(
 		{
 			var me = this,
 				data,
-				imgData;
+				resData;
 
 			data = me.callParent(arguments);
-			imgData = {
+			resData = {
 				url: me.attributes.src ? me.attributes.src : 'undefined',
-				name: me.resource ? me.resource.name : null,
-				id: me.attributes.id ? me.attributes.id : '',
-				alt: me.attributes.id ? me.attributes.alt : '',
-				width: me.attributes.width ? me.attributes.width : '',
-				'min-width': me.attributes['min-width'] ? me.attributes['min-width'] : '',
-				'max-width': me.attributes['max-width'] ? me.attributes['max-width'] : ''
+				name: me.resource ? me.resource.name : null
 			};
-			data = Ext.apply(data, imgData);
+			Ext.Object.each(
+				me.attributes,
+				function (key, val)
+				{
+					resData[key] = val ? val : '';
+				}
+			);
+			data = Ext.apply(data, resData);
 
 			return data;
 		},

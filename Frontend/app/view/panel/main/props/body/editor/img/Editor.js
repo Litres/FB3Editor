@@ -85,8 +85,8 @@ Ext.define(
 
 			me.callParent(arguments);
 			name = data.name ? data.name : me.translateText.emptyImg;
-			me.down('[name=src]').setValue(name);
 			me.getForm().setValues(data);
+			me.down('[name=src]').setValue(name);
 			me.down('image-editor-picture').updateView(data);
 			me.isLoad = false;
 		}

@@ -53,14 +53,17 @@ Ext.define(
 		getData: function ()
 		{
 			var me = this,
-				resData,
+				resData = {},
 				data;
 
 			data = me.callParent(arguments);
-			resData = {
-				href: me.attributes.href ? me.attributes.href : '',
-				id: me.attributes.id ? me.attributes.id : ''
-			};
+			Ext.Object.each(
+				me.attributes,
+				function (key, val)
+				{
+					resData[key] = val ? val : '';
+				}
+			);
 			data = Ext.apply(data, resData);
 
 			return data;
@@ -70,6 +73,10 @@ Ext.define(
 		{
 			var me = this;
 
+			// аттрибуты
+			me.attributes = {
+				href: ''
+			};
 			Ext.Object.each(
 				data,
 				function (key, val)
