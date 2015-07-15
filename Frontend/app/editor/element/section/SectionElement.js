@@ -20,8 +20,25 @@ Ext.define(
 		permit: {
 			splittable: true
 		},
+		statics: {
+			num: 0
+		},
 
 		isSection: true,
+
+		constructor: function ()
+		{
+			var me = this,
+				num = me.self.num;
+
+			num++;
+			me.defaultAttributes = {
+				id: 'section' + num
+			};
+			me.self.num = num;
+
+			me.callParent(arguments);
+		},
 
 		createScaffold: function ()
 		{

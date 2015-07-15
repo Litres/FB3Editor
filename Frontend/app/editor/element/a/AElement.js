@@ -17,16 +17,8 @@ Ext.define(
 		htmlTag: 'a',
 		xmlTag: 'a',
 		showedOnTree: false,
-		_attributes: {
-			href: ''
-		},
-
-		constructor: function (attributes, children)
-		{
-			var me = this;
-
-			me.callParent(arguments);
-			me.attributes = Ext.applyIf(attributes, me._attributes);
+		defaultAttributes: {
+			href: 'undefined'
 		},
 
 		getAttributesXml: function ()
@@ -48,48 +40,6 @@ Ext.define(
 		getBlock: function ()
 		{
 			return this;
-		},
-
-		getData: function ()
-		{
-			var me = this,
-				resData = {},
-				data;
-
-			data = me.callParent(arguments);
-			Ext.Object.each(
-				me.attributes,
-				function (key, val)
-				{
-					resData[key] = val ? val : '';
-				}
-			);
-			data = Ext.apply(data, resData);
-
-			return data;
-		},
-
-		update: function (data)
-		{
-			var me = this;
-
-			// аттрибуты
-			me.attributes = {
-				href: ''
-			};
-			Ext.Object.each(
-				data,
-				function (key, val)
-				{
-					if (val)
-					{
-						me.attributes[key] = val;
-					}
-				}
-			);
-
-			// отображение
-			me.callParent(arguments);
 		}
 	}
 );

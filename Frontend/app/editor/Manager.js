@@ -105,15 +105,18 @@ Ext.define(
 				return FBEditor.editor.Factory.createElementText(text);
 			};
 
+			// сбрасываем историю
+			FBEditor.editor.HistoryManager.clear();
+
+			// сбрасываем счетчики элементов
+			FBEditor.editor.element.section.SectionElement.num = 0;
+
 			content = content.replace(/\s+/g, ' ');
 			content = content.replace(/\), ?]/g, ')]');
 			//console.log(content);
 
 			// преобразование строки в объект
 			eval('me.content = ' + content);
-
-			// сбрасываем историю
-			FBEditor.editor.HistoryManager.clear();
 
 			// загружаем контент
 			Ext.getCmp('main-editor').fireEvent('loadData');

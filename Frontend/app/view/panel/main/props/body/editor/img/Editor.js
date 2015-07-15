@@ -35,8 +35,13 @@ Ext.define(
 				},
 				{
 					xtype: 'displayfield',
+					name: 'name',
+					value: me.translateText.emptyImg
+				},
+				{
+					xtype: 'hidden',
 					name: 'src',
-					value: me.translateText.emptyImg,
+					value: 'undefined',
 					submitValue: true
 				},
 				{
@@ -80,14 +85,15 @@ Ext.define(
 
 		updateData: function (data, isLoad)
 		{
-			var me = this,
-				name;
+			var me = this;
 
-			me.callParent(arguments);
-			name = data.name ? data.name : me.translateText.emptyImg;
+			me.isLoad = isLoad;
+			me.element = data.el ? data.el : me.element;
+			data.src = data.src ? data.src : data.name;
+			data.url = data.url ? data.url : data.src;
+			data.name = data.name ? data.name : me.translateText.emptyImg;
 			me.getForm().setValues(data);
-			me.down('[name=src]').setValue(name);
-			me.down('image-editor-picture').updateView(data);
+			me.down('image-editor-picture').updateView({url: data.url});
 			me.isLoad = false;
 		}
 	}

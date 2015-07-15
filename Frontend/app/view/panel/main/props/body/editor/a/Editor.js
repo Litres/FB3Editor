@@ -26,20 +26,12 @@ Ext.define(
 				{
 					name: 'href',
 					fieldLabel: me.translateText.href,
-					anchor: '100%'
+					anchor: '100%',
+					allowBlank: false
 				}
 			];
 
 			me.callParent(arguments);
-		},
-
-		updateData: function (data, isLoad)
-		{
-			var me = this;
-
-			me.callParent(arguments);
-			me.getForm().setValues(data);
-			me.isLoad = false;
 		}
 	}
 );

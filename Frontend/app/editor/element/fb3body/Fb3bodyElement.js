@@ -14,7 +14,7 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.fb3body.Fb3bodyElementController',
 		htmlTag: 'main',
 		xmlTag: 'fb3-body',
-		attributes: {
+		defaultAttributes: {
 			'xmlns:l': 'http://www.w3.org/1999/xlink',
 			'xmlns': 'http://www.fictionbook.org/FictionBook3/body',
 			'xmlns:fb3d': 'http://www.fictionbook.org/FictionBook3/description'
@@ -25,25 +25,6 @@ Ext.define(
 		 * @property {Boolean} Признан корневого элемента.
 		 */
 		isRoot: true,
-
-		constructor: function (attributes, children)
-		{
-			var me = this;
-
-			me.elementId = Ext.id({prefix: me.prefixId});
-			me.mixins.observable.constructor.call(me, {});
-			me.children = children || me.children;
-			Ext.Array.each(
-				me.children,
-				function (item)
-				{
-					item.parent = me;
-				}
-			);
-			me.attributes = Ext.apply(attributes, me.attributes);
-			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
-			me.createController();
-		},
 
 		setAttributesHtml: function (element)
 		{

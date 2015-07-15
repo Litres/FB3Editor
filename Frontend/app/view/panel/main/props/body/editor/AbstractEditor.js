@@ -62,10 +62,14 @@ Ext.define(
 		 */
 		updateData: function (data, isLoad)
 		{
-			var me = this;
+			var me = this,
+				form = me.getForm();
 
 			me.isLoad = isLoad;
 			me.element = data.el ? data.el : me.element;
+			form.reset();
+			form.setValues(data);
+			me.isLoad = false;
 		}
 	}
 );

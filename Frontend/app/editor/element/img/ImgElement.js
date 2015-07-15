@@ -16,7 +16,7 @@ Ext.define(
 		htmlTag: 'img',
 		xmlTag: 'img',
 		cls: 'el-img',
-		attributes: {
+		defaultAttributes: {
 			tabindex: 0
 		},
 
@@ -28,17 +28,6 @@ Ext.define(
 		resource: null,
 
 		isImg: true,
-
-		constructor: function (attributes, children)
-		{
-			var me = this;
-
-			me.mixins.observable.constructor.call(me, {});
-			me.elementId = Ext.id({prefix: me.prefixId});
-			me.children = children || me.children;
-			me.attributes = Ext.apply(attributes, me.attributes);
-			me.createController();
-		},
 
 		isEmpty: function ()
 		{
@@ -110,7 +99,6 @@ Ext.define(
 
 			data = me.callParent(arguments);
 			resData = {
-				url: me.attributes.src ? me.attributes.src : 'undefined',
 				name: me.resource ? me.resource.name : null
 			};
 			Ext.Object.each(
@@ -120,6 +108,7 @@ Ext.define(
 					resData[key] = val ? val : '';
 				}
 			);
+			resData.src = me.attributes.src ? me.attributes.src : 'undefined';
 			data = Ext.apply(data, resData);
 
 			return data;
@@ -137,9 +126,8 @@ Ext.define(
 			}
 
 			// аттрибуты
-			me.attributes = {
-				tabindex: 0
-			};
+			me.attributes = Ext.clone(me.defaultAttributes);
+
 			Ext.Object.each(
 				data,
 			    function (key, val)

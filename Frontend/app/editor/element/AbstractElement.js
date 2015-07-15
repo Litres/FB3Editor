@@ -141,6 +141,12 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {Object} Аттрибуты элемента по умолчанию.
+		 */
+		//defaultAttributes: {},
+
+		/**
+		 * @private
 		 * @property {FBEditor.editor.element.AbstractElementController} Контроллер элемента.
 		 */
 		//controller: null,
@@ -182,7 +188,8 @@ Ext.define(
 			);
 
 			me.children = ch;
-			me.attributes = attributes || me.attributes;
+			me.attributes = Ext.clone(attributes) || me.attributes;
+			me.attributes = me.defaultAttributes ? Ext.applyIf(attributes, me.defaultAttributes) : me.attributes;
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
 		},
@@ -440,6 +447,13 @@ Ext.define(
 				elementName: el.xmlTag,
 				htmlPath: me.getHtmlPath(node)
 			};
+			Ext.Object.each(
+				el.attributes,
+				function (key, val)
+				{
+					data[key] = val ? val : '';
+				}
+			);
 
 			return data;
 		},
@@ -471,7 +485,32 @@ Ext.define(
 
 		update: function (data)
 		{
+			var me = this;
+
+			// аттрибуты
+			me.attributes = me.defaultAttributes ? Ext.clone(me.defaultAttributes) : {};
+
+			Ext.Object.each(
+				data,
+				function (key, val)
+				{
+					if (val)
+					{
+						me.attributes[key] = val;
+					}
+				}
+			);
+
+			me.updateView();
+		},
+
+		/**
+		 * Обновляет отображение элемента.
+		 */
+		updateView: function ()
+		{
 			var me = this,
+				manager = FBEditor.editor.Manager,
 				viewportId,
 				oldNode,
 				newNode;
@@ -481,11 +520,11 @@ Ext.define(
 			// обновляем узлы элемента
 			viewportId = Ext.Object.getKeys(me.nodes)[0];
 			oldNode = me.nodes[viewportId];
-			FBEditor.editor.Manager.suspendEvent = true;
+			manager.suspendEvent = true;
 			newNode = me.getNode(viewportId);
 			oldNode.parentNode.replaceChild(newNode, oldNode);
 			me.sync(viewportId);
-			FBEditor.editor.Manager.suspendEvent = false;
+			manager.suspendEvent = false;
 		},
 
 		/**
