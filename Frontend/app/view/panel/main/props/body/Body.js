@@ -15,6 +15,8 @@ Ext.define(
 			'FBEditor.view.button.editor.DeleteElement',
 			'FBEditor.view.panel.main.props.body.editor.a.Editor',
 			'FBEditor.view.panel.main.props.body.editor.img.Editor',
+			'FBEditor.view.panel.main.props.body.editor.note.Editor',
+			'FBEditor.view.panel.main.props.body.editor.notes.Editor',
 			'FBEditor.view.panel.main.props.body.editor.section.Editor'
 		],
 		controller: 'panel.props.body',
