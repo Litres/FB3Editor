@@ -15,14 +15,17 @@ Ext.define(
 			'FBEditor.view.button.editor.DeleteElement',
 			'FBEditor.view.panel.main.props.body.editor.a.Editor',
 			'FBEditor.view.panel.main.props.body.editor.annotation.Editor',
+			'FBEditor.view.panel.main.props.body.editor.blockquote.Editor',
 			'FBEditor.view.panel.main.props.body.editor.div.Editor',
 			'FBEditor.view.panel.main.props.body.editor.epigraph.Editor',
 			'FBEditor.view.panel.main.props.body.editor.img.Editor',
 			'FBEditor.view.panel.main.props.body.editor.note.Editor',
 			'FBEditor.view.panel.main.props.body.editor.notes.Editor',
+			'FBEditor.view.panel.main.props.body.editor.ol.Editor',
 			'FBEditor.view.panel.main.props.body.editor.section.Editor',
 			'FBEditor.view.panel.main.props.body.editor.subscription.Editor',
-			'FBEditor.view.panel.main.props.body.editor.title.Editor'
+			'FBEditor.view.panel.main.props.body.editor.title.Editor',
+			'FBEditor.view.panel.main.props.body.editor.ul.Editor'
 		],
 		controller: 'panel.props.body',
 		id: 'panel-props-body',

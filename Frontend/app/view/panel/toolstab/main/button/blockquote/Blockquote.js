@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.blockquote.Blockquote',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractButton',
 		id: 'panel-toolstab-main-button-blockquote',
 		xtype: 'panel-toolstab-main-button-blockquote',
 		//controller: 'panel.toolstab.main.button.blockquote',
