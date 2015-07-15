@@ -21,7 +21,7 @@ Ext.define(
 		defaults: {
 			xtype: 'textfield',
 			labelAlign: 'top',
-			checkChangeBuffer: 1000,
+			checkChangeBuffer: 200,
 			listeners: {
 				change: function ()
 				{
