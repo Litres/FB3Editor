@@ -130,8 +130,10 @@ Ext.define(
 		/**
 		 * Обновляет данные элемента и его отображение.
 		 * @param {Object} data Новые данные для элемента.
+		 * @param opts Опции.
+		 * @param {Boolean} opts.withoutView true - обновить только данные, без обновления отображения.
 		 */
-		update: function (data)
+		update: function (data, opts)
 		{
 			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#update()');
 		}

@@ -441,10 +441,15 @@ Ext.define(
 				el;
 
 			node = Ext.Object.getValues(me.nodes)[0];
+
+			// текущий выделенный элемент
 			el = me.getBlock();
+
 			data = {
 				el: el,
 				elementName: el.xmlTag,
+
+				// путь html от курсора
 				htmlPath: me.getHtmlPath(node)
 			};
 			Ext.Object.each(
@@ -483,15 +488,64 @@ Ext.define(
 			FBEditor.editor.Manager.updateTree();
 		},
 
-		update: function (data)
+		update: function (data, opts)
 		{
-			var me = this;
+			var me = this,
+				resData = {},
+				markerData = null,
+				reg = /^marker-/;
+
+			opts = opts || {};
+
+			//console.log('EL update', me.xmlTag, data, opts);
+
+			if (data.marker && data.marker === 'true')
+			{
+				markerData = {};
+				delete data.marker;
+			}
+			Ext.Object.each(
+				data,
+				function (key, val)
+				{
+					if (!reg.test(key))
+					{
+						resData[key] = val;
+					}
+					else if (markerData)
+					{
+						// данные для маркера собираем отдельно
+						markerData[key.replace(reg, '')] = val;
+					}
+				}
+			);
+
+			//console.log('resData, markerData', resData, markerData);
+
+			if (markerData)
+			{
+				if (me.marker)
+				{
+					// обновляем маркер
+					me.updateMarker(markerData);
+				}
+				else
+				{
+					// создаем маркер
+					me.createMarker(markerData);
+				}
+			}
+			else
+			{
+				// удаляем маркер
+				me.removeMarker();
+			}
 
 			// аттрибуты
 			me.attributes = me.defaultAttributes ? Ext.clone(me.defaultAttributes) : {};
 
 			Ext.Object.each(
-				data,
+				resData,
 				function (key, val)
 				{
 					if (val)
@@ -501,7 +555,10 @@ Ext.define(
 				}
 			);
 
-			me.updateView();
+			if (!opts.withoutView)
+			{
+				me.updateView();
+			}
 		},
 
 		/**
@@ -892,6 +949,44 @@ Ext.define(
 			var me = this;
 
 			me.controller = Ext.create(me.controllerClass, scope || me);
+		},
+
+		/**
+		 * @protected
+		 * Создает маркер.
+		 * @param {Object} data Данные маркера.
+		 */
+		createMarker: function (data)
+		{
+			var me = this,
+				marker,
+				img,
+				factory = FBEditor.editor.Factory;
+
+			img = factory.createElement('img', data);
+			marker = factory.createElement('marker', {}, img);
+			me.add(marker);
+		},
+
+		/**
+		 * @protected
+		 * Обновляет маркер.
+		 * @param {Object} data Данные маркера.
+		 */
+		updateMarker: function (data)
+		{
+			var me = this;
+
+			me.marker.img.update(data, {'withoutView': true});
+		},
+
+		/**
+		 * @protected
+		 * Удаляет маркер.
+		 */
+		removeMarker: function ()
+		{
+			this.marker = null;
 		}
 	}
 );

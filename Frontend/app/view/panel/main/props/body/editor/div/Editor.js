@@ -8,6 +8,10 @@ Ext.define(
 	'FBEditor.view.panel.main.props.body.editor.div.Editor',
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
+		requires: [
+			'FBEditor.view.panel.main.props.body.editor.div.marker.Marker'
+		],
+		xtype: 'panel-props-body-editor-div',
 
 		translateText: {
 			width: 'Ширина',
@@ -18,7 +22,8 @@ Ext.define(
 			align: 'Выравнивание',
 			bindTo: 'Привязать к',
 			border: 'Граница',
-			onOnePage: 'on-one-page'
+			onOnePage: 'on-one-page',
+			marker: 'Маркер'
 		},
 
 		initComponent: function ()
@@ -119,10 +124,28 @@ Ext.define(
 					name: 'bindto',
 					fieldLabel: me.translateText.bindTo,
 					anchor: '100%'
+				},
+				{
+					xtype: 'panel-props-body-editor-marker',
+					title: me.translateText.marker
 				}
 			];
 
 			me.callParent(arguments);
+		},
+
+		updateData: function (data, isLoad)
+		{
+			var me = this,
+				form = me.getForm(),
+				marker;
+
+			me.isLoad = isLoad;
+			me.element = data.el ? data.el : me.element;
+			form.reset();
+			form.setValues(data);
+			me.down('panel-props-body-editor-marker').updateData(data, isLoad);
+			me.isLoad = false;
 		}
 	}
 );
