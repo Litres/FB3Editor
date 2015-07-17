@@ -40,11 +40,16 @@ Ext.define(
 		createScaffold: function ()
 		{
 			var me = this,
-				els = {};
+				els = {},
+				factory = FBEditor.editor.Factory;
 
-			els.section = FBEditor.editor.Factory.createElement('section');
-			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Текст книги');
+			els.title = factory.createElement('title');
+			els = Ext.apply(els, els.title.createScaffold());
+			me.add(els.title);
+
+			els.section = factory.createElement('section');
+			els.p = factory.createElement('p');
+			els.t = factory.createElementText('Текст книги');
 			els.p.add(els.t);
 			els.section.add(els.p);
 			me.add(els.section);
