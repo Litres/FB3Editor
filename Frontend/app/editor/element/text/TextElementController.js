@@ -91,6 +91,7 @@ Ext.define(
 				range;
 
 			e.preventDefault();
+			e.stopPropagation();
 
 			range = sel.getRangeAt(0);
 
