@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.button.Button',
 		requires: [
-
+			'FBEditor.editor.command.ConvertToTextCommand'
 		],
 		id: 'button-editor-convert-element',
 		xtype: 'button-editor-convert-element',
@@ -17,14 +17,18 @@ Ext.define(
 
 		handler: function ()
 		{
-			var cmd,
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				cmd,
 				data = {};
 
-			alert('В разработке!');return;
-			cmd = Ext.create('FBEditor.command.ConvertElement', data);
+			//TODO
+			alert('В разработке!'); return false;
+			data.el = me.element;
+			cmd = bridge.Ext.create('FBEditor.editor.command.ConvertToTextCommand', data);
 			if (cmd.execute())
 			{
-				FBEditor.HistoryCommand.add(cmd);
+				bridge.FBEditor.editor.HistoryManager.add(cmd);
 			}
 		}
 	}

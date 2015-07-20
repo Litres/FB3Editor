@@ -449,9 +449,13 @@ Ext.define(
 		 */
 		onPaste: function (e)
 		{
-			//console.log('drop:', e, me);
+			var clipboard = e.clipboardData,
+				cmd;
+
+			//console.log('paste:', this.getElement(), e.target, clipboard.getData('text'));
 
 			e.preventDefault();
+			e.stopPropagation();
 		},
 
 		/**

@@ -78,6 +78,34 @@ Ext.define(
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
 			}
+		},
+
+		onPaste: function (e)
+		{
+			var me = this,
+				el = me.getElement(),
+				sel = window.getSelection(),
+				clipData = e.clipboardData.getData('text'),
+				cmd,
+				newValue,
+				range;
+
+			e.preventDefault();
+
+			range = sel.getRangeAt(0);
+
+			// новый текст
+			newValue = el.text.substring(0, range.startOffset) + clipData + el.text.substring(range.startOffset);
+
+			console.log('paste text', newValue, clipData);
+
+			// редактируем текст
+			cmd = Ext.create('FBEditor.editor.command.text.ModifiedCommand', {newValue: newValue});
+
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		}
 	}
 );

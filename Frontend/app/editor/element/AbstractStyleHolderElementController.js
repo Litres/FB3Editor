@@ -208,6 +208,86 @@ Ext.define(
 			}
 		},
 
+		onPaste: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				name = me.getNameElement(),
+				nodes = {},
+				els = {},
+				manager = FBEditor.editor.Manager,
+				range;
+
+			e.preventDefault();
+			e.stopPropagation();
+
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			nodes.p = nodes.node.parentNode;
+			els.p = nodes.p.getElement();
+
+			if (els.node.isEmpty() && nodes.node.firstChild)
+			{
+				// пустой элемент
+				nodes.node = nodes.node.firstChild;
+				els.node = nodes.node.getElement();
+				nodes.p = nodes.node;
+				els.p = nodes.p.getElement();
+			}
+
+			//console.log('range, nodes', range, nodes);
+
+			// текущий контейнер в параграфе
+			while (!els.p.hisName(name))
+			{
+				nodes.node = nodes.p;
+				els.node = nodes.node.getElement();
+				nodes.p = nodes.node.parentNode;
+				els.p = nodes.p.getElement();
+			}
+
+			//console.log('range, nodes', range, nodes);
+
+			if (!range.collapsed)
+			{
+				// удаляем выделенную часть текста
+				me.removeRangeNodes();
+			}
+
+			if (els.p.isEmpty())
+			{
+				// создаем пустой текстовый элемент
+
+				// TODO
+				manager.suspendEvent = true;
+
+				els.text = FBEditor.editor.Factory.createElementText('');
+				nodes.text = els.text.getNode(nodes.p.viewportId);
+				nodes.node = nodes.text;
+
+				els.p.replace(els.text, nodes.p.firstChild.getElement());
+				nodes.p.replaceChild(nodes.text, nodes.p.firstChild);
+
+				manager.suspendEvent = false;
+
+				// ставим курсор в текст
+				manager.setCursor(
+					{
+						startNode: nodes.text
+					}
+				);
+			}
+
+			// текстовый элемент
+			nodes.text = manager.getDeepLast(nodes.node);
+
+			// передаем событие текстовому элементу
+			nodes.text.getElement().fireEvent('paste', e);
+
+		},
+
 		/**
 		 * Удаляет выделенную часть текста.
 		 */

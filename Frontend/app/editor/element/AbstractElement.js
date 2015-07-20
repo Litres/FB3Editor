@@ -10,7 +10,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.InterfaceElement',
 		requires: [
-			'FBEditor.editor.element.AbstractElementController'
+			'FBEditor.editor.element.AbstractElementController',
+			'FBEditor.editor.command.PasteCommand'
 		],
 		mixins: {
 			observable: 'Ext.util.Observable'
@@ -39,6 +40,10 @@ Ext.define(
 			keyDownBackspace: function ()
 			{
 				this.controller.onKeyDownBackspace.apply(this.controller, arguments);
+			},
+			paste: function ()
+			{
+				this.controller.onPaste.apply(this.controller, arguments);
 			}
 		},
 
