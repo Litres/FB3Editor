@@ -18,6 +18,8 @@ Ext.define(
 		 */
 		realName: '',
 
+		isUndefined: true,
+
 		constructor: function (realName, attributes, children)
 		{
 			var me = this,

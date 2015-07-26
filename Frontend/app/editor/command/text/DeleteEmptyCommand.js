@@ -18,13 +18,10 @@ Ext.define(
 				nodes = {},
 				els = {},
 				manager = FBEditor.editor.Manager,
-				containers,
 				range;
 
 			try
 			{
-				containers = manager.getStyleContainers();
-
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
@@ -62,7 +59,7 @@ Ext.define(
 				nodes.parentEmpty = nodes.empty.parentNode;
 				els.parentEmpty = nodes.parentEmpty.getElement();
 
-				if (els.parentEmpty.isEmpty() && Ext.Array.contains(containers, els.parentEmpty.xmlTag))
+				if (els.parentEmpty.isEmpty() && els.parentEmpty.isStyleHolder)
 				{
 					//console.log('relocate');
 					nodes.empty = nodes.parentEmpty;
@@ -75,10 +72,10 @@ Ext.define(
 
 				//console.log('nodes, els', nodes, els);
 
-				if (!Ext.Array.contains(containers, els.empty.xmlTag))
+				if (!els.empty.isStyleHolder)
 				{
 					// ищем самый верхний пустой элемент
-					while (els.parentEmpty.isEmpty() && !Ext.Array.contains(containers, els.parentEmpty.xmlTag))
+					while (els.parentEmpty.isEmpty() && !els.parentEmpty.isStyleHolder)
 					{
 						//console.log('search', els.parentEmpty.xmlTag);
 						nodes.empty = nodes.parentEmpty;
@@ -87,7 +84,7 @@ Ext.define(
 						els.parentEmpty = nodes.parentEmpty.getElement();
 					}
 
-					if (Ext.Array.contains(containers, els.parentEmpty.xmlTag) && els.parentEmpty.isEmpty())
+					if (els.parentEmpty.isStyleHolder && els.parentEmpty.isEmpty())
 					{
 						//console.log('p');
 						nodes.empty = nodes.parentEmpty;
@@ -97,22 +94,26 @@ Ext.define(
 					}
 				}
 
-				if (!Ext.Array.contains(containers, els.empty.xmlTag))
+				if (!els.empty.isStyleHolder)
 				{
 					// удаляем пустой элемент
 
-					//console.log('remove')
+					//console.log('remove', els.parentEmpty); //return false;
+
 					nodes.next = nodes.empty.nextSibling;
 					nodes.prev = nodes.empty.previousSibling;
 					els.next = nodes.next ? nodes.next.getElement() : null;
 					els.prev = nodes.prev ? nodes.prev.getElement() : null;
 
-					els.parentEmpty.remove(els.empty);
-					nodes.parentEmpty.removeChild(nodes.empty);
+					els.parentEmpty.removeAll();
+					nodes.parentEmpty.removeChild(nodes.parentEmpty.firstChild);
+
+					//console.log('isEmpty', els.parentEmpty.isEmpty());
 
 					// курсор
 					nodes.cursor = nodes.next ? manager.getDeepFirst(nodes.next) : manager.getDeepLast(nodes.prev);
-					nodes.cursorStart = nodes.next ? 0 : nodes.cursor.nodeValue.length;
+					nodes.cursorStart = nodes.next ? 0 :
+					                    (nodes.cursor && nodes.cursor.nodeValue ? nodes.cursor.nodeValue.length : 0);
 
 					// объединяем два соседних текстовых узла
 					if (els.next && els.prev && els.next.isText && els.prev.isText)
@@ -123,11 +124,20 @@ Ext.define(
 						nodes.needSplit = true;
 					}
 				}
-				else
+
+				if (els.parentEmpty.isEmpty() && els.parentEmpty.isStyleHolder)
+				{
+					nodes.empty = nodes.parentEmpty;
+					els.empty = nodes.empty.getElement();
+					nodes.parentEmpty = nodes.parentEmpty.parentNode;
+					els.parentEmpty = nodes.parentEmpty.getElement();
+				}
+
+				if (els.empty.isStyleHolder && els.empty.isEmpty())
 				{
 					// вставляем в параграф пустой элемент
 
-					//console.log('insert');
+					//console.log('insert empty');
 
 					els.newEmpty = manager.createEmptyElement();
 					nodes.newEmpty = els.newEmpty.getNode(data.viewportId);

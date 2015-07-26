@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.editor.element.p.PElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
+		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 		requires: [
 			'FBEditor.editor.element.p.PElementController',
 			'FBEditor.editor.command.p.SplitNodeCommand',
@@ -19,12 +19,6 @@ Ext.define(
 		htmlTag: 'p',
 		xmlTag: 'p',
 		cls: 'el-p',
-		showedOnTree: false,
-
-		/**
-		 * @property {Boolean} Стилевой ли элемент.
-		 */
-		isStyleType: true,
 
 		isP: true,
 

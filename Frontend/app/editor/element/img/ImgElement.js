@@ -146,13 +146,64 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
+		getNameTree: function ()
+		{
+			var me = this,
+				name;
+
+			name = me.callParent(arguments);
+
+			if (me.resource)
+			{
+				name += ' ' + me.resource.name;
+			}
+
+			return name;
+		},
+
+		getOnlyStylesChildren: function (fragment)
+		{
+			var me = this;
+
+			// признак скопированного изображения
+			if (me.attributes.src.substring(0, 1) === '#')
+			{
+				// изменяем путь к изображению
+				me.attributes.src = me.attributes.src.substring(1);
+			}
+
+			fragment.add(me);
+		},
+
+		beforeCopy: function ()
+		{
+			var me = this;
+
+			if (me.resource)
+			{
+				me.updateSrc('#' + me.resource.name);
+				//console.log('before copy img', me.resource.name);
+			}
+		},
+
+		afterCopy: function ()
+		{
+			var me = this;
+
+			if (me.resource)
+			{
+				me.updateSrc(me.attributes.src);
+				//console.log('after copy img');
+
+			}
+		},
+
 		/**
 		 * Удаляет связь изображения с ресурсом.
 		 */
-		deleteLinkResource: function ()
+		deleteLinkResource: function (src)
 		{
 			var me = this,
-				nodes = me.nodes,
 				resource = me.resource;
 
 			if (resource)
@@ -161,16 +212,8 @@ Ext.define(
 			}
 			me.resource = null;
 
-			FBEditor.editor.Manager.suspendEvent = true;
-			Ext.Object.each(
-				nodes,
-			    function (id, node)
-			    {
-				    me.attributes.src = 'undefined';
-				    node.setAttribute('src', 'undefined');
-			    }
-			);
-			FBEditor.editor.Manager.suspendEvent = false;
+			me.attributes.src = src || 'undefined';
+			me.updateSrc(me.attributes.src);
 		},
 
 		/**
@@ -193,19 +236,25 @@ Ext.define(
 			}
 		},
 
-		getNameTree: function ()
+		/**
+		 * @private
+		 * Обновляет путь изображения.
+		 * @param {String} src Путь.
+		 */
+		updateSrc: function (src)
 		{
 			var me = this,
-				name;
+				manager = FBEditor.editor.Manager;
 
-			name = me.callParent(arguments);
-
-			if (me.resource)
-			{
-				name += ' ' + me.resource.name;
-			}
-
-			return name;
+			manager.suspendEvent = true;
+			Ext.Object.each(
+				me.nodes,
+				function (key, node)
+				{
+					node.setAttribute('src', src);
+				}
+			);
+			manager.suspendEvent = false;
 		}
 	}
 );

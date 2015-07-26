@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			'FBEditor.editor.element.br.BrElementController'
+			'FBEditor.editor.element.br.BrElementController',
+			'FBEditor.editor.command.br.CreateEmptyTextCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.br.BrElementController',
 		htmlTag: 'br',

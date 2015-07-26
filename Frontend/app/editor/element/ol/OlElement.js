@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.editor.element.ol.OlElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
+		extend: 'FBEditor.editor.element.AbstractLiHolderElement',
 		requires: [
 			'FBEditor.editor.command.ol.CreateCommand',
 			'FBEditor.editor.command.ol.DeleteWrapperCommand',

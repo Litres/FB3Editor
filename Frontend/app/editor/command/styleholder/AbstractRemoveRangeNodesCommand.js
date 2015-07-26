@@ -117,9 +117,10 @@ Ext.define(
 
 						// удаляем текстовый узел
 						nodes.removed.push(nodes.common);
-						els.parent.remove(els.common);
-						nodes.parent.removeChild(nodes.common);
+						els.parent.removeAll(els.common);
+						nodes.parent.removeChild(nodes.parent.firstChild);
 
+						//console.log('isEmpty', els.parent.isEmpty(), els.parent, els.common);
 						if (!els.parent.isEmpty())
 						{
 							// курсор

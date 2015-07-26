@@ -19,7 +19,10 @@ Ext.define(
 				res = false,
 				sel = window.getSelection(),
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				offset = sel.getRangeAt(0).startOffset,
+				nodes = {},
+				els = {},
 				node,
 				text,
 				viewportId,
@@ -30,18 +33,50 @@ Ext.define(
 				me.newValue = me.newValue || data.newValue;
 				me.oldValue = me.oldValue || data.oldValue;
 				me.offset = me.offset ? me.offset : offset;
+
+				manager.suspendEvent = true;
+
+				if (data.saveRange)
+				{
+					nodes.node = data.saveRange.startNode;
+					els.node = nodes.node.getElement();
+
+					data.node = nodes.node;
+
+					nodes.parent = nodes.node.parentNode;
+					els.parent = nodes.parent.getElement();
+
+					if (els.node.isEmpty())
+					{
+						// заменяем пустой элемент на текстовый
+						els.text = factory.createElementText('');
+						nodes.text = els.text.getNode(nodes.node.viewportId);
+
+						els.parent.replace(els.text, els.node);
+						nodes.parent.replaceChild(nodes.text, nodes.node);
+
+						data.node = nodes.text;
+					}
+				}
+
 				node = data.node;
 				text = me.newValue;
 				viewportId = node.viewportId;
 
-				console.log('exec text', node, me.newValue, me.oldValue, me.offset);
-
-				manager.suspendEvent = true;
+				console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
 
 				node.nodeValue = text;
 				el = node.getElement();
 				el.setText(text);
-				el.sync(viewportId);
+
+				if (!els.parent)
+				{
+					el.sync(viewportId);
+				}
+				else
+				{
+					els.parent.sync(viewportId);
+				}
 
 				manager.suspendEvent = false;
 
@@ -70,7 +105,6 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				sel = window.getSelection(),
 				manager = FBEditor.editor.Manager,
 				nodes = {},
 				els = {},
@@ -89,19 +123,39 @@ Ext.define(
 
 				node.nodeValue = text;
 				el = node.getElement();
+				el.setText(text);
+
+				nodes.parent = node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				nodes.cursor = node;
 
 				console.log('undo exec text', node, el);
 
-				el.setText(text);
-				el.sync(viewportId);
+				if (!text && els.parent.isStyleHolder)
+				{
+					// вставляем пустой элемент
+					els.empty = manager.createEmptyElement();
+					nodes.empty = els.empty.getNode(viewportId);
+
+					els.parent.replace(els.empty, el);
+					nodes.parent.replaceChild(nodes.empty, node);
+
+					nodes.cursor = nodes.empty;
+
+					els.parent.sync(viewportId);
+				}
+				else
+				{
+					el.sync(viewportId);
+				}
 
 				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				data.saveRange = {
-					startNode: node,
-					startOffset: me.offset,
-					focusElement: node.getElement()
+					startNode: nodes.cursor,
+					startOffset: me.offset
 				};
 				manager.setCursor(data.saveRange);
 

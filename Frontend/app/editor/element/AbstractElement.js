@@ -63,7 +63,9 @@ Ext.define(
 			DOMNodeRemoved: 'onNodeRemoved',
 			DOMCharacterDataModified: 'onTextModified',
 			drop: 'onDrop',
-			paste: 'onPaste'
+			paste: 'onPaste',
+			beforecopy: 'onBeforeCopy',
+			copy: 'onCopy'
 		},
 
 		/**
@@ -992,6 +994,72 @@ Ext.define(
 		removeMarker: function ()
 		{
 			this.marker = null;
+		},
+
+		/**
+		 * Возвращает модель элемента, в которую включены только стилевые элементы и текст.
+		 * @param {FBEditor.editor.element.AbstractElement} fragment Пустой элемент, в который будут помещаться
+		 * необходимые результирующие элементы.
+		 */
+		getOnlyStylesChildren: function (fragment)
+		{
+			var me = this,
+				pos = 0,
+				child;
+
+			//console.log('* me', me.xmlTag, me.children);
+
+			while (pos < me.children.length)
+			{
+				child = me.children[pos];
+
+				if (!child.isStyleType && !child.isText)
+				{
+					//console.log('style child', pos, child ? child.xmlTag : '');
+
+					// ищем стилевого потомка
+					child.getOnlyStylesChildren(fragment);
+				}
+
+				if (child && (child.isStyleType || child.isText))
+				{
+					//console.log('child', pos, child.xmlTag);
+
+					// добавляем в контейнер стилевой элемент
+					fragment.add(child);
+				}
+				else
+				{
+					// позиция следующего потомка
+					pos++;
+				}
+			}
+		},
+
+		beforeCopy: function ()
+		{
+			var me = this;
+
+			Ext.Array.each(
+				me.children,
+			    function (el)
+			    {
+				    el.beforeCopy();
+			    }
+			);
+		},
+
+		afterCopy: function ()
+		{
+			var me = this;
+
+			Ext.Array.each(
+				me.children,
+				function (el)
+				{
+					el.afterCopy();
+				}
+			);
 		}
 	}
 );

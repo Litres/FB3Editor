@@ -1014,6 +1014,72 @@ Ext.define(
 			}
 
 			return node;
+		},
+
+		/**
+		 * Создает элемент из узла.
+		 * @param {Node} node Узел.
+		 * @return {FBEditor.editor.element.AbstractElement} Элемент.
+		 */
+		createElementFromNode: function (node)
+		{
+			var me = this,
+				factory = FBEditor.editor.Factory,
+				attributes = {},
+				name = node.nodeName.toLowerCase(),
+				schema = me.getSchema(),
+				val,
+				el;
+
+			if (node.nodeType === Node.TEXT_NODE)
+			{
+				val = node.nodeValue.trim();
+
+				// для текстовых узлов игнорируем переносы и пустой текст
+				if (val && !/^\n+$/.test(val))
+				{
+					el = factory.createElementText(node.nodeValue);
+				}
+			}
+			else
+			{
+				// аттрибуты
+				if (schema.elements[name])
+				{
+					Ext.Array.each(
+						node.attributes,
+						function (item)
+						{
+							// соответствует ли аттрибут схеме
+							if (Ext.isObject(schema.elements[name].attributes[item.name]) ||
+							Ext.Array.contains(['href'], item.name) && schema.elements[name].attributes['xlink:href'])
+							{
+								attributes[item.name] = item.value;
+							}
+						}
+					);
+				}
+
+				//name = name === 'body' ? 'paste' : name;
+				el = factory.createElement(name, attributes);
+
+				Ext.Array.each(
+					node.childNodes,
+					function (child)
+					{
+						var childEl;
+
+						childEl = me.createElementFromNode(child);
+
+						if (childEl)
+						{
+							el.add(childEl);
+						}
+					}
+				);
+			}
+
+			return el;
 		}
 	}
 );

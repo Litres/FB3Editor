@@ -183,6 +183,9 @@ Ext.define(
 			{
 				FBEditor.editor.Manager.setFocusElement(el);
 				controller = el && el.controller ? el.controller : me;
+
+				return controller.onKeyUpDefault(e);
+
 				/*console.log('keyup', e);
 				 switch (e.keyCode)
 				 {
@@ -192,6 +195,13 @@ Ext.define(
 			}
 
 			return false;
+		},
+
+		onKeyUpDefault: function (e)
+		{
+			var me = this;
+
+			//console.log('onKeyUpDefault', e);
 		},
 
 		/**
@@ -244,8 +254,19 @@ Ext.define(
 						}
 
 						return false;
+
+					default:
+						return controller.onKeyDownDefault(e);
 				}
 			}
+		},
+
+		onKeyDownDefault: function (e)
+		{
+			var me = this;
+
+			//e.preventDefault();
+			//console.log('onKeyDownDefault', me.getElement());
 		},
 
 		/**
@@ -358,6 +379,8 @@ Ext.define(
 				relNode = e.relatedNode,
 				node = e.target,
 				viewportId = relNode.viewportId,
+				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				newEl,
 				nextSibling,
 				previousSibling,
@@ -366,23 +389,25 @@ Ext.define(
 
 			// игнориуруется вставка корневого узла, так как он уже вставлен и
 			// игнорируется вставка при включенной заморозке
-			if (relNode.firstChild.nodeName !== 'MAIN' && !FBEditor.editor.Manager.suspendEvent)
+			if (relNode.firstChild.nodeName !== 'MAIN' && !manager.suspendEvent)
 			{
-				console.log('DOMNodeInserted:', Ext.Object.getValues(FBEditor.editor.Manager.content.nodes)[0].innerHTML);
+				console.log('DOMNodeInserted:', Ext.Object.getValues(manager.content.nodes)[0].innerHTML);
 				if (node.nodeType === Node.TEXT_NODE)
 				{
-					newEl = FBEditor.editor.Factory.createElementText(node.nodeValue);
+					newEl = factory.createElementText(node.nodeValue);
 				}
 				else
 				{
-					newEl = FBEditor.editor.Factory.createElement(node.localName);
+					newEl = factory.createElement(node.localName);
 				}
 				node.viewportId = viewportId;
 				newEl.setNode(node);
 				nextSibling = node.nextSibling;
 				previousSibling = node.previousSibling;
 				parentEl = relNode.getElement();
+
 				console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
+
 				if (nextSibling)
 				{
 					nextSiblingEl = nextSibling.getElement();
@@ -401,8 +426,10 @@ Ext.define(
 					//parentEl.removeAll();
 					parentEl.add(newEl);
 				}
+
 				parentEl.sync(viewportId);
-				FBEditor.editor.Manager.setFocusElement(newEl);
+				manager.setFocusElement(newEl);
+
 				e.stopPropagation();
 			}
 		},
@@ -449,13 +476,43 @@ Ext.define(
 		 */
 		onPaste: function (e)
 		{
-			var clipboard = e.clipboardData,
-				cmd;
-
 			//console.log('paste:', this.getElement(), e.target, clipboard.getData('text'));
-
 			e.preventDefault();
 			e.stopPropagation();
+		},
+
+		/**
+		 * Перед копированием.
+		 * @param {Event} e Объект события.
+		 */
+		onBeforeCopy: function (e)
+		{
+			console.log('beforecopy', this.getElement());
+			//e.preventDefault();
+			e.stopPropagation();
+
+			// изменяем данные элементов перед копированием
+			FBEditor.editor.Manager.getContent().beforeCopy();
+		},
+
+		/**
+		 * Копирование.
+		 * @param {Event} e Объект события.
+		 */
+		onCopy: function (e)
+		{
+			console.log('copy', this.getElement());
+			//e.preventDefault();
+			e.stopPropagation();
+
+			Ext.defer(
+				function ()
+				{
+					// изменяем данные элементов после копирования
+					FBEditor.editor.Manager.getContent().afterCopy();
+				},
+				10
+			);
 		},
 
 		/**

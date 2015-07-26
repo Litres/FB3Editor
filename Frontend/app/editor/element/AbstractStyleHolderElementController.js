@@ -215,8 +215,11 @@ Ext.define(
 				name = me.getNameElement(),
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
-				range;
+				htmlString = e.clipboardData.getData('text/html'),
+				parser = new DOMParser(),
+				html,
+				range,
+				cmd;
 
 			e.preventDefault();
 			e.stopPropagation();
@@ -256,6 +259,7 @@ Ext.define(
 				me.removeRangeNodes();
 			}
 
+			/*
 			if (els.p.isEmpty())
 			{
 				// создаем пустой текстовый элемент
@@ -279,12 +283,14 @@ Ext.define(
 					}
 				);
 			}
+			*/
 
-			// текстовый элемент
-			nodes.text = manager.getDeepLast(nodes.node);
-
-			// передаем событие текстовому элементу
-			nodes.text.getElement().fireEvent('paste', e);
+			html = parser.parseFromString(htmlString, 'text/html');
+			cmd = Ext.create('FBEditor.editor.command.PasteCommand', {html: html});
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 
 		},
 

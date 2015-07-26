@@ -11,7 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.a.AElement',
 			'FBEditor.editor.element.annotation.AnnotationElement',
+			'FBEditor.editor.element.b.BElement',
 			'FBEditor.editor.element.blockquote.BlockquoteElement',
+			'FBEditor.editor.element.body.BodyElement',
 			'FBEditor.editor.element.br.BrElement',
 			'FBEditor.editor.element.code.CodeElement',
 			'FBEditor.editor.element.div.DivElement',
@@ -19,6 +21,7 @@ Ext.define(
 			'FBEditor.editor.element.epigraph.EpigraphElement',
 			'FBEditor.editor.element.fb3body.Fb3bodyElement',
 			'FBEditor.editor.element.header.HeaderElement',
+			'FBEditor.editor.element.i.IElement',
 			'FBEditor.editor.element.img.ImgElement',
 			'FBEditor.editor.element.li.LiElement',
 			'FBEditor.editor.element.marker.MarkerElement',
@@ -38,6 +41,7 @@ Ext.define(
 			'FBEditor.editor.element.title.TitleElement',
 			'FBEditor.editor.element.ul.UlElement',
 			'FBEditor.editor.element.text.TextElement',
+			'FBEditor.editor.element.u.UElement',
 			'FBEditor.editor.element.undefined.UndefinedElement',
 			'FBEditor.editor.element.underline.UnderlineElement'
 		],
@@ -51,8 +55,7 @@ Ext.define(
 		 */
 		createElement: function (name, attributes, children)
 		{
-			var me = this,
-				n = name,
+			var n = name.toLowerCase(),
 				nameEl,
 				el;
 

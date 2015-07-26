@@ -7,16 +7,11 @@
 Ext.define(
 	'FBEditor.editor.element.subtitle.SubtitleElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
+		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 
 		htmlTag: 'subtitle',
 		xmlTag: 'subtitle',
-		cls: 'el-subtitle',
-
-		/**
-		 * @property {Boolean} Стилевой ли элемент.
-		 */
-		isStyleType: true
+		cls: 'el-subtitle'
 
 	}
 );

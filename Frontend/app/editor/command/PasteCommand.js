@@ -16,57 +16,260 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
-				range,
-				manager = FBEditor.editor.Manager;
+				offset = {},
+				pos = {},
+				sel = window.getSelection(),
+				manager = FBEditor.editor.Manager,
+				isEnd,
+				range;
 
 			try
 			{
 				manager.suspendEvent = true;
 
-				range = data.range || manager.getRange();
-				data.viewportId = range.start.viewportId;
-				data.clipData = data.clipData || data.clipboard.getData('text');
+				if (data.saveRange)
+				{
+					// восстанваливаем выделение
+					manager.setCursor(data.saveRange);
+				}
+
+				range = sel.getRangeAt(0);
+
+				offset = {
+					start: range.startOffset,
+					end: range.endOffset
+				};
+
+				data.range = {
+					common: range.commonAncestorContainer,
+					start: range.startContainer,
+					end: range.endContainer,
+					collapsed: range.collapsed,
+					offset: offset
+				};
 
 				nodes.node = range.startContainer;
 				els.node = nodes.node.getElement();
 
-				console.log('paste', data, range);
+				data.viewportId = nodes.node.viewportId;
 
-				return false;
+				// корневой узел из буфера обмена
+				nodes.paste = data.html.querySelector('body');
 
-				els.parent = els.node.parent;
-				nodes.parent = els.parent.nodes[data.viewportId];
-				nodes.next = nodes.node.nextSibling;
-				els.next = nodes.next ? nodes.next.getElement() : null;
-				nodes.prev = nodes.node.previousSibling;
+				console.log('paste', nodes.paste, data);
+
+				// создаем элемент из скопированного узла
+				els.paste = manager.createElementFromNode(nodes.paste);
+
+				// фрагмент для хранения вставляемых элементов
+				els.fragment = FBEditor.editor.Factory.createElement('div');
+
+				// помещаем во фрагмент только стилевые элементы и их контейнеры
+				els.paste.getOnlyStylesChildren(els.fragment);
+
+				// TODO проверяем по схеме каждый элемент, и если он не проходит проверку, то преобразуем его в текст
+
+				// узел скопированного фрагмента
+				nodes.fragment = els.fragment.getNode(data.viewportId);
+
+				if (els.node.isEmpty())
+				{
+					// позиция курсора в пустом параграфе
+
+					if (els.fragment.children[0].isStyleHolder)
+					{
+						// параграф
+						while (!els.node.isStyleHolder)
+						{
+							nodes.node = nodes.node.parentNode;
+							els.node = nodes.node.getElement();
+						}
+					}
+					else
+					{
+						// пустой элемент
+						nodes.node = manager.getDeepFirst(nodes.node);
+						els.node = nodes.node.getElement();
+					}
+				}
+				else
+				{
+					// делим узел в позиции курсора
+
+					if (els.fragment.children[0].isStyleHolder)
+					{
+						// делим на уровне параграфов
+
+						while (!els.node.isStyleHolder)
+						{
+							nodes.node = nodes.node.parentNode;
+							els.node = nodes.node.getElement();
+						}
+
+						// находится ли курсор в конце параграфа
+						pos.isEnd = manager.isLastNode(nodes.node, range.startContainer) &&
+						        range.startContainer.nodeValue.length === offset.start;
+
+						// находится ли курсор в начале параграфа
+						pos.isStart = manager.isFirstNode(nodes.node, range.startContainer) && offset.start === 0;
+					}
+					else
+					{
+						// делим узел на уровне стилевых элементов
+
+						nodes.node = range.startContainer;
+						els.node = nodes.node.getElement();
+
+						// находится ли курсор в конце элемента
+						pos.isEnd = els.node.text.length === offset.start;
+
+						// находится ли курсор в начале элемента
+						pos.isStart = offset.start === 0;
+					}
+
+					//console.log('pos', pos); //return false;
+
+					if (pos.isStart)
+					{
+						// если курсор в начале элемента
+
+						//nodes.node = nodes.node;
+					}
+					else if (pos.isEnd)
+					{
+						// если курсор в конце элемента
+
+						if (nodes.node.nextSibling)
+						{
+							// указатель на следующий элемент
+							nodes.node = nodes.node.nextSibling;
+						}
+						else
+						{
+							// добавляем временно пустой элемент в конец и переносим на него указатель
+							// после переноса фрагмента пустой элемент будет удален
+
+							nodes.parent = nodes.node.parentNode;
+							els.parent = nodes.parent.getElement();
+
+							els.node = manager.createEmptyElement();
+							nodes.node = els.node.getNode(data.viewportId);
+
+							els.parent.add(els.node);
+							nodes.parent.appendChild(nodes.node);
+						}
+					}
+					else
+					{
+						// делим элемента, если курсор не в конце и не в начале элемента
+
+						nodes.container = range.startContainer;
+						nodes.common = nodes.node.parentNode;
+						els.common = nodes.common.getElement();
+						nodes.node = manager.splitNode(els, nodes, offset.start);
+						els.common.removeEmptyText();
+					}
+				}
+
+				//console.log('nodes', nodes); return false;
+
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				// ссылки на первый и последний элементы фрагмента
+				nodes.fragmentFirst = nodes.fragment.firstChild;
+				nodes.fragmentLast = nodes.fragment.lastChild;
+				els.fragmentFirst = nodes.fragmentFirst.getElement();
+				els.fragmentLast = nodes.fragmentLast.getElement();
+
+				// переносим все элементы из фрагмента в текст
+				nodes.first = nodes.fragment.firstChild;
+				els.first = nodes.first.getElement();
+				while (nodes.first)
+				{
+					els.first = nodes.first.getElement();
+					els.parent.insertBefore(els.first, els.node);
+					nodes.parent.insertBefore(nodes.first, nodes.node);
+					nodes.first = nodes.fragment.firstChild;
+				}
+
+				// соединяем соседние текстовые узлы
+				nodes.prev = nodes.fragmentFirst.previousSibling;
 				els.prev = nodes.prev ? nodes.prev.getElement() : null;
+				nodes.next = nodes.fragmentLast.nextSibling;
+				els.next = nodes.next ? nodes.next.getElement() : null;
+				if (els.prev && els.prev.isText && els.next && els.next.isText && els.fragmentFirst.isText &&
+				    els.fragmentFirst.elementId === els.fragmentLast.elementId)
+				{
+					// соединяем текстовый узел фрагмента с соседними текстовыми узлами
 
-				// удаляем
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+					nodes.cursor = nodes.prev;
+					offset.cursor = els.prev.text.length + els.fragmentFirst.text.length;
 
+					els.textValue = els.prev.text + els.fragmentFirst.text + els.next.text;
+					els.prev.setText(els.textValue);
+					nodes.prev.nodeValue = els.textValue;
 
+					els.parent.remove(els.fragmentFirst);
+					nodes.parent.removeChild(nodes.fragmentFirst);
+					els.parent.remove(els.next);
+					nodes.parent.removeChild(nodes.next);
+					els.next = null;
+				}
+				else if (els.prev && els.prev.isText && els.fragmentFirst.isText)
+				{
+					// соединяем первый узел фрагмента
+
+					els.textValue = els.prev.text + els.fragmentFirst.text;
+					els.prev.setText(els.textValue);
+					nodes.prev.nodeValue = els.textValue;
+
+					els.parent.remove(els.fragmentFirst);
+					nodes.parent.removeChild(nodes.fragmentFirst);
+
+					nodes.cursor = nodes.fragmentLast.parentNode ? nodes.fragmentLast : nodes.prev;
+				}
+				if (els.next && els.next.isText && els.fragmentLast.isText)
+				{
+					// соединяем последний узел фрагмента
+
+					els.textValue = els.fragmentLast.text + els.next.text;
+					els.next.setText(els.textValue);
+					nodes.next.nodeValue = els.textValue;
+
+					els.parent.remove(els.fragmentLast);
+					nodes.parent.removeChild(nodes.fragmentLast);
+
+					nodes.cursor = nodes.next;
+					offset.cursor = els.fragmentLast.text.length;
+				}
+
+				if (els.node.isEmpty())
+				{
+					// удаляем пустой элемент
+					els.parent.remove(els.node);
+					nodes.parent.removeChild(nodes.node);
+				}
+
+				//console.log('nodes, els', nodes, els);
 
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
 				manager.suspendEvent = false;
 
-				//console.log('del', nodes);
-
 				// устанавливаем курсор
-				nodes.cursor = nodes.new ? nodes.new : nodes.next;
-				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.prev;
-				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.parent;
-				data.saveRange = {
-					startNode: nodes.cursor,
-					startOffset: 0,
-					focusElement: nodes.cursor.getElement()
-				};
-				manager.setCursor(data.saveRange);
+				nodes.cursor = nodes.cursor || manager.getDeepLast(nodes.fragmentLast);
+				offset.cursor = offset.cursor ? offset.cursor :
+				                (nodes.cursor.nodeValue ? nodes.cursor.nodeValue.length : 0);
+				manager.setCursor(
+					{
+						startNode: nodes.cursor,
+						startOffset: offset.cursor
+					}
+				);
 
 				// сохраняем
-				data.els = els;
 				data.range = range;
 
 				res = true;
@@ -92,6 +295,8 @@ Ext.define(
 			try
 			{
 				FBEditor.editor.Manager.suspendEvent = true;
+
+				return false;
 
 				range = data.range;
 				els = data.els;
