@@ -104,6 +104,8 @@ Ext.define(
 				{
 					// выделение только в текстовом узле
 
+					nodes.needText = true;
+
 					nodes.parent = nodes.common.parentNode;
 					els.parent = nodes.parent.getElement();
 
@@ -112,15 +114,39 @@ Ext.define(
 
 					if (data.range.offset.start === 0 && data.range.offset.end === nodes.common.nodeValue.length)
 					{
+						// выделен полностью текстовый узел
+
 						nodes.next = nodes.common.nextSibling;
 						nodes.prev = nodes.common.previousSibling;
 
 						// удаляем текстовый узел
-						nodes.removed.push(nodes.common);
+						//nodes.removed.push(nodes.common);
 						els.parent.removeAll(els.common);
 						nodes.parent.removeChild(nodes.parent.firstChild);
 
+						if (!els.parent.isStyleHolder)
+						{
+							// ищем самый верхний пустой стилевой элемент и удаляем его
+
+							nodes.needAddText = true;
+
+							while (!els.parent.isStyleHolder && els.parent.isEmpty)
+							{
+								nodes.common = nodes.parent;
+								els.common = nodes.common.getElement();
+								nodes.parent = nodes.parent.parentNode;
+								els.parent = nodes.parent.getElement();
+							}
+
+							nodes.next = nodes.common.nextSibling;
+							nodes.prev = nodes.common.previousSibling;
+
+							els.parent.remove(els.common);
+							nodes.parent.removeChild(nodes.common);
+						}
+
 						//console.log('isEmpty', els.parent.isEmpty(), els.parent, els.common);
+
 						if (!els.parent.isEmpty())
 						{
 							// курсор
@@ -268,7 +294,7 @@ Ext.define(
 					nodes.cursor = nodes.empty;
 				}
 
-				//console.log('nodes, els', nodes, els);
+				console.log('nodes, els', nodes, els);
 
 				// синхронизируем
 				els.parent.sync(data.viewportId);
@@ -286,6 +312,7 @@ Ext.define(
 
 				// сохраняем узлы
 				data.nodes = nodes;
+				data.els = els;
 
 				res = true;
 			}
@@ -317,8 +344,9 @@ Ext.define(
 
 				range = data.range;
 				nodes = data.nodes;
+				els = data.els;
 
-				restoreRange = window.getSelection().getRangeAt(0);
+				/*restoreRange = window.getSelection().getRangeAt(0);
 
 				if (!range.common.parentNode)
 				{
@@ -333,7 +361,7 @@ Ext.define(
 				nodes.common = range.common;
 				els.common = nodes.common.getElement();
 
-				els.parent = nodes.parent.getElement();
+				els.parent = nodes.parent.getElement();*/
 
 				console.log('undo remove range ' + me.elementName, data, nodes);
 
@@ -346,15 +374,32 @@ Ext.define(
 					nodes.parent.removeChild(nodes.empty);
 				}
 
-				if (els.common.isText)
+				if (nodes.needText)
 				{
 					// был выделен только текстовый узел
 
+					els.text = factory.createElementText(data.oldValue);
+					nodes.text = els.text.getNode(data.viewportId);
+
+					if (nodes.needAddText)
+					{
+						// восстанавливаем структуру, содержашавшую текст
+
+						nodes.common = els.common.getNode(data.viewportId);
+
+						nodes.deep = manager.getDeepFirst(nodes.common);
+						els.deep = nodes.deep.getElement();
+
+						els.deep.add(els.text);
+						nodes.deep.appendChild(nodes.text);
+
+						nodes.text = nodes.common;
+						els.text = els.common;
+					}
+
 					if (els.parent.isEmpty())
 					{
-						// вставляем текстовый элемент
-						els.text = factory.createElementText(data.oldValue);
-						nodes.text = els.text.getNode(data.viewportId);
+						// добавляем элемент
 						els.parent.add(els.text);
 						nodes.parent.appendChild(nodes.text);
 						range.start = nodes.text;
@@ -362,10 +407,7 @@ Ext.define(
 					}
 					else if (nodes.next)
 					{
-						// вставляем текстовый элемент перед следующим узлом
-
-						els.text = factory.createElementText(data.oldValue);
-						nodes.text = els.text.getNode(data.viewportId);
+						// вставляем элемент перед следующим узлом
 						els.next = nodes.next.getElement();
 						els.parent.insertBefore(els.text, els.next);
 						nodes.parent.insertBefore(nodes.text, nodes.next);
@@ -374,10 +416,7 @@ Ext.define(
 					}
 					else if (nodes.prev)
 					{
-						// вставляем текстовый элемент в конец родителя
-
-						els.text = factory.createElementText(data.oldValue);
-						nodes.text = els.text.getNode(data.viewportId);
+						// добавляем элемент
 						els.parent.add(els.text);
 						nodes.parent.appendChild(nodes.text);
 						range.start = nodes.text;
@@ -388,6 +427,12 @@ Ext.define(
 						// меняем текст исходного элемента
 						els.common.setText(data.oldValue);
 						nodes.common.nodeValue = data.oldValue;
+					}
+
+					if (nodes.needAddText)
+					{
+						range.start = manager.getDeepFirst(nodes.text);
+						range.end = range.start;
 					}
 				}
 
@@ -474,8 +519,7 @@ Ext.define(
 					startNode: range.start,
 					endNode: range.end,
 					startOffset: range.offset.start,
-					endOffset: range.offset.end,
-					focusElement: els.parent
+					endOffset: range.offset.end
 				};
 				manager.setCursor(data.saveRange);
 

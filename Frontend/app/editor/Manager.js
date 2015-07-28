@@ -585,6 +585,7 @@ Ext.define(
 							    Ext.Array.contains(containers, els.parentContainer.xmlTag))
 							{
 								// вставляем пустое содержимое вместо текущего узла
+								//console.log('insert empty in p', els.container, nodes.container);
 								els.empty = me.createEmptyElement();
 								els.parentContainer.replace(els.empty, els.container);
 								nodes.parentContainer.replaceChild(els.empty.getNode(viewportId), nodes.container);
@@ -673,6 +674,7 @@ Ext.define(
 					    !nodes.parent.nextSibling)
 					{
 						// добавляем пустое содержимое в параграф
+						//console.log('insert empty', els.parent, nodes.parent);
 						els.empty = me.createEmptyElement();
 						els.parent.add(els.empty);
 						nodes.parent.appendChild(els.empty.getNode(viewportId));
