@@ -215,7 +215,7 @@ Ext.define(
 				name = me.getNameElement(),
 				nodes = {},
 				els = {},
-				htmlString = e.clipboardData.getData('text/html'),
+				htmlString,
 				parser = new DOMParser(),
 				html,
 				range,
@@ -240,8 +240,6 @@ Ext.define(
 				els.p = nodes.p.getElement();
 			}
 
-			//console.log('range, nodes', range, nodes);
-
 			// текущий контейнер в параграфе
 			while (!els.p.hisName(name))
 			{
@@ -251,40 +249,21 @@ Ext.define(
 				els.p = nodes.p.getElement();
 			}
 
-			//console.log('range, nodes', range, nodes);
-
 			if (!range.collapsed)
 			{
 				// удаляем выделенную часть текста
 				me.removeRangeNodes();
 			}
 
-			/*
-			if (els.p.isEmpty())
+			htmlString = e.clipboardData.getData('text/html');
+			if (!htmlString)
 			{
-				// создаем пустой текстовый элемент
-
-				// TODO
-				manager.suspendEvent = true;
-
-				els.text = FBEditor.editor.Factory.createElementText('');
-				nodes.text = els.text.getNode(nodes.p.viewportId);
-				nodes.node = nodes.text;
-
-				els.p.replace(els.text, nodes.p.firstChild.getElement());
-				nodes.p.replaceChild(nodes.text, nodes.p.firstChild);
-
-				manager.suspendEvent = false;
-
-				// ставим курсор в текст
-				manager.setCursor(
-					{
-						startNode: nodes.text
-					}
-				);
+				// преобразуем обычный текст к html
+				htmlString = e.clipboardData.getData('text');
+				htmlString = me.convertTextToHtml(htmlString);
 			}
-			*/
 
+			//console.log('clipboard', htmlString);
 			html = parser.parseFromString(htmlString, 'text/html');
 			cmd = Ext.create('FBEditor.editor.command.PasteCommand', {html: html});
 			if (cmd.execute())
@@ -295,6 +274,7 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Удаляет выделенную часть текста.
 		 */
 		removeRangeNodes: function ()
@@ -308,6 +288,21 @@ Ext.define(
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
 			}
+		},
+
+		/**
+		 * @private
+		 * Преобразует простой текст в html строку.
+		 * @param {String} text Простой текст, который может содержать переносы.
+		 * @return {String} Строка html.
+		 */
+		convertTextToHtml: function (text)
+		{
+			var html;
+
+			html = text.replace(/^(.*?)$/gim, '<p>$1</p>');
+
+			return html;
 		}
 	}
 );

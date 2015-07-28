@@ -20,7 +20,6 @@ Ext.define(
 				pos = {},
 				sel = window.getSelection(),
 				manager = FBEditor.editor.Manager,
-				isEnd,
 				range;
 
 			try
