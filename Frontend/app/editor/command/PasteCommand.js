@@ -76,6 +76,7 @@ Ext.define(
 				{
 					// позиция курсора в пустом параграфе
 
+					nodes.needEmpty = true;
 					if (els.fragment.children[0].isStyleHolder)
 					{
 						// параграф
@@ -163,11 +164,13 @@ Ext.define(
 					{
 						// делим элемента, если курсор не в конце и не в начале элемента
 
+						nodes.needJoin = true;
 						nodes.container = range.startContainer;
 						nodes.common = nodes.node.parentNode;
 						els.common = nodes.common.getElement();
 						nodes.node = manager.splitNode(els, nodes, offset.start);
 						els.common.removeEmptyText();
+
 					}
 				}
 
@@ -203,6 +206,8 @@ Ext.define(
 				{
 					// соединяем текстовый узел фрагмента с соседними текстовыми узлами
 
+					nodes.needReplaceText = els.prev.text + els.next.text;
+
 					nodes.cursor = nodes.prev;
 					offset.cursor = els.prev.text.length + els.fragmentFirst.text.length;
 
@@ -220,6 +225,8 @@ Ext.define(
 				{
 					// соединяем первый узел фрагмента
 
+					nodes.needSplitFirst = true;
+
 					els.textValue = els.prev.text + els.fragmentFirst.text;
 					els.prev.setText(els.textValue);
 					nodes.prev.nodeValue = els.textValue;
@@ -227,11 +234,13 @@ Ext.define(
 					els.parent.remove(els.fragmentFirst);
 					nodes.parent.removeChild(nodes.fragmentFirst);
 
-					nodes.cursor = nodes.fragmentLast.parentNode ? nodes.fragmentLast : nodes.prev;
+					nodes.cursor = nodes.fragmentLast.parentNode ? manager.getDeepLast(nodes.fragmentLast) : nodes.prev;
 				}
 				if (els.next && els.next.isText && els.fragmentLast.isText)
 				{
 					// соединяем последний узел фрагмента
+
+					nodes.needSplitLast = true;
 
 					els.textValue = els.fragmentLast.text + els.next.text;
 					els.next.setText(els.textValue);
@@ -270,7 +279,8 @@ Ext.define(
 				);
 
 				// сохраняем
-				data.range = range;
+				data.nodes = nodes;
+				data.els = els;
 
 				res = true;
 			}
@@ -290,54 +300,109 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
+				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				range;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
-
-				return false;
-
+				manager.suspendEvent = true;
 				range = data.range;
+				nodes = data.nodes;
 				els = data.els;
 
-				nodes.node = els.node.nodes[data.viewportId];
-				nodes.parent = els.parent.nodes[data.viewportId];
+				nodes.cursor = range.start;
 
-				console.log('undo del el', nodes, els, range);
+				console.log('undo paste', nodes, range, els);
 
-				if (els.new)
+				if (nodes.needReplaceText)
 				{
-					// заменяем новый элемент на старый
-					nodes.new = els.new.nodes[data.viewportId];
-					els.parent.replace(els.node, els.new);
-					nodes.parent.replaceChild(nodes.node, nodes.new);
-				}
-				else if (els.next)
-				{
-					// вставляем старый перед предыдущим
-					nodes.next = els.next.nodes[data.viewportId];
-					els.parent.insertBefore(els.node, els.next);
-					nodes.parent.insertBefore(nodes.node, nodes.next);
+					// заменяем вставленный текст на старый
+					els.prev.setText(nodes.needReplaceText);
+					nodes.prev.nodeValue = nodes.needReplaceText;
+					nodes.cursor = nodes.prev;
+
+					els.prev.sync(data.viewportId);
 				}
 				else
 				{
-					// добавляем старый
-					els.parent.add(els.node);
-					nodes.parent.appendChild(nodes.node);
+					// удаляем вставленный фрагмент
+
+					if (nodes.needSplitFirst)
+					{
+						// разбиваем первый текстовый узел
+						els.startTextValue = els.prev.text.substring(0, range.offset.start);
+						els.endTextValue = els.prev.text.substring(range.offset.start);
+
+						els.t = factory.createElementText(els.startTextValue);
+						nodes.t = els.t.getNode(data.viewportId);
+						nodes.fragmentFirst = nodes.prev;
+						els.fragmentFirst = els.prev;
+						els.fragmentFirst.setText(els.endTextValue);
+						nodes.fragmentFirst.nodeValue = els.endTextValue;
+
+						els.parent.insertBefore(els.t, els.fragmentFirst);
+						nodes.parent.insertBefore(nodes.t, nodes.fragmentFirst);
+
+						nodes.cursor = nodes.t;
+					}
+
+					if (nodes.needSplitLast)
+					{
+						// разбиваем последний текстовый узел
+						els.startTextValue = els.next.text.substring(0, range.offset.cursor);
+						els.endTextValue = els.next.text.substring(range.offset.cursor);
+
+						els.fragmentLast = factory.createElementText(els.startTextValue);
+						nodes.fragmentLast = els.fragmentLast.getNode(data.viewportId);
+
+						els.next.setText(els.endTextValue);
+						nodes.next.nodeValue = els.endTextValue;
+
+						els.parent.insertBefore(els.fragmentLast, els.next);
+						nodes.parent.insertBefore(nodes.fragmentLast, nodes.next);
+					}
+
+					nodes.next = nodes.fragmentFirst;
+					els.next = nodes.next.getElement();
+					while (els.next && els.next.elementId !== els.fragmentLast.elementId)
+					{
+						nodes.buf = nodes.next.nextSibling;
+						els.parent.remove(els.next);
+						nodes.parent.removeChild(nodes.next);
+						nodes.next = nodes.buf;
+						els.next = nodes.next ? nodes.next.getElement() : null;
+					}
+					if (els.next)
+					{
+						els.parent.remove(els.next);
+						nodes.parent.removeChild(nodes.next);
+					}
+
+					if (nodes.needJoin)
+					{
+						// соединяем узлы
+						manager.joinNode(nodes.node);
+					}
+
+					if (nodes.needEmpty)
+					{
+						// вставляем пустой узел
+						els.parent.add(els.node);
+						nodes.parent.appendChild(nodes.node);
+					}
+
+					els.parent.sync(data.viewportId);
 				}
 
-				els.parent.sync(data.viewportId);
-
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				data.saveRange = {
-					startNode: range.start,
-					startOffset: range.offset.start,
-					focusElement: els.node
+					startNode: nodes.cursor,
+					startOffset: range.offset.start
 				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
+				manager.setCursor(data.saveRange);
 
 				res = true;
 			}
