@@ -9,22 +9,29 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.AbstractCreateCommand',
 
+		elementName: 'epigraph',
+
 		createElement: function (els, nodes)
 		{
 			var me = this,
-				data = me.getData();
+				data = me.getData(),
+				factory = FBEditor.editor.Factory;
 
-			els.node = FBEditor.editor.Factory.createElement('epigraph');
+			els.node = factory.createElement(me.elementName);
 			nodes.parent = nodes.node.parentNode;
-			nodes.node = nodes.parent.getElement().xmlTag === els.node.xmlTag ? nodes.parent : nodes.node;
+			els.parent = nodes.parent.getElement();
+			nodes.node = els.parent.hisName(me.elementName) ? nodes.parent : nodes.node;
 			nodes.parent = nodes.node.parentNode;
 			nodes.first = data.prevNode && data.prevNode.nextSibling ? data.prevNode : nodes.parent.firstChild;
 			els.parent = nodes.parent.getElement();
-			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Эпиграф');
+
+			els.p = factory.createElement('p');
+			els.t = factory.createElementText('Эпиграф');
+
 			els.p.add(els.t);
 			els.node.add(els.p);
 			nodes.node = els.node.getNode(data.viewportId);
+
 			if (nodes.first)
 			{
 				if (data.prevNode && data.prevNode.getElement().xmlTag === els.node.xmlTag)
