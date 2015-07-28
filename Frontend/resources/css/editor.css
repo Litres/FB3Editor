@@ -3,6 +3,7 @@
 	font-family: 'Arial Unicode MS';
 	font-size: 150%;
 	line-height: 150%;
+	white-space: pre-wrap;
 	background-color: #fff;
 }
 

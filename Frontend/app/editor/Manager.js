@@ -61,7 +61,7 @@ Ext.define(
 		stateExpandedNodesTree: {},
 
 		/**
-		 * @property {Array} Список имен элементов, которые могу содержать стилевые элементы форматирования.
+		 * @property {Array} Список имен элементов, которые могут содержать стилевые элементы форматирования.
 		 */
 		styleContainers: ['p', 'li', 'subtitle'],
 
