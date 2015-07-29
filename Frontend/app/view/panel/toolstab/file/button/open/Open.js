@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.file.button.open.Open',
 	{
-		extend: 'Ext.form.field.FileButton',
+		extend: 'FBEditor.view.button.AbstractFileButton',
 		requires: [
 			'FBEditor.view.panel.toolstab.file.button.open.OpenController'
 		],
@@ -17,6 +17,8 @@ Ext.define(
 		text: 'Открыть',
 		listeners: {
 			change: 'onChange'
-		}
+		},
+
+		accept: 'application/zip'
 	}
 );
