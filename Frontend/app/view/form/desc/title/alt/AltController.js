@@ -20,8 +20,10 @@ Ext.define(
 				data,
 				function (index, obj)
 				{
+					var field;
+
 					plugin = nextContainer.getPlugin('fieldcontainerreplicator');
-					var field = nextContainer.down('textfield');
+					field = nextContainer.down('textfield');
 
 					if (field)
 					{

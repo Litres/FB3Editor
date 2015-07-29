@@ -73,7 +73,7 @@ Ext.define(
 
 			d['title-main'] = d.title.main;
 			d['title-sub'] = d.title.sub ? d.title.sub : '';
-			d['title-alt'] = d.title.alt;//me._convertValToObj(d.title.alt, 'title-alt');
+			d['title-alt'] = Ext.isString(d.title.alt) ? {0: d.title.alt} : d.title.alt;
 			delete d.title;
 
 			return d;
