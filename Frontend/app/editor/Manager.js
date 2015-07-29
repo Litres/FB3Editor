@@ -111,8 +111,9 @@ Ext.define(
 			// сбрасываем счетчики элементов
 			FBEditor.editor.element.section.SectionElement.num = 0;
 
-			content = content.replace(/\s+/g, ' ');
+			//content = content.replace(/\s+/g, ' ');
 			content = content.replace(/\), ?]/g, ')]');
+			content = content.replace(/(\\\')/g, '\\$1');
 			//console.log(content);
 
 			// преобразование строки в объект
