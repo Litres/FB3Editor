@@ -11,7 +11,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.InterfaceElement',
 		requires: [
 			'FBEditor.editor.element.AbstractElementController',
-			'FBEditor.editor.command.PasteCommand'
+			'FBEditor.editor.command.PasteCommand',
+			'FBEditor.editor.command.RemoveNodesCommand'
 		],
 		mixins: {
 			observable: 'Ext.util.Observable'

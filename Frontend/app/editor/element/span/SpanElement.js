@@ -11,6 +11,6 @@ Ext.define(
 
 		htmlTag: 'span',
 		xmlTag: 'span',
-		cls: 'el-em'
+		cls: 'el-span'
 	}
 );

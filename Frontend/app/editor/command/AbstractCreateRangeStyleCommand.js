@@ -21,18 +21,19 @@ Ext.define(
 				offset = {},
 				reg = {},
 				pos = {},
-				containers,
+				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				sel,
 				range;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
-					FBEditor.editor.Manager.setCursor(data.saveRange);
+					manager.setCursor(data.saveRange);
 				}
 
 				// получаем данные из выделения
@@ -41,10 +42,8 @@ Ext.define(
 
 				if (range.collapsed)
 				{
-					return false;
+					throw Error('Отсутствует выделение');
 				}
-
-				containers = FBEditor.editor.Manager.getStyleContainers();
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
@@ -98,7 +97,7 @@ Ext.define(
 					}
 
 					// новый элемент c выделенной частью текста
-					els.node = FBEditor.editor.Factory.createElement(me.elementName);
+					els.node = factory.createElement(me.elementName);
 					els = Ext.apply(els, els.node.createScaffold());
 					els.t.setText(els.selValue);
 					nodes.node = els.node.getNode(data.viewportId);
@@ -123,7 +122,7 @@ Ext.define(
 					// новый текстовый элемент c последней частью текста
 					if (els.endValue)
 					{
-						els.node = FBEditor.editor.Factory.createElementText(els.endValue);
+						els.node = factory.createElementText(els.endValue);
 						nodes.node = els.node.getNode(data.viewportId);
 
 						if (nodes.next)
@@ -150,7 +149,7 @@ Ext.define(
 					nodes.firstP = range.startContainer;
 					els.firstP = nodes.firstP.getElement();
 					els.isRoot = els.firstP.isRoot;
-					while (els.firstP && !Ext.Array.contains(containers, els.firstP.xmlTag))
+					while (els.firstP && !els.firstP.isStyleHolder)
 					{
 						nodes.firstP = els.isRoot ? nodes.firstP.firstChild : nodes.firstP.parentNode;
 						els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
@@ -159,7 +158,7 @@ Ext.define(
 					// последний параграф
 					nodes.lastP = range.endContainer;
 					els.lastP = nodes.lastP.getElement();
-					while (els.lastP && !Ext.Array.contains(containers, els.lastP.xmlTag))
+					while (els.lastP && !els.lastP.isStyleHolder)
 					{
 						nodes.lastP = els.isRoot ? nodes.lastP.lastChild : nodes.lastP.parentNode;
 						els.lastP = nodes.lastP ? nodes.lastP.getElement() : null;
@@ -174,7 +173,7 @@ Ext.define(
 						{
 							nodes.cur = nodes.cur.parentNode;
 						}
-						nodes.pp = FBEditor.editor.Manager.getNodesPP(nodes.cur.nextSibling, nodes, els);
+						nodes.pp = manager.getNodesPP(nodes.cur.nextSibling, nodes, els);
 					}
 
 					// регулярные выражения для определения позиции выделения
@@ -204,7 +203,7 @@ Ext.define(
 						nodes.common = nodes.firstP;
 						els.common = els.firstP;
 						nodes.container = range.startContainer;
-						nodes.startContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.start);
+						nodes.startContainer = manager.splitNode(els, nodes, offset.start);
 						els.startContainer = nodes.startContainer.getElement();
 						els.common.removeEmptyText();
 					}
@@ -238,7 +237,7 @@ Ext.define(
 						nodes.common = nodes.lastP;
 						els.common = els.lastP;
 						nodes.container = nodes.endContainer;
-						nodes.endContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.end);
+						nodes.endContainer = manager.splitNode(els, nodes, offset.end);
 						els.common.removeEmptyText();
 					}
 					els.endContainer = nodes.endContainer.getElement();
@@ -263,7 +262,7 @@ Ext.define(
 					}
 
 					// новый элемент в первом параграфе
-					els.node = FBEditor.editor.Factory.createElement(me.elementName);
+					els.node = factory.createElement(me.elementName);
 					nodes.node = els.node.getNode(data.viewportId);
 					els.parentStart.insertBefore(els.node, els.startContainer);
 					nodes.parentStart.insertBefore(nodes.node, nodes.startContainer);
@@ -289,7 +288,7 @@ Ext.define(
 						nodes.prev = nodes.endContainer.previousSibling;
 
 						// новый элемент в последнем параграфе
-						els.node = FBEditor.editor.Factory.createElement(me.elementName);
+						els.node = factory.createElement(me.elementName);
 						nodes.node = els.node.getNode(data.viewportId);
 						nodes.first = nodes.parentEnd.firstChild;
 						els.first = nodes.first.getElement();
@@ -323,7 +322,7 @@ Ext.define(
 							elsP.p = nodesP.p.getElement();
 
 							// новый элемент в параграфе
-							elsP.node = FBEditor.editor.Factory.createElement(me.elementName);
+							elsP.node = factory.createElement(me.elementName);
 							nodesP.node = elsP.node.getNode(data.viewportId);
 							nodesP.first = nodesP.p.firstChild;
 							elsP.first = nodesP.first.getElement();
@@ -364,10 +363,10 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				FBEditor.editor.Manager.setCursor(
+				manager.setCursor(
 					{
 						startNode: nodes.cursor,
 						startOffset: nodes.cursor.nodeValue.length,
@@ -479,7 +478,7 @@ Ext.define(
 					if (range.offset.start)
 					{
 						// соединяем узлы первого параграфа
-						FBEditor.editor.Manager.joinNode(nodes.startContainer);
+						manager.joinNode(nodes.startContainer);
 					}
 
 					els.lastP = nodes.lastP.getElement();
@@ -510,7 +509,7 @@ Ext.define(
 					if (range.offset.end < range.end.length)
 					{
 						// соединяем узлы последнего параграфа
-						FBEditor.editor.Manager.joinNode(nodes.endContainer);
+						manager.joinNode(nodes.endContainer);
 					}
 
 					// перебираем все параграфы, которые входят в выделение между первым и последним параграфами
@@ -552,7 +551,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				data.saveRange = {
 					startNode: range.start,
@@ -561,7 +560,7 @@ Ext.define(
 					endOffset: range.offset.end,
 					focusElement: els.parent
 				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
+				manager.setCursor(data.saveRange);
 
 				res = true;
 			}

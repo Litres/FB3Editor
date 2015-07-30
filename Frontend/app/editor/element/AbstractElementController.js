@@ -318,12 +318,18 @@ Ext.define(
 
 		onKeyDownDelete: function (e)
 		{
-			return true;
+			var me = this;
+
+			e.preventDefault();
+			me.removeNodes();
 		},
 
 		onKeyDownBackspace: function (e)
 		{
-			return true;
+			var me = this;
+
+			e.preventDefault();
+			me.removeNodes();
 		},
 
 		onKeyDownCtrlZ: function (e)
@@ -487,7 +493,7 @@ Ext.define(
 		 */
 		onBeforeCopy: function (e)
 		{
-			console.log('beforecopy', this.getElement());
+			//console.log('beforecopy', this.getElement());
 			//e.preventDefault();
 			e.stopPropagation();
 
@@ -501,7 +507,7 @@ Ext.define(
 		 */
 		onCopy: function (e)
 		{
-			console.log('copy', this.getElement());
+			//console.log('copy', this.getElement());
 			//e.preventDefault();
 			e.stopPropagation();
 
@@ -628,6 +634,20 @@ Ext.define(
 			}*/
 
 			return node;
+		},
+
+		/**
+		 * Удаляет выделенную часть текста.
+		 */
+		removeNodes: function ()
+		{
+			var cmd;
+
+			cmd = Ext.create('FBEditor.editor.command.RemoveNodesCommand');
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
 		}
 	}
 );

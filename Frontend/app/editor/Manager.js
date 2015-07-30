@@ -111,9 +111,9 @@ Ext.define(
 			// сбрасываем счетчики элементов
 			FBEditor.editor.element.section.SectionElement.num = 0;
 
-			//content = content.replace(/\s+/g, ' ');
+			content = content.replace(/\n+|\t+/g, ' ');
 			content = content.replace(/\), ?]/g, ')]');
-			content = content.replace(/(\\\')/g, '\\$1');
+			content = content.replace(/(\\\')/g, "\\$1");
 			//console.log(content);
 
 			// преобразование строки в объект
@@ -737,7 +737,8 @@ Ext.define(
 				{
 					nodes.firstChild = nodes.first.firstChild;
 					nodes.next = nodes.first;
-					//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first, nodes.last, nodes.prevLast);
+					//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first,
+					// nodes.first.childNodes.length, nodes.last, nodes.prevLast);
 					if (els.last.isText && !els.first.isText)
 					{
 						// перенос узлов без возможности объединения текста
@@ -774,7 +775,7 @@ Ext.define(
 							{
 								// переносим узел
 								els.prevLast.add(els.next);
-								nodes.next.parentNode.getElement().remove(els.next);
+								//nodes.next.parentNode.getElement().remove(els.next);
 								nodes.prevLast.appendChild(nodes.next);
 
 								if (els.last.isText)
@@ -794,7 +795,7 @@ Ext.define(
 						}
 					}
 
-					if (nodes.prevLast.firstChild.getElement().xmlTag === me.emptyElement)
+					if (nodes.prevLast.firstChild.getElement().isEmpty())
 					{
 						// удаляем пустой узел
 						els.prevLast.remove(nodes.prevLast.firstChild.getElement());
@@ -1083,6 +1084,38 @@ Ext.define(
 			}
 
 			return el;
+		},
+
+		/**
+		 * Удаляет все пустые дочерние узлы.
+		 * @param {Node} node Узел.
+		 */
+		removeEmptyNodes: function (node)
+		{
+			var me = this,
+				pos = 0,
+				el,
+				child;
+
+			el = node.getElement();
+			while (pos < el.children.length)
+			{
+				child = el.children[pos];
+
+				if (child.isEmpty())
+				{
+					el.remove(child);
+					node.removeChild(child.nodes[node.viewportId]);
+				}
+				else
+				{
+					if (child.children.length)
+					{
+						me.removeEmptyNodes(child.nodes[node.viewportId]);
+					}
+					pos++;
+				}
+			}
 		}
 	}
 );

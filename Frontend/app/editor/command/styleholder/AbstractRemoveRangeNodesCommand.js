@@ -294,7 +294,7 @@ Ext.define(
 					nodes.cursor = nodes.empty;
 				}
 
-				console.log('nodes, els', nodes, els);
+				//console.log('nodes, els', nodes, els);
 
 				// синхронизируем
 				els.parent.sync(data.viewportId);
@@ -335,8 +335,7 @@ Ext.define(
 				nodes = {},
 				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
-				range,
-				restoreRange;
+				range;
 
 			try
 			{
@@ -345,23 +344,6 @@ Ext.define(
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
-
-				/*restoreRange = window.getSelection().getRangeAt(0);
-
-				if (!range.common.parentNode)
-				{
-					// восстанавливаем потерянную ссылку из текущего выделения
-
-					range.common = restoreRange.commonAncestorContainer;
-					data.range.common = range.common;
-					data.range.start = range.common;
-					data.range.end = range.common;
-				}
-
-				nodes.common = range.common;
-				els.common = nodes.common.getElement();
-
-				els.parent = nodes.parent.getElement();*/
 
 				console.log('undo remove range ' + me.elementName, data, nodes);
 
@@ -465,8 +447,8 @@ Ext.define(
 						}
 						else
 						{
-							nodes.nextCursor = restoreRange.startContainer;
-							range.start = nodes.nextCursor;
+							//nodes.nextCursor = restoreRange.startContainer;
+							//range.start = nodes.nextCursor;
 						}
 						els.ignoreJoin = true;
 						range.end = nodes.nextCursor;
