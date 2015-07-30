@@ -262,6 +262,10 @@ Ext.define(
 				htmlString = e.clipboardData.getData('text');
 				htmlString = me.convertTextToHtml(htmlString);
 			}
+			else
+			{
+				htmlString = htmlString.replace(/\n+|\t+/g, ' ');
+			}
 
 			//console.log('clipboard', htmlString);
 			html = parser.parseFromString(htmlString, 'text/html');
