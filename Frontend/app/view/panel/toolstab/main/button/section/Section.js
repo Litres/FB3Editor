@@ -13,6 +13,10 @@ Ext.define(
 		//controller: 'panel.toolstab.main.button.section',
 		html: '<i class="fa fa-cube"></i>',
 		tooltip: 'Вложенная секция',
-		elementName: 'section'
+		elementName: 'section',
+
+		createOpts: {
+			inner: true
+		}
 	}
 );

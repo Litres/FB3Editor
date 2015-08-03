@@ -61,11 +61,6 @@ Ext.define(
 		stateExpandedNodesTree: {},
 
 		/**
-		 * @property {Array} Список имен элементов, которые могут содержать стилевые элементы форматирования.
-		 */
-		styleContainers: ['p', 'li', 'subtitle'],
-
-		/**
 		 * Инициализирует менеджер.
 		 */
 		init: function ()
@@ -386,15 +381,6 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает список имен элементов, которые могу содержать стилевые элементы форматирования.
-		 * @return {Array}
-		 */
-		getStyleContainers: function ()
-		{
-			return this.styleContainers;
-		},
-
-		/**
 		 * Обновляет дерево навигации по тексту.
 		 */
 		updateTree: function ()
@@ -465,12 +451,67 @@ Ext.define(
 			    {
 				    if (!item.isText)
 				    {
-					    els.push(item.xmlTag);
+					    els.push(item.getName());
 				    }
 			    }
 			);
 
 			return els;
+		},
+
+		/**
+		 * Проверяет по схеме элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @return {Boolean} Соответствует ли схеме.
+		 */
+		verifyElement: function (el)
+		{
+			var me = this,
+				schema = me.getSchema(),
+				res = true,
+				name,
+				names;
+
+			//console.log('el', el);
+
+			if (!el || el.isText || el.isStyleHolder && el.isEmpty())
+			{
+				// текст и пустые элементы не нуждаются в проверке
+				return true;
+			}
+
+			name = el.getName();
+			names = me.getNamesElements(el);
+
+			res = schema.verify(name, names);
+
+			//console.log('verify: ', name, names);
+
+			if (!res)
+			{
+				console.log('Ошибка структуры элемента:', name, names);
+			}
+
+			if (res && el.children)
+			{
+				Ext.Array.each(
+					el.children,
+					function (item)
+					{
+						if (!item.isText)
+						{
+							res = me.verifyElement(item);
+
+							if (!res)
+							{
+								return false;
+							}
+						}
+					}
+				);
+			}
+
+			return res;
 		},
 
 		/**
@@ -516,7 +557,6 @@ Ext.define(
 		splitNode: function (els, nodes, offset)
 		{
 			var me = this,
-				containers = me.getStyleContainers(),
 				viewportId;
 
 			nodes.parentContainer = nodes.container.parentNode;
@@ -583,7 +623,7 @@ Ext.define(
 						if (!els.startTextValue)
 						{
 							if (!nodes.parentContainer.previousSibling &&
-							    Ext.Array.contains(containers, els.parentContainer.xmlTag))
+							    els.parentContainer.isStyleHolder)
 							{
 								// вставляем пустое содержимое вместо текущего узла
 								//console.log('insert empty in p', els.container, nodes.container);
@@ -671,7 +711,7 @@ Ext.define(
 						nodes.nextContainer = nodes.buf;
 					}
 
-					if (!nodes.parent.firstChild && Ext.Array.contains(containers, els.parent.xmlTag) &&
+					if (!nodes.parent.firstChild && els.parent.isStyleHolder &&
 					    !nodes.parent.nextSibling)
 					{
 						// добавляем пустое содержимое в параграф
@@ -909,8 +949,7 @@ Ext.define(
 		{
 			var me = this,
 				pp = [],
-				p = [],
-				containers;
+				p = [];
 
 			//console.log('cur', cur);
 
@@ -929,9 +968,7 @@ Ext.define(
 				return pp;
 			}
 
-			containers = me.getStyleContainers();
-
-			if (!Ext.Array.contains(containers, els.cur.xmlTag))
+			if (!els.cur.isStyleHolder)
 			{
 				// если элемент не параграф, ищем в нем все вложенные параграфы
 

@@ -16,7 +16,7 @@ Ext.define(
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager;
 
-			manager.createElement(btn.elementName);
+			manager.createElement(btn.elementName, btn.createOpts);
 		},
 
 		/**

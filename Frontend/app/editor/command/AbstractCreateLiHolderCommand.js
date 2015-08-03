@@ -18,17 +18,18 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				manager = FBEditor.editor.Manager,
 				sel,
 				range;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
-					FBEditor.editor.Manager.setCursor(data.saveRange);
+					manager.setCursor(data.saveRange);
 				}
 
 				// получаем данные из выделения
@@ -135,10 +136,10 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				FBEditor.editor.Manager.setCursor(
+				manager.setCursor(
 					{
 						startNode: data.range.start,
 						startOffset: data.range.offset.start,
@@ -148,6 +149,9 @@ Ext.define(
 
 				// сохраянем узлы
 				data.saveNodes = nodes;
+				
+				// проверяем по схеме
+				me.verifyElement(els.parent);
 
 				res = true;
 			}
@@ -167,12 +171,13 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				manager = FBEditor.editor.Manager,
 				range,
 				viewportId;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				range = data.range;
 				nodes = data.saveNodes;
@@ -218,7 +223,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				data.saveRange = {
 					startNode: range.start,
@@ -227,7 +232,7 @@ Ext.define(
 					endOffset: range.offset.end,
 					focusElement: range.common.getElement()
 				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
+				manager.setCursor(data.saveRange);
 
 				// сохраняем ссылку на первый параграф
 				data.node = nodes.pp[0];

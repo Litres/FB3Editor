@@ -97,6 +97,9 @@ Ext.define(
 				data.els = els;
 				data.nodes = nodes;
 
+				// проверяем по схеме
+				me.verifyElement(els.parent);
+
 				res = true;
 			}
 			catch (e)

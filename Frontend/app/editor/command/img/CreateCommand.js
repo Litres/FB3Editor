@@ -18,11 +18,12 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				manager = FBEditor.editor.Manager,
 				range;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				range = data.opts.range;
 
@@ -100,10 +101,10 @@ Ext.define(
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				FBEditor.editor.Manager.setCursor(
+				manager.setCursor(
 					{
 						startNode: nodes.node
 					}
@@ -111,6 +112,9 @@ Ext.define(
 
 				// сохраняем узел
 				data.saveNode = nodes.node;
+
+				// проверяем по схеме
+				me.verifyElement(els.parent);
 
 				res = true;
 			}

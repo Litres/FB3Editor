@@ -68,8 +68,12 @@ Ext.define(
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
 
-				// сохраянем узел
+				// сохраняем узел
 				data.saveNode = nodes.node;
+
+				// проверяем по схеме
+				me.verifyElement(els.parent);
+
 				res = true;
 			}
 			catch (e)

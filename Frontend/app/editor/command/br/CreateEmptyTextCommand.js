@@ -18,7 +18,6 @@ Ext.define(
 				els = {},
 				sel = window. getSelection(),
 				manager = FBEditor.editor.Manager,
-				factory = FBEditor.editor.Factory,
 				range;
 
 			try
@@ -35,12 +34,6 @@ Ext.define(
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
-				/*els.text = factory.createElementText('');
-				nodes.text = els.text.getNode(nodes.node.viewportId);
-
-				els.parent.replace(els.text, els.node);
-				nodes.parent.replaceChild(nodes.text, nodes.node);*/
-
 				els.parent.removeAll();
 				nodes.parent.removeChild(nodes.parent.firstChild);
 
@@ -49,7 +42,8 @@ Ext.define(
 
 				manager.suspendEvent = false;
 
-				console.log('nodes', nodes, els);
+				//console.log('nodes', nodes, els);
+
 				data.els = els;
 
 				res = true;
@@ -73,6 +67,7 @@ Ext.define(
 				manager = FBEditor.editor.Manager,
 				range;
 
+			// не требуется
 			return false;
 
 			try

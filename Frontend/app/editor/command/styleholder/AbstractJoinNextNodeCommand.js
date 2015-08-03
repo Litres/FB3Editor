@@ -136,13 +136,15 @@ Ext.define(
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,
-						startOffset: nodes.startCursor,
-						focusElement: nodes.cursor.getElement()
+						startOffset: nodes.startCursor
 					}
 				);
 
 				// сохраняем ссылки
 				data.nodes = nodes;
+
+				// проверяем по схеме
+				me.verifyElement(els.parent);
 
 				res = true;
 			}

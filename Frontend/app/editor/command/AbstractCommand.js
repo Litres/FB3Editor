@@ -32,6 +32,30 @@ Ext.define(
 		getData: function ()
 		{
 			return this.data;
+		},
+
+		/**
+		 * Проверяет элемент по схеме и в случае неудачи отменяет действие команды.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 */
+		verifyElement: function (el)
+		{
+			var me = this,
+				manager = FBEditor.editor.Manager,
+				xml;
+
+			if (!manager.verifyElement(el))
+			{
+				xml = el.getXml();
+
+				// отменяем действие команды
+				me.unExecute();
+
+				console.log('Полученная структура: ', xml);
+				throw Error('Действие команды отменено. Полученная структура элемента не соответствует схеме: ' +
+				            el.getName());
+			}
+
 		}
 	}
 );

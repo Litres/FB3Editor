@@ -185,6 +185,9 @@ Ext.define(
 				// сохраянем узлы
 				data.saveNodes = nodes;
 
+				// проверяем по схеме
+				me.verifyElement(els.parent);
+
 				res = true;
 			}
 			catch (e)

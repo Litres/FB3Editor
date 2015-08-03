@@ -624,6 +624,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает имя элемента.
+		 * @return {String} Имя элемента.
+		 */
+		getName: function ()
+		{
+			return this.xmlTag;
+		},
+
+		/**
 		 * Возвращает блочный элемент.
 		 * @return {FBEditor.editor.element.AbstractElement}
 		 */

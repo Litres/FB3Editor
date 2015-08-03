@@ -91,7 +91,7 @@ Ext.define(
 		{
 			var me = this,
 				res = true,
-				srcEls = elements,
+				srcEls = Ext.clone(elements),
 				seq,
 				choice,
 				el,
@@ -205,8 +205,7 @@ Ext.define(
 			// данные проверяемого элемента element
 			el = Ext.Object.getValues(element)[0];
 			me.disableDebug || console.log('--- ELEMENT --- (name, nextName, el, items)', name, nextName, el, items);
-
-			if (el.name === name || el.ref === name)
+			if (el.name && el.name === name || el.ref && el.ref === name)
 			{
 				// совпадающее имя элемента
 				me.disableDebug || console.log('< OK > sequence element (el, nextName)', el, nextName);
@@ -226,6 +225,25 @@ Ext.define(
 				{
 					// убираем из последовательности element
 					items.splice(0, 1);
+				}
+			}
+			else if ((el.name || el.ref) && (!el.minOccurs || Number(el.minOccurs) !== 0))
+			{
+				// пропущен обязательный элемент
+				items.splice(0, items.length);
+			}
+			else if (name === undefined)
+			{
+				if (el.minOccurs && Number(el.minOccurs) === 0)
+				{
+					// элемент не обязателен
+					res = true;
+					items.splice(0, 1);
+				}
+				else
+				{
+					// пропущен обязательный элемент
+					items.splice(0, items.length);
 				}
 			}
 			else if (el.minOccurs && Number(el.minOccurs) === 0)

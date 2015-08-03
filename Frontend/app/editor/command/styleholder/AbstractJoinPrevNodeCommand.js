@@ -130,6 +130,9 @@ Ext.define(
 				// сохраняем ссылки
 				data.nodes = nodes;
 
+				// проверяем по схеме
+				me.verifyElement(els.parent);
+
 				res = true;
 			}
 			catch (e)

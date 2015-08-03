@@ -207,6 +207,9 @@ Ext.define(
 				// сохраняем ссылки
 				me.data.nodes = nodes;
 
+				// проверяем по схеме
+				me.verifyElement(els.parent);
+
 				res = true;
 			}
 			catch (e)
