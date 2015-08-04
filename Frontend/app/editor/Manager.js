@@ -469,18 +469,17 @@ Ext.define(
 			var me = this,
 				schema = me.getSchema(),
 				res = true,
-				name,
+				name = el.getName(),
 				names;
 
 			//console.log('el', el);
 
-			if (!el || el.isText || el.isStyleHolder && el.isEmpty())
+			if (!el || el.isText || el.isStyleHolder && el.isEmpty() || !schema.getElement(name))
 			{
-				// текст и пустые элементы не нуждаются в проверке
+				// текст, пустые и неопределенные элементы не нуждаются в проверке
 				return true;
 			}
 
-			name = el.getName();
 			names = me.getNamesElements(el);
 
 			res = schema.verify(name, names);

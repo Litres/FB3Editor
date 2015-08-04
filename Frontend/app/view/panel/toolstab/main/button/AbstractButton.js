@@ -19,6 +19,11 @@ Ext.define(
 			sync: 'onSync'
 		},
 
+		/**
+		 * @property {Object} Опции, которые передаются в команду создания элемента.
+		 */
+		createOpts: null,
+
 		initComponent: function ()
 		{
 			var me = this,

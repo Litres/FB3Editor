@@ -579,6 +579,7 @@ Ext.define(
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
 			name = els.parent.xmlTag;
+			//console.log('name, nameElements', name, nameElements);
 			res = sch.verify(name, nameElements) ? nodes.node : false;
 
 			return res;
