@@ -18,6 +18,8 @@ Ext.define(
 		cls: 'el-epigraph',
 		permit: {
 			splittable: true
-		}
+		},
+
+		isEpigraph: true
 	}
 );

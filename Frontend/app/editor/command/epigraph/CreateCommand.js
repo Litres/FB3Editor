@@ -17,13 +17,17 @@ Ext.define(
 				data = me.getData(),
 				factory = FBEditor.editor.Factory;
 
+			nodes.parent = nodes.node.parentNode;
+			els.parent = nodes.parent.getElement();
+
 			els.node = factory.createElement(me.elementName);
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
+
 			nodes.node = els.parent.hisName(me.elementName) ? nodes.parent : nodes.node;
+
 			nodes.parent = nodes.node.parentNode;
-			nodes.first = data.prevNode && data.prevNode.nextSibling ? data.prevNode : nodes.parent.firstChild;
 			els.parent = nodes.parent.getElement();
+
+			nodes.first = data.prevNode && data.prevNode.nextSibling ? data.prevNode : nodes.parent.firstChild;
 
 			els.p = factory.createElement('p');
 			els.t = factory.createElementText('Эпиграф');
