@@ -758,7 +758,7 @@ Ext.define(
 			node = Ext.Object.getValues(me.nodes)[0];
 			text = node.textContent || node.innerText;
 
-			return text;
+			return text || '';
 		},
 
 		/**

@@ -259,7 +259,7 @@ Ext.define(
 			}
 			else
 			{
-				sel.collapse(data.startNode);
+				sel.collapse(data.startNode, 0);
 			}
 			if (data.endNode)
 			{

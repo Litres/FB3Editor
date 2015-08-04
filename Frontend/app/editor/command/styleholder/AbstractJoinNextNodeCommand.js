@@ -144,7 +144,7 @@ Ext.define(
 				data.nodes = nodes;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.parentP);
 
 				res = true;
 			}

@@ -117,7 +117,7 @@ Ext.define(
 					                false : pos.needSplit;
 
 					data.range.pos = pos;
-					console.log('pos', pos, range.toString());
+					//console.log('pos', pos, range.toString());
 
 					if (pos.needSplit)
 					{
@@ -208,7 +208,7 @@ Ext.define(
 				me.data.nodes = nodes;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.parentP);
 
 				res = true;
 			}

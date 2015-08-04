@@ -64,7 +64,7 @@ Ext.define(
 
 				// курсор
 				nodes.cursor = manager.getDeepLast(nodes.lastPrev);
-				nodes.startCursor = els.lastPrev.getText().length;
+				nodes.startCursor = els.lastPrev.getText() ? els.lastPrev.getText().length : 0;
 
 				data.curEmpty = els.p.isEmpty();
 
@@ -131,7 +131,7 @@ Ext.define(
 				data.nodes = nodes;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.parentP);
 
 				res = true;
 			}
