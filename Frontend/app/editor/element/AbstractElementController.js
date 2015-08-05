@@ -568,8 +568,10 @@ Ext.define(
 
 			nodes.node = range.endContainer;
 			els.node = nodes.node.getElement();
+
 			nodes.node = els.node.isText || els.node.hisName(manager.emptyElement) ? nodes.node.parentNode : nodes.node;
 			els.node = nodes.node.getElement();
+
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 
@@ -578,7 +580,7 @@ Ext.define(
 
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
-			name = els.parent.xmlTag;
+			name = els.parent.getName();
 			//console.log('name, nameElements', name, nameElements);
 			res = sch.verify(name, nameElements) ? nodes.node : false;
 

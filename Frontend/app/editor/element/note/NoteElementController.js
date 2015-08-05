@@ -9,20 +9,48 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 
-		getNameElementsVerify: function (nodes)
+		getNodeVerify: function (sel, opts)
 		{
 			var me = this,
 				els = {},
-				nameElements,
-				name;
+				nodes = {},
+				manager = FBEditor.editor.Manager,
+				name = me.getNameElement(),
+				res,
+				sch,
+				range,
+				nameElements;
 
-			name = me.getNameElement();
-			nodes.node = nodes.parent.getElement().xmlTag === name ? nodes.parent : nodes.node;
+			// получаем узел из выделения
+			sel = sel || window.getSelection();
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
-			nodes.first = nodes.parent.firstChild;
 			els.parent = nodes.parent.getElement();
+
+			// ищем notes
+			while (!(els.parent.isNotes || els.parent.isRoot))
+			{
+				nodes.node = nodes.parent;
+				els.node = nodes.node.getElement();
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+			}
+
+			if (!els.parent.isNotes)
+			{
+				return false;
+			}
+
+			nodes.parent = nodes.node.parentNode;
+			els.parent = nodes.parent.getElement();
+			nodes.first = nodes.parent.firstChild;
 			els.first = nodes.first ? nodes.first.getElement() : null;
-			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
+
+			// получаем дочерние имена элементов для проверки по схеме
+			nameElements = manager.getNamesElements(els.parent);
 			if (!els.first.isTitle)
 			{
 				nameElements.unshift(name);
@@ -32,7 +60,13 @@ Ext.define(
 				nameElements.splice(1, 0, name);
 			}
 
-			return nameElements;
+			// проверяем элемент по схеме
+			sch = manager.getSchema();
+			name = els.parent.getName();
+			//console.log('name, nameElements', name, nameElements);
+			res = sch.verify(name, nameElements) ? nodes.node : false;
+
+			return res;
 		}
 	}
 );
