@@ -1,32 +1,39 @@
 /**
- * Кнотроллер элемента annotation.
+ * Контроллер кнопки annotation.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.annotation.AnnotationElementController',
+	'FBEditor.view.panel.toolstab.main.button.annotation.AnnotationController',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController',
+		extend: 'FBEditor.view.panel.toolstab.main.button.ButtonController',
+		alias: 'controller.panel.toolstab.main.button.annotation',
 
-		getNodeVerify: function (sel, opts)
+		onSync: function ()
 		{
 			var me = this,
-				els = {},
-				nodes = {},
+				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
-				name = me.getNameElement(),
+				nodes = {},
+				els = {},
 				pos = 0,
-				res,
-				sch,
+				name = btn.elementName,
 				range,
-				nameElements;
+				nameElements,
+				sch,
+				enable;
 
-			// получаем узел из выделения
-			sel = sel || window.getSelection();
-			range = sel.getRangeAt(0);
+			range = manager.getRange();
 
-			nodes.node = range.commonAncestorContainer;
+			if (!range)
+			{
+				btn.disable();
+
+				return;
+			}
+
+			nodes.node = range.common;
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
@@ -80,9 +87,16 @@ Ext.define(
 			sch = manager.getSchema();
 			name = els.parent.getName();
 			//console.log('name, nameElements', name, nameElements);
-			res = sch.verify(name, nameElements) ? nodes.node : false;
+			enable = sch.verify(name, nameElements);
 
-			return res;
+			if (enable)
+			{
+				btn.enable();
+			}
+			else
+			{
+				btn.disable();
+			}
 		}
 	}
 );

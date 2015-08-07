@@ -8,9 +8,12 @@ Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.annotation.Annotation',
 	{
 		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractButton',
+		requires: [
+			'FBEditor.view.panel.toolstab.main.button.annotation.AnnotationController'
+		],
 		id: 'panel-toolstab-main-button-annotation',
 		xtype: 'panel-toolstab-main-button-annotation',
-		//controller: 'panel.toolstab.main.button.annotation',
+		controller: 'panel.toolstab.main.button.annotation',
 		html: '<i class="fa fa-font"></i>',
 		tooltip: 'Аннотация',
 		elementName: 'annotation'

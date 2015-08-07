@@ -19,6 +19,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				sel,
 				range;
 
@@ -91,7 +92,7 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 
 				// новый элемент
-				els.node = FBEditor.editor.Factory.createElement(me.elementName);
+				els.node = factory.createElement(me.elementName);
 				nodes.node = els.node.getNode(data.viewportId);
 				els.parent.insertBefore(els.node, els.firstP);
 				nodes.parent.insertBefore(nodes.node, nodes.firstP);
@@ -109,7 +110,7 @@ Ext.define(
 						elsLi.p = nodesLi.p.getElement();
 
 						// новый элемент li в списке
-						elsLi.node = FBEditor.editor.Factory.createElement('li');
+						elsLi.node = factory.createElement('li');
 						nodesLi.node = elsLi.node.getNode(data.viewportId);
 
 						// добавляем в список
@@ -172,6 +173,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				range,
 				viewportId;
 
@@ -195,7 +197,7 @@ Ext.define(
 				while (els.li)
 				{
 					// новый параграф
-					els.p = FBEditor.editor.Factory.createElement('p');
+					els.p = factory.createElement('p');
 					nodes.p = els.p.getNode(data.viewportId);
 					nodes.pp.push(nodes.p);
 

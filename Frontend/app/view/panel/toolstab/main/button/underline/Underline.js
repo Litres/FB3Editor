@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.underline.Underline',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractStyleButton',
 		id: 'panel-toolstab-main-button-underline',
 		xtype: 'panel-toolstab-main-button-underline',
 		//controller: 'panel.toolstab.main.button.underline',

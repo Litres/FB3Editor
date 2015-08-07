@@ -25,14 +25,18 @@ Ext.define(
 			sel = sel || window.getSelection();
 			range = sel.getRangeAt(0);
 
-			nodes.node = range.endContainer;
+			nodes.node = range.commonAncestorContainer;
 			els.node = nodes.node.getElement();
-
-			nodes.node = els.node.isText || els.node.hisName(manager.emptyElement) ? nodes.node.parentNode : nodes.node;
-			els.node = nodes.node.getElement();
-
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
+
+			while (els.parent.isStyleHolder || els.parent.isStyleType)
+			{
+				nodes.node = nodes.parent;
+				els.node = nodes.node.getElement();
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+			}
 
 			// ищем родитель-заголовок
 			nodes.title = nodes.parent;

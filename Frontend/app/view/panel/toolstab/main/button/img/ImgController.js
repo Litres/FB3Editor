@@ -50,6 +50,14 @@ Ext.define(
 				disable;
 
 			el = manager.getFocusElement();
+
+			if (!el)
+			{
+				btn.disable();
+
+				return;
+			}
+
 			name = btn.elementName;
 			disable = el.hisName(name);
 

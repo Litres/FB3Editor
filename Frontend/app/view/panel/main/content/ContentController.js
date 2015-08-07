@@ -37,10 +37,12 @@ Ext.define(
 		onContentBody: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				manager = FBEditor.editor.Manager;
 
 			view.setActiveItem('main-editor');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-main');
+			manager.syncButtons();
 		},
 
 		/**
@@ -49,10 +51,12 @@ Ext.define(
 		onContentDesc: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				manager = FBEditor.editor.Manager;
 
 			view.setActiveItem('form-desc');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
+			manager.disableButtons();
 		},
 
 		/**
@@ -61,10 +65,12 @@ Ext.define(
 		onContentResources: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				manager = FBEditor.editor.Manager;
 
 			view.setActiveItem('panel-resources');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
+			manager.disableButtons();
 		}
     }
 );

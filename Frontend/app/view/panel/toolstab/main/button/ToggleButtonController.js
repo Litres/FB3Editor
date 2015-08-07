@@ -45,6 +45,12 @@ Ext.define(
 				state;
 
 			range = manager.getRange();
+
+			if (!range)
+			{
+				return;
+			}
+
 			start = range.start.getElement ? range.start.getElement() : manager.getFocusElement();
 			end = range.end.getElement ? range.end.getElement() : start;
 			name = btn.elementName;
@@ -53,10 +59,28 @@ Ext.define(
 			state = (start.hisName(name) || start.hasParentName(name)) &&
 			        (end.hisName(name) || end.hasParentName(name));
 
-			//console.log(name, state, el);
+			//console.log(name, state);
 
 			// переключаем состояние
 			btn.toggle(state);
+
+			//console.log('state', state);
+
+			btn.enable();
+
+			if (!state)
+			{
+				// активность кнопки для отжатого состояния
+				if (!btn.isActiveSelection())
+				{
+					btn.disable();
+				}
+				else
+				{
+					btn.enable();
+				}
+			}
+
 		}
 	}
 );

@@ -1,32 +1,38 @@
 /**
- * Кнотроллер элемента annotation.
+ * Контроллер кнопки epigraph.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.annotation.AnnotationElementController',
+	'FBEditor.view.panel.toolstab.main.button.epigraph.EpigraphController',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController',
+		extend: 'FBEditor.view.panel.toolstab.main.button.ButtonController',
+		alias: 'controller.panel.toolstab.main.button.epigraph',
 
-		getNodeVerify: function (sel, opts)
+		onSync: function ()
 		{
 			var me = this,
-				els = {},
-				nodes = {},
+				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
-				name = me.getNameElement(),
-				pos = 0,
-				res,
-				sch,
+				nodes = {},
+				els = {},
+				name = btn.elementName,
 				range,
-				nameElements;
+				nameElements,
+				sch,
+				enable;
 
-			// получаем узел из выделения
-			sel = sel || window.getSelection();
-			range = sel.getRangeAt(0);
+			range = manager.getRange();
 
-			nodes.node = range.commonAncestorContainer;
+			if (!range)
+			{
+				btn.disable();
+
+				return;
+			}
+
+			nodes.node = range.common;
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
@@ -67,22 +73,30 @@ Ext.define(
 
 			nameElements = manager.getNamesElements(els.parent);
 
-			while (els.first && (els.first.isEpigraph || els.first.isTitle))
+			// получаем дочерние имена элементов для проверки по схеме
+			if (!els.first.isTitle)
 			{
-				pos++;
-				nodes.first = nodes.first.nextSibling;
-				els.first = nodes.first ? nodes.first.getElement() : null;
+				nameElements.unshift(name);
 			}
-
-			nameElements.splice(pos, 0, name);
+			else
+			{
+				nameElements.splice(1, 0, name);
+			}
 
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
 			name = els.parent.getName();
 			//console.log('name, nameElements', name, nameElements);
-			res = sch.verify(name, nameElements) ? nodes.node : false;
+			enable = sch.verify(name, nameElements);
 
-			return res;
+			if (enable)
+			{
+				btn.enable();
+			}
+			else
+			{
+				btn.disable();
+			}
 		}
 	}
 );

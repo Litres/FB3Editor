@@ -9,9 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.toolstab.main.button.ButtonController',
 		alias: 'controller.panel.toolstab.main.button.titlebody',
-		requires: [
-			'FBEditor.view.window.img.Create'
-		],
 
 		onSync: function ()
 		{

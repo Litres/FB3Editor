@@ -28,6 +28,15 @@ Ext.define(
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager;
 
+			if (!btn.isActiveSelection())
+			{
+				btn.disable();
+			}
+			else
+			{
+				btn.enable();
+			}
+
 			//console.log('sync', btn.elementName);
 		}
 	}

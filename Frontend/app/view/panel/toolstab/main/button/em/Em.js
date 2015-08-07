@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.em.Em',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractStyleButton',
 		id: 'panel-toolstab-main-button-em',
 		xtype: 'panel-toolstab-main-button-em',
 		//controller: 'panel.toolstab.main.button.em',

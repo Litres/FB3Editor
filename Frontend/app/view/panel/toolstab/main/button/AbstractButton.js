@@ -19,6 +19,8 @@ Ext.define(
 			sync: 'onSync'
 		},
 
+		disabled: true,
+
 		/**
 		 * @property {Object} Опции, которые передаются в команду создания элемента.
 		 */
@@ -32,6 +34,19 @@ Ext.define(
 			me.callParent(arguments);
 
 			manager.addButtons(me);
+		},
+
+		/**
+		 * Проверяет должна ли быть кнопка активной для текущего выделения в тексте.
+		 * @return {Boolean} Активна ли.
+		 */
+		isActiveSelection: function ()
+		{
+			var me = this,
+				res = false;
+
+
+			return res;
 		}
 	}
 );

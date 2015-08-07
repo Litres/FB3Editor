@@ -9,9 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.toolstab.main.button.ButtonController',
 		alias: 'controller.panel.toolstab.main.button.note',
-		requires: [
-			'FBEditor.view.window.img.Create'
-		],
 
 		onSync: function ()
 		{
@@ -24,6 +21,14 @@ Ext.define(
 				enable;
 
 			range = manager.getRange();
+
+			if (!range)
+			{
+				btn.disable();
+
+				return;
+			}
+
 			end = range.end.getElement ? range.end.getElement() : manager.getFocusElement();
 			name = btn.elementName;
 

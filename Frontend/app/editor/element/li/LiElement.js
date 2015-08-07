@@ -17,6 +17,7 @@ Ext.define(
 		],
 		controllerClass: 'FBEditor.editor.element.li.LiElementController',
 		htmlTag: 'li',
-		xmlTag: 'li'
+		xmlTag: 'li',
+		isLi: true
 	}
 );

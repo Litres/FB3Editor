@@ -21,7 +21,8 @@ Ext.define(
 				data = me.getData();
 
 			nodes.parent = nodes.node.parentNode;
-			nodes.node = nodes.parent.getElement().xmlTag === me.elementName ? nodes.parent : nodes.node;
+			els.parent = nodes.parent.getElement();
+			nodes.node = els.parent.hisName(me.elementName) ? nodes.parent : nodes.node;
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 			nodes.next = nodes.node.nextSibling;

@@ -17,7 +17,6 @@ Ext.define(
 				name;
 
 			name = me.getNameElement();
-			nodes.first = nodes.parent.firstChild;
 			els.parent = nodes.parent.getElement();
 			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
 			nameElements.push(name);

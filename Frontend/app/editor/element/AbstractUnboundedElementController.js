@@ -12,6 +12,47 @@ Ext.define(
 
 		createFromRange: true,
 
+		getNodeVerify: function (sel, opts)
+		{
+			var me = this,
+				els = {},
+				nodes = {},
+				manager = FBEditor.editor.Manager,
+				res,
+				sch,
+				name,
+				range,
+				nameElements;
+
+			// получаем узел из выделения
+			sel = sel || window.getSelection();
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.commonAncestorContainer;
+			els.node = nodes.node.getElement();
+			nodes.parent = nodes.node.parentNode;
+			els.parent = nodes.parent.getElement();
+
+			while (els.parent.isStyleHolder || els.parent.isStyleType)
+			{
+				nodes.node = nodes.parent;
+				els.node = nodes.node.getElement();
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+			}
+
+			// получаем дочерние имена элементов для проверки по схеме
+			nameElements = me.getNameElementsVerify(nodes);
+
+			// проверяем элемент по схеме
+			sch = manager.getSchema();
+			name = els.parent.getName();
+			//console.log('name, nameElements', name, nameElements);
+			res = sch.verify(name, nameElements) ? nodes.node : false;
+
+			return res;
+		},
+
 		/**
 		 * Проверяет по схеме создание нового элемента из выделения.
 		 * @param {Selection} sel Выделение.
@@ -25,6 +66,7 @@ Ext.define(
 				pos = {},
 				reg = {},
 				names = {},
+				manager = FBEditor.editor.Manager,
 				res,
 				sch,
 				name,
@@ -35,6 +77,7 @@ Ext.define(
 			// получаем данные из выделения
 			sel = sel || window.getSelection();
 			range = sel.getRangeAt(0);
+
 			nodes.common = range.commonAncestorContainer;
 			els.common = nodes.common.getElement();
 			nodes.startContainer = range.startContainer;
@@ -82,7 +125,7 @@ Ext.define(
 			pos.end = els.common.getChildPosition(els.end);
 
 			// получаем дочерние имена элементов родитильского элемента для проверки по схеме
-			names.common = FBEditor.editor.Manager.getNamesElements(els.common);
+			names.common = manager.getNamesElements(els.common);
 
 			// количество имен элементов, заменяемых в списке
 			pos.count = pos.end - pos.start;
@@ -102,7 +145,7 @@ Ext.define(
 			//console.log('names.el', names.el);
 
 			// проверяем элемент по схеме
-			sch = FBEditor.editor.Manager.getSchema();
+			sch = manager.getSchema();
 			res = sch.verify(name, names.el);
 
 			if (res)
@@ -123,7 +166,7 @@ Ext.define(
 
 				//console.log('names.common', names.common);
 
-				name = els.common.xmlTag;
+				name = els.common.getName();
 				res = sch.verify(name, names.common);
 			}
 
@@ -139,15 +182,19 @@ Ext.define(
 		{
 			var me = this,
 				els = {},
+				manager = FBEditor.editor.Manager,
 				nameElements,
 				name;
 
 			name = me.getNameElement();
-			nodes.node = nodes.parent.getElement().xmlTag === name ? nodes.parent : nodes.node;
+
+			els.parent = nodes.parent.getElement();
+			nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 			nodes.parent = nodes.node.parentNode;
 			els.node = nodes.node.getElement();
 			els.parent = nodes.parent.getElement();
-			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
+
+			nameElements = manager.getNamesElements(els.parent);
 			nameElements.splice(els.parent.getChildPosition(els.node) + 1, 0, name);
 
 			return nameElements;

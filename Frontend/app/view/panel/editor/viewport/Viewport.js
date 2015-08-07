@@ -28,6 +28,7 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
+				manager = FBEditor.editor.Manager,
 				root,
 				rootNode;
 
@@ -35,14 +36,14 @@ Ext.define(
 			if (me.createRootElement)
 			{
 				// инициализируем корневой узел
-				root = FBEditor.editor.Manager.createRootElement();
+				root = manager.createRootElement();
 				rootNode = root.getNode(me.id);
 				me.loadData(rootNode);
 
 				// создаем элементы корневого узла по умолчанию
 				root.createScaffold();
 
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				// добавляем узлы в корневой
 				Ext.Array.each(
@@ -53,10 +54,10 @@ Ext.define(
 					}
 				);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// обновляем дерево навигации по тексту
-				FBEditor.editor.Manager.updateTree();
+				manager.updateTree();
 			}
 		},
 

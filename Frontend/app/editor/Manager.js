@@ -162,9 +162,10 @@ Ext.define(
 		createRootElement: function ()
 		{
 			var me = this,
+				factory = FBEditor.editor.Factory,
 				root;
 
-			root = FBEditor.editor.Factory.createElement('fb3-body');
+			root = factory.createElement('fb3-body');
 			me.content = root;
 
 			return root;
@@ -187,6 +188,7 @@ Ext.define(
 			me.focusElement = el;
 			me.selection = sel || window.getSelection();
 			range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
+
 			if (range)
 			{
 				me.range = {
@@ -197,6 +199,10 @@ Ext.define(
 					offset: {
 						start: range.startOffset,
 						end: range.endOffset
+					},
+					toString: function ()
+					{
+						return range.toString();
 					}
 				};
 			}
@@ -210,6 +216,10 @@ Ext.define(
 					offset: {
 						start: 0,
 						end: 0
+					},
+					toString: function ()
+					{
+						return '';
 					}
 				};
 			}
@@ -288,12 +298,31 @@ Ext.define(
 			var me = this,
 				buttons = me.buttons;
 
+			//console.log('sync buttons');
 			Ext.Array.each(
 				buttons,
 			    function (btn)
 			    {
 				    btn.fireEvent('sync');
 			    }
+			);
+		},
+
+		/**
+		 * Деактивирует кнопки элементов.
+		 */
+		disableButtons: function ()
+		{
+			var me = this,
+				buttons = me.buttons;
+
+			//console.log('disable buttons');
+			Ext.Array.each(
+				buttons,
+				function (btn)
+				{
+					btn.disable();
+				}
 			);
 		},
 
@@ -326,15 +355,13 @@ Ext.define(
 		createElement: function (name, opts)
 		{
 			var me = this,
+				factory = FBEditor.editor.Factory,
 				el,
 				sel;
 
 			sel = me.getSelection();
-			if (sel)
-			{
-				el = FBEditor.editor.Factory.createElement(name);
-				el.fireEvent('createElement', sel, opts);
-			}
+			el = factory.createElement(name);
+			el.fireEvent('createElement', sel, opts);
 		},
 
 		/**

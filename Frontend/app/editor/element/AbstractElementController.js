@@ -356,23 +356,23 @@ Ext.define(
 		{
 			var me = this,
 				bridgeNav = FBEditor.getBridgeNavigation(),
+				manager = FBEditor.editor.Manager,
 				focusNode,
 				focusElement;
 
 			e.stopPropagation();
 			focusNode = me.getFocusNode(e.target);
+
 			if (focusNode && focusNode.getElement)
 			{
 				focusElement = focusNode.getElement();
 
 				// фокус на элементе
-				FBEditor.editor.Manager.setFocusElement(focusNode);
+				manager.setFocusElement(focusNode);
 
 				// разворачиваем узел элемента в дереве навигации по тексту
 				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(focusElement);
 			}
-
-			return false;
 		},
 
 		/**

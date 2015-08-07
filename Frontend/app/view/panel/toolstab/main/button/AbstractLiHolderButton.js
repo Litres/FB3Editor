@@ -1,30 +1,36 @@
 /**
- * Абстрактный контроллер списков, содержащих элемент li.
+ * Абстрактная кнопка создания элемента списка, содержащих элементы li.
  *
+ * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.AbstractLiHolderElementController',
+	'FBEditor.view.panel.toolstab.main.button.AbstractLiHolderButton',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 
-		getNodeVerify: function (sel)
+		isActiveSelection: function ()
 		{
 			var me = this,
-				els = {},
-				nodes = {},
 				manager = FBEditor.editor.Manager,
-				res,
+				nodes = {},
+				els = {},
+				name = me.elementName,
 				range,
 				nameElements,
-				sch;
+				sch,
+				enable;
 
-			// получаем данные из выделения
-			range = sel.getRangeAt(0);
+			range = manager.getRange();
+
+			if (!range)
+			{
+				return false;
+			}
 
 			// первый параграф
-			nodes.first = range.startContainer;
+			nodes.first = range.start;
 			els.first = nodes.first.getElement();
 			while (!els.first.isP && !els.first.isRoot)
 			{
@@ -43,14 +49,15 @@ Ext.define(
 
 			// получаем дочерние имена элементов для проверки по схеме
 			nameElements = manager.getNamesElements(els.parent);
-			nameElements.splice(els.pos, 1, me.getNameElement());
+			nameElements.splice(els.pos, 1, name);
 
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
-			els.name = els.parent.getName();
-			res = sch.verify(els.name, nameElements) ? nodes.first : false;
+			name = els.parent.getName();
+			//console.log('name, nameElements', name, nameElements);
+			enable = sch.verify(name, nameElements);
 
-			return res;
+			return enable;
 		}
 	}
 );

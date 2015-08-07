@@ -77,9 +77,7 @@ Ext.define(
 				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.prev;
 				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.parent;
 				data.saveRange = {
-					startNode: nodes.cursor,
-					startOffset: 0,
-					focusElement: nodes.cursor.getElement()
+					startNode: manager.getDeepFirst(nodes.cursor)
 				};
 				manager.setCursor(data.saveRange);
 
@@ -108,11 +106,12 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
+				manager = FBEditor.editor.Manager,
 				range;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				range = data.range;
 				els = data.els;
@@ -145,7 +144,7 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -153,7 +152,7 @@ Ext.define(
 					startOffset: range.offset.start,
 					focusElement: els.node
 				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
+				manager.setCursor(data.saveRange);
 
 				res = true;
 			}
