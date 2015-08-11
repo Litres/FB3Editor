@@ -27,9 +27,28 @@ Ext.define(
 		onActivePanelBody: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				manager = FBEditor.editor.Manager,
+				cursor,
+				root,
+				range;
 
 			view.setActiveItem('panel-props-body');
+
+			// курсор
+			range = manager.getRange();
+			if (!range || range && !range.start.parentNode)
+			{
+				root = manager.getContent();
+				range = {
+					start: manager.getDeepFirst(root.nodes[Ext.Object.getKeys(root.nodes)[0]])
+				};
+			}
+			cursor = {
+				startNode: range.start,
+				startOffset: range.offset ? range.offset.start : 0
+			};
+			manager.setCursor(cursor);
 		},
 
 		/**

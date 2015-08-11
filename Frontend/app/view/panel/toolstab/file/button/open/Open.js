@@ -14,7 +14,7 @@ Ext.define(
 		id: 'panel-toolstab-file-button-open',
 		xtype: 'panel-toolstab-file-button-open',
 		controller: 'panel.toolstab.file.button.open',
-		text: 'Открыть',
+		text: 'Открыть книгу',
 		listeners: {
 			change: 'onChange'
 		},

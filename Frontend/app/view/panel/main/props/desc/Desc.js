@@ -8,13 +8,118 @@ Ext.define(
 	'FBEditor.view.panel.main.props.desc.Desc',
 	{
 		extend: 'FBEditor.view.panel.main.props.Abstract',
+		requires: [
+			'FBEditor.view.panel.main.props.desc.DescController',
+			'FBEditor.view.button.desc.Load',
+			'FBEditor.view.button.desc.Save'
+		],
+		controller: 'panel.props.desc',
 		id: 'panel-props-desc',
 		xtype: 'panel-props-desc',
-		html: 'Панель свойств редактора описания книги',
+
+		translateText: {
+			loadUrl: 'URL для загрузки описания',
+			saveUrl: 'URL для сохранения описания'
+		},
+
+		initComponent: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				manager = bridge.FBEditor.desc.Manager,
+				loadUrl,
+				saveUrl;
+
+			loadUrl = manager.isLoadUrl() ? manager.loadUrl : '';
+			saveUrl = manager.saveUrl ? manager.saveUrl : '';
+
+			me.items = [
+				{
+					xtype: 'textfield',
+					labelAlign: 'top',
+					name: 'desc-load-url',
+					fieldLabel: me.translateText.loadUrl,
+					value: loadUrl,
+					width: '100%',
+					checkChangeBuffer: 200,
+					listeners: {
+						change: function (self, newVal)
+						{
+							manager.loadUrl = newVal;
+						}
+					}
+				},
+				{
+					xtype: 'button-desc-load'
+				},
+				{
+					xtype: 'textfield',
+					vtype: 'url',
+					labelAlign: 'top',
+					name: 'desc-save-url',
+					fieldLabel: me.translateText.saveUrl,
+					value: saveUrl,
+					width: '100%',
+					marginTop: 10,
+					allowBlank: false,
+					checkChangeBuffer: 200,
+					listeners: {
+						change: function (self, newVal)
+						{
+							var btn = Ext.getCmp('button-desc-save');
+
+							manager.saveUrl = newVal;
+
+							if (newVal && self.isValid())
+							{
+								btn.enable();
+							}
+							else
+							{
+								btn.disable();
+							}
+						}
+					}
+				},
+				{
+					xtype: 'button-desc-save',
+					disabled: saveUrl ? false : true
+				}
+			];
+
+			me.callParent(arguments);
+		},
 
 		getContentId: function ()
 		{
 			return 'form-desc';
+		},
+
+		/**
+		 * Устанавливает значение url для загрузки описания.
+		 * @param {String} url Адрес для загрузки.
+		 */
+		setLoadUrl: function (url)
+		{
+			var me = this,
+				field;
+
+			field = me.down('[name="desc-load-url"]');
+			field.setValue(url);
+		},
+
+		/**
+		 * Возвращает поле url сохранения.
+		 * @return {Ext.form.field.Field} Текстовое поле.
+		 */
+		getSaveField: function ()
+		{
+			var me = this,
+				field;
+
+			field = me.down('[name="desc-save-url"]');
+
+			return field;
 		}
 	}
 );

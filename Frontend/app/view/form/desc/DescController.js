@@ -90,19 +90,14 @@ Ext.define(
 
 		/**
 		 * Загружает данные в форму.
-		 * @param {Object} df Данные, полученные из книги.
+		 * @param {Object} data Преобразованные данные, полученные из книги.
 		 */
-		onLoadData:  function (df)
+		onLoadData:  function (data)
 		{
 			var me = this,
 				view = me.getView(),
-				form = view.getForm(),
-				converter,
-				data;
+				form = view.getForm();
 
-			converter = FBEditor.converter.desc.Data;
-			data = converter.toForm(df);
-			//console.log(data);
 			view.fireEvent('reset');
 			form.setValues(data);
 			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
@@ -113,7 +108,7 @@ Ext.define(
 			Ext.getCmp('form-desc-classification-udk').fireEvent('loadData', data['classification-udk']);
 			Ext.getCmp('form-desc-classification-bbk').fireEvent('loadData', data['classification-bbk']);
 			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
-			 Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
+			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
 			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);

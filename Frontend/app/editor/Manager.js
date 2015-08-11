@@ -233,6 +233,18 @@ Ext.define(
 		},
 
 		/**
+		 * Сбрасывает фокус.
+		 */
+		resetFocus: function ()
+		{
+			var me = this;
+
+			me.focusElement = null;
+			me.range = null;
+			me.selection = null;
+		},
+
+		/**
 		 * Устанавливает выделение.
 		 * @param data Данные выделения.
 		 * @param {Node} data.startNode Начальный узел.

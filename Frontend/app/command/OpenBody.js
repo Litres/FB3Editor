@@ -35,6 +35,7 @@ Ext.define(
 			me.activePanelContent = content.getLayout().getActiveItem();
 			content.fireEvent('contentBody');
 			props = bridgeProps.Ext && bridgeProps.Ext.getCmp ? bridgeProps.Ext.getCmp('panel-main-props-card') : null;
+
 			if (props)
 			{
 				me.activePanelProps = props.getLayout().getActiveItem();

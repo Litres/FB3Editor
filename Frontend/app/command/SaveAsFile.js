@@ -34,7 +34,7 @@ Ext.define(
 					throw Error('Некорректно заполнено описание книги');
 				}
 				descValues = desc.getValues();
-				descXml = desc.getXml(descValues);
+				descXml = FBEditor.desc.Manager.getXml(descValues);
 				fb3data = {
 					thumb: cover,
 					meta: desc.getMetaXml(descValues),

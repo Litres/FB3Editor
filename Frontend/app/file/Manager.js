@@ -82,7 +82,11 @@ Ext.define(
 								contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
 								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
 								Ext.suspendLayouts();
-								Ext.getCmp('form-desc').fireEvent('loadDesc', desc);
+
+								// загружаем описание в форму
+								FBEditor.desc.Manager.loadUrl = null;
+								FBEditor.desc.Manager.loadDataToForm(desc);
+
 								if (!FBEditor.resource.Manager.checkThumbInResources(thumb))
 								{
 									// если обложка находится не в директории ресурсов, то перемещаем ее туда
@@ -110,7 +114,10 @@ Ext.define(
 									}
 								);
 							}
+
+							FBEditor.editor.Manager.resetFocus();
 							FBEditor.editor.Manager.createContent(contentBody);
+
 							Ext.resumeLayouts(true);
 						}
 					}

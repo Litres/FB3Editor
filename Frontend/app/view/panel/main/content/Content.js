@@ -12,7 +12,8 @@ Ext.define(
 			'FBEditor.view.panel.main.content.ContentController',
 			'FBEditor.view.panel.editor.Editor',
 			'FBEditor.view.form.desc.Desc',
-			'FBEditor.view.panel.resources.Resources'
+			'FBEditor.view.panel.resources.Resources',
+			'FBEditor.view.panel.empty.Empty'
 		],
 		id: 'panel-main-content',
 		xtype: 'panel-main-content',
@@ -35,28 +36,77 @@ Ext.define(
 			},
 			{
 				xtype: 'main-editor'
+			},
+			{
+				xtype: 'panel-empty'
 			}
 		],
 		listeners: {
 			resize: 'onResize',
 			contentBody: 'onContentBody',
 			contentDesc: 'onContentDesc',
-			contentResources: 'onContentResources'
+			contentResources: 'onContentResources',
+			contentEmpty: 'onContentEmpty'
 		},
 
 		afterRender: function ()
 		{
+			var me = this,
+				manager = FBEditor.desc.Manager;
+
+			if (!manager.loadUrl)
+			{
+				// переключаем контекст на текст
+				Ext.defer(
+					function ()
+					{
+						me.openBody();
+					},
+					500
+				);
+			}
+
+			me.callParent(arguments);
+		},
+
+		/**
+		 * Активана ли панель.
+		 * @param {String} itemId Id панели.
+		 * @return {Boolean}
+		 */
+		isActiveItem: function (itemId)
+		{
+			var me = this,
+				res,
+				layout,
+				active;
+
+			layout = me.getLayout();
+			active = layout.getActiveItem();
+			res = active.getId() === itemId;
+
+			return res;
+		},
+
+		/**
+		 * Открывает панель текста.
+		 */
+		openBody: function ()
+		{
 			var me = this;
 
-			Ext.defer(
-				function ()
-				{
-					// переключаем контекст на текст
-					Ext.create('FBEditor.command.OpenBody').execute();
-				},
-			    2000
-			);
-			me.callParent(arguments);
+			if (!Ext.getCmp('main-editor') || !Ext.getCmp('main-editor').rendered)
+			{
+				Ext.defer(
+					function ()
+					{
+						me.openBody();
+					},
+					500
+				);
+			}
+
+			Ext.create('FBEditor.command.OpenBody').execute();
 		}
     }
 );

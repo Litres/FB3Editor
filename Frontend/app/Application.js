@@ -10,6 +10,7 @@ Ext.define(
 	    extend: 'Ext.app.Application',
 	    name: 'FBEditor',
 		requires: [
+			'FBEditor.desc.Manager',
 			'FBEditor.editor.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
@@ -41,13 +42,13 @@ Ext.define(
 				props: null
 			};
 
-			// мост для передачи событий панели контента
+			// мост для передачи событий в основное приложение
 			FBEditor.getBridgeWindow = function ()
 			{
 				return FBEditor.parentWindow || window;
 			};
 
-			// мост для передачи событий панели свойств
+			// мост для передачи событий в приложение панели свойств
 			FBEditor.getBridgeProps = function ()
 			{
 				var win;
@@ -59,7 +60,7 @@ Ext.define(
 				return win;
 			};
 
-			// мост для передачи событий панели навигации
+			// мост для передачи событий в приложение панели навигации
 			FBEditor.getBridgeNavigation = function ()
 			{
 				return FBEditor.parentWindow ?
@@ -81,6 +82,7 @@ Ext.define(
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 			FBEditor.command.HistoryCommand.init();
+			FBEditor.desc.Manager.init();
 			FBEditor.editor.Manager.init();
 		},
 
@@ -90,6 +92,10 @@ Ext.define(
 		    {
 			    // убираем отсоединенную панель из главного окна
 			    FBEditor.parentWindow.Ext.getCmp('main').removeDetachedPanel(window);
+		    }
+		    else
+		    {
+			    FBEditor.desc.Manager.launch();
 		    }
 	    },
 

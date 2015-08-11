@@ -47,25 +47,16 @@ Ext.define(
 
 		/**
 		 * Возвращает описание книги.
-		 * @return {Object}
+		 * @return {String} Строка xml.
 		 */
 		getDesc: function ()
 		{
 			var me = this,
-				desc = me.desc,
-				text,
-				annotation,
-				history;
+				desc = me.desc;
 
 			if (!desc)
 			{
-				desc = me.getJson()['fb3-description'];
-				text = me.getText();
-				text = text.replace(/[\n\r\t]/g, '');
-				annotation = text.match(/<annotation>(.*?)<\/annotation>/);
-				desc.annotation = annotation ? annotation[1] : '';
-				history = text.match(/<history>(.*?)<\/history>/);
-				desc.history = history ? history[1] : '';
+				desc = me.getText();
 			}
 
 			return desc;

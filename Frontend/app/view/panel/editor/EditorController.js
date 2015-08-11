@@ -18,6 +18,7 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				viewports = me.getViewports(),
+				content = Ext.getCmp('panel-main-content'),
 				data,
 				north;
 
@@ -28,7 +29,7 @@ Ext.define(
 			    {
 				    data = FBEditor.editor.Manager.getNode(item.id);
 				    item.loadData(data);
-				    if (item.id !== north.id)
+				    if (item.id !== north.id && content.isActiveItem('main-editor'))
 				    {
 					    item.fireEvent('syncScroll', north);
 				    }

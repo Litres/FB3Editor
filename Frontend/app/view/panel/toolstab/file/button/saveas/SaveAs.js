@@ -14,7 +14,7 @@ Ext.define(
 		id:'panel-toolstab-file-button-saveas',
 		xtype: 'panel-toolstab-file-button-saveas',
 		controller: 'panel.toolstab.file.button.saveas',
-		text: 'Сохранить как...',
+		text: 'Сохранить книгу',
 		listeners: {
 			click: 'onClick'
 		}

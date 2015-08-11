@@ -21,22 +21,26 @@ Ext.define(
 		 */
 		onClick: function (btn, evt)
 		{
-			var cmd,
+			var content = Ext.getCmp('panel-main-content'),
+				cmd,
 				cmdOpts,
 				cmdName,
 				isSplited;
 
-			cmdOpts = {
-				btn: btn,
-				editor: Ext.getCmp('main-editor')
-			};
-			isSplited = btn.isSplited();
-			cmdName = !isSplited ? 'FBEditor.command.SplitEditor' : 'FBEditor.command.UnsplitEditor';
-			cmd = Ext.create(cmdName, cmdOpts);
-			if (cmd.execute())
+			if (content.isActiveItem('main-editor'))
 			{
-				btn.setSplited(!isSplited);
-				FBEditor.HistoryCommand.add(cmd);
+				cmdOpts = {
+					btn: btn,
+					editor: Ext.getCmp('main-editor')
+				};
+				isSplited = btn.isSplited();
+				cmdName = !isSplited ? 'FBEditor.command.SplitEditor' : 'FBEditor.command.UnsplitEditor';
+				cmd = Ext.create(cmdName, cmdOpts);
+				if (cmd.execute())
+				{
+					btn.setSplited(!isSplited);
+					FBEditor.HistoryCommand.add(cmd);
+				}
 			}
 		}
 	}

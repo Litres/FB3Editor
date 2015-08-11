@@ -49,7 +49,7 @@ Ext.define(
 		/**
 		 * @private
 		 * Создает объект внешней библиотеки.
-		 * @return {X2JS} Внешня библиотека.
+		 * @return {X2JS} Внешняя библиотека.
 		 */
 		createX2Js: function ()
 		{

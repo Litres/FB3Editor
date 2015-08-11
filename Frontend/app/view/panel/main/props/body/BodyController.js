@@ -32,6 +32,7 @@ Ext.define(
 			{
 				// удаляем старую панель редактирования
 				view.remove(editor);
+				view.editor = null;
 			}
 		},
 

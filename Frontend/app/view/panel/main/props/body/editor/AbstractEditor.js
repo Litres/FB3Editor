@@ -63,8 +63,9 @@ Ext.define(
 		updateData: function (data, isLoad)
 		{
 			var me = this,
-				form = me.getForm();
+				form;
 
+			form = me.getForm();
 			me.isLoad = isLoad;
 			me.element = data.el ? data.el : me.element;
 			form.reset();

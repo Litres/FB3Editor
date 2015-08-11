@@ -71,6 +71,19 @@ Ext.define(
 			view.setActiveItem('panel-resources');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
 			manager.disableButtons();
+		},
+
+		/**
+		 * Переключает контент на пустую панель.
+		 */
+		onContentEmpty: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				manager = FBEditor.editor.Manager;
+
+			view.setActiveItem('panel-empty');
+			manager.disableButtons();
 		}
     }
 );
