@@ -41,16 +41,29 @@ Ext.define(
 					fieldLabel: me.translateText.loadUrl,
 					value: loadUrl,
 					width: '100%',
+					allowBlank: false,
 					checkChangeBuffer: 200,
 					listeners: {
 						change: function (self, newVal)
 						{
+							var btn = Ext.getCmp('button-desc-load');
+
 							manager.loadUrl = newVal;
+
+							if (newVal && self.isValid())
+							{
+								btn.enable();
+							}
+							else
+							{
+								btn.disable();
+							}
 						}
 					}
 				},
 				{
-					xtype: 'button-desc-load'
+					xtype: 'button-desc-load',
+					disabled: loadUrl ? false : true
 				},
 				{
 					xtype: 'textfield',
