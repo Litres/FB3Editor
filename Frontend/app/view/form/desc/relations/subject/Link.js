@@ -16,8 +16,8 @@ Ext.define(
 		xtype: 'form-desc-relations-subject-link',
 		controller: 'form.desc.relations.subject.link',
 		layout: 'hbox',
-		viewModel: true,
-		referenceHolder: true,
+		//viewModel: true,
+		//referenceHolder: true,
 		listeners: {
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
