@@ -173,8 +173,12 @@ Ext.define(
 
 			Ext.Ajax.request(
 				{
-					xmlData: xml,
-			        url: url,
+					url: url,
+					params: {
+						action: 'update_hub_on_fb3_meta',
+						fb3_meta: xml
+					},
+					disableCaching: true,
 				    success: function (response)
 				    {
 					    console.log('Описание сохранено', response.responseText);
