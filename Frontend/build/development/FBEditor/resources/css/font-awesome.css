@@ -65,9 +65,9 @@
   left: -1.85714286em;
 }
 .fa-border {
-  padding: .2em .25em .15em;
-  border: solid 0.08em #eeeeee;
-  border-radius: .1em;
+  padding: .2em .15em .15em;
+  border: solid 0.1em #aaa;
+  border-radius: .2em;
 }
 .pull-right {
   float: right;

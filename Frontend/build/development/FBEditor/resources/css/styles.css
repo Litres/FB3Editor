@@ -1,4 +1,5 @@
 @import 'font-awesome.css';
+@import 'editor.css';
 
 .desc-fieldcontainer:nth-child(even)
 {
@@ -552,9 +553,17 @@
 	line-height: 0.75em;
 }
 
-.treenavigation-children span:before {
+.treenavigation-children span:before
+{
 	width: 18px;
 }
+
+.panel-treenavigation .x-grid-item-focused .x-grid-cell-inner:before
+{
+	border: none;
+}
+
+/* Дерево описания */
 
 .treenavigation-root-desc,
 .treenavigation-children-desc,
@@ -576,6 +585,8 @@
 	content: "\f1dd";
 }
 
+/* Дерево текста */
+
 .treenavigation-root-body,
 .treenavigation-children-body,
 .treenavigation-root-body.x-grid-item-focused,
@@ -590,6 +601,94 @@
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
+
+.treenavigation-children-body span:before
+{
+	content: "\f06c";
+}
+
+.treenavigation-children-el-section span:before
+{
+	content: "\f1b2";
+}
+
+.treenavigation-children-el-title span:before
+{
+	content: "\f1dc";
+}
+
+.treenavigation-children-el-img span:before
+{
+	content: "\f03e";
+}
+
+.treenavigation-children-el-div span:before
+{
+	content: "\f1b3";
+}
+
+.treenavigation-children-el-notes span:before
+{
+	content: "\f0e6";
+}
+
+.treenavigation-children-el-note span:before
+{
+	content: "\f075";
+}
+
+.treenavigation-children-el-marker span:before
+{
+	content: "\f024";
+}
+
+.treenavigation-children-el-ol span:before
+{
+	content: "\f0cb";
+}
+
+.treenavigation-children-el-ul span:before
+{
+	content: "\f0ca";
+}
+
+.treenavigation-children-el-annotation span:before
+{
+	content: "\f031";
+}
+
+.treenavigation-children-el-subscription span:before
+{
+	content: "\f08d";
+}
+
+.treenavigation-children-el-blockquote span:before
+{
+	content: "\f10e";
+}
+
+.treenavigation-children-el-epigraph span:before
+{
+	content: "\f231";
+}
+
+.treenavigation-children-el-undefined span:before
+{
+	content: "\f128";
+}
+
+.window-panel-body-tree-name
+{
+	padding: 10px;
+}
+
+.window-panel-body-tree-name span
+{
+	font-weight: bold;
+	color: #3a7461;
+}
+
+/* Дерево ресурсов */
 
 .treenavigation-root-resource,
 .treenavigation-children-resource,
@@ -611,11 +710,6 @@
 	content: "\f07b";
 }
 
-.panel-treenavigation .x-grid-item-focused .x-grid-cell-inner:before
-{
-	border: none;
-}
-
 .window-panel-resources-tree-name
 {
 	padding: 10px;
@@ -625,4 +719,50 @@
 {
 	font-weight: bold;
 	color: #743e45;
+}
+
+/* <-- Дерево ресурсов */
+
+.panel-filename-display .x-form-display-field-default
+{
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.panel-filename-field .x-form-text-default
+{
+	text-align: center;
+	font-size: 16px;
+	background-color: #B9E7DC;
+	color: #2e9577;
+}
+
+.panel-filename-field .x-form-trigger-wrap-focus
+{
+	border: none;
+}
+
+.element-info
+{
+	position: relative;
+	padding: 5px;
+}
+
+.element-info div
+{
+	position: relative;
+	margin: 0 0 5px 0;
+}
+
+.element-info div span
+{
+	color: #666;
+}
+
+.element-info-name
+{
+	font-weight: bold;
+	color: #c26874;
 }

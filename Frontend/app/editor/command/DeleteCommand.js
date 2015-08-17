@@ -49,20 +49,20 @@ Ext.define(
 
 					// пустой параграф
 					els.p = manager.createEmptyP();
-					els.new = els.p;
+					els.newEl = els.p;
 
 					if (els.parent.isRoot)
 					{
 						// в корневом элементе должна быть хотя бы одна секция
 						els.s = FBEditor.editor.Factory.createElement('section');
 						els.s.add(els.p);
-						els.new = els.s;
+						els.newEl = els.s;
 					}
 
-					nodes.new = els.new.getNode(data.viewportId);
+					nodes.newEl = els.newEl.getNode(data.viewportId);
 
-					els.parent.add(els.new);
-					nodes.parent.appendChild(nodes.new);
+					els.parent.add(els.newEl);
+					nodes.parent.appendChild(nodes.newEl);
 				}
 
 				// синхронизируем элемент
@@ -73,7 +73,7 @@ Ext.define(
 				//console.log('del', nodes);
 
 				// устанавливаем курсор
-				nodes.cursor = nodes.new ? nodes.new : nodes.next;
+				nodes.cursor = nodes.newEl ? nodes.newEl : nodes.next;
 				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.prev;
 				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.parent;
 				data.saveRange = {
@@ -121,12 +121,12 @@ Ext.define(
 
 				console.log('undo del el', nodes, els, range);
 
-				if (els.new)
+				if (els.newEl)
 				{
 					// заменяем новый элемент на старый
-					nodes.new = els.new.nodes[data.viewportId];
-					els.parent.replace(els.node, els.new);
-					nodes.parent.replaceChild(nodes.node, nodes.new);
+					nodes.newEl = els.newEl.nodes[data.viewportId];
+					els.parent.replace(els.node, els.newEl);
+					nodes.parent.replaceChild(nodes.node, nodes.newEl);
 				}
 				else if (els.next)
 				{

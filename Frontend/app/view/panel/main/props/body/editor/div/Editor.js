@@ -18,12 +18,12 @@ Ext.define(
 			minWidth: 'Мин. ширина',
 			maxWidth: 'Макс. ширина',
 			widthError: 'По шаблону \d+(\.\d+)?(em|ex|%|mm). Например: 1.5em',
-			float: 'Обтекание',
+			floatText: 'Обтекание',
 			align: 'Выравнивание',
 			bindTo: 'Привязать к',
 			border: 'Граница',
 			onOnePage: 'on-one-page',
-			marker: 'Маркер'
+			markerText: 'Маркер'
 		},
 
 		initComponent: function ()
@@ -32,26 +32,32 @@ Ext.define(
 				store;
 
 			store = {
-				float: Ext.create('Ext.data.Store', {
-					fields: ['value', 'text'],
-					data : [
-						{value: '', text: 'ничего'},
-						{value: 'left', text: 'слева'},
-						{value: 'right', text: 'справа'},
-						{value: 'center', text: 'по центру'},
-						{value: 'default', text: 'по умолчанию'}
-					]
-				}),
-				align: Ext.create('Ext.data.Store', {
-					fields: ['text'],
-					data : [
-						{value: '', text: 'ничего'},
-						{value: 'left', text: 'слева'},
-						{value: 'right', text: 'справа'},
-						{value: 'center', text: 'по центру'},
-						{value: 'default', text: 'по ширине'}
-					]
-				})
+				floatStore: Ext.create(
+					'Ext.data.Store',
+					{
+						fields: ['value', 'text'],
+						data : [
+							{value: '', text: 'ничего'},
+							{value: 'left', text: 'слева'},
+							{value: 'right', text: 'справа'},
+							{value: 'center', text: 'по центру'},
+							{value: 'default', text: 'по умолчанию'}
+						]
+					}
+				),
+				alignStore: Ext.create(
+					'Ext.data.Store',
+					{
+						fields: ['text'],
+						data : [
+							{value: '', text: 'ничего'},
+							{value: 'left', text: 'слева'},
+							{value: 'right', text: 'справа'},
+							{value: 'center', text: 'по центру'},
+							{value: 'default', text: 'по ширине'}
+						]
+					}
+				)
 			};
 
 			me.items = [
@@ -88,8 +94,8 @@ Ext.define(
 					xtype: 'combo',
 					name: 'float',
 					labelAlign: 'left',
-					fieldLabel: me.translateText.float,
-					store: store.float,
+					fieldLabel: me.translateText.floatText,
+					store: store.floatStore,
 					queryMode: 'local',
 					valueField: 'value',
 					displayField: 'text',
@@ -100,7 +106,7 @@ Ext.define(
 					name: 'align',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.align,
-					store: store.align,
+					store: store.alignStore,
 					queryMode: 'local',
 					valueField: 'value',
 					displayField: 'text',
@@ -127,7 +133,7 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-props-body-editor-marker',
-					title: me.translateText.marker
+					title: me.translateText.markerText
 				}
 			];
 

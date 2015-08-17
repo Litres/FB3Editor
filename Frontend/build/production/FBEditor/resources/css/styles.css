@@ -1,4 +1,17 @@
 @import 'font-awesome.css';
+@import 'editor.css';
+
+.desc-fieldcontainer:nth-child(even)
+{
+	padding: 10px 0 0 0;
+	background-color: #eee;
+}
+
+.fb3 .form-desc .x-form-text-field-body-default
+{
+	max-width: none;
+	width: 100%;
+}
 
 .fb3 .form-desc .x-panel-body-default
 {
@@ -22,9 +35,17 @@
 .fb3 .form-desc .x-fieldset-header-default
 {
 	width: 100%;
-	padding: 10px;
+	height: 40px;
+	padding: 0;
 	background-color: #E6E9ED;
 	border-radius: 8px 8px 0 0;
+}
+
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-default
+{
+	width: auto;
+	height: auto;
+	padding: 10px;
 }
 
 .fb3 .form-desc .desc-fieldset-title .x-fieldset-header-default
@@ -94,14 +115,32 @@
 
 .fb3 .form-desc .x-fieldset-header-default > .x-fieldset-header-text
 {
+	width: 95%;
+	padding: 12px 0;
 	font-family: Arial,Helvetica,sans-serif;
 	font-weight: bold;
 	font-size:  16px;
 }
 
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-default > .x-fieldset-header-text
+{
+	width: auto;
+	padding: 0;
+}
+
 .fb3 .form-desc .fieldset-optional .x-fieldset-header-text
 {
 	color: #A89BA2;
+}
+
+.fb3 .form-desc .x-fieldset-header-tool-default
+{
+	padding: 11px 0 0 10px;
+}
+
+.fb3 .form-desc .fieldset-inner .x-fieldset-header-tool-default
+{
+	padding: 0px;
 }
 
 .fb3 .form-desc .x-fieldset-header-tool-default > .x-tool-toggle
@@ -150,6 +189,11 @@
 	color: #A89BA2;
 }
 
+.fb3 .form-desc .x-html-editor-wrap
+{
+	width: 100%;
+}
+
 .fb3 .form-desc .x-form-item-body-default .after-body
 {
 	color: #A89BA2;
@@ -195,6 +239,21 @@
 	border-radius: 3px;
 }
 
+.fb3 .field-required .x-form-trigger-wrap-default,
+.fb3 .field-required .x-form-trigger-default,
+.fb3 .field-required .x-form-text-default,
+.fb3 .field-required .x-form-radio-default,
+.fb3 .field-required .x-form-spinner-default
+{
+	background-color: #fbe4fa;
+}
+
+.fb3 .field-required .x-form-radio-default
+{
+	border-radius: 10px;
+	box-shadow: 0px 0px 1px 3px #fbe4fa;
+}
+
 .fb3 .textfieldclear-trigger
 {
 	width: 18px;
@@ -223,6 +282,16 @@
 	text-align: center;
 }
 
+.window-panel-resources .resource-thumb-img
+{
+	cursor: pointer;
+}
+
+.window-panel-resources .resource-thumb-img-folder
+{
+	cursor: default;
+}
+
 .resource-great-thumb .resource-thumb-img
 {
 	max-width: 320px;
@@ -237,7 +306,7 @@
 
 .resource-great-thumb .resource-thumb-img-folder:before
 {
-	font-size: 14.5em;;
+	font-size: 14.3em;;
 }
 
 .resource-great-thumb .resource-thumb-name
@@ -278,7 +347,7 @@
 
 .resource-large-thumb .resource-thumb-img-folder:before
 {
-	font-size: 6.4em;;
+	font-size: 6.2em;;
 }
 
 .resource-normal-thumb .resource-thumb-img
@@ -307,7 +376,7 @@
 
 .resource-normal-thumb .resource-thumb-img-folder:before
 {
-	font-size: 3.7em;;
+	font-size: 3.5em;;
 }
 
 .resource-great-thumb .resource-thumb-img.resource-thumb-img-svg,
@@ -446,4 +515,254 @@
 .resource-info-name
 {
 	font-weight: bold;
+}
+
+.resource-info-cover
+{
+	font-weight: bold;
+	color: #c26874;
+}
+
+.treenavigation-root
+{
+	font-size: 15px;
+}
+
+.treenavigation-root span,
+.treenavigation-children span
+{
+	position: relative;
+	left: -20px;
+}
+
+.treenavigation-root span:before,
+.treenavigation-children span:before
+{
+	position: relative;
+	width: 24px;
+	text-align: center;
+	left: -3px;
+
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate(0, 0);
+	line-height: 0.75em;
+}
+
+.treenavigation-children span:before
+{
+	width: 18px;
+}
+
+.panel-treenavigation .x-grid-item-focused .x-grid-cell-inner:before
+{
+	border: none;
+}
+
+/* Дерево описания */
+
+.treenavigation-root-desc,
+.treenavigation-children-desc,
+.treenavigation-root-desc.x-grid-item-focused,
+.treenavigation-children-desc.x-grid-item-focused
+{
+	color: #1d458a;
+}
+
+.treenavigation-root-desc span:before
+{
+	content: "\f03a";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
+}
+
+.treenavigation-children-desc span:before
+{
+	content: "\f1dd";
+}
+
+/* Дерево текста */
+
+.treenavigation-root-body,
+.treenavigation-children-body,
+.treenavigation-root-body.x-grid-item-focused,
+.treenavigation-children-body.x-grid-item-focused
+{
+	color: #3a7461;
+}
+
+.treenavigation-root-body span:before
+{
+	content: "\f044";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
+}
+
+.treenavigation-children-body span:before
+{
+	content: "\f06c";
+}
+
+.treenavigation-children-el-section span:before
+{
+	content: "\f1b2";
+}
+
+.treenavigation-children-el-title span:before
+{
+	content: "\f1dc";
+}
+
+.treenavigation-children-el-img span:before
+{
+	content: "\f03e";
+}
+
+.treenavigation-children-el-div span:before
+{
+	content: "\f1b3";
+}
+
+.treenavigation-children-el-notes span:before
+{
+	content: "\f0e6";
+}
+
+.treenavigation-children-el-note span:before
+{
+	content: "\f075";
+}
+
+.treenavigation-children-el-marker span:before
+{
+	content: "\f024";
+}
+
+.treenavigation-children-el-ol span:before
+{
+	content: "\f0cb";
+}
+
+.treenavigation-children-el-ul span:before
+{
+	content: "\f0ca";
+}
+
+.treenavigation-children-el-annotation span:before
+{
+	content: "\f031";
+}
+
+.treenavigation-children-el-subscription span:before
+{
+	content: "\f08d";
+}
+
+.treenavigation-children-el-blockquote span:before
+{
+	content: "\f10e";
+}
+
+.treenavigation-children-el-epigraph span:before
+{
+	content: "\f231";
+}
+
+.treenavigation-children-el-undefined span:before
+{
+	content: "\f128";
+}
+
+.window-panel-body-tree-name
+{
+	padding: 10px;
+}
+
+.window-panel-body-tree-name span
+{
+	font-weight: bold;
+	color: #3a7461;
+}
+
+/* Дерево ресурсов */
+
+.treenavigation-root-resource,
+.treenavigation-children-resource,
+.treenavigation-root-resource.x-grid-item-focused,
+.treenavigation-children-resource.x-grid-item-focused
+{
+	color: #743e45;
+}
+
+.treenavigation-root-resource span:before
+{
+	content: "\f1c0";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
+}
+
+.treenavigation-children-resource span:before
+{
+	content: "\f07b";
+}
+
+.window-panel-resources-tree-name
+{
+	padding: 10px;
+}
+
+.window-panel-resources-tree-name span
+{
+	font-weight: bold;
+	color: #743e45;
+}
+
+/* <-- Дерево ресурсов */
+
+.panel-filename-display .x-form-display-field-default
+{
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.panel-filename-field .x-form-text-default
+{
+	text-align: center;
+	font-size: 16px;
+	background-color: #B9E7DC;
+	color: #2e9577;
+}
+
+.panel-filename-field .x-form-trigger-wrap-focus
+{
+	border: none;
+}
+
+.element-info
+{
+	position: relative;
+	padding: 5px;
+}
+
+.element-info div
+{
+	position: relative;
+	margin: 0 0 5px 0;
+}
+
+.element-info div span
+{
+	color: #666;
+}
+
+.element-info-name
+{
+	font-weight: bold;
+	color: #c26874;
 }

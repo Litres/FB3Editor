@@ -171,22 +171,22 @@ Ext.define(
 
 					// пустой параграф
 					els.p = manager.createEmptyP();
-					els.new = els.p;
+					els.newEl = els.p;
 
 					if (els.parent.isRoot)
 					{
 						// в корневом элементе должна быть хотя бы одна секция
 						els.s = factory.createElement('section');
 						els.s.add(els.p);
-						els.new = els.s;
+						els.newEl = els.s;
 					}
 
-					nodes.new = els.new.getNode(data.viewportId);
+					nodes.newEl = els.newEl.getNode(data.viewportId);
 
-					els.parent.add(els.new);
-					nodes.parent.appendChild(nodes.new);
+					els.parent.add(els.newEl);
+					nodes.parent.appendChild(nodes.newEl);
 
-					nodes.cursor = manager.getDeepFirst(nodes.new);
+					nodes.cursor = manager.getDeepFirst(nodes.newEl);
 					nodes.startCursor = 0;
 				}
 
@@ -247,8 +247,8 @@ Ext.define(
 				if (els.isEmpty)
 				{
 					// удаляем пустой параграф или секцию
-					els.parent.remove(els.new);
-					nodes.parent.removeChild(nodes.new);
+					els.parent.remove(els.newEl);
+					nodes.parent.removeChild(nodes.newEl);
 					nodes.nextCursor = null;
 				}
 
