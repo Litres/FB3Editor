@@ -1,4 +1,4 @@
-# FB3Editor (v254)
+# FB3Editor (v256)
 
 FB3Editor - open source online eBook editor 
 

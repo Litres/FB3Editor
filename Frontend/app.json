@@ -179,6 +179,9 @@
      * settings.
      */
     "production": {
+        "loader": {
+            "cache": 256
+        }
     },
     
     "testing": {
