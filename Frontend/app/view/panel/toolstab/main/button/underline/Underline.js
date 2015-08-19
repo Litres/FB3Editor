@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-underline',
 		//controller: 'panel.toolstab.main.button.underline',
 		html: '<i class="fa fa-underline"></i>',
-		tooltip: 'Подчёркнутый',
+		tooltip: 'Подчёркнутый (Ctrl+U)',
 		elementName: 'underline'
 	}
 );

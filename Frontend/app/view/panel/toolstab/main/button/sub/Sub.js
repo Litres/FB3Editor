@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-sub',
 		//controller: 'panel.toolstab.main.button.sub',
 		html: '<i class="fa fa-subscript"></i>',
-		tooltip: 'Нижний индекс',
+		tooltip: 'Нижний индекс (Ctrl+X)',
 		elementName: 'sub'
 	}
 );

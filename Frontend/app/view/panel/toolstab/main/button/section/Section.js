@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-section',
 		controller: 'panel.toolstab.main.button.section',
 		html: '<i class="fa fa-cube"></i>',
-		tooltip: 'Вложенная секция',
+		tooltip: 'Вложенная секция (Ctrl+Shift+S)',
 		elementName: 'section',
 
 		createOpts: {

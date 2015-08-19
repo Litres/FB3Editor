@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-epigraph',
 		controller: 'panel.toolstab.main.button.epigraph',
 		html: '<i class="fa fa-pinterest-p"></i>',
-		tooltip: 'Эпиграф',
+		tooltip: 'Эпиграф (Ctrl+E)',
 		elementName: 'epigraph'
 	}
 );

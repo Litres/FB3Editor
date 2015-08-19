@@ -38,6 +38,14 @@ Ext.define(
 			{
 				nodes.common = range.common;
 				els.common = nodes.common.getElement();
+
+				if (els.common.isRoot)
+				{
+					btn.disable();
+
+					return;
+				}
+
 				nodes.start = range.start;
 				els.start = nodes.start.getElement();
 				nodes.end = range.end;

@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-strong',
 		//controller: 'panel.toolstab.main.button.strong',
 		html: '<i class="fa fa-bold"></i>',
-		tooltip: 'Полужирный',
+		tooltip: 'Полужирный (Ctrl+B)',
 		elementName: 'strong'
 	}
 );

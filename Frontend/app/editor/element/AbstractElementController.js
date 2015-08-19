@@ -8,6 +8,10 @@
 Ext.define(
 	'FBEditor.editor.element.AbstractElementController',
 	{
+		requires: [
+			'FBEditor.editor.KeyMap'
+		],
+
 		/**
 		 * @property {FBEditor.editor.element.AbstractElement} Элемент контроллера.
 		 */
@@ -263,8 +267,10 @@ Ext.define(
 
 		onKeyDownDefault: function (e)
 		{
-			var me = this;
+			var me = this,
+				keymap = FBEditor.editor.KeyMap;
 
+			keymap.key(e);
 			//e.preventDefault();
 			//console.log('onKeyDownDefault', me.getElement());
 		},

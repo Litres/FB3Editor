@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-title',
 		controller: 'panel.toolstab.main.button.title',
 		html: '<i class="fa fa-header"></i>',
-		tooltip: 'Заголовок',
+		tooltip: 'Заголовок (Ctrl+H)',
 		elementName: 'title'
 	}
 );

@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-pre',
 		//controller: 'panel.toolstab.main.button.pre',
 		html: '<span style="position: relative; font-family: monospace; font-size: 1.4em; top: 2px;">M</span>',
-		tooltip: 'Моноширинный',
+		tooltip: 'Моноширинный (Ctrl+M)',
 		elementName: 'pre'
 	}
 );

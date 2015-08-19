@@ -34,6 +34,14 @@ Ext.define(
 
 			nodes.node = range.common;
 			els.node = nodes.node.getElement();
+
+			if (els.node.isRoot)
+			{
+				btn.disable();
+
+				return;
+			}
+
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 
@@ -46,13 +54,21 @@ Ext.define(
 			}
 
 			nameElements = manager.getNamesElements(els.parent);
-			nameElements.push(name);
 
-			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			name = els.parent.getName();
-			//console.log('name, nameElements', name, nameElements);
-			enable = sch.verify(name, nameElements);
+			if (nameElements[nameElements.length - 1] === name)
+			{
+				enable = false;
+			}
+			else
+			{
+				nameElements.push(name);
+
+				// проверяем элемент по схеме
+				sch = manager.getSchema();
+				name = els.parent.getName();
+				//console.log('name, nameElements', name, nameElements);
+				enable = sch.verify(name, nameElements);
+			}
 
 			if (enable)
 			{

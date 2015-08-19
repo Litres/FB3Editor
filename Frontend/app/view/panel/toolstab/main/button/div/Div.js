@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-div',
 		controller: 'panel.toolstab.main.button.div',
 		html: '<i class="fa fa-cubes"></i>',
-		tooltip: 'Блок',
+		tooltip: 'Блок (Ctrl+D)',
 		elementName: 'div'
 	}
 );

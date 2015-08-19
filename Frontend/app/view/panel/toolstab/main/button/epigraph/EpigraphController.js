@@ -34,6 +34,14 @@ Ext.define(
 
 			nodes.node = range.common;
 			els.node = nodes.node.getElement();
+
+			if (els.node.isRoot)
+			{
+				btn.disable();
+
+				return;
+			}
+
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 
@@ -65,7 +73,7 @@ Ext.define(
 				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 			}
 
-			nodes.parent = nodes.node.parentNode;
+			nodes.parent = els.node.isRoot ? nodes.node : nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 
 			nodes.first = nodes.parent.firstChild;

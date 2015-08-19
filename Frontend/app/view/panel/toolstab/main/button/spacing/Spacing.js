@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-spacing',
 		//controller: 'panel.toolstab.main.button.spacing',
 		html: '<i class="fa fa-text-width"></i>',
-		tooltip: 'Межбуквенный интервал',
+		tooltip: 'Межбуквенный интервал (Ctrl+Shift+I)',
 		elementName: 'spacing'
 	}
 );

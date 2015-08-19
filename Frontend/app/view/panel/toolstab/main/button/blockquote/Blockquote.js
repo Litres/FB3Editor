@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-blockquote',
 		controller: 'panel.toolstab.main.button.blockquote',
 		html: '<i class="fa fa-quote-right"></i>',
-		tooltip: 'Цитата',
+		tooltip: 'Цитата (Ctrl+Q)',
 		elementName: 'blockquote'
 	}
 );

@@ -18,6 +18,11 @@ Ext.define(
 		 */
 		elements: null,
 
+		/**
+		 * @property {Boolean} Показывать ли отладочные сообщения в консоли.
+		 */
+		disableDebug: true,
+
 		constructor: function ()
 		{
 			var me = this,
@@ -96,9 +101,6 @@ Ext.define(
 				choice,
 				el,
 				nameEl;
-
-			// отладочные сообщения
-			me.disableDebug = true;
 
 			el = me.getElement(name);
 			if (!el)

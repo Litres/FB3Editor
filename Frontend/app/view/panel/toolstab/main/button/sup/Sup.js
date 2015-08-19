@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-sup',
 		//controller: 'panel.toolstab.main.button.sup',
 		html: '<i class="fa fa-superscript"></i>',
-		tooltip: 'Верхний индекс',
+		tooltip: 'Верхний индекс (Ctrl+Shift+X)',
 		elementName: 'sup'
 	}
 );

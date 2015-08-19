@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-img',
 		controller: 'panel.toolstab.main.button.img',
 		html: '<i class="fa fa-picture-o"></i>',
-		tooltip: 'Изображение',
+		tooltip: 'Изображение (Ctrl+P)',
 		elementName: 'img',
 
 		/**

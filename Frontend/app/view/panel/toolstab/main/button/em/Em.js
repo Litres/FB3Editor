@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main-button-em',
 		//controller: 'panel.toolstab.main.button.em',
 		html: '<i class="fa fa-italic"></i>',
-		tooltip: 'Курсив',
+		tooltip: 'Курсив (Ctrl+I)',
 		elementName: 'em'
 	}
 );

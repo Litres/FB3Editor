@@ -1,7 +1,7 @@
 /**
- * The main application class. An instance of this class is created by app.js when it calls
- * Ext.application(). This is the ideal place to handle application launch and initialization
- * details.
+ * Инициализация приложения.
+ *
+ * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
@@ -10,11 +10,11 @@ Ext.define(
 	    extend: 'Ext.app.Application',
 	    name: 'FBEditor',
 		requires: [
+			'FBEditor.command.HistoryCommand',
 			'FBEditor.desc.Manager',
 			'FBEditor.editor.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
-			'FBEditor.command.HistoryCommand',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',
 			'FBEditor.xsl.Body',
