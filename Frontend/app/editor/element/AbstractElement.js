@@ -285,15 +285,14 @@ Ext.define(
 		removeAll: function ()
 		{
 			var me = this,
-				children = me.children;
+				children = me.children,
+				el;
 
-			 Ext.Array.each(
-				 children,
-			     function (el)
-			     {
-				     me.remove(el);
-			     }
-			 );
+			while (children.length)
+			{
+				el = children[0];
+				me.remove(el);
+			}
 		},
 
 		clear: function ()
@@ -314,18 +313,22 @@ Ext.define(
 		{
 			var me = this,
 				children = me.children,
+				factory = FBEditor.editor.Factory,
 				newEl,
 				ignoredText,
 				ignoredDeep;
 
 			ignoredText = opts && opts.ignoredText ? true : false;
 			ignoredDeep = opts && opts.ignoredDeep ? true : false;
+
 			if (me.isText && ignoredText)
 			{
 				return null;
 			}
-			newEl = me.isText ? FBEditor.editor.Factory.createElementText(me.text) :
-			        FBEditor.editor.Factory.createElement(me.xmlTag);
+
+			newEl = me.isText ? factory.createElementText(me.text) :
+			        factory.createElement(me.getName());
+
 			if (!ignoredDeep)
 			{
 				Ext.Array.each(
@@ -1036,6 +1039,46 @@ Ext.define(
 					//console.log('child', pos, child.xmlTag);
 
 					// добавляем в контейнер стилевой элемент
+					fragment.add(child);
+				}
+				else
+				{
+					// позиция следующего потомка
+					pos++;
+				}
+			}
+		},
+
+		/**
+		 * Преобразует элемент в текст.
+		 * @param {FBEditor.editor.element.AbstractElement} fragment Пустой элемент, в который будут помещаться
+		 * необходимые результирующие элементы.
+		 */
+		convertToText: function (fragment)
+		{
+			var me = this,
+				pos = 0,
+				child;
+
+			//console.log('* me', me.xmlTag, me.children);
+
+			while (pos < me.children.length)
+			{
+				child = me.children[pos];
+
+				if (!child.isStyleType && !child.isText)
+				{
+					//console.log('style child', pos, child ? child.xmlTag : '');
+
+					// конвертируем потомка
+					child.convertToText(fragment);
+				}
+
+				if (child && (child.isStyleType || child.isText))
+				{
+					//console.log('child', pos, child.xmlTag);
+
+					// добавляем в контейнер текстовый элемент
 					fragment.add(child);
 				}
 				else

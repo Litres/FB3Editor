@@ -30,6 +30,11 @@ Ext.define(
 			me.htmlTag = n;
 			me.xmlTag = n;
 			me.callParent([attributes, children]);
+		},
+
+		convertToText: function (fragment)
+		{
+			//
 		}
 	}
 );

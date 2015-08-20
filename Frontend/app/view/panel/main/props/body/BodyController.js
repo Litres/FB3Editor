@@ -86,7 +86,7 @@ Ext.define(
 				{
 					deleteBtn.setVisible(false);
 				}
-				if (el.isImg || el.isRoot)
+				if (el.isImg || el.isRoot || !convertBtn.verify())
 				{
 					convertBtn.setVisible(false);
 				}

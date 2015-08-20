@@ -19,17 +19,51 @@ Ext.define(
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
-				cmd,
-				data = {};
+				data = {},
+				cmd;
 
-			//TODO
-			alert('В разработке!'); return false;
 			data.el = me.element;
 			cmd = bridge.Ext.create('FBEditor.editor.command.ConvertToTextCommand', data);
 			if (cmd.execute())
 			{
-				bridge.FBEditor.editor.HistoryManager.add(cmd);
+				//bridge.FBEditor.editor.HistoryManager.add(cmd);
 			}
+		},
+
+		/**
+		 * Проверяет по схеме возможную новую структуру после преобразования.
+		 * @return {Boolean} Разрешено ли преобразование.
+		 */
+		verify: function ()
+		{
+			var me = this,
+				res = false,
+				els = {},
+				nodes = {},
+				manager = FBEditor.editor.Manager,
+				sch = manager.getSchema(),
+				viewportId,
+				range;
+
+			range = manager.getRange();
+			viewportId = range.start.viewportId;
+
+			els.node = me.element;
+			nodes.node = els.node.nodes[viewportId];
+			els.parent = els.node.parent;
+			nodes.parent = els.parent.nodes[viewportId];
+
+			els.nameEl = els.parent.getName();
+			els.pos = els.parent.getChildPosition(els.node);
+			els.namesElements = manager.getNamesElements(els.parent);
+			els.namesElements.splice(els.pos, 1, 'p');
+
+			if (sch.verify(els.nameEl, els.namesElements) || sch.verify(els.node.getName(), ['p']))
+			{
+				res = true;
+			}
+
+			return res;
 		}
 	}
 );

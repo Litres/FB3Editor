@@ -35,6 +35,31 @@ Ext.define(
 			);
 
 			fragment.add(me);
+		},
+
+		convertToText: function (fragment)
+		{
+			var me = this,
+				factory = FBEditor.editor.Factory;
+
+			// переносим из li всех потомков в p и добавляем во фрагмент
+			Ext.Array.each(
+				me.children,
+				function (li)
+				{
+					var p = factory.createElement('p');
+
+					Ext.Array.each(
+						li.children,
+					    function (child)
+					    {
+						    p.add(child);
+					    }
+					);
+
+					fragment.add(p);
+				}
+			);
 		}
 	}
 );
