@@ -105,7 +105,7 @@ Ext.define(
 			Ext.getCmp('form-desc-periodical').down('form-desc-title-alt').
 				fireEvent('loadData', data['periodical-title-alt']);
 			Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations['relations-subject']);
-			Ext.getCmp('form-desc-classification-udk').fireEvent('loadData', data['classification-udk']);
+			Ext.getCmp('form-desc-classification-udc').fireEvent('loadData', data['classification-udc']);
 			Ext.getCmp('form-desc-classification-bbk').fireEvent('loadData', data['classification-bbk']);
 			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);

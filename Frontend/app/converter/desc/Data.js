@@ -135,9 +135,9 @@ Ext.define(
 			d['classification-class-text'] = d['fb3-classification']['class'].text;
 			d['classification-subject'] = me._convertValToObj(d['fb3-classification'].subject,
 			                                                  'classification-subject');
-			d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?
-			                                     d['fb3-classification']['custom-subject'] : '';
-			d['classification-udk'] = me._convertValToObj(d['fb3-classification'].udk, 'classification-udk');
+			/*d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?
+			                                     d['fb3-classification']['custom-subject'] : '';*/
+			d['classification-udc'] = me._convertValToObj(d['fb3-classification'].udc, 'classification-udc');
 			d['classification-bbk'] = me._convertValToObj(d['fb3-classification'].bbk, 'classification-bbk');
 			if (d['fb3-classification']['target-audience'])
 			{
@@ -153,22 +153,22 @@ Ext.define(
 					d['fb3-classification']['target-audience']['age-max'] ?
 					d['fb3-classification']['target-audience']['age-max'] : '';
 			}
-			if (d['fb3-classification'].coverage)
+			if (d['fb3-classification'].setting)
 			{
-				d['classification-coverage-text'] = d['fb3-classification'].coverage.text ?
-				                                    d['fb3-classification'].coverage.text : '';
-				d['classification-coverage-country'] = d['fb3-classification'].coverage.country ?
-				                                       d['fb3-classification'].coverage.country : '';
-				d['classification-coverage-place'] = d['fb3-classification'].coverage.place ?
-				                                     d['fb3-classification'].coverage.place : '';
-				d['classification-coverage-date'] = d['fb3-classification'].coverage.date ?
-				                                    d['fb3-classification'].coverage.date : '';
-				d['classification-coverage-age'] = d['fb3-classification'].coverage.age ?
-				                                   d['fb3-classification'].coverage.age : '';
-				d['classification-coverage-date-from'] = d['fb3-classification'].coverage['date-from'] ?
-				                                         d['fb3-classification'].coverage['date-from'] : '';
-				d['classification-coverage-date-to'] = d['fb3-classification'].coverage['date-to'] ?
-				                                       d['fb3-classification'].coverage['date-to'] : '';
+				d['classification-setting-text'] = d['fb3-classification'].setting.text ?
+				                                    d['fb3-classification'].setting.text : '';
+				d['classification-setting-country'] = d['fb3-classification'].setting.country ?
+				                                       d['fb3-classification'].setting.country : '';
+				d['classification-setting-place'] = d['fb3-classification'].setting.place ?
+				                                     d['fb3-classification'].setting.place : '';
+				d['classification-setting-date'] = d['fb3-classification'].setting.date ?
+				                                    d['fb3-classification'].setting.date : '';
+				d['classification-setting-age'] = d['fb3-classification'].setting.age ?
+				                                   d['fb3-classification'].setting.age : '';
+				d['classification-setting-date-from'] = d['fb3-classification'].setting['date-from'] ?
+				                                         d['fb3-classification'].setting['date-from'] : '';
+				d['classification-setting-date-to'] = d['fb3-classification'].setting['date-to'] ?
+				                                       d['fb3-classification'].setting['date-to'] : '';
 			}
 			delete d['fb3-classification'];
 

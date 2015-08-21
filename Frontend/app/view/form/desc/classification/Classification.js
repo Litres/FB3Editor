@@ -14,7 +14,7 @@ Ext.define(
 			'FBEditor.view.form.desc.classification.classContents.Contents',
 			//'FBEditor.view.form.desc.classification.customSubject.CustomSubject',
 			'FBEditor.view.form.desc.classification.target.Target',
-			'FBEditor.view.form.desc.classification.coverage.Coverage',
+			'FBEditor.view.form.desc.classification.setting.Setting',
 			'FBEditor.view.form.desc.written.Written'
 		],
 		xtype: 'form-desc-classification',
@@ -24,11 +24,11 @@ Ext.define(
 			bookClass: 'Литературная форма',
 			contents: 'Тип лит. формы',
 			target: 'Целевая аудитория',
-			coverage: 'Привязка к месту и времени',
+			setting: 'Привязка к месту и времени',
 			codes: 'Коды',
-			udk: 'Код УДК',
+			udc: 'Код УДК',
 			bbk: 'Код ББК',
-			udkError: 'По шаблону \d+(\.\d+)+(:\d+)?. Например 373.167.1:58',
+			udcError: 'По шаблону \d+(\.\d+)+(:\d+)?. Например 373.167.1:58',
 			bbkError: 'По шаблону \d+([\.а-я]\d+)+. Например 28.5я72',
 			written: 'Дата и место написания',
 			keywords: 'Ключевые слова',
@@ -121,10 +121,10 @@ Ext.define(
 				},
 				{
 					xtype: 'desc-fieldsetinner',
-					title: me.translateText.coverage,
+					title: me.translateText.setting,
 					items: [
 						{
-							xtype: 'form-desc-classification-coverage'
+							xtype: 'form-desc-classification-setting'
 						}
 					]
 				},
@@ -136,7 +136,7 @@ Ext.define(
 						{
 							xtype: 'desc-fieldcontainer',
 							name: 'form-desc-plugin-fieldcontainerreplicator',
-							id: 'form-desc-classification-udk',
+							id: 'form-desc-classification-udc',
 							flex: 1,
 							layout: 'anchor',
 							items: [
@@ -152,7 +152,7 @@ Ext.define(
 									},
 									plugins: {
 										ptype: 'fieldcontainerreplicator',
-										groupName: 'classification-udk',
+										groupName: 'classification-udc',
 										btnStyle: {
 											margin: '0 0 0 5px'
 										}
@@ -160,12 +160,12 @@ Ext.define(
 									items: [
 										{
 											xtype: 'textfieldclear',
-											name: 'classification-udk',
+											name: 'classification-udc',
 											flex: 1,
-											fieldLabel: me.translateText.udk,
+											fieldLabel: me.translateText.udc,
 											regex: /^\d+(\.\d+)+(:\d+)?$/,
-											regexText: me.translateText.udkError,
-											afterBodyEl:  '<span class="after-body">' + me.translateText.udkError +
+											regexText: me.translateText.udcError,
+											afterBodyEl:  '<span class="after-body">' + me.translateText.udcError +
 											              '</span>'
 										}
 									]
@@ -227,7 +227,7 @@ Ext.define(
 							xtype: 'form-desc-written'
 						}
 					]
-				},
+				}/*,
 				{
 					xtype: 'desc-fieldsetinner',
 					title: me.translateText.keywords,
@@ -244,7 +244,7 @@ Ext.define(
 							afterBodyEl:  '<span class="after-body">' + me.translateText.keywordsHelp + '</span>'
 						}
 					]
-				}
+				}*/
 
 			];
 			me.callParent(arguments);
@@ -264,17 +264,17 @@ Ext.define(
 					__text: me.down('form-desc-bookClass').getValue()
 				},
 				'target-audience': me.down('form-desc-classification-target').getValues(),
-				coverage: me.down('form-desc-classification-coverage').getValues(),
-				udk: me.getDataFields(me.query('[name=classification-udk]')),
+				setting: me.down('form-desc-classification-setting').getValues(),
+				udc: me.getDataFields(me.query('[name=classification-udc]')),
 				bbk: me.getDataFields(me.query('[name=classification-bbk]'))
 			};
 			data['fb3-classification'] = me.removeEmptyValues(values);
 			data = me.down('form-desc-written').getValues(data);
-			keywords = me.down('[name=keywords]').getValue();
+			/*keywords = me.down('[name=keywords]').getValue();
 			if (keywords)
 			{
 				data.keywords = keywords;
-			}
+			}*/
 
 			return data;
 		}

@@ -52,6 +52,22 @@ attributeFormDefault="unqualified">\
 				      <enumeration value="photographer" />\
 				      <enumeration value="narrator" />\
 				      <enumeration value="rendering" />\
+				      <enumeration value="performer">\
+					</enumeration>\
+					<enumeration value="maker">\
+					</enumeration>\
+					<enumeration value="actor">\
+					</enumeration>\
+					<enumeration value="director">\
+					</enumeration>\
+					<enumeration value="producer">\
+					</enumeration>\
+					<enumeration value="composer">\
+					</enumeration>\
+					<enumeration value="sound_engineer">\
+					</enumeration>\
+					<enumeration value="screenwriter">\
+					</enumeration>\
 				      <enumeration value="other" />\
 				      <enumeration value="undef" />\
 			      </restriction>\
@@ -71,6 +87,7 @@ attributeFormDefault="unqualified">\
 		          <enumeration value="alt_media" />\
 		          <enumeration value="sequel" />\
 		          <enumeration value="prequel" />\
+		          <enumeration value="reissue" />\
 		          <enumeration value="undef" />\
 	          </restriction>\
           </simpleType>\
@@ -210,18 +227,17 @@ attributeFormDefault="unqualified">\
 				                        </complexType>\
 			                        </element>\
 			                        <element name="history" type="fb3d:AnnotationType" minOccurs="0"/>\
-			                        <element name="keywords" type="string" minOccurs="0">\
-				                        			                        </element>\
 			                        <element name="publish-info" minOccurs="0" maxOccurs="unbounded">\
-				                        				                        <complexType mixed="false">\
-					                        <attribute name="title" type="token" use="required">\
-						                        					                        </attribute>\
-					                        <attribute name="publisher" type="token" use="optional"/>\
-					                        <attribute name="city" type="token" use="optional"/>\
-					                        <attribute name="year" type="gYear" use="optional"/>\
-					                        <attribute name="isbn" type="fb3d:ISBNType" use="optional"/>\
-				                        </complexType>\
-			                        </element>\
+										<complexType mixed="false">\
+											<sequence>\
+												<element name="isbn" type="fb3d:ISBNType" minOccurs="0" maxOccurs="unbounded"/>\
+											</sequence>\
+											<attribute name="title" type="token" use="required"/>\
+											<attribute name="publisher" type="token" use="optional"/>\
+											<attribute name="city" type="token" use="optional"/>\
+											<attribute name="year" type="gYear" use="optional"/>\
+										</complexType>\
+									</element>\
 			                        <element name="custom-info" minOccurs="0" maxOccurs="unbounded">\
 				                        				                        <complexType>\
 					                        <simpleContent>\
@@ -297,14 +313,6 @@ attributeFormDefault="unqualified">\
       </element>\
       <element name="subject" type="fb3d:SubjectType" maxOccurs="unbounded">\
                 </element>\
-      <element name="custom-subject" minOccurs="0" maxOccurs="unbounded">\
-                    <simpleType>\
-	          <restriction base="token">\
-		          <minLength value="1"/>\
-		          <whiteSpace value="collapse"/>\
-	          </restriction>\
-          </simpleType>\
-      </element>\
       <element name="target-audience" minOccurs="0">\
                     <complexType mixed="true">\
 	          <attribute name="age-min" use="optional">\
@@ -334,8 +342,8 @@ attributeFormDefault="unqualified">\
 	          </attribute>\
           </complexType>\
       </element>\
-      <element name="coverage" minOccurs="0">\
-                    <complexType mixed="true">\
+      <element name="setting" minOccurs="0">\
+          <complexType mixed="true">\
 	          <attribute name="country" type="token" use="optional"/>\
 	          <attribute name="place" type="token" use="optional"/>\
 	          <attribute name="date" type="date" use="optional"/>\

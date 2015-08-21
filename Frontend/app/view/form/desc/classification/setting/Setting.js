@@ -5,10 +5,10 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.classification.coverage.Coverage',
+	'FBEditor.view.form.desc.classification.setting.Setting',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
-		xtype: 'form-desc-classification-coverage',
+		xtype: 'form-desc-classification-setting',
 		layout: 'hbox',
 
 		translateText: {
@@ -39,17 +39,17 @@ Ext.define(
 					items: [
 						{
 							xtype: 'textfield',
-							name: 'classification-coverage-age',
+							name: 'classification-setting-age',
 							fieldLabel: me.translateText.age
 						},
 						{
 							xtype: 'countryfield',
-							name: 'classification-coverage-country',
+							name: 'classification-setting-country',
 							fieldLabel: me.translateText.country
 						},
 						{
 							xtype: 'textfield',
-							name: 'classification-coverage-place',
+							name: 'classification-setting-place',
 							fieldLabel: me.translateText.place
 						}
 					]
@@ -71,22 +71,22 @@ Ext.define(
 					items: [
 						{
 							xtype: 'datefield',
-							name: 'classification-coverage-date',
+							name: 'classification-setting-date',
 							fieldLabel: me.translateText.date
 						},
 						{
 							xtype: 'datefield',
-							name: 'classification-coverage-date-from',
+							name: 'classification-setting-date-from',
 							fieldLabel: me.translateText.dateFrom
 						},
 						{
 							xtype: 'datefield',
-							name: 'classification-coverage-date-to',
+							name: 'classification-setting-date-to',
 							fieldLabel: me.translateText.dateTo
 						},
 						{
 							xtype: 'textfield',
-							name: 'classification-coverage-text',
+							name: 'classification-setting-text',
 							fieldLabel: me.translateText.desc
 						}
 					]
@@ -100,14 +100,14 @@ Ext.define(
 			var me = this,
 				data,
 				values = {
-					__text: me.down('[name=classification-coverage-text]').getValue(),
-					_country: me.down('[name=classification-coverage-country]').getValue(),
-					_place: me.down('[name=classification-coverage-place]').getValue(),
-					_age: me.down('[name=classification-coverage-age]').getValue(),
-					_date: Ext.Date.format(me.down('[name=classification-coverage-date]').getValue(), 'Y-m-d'),
-					'_date-from': Ext.Date.format(me.down('[name=classification-coverage-date-from]').getValue(),
+					__text: me.down('[name=classification-setting-text]').getValue(),
+					_country: me.down('[name=classification-setting-country]').getValue(),
+					_place: me.down('[name=classification-setting-place]').getValue(),
+					_age: me.down('[name=classification-setting-age]').getValue(),
+					_date: Ext.Date.format(me.down('[name=classification-setting-date]').getValue(), 'Y-m-d'),
+					'_date-from': Ext.Date.format(me.down('[name=classification-setting-date-from]').getValue(),
 					                              'Y-m-d'),
-					'_date-to': Ext.Date.format(me.down('[name=classification-coverage-date-to]').getValue(), 'Y-m-d')
+					'_date-to': Ext.Date.format(me.down('[name=classification-setting-date-to]').getValue(), 'Y-m-d')
 				};
 
 			data = me.removeEmptyValues(values);

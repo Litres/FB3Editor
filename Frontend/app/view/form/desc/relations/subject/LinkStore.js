@@ -131,6 +131,38 @@ Ext.define(
 				name: 'Пересказ'
 			},
 			{
+				value: 'performer',
+				name: 'Исполнитель'
+			},
+			{
+				value: 'maker',
+				name: 'Производитель'
+			},
+			{
+				value: 'actor',
+				name: 'Актер'
+			},
+			{
+				value: 'director',
+				name: 'Режиссер'
+			},
+			{
+				value: 'producer',
+				name: 'Продюсер'
+			},
+			{
+				value: 'composer',
+				name: 'Композитор'
+			},
+			{
+				value: 'sound_engineer',
+				name: 'Звукорежиссер'
+			},
+			{
+				value: 'screenwriter',
+				name: 'Сценарист'
+			},
+			{
 				value: 'other',
 				name: 'Прочее'
 			},

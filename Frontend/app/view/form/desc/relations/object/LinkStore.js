@@ -71,6 +71,10 @@ Ext.define(
 				name: 'Приквел'
 			},
 			{
+				value: 'reissue',
+				name: 'Переиздание'
+			},
+			{
 				value: 'undef',
 				name: 'Не определено'
 			}
