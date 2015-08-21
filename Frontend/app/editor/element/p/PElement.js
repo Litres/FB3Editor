@@ -37,6 +37,19 @@ Ext.define(
 			element = me.callParent(arguments);
 
 			return element;
+		},
+
+		getXml: function ()
+		{
+			var me = this,
+				xml;
+
+			xml = me.callParent(arguments);
+
+			// заменяем все пустые параграфы на br
+			xml = xml.replace(/<p><br\/><\/p>/gi, '<br/>');
+
+			return xml;
 		}
 	}
 );

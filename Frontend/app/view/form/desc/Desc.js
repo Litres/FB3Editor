@@ -122,44 +122,6 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает данные в виде строки xml.
-		 * @param {Object} [values] Данные формы.
-		 * @return {String} строка xml.
-		 */
-		getXml: function (values)
-		{
-			var me = this,
-				xml,
-				xsd,
-				data;
-
-			data = values || me.getValues();
-			data = {
-				'fb3-description': data
-			};
-			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
-			data['fb3-description']._id = '';
-			data['fb3-description']._version = '1.0';
-			console.log('save desc', data);
-			xml = FBEditor.util.xml.Json.jsonToXml(data);
-			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
-			//console.log(xml);
-
-			// проверка xml по схеме отложена на будущее
-			/*xsd = FBEditor.xsd.Desc.getXsd();
-			data = {
-				xml: xml,
-				xsd: xsd,
-				xmlFileName: 'description.xml',
-				schemaFileName: 'description.xsd'
-			};
-			valid = FBEditor.util.xml.Jsxml.valid(data);
-			console.log('valid', valid);*/
-
-			return xml;
-		},
-
-		/**
 		 * Проверяет валидность формы.
 		 * @return {Boolean} Валидна ли форма.
 		 */
@@ -203,81 +165,6 @@ Ext.define(
 			);
 
 			return data;
-		},
-
-		/**
-		 * Возвращает мета-данные в виде строки xml.
-		 * @param {Object} [values] Данные формы.
-		 * @return {String} Строка xml.
-		 */
-		getMetaXml: function (values)
-		{
-			var me = this,
-				xml,
-				data,
-				rev,
-				metaData;
-
-			/**
-			 * Возвращает авторов.
-			 * @param {Array} subjects Список связанных персон.
-			 * @return {String} Авторы через запятую.
-			 */
-			function getCreator(subjects)
-			{
-				var authors = [];
-
-				Ext.each(
-					subjects,
-				    function (item)
-					{
-						var subject;
-
-						if (item._link === 'author')
-						{
-							subject = item.title ? item.title.main : item['last-name'];
-							authors.push(subject);
-						}
-					}
-				);
-
-				return authors.join(', ');
-			}
-
-			data = values || me.getValues();
-			rev = FBEditor.file.Manager.fb3file ?
-			      Number(FBEditor.file.Manager.fb3file.getStructure().getMeta().revision.__text) : 0;
-			rev = Ext.isNumber(rev) ? rev + 1 : 1;
-			metaData = {
-				coreProperties: {
-					__prefix: 'cp',
-					'_xmlns:cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
-					'_xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-					'_xmlns:dcterms': 'http://purl.org/dc/terms/',
-					'_xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
-					'dc:title': data.title.main,
-					'dc:creator': getCreator(data['fb3-relations'].subject),
-					'cp:revision': rev,
-					'cp:contentStatus': data['fb3-classification']['class']._contents,
-					'cp:category': data['fb3-classification']['class'].__text,
-					'dcterms:modified': data['document-info']._updated,
-					'dcterms:created': data['document-info']._created
-				}
-			};
-			if (data.title && data.title.sub)
-			{
-				metaData.coreProperties['dc:subject'] = data.title.sub;
-			}
-			if (data.annotation)
-			{
-				metaData.coreProperties['dc:description'] = Ext.util.Format.stripTags(data.annotation);
-			}
-			console.log('save meta', metaData);
-			xml = FBEditor.util.xml.Json.jsonToXml(metaData);
-			xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + xml;
-			//console.log(xml);
-
-			return xml;
 		}
 	}
 );

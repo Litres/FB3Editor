@@ -37,7 +37,7 @@ Ext.define(
 				descXml = FBEditor.desc.Manager.getXml(descValues);
 				fb3data = {
 					thumb: cover,
-					meta: desc.getMetaXml(descValues),
+					meta: FBEditor.desc.Manager.getMetaXml(descValues),
 					books: [
 						{
 							desc: descXml,
