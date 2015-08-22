@@ -31,6 +31,12 @@ Ext.define(
 
 			// первый параграф
 			nodes.first = range.start;
+
+			if (!nodes.first.getElement || nodes.first.getElement().isRoot)
+			{
+				return false;
+			}
+
 			els.first = nodes.first.getElement();
 			while (!els.first.isP && !els.first.isRoot)
 			{

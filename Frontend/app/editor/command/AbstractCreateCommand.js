@@ -159,8 +159,7 @@ Ext.define(
 			nodes.p = els.p.nodes[data.viewportId];
 			data.saveRange = {
 				startNode: nodes.p.firstChild,
-				startOffset: nodes.p.firstChild.length,
-				focusElement: els.p
+				startOffset: nodes.p.firstChild.length
 			};
 			FBEditor.editor.Manager.setCursor(data.saveRange);
 		}

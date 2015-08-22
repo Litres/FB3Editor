@@ -37,7 +37,8 @@ Ext.Microloader=Ext.Microloader||function(){var j=Ext.Boot,k=[],r=!1,h={detectPl
 Ext.manifest=JSON.parse(j.content);h.load(f)})}else h.load(f)},load:function(f){var k=f.loadOrder,v=k?j.createLoadOrderMap(k):null,u=[],q=f.js||[],s=f.css||[],n,p=function(){r=!0;h.notify()};k&&(f.loadOrderMap=v);for(var d=s.concat(q),s=d.length,q=0;q<s;q++)f=d[q],n=!0,f.platform&&!j.filterPlatform(f.platform)&&(n=!1),n&&u.push(f.path);j.load({url:u,loadOrder:k,loadOrderMap:v,sequential:!0,success:p,failure:p})},onMicroloaderReady:function(f){r?f():k.push(f)},notify:function(){for(var f;f=k.shift();)f()}};
 return h}();Ext.manifest=Ext.manifest||"bootstrap";Ext.Microloader.run();</script>
 
-	<!--link href="resources/css/styles.css" rel="stylesheet" type="text/css" /-->
+    <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 
 </head>
 <body></body>

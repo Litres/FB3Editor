@@ -37,15 +37,15 @@ Ext.define(
 			if (!range.collapsed)
 			{
 				nodes.common = range.common;
-				els.common = nodes.common.getElement();
 
-				if (els.common.isRoot)
+				if (!nodes.common.getElement || nodes.common.getElement().isRoot)
 				{
 					btn.disable();
 
 					return;
 				}
 
+				els.common = nodes.common.getElement();
 				nodes.start = range.start;
 				els.start = nodes.start.getElement();
 				nodes.end = range.end;
@@ -139,6 +139,14 @@ Ext.define(
 			else
 			{
 				nodes.node = range.common;
+
+				if (!nodes.node.getElement || nodes.node.getElement().isRoot)
+				{
+					btn.disable();
+
+					return;
+				}
+
 				els.node = nodes.node.getElement();
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();

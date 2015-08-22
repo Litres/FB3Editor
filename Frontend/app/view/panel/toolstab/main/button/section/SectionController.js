@@ -29,15 +29,15 @@ Ext.define(
 			}
 
 			nodes.node = range.common;
-			els.node = nodes.node.getElement();
 
-			if (els.node.isRoot)
+			if (!nodes.node.getElement || nodes.node.getElement().isRoot)
 			{
 				btn.disable();
 
 				return;
 			}
 
+			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 

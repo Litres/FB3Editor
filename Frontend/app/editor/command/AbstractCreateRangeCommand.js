@@ -23,6 +23,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				offset = {},
+				manager = FBEditor.editor.Manager,
 				sel,
 				collapsed,
 				range,
@@ -30,12 +31,12 @@ Ext.define(
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
-					FBEditor.editor.Manager.setCursor(data.saveRange);
+					manager.setCursor(data.saveRange);
 				}
 
 				// получаем данные из выделения
@@ -64,7 +65,7 @@ Ext.define(
 					end: range.endOffset
 				};
 				joinStartContainer = range.startOffset === 0 ?
-				                     !FBEditor.editor.Manager.isFirstNode(nodes.common, range.startContainer) : true;
+				                     !manager.isFirstNode(nodes.common, range.startContainer) : true;
 				data.range = {
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
@@ -82,7 +83,7 @@ Ext.define(
 
 				// разбиваем конечный узел текущего выделения
 				nodes.container = nodes.endContainer;
-				nodes.endContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.end);
+				nodes.endContainer = manager.splitNode(els, nodes, offset.end);
 
 				// конечный узел текущего выделения
 				if (collapsed)
@@ -93,7 +94,7 @@ Ext.define(
 				{
 					// разбиваем начальный узел текущего выделения
 					nodes.container = nodes.startContainer;
-					nodes.startContainer = FBEditor.editor.Manager.splitNode(els, nodes, offset.start);
+					nodes.startContainer = manager.splitNode(els, nodes, offset.start);
 				}
 
 				els.startContainer = nodes.startContainer.getElement();
@@ -127,10 +128,10 @@ Ext.define(
 				// синхронизируем
 				els.common.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				FBEditor.editor.Manager.setCursor(
+				manager.setCursor(
 					{
 						startNode: nodes.node.firstChild,
 						startOffset: 0,
@@ -165,12 +166,13 @@ Ext.define(
 				els = {},
 				nodes = {},
 				sel = window.getSelection(),
+				manager = FBEditor.editor.Manager,
 				range,
 				viewportId;
 
 			try
 			{
-				FBEditor.editor.Manager.suspendEvent = true;
+				manager.suspendEvent = true;
 
 				range = data.range;
 				nodes = data.saveNodes;
@@ -199,17 +201,17 @@ Ext.define(
 				// объединяем элементы в точках разделения
 				if (range.joinStartContainer)
 				{
-					FBEditor.editor.Manager.joinNode(nodes.startContainer);
+					manager.joinNode(nodes.startContainer);
 				}
 				if (!range.collapsed)
 				{
-					FBEditor.editor.Manager.joinNode(nodes.endContainer);
+					manager.joinNode(nodes.endContainer);
 				}
 
 				// синхронизируем
 				els.parent.sync(viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				// устанавливаем выделение
 				if (!range.joinStartContainer)
@@ -233,7 +235,7 @@ Ext.define(
 					endOffset: range.offset.end,
 					focusElement: range.common.getElement()
 				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
+				manager.setCursor(data.saveRange);
 
 				res = true;
 			}
