@@ -40,12 +40,19 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				bridge = FBEditor.getBridgeWindow(),
+				manager = bridge.FBEditor.editor.Manager,
 				sch = manager.getSchema(),
 				viewportId,
 				range;
 
 			range = manager.getRange();
+
+			if (!range)
+			{
+				return false;
+			}
+
 			viewportId = range.start.viewportId;
 
 			els.node = me.element;
