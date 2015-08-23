@@ -11,7 +11,7 @@ Ext.define(
 		xtype: 'textfieldclear',
 		triggers: {
 			foo: {
-				cls: 'fa textfieldclear-trigger',
+				cls: 'textfieldclear-trigger',
 				handler: function()
 				{
 					this.setValue('');

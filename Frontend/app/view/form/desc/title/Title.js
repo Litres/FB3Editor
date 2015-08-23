@@ -14,6 +14,8 @@ Ext.define(
 		],
 		xtype: 'form-desc-title',
 
+		minHeight: 135,
+
 		/**
 		 * @property {Boolean} Необходимо ли показывать подзаголовок.
 		 */
@@ -47,6 +49,7 @@ Ext.define(
 					}
 				}
 			);
+
 			if (me.enableSub)
 			{
 				items.push(
@@ -58,6 +61,7 @@ Ext.define(
 					}
 				);
 			}
+
 			items.push(
 				{
 					xtype: 'form-desc-title-alt',
@@ -65,6 +69,7 @@ Ext.define(
 					fieldLabelAlt: me.translateText.alt
 				}
 			);
+
 			me.items = items;
 			me.callParent(arguments);
 		},
