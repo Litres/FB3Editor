@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.AbstractCreateCommand',
 
+		elementName: 'annotation',
+
 		createElement: function (els, nodes)
 		{
 			var me = this,
@@ -16,13 +18,14 @@ Ext.define(
 				range = data.range,
 				factory = FBEditor.editor.Factory;
 
-			els.node = factory.createElement('annotation');
+			els.node = factory.createElement(me.elementName);
 			nodes.parent = nodes.node.parentNode;
 			nodes.first = nodes.parent.firstChild;
 			els.parent = nodes.parent.getElement();
 
 			if (range.collapsed)
 			{
+				// содержимое по умолчанию
 				els.p = factory.createElement('p');
 				els.t = factory.createElementText('Аннотация');
 				els.p.add(els.t);
@@ -54,7 +57,7 @@ Ext.define(
 
 			if (!range.collapsed)
 			{
-				// переносим выделенный параграф в аннотацию
+				// переносим выделенный параграф в элемент
 
 				nodes.p = range.start;
 				els.p = nodes.p.getElement();
@@ -100,7 +103,7 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 				els.p = nodes.p.getElement();
 
-				// возвращаем параграф на старое место из аннотации
+				// возвращаем параграф на старое место из элемента
 				if (nodes.next)
 				{
 					els.next = nodes.next.getElement();
@@ -113,7 +116,7 @@ Ext.define(
 					nodes.parent.appendChild(nodes.p);
 				}
 
-				// удаляем аннотацию
+				// удаляем элемент
 				els.parent.remove(els.node);
 				nodes.parent.removeChild(nodes.node);
 
@@ -125,7 +128,9 @@ Ext.define(
 				nodes.cursor = manager.getDeepLast(nodes.p);
 				data.saveRange = {
 					startNode: nodes.cursor,
-					startOffset: nodes.cursor.length
+					startOffset: 0,
+					endNode: nodes.cursor,
+					endOffset: nodes.cursor.length
 				};
 				manager.setCursor(data.saveRange);
 

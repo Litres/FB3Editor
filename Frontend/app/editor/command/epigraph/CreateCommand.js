@@ -15,6 +15,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				range = data.range,
 				factory = FBEditor.editor.Factory;
 
 			nodes.parent = nodes.node.parentNode;
@@ -29,11 +30,15 @@ Ext.define(
 
 			nodes.first = data.prevNode && data.prevNode.nextSibling ? data.prevNode : nodes.parent.firstChild;
 
-			els.p = factory.createElement('p');
-			els.t = factory.createElementText('Эпиграф');
+			if (range.collapsed)
+			{
+				// содержимое по умолчанию
+				els.p = factory.createElement('p');
+				els.t = factory.createElementText('Эпиграф');
+				els.p.add(els.t);
+				els.node.add(els.p);
+			}
 
-			els.p.add(els.t);
-			els.node.add(els.p);
 			nodes.node = els.node.getNode(data.viewportId);
 
 			if (nodes.first)
@@ -64,6 +69,95 @@ Ext.define(
 				els.parent.add(els.node);
 				nodes.parent.appendChild(nodes.node);
 			}
+
+			if (!range.collapsed)
+			{
+				// переносим выделенный параграф в элемент
+
+				nodes.p = range.start;
+				els.p = nodes.p.getElement();
+				els.isRoot = els.p.isRoot;
+				while (els.p && !els.p.isP)
+				{
+					nodes.p = els.isRoot ? nodes.p.firstChild : nodes.p.parentNode;
+					els.p = nodes.p ? nodes.p.getElement() : null;
+				}
+
+				nodes.next = nodes.p.nextSibling;
+
+				els.node.add(els.p);
+				nodes.node.appendChild(nodes.p);
+			}
+
+			me.data.nodes = nodes;
+		},
+
+		unExecute: function ()
+		{
+			var me = this,
+				data = me.getData(),
+				res = false,
+				els = {},
+				nodes = {},
+				manager = FBEditor.editor.Manager,
+				range;
+
+			try
+			{
+				range = data.range;
+
+				if (range.collapsed)
+				{
+					return me.callParent(arguments);
+				}
+
+				manager.suspendEvent = true;
+
+				nodes = data.nodes;
+				els.node = nodes.node.getElement();
+				els.parent = nodes.parent.getElement();
+				els.p = nodes.p.getElement();
+
+				// возвращаем параграф на старое место из элемента
+				if (nodes.next)
+				{
+					els.next = nodes.next.getElement();
+					els.parent.insertBefore(els.p, els.next);
+					nodes.parent.insertBefore(nodes.p, nodes.next);
+				}
+				else
+				{
+					els.parent.add(els.p);
+					nodes.parent.appendChild(nodes.p);
+				}
+
+				// удаляем элемент
+				els.parent.remove(els.node);
+				nodes.parent.removeChild(nodes.node);
+
+				els.parent.sync(data.viewportId);
+
+				manager.suspendEvent = false;
+
+				// устанавливаем курсор
+				nodes.cursor = manager.getDeepLast(nodes.p);
+				data.saveRange = {
+					startNode: nodes.cursor,
+					startOffset: 0,
+					endNode: nodes.cursor,
+					endOffset: nodes.cursor.length
+				};
+				manager.setCursor(data.saveRange);
+
+				res = true;
+			}
+			catch (e)
+			{
+				Ext.log({level: 'warn', msg: e, dump: e});
+				FBEditor.editor.HistoryManager.remove();
+			}
+
+			return res;
 		}
 	}
 );

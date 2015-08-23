@@ -10,7 +10,6 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
 			'FBEditor.editor.command.subscription.CreateCommand',
-			'FBEditor.editor.command.subscription.DeleteWrapperCommand',
 			'FBEditor.editor.element.subscription.SubscriptionElementController'
 		],
 		controllerClass: 'FBEditor.editor.element.subscription.SubscriptionElementController',
