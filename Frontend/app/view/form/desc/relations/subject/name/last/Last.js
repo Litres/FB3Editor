@@ -20,8 +20,11 @@ Ext.define(
 		displayField: 'last_name',
 		valueField: 'last_name',
 		hideTrigger: true,
+		//typeAhead: true,
 		listConfig: {
-			maxHeight: 'auto'
+			shadow: false,
+			maxHeight: 'auto',
+			cls: 'boundlist-person'
 		},
 		listeners: {
 			select: 'onSelect',
@@ -47,15 +50,15 @@ Ext.define(
 			me.tpl = Ext.create(
 				'Ext.XTemplate',
                 '<tpl for=".">',
-                '<div class="x-boundlist-item boundlist-person">',
+                '<div class="x-boundlist-item boundlist-person-item">',
                 '<div class="last-name">{last_name}</div>',
 				'<div class="first-name">{first_name} {middle_name}</div>',
-				/*'<div class="uuid">{uuid}</div>',*/
                 '</div>',
                 '</tpl>'
 			);
 
-			store = Ext.create('FBEditor.view.form.desc.relations.subject.name.last.LastStore');
+			store = Ext.data.StoreManager.lookup('desc-relations-subject-name-last');
+			store = store || Ext.create('FBEditor.view.form.desc.relations.subject.name.last.LastStore');
 			me.store = store;
 
 			storage = Ext.util.LocalStorage.get('FBEditor');
@@ -120,6 +123,18 @@ Ext.define(
 			data = Ext.JSON.decode(storage.getItem(me.name));
 
 			return data || [];
+		},
+
+		createPicker: function() {
+			var me = this,
+				picker;
+
+			picker = me.callParent(arguments);
+
+			// фикс для повторяющегося события show
+			picker.fireHierarchyEvent = function (eventName) {};
+
+			return picker;
 		}
 	}
 );

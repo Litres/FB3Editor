@@ -775,22 +775,28 @@
 
 .boundlist-person
 {
+	z-index: 999;
+	box-shadow: 0 0 4px #999;
+}
+
+.boundlist-person-item
+{
 	padding: 4px;
 	line-height: 14px;
 }
 
-.boundlist-person .last-name
+.boundlist-person-item .last-name
 {
 	font-size: 14px;
 }
 
-.boundlist-person .first-name
+.boundlist-person-item .first-name
 {
 	font-size: 13px;
 	color: #666;
 }
 
-.boundlist-person .uuid
+.boundlist-person-item .uuid
 {
 	font-size: 12px;
 	color: #999;

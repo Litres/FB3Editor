@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.relations.subject.name.last.LastStore',
 	{
 		extend: 'Ext.data.Store',
+		storeId: 'desc-relations-subject-name-last',
 		pageSize: 50,
 		sorters: [
 			{

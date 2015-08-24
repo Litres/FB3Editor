@@ -35,6 +35,7 @@ Ext.define(
 
 			val = combo.getValue();
 
+			//console.log('focus', combo);
 			if (val)
 			{
 				// разворачиваем список, если значение не пустое
