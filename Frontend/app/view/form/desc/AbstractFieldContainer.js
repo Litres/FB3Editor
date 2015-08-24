@@ -185,6 +185,36 @@ Ext.define(
 			);
 
 			return data;
+		},
+
+		/**
+		 * Обновляет данные полей в контейнере.
+		 * @param {Object} data Данные.
+		 */
+		updateData: function (data)
+		{
+			var me = this;
+
+			Ext.Object.each(
+				data,
+				function (name, value)
+				{
+					var field = me.down('[name=' + name + ']');
+					//console.log('field', field, name, value);
+
+					if (field)
+					{
+						if (Ext.isObject(value))
+						{
+							field.updateData(value);
+						}
+						else
+						{
+							field.setValue(value);
+						}
+					}
+				}
+			);
 		}
 	}
 );

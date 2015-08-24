@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.relations.subject.name.last.Last',
 			'FBEditor.view.form.desc.relations.subject.Link'
 		],
 		id: 'form-desc-relations-subject',
@@ -78,12 +79,17 @@ Ext.define(
 													regexText: me.translateText.idError
 												},
 												{
+													xtype: 'form-desc-relations-subject-name-last',
+													fieldLabel: me.translateText.lastName,
+													name: 'relations-subject-last-name'
+												},
+												/*{
 													xtype: 'textfield',
 													//allowBlank: false,
 													//cls: 'field-required',
 													fieldLabel: me.translateText.lastName,
 													name: 'relations-subject-last-name'
-												},
+												},*/
 												{
 													fieldLabel: me.translateText.firstName,
 													name: 'relations-subject-first-name',

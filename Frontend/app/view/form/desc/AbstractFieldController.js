@@ -34,6 +34,7 @@ Ext.define(
 				        function (name, value)
 				        {
 					        var field = nextContainer.query('[name=' + name + ']')[0];
+					        //console.log('field', field, name, value);
 
 					        if (field)
 					        {
