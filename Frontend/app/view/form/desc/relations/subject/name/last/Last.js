@@ -41,7 +41,8 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				store;
+				store,
+				storage;
 
 			me.tpl = Ext.create(
 				'Ext.XTemplate',
@@ -57,7 +58,8 @@ Ext.define(
 			store = Ext.create('FBEditor.view.form.desc.relations.subject.name.last.LastStore');
 			me.store = store;
 
-			me.localStorage = new Ext.util.LocalStorage(
+			storage = Ext.util.LocalStorage.get('FBEditor');
+			me.localStorage = storage || new Ext.util.LocalStorage(
 				{
 					id: 'FBEditor'
 				}
