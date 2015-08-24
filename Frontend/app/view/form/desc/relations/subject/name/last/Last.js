@@ -19,8 +19,7 @@ Ext.define(
 		minChars: 3,
 		displayField: 'last_name',
 		valueField: 'last_name',
-		//editable: false,
-		//forceSelection: true,
+		hideTrigger: true,
 		listConfig: {
 			maxHeight: 'auto'
 		},
