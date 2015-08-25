@@ -233,6 +233,20 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает фокус на корневом узле дерева навигации по тексту.
+		 */
+		selectRoot: function ()
+		{
+			var me = this,
+				root = me.getRootNode(),
+				path;
+
+			path = '/' + root.id;
+			//console.log(path);
+			me.selectPath(path);
+		},
+
+		/**
 		 * Переписывает стандартный метод, возвращающий корневой узел (необходимо для метода #selectPath).
 		 * @return {Ext.data.TreeModel} Корневой узел.
 		 */

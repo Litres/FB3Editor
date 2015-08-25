@@ -45,7 +45,8 @@ Ext.define(
 						type: file.LOAD_TYPE_ARRAYBUFFER,
 						load: function (data)
 						{
-							var structure,
+							var resourceManager = FBEditor.resource.Manager,
+								structure,
 								thumb,
 								meta,
 								books,
@@ -59,6 +60,10 @@ Ext.define(
 
 							try
 							{
+								// переключаем контекст на текст
+								Ext.getCmp('panel-main-content').openBody();
+								Ext.getCmp('panel-treenavigation').fireEvent('clearSelection');
+
 								me.fb3file = Ext.create('FBEditor.FB3.File', {file: file.file, content: data});
 								structure = me.fb3file.getStructure();
 								fileName = me.fb3file.getName();
@@ -92,14 +97,14 @@ Ext.define(
 								FBEditor.desc.Manager.loadUrl = null;
 								FBEditor.desc.Manager.loadDataToForm(desc);
 
-								if (!FBEditor.resource.Manager.checkThumbInResources(thumb))
+								if (!resourceManager.checkThumbInResources(thumb))
 								{
 									// если обложка находится не в директории ресурсов, то перемещаем ее туда
-									thumb.moveTo(FBEditor.resource.Manager.getDefaultThumbPath());
+									thumb.moveTo(resourceManager.getDefaultThumbPath());
 									images.push(thumb);
 								}
-								FBEditor.resource.Manager.load(images);
-								FBEditor.resource.Manager.setCover(thumb.getFileName());
+								resourceManager.load(images);
+								resourceManager.setCover(thumb.getFileName());
 							}
 							catch (e)
 							{
@@ -122,6 +127,9 @@ Ext.define(
 
 							FBEditor.editor.Manager.resetFocus();
 							FBEditor.editor.Manager.createContent(contentBody);
+
+							// фокус на дерево текста
+							Ext.getCmp('panel-body-navigation').selectRoot();
 
 							Ext.resumeLayouts(true);
 						}

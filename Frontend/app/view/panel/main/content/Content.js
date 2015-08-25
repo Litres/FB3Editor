@@ -93,7 +93,8 @@ Ext.define(
 		 */
 		openBody: function ()
 		{
-			var me = this;
+			var me = this,
+				nav;
 
 			if (!Ext.getCmp('main-editor') || !Ext.getCmp('main-editor').rendered)
 			{
@@ -107,6 +108,9 @@ Ext.define(
 			}
 
 			Ext.create('FBEditor.command.OpenBody').execute();
+			nav = Ext.getCmp('panel-body-navigation');
+			//console.log('root nav', nav.getRootNode());
+			nav.selectRoot();
 		}
     }
 );

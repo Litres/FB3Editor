@@ -58,7 +58,7 @@ Ext.define(
 		loadFromUrl: function (url)
 		{
 			var me = this,
-				bridge,
+				bridge = FBEditor.getBridgeProps(),
 				btn;
 
 			// загружена ли пустая панель
@@ -73,7 +73,6 @@ Ext.define(
 				);
 			}
 
-			bridge = FBEditor.getBridgeProps();
 			btn = bridge.Ext.getCmp('button-desc-load');
 			me.loadUrl = url;
 			Ext.log({level: 'info', msg: 'Загрузка описания из ' + url});

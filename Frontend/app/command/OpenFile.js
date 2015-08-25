@@ -16,6 +16,8 @@ Ext.define(
 				result;
 
 			data = me.data;
+
+			// открываем книгу
 			result = FBEditor.file.Manager.openFB3(data.evt);
 
 			return result;
