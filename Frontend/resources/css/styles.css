@@ -4,6 +4,12 @@
 	background-color: #eee;
 }
 
+.x-boundlist
+{
+	z-index: 999;
+	box-shadow: 0 0 4px #999;
+}
+
 .fb3 .form-desc .x-form-text-field-body-default
 {
 	max-width: none;
@@ -272,6 +278,11 @@
 }
 
 .plugin-fieldcontainerreplicator .x-form-item-body
+{
+	vertical-align: top;
+}
+
+.relations-subject-title .x-form-item-body
 {
 	vertical-align: top;
 }
@@ -773,31 +784,39 @@
 
 /* Список персон */
 
-.boundlist-person
-{
-	z-index: 999;
-	box-shadow: 0 0 4px #999;
-}
-
 .boundlist-person-item
 {
 	padding: 4px;
 	line-height: 14px;
 }
 
-.boundlist-person-item .last-name
+.boundlist-person-item-last-name
 {
 	font-size: 14px;
 }
 
-.boundlist-person-item .first-name
+.boundlist-person-item-first-name
 {
 	font-size: 13px;
 	color: #666;
 }
 
-.boundlist-person-item .uuid
+
+/* Список объектов */
+
+.boundlist-object-item
 {
-	font-size: 12px;
-	color: #999;
+	padding: 4px;
+	line-height: 14px;
+}
+
+.boundlist-object-item-name
+{
+	font-size: 14px;
+}
+
+.boundlist-object-item-persons
+{
+	font-size: 13px;
+	color: #666;
 }

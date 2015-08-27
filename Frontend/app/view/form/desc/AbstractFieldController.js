@@ -60,6 +60,59 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает редактируемость полей.
+		 * @param {Boolean} editable Редактируемые ли поля.
+		 */
+		onEditable: function (editable)
+		{
+			var me = this,
+				view = me.getView(),
+				fields,
+				plugin,
+				radios;
+
+			plugin = view.down('form-desc-title-alt').getPlugin('fieldcontainerreplicator');
+			if (plugin)
+			{
+				if (editable)
+				{
+					// разрешаем добавлять новые поля через плагин
+					plugin.getBtnAdd().enable();
+				}
+				else
+				{
+					// запрещаем добавлять новые поля через плагин
+					plugin.getBtnAdd().disable();
+				}
+			}
+
+			/*radios = view.down('radiogroup');
+			if (radios)
+			{
+				if (editable)
+				{
+					radios.enable();
+				}
+				else
+				{
+					radios.disable();
+				}
+			}*/
+
+			fields = view.query('[name]');
+			Ext.Array.each(
+				fields,
+			    function (item)
+			    {
+				    if (item.setEditable)
+				    {
+					    item.setEditable(editable);
+				    }
+			    }
+			);
+		},
+
+		/**
 		 * Сбрасывает поля формы.
 		 */
 		onResetFields: function ()
@@ -95,6 +148,9 @@ Ext.define(
 					}
 					else
 					{
+						// уведомляем первый контейнер
+						item.fireEvent('resetContainer');
+
 						// удаляем вложенные контейнеры первого контенейра
 						childContainers = me.getContainersReplicator(item);
 						Ext.each(

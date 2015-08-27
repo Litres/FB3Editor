@@ -17,7 +17,8 @@ Ext.define(
 
 		listeners: {
 			resetFields: 'onResetFields',
-			loadData: 'onLoadData'
+			loadData: 'onLoadData',
+			editable: 'onEditable'
 		},
 
 		afterRender: function ()

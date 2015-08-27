@@ -84,6 +84,9 @@ Ext.define(
 			FBEditor.command.HistoryCommand.init();
 			FBEditor.desc.Manager.init();
 			FBEditor.editor.Manager.init();
+
+			// определяем доступность хаба
+			me.getAccessHub();
 		},
 
 	    launch: function ()
@@ -160,6 +163,40 @@ Ext.define(
 			if (!window.name)
 			{
 				//
+			}
+		},
+
+		/**
+		 * Доступен ли хаб.
+		 */
+		getAccessHub: function ()
+		{
+			var urlTestAccess = 'https://hub.litres.ru/pages/machax_arts/?uuid=1';
+
+			FBEditor.accessHub = false;
+
+			try
+			{
+				Ext.Ajax.request(
+					{
+						url: urlTestAccess,
+						async: false,
+						timeout: 1000,
+						success: function (response)
+						{
+							FBEditor.accessHub = response.responseText.substring(0, 1) === '{' ? true : false;
+							Ext.log({msg: 'Доступ к хабу: ' + FBEditor.accessHub, level: 'info'});
+						},
+						failure: function ()
+						{
+							Ext.log({msg: 'Доступ к хабу: ' + FBEditor.accessHub, level: 'info'});
+						}
+					}
+				);
+			}
+			catch (e)
+			{
+				Ext.log({msg: 'Доступ к хабу: ' + FBEditor.accessHub, level: 'info'});
 			}
 		}
 	}

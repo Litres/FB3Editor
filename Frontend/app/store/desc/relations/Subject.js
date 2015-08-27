@@ -1,14 +1,14 @@
 /**
- * Хранилище фамилий персон.
+ * Хранилище персон.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.relations.subject.name.last.LastStore',
+	'FBEditor.store.desc.relations.Subject',
 	{
 		extend: 'Ext.data.Store',
-		storeId: 'desc-relations-subject-name-last',
+		storeId: 'desc-relations-subject',
 		pageSize: 50,
 		sorters: [
 			{
@@ -20,8 +20,8 @@ Ext.define(
 			'id',
 			'uuid',
 			'first_name',
-		    'last_name',
-		    'middle_name'
+			'last_name',
+			'middle_name'
 		],
 		proxy: {
 			type: 'ajax',

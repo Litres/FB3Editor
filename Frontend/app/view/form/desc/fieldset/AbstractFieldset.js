@@ -61,7 +61,8 @@ Ext.define(
 			// устанавливаем якорь в заголовок блока
 			me.title = me.title + '<a name="' + me.xtype + '"></a>';
 
-			me.cls = req ? me.xtype : me.xtype + ' fieldset-optional';
+			me.cls = me.xtype;//req ? me.xtype : me.xtype + ' fieldset-optional';
+
 			if (!me.items)
 			{
 				me.items = [

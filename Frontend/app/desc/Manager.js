@@ -19,6 +19,11 @@ Ext.define(
 		 */
 		saveUrl: null,
 
+		/**
+		 * @property {Boolean} Идет ли в данный момент процесс загрузки данных в форму.
+		 */
+		loadingProcess: false,
+
 		init: function ()
 		{
 			var me = this,
@@ -261,7 +266,9 @@ Ext.define(
 			Ext.defer(
 				function ()
 				{
+					me.loadingProcess = true;
 					form.fireEvent('loadDesc', desc);
+					me.loadingProcess = false;
 
 					if (me.needShowForm)
 					{
