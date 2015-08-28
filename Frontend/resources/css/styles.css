@@ -782,40 +782,20 @@
 	color: #c26874;
 }
 
-/* Список персон */
+/* Выпадающий список поиска в селекте */
 
-.boundlist-person-item
+.boundlist-search-item
 {
 	padding: 4px;
 	line-height: 14px;
 }
 
-.boundlist-person-item-last-name
+.boundlist-search-item-name
 {
 	font-size: 14px;
 }
 
-.boundlist-person-item-first-name
-{
-	font-size: 13px;
-	color: #666;
-}
-
-
-/* Список объектов */
-
-.boundlist-object-item
-{
-	padding: 4px;
-	line-height: 14px;
-}
-
-.boundlist-object-item-name
-{
-	font-size: 14px;
-}
-
-.boundlist-object-item-persons
+.boundlist-search-item-sub
 {
 	font-size: 13px;
 	color: #666;

@@ -175,40 +175,140 @@ Ext.define(
 			btn.disable();
 			field.disable();
 
-			Ext.Ajax.request(
-				{
-					url: url,
-					params: {
-						action: 'update_hub_on_fb3_meta',
-						fb3_meta: xml
-					},
-					disableCaching: true,
-				    success: function (response)
-				    {
-					    console.log('Описание сохранено', response.responseText);
-					    btn.enable();
-					    field.enable();
-				    },
-				    failure: function (response)
-				    {
-					    var status;
+			try
+			{
+				Ext.Ajax.request(
+					{
+						url: url,
+						params: {
+							action: 'update_hub_on_fb3_meta',
+							fb3_meta: xml
+						},
+						disableCaching: true,
+						success: function (response)
+						{
+							Ext.log({level: 'info', msg: 'Описание сохранено'});
+							btn.enable();
+							field.enable();
+						},
+						failure: function (response)
+						{
+							var status;
 
-					    status = response.statusText ? ' (' + response.statusText + ')' : '';
-					    btn.enable();
-					    field.enable();
+							status = response.statusText ? ' (' + response.statusText + ')' : '';
+							btn.enable();
+							field.enable();
 
-					    Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: response});
-					    Ext.Msg.show(
-						    {
-							    title: 'Ошибка',
-							    message: 'Невозможно сохранить описание книги по адресу ' + url + status,
-							    buttons: Ext.MessageBox.OK,
-							    icon: Ext.MessageBox.ERROR
-						    }
-					    );
-				    }
-			    }
-			);
+							Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: response});
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно сохранить описание книги по адресу ' + url + status,
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
+						}
+					}
+				);
+			}
+			catch (e)
+			{
+				Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: e});
+				Ext.Msg.show(
+					{
+						title: 'Ошибка',
+						message: 'Невозможно сохранить описание книги по адресу ' + url + status,
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					}
+				);
+			}
+		},
+
+		/**
+		 * Генерирует новый id и передает в функцию-колбэк.
+		 * @param options Опции.
+		 * @param {Function} options.fn Колбэк-функция, принимающая в качестве парметра новый id.
+		 * @param {Object} options.scope Владелец функции fn.
+		 */
+		getNewId: function (options)
+		{
+			var me = this,
+				total = 10,
+				id = [],
+				fn = options.fn,
+				scope = options.scope,
+				url = options.url,
+				property = options.property,
+				i;
+
+			// генерируем необходимую порцию новых id
+			for (i = 0; i < total; i++)
+			{
+				id.push(me.generateNewId());
+			}
+			//console.log('id', id);
+
+			// отправляем запрос на получение списка записей соответствущих новым id
+			try
+			{
+				Ext.Ajax.request(
+					{
+						url: url,
+						method: 'GET',
+						params: {
+							uuid: id.join(',')
+						},
+						success: function (response)
+						{
+							var json = JSON.parse(response.responseText),
+								newId = id[0],
+								root;
+
+							root = json[property] || [];
+							//console.log('success', root);
+
+							Ext.Array.each(
+								id,
+							    function (uuid)
+							    {
+								    var res;
+
+								    // ищем uuid в списке персон
+								    res = Ext.Array.findBy(
+									    root,
+								        function (item)
+								        {
+									        return item.uuid === uuid;
+								        }
+								    );
+
+								    if (!res)
+								    {
+									    // новый uuid найден, заканчиваем поиск
+
+									    newId = uuid;
+
+									    return false;
+								    }
+							    }
+							);
+
+							// колбэк
+							Ext.callback(fn, scope, [newId]);
+						},
+						failure: function ()
+						{
+							Ext.callback(fn, scope, [id[0]]);
+						}
+					}
+				);
+			}
+			catch (e)
+			{
+				Ext.callback(fn, scope, [id[0]]);
+			}
 		},
 
 		/**
@@ -413,6 +513,19 @@ Ext.define(
 			//console.log(xml);
 
 			return xml;
+		},
+
+		/**
+		 * Генерирует и возвращает UUID.
+		 * @return {String} UUID.
+		 */
+		generateNewId: function ()
+		{
+			var id;
+
+			id = Ext.data.identifier.Uuid.Global.generate();
+
+			return id;
 		}
 	}
 );

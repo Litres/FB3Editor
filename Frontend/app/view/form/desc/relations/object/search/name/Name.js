@@ -26,10 +26,10 @@ Ext.define(
 		tpl: Ext.create(
 			'Ext.XTemplate',
 			'<tpl for=".">',
-			'<div class="x-boundlist-item boundlist-object-item">',
-			'<div class="boundlist-object-item-name">{name}</div>',
-			'<div class="boundlist-object-item-persons"><tpl for="persons">{[xindex > 1 ? " / " : ""]}{title}</tpl></div>',
-			'<div class="boundlist-object-item-persons"><tpl for="series">{[xindex > 1 ? " / " : ""]}{name}</tpl></div>',
+			'<div class="x-boundlist-item boundlist-search-item">',
+			'<div class="boundlist-search-item-name">{name}</div>',
+			'<div class="boundlist-search-item-sub"><tpl for="persons">{[xindex > 1 ? " / " : ""]}{title}</tpl></div>',
+			'<div class="boundlist-search-item-sub"><tpl for="series">{[xindex > 1 ? " / " : ""]}{name}</tpl></div>',
 			'</div>',
 			'</tpl>'
 		),

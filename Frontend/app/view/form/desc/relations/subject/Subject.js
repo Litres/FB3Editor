@@ -43,7 +43,7 @@ Ext.define(
 
 							// скрываем поля поиска, показываем поля данных
 							btn = this.down('form-desc-relations-subject-customBtn');
-							btn.handler();
+							btn.switchContainers();
 						}
 					},
 					items: [
@@ -84,6 +84,7 @@ Ext.define(
 						'last-name': item.down('[name=relations-subject-last-name]').getValue(),
 						'first-name': item.down('[name=relations-subject-first-name]').getValue(),
 						'middle-name': item.down('[name=relations-subject-middle-name]').getValue(),
+						percent: item.down('[name=relations-subject-percent]').getValue(),
 						title: item.down('[name=relations-subject-title]').getValues()
 					};
 					val = me.removeEmptyValues(val);

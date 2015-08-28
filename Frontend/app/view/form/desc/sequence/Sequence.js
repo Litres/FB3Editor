@@ -12,6 +12,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.sequence.CustomContainer',
+			'FBEditor.view.form.desc.sequence.SearchContainer',
 			'FBEditor.view.form.desc.sequence.SequenceController'
 		],
 		id: 'form-desc-sequence',
@@ -32,7 +34,7 @@ Ext.define(
 		translateText: {
 			id: 'ID',
 			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
-			         'Например: f5425391-da0f-102b-ad52-84a7b9a81fa0',
+			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			number: 'Номер'
 		},
 
@@ -71,6 +73,14 @@ Ext.define(
 						removeFields: function ()
 						{
 							me.fireEvent('removeFields', this);
+						},
+						resetContainer: function ()
+						{
+							var btn;
+
+							// скрываем поля поиска, показываем поля данных
+							btn = this.down('form-desc-sequence-customBtn');
+							btn.switchContainers();
 						}
 					},
 					getValues: function ()
@@ -102,53 +112,12 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'desc-fieldcontainer',
-									flex: 1,
-									layout: 'anchor',
-									defaults: {
-										anchor: '100%',
-										labelWidth: 80,
-										labelAlign: 'right',
-										xtype: 'textfield'
-									},
-									items: [
-										{
-											xtype: 'textfieldclear',
-											fieldLabel: me.translateText.id,
-											name: prefixName + '-id',
-											allowBlank: false,
-											regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-											regexText: me.translateText.idError,
-											cls: 'field-required'
-										},
-										{
-											xtype: 'numberfield',
-											name: prefixName + '-number',
-											fieldLabel: me.translateText.number,
-											cls: 'field-optional'
-										}
-									]
+									xtype: 'form-desc-sequence-container-custom',
+									prefixName: me.prefixName
 								},
 								{
-									xtype: 'fieldcontainer',
-									width: 10
-								},
-								{
-									xtype: 'desc-fieldcontainer',
-									flex: 1,
-									layout: 'anchor',
-									items: [
-										{
-											xtype: 'form-desc-title',
-											name: prefixName + '-title',
-											layout: 'anchor',
-											defaults: {
-												anchor: '100%',
-												labelWidth: 160,
-												labelAlign: 'right'
-											}
-										}
-									]
+									xtype: 'form-desc-sequence-container-search',
+									prefixName: me.prefixName
 								}
 							]
 						}

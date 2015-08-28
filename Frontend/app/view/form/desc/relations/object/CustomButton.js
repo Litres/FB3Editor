@@ -22,13 +22,27 @@ Ext.define(
 		 */
 		customContainer: null,
 
-		handler: function (btn)
+		handler: function ()
 		{
-			var me = this;
+			var me = this,
+				manager = FBEditor.desc.Manager;
+
+			// получаем новый id
+			manager.getNewId(
+				{
+					url: 'https://hub.litres.ru/pages/machax_arts/',
+					property: 'arts',
+					fn: me.setObjectId,
+					scope: me
+				}
+			);
 
 			me.switchContainers();
 		},
 
+		/**
+		 * Переключает контейнер с поиска на данные.
+		 */
 		switchContainers: function ()
 		{
 			var me = this,
@@ -40,6 +54,20 @@ Ext.define(
 
 			custom.setHidden(false);
 			search.setHidden(true);
+		},
+
+		/**
+		 * Устанавливает id в поле.
+		 * @param {String} id uuid.
+		 */
+		setObjectId: function (id)
+		{
+			var me = this,
+				container;
+
+			// обновляем поле id
+			container = me.up('[name=plugin-fieldcontainerreplicator]');
+			container.updateData({'relations-object-id': id});
 		}
 	}
 );

@@ -759,7 +759,7 @@ Ext.define(
 				text;
 
 			node = Ext.Object.getValues(me.nodes)[0];
-			text = node.textContent || node.innerText;
+			text = node ? node.textContent || node.innerText : '';
 
 			return text || '';
 		},

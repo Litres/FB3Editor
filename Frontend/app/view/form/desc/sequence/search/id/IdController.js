@@ -1,14 +1,14 @@
 /**
- * Контроллер поискового поля по названию объекта.
+ * Контроллер поискового поля по uuid/id.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.relations.object.search.name.NameController',
+	'FBEditor.view.form.desc.sequence.search.id.IdController',
 	{
 		extend: 'FBEditor.view.field.combosearch.ComboSearchController',
-		alias: 'controller.form.desc.relations.object.search.name',
+		alias: 'controller.form.desc.sequence.search.id',
 
 		/**
 		 * Заполняет данные полей.
@@ -24,8 +24,8 @@ Ext.define(
 
 			container = view.up('[name=plugin-fieldcontainerreplicator]');
 			d = {
-				'relations-object-id': data.uuid,
-				'relations-object-title-main': data['name'] ? data['name'] : ''
+				'sequence-id': data.uuid,
+				'sequence-title-main': data['name'] ? data['name'] : ''
 			};
 			container.updateData(d);
 
@@ -33,7 +33,7 @@ Ext.define(
 			container.fireEvent('editable', false);
 
 			// скрываем поля поиска и показываем данные
-			btn = view.up('desc-fieldcontainer').down('form-desc-relations-object-customBtn');
+			btn = view.up('desc-fieldcontainer').down('form-desc-sequence-customBtn');
 			btn.switchContainers();
 		}
 	}

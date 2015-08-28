@@ -5,22 +5,22 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.relations.subject.search.id.Id',
+	'FBEditor.view.form.desc.sequence.search.id.Id',
 	{
 		extend: 'FBEditor.view.field.combosearch.ComboSearch',
 		requires: [
-			'FBEditor.view.form.desc.relations.subject.search.id.IdController'
+			'FBEditor.view.form.desc.sequence.search.id.IdController'
 		],
-		controller: 'form.desc.relations.subject.search.id',
-		xtype: 'form-desc-relations-subject-searchId',
+		controller: 'form.desc.sequence.search.id',
+		xtype: 'form-desc-sequence-searchId',
 
 		queryParam: 'uuid',
-		displayField: 'last_name',
-		valueField: 'last_name',
+		displayField: 'name',
+		valueField: 'name',
 		listConfig: {
 			shadow: false,
 			maxHeight: 'auto',
-			cls: 'boundlist-person'
+			cls: 'boundlist-sequence'
 		},
 
 		tpl: Ext.create(
@@ -28,7 +28,7 @@ Ext.define(
 			'<tpl for=".">',
 			'<div class="x-boundlist-item boundlist-search-item">',
 			'<div class="boundlist-search-item-name">{uuid}</div>',
-			'<div class="boundlist-search-item-sub">{last_name} {first_name} {middle_name}</div>',
+			'<div class="boundlist-search-item-sub">{name}</div>',
 			'</div>',
 			'</tpl>'
 		),
@@ -37,8 +37,8 @@ Ext.define(
 		{
 			var store;
 
-			store = Ext.data.StoreManager.lookup('desc-relations-subject');
-			store = store || Ext.create('FBEditor.store.desc.relations.Subject');
+			store = Ext.data.StoreManager.lookup('desc-sequence');
+			store = store || Ext.create('FBEditor.store.desc.sequence.Sequence');
 
 			return store;
 		},
@@ -50,7 +50,7 @@ Ext.define(
 				param;
 
 			// параметр запроса зависит от введенного значения
-			param = /^[0-9]{2,}$/.test(val) ? 'person' : 'uuid';
+			param = /^[0-9]{2,}$/.test(val) ? 'series' : 'uuid';
 
 			return param;
 		}

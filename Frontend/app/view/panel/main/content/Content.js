@@ -52,9 +52,11 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				manager = FBEditor.desc.Manager;
+				managerDesc = FBEditor.desc.Manager,
+				managerEditor = FBEditor.editor.Manager,
+				root;
 
-			if (!manager.loadUrl)
+			if (!managerDesc.loadUrl)
 			{
 				// переключаем контекст на текст
 				Ext.defer(
@@ -64,6 +66,12 @@ Ext.define(
 					},
 					500
 				);
+			}
+			else
+			{
+				// инциализируем корневой элемент
+				root = managerEditor.createRootElement();
+				root.createScaffold();
 			}
 
 			me.callParent(arguments);

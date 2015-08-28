@@ -474,6 +474,7 @@ attributeFormDefault="unqualified">\
                                           </attribute>\
   <attribute name="link" type="fb3d:SubjectRelationEnumType" use="required">\
 	    </attribute>\
+	<attribute name="percent" type="optional"/>\
 </complexType>\
 <complexType name="ObjectRelationType" mixed="false">\
     <sequence>\

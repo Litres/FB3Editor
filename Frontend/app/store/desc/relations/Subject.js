@@ -14,13 +14,21 @@ Ext.define(
 			{
 				property: 'last_name',
 				direction: 'ASC'
+			},
+			{
+				property: 'first_name',
+				direction: 'ASC'
+			},
+			{
+				property: 'middle_name',
+				direction: 'ASC'
 			}
 		],
 		fields: [
 			'id',
 			'uuid',
-			'first_name',
 			'last_name',
+			'first_name',
 			'middle_name'
 		],
 		proxy: {

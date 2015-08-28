@@ -24,6 +24,7 @@ Ext.define(
 			lastName: 'Фамилия',
 			titleMain: 'Стандартное написание',
 			titleAlt: 'Альтернативное написание',
+			percent: 'Процент владения',
 			desc: 'Написание'
 		},
 
@@ -51,7 +52,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfieldclear',
+									xtype: FBEditor.accessHub ? 'textfieldclear' : 'displayfield',
 									fieldLabel: me.translateText.id,
 									name: 'relations-subject-id',
 									allowBlank: false,
@@ -74,6 +75,15 @@ Ext.define(
 								{
 									fieldLabel: me.translateText.middleName,
 									name: 'relations-subject-middle-name',
+									cls: 'field-optional'
+								},
+								{
+									xtype: 'numberfield',
+									fieldLabel: me.translateText.percent,
+									name: 'relations-subject-percent',
+									minValue: 0,
+									maxValue: 100,
+									autoStripChars: true,
 									cls: 'field-optional'
 								}/*,
 								 {

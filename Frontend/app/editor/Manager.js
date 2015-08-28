@@ -148,6 +148,7 @@ Ext.define(
 				content = me.content,
 				xml;
 
+			console.log('content', content);
 			xml = content.getXml();
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			console.log(xml);
