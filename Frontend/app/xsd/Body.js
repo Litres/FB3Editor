@@ -18,12 +18,9 @@ Ext.define(
 			var xsd;
 
 			xsd = '<?xml version="1.0" encoding="UTF-8"?>\
-<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->\
-<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->\
-<schema>\
-	<!-- See license.txt for licensing information -->\
-	<import namespace="http://www.w3.org/1999/xlink" schemaLocation="fb3_links.xsd"/>\
-	<import namespace="http://www.fictionbook.org/FictionBook3/description" schemaLocation="fb3_descr.xsd"/>\
+<schema xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns="http://www.w3.org/2001/XMLSchema"\
+		xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.fictionbook.org/FictionBook3/body"\
+		elementFormDefault="qualified" attributeFormDefault="unqualified">\
 	<element name="fb3-body">\
 		<complexType>\
 			<complexContent>\
@@ -45,7 +42,6 @@ Ext.define(
 					</sequence>\
 					<attribute name="id" type="fb3b:UUIDType" use="required"/>\
 				</extension>\
-				<!-- OB: тип изменен с ID на  fb3b:UUIDType -->\
 			</complexContent>\
 		</complexType>\
 		<unique name="SectionID">\
@@ -54,7 +50,7 @@ Ext.define(
 		</unique>\
 		<key name="SimpleNotesLinks">\
 			<selector xpath=".//note"/>\
-			<field xpath="@xlink:href"/>\
+			<field xpath="@fb3b:href"/>\
 		</key>\
 		<keyref name="SimpleNotesTargets" refer="fb3b:SimpleNotesLinks">\
 			<selector xpath="notes/note"/>\
@@ -86,8 +82,7 @@ Ext.define(
 				<element name="p" type="fb3b:StyleType"/>\
 				<element name="br" type="fb3b:BRType"/>\
 			</choice>\
-			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">\
-			</element>\
+			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
 		</sequence>\
 		<attribute name="id" type="ID" use="optional"/>\
 	</complexType>\
@@ -95,17 +90,13 @@ Ext.define(
 		<complexContent>\
 			<extension base="fb3b:TitledType">\
 				<sequence>\
-					<element ref="fb3d:fb3-relations" minOccurs="0"/>\
-					<element ref="fb3d:fb3-classification" minOccurs="0"/>\
 					<element name="annotation" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
 					<choice>\
-						<element name="section" type="fb3b:SectionType" maxOccurs="unbounded">\
-						</element>\
+						<element name="section" type="fb3b:SectionType" maxOccurs="unbounded"></element>\
 						<sequence>\
 							<choice maxOccurs="unbounded">\
 								<element name="p" type="fb3b:StyleType"/>\
-								<element name="subtitle" type="fb3b:StyleType">\
-								</element>\
+								<element name="subtitle" type="fb3b:StyleType"></element>\
 								<element name="ol">\
 									<complexType>\
 										<complexContent>\
@@ -137,15 +128,13 @@ Ext.define(
 								</element>\
 								<element name="blockquote" type="fb3b:PHolderType"/>\
 								<element name="br" type="fb3b:BRType"/>\
-								<element name="div" type="fb3b:DivBlockType">\
-								</element>\
+								<element name="div" type="fb3b:DivBlockType"></element>\
 							</choice>\
-							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">\
-							</element>\
+							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
 						</sequence>\
 					</choice>\
 				</sequence>\
-				<attribute name="id" type="fb3d:UUIDType" use="required"/>\
+				<attribute name="id" type="fb3b:UUIDType" use="required"/>\
 				<attribute name="article" type="boolean" use="optional"/>\
 			</extension>\
 		</complexContent>\
@@ -179,8 +168,7 @@ Ext.define(
 				<element name="blockquote" type="fb3b:PHolderType"/>\
 				<element name="br" type="fb3b:BRType"/>\
 			</choice>\
-			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">\
-			</element>\
+			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
 		</sequence>\
 		<attributeGroup ref="fb3b:SizingAttributes"/>\
 		<attribute name="float" use="optional">\
@@ -255,22 +243,14 @@ Ext.define(
 	</complexType>\
 	<complexType name="StyleType" mixed="true">\
 		<choice minOccurs="0" maxOccurs="unbounded">\
-			<element name="strong" type="fb3b:StyleType">\
-			</element>\
-			<element name="em" type="fb3b:StyleType">\
-			</element>\
-			<element name="strikethrough" type="fb3b:StyleType">\
-			</element>\
-			<element name="sub" type="fb3b:StyleType">\
-			</element>\
-			<element name="sup" type="fb3b:StyleType">\
-			</element>\
-			<element name="pre" type="fb3b:StyleType">\
-			</element>\
-			<element name="underline" type="fb3b:StyleType">\
-			</element>\
-			<element name="spacing" type="fb3b:StyleType">\
-			</element>\
+			<element name="strong" type="fb3b:StyleType"></element>\
+			<element name="em" type="fb3b:StyleType"></element>\
+			<element name="strikethrough" type="fb3b:StyleType"></element>\
+			<element name="sub" type="fb3b:StyleType"></element>\
+			<element name="sup" type="fb3b:StyleType"></element>\
+			<element name="pre" type="fb3b:StyleType"></element>\
+			<element name="underline" type="fb3b:StyleType"></element>\
+			<element name="spacing" type="fb3b:StyleType"></element>\
 			<element name="span">\
 				<complexType mixed="true">\
 					<complexContent mixed="true">\
@@ -313,7 +293,7 @@ Ext.define(
 	<complexType name="LinkType" mixed="true">\
 		<complexContent mixed="true">\
 			<extension base="fb3b:StyleInLinkType">\
-				<attribute ref="xlink:href" use="required"/>\
+				<attribute name="href" type="anyURI" use="required"/>\
 			</extension>\
 		</complexContent>\
 	</complexType>\
@@ -321,7 +301,7 @@ Ext.define(
 		<complexContent mixed="true">\
 			<extension base="fb3b:StyleInLinkType">\
 				<attribute name="href" type="IDREF" use="required"/>\
-				<attribute ref="xlink:role" use="optional"/>\
+				<attribute ref="fb3b:role" use="optional"/>\
 				<attribute name="autotext" type="boolean" use="optional"/>\
 			</extension>\
 		</complexContent>\
@@ -337,7 +317,6 @@ Ext.define(
 			<extension base="fb3b:TitledType">\
 				<sequence maxOccurs="unbounded">\
 					<element name="p" type="fb3b:StyleType"/>\
-					<!--OB подписи в цитаты и прочее-->\
 					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
 				</sequence>\
 			</extension>\
@@ -425,12 +404,7 @@ Ext.define(
 	</simpleType>\
 	<simpleType name="ScreenSizeType">\
 		<restriction base="normalizedString">\
-			<pattern value="\d+(\.\d+)?(em|ex|%|mm)"/>\
-		</restriction>\
-	</simpleType>\
-	<simpleType name="UUIDType">\
-		<restriction base="token">\
-			<pattern value="[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}"/>\
+			<pattern value="\\d+(\\.\\d+)?(em|ex|%|mm)"/>\
 		</restriction>\
 	</simpleType>\
 	<attributeGroup name="SizingAttributes">\
@@ -438,8 +412,24 @@ Ext.define(
 		<attribute name="min-width" type="fb3b:ScreenSizeType" use="optional"/>\
 		<attribute name="max-width" type="fb3b:ScreenSizeType" use="optional"/>\
 	</attributeGroup>\
-</schema>\
-';
+	<simpleType name="UUIDType">\
+		<restriction base="token">\
+			<pattern value="[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}"/>\
+		</restriction>\
+	</simpleType>\
+	<attribute name="role" default="auto">\
+		<simpleType>\
+			<restriction base="token">\
+				<enumeration value="auto"/>\
+				<enumeration value="footnote"/>\
+				<enumeration value="endnote"/>\
+				<enumeration value="comment"/>\
+				<enumeration value="other"/>\
+			</restriction>\
+		</simpleType>\
+	</attribute>\
+	<attribute name="href" type="anyURI"></attribute>\
+</schema>';
 
 			return xsd;
 		}

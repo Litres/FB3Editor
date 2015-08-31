@@ -20,24 +20,17 @@ Ext.define(
 		permit: {
 			splittable: true
 		},
-		statics: {
-			num: 0
-		},
 
 		isSection: true,
 
 		constructor: function ()
 		{
-			var me = this,
-				num = me.self.num;
-
-			num++;
-			me.defaultAttributes = {
-				id: 'section' + num
-			};
-			me.self.num = num;
+			var me = this;
 
 			me.callParent(arguments);
+
+			// генерируем новый uuid
+			me.attributes.id = Ext.data.identifier.Uuid.Global.generate();
 		},
 
 		createScaffold: function ()

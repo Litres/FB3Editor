@@ -49,9 +49,9 @@ Ext.define(
 			return node;
 		},
 
-		getXml: function ()
+		getXml: function (withoutText)
 		{
-			return this.text;
+			return withoutText ? '' : this.text;
 		},
 
 		/*sync: function (viewportId)

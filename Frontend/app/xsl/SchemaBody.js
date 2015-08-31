@@ -118,6 +118,7 @@ Ext.define(
 				choice: {<xsl:call-template name="choice"><xsl:with-param name="choice" select="choice"/></xsl:call-template>}\
 				<xsl:if test="$extAttrs or $attrs or attributeGroup">\
 					, attributes: {\
+					<xsl:if test="@mixed">mixed: <xsl:value-of select="@mixed"/>,</xsl:if>\
 					<xsl:for-each select="$extAttrs"><xsl:if test="position()!=1">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
 					<xsl:for-each select="$attrs"><xsl:if test="position()!=1 or $extAttrs">,</xsl:if><xsl:call-template name="attribute"/></xsl:for-each>\
 					<xsl:if test="attributeGroup and ($attrs or $extAttrs)">,</xsl:if><xsl:call-template name="attributeGroup"/>\
@@ -134,8 +135,10 @@ Ext.define(
 				<xsl:otherwise><xsl:text>undefined</xsl:text></xsl:otherwise>\
 			</xsl:choose>\
 		</xsl:variable>\
-		\'<xsl:value-of select="$attrName"/>\': {<xsl:apply-templates select="@*"/>}\
-		<xsl:if test="simpleType/restriction">, restriction: {<xsl:call-template name="restriction"><xsl:with-param name="rest" select="simpleType/restriction"/></xsl:call-template>}</xsl:if>\
+		\'<xsl:value-of select="$attrName"/>\': {\
+			<xsl:apply-templates select="@*"/>\
+			<xsl:if test="simpleType/restriction">, type: {<xsl:call-template name="restriction"><xsl:with-param name="rest" select="simpleType/restriction"/></xsl:call-template>}</xsl:if>\
+		}\
 	</xsl:template>\
 	\
 	<xsl:template name="attributeGroup">\

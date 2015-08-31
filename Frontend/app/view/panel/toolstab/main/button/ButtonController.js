@@ -38,6 +38,22 @@ Ext.define(
 			}
 
 			//console.log('sync', btn.elementName);
+		},
+
+		/**
+		 * Проверяет получаемую схему.
+		 * @param {String} xml Строка xml, новой проверяемой структуры.
+		 * @return {Boolean}
+		 */
+		verify: function (xml)
+		{
+			var manager = FBEditor.editor.Manager,
+				sch = manager.getSchema(),
+				res;
+
+			res = sch.validXml(xml);
+
+			return res;
 		}
 	}
 );

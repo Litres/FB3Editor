@@ -14,7 +14,13 @@ Ext.define(
 		],
 
 		/**
-		 * @property {Object} Элементы схемы.
+		 * @private
+		 * @property {String} Схема текста.
+		 */
+		_xsd: '',
+
+		/**
+		 * @property {Object} Элементы схемы в виде json.
 		 */
 		elements: null,
 
@@ -22,6 +28,12 @@ Ext.define(
 		 * @property {Boolean} Показывать ли отладочные сообщения в консоли.
 		 */
 		disableDebug: true,
+
+		/**
+		 * @private
+		 * @property {Object} Кэш схемы элементов в виде xml.
+		 */
+		//xsd: {},
 
 		constructor: function ()
 		{
@@ -47,7 +59,8 @@ Ext.define(
 
 			try
 			{
-				xsd = FBEditor.xsd.Body.getXsd();
+				me._xsd = FBEditor.xsd.Body.getXsd();
+				xsd = me._xsd.replace(/<schema.*?>/, "<schema>");
 				xsl = FBEditor.xsl.SchemaBody.getXsl();
 				xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
 				//console.log(xsdJson);
@@ -55,7 +68,7 @@ Ext.define(
 				// преобразование строки в объект
 				eval(xsdJson);
 				me.elements = elements;
-				console.log(elements);
+				Ext.log({msg: 'Элементы схемы:', level: 'info', dump: elements});
 			}
 			catch (e)
 			{
@@ -63,12 +76,46 @@ Ext.define(
 				Ext.Msg.show(
 					{
 						title: 'Ошибка',
-						message: 'Невозможно инициализировать схему тела книги.',
+						message: 'Невозможно инициализировать схему тела книги',
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.ERROR
 					}
 				);
 			}
+		},
+
+		/**
+		 * Проверяет xml по схеме.
+		 * @param {String} xml
+		 */
+		validXml: function (xml, debug)
+		{
+			var me = this,
+				data,
+				valid,
+				res;
+
+			//console.log({xml: xml, xsd: me._xsd});
+
+			data = {
+				xml: xml,
+				xsd: me._xsd,
+				xmlFileName: 'body.xml',
+				schemaFileName: 'fb3_body.xsd'
+			};
+
+			valid = FBEditor.util.xml.Jsxml.valid(data);
+
+			// признак ошибки
+			res = !/^body.xml:1/i.test(valid);
+
+			if (!res && debug)
+			{
+				Ext.log({msg: valid, level: 'warn'});
+			}
+
+
+			return res;
 		},
 
 		/**
@@ -87,12 +134,22 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает имя элемента схемы.
+		 * @param {Object} el Элемент схемы.
+		 * @return {String} Имя.
+		 */
+		getName: function (el)
+		{
+			return el.attributes.name;
+		},
+
+		/**
 		 * Проверяет имя элемента по схеме.
 		 * @param {String} name Имя элемента.
 		 * @param {Array} elements Список имен дочерних элементов.
 		 * @return {Boolean} Успешность проверки имени элемента по схеме.
 		 */
-		verify: function (name, elements)
+		verify: function (name, elements, debug)
 		{
 			var me = this,
 				res = true,
@@ -100,7 +157,8 @@ Ext.define(
 				seq,
 				choice,
 				el,
-				nameEl;
+				nameEl,
+				disableDebug = debug ? false : me.disableDebug;
 
 			el = me.getElement(name);
 			if (!el)
@@ -111,26 +169,34 @@ Ext.define(
 			seq = el.sequence.length ? Ext.clone(el.sequence) : null;
 			choice = el.choice.elements && el.choice.elements.length ? Ext.clone(el.choice) : null;
 
-			me.disableDebug || console.log('VERIFY name, srcEls, el', name, srcEls, el);
+			disableDebug || console.log('VERIFY name, srcEls, el', name, srcEls, el);
 
-			while (srcEls.length)
+			try
 			{
-				nameEl = srcEls[0];
-				me.disableDebug || console.log('======================== (nameEl, seq, srcEls)', nameEl, seq, srcEls);
-				if (seq && !me.checkSequence(seq, srcEls))
+				while (srcEls.length)
 				{
-					me.disableDebug || console.log('=== ERROR VERIFY SEQ === (nameEl, seq, srcEls)', nameEl, seq, srcEls);
-					return false;
-				}
-				if (choice)
-				{
-					if (!me.checkChoice(nameEl, choice))
+					nameEl = srcEls[0];
+					disableDebug || console.log('======================== (nameEl, seq, srcEls)', nameEl, seq, srcEls);
+					if (seq && !me.checkSequence(seq, srcEls, debug))
 					{
-						me.disableDebug || console.log('=== ERROR VERIFY CHOICE === (nameEl, choice, srcEls)', nameEl, choice, srcEls);
+						disableDebug || console.log('=== ERROR VERIFY SEQ === (nameEl, seq, srcEls)', nameEl, seq, srcEls);
 						return false;
 					}
-					srcEls.splice(0, 1);
+					if (choice)
+					{
+						if (!me.checkChoice(nameEl, choice, debug))
+						{
+							disableDebug || console.log('=== ERROR VERIFY CHOICE === (nameEl, choice, srcEls)', nameEl, choice, srcEls);
+							return false;
+						}
+						srcEls.splice(0, 1);
+					}
 				}
+			}
+			catch (e)
+			{
+				disableDebug || console.log('=== THROW ERROR VERIFY === ', e);
+				res = false;
 			}
 
 			return res;
@@ -142,15 +208,16 @@ Ext.define(
 		 * @param {Array} srcEls Список имен дочерних элементов.
 		 * @return {Boolean} Успешность проверки имени элемента.
 		 */
-		checkSequence: function (seq, srcEls)
+		checkSequence: function (seq, srcEls, debug)
 		{
 			var me = this,
 				res = false,
 				item,
 				name,
-				nextName;
+				nextName,
+				disableDebug = debug ? false : me.disableDebug;
 
-			me.disableDebug || console.log('--- SEQUENCE --- (name, seq, srcEls)', srcEls[0], seq, srcEls);
+			disableDebug || console.log('--- SEQUENCE --- (name, seq, srcEls)', srcEls[0], seq, srcEls);
 
 			// перебираем всю последовательность sequence
 			while (seq.length)
@@ -163,7 +230,7 @@ Ext.define(
 					{
 						// проверяем имя элемента на прямое совпадение с element
 						nextName = srcEls.length > 1 ? srcEls[1] : false;
-						res = me.checkElement(name, nextName, item.element, seq);
+						res = me.checkElement(name, nextName, item.element, seq, debug);
 						if (res)
 						{
 							// если элемент прошел проверку, то удаляем его из списка и проверяем следующий
@@ -173,12 +240,19 @@ Ext.define(
 					else if (item.choice)
 					{
 						// проверяем все последующие имена элементов на choice
-						while (name && (res = me.checkChoice(name, item.choice)))
+						if (name)
 						{
-							// если имя элемента совпало, то удаляем его из списка и проверяем следующее
-							me.disableDebug || console.log('< OK > sequence choice (name, choice)', name, item.choice);
-							srcEls.splice(0, 1);
-							name = srcEls.length ? srcEls[0] : false;
+							while (name && (res = me.checkChoice(name, item.choice, debug)))
+							{
+								// если имя элемента совпало, то удаляем его из списка и проверяем следующее
+								disableDebug || console.log('< OK > sequence choice (name, choice)', name, item.choice);
+								srcEls.splice(0, 1);
+								name = srcEls.length ? srcEls[0] : false;
+							}
+						}
+						else
+						{
+							res = me.checkChoice(name, item.choice, debug);
 						}
 
 						// убираем из последовательности choice
@@ -198,19 +272,20 @@ Ext.define(
 		 * @param {Array} items Элементы sequence.
 		 * @return {Boolean} Успешность проверки имени элемента.
 		 */
-		checkElement: function (name, nextName, element, items)
+		checkElement: function (name, nextName, element, items, debug)
 		{
 			var me = this,
 				res = false,
-				el;
+				el,
+				disableDebug = debug ? false : me.disableDebug;
 
 			// данные проверяемого элемента element
 			el = Ext.Object.getValues(element)[0];
-			me.disableDebug || console.log('--- ELEMENT --- (name, nextName, el, items)', name, nextName, el, items);
+			disableDebug || console.log('--- ELEMENT --- (name, nextName, el, items)', name, nextName, el, items);
 			if (el.name && el.name === name || el.ref && el.ref === name)
 			{
 				// совпадающее имя элемента
-				me.disableDebug || console.log('< OK > sequence element (el, nextName)', el, nextName);
+				disableDebug || console.log('< OK > sequence element (el, nextName)', el, nextName);
 				res = true;
 				if (el.maxOccurs && el.maxOccurs === 'unbounded' && nextName === name)
 				{
@@ -269,14 +344,15 @@ Ext.define(
 		 * @param {Object} choice Элемент с choice.
 		 * @return {Boolean} Успешность проверки имени элемента.
 		 */
-		checkChoice: function (name, choice)
+		checkChoice: function (name, choice, debug)
 		{
 			var me = this,
 				res = false,
-				attrs;
+				attrs,
+				disableDebug = debug ? false : me.disableDebug;
 
-			me.disableDebug || console.log('+++ CHOICE +++ (name, choice)', name, choice);
-			//attrs = choice.attributes || {};
+			disableDebug || console.log('+++ CHOICE +++ (name, choice)', name, choice);
+			attrs = choice.attributes || {};
 
 			// проверяем имя элемента на совпадение с choice.elements
 			res = Ext.Array.findBy(
@@ -296,7 +372,7 @@ Ext.define(
 			if (choice.sequence)
 			{
 				// проверяем имя элемента на совпадение в последовательности choice.sequence
-				res = me.checkChoiceSequence(name, choice.sequence);
+				res = me.checkChoiceSequence(name, choice.sequence, debug);
 			}
 
 			return res;
@@ -308,12 +384,13 @@ Ext.define(
 		 * @param {Array} choiceSeq Элементы choice.sequence.
 		 * @return {Boolean} Успешность проверки имени элемента.
 		 */
-		checkChoiceSequence: function (name, choiceSeq)
+		checkChoiceSequence: function (name, choiceSeq, debug)
 		{
 			var me = this,
-				res = false;
+				res = false,
+				disableDebug = debug ? false : me.disableDebug;
 
-			me.disableDebug || console.log('+++ CHOICE SEQUENCE +++ (name, choiceSeq)', name, choiceSeq);
+			disableDebug || console.log('+++ CHOICE SEQUENCE +++ (name, choiceSeq)', name, choiceSeq);
 
 			// ищем любое совпадение в choice.sequence
 			res = Ext.Array.findBy(
@@ -325,16 +402,16 @@ Ext.define(
 					    // проверяем имя элемента на прямое совпадение с element
 					    if (item.element[name])
 					    {
-						    me.disableDebug || console.log('-< OK >- choice sequence element (name, element)', name, item.element);
+						    disableDebug || console.log('-< OK >- choice sequence element (name, element)', name, item.element);
 						    return true;
 					    }
 				    }
 				    else if (item.choice)
 				    {
 					    // проверяем имя элемента в choice
-					    if (me.checkChoice(name, item.choice))
+					    if (me.checkChoice(name, item.choice, debug))
 					    {
-						    me.disableDebug || console.log('+< OK >+ choice sequence choice (name, choice)', name, item.choice);
+						    disableDebug || console.log('+< OK >+ choice sequence choice (name, choice)', name, item.choice);
 						    return true;
 					    }
 				    }
@@ -345,5 +422,256 @@ Ext.define(
 
 			return res;
 		}
+
+		/**
+		 * Возвращает полноценную xsd схему для элемента c именем name, заключенного в корневой элемент fb3-body.
+		 * @param {Object} el Элемент схемы.
+		 * @return {String} Xsd схема в виде строки, пригодная для валидации.
+		 */
+		/*getSchema: function (el)
+		{
+			var me = this,
+				xsd;
+
+			xsd = '<?xml version="1.0" encoding="UTF-8"?>' +
+			      '<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink"' +
+			      ' targetNamespace="http://www.fictionbook.org/FictionBook3/body" elementFormDefault="qualified"' +
+			      ' attributeFormDefault="unqualified">' +
+			      '<element name="fb3-body"><complexType><sequence>' + me.getSchemaElement(el) +
+			      '</sequence></complexType></element>' +
+			      '</schema>';
+
+			return xsd;
+		},*/
+
+		/**
+		 * @private
+		 * Возвращает часть схемы xsd для элемента с именем name.
+		 * @param {Object} el Элемент схемы.
+		 * @return {String} Часть схемы элемента.
+		 */
+		/*getSchemaElement: function (el)
+		{
+			var me = this,
+				name,
+				complexType = '',
+				sequence = '',
+				mixed,
+				attributes,
+				xsd;
+
+			if (!el)
+			{
+				console.log('Нет схемы для элемента', name);
+				return '';
+			}
+
+			name = me.getName(el);
+
+			//console.log(name, me.xsd[name], me.xsd);
+
+			if (me.xsd[name] === null)
+			{
+				return '';
+			}
+
+			if (me.xsd[name])
+			{
+				// берем из кэша
+				return me.xsd[name];
+			}
+			else
+			{
+				me.xsd[name] = null;
+			}
+
+			if (el.sequence)
+			{
+				// получаем последовательность элемента
+				sequence = me.getSequence(el.sequence);
+			}
+
+			if (el.choice && (el.choice.elements || el.choice.sequence))
+			{
+				// получаем choice элемента
+				sequence += me.getChoice(el);
+			}
+
+			// получаем аттрибуты элемента
+			attributes = me.getAttributes(el);
+
+			// шаблон для element
+			xsd = '<element name="{%name%}">{%complexType%}</element>';
+
+			if (sequence || attributes)
+			{
+				// шаблон для complexType
+				complexType = '<complexType{%mixed%}>{%sequence%}{%attributes%}</complexType>';
+			}
+
+			mixed = el.attributes && el.attributes.mixed ? ' mixed="true"' : '';
+
+			// заменяем токены в шаблонах
+			complexType = complexType.replace('{%sequence%}', sequence);
+			complexType = complexType.replace('{%attributes%}', attributes);
+			complexType = complexType.replace('{%mixed%}', mixed);
+			xsd = xsd.replace('{%name%}', name);
+			xsd = xsd.replace('{%complexType%}', complexType);
+
+			// сохраняем
+			me.xsd[name] = xsd;
+
+			return xsd;
+		},*/
+
+		/**
+		 * @private
+		 * Возвращает последовательность элемента.
+		 * @param {Array} seq Последовательность элементов.
+		 * @return {String} Последовательность элемента в виде xml-строки.
+		 */
+		/*getSequence: function (seq)
+		{
+			var me = this,
+				sequence = '';
+
+			Ext.Array.each(
+				seq,
+				function (item)
+				{
+					var name = Ext.Object.getKeys(item.element)[0],
+						el = me.getElement(name);
+
+					if (item.element)
+					{
+						sequence += me.getSchemaElement(el);
+					}
+					else if (item.choice && item.choice.elements)
+					{
+						sequence += me.getChoice(item);
+					}
+				}
+			);
+
+			sequence = sequence ? '<sequence>' + sequence + '</sequence>' : '';
+
+			return sequence;
+		},*/
+
+		/**
+		 * @private
+		 * Возвращает choice элемента.
+		 * @param {Object} el Объект схемы элемента.
+		 * @return {String} Choice элемента в виде xml-строки.
+		 */
+		/*getChoice: function (el)
+		{
+			var me = this,
+				choice,
+				attributes = '',
+				content = '';
+
+			Ext.Array.each(
+				el.choice.elements,
+				function (item)
+				{
+					var name = Ext.Object.getKeys(item)[0];
+
+					//content += me.getSchemaElement(me.getElement(name));
+					content += '<element name="' + name + '"/>';
+				}
+			);
+
+			if (el.choice.sequence)
+			{
+				content += me.getSequence(el.choice.sequence);
+			}
+
+			Ext.Object.each(
+				el.choice.attributes,
+				function (name, val)
+				{
+					attributes += ' ' + name + '="' + val + '"';
+				}
+			);
+
+			choice = '<choice{%attributes%}>{%content%}</choice>';
+			choice = choice.replace('{%attributes%}', attributes);
+			choice = choice.replace('{%content%}', content);
+
+			return choice;
+		},*/
+
+		/**
+		 * @private
+		 * Возвращает аттрибуты элемента.
+		 * @param {Object} el Объект схемы элемента.
+		 * @return {String} Аттрибуты элемента в виде xml-строки.
+		 */
+		/*getAttributes: function (el)
+		{
+			var attributes = '';
+
+			Ext.Object.each(
+				el.attributes,
+				function (name, item)
+				{
+					var attribute = '',
+						simpleType;
+
+					if (Ext.isObject(item))
+					{
+						Ext.Object.each(
+							item,
+							function (key, val)
+							{
+								var restriction = '';
+
+								if (!Ext.isObject(val))
+								{
+									attribute += ' ' + key + '="' + val + '"';
+								}
+								else if (key === 'type')
+								{
+									// создаем simpleType для аттрибута
+
+									simpleType = '<simpleType><restriction base="{%base%}">' +
+									             '{%restriction%}</restriction></simpleType>';
+
+									if (val.pattern)
+									{
+										restriction = '<pattern value="' + val.pattern + '"/>';
+									}
+									else if (val.enumeration)
+									{
+										Ext.Array.each(
+											val.enumeration,
+											function (enumeration)
+											{
+												restriction += '<enumeration value="' + enumeration + '"/>';
+											}
+										);
+									}
+
+									simpleType = simpleType.replace('{%base%}', val.base);
+									simpleType = simpleType.replace('{%restriction%}', restriction);
+								}
+							}
+						);
+
+						if (simpleType)
+						{
+							attributes += '<attribute ' + attribute + '>' + simpleType + '</attribute>';
+						}
+						else
+						{
+							attributes += '<attribute ' + attribute + '/>';
+						}
+					}
+				}
+			);
+
+			return attributes;
+		}*/
 	}
 );

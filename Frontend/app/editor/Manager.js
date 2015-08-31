@@ -103,9 +103,6 @@ Ext.define(
 			// сбрасываем историю
 			FBEditor.editor.HistoryManager.clear();
 
-			// сбрасываем счетчики элементов
-			FBEditor.editor.element.section.SectionElement.num = 0;
-
 			content = content.replace(/\n+|\t+/g, ' ');
 			content = content.replace(/\), ?]/g, ')]');
 			content = content.replace(/(\\\')/g, "\\$1");
@@ -508,9 +505,8 @@ Ext.define(
 		{
 			var me = this,
 				schema = me.getSchema(),
-				res = true,
 				name = el.getName(),
-				names;
+				xml;
 
 			//console.log('el', el);
 
@@ -520,35 +516,11 @@ Ext.define(
 				return true;
 			}
 
-			names = me.getNamesElements(el);
+			// получаем xml без текстовых элементов
+			xml = me.content.getXml(true);
 
-			res = schema.verify(name, names);
-
-			//console.log('verify: ', name, names);
-
-			if (!res)
-			{
-				console.log('Ошибка структуры элемента:', name, names);
-			}
-
-			if (res && el.children)
-			{
-				Ext.Array.each(
-					el.children,
-					function (item)
-					{
-						if (!item.isText)
-						{
-							res = me.verifyElement(item);
-
-							if (!res)
-							{
-								return false;
-							}
-						}
-					}
-				);
-			}
+			// проверяем по схеме
+			res = schema.validXml(xml);
 
 			return res;
 		},

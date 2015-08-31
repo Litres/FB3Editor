@@ -26,6 +26,17 @@ Ext.define(
 		 */
 		isRoot: true,
 
+		constructor: function ()
+		{
+			var me = this,
+				img;
+
+			me.callParent(arguments);
+
+			// генерируем новый uuid
+			me.attributes.id = Ext.data.identifier.Uuid.Global.generate();
+		},
+
 		setAttributesHtml: function (element)
 		{
 			var me = this,

@@ -21,7 +21,7 @@ Ext.define(
 			href: 'undefined'
 		},
 
-		getAttributesXml: function ()
+		getAttributesXml: function (withoutText)
 		{
 			var me = this,
 				attr = '';
@@ -30,7 +30,7 @@ Ext.define(
 				me.attributes,
 				function (key, val)
 				{
-					attr += (key === 'href' ? 'l:' : '') + key + '="' + val + '" ';
+					attr += (key === 'href' && !withoutText ? 'l:' : '') + key + '="' + val + '" ';
 				}
 			);
 

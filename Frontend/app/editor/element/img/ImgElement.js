@@ -57,18 +57,25 @@ Ext.define(
 			return node;
 		},
 
-		getAttributesXml: function ()
+		getAttributesXml: function (withoutText)
 		{
 			var me = this,
 				attributes = Ext.clone(me.attributes),
 				attr = '';
 
-			attributes.src = me.resource.name;
+			attributes.src = me.resource ? me.resource.name : 'undefined';
 			Ext.Object.each(
 				attributes,
 				function (key, val)
 				{
-					attr += key + '="' + val + '" ';
+					if (withoutText && key === 'alt' || key === 'tabindex')
+					{
+						// пропускаем
+					}
+					else
+					{
+						attr += key + '="' + val + '" ';
+					}
 				}
 			);
 

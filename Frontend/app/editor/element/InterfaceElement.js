@@ -47,6 +47,24 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает первый элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Первый элемент.
+		 */
+		first: function ()
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#first()');
+		},
+
+		/**
+		 * Возвращает следующий элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Следующий элемент.
+		 */
+		next: function ()
+		{
+			throw Error('Не реализован метод FBEditor.editor.element.InterfaceElement#next()');
+		},
+
+		/**
 		 * Удаляет все дочерние элементы.
 		 */
 		removeAll: function ()
@@ -73,8 +91,8 @@ Ext.define(
 		},
 
 		/**
-		 * Устанавливает html-узел для элемента.
-		 * @param {HTMLElement} node Узел html.
+		 * Устанавливает узел для элемента.
+		 * @param {Node} node Узел html.
 		 */
 		setNode: function (node)
 		{
@@ -82,9 +100,9 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает узел html для отображения.
+		 * Возвращает узел для отображения.
 		 * @param {String} viewportId Id окна.
-		 * @return {HTMLElement} Узел html.
+		 * @return {Node} Узел html.
 		 */
 		getNode: function (viewportId)
 		{

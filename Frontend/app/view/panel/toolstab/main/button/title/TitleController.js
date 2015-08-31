@@ -15,13 +15,12 @@ Ext.define(
 			var me = this,
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				nodes = {},
 				els = {},
-				name = btn.elementName,
 				range,
-				nameElements,
-				sch,
-				enable;
+				enable,
+				xml;
 
 			range = manager.getRange();
 
@@ -53,16 +52,46 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 			}
 
-			// получаем дочерние имена элементов для проверки по схеме
-			nameElements = manager.getNamesElements(els.parent);
-			nameElements.unshift(name);
+			els.title = factory.createElement('title');
+			els.title.createScaffold();
+			els.parent.children.unshift(els.title);
 
-			name = els.parent.getName();
+
+			if (!range.collapsed)
+			{
+				// переносим выделенный параграф
+
+				els.p = range.start.getElement();
+				els.isRoot = els.p.isRoot;
+				while (els.p && !els.p.isP)
+				{
+					els.p = els.isRoot ? els.p.first() : els.p.parent;
+				}
+
+				els.next = els.p.next();
+				els.title.add(els.p);
+			}
+
+			// получаем xml
+			xml = manager.getContent().getXml(true);
+
+			if (!range.collapsed)
+			{
+				// возвращаем параграф на старое место
+				if (els.next)
+				{
+					els.parent.insertBefore(els.p, els.next);
+				}
+				else
+				{
+					els.parent.add(els.p);
+				}
+			}
+
+			els.parent.children.splice(0, 1);
 
 			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			//console.log('name, nameElements', name, nameElements);
-			enable = sch.verify(name, nameElements);
+			enable = me.verify(xml);
 
 			if (enable)
 			{

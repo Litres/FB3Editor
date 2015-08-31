@@ -282,6 +282,30 @@ Ext.define(
 			}
 		},
 
+		first: function ()
+		{
+			var me = this,
+				children = me.children,
+				first;
+
+			first = children.length ? children[0] : null;
+
+			return first;
+		},
+
+		next: function ()
+		{
+			var me = this,
+				parent = me.parent,
+				pos,
+				next;
+
+			pos = parent.getChildPosition(me);
+			next = parent.children[pos + 1] ? parent.children[pos + 1] : null;
+
+			return next;
+		},
+
 		removeAll: function ()
 		{
 			var me = this,
@@ -409,7 +433,11 @@ Ext.define(
 			}
 		},
 
-		getXml: function ()
+		/**
+		 * @param {Boolean} [[withoutText] Надо ли исключить текст из xml.
+		 * @return {String}
+		 */
+		getXml: function (withoutText)
 		{
 			var me = this,
 				children = me.children,
@@ -417,12 +445,12 @@ Ext.define(
 				xml,
 				attr;
 
-			attr = me.getAttributesXml();
+			attr = me.getAttributesXml(withoutText);
 			xml = '<' + tag;
 			xml += attr ? ' ' + attr : '';
 			if (me.marker)
 			{
-				xml += '>' + me.marker.getXml();
+				xml += '>' + me.marker.getXml(withoutText);
 			}
 			if (children && children.length)
 			{
@@ -431,7 +459,7 @@ Ext.define(
 					children,
 					function (item)
 					{
-						xml += item.getXml();
+						xml += item.getXml(withoutText);
 					}
 				);
 				xml += '</' + tag + '>';
@@ -898,9 +926,10 @@ Ext.define(
 		/**
 		 * @protected
 		 * Возвращает строку атрибутов элементов для xml.
+		 * @param {Boolean} [withoutText] Надо ли исключить текст из xml.
 		 * @return {String} Строка атрибутов.
 		 */
-		getAttributesXml: function ()
+		getAttributesXml: function (withoutText)
 		{
 			var me = this,
 				attr = '';

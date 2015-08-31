@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Конвертер fb3_body.xsd</title>
+</head>
+<style>
+	html {
+		height: 100%;
+	}
+	body {
+		font-family: Arial;
+		height: 100%;
+	}
+	p {
+		margin: 10px 0 5px 0;
+	}
+	section {
+		padding: 5px;
+	}
+	.fb3_body {
+		width: 100%;
+		height: 50px;
+	}
+	.fb3_general, .fb3_links {
+		width: 100%;
+		height: 30px;
+	}
+	.result {
+		width: 100%;
+		height: 200px;
+	}
+</style>
+
+<script type="application/javascript">
+	document.addEventListener('DOMContentLoaded', onReady);
+
+	function onReady (e)
+	{
+		var btn = document.querySelector('#convert-button'),
+				nodes = {},
+				names,
+				name,
+				i;
+
+		names = getXsdNames();
+
+		for (i = 0; i < names.length; i++)
+		{
+			name = names[i];
+			nodes[name] = document.querySelector('.' + name);
+			nodes[name].value = window.localStorage['FBEditor-converter-' + name + '.xsd'] ?
+								   window.localStorage['FBEditor-converter-' + name + '.xsd'] : '';
+		}
+
+		nodes[getBodyName()].focus();
+		btn.addEventListener('click', convert);
+	}
+
+	function getBodyName ()
+	{
+		return 'fb3_body'
+	}
+
+	function getXsdNames ()
+	{
+		return [getBodyName(), 'fb3_general', 'fb3_links']
+	}
+
+	function getPatterns ()
+	{
+		var patterns;
+
+		patterns = {
+			common: [
+				{
+					regTpl: /\n|\t/gm,
+					str: ''
+				},
+				{
+					regTpl: /[\s]{2,}/gm,
+					str: ' '
+				},
+				{
+					regTpl: /xs:/gm,
+					str: ''
+				},
+				{
+					regTpl: /<annotation>.*?<\/annotation>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<![-]{2}.*?-->/gm,
+					str: ''
+				},
+				{
+					regTpl: /<include.*?>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<import.*?>/gm,
+					str: ''
+				}
+			],
+			'fb3_body': [
+				{
+					regTpl: / xmlns:fb3d=".*?"/gm,
+					str: ''
+				},
+				{
+					regTpl: /<element ref="fb3d:.*?>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<attribute ref="xlink:href"/gm,
+					str: '<attribute name="href" type="anyURI"'
+				},
+				{
+					regTpl: /(fb3d|xlink):/gm,
+					str: 'fb3b:'
+				},
+				{
+					regTpl: /<\/schema>/gm,
+					str: ''
+				}
+			],
+			'fb3_general': [
+				{
+					regTpl: /xs:/gm,
+					str: ''
+				},
+				{
+					regTpl: /<schema.*?>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<\?xml.*?>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<\/schema>/gm,
+					str: ''
+				}
+			],
+			'fb3_links': [
+				{
+					regTpl: /xs:/gm,
+					str: ''
+				},
+				{
+					regTpl: /<schema.*?>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<\?xml.*?>/gm,
+					str: ''
+				},
+				{
+					regTpl: /<\/schema>/gm,
+					str: ''
+				}
+			]
+		};
+
+		return patterns;
+	}
+
+	function convert (e)
+	{
+		var	content = {},
+				result = '',
+				names,
+				name,
+				resultNode,
+				patterns,
+				i;
+
+		patterns = getPatterns();
+		names = getXsdNames();
+
+		for (i = 0; i < names.length; i++)
+		{
+			name = names[i];
+			content[name] = document.querySelector('.' + name).value;
+			window.localStorage['FBEditor-converter-' + name + '.xsd'] = content[name];
+			content[name] = replaceContent(content[name], patterns[name]);
+			result += content[name];
+		}
+
+		result = replaceContent(result, patterns.common) + "</schema>";
+
+		resultNode = document.querySelector('.result');
+		resultNode.value = result;
+	}
+
+	function replaceContent (content, patterns)
+	{
+		var i,r;
+
+		for (i in patterns)
+		{
+			r = patterns[i];
+
+			content = content.replace(r.regTpl, r.str);
+		}
+
+		return content;
+	}
+</script>
+
+<body>
+	<h1>Конвертер fb3_body.xsd в строку JS, пригодную для редактора</h1>
+
+	<section>
+		<p>fb3_body.xsd (вставьте содержимое fb3_body.xsd в это поле):</p>
+		<textarea class="fb3_body"></textarea>
+
+		<p>fb3_general.xsd (вставьте содержимое fb3_general.xsd в это поле):</p>
+		<textarea class="fb3_general"></textarea>
+
+		<p>fb3_links.xsd (вставьте содержимое fb3_links.xsd в это поле):</p>
+		<textarea class="fb3_links"></textarea>
+
+		<p><input id="convert-button" type="button" value="Конвертировать" /></p>
+	</section>
+
+	<section>
+		<p>Результат (строка JS):</p>
+		<textarea disabled class="result"></textarea>
+	</section>
+</body>
+</html>
