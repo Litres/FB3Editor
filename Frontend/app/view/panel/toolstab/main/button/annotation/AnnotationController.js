@@ -15,13 +15,13 @@ Ext.define(
 			var me = this,
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				nodes = {},
 				els = {},
 				pos = 0,
 				name = btn.elementName,
 				range,
-				nameElements,
-				sch,
+				xml,
 				enable;
 
 			range = manager.getRange();
@@ -74,13 +74,11 @@ Ext.define(
 				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 			}
 
-			nodes.parent = nodes.node.parentNode;
 			nodes.parent = els.node.isRoot ? nodes.node : nodes.node.parentNode;
+			els.parent = nodes.parent.getElement();
 
 			nodes.first = nodes.parent.firstChild;
 			els.first = nodes.first ? nodes.first.getElement() : null;
-
-			nameElements = manager.getNamesElements(els.parent);
 
 			while (els.first && (els.first.isEpigraph || els.first.isTitle))
 			{
@@ -89,13 +87,49 @@ Ext.define(
 				els.first = nodes.first ? nodes.first.getElement() : null;
 			}
 
-			nameElements.splice(pos, 0, name);
+			// создаем временный элемент для проверки новой структуры
+			els.newEl = factory.createElement(name);
+			els.newEl.createScaffold();
 
-			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			name = els.parent.getName();
-			//console.log('name, nameElements', name, nameElements);
-			enable = sch.verify(name, nameElements);
+			els.parent.children.splice(pos, 0, els.newEl);
+
+			if (!range.collapsed)
+			{
+				// переносим выделенный параграф
+
+				els.p = range.start.getElement();
+				els.isRoot = els.p.isRoot;
+				while (els.p && !els.p.isP)
+				{
+					els.p = els.isRoot ? els.p.first() : els.p.parent;
+				}
+
+				els.parentP = els.p.parent;
+				els.next = els.p.next();
+				els.newEl.add(els.p);
+			}
+
+			// получаем xml
+			xml = manager.getContent().getXml(true);
+
+			if (!range.collapsed)
+			{
+				// возвращаем параграф на старое место
+				if (els.next)
+				{
+					els.parentP.insertBefore(els.p, els.next);
+				}
+				else
+				{
+					els.parentP.add(els.p);
+				}
+			}
+
+			// удаляем временный элемент
+			els.parent.children.splice(pos, 1);
+
+			// проверяем по схеме
+			enable = me.verify(xml);
 
 			if (enable)
 			{

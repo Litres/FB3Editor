@@ -20,6 +20,20 @@ Ext.define(
 			splittable: true
 		},
 
-		isEpigraph: true
+		isEpigraph: true,
+
+		createScaffold: function ()
+		{
+			var me = this,
+				factory = FBEditor.editor.Factory,
+				els = {};
+
+			els.p = factory.createElement('p');
+			els.t = factory.createElementText('Эпиграф');
+			els.p.add(els.t);
+			me.add(els.p);
+
+			return els;
+		}
 	}
 );

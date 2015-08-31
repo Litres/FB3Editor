@@ -68,6 +68,7 @@ Ext.define(
 					els.p = nodes.p ? nodes.p.getElement() : null;
 				}
 
+				nodes.parentP = nodes.p.parentNode;
 				nodes.next = nodes.p.nextSibling;
 
 				els.node.add(els.p);
@@ -102,18 +103,19 @@ Ext.define(
 				els.node = nodes.node.getElement();
 				els.parent = nodes.parent.getElement();
 				els.p = nodes.p.getElement();
+				els.parentP = nodes.parentP.getElement();
 
 				// возвращаем параграф на старое место из элемента
 				if (nodes.next)
 				{
 					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.p, els.next);
-					nodes.parent.insertBefore(nodes.p, nodes.next);
+					els.parentP.insertBefore(els.p, els.next);
+					nodes.parentP.insertBefore(nodes.p, nodes.next);
 				}
 				else
 				{
-					els.parent.add(els.p);
-					nodes.parent.appendChild(nodes.p);
+					els.parentP.add(els.p);
+					nodes.parentP.appendChild(nodes.p);
 				}
 
 				// удаляем элемент

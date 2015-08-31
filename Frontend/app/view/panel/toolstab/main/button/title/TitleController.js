@@ -16,6 +16,7 @@ Ext.define(
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				name = btn.elementName,
 				nodes = {},
 				els = {},
 				range,
@@ -52,10 +53,11 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 			}
 
-			els.title = factory.createElement('title');
-			els.title.createScaffold();
-			els.parent.children.unshift(els.title);
+			// создаем временный элемент для проверки новой структуры
 
+			els.newEl = factory.createElement(name);
+			els.newEl.createScaffold();
+			els.parent.children.unshift(els.newEl);
 
 			if (!range.collapsed)
 			{
@@ -69,7 +71,7 @@ Ext.define(
 				}
 
 				els.next = els.p.next();
-				els.title.add(els.p);
+				els.newEl.add(els.p);
 			}
 
 			// получаем xml
@@ -88,9 +90,10 @@ Ext.define(
 				}
 			}
 
+			// удаляем временный элемент
 			els.parent.children.splice(0, 1);
 
-			// проверяем элемент по схеме
+			// проверяем по схеме
 			enable = me.verify(xml);
 
 			if (enable)

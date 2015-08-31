@@ -15,6 +15,20 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.annotation.AnnotationElementController',
 		htmlTag: 'annotation',
 		xmlTag: 'annotation',
-		cls: 'el-annotation'
+		cls: 'el-annotation',
+
+		createScaffold: function ()
+		{
+			var me = this,
+				factory = FBEditor.editor.Factory,
+				els = {};
+
+			els.p = factory.createElement('p');
+			els.t = factory.createElementText('Аннотация');
+			els.p.add(els.t);
+			me.add(els.p);
+
+			return els;
+		}
 	}
 );

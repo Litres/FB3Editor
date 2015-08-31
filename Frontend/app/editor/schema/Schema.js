@@ -95,7 +95,7 @@ Ext.define(
 				valid,
 				res;
 
-			//console.log({xml: xml, xsd: me._xsd});
+			!debug || console.log({xml: xml, xsd: me._xsd});
 
 			data = {
 				xml: xml,

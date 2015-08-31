@@ -45,13 +45,13 @@ Ext.define(
 		 * @param {String} xml Строка xml, новой проверяемой структуры.
 		 * @return {Boolean}
 		 */
-		verify: function (xml)
+		verify: function (xml, debug)
 		{
 			var manager = FBEditor.editor.Manager,
 				sch = manager.getSchema(),
 				res;
 
-			res = sch.validXml(xml);
+			res = sch.validXml(xml, debug);
 
 			return res;
 		}
