@@ -59,7 +59,7 @@ Ext.define(
 				nodes.p = nodes.node.parentNode;
 				els.p = nodes.p.getElement();
 
-				if (els.node.isEmpty() && nodes.node.firstChild)
+				if (els.node.isEmpty() && nodes.node.firstChild || els.node.isP)
 				{
 					// пустой элемент
 					nodes.node = nodes.node.firstChild;
@@ -97,7 +97,8 @@ Ext.define(
 					nodes.parentP.appendChild(nodes.newP);
 				}
 
-				if (!els.p.isEmpty())
+				//console.log(nodes);
+				if (!els.p.isEmpty() && data.range.start.getElement().isText)
 				{
 					pos.isEnd = data.range.end.nodeValue && data.range.offset.end === data.range.end.nodeValue.length ?
 					            manager.isLastNode(nodes.p, data.range.end) : false;
@@ -117,7 +118,7 @@ Ext.define(
 					                false : pos.needSplit;
 
 					data.range.pos = pos;
-					//console.log('pos', pos, range.toString());
+					console.log('pos', pos, range.toString());
 
 					if (pos.needSplit)
 					{

@@ -23,6 +23,8 @@ Ext.define(
 			splittable: true
 		},
 
+		isBlockquote: true,
+
 		createScaffold: function ()
 		{
 			var me = this,

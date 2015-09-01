@@ -520,9 +520,9 @@ Ext.define(
 
 			//console.log('el', el);
 
-			if (!el || el.isText || !schema.getElement(name))
+			if (!el || el.isText || el.parent.isBlockquote && el.isStyleHolder && el.isEmpty() || !schema.getElement(name))
 			{
-				// текст, пустые и неопределенные элементы не нуждаются в проверке
+				// текст, пустые в цитатах и неопределенные элементы не нуждаются в проверке
 				return true;
 			}
 
