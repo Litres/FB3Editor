@@ -80,6 +80,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает фабрику элементов.
+		 * @return {FBEditor.editor.Factory} Фабрика.
+		 */
+		getFactory: function ()
+		{
+			return FBEditor.editor.Factory;
+		},
+
+		/**
 		 * Создает контент из загруженной книги.
 		 * @param {String} content Исходный объект тела книги в виде строки, которую необходимо преобразовать
 		 * в настоящий объект.
@@ -160,7 +169,7 @@ Ext.define(
 		createRootElement: function ()
 		{
 			var me = this,
-				factory = FBEditor.editor.Factory,
+				factory = me.getFactory(),
 				root;
 
 			root = factory.createElement('fb3-body');
@@ -365,7 +374,7 @@ Ext.define(
 		createElement: function (name, opts)
 		{
 			var me = this,
-				factory = FBEditor.editor.Factory,
+				factory = me.getFactory(),
 				el,
 				sel;
 
@@ -501,11 +510,11 @@ Ext.define(
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
 		 * @return {Boolean} Соответствует ли схеме.
 		 */
-		verifyElement: function (el)
+		verifyElement: function (el, debug)
 		{
 			var me = this,
 				schema = me.getSchema(),
-				name = el.getName(),
+				res,
 				xml;
 
 			//console.log('el', el);
@@ -520,7 +529,7 @@ Ext.define(
 			xml = me.content.getXml(true);
 
 			// проверяем по схеме
-			res = schema.validXml(xml);
+			res = schema.validXml(xml, debug);
 
 			return res;
 		},
@@ -534,7 +543,7 @@ Ext.define(
 			var me= this,
 				el;
 
-			el = FBEditor.editor.Factory.createElement(me.emptyElement);
+			el = me.getFactory().createElement(me.emptyElement);
 
 			return el;
 		},
@@ -546,10 +555,11 @@ Ext.define(
 		createEmptyP: function ()
 		{
 			var me= this,
-				els = {};
+				els = {},
+				factory = me.getFactory();
 
-			els.empty = FBEditor.editor.Factory.createElement(me.emptyElement);
-			els.p = FBEditor.editor.Factory.createElement('p');
+			els.empty = factory.createElement(me.emptyElement);
+			els.p = factory.createElement('p');
 			els.p.add(els.empty);
 
 			return els.p;
@@ -568,6 +578,7 @@ Ext.define(
 		splitNode: function (els, nodes, offset)
 		{
 			var me = this,
+				factory = me.getFactory(),
 				viewportId;
 
 			nodes.parentContainer = nodes.container.parentNode;
@@ -578,7 +589,6 @@ Ext.define(
 			if (els.parentContainer.elementId === els.common.elementId && els.container.isText)
 			{
 				// простая разбивка текстового узла на два
-
 				nodes.next = nodes.container.nextSibling;
 
 				// части текста
@@ -595,7 +605,7 @@ Ext.define(
 				if (els.startTextValue && els.endTextValue.trim())
 				{
 					// добавляем текст после текущего узла
-					els.container = FBEditor.editor.Factory.createElementText(els.endTextValue);
+					els.container = factory.createElementText(els.endTextValue);
 					nodes.container = els.container.getNode(viewportId);
 
 					if (nodes.next)
@@ -633,21 +643,9 @@ Ext.define(
 
 						if (!els.startTextValue)
 						{
-							if (!nodes.parentContainer.previousSibling &&
-							    els.parentContainer.isStyleHolder)
-							{
-								// вставляем пустое содержимое вместо текущего узла
-								//console.log('insert empty in p', els.container, nodes.container);
-								els.empty = me.createEmptyElement();
-								els.parentContainer.replace(els.empty, els.container);
-								nodes.parentContainer.replaceChild(els.empty.getNode(viewportId), nodes.container);
-							}
-							else
-							{
-								// удаляем пустой текущий узел
-								els.parentContainer.remove(els.container);
-								nodes.parentContainer.removeChild(nodes.container);
-							}
+							// удаляем пустой текущий узел
+							els.parentContainer.remove(els.container);
+							nodes.parentContainer.removeChild(nodes.container);
 						}
 						else
 						{
@@ -659,7 +657,7 @@ Ext.define(
 						if (els.endTextValue.trim())
 						{
 							// добавляем текст
-							els.t = FBEditor.editor.Factory.createElementText(els.endTextValue);
+							els.t = factory.createElementText(els.endTextValue);
 							els.cloneContainer.add(els.t);
 						}
 
@@ -720,16 +718,6 @@ Ext.define(
 						els.parentContainer.remove(els.nextContainer);
 
 						nodes.nextContainer = nodes.buf;
-					}
-
-					if (!nodes.parent.firstChild && els.parent.isStyleHolder &&
-					    !nodes.parent.nextSibling)
-					{
-						// добавляем пустое содержимое в параграф
-						//console.log('insert empty', els.parent, nodes.parent);
-						els.empty = me.createEmptyElement();
-						els.parent.add(els.empty);
-						nodes.parent.appendChild(els.empty.getNode(viewportId));
 					}
 
 					// переносим указатель
@@ -1076,7 +1064,7 @@ Ext.define(
 		createElementFromNode: function (node)
 		{
 			var me = this,
-				factory = FBEditor.editor.Factory,
+				factory = me.getFactory(),
 				attributes = {},
 				name = node.nodeName.toLowerCase(),
 				schema = me.getSchema(),

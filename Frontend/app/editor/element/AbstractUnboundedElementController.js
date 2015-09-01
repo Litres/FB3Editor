@@ -18,11 +18,14 @@ Ext.define(
 				els = {},
 				nodes = {},
 				manager = FBEditor.editor.Manager,
+				factory = manager.getFactory(),
+				pos,
 				res,
-				sch,
+				xml,
 				name,
-				range,
-				nameElements;
+				range;
+
+			name = me.getNameElement();
 
 			// получаем узел из выделения
 			sel = sel || window.getSelection();
@@ -41,14 +44,27 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 			}
 
-			// получаем дочерние имена элементов для проверки по схеме
-			nameElements = me.getNameElementsVerify(nodes);
+			els.parent = nodes.parent.getElement();
+			nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 
-			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			name = els.parent.getName();
-			//console.log('name, nameElements', name, nameElements);
-			res = sch.verify(name, nameElements) ? nodes.node : false;
+			nodes.parent = els.node.isRoot ? nodes.node : nodes.node.parentNode;
+			els.parent = nodes.parent.getElement();
+
+			// создаем временный элемент для проверки новой структуры
+			els.newEl = factory.createElement(name);
+			els.newEl.createScaffold();
+
+			pos = els.parent.getChildPosition(els.node) + 1;
+			els.parent.children.splice(pos, 0, els.newEl);
+
+			// получаем xml
+			xml = manager.getContent().getXml(true);
+
+			// удаляем временный элемент
+			els.parent.children.splice(pos, 1);
+
+			// проверяем по схеме
+			res = me.verify(xml) ? nodes.node : false;
 
 			return res;
 		},
@@ -71,6 +87,9 @@ Ext.define(
 				sch,
 				name,
 				range;
+
+			// можно не делать дополнительную проверку, так как кнопки на панели уже проверяют схему при синхронизации
+			return true;
 
 			name = me.getNameElement();
 

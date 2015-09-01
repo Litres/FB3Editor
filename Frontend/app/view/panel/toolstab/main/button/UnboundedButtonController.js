@@ -14,15 +14,14 @@ Ext.define(
 			var me = this,
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
+				factory = manager.getFactory(),
 				nodes = {},
 				els = {},
-				names = {},
 				reg = {},
 				pos = {},
 				name = btn.elementName,
-				nameElements,
+				xml,
 				range,
-				sch,
 				enable;
 
 			range = manager.getRange();
@@ -92,12 +91,6 @@ Ext.define(
 				}
 				pos.end = els.common.getChildPosition(els.end);
 
-				// получаем дочерние имена элементов родитильского элемента для проверки по схеме
-				names.common = manager.getNamesElements(els.common);
-
-				// количество имен элементов, заменяемых в списке
-				pos.count = pos.end - pos.start;
-
 				reg.start = new RegExp('^' + range.toString());
 				reg.start2 = new RegExp('^' + els.start.getText());
 				reg.end = new RegExp(range.toString() + '$');
@@ -107,34 +100,49 @@ Ext.define(
 				pos.isStart = reg.start.test(els.start.getText()) || reg.start2.test(range.toString());
 				pos.isEnd = reg.end.test(els.end.getText()) || reg.end2.test(range.toString());
 
-				// получаем имена элементов, которые станут дочерними для элемента, для проверки по схеме
-				names.el = names.common.slice(pos.start, pos.end + 1);
+				// создаем временный элемент для проверки новой структуры
+				els.newEl = factory.createElement(name);
+				els.newEl.createScaffold();
 
-				// проверяем элемент по схеме
-				sch = manager.getSchema();
-				//console.log('name, names.el', name, names.el);
-				enable = sch.verify(name, names.el);
+				pos.count = pos.end - pos.start;
+				pos.start = !pos.isStart ? pos.start + 1 : pos.start;
+				pos.count = pos.isStart && pos.isEnd ? pos.count + 1 : pos.count;
+				pos.count = !pos.isStart && !pos.isEnd ? pos.count - 1 : pos.count;
 
-				if (enable)
+				//console.log(els);
+				//console.log(pos);
+
+				els.common.children.splice(pos.start, 0, els.newEl);
+
+				// переносим все выделенные элементы во временный
+				els.rangeNext = els.common.children[pos.start + pos.count + 1];
+				els.range = els.common.children.splice(pos.start + 1, pos.count);
+				for (var i = 0; i < pos.count; i++)
 				{
-					// проверяем родительсктий элемент по схеме
-
-					pos.start = !pos.isStart ? pos.start + 1 : pos.start;
-					pos.count = pos.isStart && pos.isEnd ? pos.count + 1 : pos.count;
-					pos.count = !pos.isStart && !pos.isEnd ? pos.count - 1 : pos.count;
-
-					// убираем из проверки имена элементов, которые попали в выделение, и заменяем их на имя нового элемента
-					names.common.splice(pos.start, pos.count, name);
-					if (els.start.elementId === els.end.elementId && !pos.isStart && !pos.isEnd)
-					{
-						// добалвяем имя элемента, который делится выделением пополам
-						names.common.splice(pos.start + 1, 0, names.common[pos.start - 1]);
-					}
-
-					name = els.common.getName();
-					//console.log('name, names.common', name, names.common);
-					enable = sch.verify(name, names.common);
+					els.newEl.add(els.range[i]);
 				}
+
+				// получаем xml
+				xml = manager.getContent().getXml(true);
+
+				// возвращаем все выделенные элементы обратно
+				for (i = 0; i < pos.count; i++)
+				{
+					if (els.rangeNext)
+					{
+						els.common.insertBefore(els.range[i], els.rangeNext);
+					}
+					else
+					{
+						els.common.add(els.range[i]);
+					}
+				}
+
+				// удаляем временный элемент
+				els.common.children.splice(pos.start, 1);
+
+				// проверяем по схеме
+				enable = me.verify(xml);
 			}
 			else
 			{
@@ -159,15 +167,27 @@ Ext.define(
 					els.parent = nodes.parent.getElement();
 				}
 
-				// получаем дочерние имена элементов для проверки по схеме
-				nameElements = manager.getNamesElements(els.parent);
-				nameElements.splice(els.parent.getChildPosition(els.node) + 1, 0, name);
+				els.parent = nodes.parent.getElement();
+				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 
-				// проверяем элемент по схеме
-				sch = manager.getSchema();
-				name = els.parent.getName();
-				//console.log('name, nameElements', name, nameElements);
-				enable = sch.verify(name, nameElements);
+				nodes.parent = els.node.isRoot ? nodes.node : nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				// создаем временный элемент для проверки новой структуры
+				els.newEl = factory.createElement(name);
+				els.newEl.createScaffold();
+
+				pos = els.parent.getChildPosition(els.node) + 1;
+				els.parent.children.splice(pos, 0, els.newEl);
+
+				// получаем xml
+				xml = manager.getContent().getXml(true);
+
+				// удаляем временный элемент
+				els.parent.children.splice(pos, 1);
+
+				// проверяем по схеме
+				enable = me.verify(xml);
 			}
 
 			if (enable)

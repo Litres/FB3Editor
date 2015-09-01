@@ -15,7 +15,7 @@ Ext.define(
 			var me = this,
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
-				factory = FBEditor.editor.Factory,
+				factory = manager.getFactory(),
 				name = btn.elementName,
 				nodes = {},
 				els = {},
@@ -70,6 +70,7 @@ Ext.define(
 					els.p = els.isRoot ? els.p.first() : els.p.parent;
 				}
 
+				els.parentP = els.p.parent;
 				els.next = els.p.next();
 				els.newEl.add(els.p);
 			}
@@ -82,11 +83,11 @@ Ext.define(
 				// возвращаем параграф на старое место
 				if (els.next)
 				{
-					els.parent.insertBefore(els.p, els.next);
+					els.parentP.insertBefore(els.p, els.next);
 				}
 				else
 				{
-					els.parent.add(els.p);
+					els.parentP.add(els.p);
 				}
 			}
 

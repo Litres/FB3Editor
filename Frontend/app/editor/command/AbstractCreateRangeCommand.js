@@ -24,10 +24,12 @@ Ext.define(
 				nodes = {},
 				offset = {},
 				manager = FBEditor.editor.Manager,
+				factory = manager.getFactory(),
 				sel,
 				collapsed,
 				range,
-				joinStartContainer;
+				joinStartContainer,
+				joinEndContainer;
 
 			try
 			{
@@ -66,6 +68,8 @@ Ext.define(
 				};
 				joinStartContainer = range.startOffset === 0 ?
 				                     !manager.isFirstNode(nodes.common, range.startContainer) : true;
+				joinEndContainer = range.endOffset === range.endContainer.nodeValue.length ?
+				                     !manager.isLastNode(nodes.common, range.endContainer) : true;
 				data.range = {
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
@@ -73,7 +77,8 @@ Ext.define(
 					prevParentStart: range.startContainer.parentNode.previousSibling,
 					collapsed: collapsed,
 					offset: offset,
-					joinStartContainer: joinStartContainer
+					joinStartContainer: joinStartContainer,
+					joinEndContainer : joinEndContainer
 				};
 
 				//console.log('range', data.range);
@@ -84,8 +89,22 @@ Ext.define(
 				// разбиваем конечный узел текущего выделения
 				nodes.container = nodes.endContainer;
 				nodes.endContainer = manager.splitNode(els, nodes, offset.end);
+				els.endContainer = nodes.endContainer.getElement();
 
-				// конечный узел текущего выделения
+				if (els.endContainer.isEmpty() && !els.common.isEmpty() && nodes.endContainer.previousSibling)
+				{
+					// удаляем пустой последний контейнер
+					//console.log('удален пустой узел после разделения');
+					nodes.prev = nodes.endContainer.previousSibling;
+
+					els.common.remove(els.endContainer);
+					nodes.common.removeChild(nodes.endContainer);
+
+					nodes.endContainer = nodes.prev;
+					nodes.endContainer = joinEndContainer ? nodes.endContainer.previousSibling : nodes.endContainer;
+				}
+
+				// начальный узел текущего выделения
 				if (collapsed)
 				{
 					nodes.startContainer = nodes.endContainer;
@@ -97,32 +116,40 @@ Ext.define(
 					nodes.startContainer = manager.splitNode(els, nodes, offset.start);
 				}
 
+				//console.log('nodes', nodes, data.range);
+
 				els.startContainer = nodes.startContainer.getElement();
+				nodes.endContainer = nodes.endContainer.parentNode ? nodes.endContainer : nodes.startContainer;
 				els.endContainer = nodes.endContainer.getElement();
 
-				// создаем новый блок
-				els.node = FBEditor.editor.Factory.createElement(me.elementName);
+				// создаем новый элемент
+				els.node = factory.createElement(me.elementName);
 				nodes.node = els.node.getNode(data.viewportId);
 
-				//console.log('nodes', nodes);
+				//console.log('nodes', nodes, range);
+				//return;
 
-				// вставляем новый блок
+				// вставляем новый элемент
 				els.common.insertBefore(els.node, els.startContainer);
 				nodes.common.insertBefore(nodes.node, nodes.startContainer);
 
-				// переносим элементы, которые находятся в текущем выделении в новый блок
+				// переносим элементы, которые находятся в текущем выделении в новый элемент
 				nodes.next = nodes.startContainer;
 				els.next = nodes.next.getElement();
-				while (nodes.next && els.next.elementId !== els.endContainer.elementId)
+				while (els.next && els.next.elementId !== els.endContainer.elementId)
 				{
 					nodes.buf = nodes.next.nextSibling;
 
 					els.node.add(els.next);
 					nodes.node.appendChild(nodes.next);
-					els.common.remove(els.next);
 
 					nodes.next = nodes.buf;
-					els.next = nodes.next.getElement();
+					els.next = nodes.next ? nodes.next.getElement() : null;
+				}
+				if (els.next && els.next.elementId === els.endContainer.elementId && !joinEndContainer)
+				{
+					els.node.add(els.next);
+					nodes.node.appendChild(nodes.next);
 				}
 
 				// синхронизируем
@@ -133,11 +160,7 @@ Ext.define(
 				// устанавливаем курсор
 				manager.setCursor(
 					{
-						startNode: nodes.node.firstChild,
-						startOffset: 0,
-						endNode: nodes.node.firstChild,
-						endOffset: 0,
-						focusElement: nodes.node.firstChild.getElement()
+						startNode: nodes.node.firstChild
 					}
 				);
 
@@ -145,7 +168,7 @@ Ext.define(
 				data.saveNodes = nodes;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.parent, true);
 
 				res = true;
 			}
@@ -165,7 +188,6 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				sel = window.getSelection(),
 				manager = FBEditor.editor.Manager,
 				range,
 				viewportId;
@@ -177,33 +199,34 @@ Ext.define(
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
+
 				console.log('undo create range ' + me.elementName, range, nodes);
 
 				els.node = nodes.node.getElement();
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
-				// переносим все элементы из блока обратно в исходный контейнер
+				// переносим все элементы обратно в исходный контейнер
 				nodes.first = nodes.node.firstChild;
-				while (nodes.first)
+				els.first = nodes.first.getElement();
+				while (els.first)
 				{
-					els.first = nodes.first.getElement();
 					els.parent.insertBefore(els.first, els.node);
-					//els.node.remove(els.first);
 					nodes.parent.insertBefore(nodes.first, nodes.node);
 					nodes.first = nodes.node.firstChild;
+					els.first = nodes.first ? nodes.first.getElement() : null;
 				}
 
-				// удаляем новый блок
-				nodes.parent.removeChild(nodes.node);
+				// удаляем новый элемент
 				els.parent.remove(els.node);
+				nodes.parent.removeChild(nodes.node);
 
 				// объединяем элементы в точках разделения
 				if (range.joinStartContainer)
 				{
 					manager.joinNode(nodes.startContainer);
 				}
-				if (!range.collapsed)
+				if (range.joinEndContainer)
 				{
 					manager.joinNode(nodes.endContainer);
 				}
@@ -223,6 +246,7 @@ Ext.define(
 				{
 					range.common = range.common.getElement().isText ? range.common.parentNode : range.common;
 				}
+
 				range.common = range.common ? range.common : range.prevParentStart.parentNode;
 				range.start = range.start.parentNode ? range.start : range.prevParentStart.nextSibling;
 				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
@@ -232,8 +256,7 @@ Ext.define(
 					startNode: range.start,
 					endNode: range.end,
 					startOffset: range.offset.start,
-					endOffset: range.offset.end,
-					focusElement: range.common.getElement()
+					endOffset: range.offset.end
 				};
 				manager.setCursor(data.saveRange);
 

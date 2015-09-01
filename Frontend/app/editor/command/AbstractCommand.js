@@ -38,13 +38,13 @@ Ext.define(
 		 * Проверяет элемент по схеме и в случае неудачи отменяет действие команды.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
 		 */
-		verifyElement: function (el)
+		verifyElement: function (el, debug)
 		{
 			var me = this,
 				manager = FBEditor.editor.Manager,
 				xml;
 
-			if (!manager.verifyElement(el))
+			if (!manager.verifyElement(el, debug))
 			{
 				xml = el.getXml();
 

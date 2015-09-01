@@ -27,20 +27,18 @@ Ext.define(
 
 				// переносим элементы, которые выделены, из старой секции в заголовок
 				nodes.next = nodes.startContainer;
-				els.next = nodes.next ? nodes.next.getElement() : null;
 				els.next = nodes.next.getElement();
 				nodes.parentNext = nodes.next.parentNode;
 				els.parentNext = nodes.parentNext.getElement();
-				while (nodes.next && els.next.elementId !== els.endContainer.elementId)
+				while (els.next && els.next.elementId !== els.endContainer.elementId)
 				{
 					nodes.buf = nodes.next.nextSibling;
 
 					els.title.add(els.next);
 					nodes.title.appendChild(nodes.next);
-					els.parentNext.remove(els.next);
 
 					nodes.next = nodes.buf;
-					els.next = nodes.next.getElement();
+					els.next = nodes.next ? nodes.next.getElement() : null;
 				}
 
 				nodes.cursor = nodes.title;
@@ -49,6 +47,9 @@ Ext.define(
 
 		restoreElement: function (nodes, els, range)
 		{
+			var me = this,
+				data = me.getData();
+
 			if (nodes.title)
 			{
 				// переносим элементы из заголовка

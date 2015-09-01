@@ -18,7 +18,9 @@ Ext.define(
 		createElement: function (els, nodes)
 		{
 			var me = this,
-				data = me.getData();
+				data = me.getData(),
+				manager = FBEditor.editor.Manager,
+				factory = manager.getFactory();
 
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
@@ -28,7 +30,7 @@ Ext.define(
 			nodes.next = nodes.node.nextSibling;
 
 			// создаем элемент
-			els.node = FBEditor.editor.Factory.createElement(me.elementName);
+			els.node = factory.createElement(me.elementName);
 			els = Ext.apply(els, els.node.createScaffold());
 			nodes.node = els.node.getNode(data.viewportId);
 
