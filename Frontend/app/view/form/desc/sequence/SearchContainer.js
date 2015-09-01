@@ -10,8 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.sequence.CustomButton',
-			'FBEditor.view.form.desc.sequence.search.name.Name',
-			'FBEditor.view.form.desc.sequence.search.id.Id'
+			'FBEditor.view.form.desc.sequence.search.name.Name'
 		],
 		xtype: 'form-desc-sequence-container-search',
 		layout: 'anchor',
@@ -41,12 +40,6 @@ Ext.define(
 			me.hidden = FBEditor.desc.Manager.loadingProcess ? true : me.hidden;
 
 			me.items = [
-				{
-					xtype: 'form-desc-sequence-searchId',
-					fieldLabel: me.translateText.id,
-					name: prefixName + '-search',
-					regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}|[0-9]{2,}$/
-				},
 				{
 					xtype: 'form-desc-sequence-searchName',
 					fieldLabel: me.translateText.search,

@@ -13,6 +13,8 @@ Ext.define(
 		],
 		controller: 'combosearch',
 		xtype: 'combosearch',
+
+		autoSelect: false,
 		queryMode: 'remote',
 		minChars: 2,
 		hideTrigger: true,
@@ -81,18 +83,18 @@ Ext.define(
 				return;
 			}
 
-			me.queryParam = me.getQueryParam();
-
 			// определяем задержку запроса, в зависимости от количества введенных символов
 			me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
 
 			me.callParent(arguments);
 		},
 
-		onKeyUp: function ()
+		onKeyUp: function (e)
 		{
 			var me = this,
-				val = me.getValue();
+				k = e.getKey(),
+				val = me.getValue(),
+				pos;
 
 			if (!me.isValid())
 			{
@@ -100,12 +102,20 @@ Ext.define(
 				return;
 			}
 
-			me.queryParam = me.getQueryParam();
+			// позиция курсора в поле
+			pos = me.inputEl.dom.selectionStart;
 
-			// определяем задержку запроса, в зависимости от количества введенных символов
-			me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
+			// запрос не отправится, если введен пробел в конце строки
+			if (k !== e.SPACE || k === e.SPACE && pos !== val.length)
+			{
+				// определяем задержку запроса, в зависимости от количества введенных символов
+				me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
 
-			me.callParent(arguments);
+				//me.setValue(val.trim());
+
+				me.callParent(arguments);
+			}
+
 		},
 
 		/**
@@ -160,15 +170,6 @@ Ext.define(
 			data = Ext.JSON.decode(storage.getItem(me.name));
 
 			return data || [];
-		},
-
-		/**
-		 * Возвращает параметр запроса.
-		 * @return {String}
-		 */
-		getQueryParam: function ()
-		{
-			return this.queryParam;
 		}
 	}
 );

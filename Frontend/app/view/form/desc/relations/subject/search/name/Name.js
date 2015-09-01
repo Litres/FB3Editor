@@ -14,8 +14,6 @@ Ext.define(
 		controller: 'form.desc.relations.subject.search.name',
 		xtype: 'form-desc-relations-subject-searchName',
 
-		autoSelect: false,
-		queryParam: 'last',
 		displayField: 'last_name',
 		valueField: 'last_name',
 		listConfig: {
@@ -35,29 +33,6 @@ Ext.define(
 			'</tpl>'
 		),
 
-		onPaste: function ()
-		{
-			// при вставке не отправлять запрос
-		},
-
-		onKeyUp: function (e)
-		{
-			var me = this,
-				k = e.getKey();
-
-			// отправляем запрос при нажатии Enter
-			if (k === e.ENTER)
-			{
-				e.isSpecialKey = function ()
-				{
-					// чтобы запрос отправился, считаем, что нажата не специальная клавиша
-					return false;
-				};
-
-				me.callParent(arguments);
-			}
-		},
-
 		getCreateStore: function ()
 		{
 			var store;
@@ -73,18 +48,35 @@ Ext.define(
 			var values,
 				params;
 
-			// разбиваем строку на три значения, отделенных пробелами
-			val = val.trim();
-			values = val.split(/[ ]+/, 3);
+			// параметр запроса зависит от введенного значения
 
-			//console.log('val', val, values);
+			if (/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/.test(val))
+			{
+				params = {
+					uuid: val
+				};
+			}
+			else if (/^[0-9]{2,}$/.test(val))
+			{
+				params = {
+					person: val
+				};
+			}
+			else
+			{
+				// разбиваем строку на три значения, отделенных пробелами
+				val = val.trim();
+				values = val.split(/[ ]+/, 3);
 
-			// формируем параметры для запроса
-			params = {
-				last: values[0],
-				first: values[1] ? values[1] : '',
-				middle: values[2] ? values[2] : ''
-			};
+				//console.log('val', val, values);
+
+				// формируем параметры для запроса
+				params = {
+					last: values[0],
+					first: values[1] ? values[1] : '',
+					middle: values[2] ? values[2] : ''
+				};
+			}
 
 			return params;
 		}

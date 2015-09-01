@@ -11,8 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.store.desc.relations.Subject',
 			'FBEditor.view.form.desc.relations.subject.CustomButton',
-			'FBEditor.view.form.desc.relations.subject.search.name.Name',
-			'FBEditor.view.form.desc.relations.subject.search.id.Id'
+			'FBEditor.view.form.desc.relations.subject.search.name.Name'
 		],
 		xtype: 'form-desc-relations-subject-container-search',
 
@@ -40,12 +39,6 @@ Ext.define(
 			me.hidden = FBEditor.desc.Manager.loadingProcess ? true : me.hidden;
 
 			me.items = [
-				{
-					xtype: 'form-desc-relations-subject-searchId',
-					fieldLabel: me.translateText.id,
-					name: 'relations-subject-search',
-					regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}|[0-9]{2,}$/
-				},
 				{
 					xtype: 'form-desc-relations-subject-searchName',
 					fieldLabel: me.translateText.search,

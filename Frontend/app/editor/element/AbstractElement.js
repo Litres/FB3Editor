@@ -324,13 +324,16 @@ Ext.define(
 			var me = this,
 				children = me.children;
 
-			Ext.Array.each(
+			/*Ext.Array.each(
 				children,
 				function (el)
 				{
-					el.clear(el);
+					if (el)
+					{
+						el.clear(el);
+					}
 				}
-			);
+			);*/
 		},
 
 		clone: function (opts)

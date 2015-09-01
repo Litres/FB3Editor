@@ -15,7 +15,6 @@ Ext.define(
 		controller: 'form.desc.sequence.search.name',
 		xtype: 'form-desc-sequence-searchName',
 
-		queryParam: 'q',
 		displayField: 'name',
 		valueField: 'name',
 		listConfig: {
@@ -42,6 +41,34 @@ Ext.define(
 			store = store || Ext.create('FBEditor.store.desc.sequence.Sequence');
 
 			return store;
+		},
+
+		getParams: function (val)
+		{
+			var params;
+
+			// параметр запроса зависит от введенного значения
+
+			if (/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/.test(val))
+			{
+				params = {
+					uuid: val
+				};
+			}
+			else if (/^[0-9]{2,}$/.test(val))
+			{
+				params = {
+					series: val
+				};
+			}
+			else
+			{
+				params = {
+					q: val
+				};
+			}
+
+			return params;
 		}
 	}
 );
