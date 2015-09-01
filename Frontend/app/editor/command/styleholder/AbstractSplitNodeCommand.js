@@ -207,7 +207,7 @@ Ext.define(
 				// сохраняем ссылки
 				me.data.nodes = nodes;
 
-				// проверяем по схеме
+				// проверяем по схем
 				me.verifyElement(els.parentP);
 
 				res = true;

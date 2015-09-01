@@ -514,12 +514,13 @@ Ext.define(
 		{
 			var me = this,
 				schema = me.getSchema(),
+				name = el.getName(),
 				res,
 				xml;
 
 			//console.log('el', el);
 
-			if (!el || el.isText || el.isStyleHolder && el.isEmpty() || !schema.getElement(name))
+			if (!el || el.isText || !schema.getElement(name))
 			{
 				// текст, пустые и неопределенные элементы не нуждаются в проверке
 				return true;
