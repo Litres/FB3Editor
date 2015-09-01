@@ -61,6 +61,13 @@ Ext.define(
 		stateExpandedNodesTree: {},
 
 		/**
+		 * @private
+		 * @property {String} Кэш для синхронизации кнопок.
+		 * Используется для защиты от многократной синхронизации кнопок.
+		 */
+		cashSyncBtn: null,
+
+		/**
 		 * Инициализирует менеджер.
 		 */
 		init: function ()
@@ -231,8 +238,13 @@ Ext.define(
 				};
 			}
 
-			// синхронизируем кнопки элементов с текущим выделением
-			me.syncButtons();
+			if (!el.isText && me.cashSyncBtn !== el.elementId || !me.range.collapsed)
+			{
+				// синхронизируем кнопки элементов с текущим выделением
+				// защита от многокртаной синхронизации на одном и том же элементе
+				me.cashSyncBtn = el.elementId;
+				me.syncButtons();
+			}
 
 			// показываем информацию о выделенном элементе
 			data = el.getData();
