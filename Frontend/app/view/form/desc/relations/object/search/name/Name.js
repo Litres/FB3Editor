@@ -17,8 +17,6 @@ Ext.define(
 		displayField: 'name',
 		valueField: 'name',
 		listConfig: {
-			shadow: false,
-			maxHeight: 'auto',
 			cls: 'boundlist-object'
 		},
 

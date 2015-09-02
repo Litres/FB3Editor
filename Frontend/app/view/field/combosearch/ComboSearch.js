@@ -14,11 +14,16 @@ Ext.define(
 		controller: 'combosearch',
 		xtype: 'combosearch',
 
+		enableKeyEvents: true,
 		autoSelect: false,
 		queryMode: 'remote',
 		minChars: 2,
 		hideTrigger: true,
 		queryDelay: 200,
+		defaultListConfig: {
+			shadow: false,
+			maxHeight: 'auto'
+		},
 		listeners: {
 			select: 'onSelect',
 			focus: 'onFocus'
@@ -70,6 +75,34 @@ Ext.define(
 				);
 
 			me.callParent(arguments);
+
+		},
+
+		afterRender: function ()
+		{
+			var me = this,
+				input = me.inputEl.dom;
+
+			// регистрируем события клавиш, которые не должны передаваться в выпадающий список
+			input.addEventListener(
+				'keydown',
+			    function (e)
+			    {
+				    var event = Ext.event.Event,
+					    k = e.keyCode,
+					    stopList;
+
+				    stopList = [event.HOME, event.END, event.LEFT, event.RIGHT];
+
+				    if (Ext.Array.contains(stopList, k))
+				    {
+					    e.stopPropagation();
+				    }
+			    }
+			);
+
+			me.callParent(arguments);
+
 		},
 
 		onPaste: function ()
