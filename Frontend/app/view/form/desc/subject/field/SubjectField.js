@@ -27,6 +27,28 @@ Ext.define(
 			change: 'onChange'
 		},
 
+		/*afterRender: function ()
+		{
+			var me = this,
+				subject = me.up('form-desc-subject'),
+				subjectTree = subject.subjectTree;
+
+			// обрабатываем esc в поле ввода
+			me.keyNav = new Ext.util.KeyNav(
+				{
+					target: me.inputEl,
+					forceKeyDown: true,
+					esc: function ()
+					{
+						this.onEsc();
+					},
+					scope: subjectTree
+				}
+			);
+
+			me.callParent(arguments);
+		},*/
+
 		/**
 		 * Устанавливает курсор в конец поля.
 		 */

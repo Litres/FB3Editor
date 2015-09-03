@@ -103,27 +103,6 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		afterRender: function ()
-		{
-			var me = this,
-				field = me.getTextField();
-
-			// обрабатываем esc в поле ввода
-			me.keyNav = new Ext.util.KeyNav(
-				{
-					target: field.inputEl,
-					forceKeyDown: true,
-					esc: function ()
-					{
-						me.onEsc();
-					},
-					scope: me
-				}
-			);
-
-			me.callParent(arguments);
-		},
-
 		show: function ()
 		{
 			var me = this,
