@@ -15,47 +15,27 @@ Ext.define(
 		controller: 'form.desc.subject.field',
 		name: 'classification-subject',
 		allowBlank: false,
-		editable: false,
+		selectOnFocus: true,
+		checkChangeBuffer: 200,
+		//editable: false,
 		cls: 'field-required',
 		listeners: {
 			click: {
 				element: 'el',
 				fn: 'onClick'
-			}
+			},
+			change: 'onChange'
 		},
 
 		/**
-		 * Переписывает стандартный метод возврата значения поля.
-		 * @return {String} Часть значения поля, которая содержится в скобках.
+		 * Устанавливает курсор в конец поля.
 		 */
-		getValue: function ()
+		focusToEnd: function ()
 		{
 			var me = this,
-			val;
+				val = me.getValue();
 
-			val = me.callParent();
-			val = val.replace(/.*?\((.*?)\)$/, '$1');
-
-			return val;
-		},
-
-		/**
-		 * Переписывает стандартный метод установки значения поля.
-		 * @param {String} value Значение поля.
-		 */
-		setValue: function (value)
-		{
-			var me = this,
-				val = value,
-				tree,
-				name = value;
-
-			if (val && Ext.isString(val) && (val.indexOf('(') === -1))
-			{
-				tree = Ext.getCmp('form-desc-subjectTree');
-				name = tree.getNameByValue(val);
-			}
-			me.callParent([name]);
+			me.focus([val.length, val.length]);
 		}
 	}
 );

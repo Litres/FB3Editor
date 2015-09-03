@@ -738,6 +738,35 @@
 
 /* <-- Дерево ресурсов */
 
+/* Дерево жанров */
+
+.treenavigation-root-genres div
+{
+	height: 1px;
+	padding: 0
+}
+
+.treenavigation-children-genres,
+.treenavigation-children-genres.x-grid-item-focused
+{
+	color: gray;
+}
+
+.treenavigation-children-genres span:before
+{
+	color: gray;
+	content: "\f0c5";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
+}
+
+.treenavigation-leaf-genres span:before
+{
+	content: "\f0f6";
+}
+
+/* <-- Дерево жанров */
+
 .panel-filename-display .x-form-display-field-default
 {
 	text-align: center;

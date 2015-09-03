@@ -79,6 +79,12 @@ Ext.define(
 				me.onfocus();
 			};
 
+			// инициализируем localStorage
+			FBEditor.getLocalStorage = function ()
+			{
+				return Ext.util.LocalStorage.get('FBEditor') || new Ext.util.LocalStorage({id: 'FBEditor'});
+			};
+
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 			FBEditor.command.HistoryCommand.init();
@@ -139,7 +145,7 @@ Ext.define(
 					FBEditor.parentWindow.Ext.getCmp('main').attachPanel(window.name, window);
 
 					// удаляем сохраненное состояние отсоединенной панели
-					localStorage.removeItem(window.name);
+					FBEditor.getLocalStorage().removeItem(window.name);
 				}
 
 				// принудительно закрываем окно, даже если оно было обновлено

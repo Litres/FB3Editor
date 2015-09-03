@@ -40,11 +40,6 @@ Ext.define(
 		queryDelaySlow: 1000,
 
 		/**
-		 * @property {Ext.util.LocalStorage} Локальное хранилище.
-		 */
-		localStorage: null,
-
-		/**
 		 * @property {Number} Максимальное количество записей хранящихся в локальном хранилище.
 		 */
 		localStorageLimit: 10,
@@ -62,17 +57,11 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				storage;
+			var me = this;
 
 			me.store = me.getCreateStore();
 
-			storage = Ext.util.LocalStorage.get('FBEditor');
-			me.localStorage = storage || new Ext.util.LocalStorage(
-					{
-						id: 'FBEditor'
-					}
-				);
+			me.localStorage = FBEditor.getLocalStorage();
 
 			me.callParent(arguments);
 
@@ -175,7 +164,7 @@ Ext.define(
 		saveToStorage: function (data)
 		{
 			var me = this,
-				storage = me.localStorage,
+				storage = FBEditor.getLocalStorage(),
 				storageData = me.getDataStorage(),
 				strValue;
 
@@ -197,7 +186,7 @@ Ext.define(
 		getDataStorage: function ()
 		{
 			var me = this,
-				storage = me.localStorage,
+				storage = FBEditor.getLocalStorage(),
 				data;
 
 			data = Ext.JSON.decode(storage.getItem(me.name));

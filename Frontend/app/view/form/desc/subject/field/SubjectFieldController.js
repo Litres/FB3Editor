@@ -13,14 +13,39 @@ Ext.define(
 		/**
 		 * Вызывается при клике по полю.
 		 */
-		onClick: function ()
+		onClick: function (e, input)
 		{
 			var me = this,
 				view = me.getView(),
-				val;
+				subject = view.up('form-desc-subject'),
+				subjectTree = subject.subjectTree;
+
+			// останавливаем всплытие события, чтобы не допустить закрытия окна
+			e.stopPropagation();
 
 			// показываем дерево жанров
-			view.ownerCt.fireEvent('showSubjectTree');
+			subject.fireEvent('showSubjectTree');
+		},
+
+		/**
+		 * Вызывается при изменение значения поля.
+		 */
+		onChange: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				subject = view.up('form-desc-subject'),
+				subjectTree = subject.subjectTree,
+				value = view.getValue();
+
+			if (!subjectTree.isShow)
+			{
+				// открываем окно
+				subjectTree.show();
+			}
+
+			// Фильтруем дерево жанров
+			subjectTree.fireEvent('filter', value.trim());
 		}
 	}
 );

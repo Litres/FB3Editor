@@ -89,7 +89,7 @@ Ext.define(
 					me.windowPanels,
 					function (key)
 					{
-						if (!localStorage.getItem(key))
+						if (!FBEditor.getLocalStorage().getItem(key))
 						{
 							// добавляем панели в главное окно
 							me.add(me.panelConfig[key]);

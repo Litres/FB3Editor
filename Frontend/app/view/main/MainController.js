@@ -88,7 +88,7 @@ Ext.define(
 				params,
 				win;
 
-			box = localStorage.getItem(name);
+			box = FBEditor.getLocalStorage().getItem(name);
 			box = Ext.Object.fromQueryString(box, true);
 			params = 'width=' +box.width +
 				',height=' + box.height +
@@ -200,7 +200,7 @@ Ext.define(
 							left: win.screenX,
 							top: win.screenY
 						};
-						localStorage.setItem(key, Ext.Object.toQueryString(box, true));
+						FBEditor.getLocalStorage().setItem(key, Ext.Object.toQueryString(box, true));
 						
 						win.close();
 						FBEditor.childWindow[name] = null;

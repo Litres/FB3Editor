@@ -29,7 +29,7 @@ Ext.define(
 		},
 
 		translateText: {
-			subject: 'Жанры',
+			subject: 'Жанр',
 			select: 'Выбрать'
 		},
 
@@ -50,7 +50,7 @@ Ext.define(
 					fieldLabel: me.translateText.subject,
 					labelAlign: 'right',
 					labelWidth: 110
-				},
+				}/*,
 				{
 					xtype: 'button',
 					margin: '0 0 0 5',
@@ -60,7 +60,7 @@ Ext.define(
 					{
 						this.fireEvent('showSubjectTree');
 					}
-				}
+				}*/
 			];
 			me.callParent(arguments);
 		}

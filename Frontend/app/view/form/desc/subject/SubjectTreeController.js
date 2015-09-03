@@ -11,6 +11,18 @@ Ext.define(
 		alias: 'controller.form.desc.subjectTree',
 
 		/**
+		 * Вызывается при необходимотси отфильтровать дерево.
+		 * @param {String} value Значение для фильтрации.
+		 */
+		onFilter: function (value)
+		{
+			var me = this,
+				view = me.getView();
+
+			view.filterData(value);
+		},
+
+		/**
 		 * Вызывается при клике на панели дерева.
 		 * @param {Object} evt Объект события.
 		 */

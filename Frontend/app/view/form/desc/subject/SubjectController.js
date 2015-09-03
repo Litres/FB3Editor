@@ -13,19 +13,23 @@ Ext.define(
 		/**
 		 * Заполняет текстовое поле выбранным жанром из списка.
 		 * @param {Object} data Данные жанра.
-		 * @param {String} data.name Название жанра.
-		 * @param {String} data.value Значение жанра.
 		 */
 		onSelectSubject: function (data)
 		{
 			var me = this,
 				view = me.getView(),
+				val,
 				textfield;
 
-			textfield = view.query('textfield')[0];
-			textfield.setValue(data.name);
+			val = data[view.subjectTree.displayField];
+			textfield = view.down('textfield');
+			textfield.setValue(val);
+			textfield.focusToEnd();
 		},
 
+		/**
+		 * Показывает окно жанров.
+		 */
 		onShowSubjectTree: function ()
 		{
 			var me = this,
@@ -34,7 +38,9 @@ Ext.define(
 
 			subjectTree = view.subjectTree;
 			subjectTree.subjectView = view;
-			subjectTree.show();
+
+			// показываем окно жанров
+			subjectTree.initData();
 		}
 	}
 );
