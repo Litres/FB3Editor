@@ -25,6 +25,7 @@
 .panel-editor-viewport .el-title,
 .panel-editor-viewport .el-section,
 .panel-editor-viewport .el-blockquote,
+.panel-editor-viewport .el-pre,
 .panel-editor-viewport .el-annotation,
 .panel-editor-viewport .el-epigraph,
 .panel-editor-viewport .el-poem,
@@ -55,12 +56,25 @@
 	background-color: #F4EEE3; /*## Основной фоновый цвет тела книги в редакторе*/
 }
 
+.panel-editor-viewport .el-blockquote
+{
+	color: #570110;
+}
+
 .panel-editor-viewport .el-code
 {
 	display: inline;
 	margin: 0;
 	font-family: monospace;
 	font-style: normal;
+	color: #4d4d4d;
+	background: rgb(238,238,238);
+}
+
+
+.panel-editor-viewport .el-pre
+{
+	font-family: monospace;
 	background: rgb(238,238,238);
 }
 

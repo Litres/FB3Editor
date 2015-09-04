@@ -11,8 +11,8 @@ Ext.define(
 		id: 'panel-toolstab-main-button-code',
 		xtype: 'panel-toolstab-main-button-code',
 		//controller: 'panel.toolstab.main.button.code',
-		html: '<span style="position: relative; font-family: monospace; font-size: 1.4em; top: 2px;">M</span>',
-		tooltip: 'Моноширинный (Ctrl+M)',
+		html: '<i class="fa fa-code"></i>',
+		tooltip: 'Код',
 		elementName: 'code'
 	}
 );

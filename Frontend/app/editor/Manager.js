@@ -530,11 +530,9 @@ Ext.define(
 				res,
 				xml;
 
-			//console.log('el', el);
-
-			if (!el || el.isText || el.parent.isBlockquote && el.isStyleHolder && el.isEmpty() || !schema.getElement(name))
+			if (!el || el.isText || el.isUndefined || el.isStyleHolder && el.isEmpty())
 			{
-				// текст, пустые в цитатах и неопределенные элементы не нуждаются в проверке
+				// текст, пустые в абзаце и неопределенные элементы не нуждаются в проверке
 				return true;
 			}
 

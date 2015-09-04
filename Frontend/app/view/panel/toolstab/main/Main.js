@@ -20,6 +20,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.note.Note',
 			'FBEditor.view.panel.toolstab.main.button.notes.Notes',
 			'FBEditor.view.panel.toolstab.main.button.ol.Ol',
+			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.section.Section',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
 			'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
@@ -82,6 +83,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-blockquote'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-pre'
 				},
 				{
 					xtype: 'panel-toolstab-main-button-ul'

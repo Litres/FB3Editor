@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.editor.command.pre.CreateRangeCommand',
 	{
-		extend: 'FBEditor.editor.command.AbstractCreateRangeStyleCommand',
+		extend: 'FBEditor.editor.command.AbstractCreateRangeCommand',
 
 		elementName: 'pre'
 	}

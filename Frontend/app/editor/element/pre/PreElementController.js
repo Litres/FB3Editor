@@ -7,6 +7,6 @@
 Ext.define(
 	'FBEditor.editor.element.pre.PreElementController',
 	{
-		extend: 'FBEditor.editor.element.AbstractStyleElementController'
+		extend: 'FBEditor.editor.element.AbstractUnboundedElementController'
 	}
 );

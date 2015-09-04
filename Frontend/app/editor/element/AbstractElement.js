@@ -753,7 +753,7 @@ Ext.define(
 				children,
 				function (item, index)
 				{
-					if (el.elementId ===  item.elementId)
+					if (el.elementId === item.elementId)
 					{
 						pos = index;
 
@@ -1109,13 +1109,50 @@ Ext.define(
 				if (child && (child.isStyleType || child.isText))
 				{
 					//console.log('child', pos, child.xmlTag);
+					if (child.isStyleType)
+					{
+						// удаляем все неопределенные элементы
+						child.removeUndefinedElements();
+					}
 
-					// добавляем в контейнер текстовый элемент
-					fragment.add(child);
+					if (child.children.length)
+					{
+						// добавляем в контейнер текстовый элемент
+						fragment.add(child);
+					}
+					else
+					{
+						pos++;
+					}
 				}
 				else
 				{
 					// позиция следующего потомка
+					pos++;
+				}
+			}
+		},
+
+		/**
+		 * Удаляет все неопределенные элементы.
+		 */
+		removeUndefinedElements: function ()
+		{
+			var me = this,
+				children = me.children,
+				pos = 0,
+				el;
+
+			while (me.children.length && pos < me.children.length)
+			{
+				el = children[pos];
+
+				if (el.isUndefined)
+				{
+					me.remove(el);
+				}
+				else
+				{
 					pos++;
 				}
 			}

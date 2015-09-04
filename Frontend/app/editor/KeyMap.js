@@ -75,7 +75,7 @@ Ext.define(
 				ctrl: true,
 				fn: 'onBtn',
 				args: {
-					name: 'code'
+					name: 'pre'
 				}
 			},
 			{

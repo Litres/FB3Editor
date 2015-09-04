@@ -86,7 +86,7 @@ Ext.define(
 				data.range = range;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.node);
 
 				res = true;
 			}

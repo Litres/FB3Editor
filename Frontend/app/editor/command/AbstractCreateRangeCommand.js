@@ -168,7 +168,7 @@ Ext.define(
 				data.saveNodes = nodes;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent, true);
+				me.verifyElement(els.parent);
 
 				res = true;
 			}
