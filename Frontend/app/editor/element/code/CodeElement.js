@@ -7,9 +7,11 @@
 Ext.define(
 	'FBEditor.editor.element.code.CodeElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
+		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
-			'FBEditor.editor.element.code.CodeElementController'
+			'FBEditor.editor.element.code.CodeElementController',
+			'FBEditor.editor.command.code.CreateRangeCommand',
+			'FBEditor.editor.command.code.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.code.CodeElementController',
 		htmlTag: 'code',

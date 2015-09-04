@@ -111,7 +111,7 @@ Ext.define(
 										</complexContent>\
 									</complexType>\
 								</element>\
-								<element name="code" type="fb3b:PHolderType"/>\
+								<element name="pre" type="fb3b:PHolderType"/>\
 								<element name="table">\
 									<complexType>\
 										<complexContent>\
@@ -153,7 +153,7 @@ Ext.define(
 				<element name="p" type="fb3b:StyleType"/>\
 				<element name="ol" type="fb3b:LiHolderType"/>\
 				<element name="ul" type="fb3b:LiHolderType"/>\
-				<element name="code" type="fb3b:PHolderType"/>\
+				<element name="pre" type="fb3b:PHolderType"/>\
 				<element name="table" type="fb3b:TableType"/>\
 				<element name="poem" type="fb3b:PoemType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
@@ -162,7 +162,7 @@ Ext.define(
 				<element name="p" type="fb3b:StyleType"/>\
 				<element name="ol" type="fb3b:LiHolderType"/>\
 				<element name="ul" type="fb3b:LiHolderType"/>\
-				<element name="code" type="fb3b:PHolderType"/>\
+				<element name="pre" type="fb3b:PHolderType"/>\
 				<element name="table" type="fb3b:TableType"/>\
 				<element name="poem" type="fb3b:PoemType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
@@ -193,14 +193,14 @@ Ext.define(
 				<element name="p" type="fb3b:StyleType"/>\
 				<element name="ol" type="fb3b:LiHolderType"/>\
 				<element name="ul" type="fb3b:LiHolderType"/>\
-				<element name="code" type="fb3b:PHolderType"/>\
+				<element name="pre" type="fb3b:PHolderType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
 			</choice>\
 			<choice minOccurs="0" maxOccurs="unbounded">\
 				<element name="p" type="fb3b:StyleType"/>\
 				<element name="ol" type="fb3b:LiHolderType"/>\
 				<element name="ul" type="fb3b:LiHolderType"/>\
-				<element name="code" type="fb3b:PHolderType"/>\
+				<element name="pre" type="fb3b:PHolderType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
 				<element name="br" type="fb3b:BRType"/>\
 			</choice>\
@@ -248,7 +248,7 @@ Ext.define(
 			<element name="strikethrough" type="fb3b:StyleType"></element>\
 			<element name="sub" type="fb3b:StyleType"></element>\
 			<element name="sup" type="fb3b:StyleType"></element>\
-			<element name="pre" type="fb3b:StyleType"></element>\
+			<element name="code" type="fb3b:StyleType"></element>\
 			<element name="underline" type="fb3b:StyleType"></element>\
 			<element name="spacing" type="fb3b:StyleType"></element>\
 			<element name="span">\
@@ -366,7 +366,7 @@ Ext.define(
 						</complexContent>\
 					</complexType>\
 				</element>\
-				<element name="code" type="fb3b:PHolderType"/>\
+				<element name="pre" type="fb3b:PHolderType"/>\
 				<element name="table" type="fb3b:TableType"/>\
 				<element name="poem" type="fb3b:PoemType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\

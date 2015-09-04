@@ -17,7 +17,6 @@ Ext.define(
 		allowBlank: false,
 		selectOnFocus: true,
 		checkChangeBuffer: 200,
-		//editable: false,
 		cls: 'field-required',
 		listeners: {
 			click: {
@@ -27,7 +26,7 @@ Ext.define(
 			change: 'onChange'
 		},
 
-		/*afterRender: function ()
+		afterRender: function ()
 		{
 			var me = this,
 				subject = me.up('form-desc-subject'),
@@ -37,7 +36,7 @@ Ext.define(
 			me.keyNav = new Ext.util.KeyNav(
 				{
 					target: me.inputEl,
-					forceKeyDown: true,
+					//forceKeyDown: true,
 					esc: function ()
 					{
 						this.onEsc();
@@ -47,7 +46,7 @@ Ext.define(
 			);
 
 			me.callParent(arguments);
-		},*/
+		},
 
 		/**
 		 * Устанавливает курсор в конец поля.

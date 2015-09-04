@@ -7,6 +7,6 @@
 Ext.define(
 	'FBEditor.editor.element.code.CodeElementController',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController'
+		extend: 'FBEditor.editor.element.AbstractStyleElementController'
 	}
 );

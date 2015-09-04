@@ -106,8 +106,13 @@ Ext.define(
 		show: function ()
 		{
 			var me = this,
-				textfield = me.getTextField(),
+				textfield,
 				val;
+
+			if (!me.rendered)
+			{
+				return;
+			}
 
 			me.callParent(arguments);
 
@@ -118,6 +123,7 @@ Ext.define(
 			if (me.subjectView)
 			{
 				// фильтруем значение
+				textfield = me.getTextField();
 				val = textfield.getValue();
 				me.filterData(val);
 

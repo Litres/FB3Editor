@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.a.A',
 			'FBEditor.view.panel.toolstab.main.button.annotation.Annotation',
 			'FBEditor.view.panel.toolstab.main.button.blockquote.Blockquote',
+			'FBEditor.view.panel.toolstab.main.button.code.Code',
 			'FBEditor.view.panel.toolstab.main.button.div.Div',
 			'FBEditor.view.panel.toolstab.main.button.em.Em',
 			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
@@ -19,7 +20,6 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.note.Note',
 			'FBEditor.view.panel.toolstab.main.button.notes.Notes',
 			'FBEditor.view.panel.toolstab.main.button.ol.Ol',
-			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.section.Section',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
 			'FBEditor.view.panel.toolstab.main.button.strikethrough.Strikethrough',
@@ -125,7 +125,7 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-sup'
 				},
 				{
-					xtype: 'panel-toolstab-main-button-pre'
+					xtype: 'panel-toolstab-main-button-code'
 				}
 			];
 			me.callParent(arguments);

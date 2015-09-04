@@ -55,7 +55,7 @@
 	background-color: #F4EEE3; /*## Основной фоновый цвет тела книги в редакторе*/
 }
 
-.panel-editor-viewport .el-pre
+.panel-editor-viewport .el-code
 {
 	display: inline;
 	margin: 0;
