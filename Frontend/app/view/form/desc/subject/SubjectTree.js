@@ -234,7 +234,7 @@ Ext.define(
 
 			Ext.Ajax.request(
 				{
-					url: 'http://partnersdnld.litres.ru/genres_list_2/',
+					url: 'https://hub.litres.ru/genres_list_2/',
 					timeout: 5000,
 					scope: me,
 					success: function (response)
