@@ -109,11 +109,6 @@ Ext.define(
 				textfield,
 				val;
 
-			if (!me.rendered)
-			{
-				return;
-			}
-
 			me.callParent(arguments);
 
 			me.fireEvent('alignTo');
@@ -296,11 +291,11 @@ Ext.define(
 
 			json = FBEditor.util.xml.Json.xmlToJson(text);
 
-			//console.log('load data', json);
-
 			rootTreeData = me.getTreeData(json.genres.genre);
 			me.cacheData = Ext.clone(rootTreeData);
 			store.loadData(rootTreeData);
+			//console.log('load data', rootTreeData);
+
 			me.dataLoaded = true;
 			me.show();
 		},
