@@ -657,14 +657,14 @@ Ext.define(
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
 			}
-		},
+		}
 
 		/**
 		 * Проверяет получаемую схему.
 		 * @param {String} xml Строка xml, новой проверяемой структуры.
 		 * @return {Boolean}
 		 */
-		verify: function (xml, debug)
+		/*verify: function (xml, debug)
 		{
 			var manager = FBEditor.editor.Manager,
 				sch = manager.getSchema(),
@@ -673,6 +673,6 @@ Ext.define(
 			res = sch.validXml(xml, debug);
 
 			return res;
-		}
+		}*/
 	}
 );

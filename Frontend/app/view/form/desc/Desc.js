@@ -41,6 +41,7 @@ Ext.define(
 		bodyPadding: 0,
 		cls: 'form-desc',
 		listeners: {
+			accessHub: 'onAccessHub',
 			loadDesc: 'onLoadData',
 			reset: 'onReset',
 			activate: 'onActivate',

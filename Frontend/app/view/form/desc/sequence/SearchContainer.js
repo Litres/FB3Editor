@@ -47,6 +47,7 @@ Ext.define(
 				},
 				{
 					xtype: 'form-desc-sequence-customBtn',
+					cls: 'form-desc-customBtn',
 					width: 300,
 					searchContainer: me
 				}

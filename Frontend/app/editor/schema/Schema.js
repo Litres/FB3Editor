@@ -25,6 +25,16 @@ Ext.define(
 		elements: null,
 
 		/**
+		 * @private
+		 * @property {Object[]} Очередь функций обратного вызова при получении ответа после проверки схемы.
+		 * Самая первая функция должна быть выполнена в первую очередь.
+		 * @property {Function} Object.fn Функция.
+		 * @property {Object} Object.scope Хозяин функции.
+		 * @property {Object} [Object.scopeData] Дополнительные данные.
+		 */
+		callback: [],
+
+		/**
 		 * @property {Boolean} Показывать ли отладочные сообщения в консоли.
 		 */
 		disableDebug: true,
@@ -86,36 +96,73 @@ Ext.define(
 
 		/**
 		 * Проверяет xml по схеме.
-		 * @param {String} xml
+		 * @param opts Данные.
+		 * @param {String} opts.xml Строка xml, которую необходимо проверить по схеме.
+		 * @param {Function} opts.callback Функция обратного вызова, которая получит результат проверки.
+		 * @param {Object} opts.scope Хозяин функции обратного вызова.
+		 * @param {Object} [opts.scopeData] Дополнительные данные.
 		 */
-		validXml: function (xml, debug)
+		validXml: function (opts)
 		{
 			var me = this,
-				data,
-				valid,
-				res;
-
-			!debug || console.log({xml: xml, xsd: me._xsd});
+				manager = FBEditor.webworker.Manager,
+				master = manager.getMaster('xmllint'),
+				data;
 
 			data = {
-				xml: xml,
+				xml: opts.xml,
 				xsd: me._xsd,
 				xmlFileName: 'body.xml',
 				schemaFileName: 'fb3_body.xsd'
 			};
 
-			valid = FBEditor.util.xml.Jsxml.valid(data);
+			// сохраняем колбэк в очереди вызовов
+			opts.scopeData = opts.scopeData || {};
+			me.callback.push({fn: opts.callback, scope: opts.scope, scopeData: opts.scopeData});
 
-			// признак ошибки
-			res = !/^body.xml:1/i.test(valid);
+			master.post(data, me.messageValid, me);
+		},
 
-			if (!res && debug)
+		/**
+		 * Получает результаты проверки от xmllint и вызывает колбэк.
+		 * @param response Результаты провекри по схеме.
+		 * @param {Boolean} response.res Прошла ли проверка.
+		 * @param {String} response.valid Сообщение.
+		 */
+		messageValid: function (response)
+		{
+			var me = this,
+				data = response.data,
+				callback;
+
+			callback = me.getCallback();
+
+			!callback.scopeData.debug || console.log('xmllint', data.res, data.valid, data);
+
+			if (callback)
 			{
-				Ext.log({msg: valid, level: 'warn'});
+				callback.scopeData.loaded = data.loaded;
+				callback.fn.call(callback.scope, data.res, callback.scopeData);
+			}
+		},
+
+		/**
+		 * @private
+		 * Возвращает первый колбэк из очереди.
+		 * @return {Function|null} Колбэк.
+		 */
+		getCallback: function ()
+		{
+			var me = this,
+				callback = null;
+
+			if (me.callback.length)
+			{
+				// первый колбэк
+				callback = me.callback.splice(0, 1)[0];
 			}
 
-
-			return res;
+			return callback;
 		},
 
 		/**

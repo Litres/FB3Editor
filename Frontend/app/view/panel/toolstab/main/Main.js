@@ -37,11 +37,21 @@ Ext.define(
 		xtype: 'panel-toolstab-main',
 		title: 'Форматирование',
 
+		translateText: {
+			loading: 'Загрузка xmllint ...'
+		},
+
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				manager = FBEditor.editor.Manager,
+				sch = manager.getSchema(),
+				tbar;
 
-			me.tbar = [
+			// вызываем тестовую проверку по схеме для определения загрузки xmllint
+			sch.validXml({xml: 'test', callback: me.verifyResult, scope: me});
+
+			tbar = [
 				{
 					xtype: 'panel-toolstab-main-button-notes'
 				},
@@ -132,7 +142,46 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-code'
 				}
 			];
+
+			me.dockedItems = [
+				{
+					xtype: 'toolbar',
+					dock: 'top',
+					items: tbar,
+					hidden: true
+				}
+			];
+
+			me.items = [
+				{
+					xtype: 'component',
+					padding: 10,
+					style: {
+						color: 'gray'
+					},
+					html: me.translateText.loading
+				}
+			];
+
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Получает результат проверки xmllint.
+		 * @param {Boolean} res
+		 * @param data
+		 * @param {Boolean} data.loaded Загружен ли xmllint.
+		 */
+		verifyResult: function (res, data)
+		{
+			var me = this;
+
+			if (data.loaded)
+			{
+				Ext.log({msg: 'xmllint загружен', level: 'info'});
+
+				me.getDockedItems()[0].setVisible(true);
+			}
 		}
 	}
 );

@@ -43,17 +43,42 @@ Ext.define(
 		/**
 		 * Проверяет получаемую схему.
 		 * @param {String} xml Строка xml, новой проверяемой структуры.
-		 * @return {Boolean}
+		 * @param {Boolean} [debug] Нужно ли выводить отладочные сообщения.
 		 */
 		verify: function (xml, debug)
 		{
-			var manager = FBEditor.editor.Manager,
+			var me = this,
+				manager = FBEditor.editor.Manager,
 				sch = manager.getSchema(),
-				res;
+				scopeData = {};
 
-			res = sch.validXml(xml, debug);
+			scopeData.debug = debug;
 
-			return res;
+			// вызываем проверку по схеме
+			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+		},
+
+		/**
+		 * @private
+		 * Получает результат проверки по схеме.
+		 * @param {Boolean} enable Прошла ли проверка.
+		 * @param {Object} [scopeData]
+		 */
+		verifyResult: function (enable, scopeData)
+		{
+			var me = this,
+				btn = me.getView();
+
+			//console.log('btn', enable, btn);
+
+			if (enable)
+			{
+				btn.enable();
+			}
+			else
+			{
+				btn.disable();
+			}
 		}
 	}
 );

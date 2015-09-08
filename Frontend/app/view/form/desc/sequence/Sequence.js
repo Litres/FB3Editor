@@ -22,6 +22,7 @@ Ext.define(
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 		layout: 'anchor',
 		listeners: {
+			accessHub: 'onAccessHub',
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
 			putData: 'onPutData',

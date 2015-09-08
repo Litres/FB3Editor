@@ -365,12 +365,17 @@ Ext.define(
 
 				manager.suspendEvent = false;
 
+				els.focus = nodes.cursor.parentNode.getElement();
+
+				// сохраняем айди, чтобы избежать двойной синхронизации кнопок
+				manager.cashSyncBtn = els.focus.elementId;
+
 				// устанавливаем курсор
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,
 						startOffset: nodes.cursor.nodeValue.length,
-						focusElement: nodes.cursor.parentNode.getElement()
+						focusElement: els.focus
 					}
 				);
 

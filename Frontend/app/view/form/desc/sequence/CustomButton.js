@@ -41,19 +41,23 @@ Ext.define(
 		},
 
 		/**
-		 * Переключает контейнер с поиска на данные.
+		 * Переключает контейнер с поиска на данные или обратно.
+		 * @param {Boolean} customToSearch Переключить ли контейнер на поиск.
 		 */
-		switchContainers: function ()
+		switchContainers: function (customToSearch)
 		{
 			var me = this,
+				hidden,
 				search,
 				custom;
 
 			search = me.searchContainer;
 			custom = me.customContainer;
 
-			custom.setHidden(false);
-			search.setHidden(true);
+			hidden = customToSearch ? true : false;
+
+			custom.setHidden(hidden);
+			search.setHidden(!hidden);
 		},
 
 		/**

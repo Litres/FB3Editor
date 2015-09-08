@@ -47,6 +47,10 @@ Ext.define(
 			els.parent = nodes.parent.getElement();
 			nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 
+			// можно не делать дополнительную проверку, так как кнопки на панели уже проверяют схему при синхронизации
+			return nodes.node;
+
+			/*
 			nodes.parent = els.node.isRoot ? nodes.node : nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 
@@ -67,6 +71,7 @@ Ext.define(
 			res = me.verify(xml) ? nodes.node : false;
 
 			return res;
+			*/
 		},
 
 		/**
@@ -91,6 +96,7 @@ Ext.define(
 			// можно не делать дополнительную проверку, так как кнопки на панели уже проверяют схему при синхронизации
 			return true;
 
+			/*
 			name = me.getNameElement();
 
 			// получаем данные из выделения
@@ -189,12 +195,13 @@ Ext.define(
 				res = sch.verify(name, names.common);
 			}
 
-			/*console.log('range', range, range.toString());
+			console.log('range', range, range.toString());
 			 console.log('nodes', nodes);
 			 console.log('els', els);
-			 console.log('pos', pos);*/
+			 console.log('pos', pos);
 
 			return res;
+			*/
 		},
 
 		getNameElementsVerify: function (nodes)

@@ -23,6 +23,14 @@ Ext.define(
 	    },
 
 		/**
+		 * Оповещает все необходимые компоненты, что хаб доступен.
+		 */
+		onAccessHub: function ()
+		{
+			Ext.getCmp('form-desc').fireEvent('accessHub');
+		},
+
+		/**
 		 * Выполняет необходимые проверки перед тем как создать панель.
 		 * @param {String} name Имя панели.
 		 * @param {Object} action Необходимые колбэки для передачи управления.

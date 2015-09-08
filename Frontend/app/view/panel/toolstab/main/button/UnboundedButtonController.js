@@ -21,15 +21,13 @@ Ext.define(
 				pos = {},
 				name = btn.elementName,
 				xml,
-				range,
-				enable;
+				range;
 
 			range = manager.getRange();
 
 			if (!range)
 			{
 				btn.disable();
-
 				return;
 			}
 
@@ -40,7 +38,6 @@ Ext.define(
 				if (!nodes.common.getElement || nodes.common.getElement().isRoot)
 				{
 					btn.disable();
-
 					return;
 				}
 
@@ -58,7 +55,6 @@ Ext.define(
 					if (els.common.isRoot)
 					{
 						btn.disable();
-
 						return;
 					}
 				}
@@ -142,7 +138,7 @@ Ext.define(
 				els.common.children.splice(pos.start, 1);
 
 				// проверяем по схеме
-				enable = me.verify(xml);
+				me.verify(xml);
 			}
 			else
 			{
@@ -151,7 +147,6 @@ Ext.define(
 				if (!nodes.node.getElement || nodes.node.getElement().isRoot)
 				{
 					btn.disable();
-
 					return;
 				}
 
@@ -187,16 +182,7 @@ Ext.define(
 				els.parent.children.splice(pos, 1);
 
 				// проверяем по схеме
-				enable = me.verify(xml);
-			}
-
-			if (enable)
-			{
-				btn.enable();
-			}
-			else
-			{
-				btn.disable();
+				me.verify(xml);
 			}
 		}
 	}

@@ -30,6 +30,31 @@ Ext.define(
 		},
 
 		/**
+		 * Xаб доступен.
+		 */
+		onAccessHub: function ()
+		{
+			var cmpArr = [
+				'form-desc-sequence',
+				'form-desc-relations-subject',
+				'form-desc-relations-object'
+			];
+
+			Ext.Array.each(
+				cmpArr,
+			    function (id)
+			    {
+				    var cmp = Ext.getCmp(id);
+
+				    if (cmp)
+				    {
+					    cmp.fireEvent('accessHub');
+				    }
+			    }
+			);
+		},
+
+		/**
 		 * Выполняется при прокручивании скролла.
 		 * @param {Ext.event.Event} evt Объект события.
 		 * @param {HTMLElement} el Элемент.

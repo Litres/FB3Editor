@@ -20,7 +20,6 @@ Ext.define(
 				nodes = {},
 				els = {},
 				range,
-				enable,
 				xml;
 
 			range = manager.getRange();
@@ -95,16 +94,7 @@ Ext.define(
 			els.parent.children.splice(0, 1);
 
 			// проверяем по схеме
-			enable = me.verify(xml);
-
-			if (enable)
-			{
-				btn.enable();
-			}
-			else
-			{
-				btn.disable();
-			}
+			me.verify(xml);
 		}
 	}
 );

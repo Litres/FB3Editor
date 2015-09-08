@@ -65,7 +65,7 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			if (view.isVisible())
+			if (view.isVisible() && view.subjectView && view.rendered)
 			{
 				view.alignTo(view.subjectView, 'tr', [-view.getWidth(), -view.getHeight()]);
 			}

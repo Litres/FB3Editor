@@ -46,6 +46,7 @@ Ext.define(
 				},
 				{
 					xtype: 'form-desc-relations-object-customBtn',
+					cls: 'form-desc-customBtn',
 					width: 300,
 					searchContainer: me
 				}

@@ -60,6 +60,23 @@ Ext.define(
 		},
 
 		/**
+		 * Активирует поисковый контейнер.
+		 */
+		onAccessHub: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				btn;
+
+			btn = view.down('[cls=form-desc-customBtn]');
+
+			if (btn)
+			{
+				btn.switchContainers(true);
+			}
+		},
+
+		/**
 		 * Устанавливает редактируемость полей.
 		 * @param {Boolean} editable Редактируемые ли поля.
 		 */

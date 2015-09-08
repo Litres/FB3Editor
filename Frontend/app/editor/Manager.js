@@ -196,7 +196,8 @@ Ext.define(
 				bridgeProps = FBEditor.getBridgeProps(),
 				el,
 				data,
-				range;
+				range,
+				difCollapsed;
 
 			el = elOrNode.getElement ? elOrNode.getElement() : elOrNode;
 			me.focusElement = el;
@@ -205,6 +206,7 @@ Ext.define(
 
 			if (range)
 			{
+				difCollapsed = me.range ? me.range.collapsed !== range.collapsed : true;
 				me.range = {
 					collapsed: range.collapsed,
 					common: range.commonAncestorContainer,
@@ -222,6 +224,7 @@ Ext.define(
 			}
 			else
 			{
+				difCollapsed = true;
 				me.range = {
 					collapsed: true,
 					common: elOrNode,
@@ -238,7 +241,7 @@ Ext.define(
 				};
 			}
 
-			if (!el.isText && me.cashSyncBtn !== el.elementId || !me.range.collapsed)
+			if (!el.isText && me.cashSyncBtn !== el.elementId || difCollapsed)
 			{
 				// синхронизируем кнопки элементов с текущим выделением
 				// защита от многокртаной синхронизации на одном и том же элементе
@@ -520,30 +523,26 @@ Ext.define(
 		/**
 		 * Проверяет по схеме элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
-		 * @return {Boolean} Соответствует ли схеме.
+		 * @param {Boolean} [debug] Нужны ли отладочные сообщения.
 		 */
-		verifyElement: function (el, debug)
+		/*verifyElement: function (el, debug)
 		{
 			var me = this,
-				schema = me.getSchema(),
-				name = el.getName(),
-				res,
+				sch = me.getSchema(),
 				xml;
 
 			if (!el || el.isText || el.isUndefined || el.isStyleHolder && el.isEmpty())
 			{
-				// текст, пустые в абзаце и неопределенные элементы не нуждаются в проверке
+				// текст, пустые абзаци и неопределенные элементы не нуждаются в проверке
 				return true;
 			}
 
 			// получаем xml без текстовых элементов
 			xml = me.content.getXml(true);
 
-			// проверяем по схеме
-			res = schema.validXml(xml, debug);
-
-			return res;
-		},
+			// вызываем проверку по схеме
+			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, debug: debug});
+		},*/
 
 		/**
 		 * Возвращает пустой элемент, для заполнения элементов без содержимого.

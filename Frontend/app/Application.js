@@ -17,6 +17,7 @@ Ext.define(
 			'FBEditor.resource.Manager',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',
+			'FBEditor.webworker.Manager',
 			'FBEditor.xsl.Body',
 			'FBEditor.xsd.Desc'
 		],
@@ -85,6 +86,7 @@ Ext.define(
 				return Ext.util.LocalStorage.get('FBEditor') || new Ext.util.LocalStorage({id: 'FBEditor'});
 			};
 
+			FBEditor.webworker.Manager.init();
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 			FBEditor.command.HistoryCommand.init();
@@ -177,33 +179,37 @@ Ext.define(
 		 */
 		getAccessHub: function ()
 		{
-			var urlTestAccess = 'https://hub.litres.ru/pages/machax_arts/?uuid=1';
+			var manager = FBEditor.webworker.Manager,
+				master;
 
 			FBEditor.accessHub = false;
 
-			try
-			{
-				Ext.Ajax.request(
+			// владелец потока
+			master = manager.factory('httpRequest');
+
+			// запрос на доступ к хабу через поток
+			master.post(
+				{
+					url: 'https://hub.litres.ru/pages/machax_arts/?uuid=1'
+				},
+				function (response, data)
+				{
+					//console.log('response, data', response, data);
+
+					if (response)
 					{
-						url: urlTestAccess,
-						async: false,
-						timeout: 1000,
-						success: function (response)
+						FBEditor.accessHub = response.substring(0, 1) === '{' ? true : false;
+
+						Ext.log({msg: 'Хаб доступен', level: 'info'});
+
+						if (FBEditor.accessHub)
 						{
-							FBEditor.accessHub = response.responseText.substring(0, 1) === '{' ? true : false;
-							Ext.log({msg: 'Доступ к хабу: ' + FBEditor.accessHub, level: 'info'});
-						},
-						failure: function ()
-						{
-							Ext.log({msg: 'Доступ к хабу: ' + FBEditor.accessHub, level: 'info'});
+							// оповещаем все необходимые компоненты, что хаб доступен
+							Ext.getCmp('main').fireEvent('accessHub');
 						}
 					}
-				);
-			}
-			catch (e)
-			{
-				Ext.log({msg: 'Доступ к хабу: ' + FBEditor.accessHub, level: 'info'});
-			}
+				}
+			);
 		}
 	}
 );

@@ -16,6 +16,7 @@ Ext.define(
 		controller: 'form.desc.abstractField',
 
 		listeners: {
+			accessHub: 'onAccessHub',
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
 			editable: 'onEditable'
@@ -32,6 +33,11 @@ Ext.define(
 				me.name = 'plugin-fieldcontainerreplicator';
 			}
 			me.callParent(arguments);
+		},
+
+		onAccessHub: function ()
+		{
+
 		},
 
 		/**

@@ -109,14 +109,14 @@ Ext.define(
 				textfield,
 				val;
 
-			me.callParent(arguments);
-
-			me.fireEvent('alignTo');
-
-			me.isShow = true;
-
 			if (me.subjectView)
 			{
+				me.callParent(arguments);
+
+				me.fireEvent('alignTo');
+
+				me.isShow = true;
+
 				// фильтруем значение
 				textfield = me.getTextField();
 				val = textfield.getValue();

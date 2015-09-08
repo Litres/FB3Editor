@@ -21,8 +21,7 @@ Ext.define(
 				name = btn.elementName,
 				range,
 				xml,
-				pos,
-				enable;
+				pos;
 
 			range = manager.getRange();
 
@@ -123,16 +122,7 @@ Ext.define(
 			els.parent.children.splice(pos, 1);
 
 			// проверяем по схеме
-			enable = me.verify(xml);
-
-			if (enable)
-			{
-				btn.enable();
-			}
-			else
-			{
-				btn.disable();
-			}
+			me.verify(xml);
 		}
 	}
 );

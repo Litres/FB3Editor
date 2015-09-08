@@ -134,8 +134,10 @@
             "remote": true
         },
         {
-            "path": "bower_components/xmllint/index.js",
-            "remote": true
+            "path": "app/webworker/httpRequest/Worker.js"
+        },
+        {
+            "path": "app/webworker/xmllint/Worker.js"
         },
         {
             "path": "bower_components/jsxml/jsxml.js",
@@ -220,7 +222,7 @@
      */
     "production": {
         "loader": {
-            "cache": 286,
+            "cache": 287,
             "cacheParam": "_v"
         }
     },
