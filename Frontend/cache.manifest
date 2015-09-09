@@ -1,19 +1,16 @@
 CACHE MANIFEST
-# v290
+# v1.0
 
 CACHE:
-index.html
+
 app.js
-app.json
-app/webworker/httpRequest/Worker.js
-app/webworker/xmllint/Worker.js
-app/webworker/xmllint/lib/index.js
-bower_components/jsxml/jsxml.js
-bower_components/jsxml/stand.js
-resources/css/editor.css
-resources/css/font-awesome.css
-resources/css/styles.css
-resources/FBEditor-all.css
-resources/FBEditor-all_01.css
-resources/FBEditor-all_02.css
-resources/images/favicon.ico
+bootstrap.js
+bootstrap.json
+
+FALLBACK:
+
+app.js* app.js
+
+NETWORK:
+
+*

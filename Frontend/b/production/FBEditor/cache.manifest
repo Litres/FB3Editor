@@ -1,0 +1,30 @@
+CACHE MANIFEST
+# v1.3
+
+CACHE:
+
+# not version resources
+
+app.json
+resources/FBEditor-all_01.css
+resources/FBEditor-all_02.css
+resources/images/favicon.ico
+app/webworker/httpRequest/Worker.js
+app/webworker/xmllint/Worker.js
+app/webworker/xmllint/lib/index.js
+
+# version resources
+
+resources/css/font-awesome.css?_v=291
+resources/css/styles.css?_v=291
+resources/css/editor.css?_v=291
+resources/FBEditor-all.css?_v=291
+
+app.js?_v=291
+bower_components/jsxml/jsxml.js?_v=291
+bower_components/jsxml/stand.js?_v=291
+
+
+NETWORK:
+
+*
