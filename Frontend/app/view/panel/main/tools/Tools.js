@@ -28,11 +28,11 @@ Ext.define(
 		},
 		items: [
 			{
-				xtype: 'panel-filename'
-
+				xtype: 'panel-main-toolstab'
 			},
 			{
-				xtype: 'panel-main-toolstab'
+				xtype: 'panel-filename'
+
 			}
 		]
     }

@@ -56,7 +56,7 @@ Ext.define(
 				managerEditor = FBEditor.editor.Manager,
 				root;
 
-			if (!managerDesc.loadUrl)
+			/*if (!managerDesc.loadUrl)
 			{
 				// переключаем контекст на текст
 				Ext.defer(
@@ -72,7 +72,11 @@ Ext.define(
 				// инциализируем корневой элемент
 				root = managerEditor.createRootElement();
 				root.createScaffold();
-			}
+			}*/
+
+			// инциализируем корневой элемент
+			root = managerEditor.createRootElement();
+			root.createScaffold();
 
 			me.callParent(arguments);
 		},

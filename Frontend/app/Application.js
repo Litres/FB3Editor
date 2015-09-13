@@ -99,6 +99,8 @@ Ext.define(
 
 	    launch: function ()
 	    {
+		    var me = this;
+
 		    if (FBEditor.parentWindow)
 		    {
 			    // убираем отсоединенную панель из главного окна
@@ -108,6 +110,9 @@ Ext.define(
 		    {
 			    FBEditor.desc.Manager.launch();
 		    }
+
+		    // удаляем информационную заставку
+		    document.querySelector('.app-loading').parentNode.removeChild(document.querySelector('.app-loading'));
 	    },
 
 		/**
@@ -213,3 +218,11 @@ Ext.define(
 		}
 	}
 );
+
+(function renderingInfo ()
+{
+	// меняем сообщение о загрузки
+	document.querySelector('.app-loading-info').firstChild.nodeValue = 'Рендеринг';
+	//document.querySelector('.app-loader').style.visibility = 'hidden';
+	//eval("Ext = null;");
+}());

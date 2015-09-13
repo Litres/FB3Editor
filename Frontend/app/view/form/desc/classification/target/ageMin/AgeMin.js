@@ -9,12 +9,21 @@ Ext.define(
 	{
 		extend: 'Ext.form.field.ComboBox',
 		requires: [
+			'FBEditor.view.form.desc.classification.target.ageMin.AgeMinController',
 			'FBEditor.view.form.desc.classification.target.ageMin.AgeMinStore'
 		],
+		controller: 'form.desc.classification.target.agemin',
 		xtype: 'form-desc-classification-target-agemin',
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
+
+		listeners: {
+			click: {
+				element: 'el',
+				fn: 'onClick'
+			}
+		},
 
 		initComponent: function ()
 		{

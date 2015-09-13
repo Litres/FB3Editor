@@ -9,15 +9,28 @@ Ext.define(
 	{
 		extend: 'Ext.form.field.ComboBox',
 		requires: [
+			'FBEditor.view.field.lang.LangController',
 			'FBEditor.view.field.lang.LangStore'
 		],
+		controller: 'langfield',
 		xtype: 'langfield',
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
-		editable: false,
+		editable: true,
+		typeAhead: true,
+		value: '',
 		listConfig: {
-			maxHeight: 'auto'
+			maxHeight: 210,
+			tpl : '<tpl for="."><tpl if="value!=\'line\'"><div class="x-boundlist-item">{name}</div>' +
+			      '<tpl else><div class="x-boundlist-item x-boundlist-item-line"></div></tpl></tpl>'
+		},
+
+		listeners: {
+			click: {
+				element: 'el',
+				fn: 'onClick'
+			}
 		},
 
 		initComponent: function ()
@@ -27,7 +40,9 @@ Ext.define(
 
 			store = Ext.create('FBEditor.view.field.lang.LangStore');
 			me.store = store;
+
 			me.callParent(arguments);
+
 		}
 	}
 );

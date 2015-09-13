@@ -51,7 +51,7 @@ Ext.define(
 							fieldLabel: me.translateText.writtenLang,
 							allowBlank: false,
 							forceSelection: true,
-							cls: 'field-required'
+							cls: 'field-optional'
 						},
 						{
 							xtype: 'countryfield',

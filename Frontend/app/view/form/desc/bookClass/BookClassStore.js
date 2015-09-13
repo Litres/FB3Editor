@@ -14,6 +14,10 @@ Ext.define(
 		],
 		data: [
 			{
+				value: '',
+				name: 'Неизвестно'
+			},
+			{
 				value: 'novel',
 				name: 'Роман'
 			},

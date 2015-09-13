@@ -177,6 +177,9 @@
             "bootstrap": true
         },
         {
+            "path": "resources/css/loader.css"
+        },
+        {
             "path": "resources/css/font-awesome.css"
         },
         {
@@ -216,7 +219,7 @@
      */
     "production": {
         "loader": {
-            "cache": "291",
+            "cache": "292",
             "cacheParam": "_v"
         }
     },

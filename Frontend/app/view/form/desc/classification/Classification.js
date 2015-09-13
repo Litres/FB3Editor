@@ -11,8 +11,6 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.bookClass.BookClass',
 			'FBEditor.view.form.desc.subject.Subject',
-			'FBEditor.view.form.desc.classification.classContents.Contents',
-			//'FBEditor.view.form.desc.classification.customSubject.CustomSubject',
 			'FBEditor.view.form.desc.classification.target.Target',
 			'FBEditor.view.form.desc.classification.setting.Setting',
 			'FBEditor.view.form.desc.written.Written'
@@ -28,8 +26,8 @@ Ext.define(
 			codes: 'Коды',
 			udc: 'Код УДК',
 			bbk: 'Код ББК',
-			udcError: 'По шаблону \d+(\.\d+)+(:\d+)?. Например 373.167.1:58',
-			bbkError: 'По шаблону \d+([\.а-я]\d+)+. Например 28.5я72',
+			udcError: 'По шаблону [\\d\\. \\*\\(\\)\\[\\]\\+:«»\'/A-Яа-я]+',
+			bbkError: 'По шаблону [\\(\\)\\d\\.\\-A-Яа-я/\\+ ]+',
 			written: 'Дата и место написания',
 			keywords: 'Ключевые слова',
 			keywordsHelp: 'Перечислите через запятую. Например 1912, война, роман, отечественная, наполеон, кутузов'
@@ -65,7 +63,7 @@ Ext.define(
 											xtype: 'form-desc-bookClass',
 											name: 'classification-class-text',
 											fieldLabel: me.translateText.bookClass,
-											cls: 'field-required'
+											cls: 'field-optional'
 										},
 										{
 											xtype: 'hiddenfield',
@@ -73,18 +71,6 @@ Ext.define(
 											value: 'standalone',
 											fieldLabel: me.translateText.contents
 										}
-										/*
-										{
-											xtype: 'form-desc-classification-class-contents',
-											name: 'classification-class-contents',
-											fieldLabel: me.translateText.contents
-										}
-										*/
-										/*
-										{
-											xtype: 'classification-custom-subject'
-										}
-										*/
 									]
 								},
 								{
@@ -163,7 +149,7 @@ Ext.define(
 											name: 'classification-udc',
 											flex: 1,
 											fieldLabel: me.translateText.udc,
-											regex: /^\d+(\.\d+)+(:\d+)?$/,
+											regex: /^[\d\. \*\(\)\[\]\+:«»'/A-Яа-я]+$/,
 											regexText: me.translateText.udcError,
 											afterBodyEl:  '<span class="after-body">' + me.translateText.udcError +
 											              '</span>'
@@ -207,7 +193,7 @@ Ext.define(
 											name: 'classification-bbk',
 											flex: 1,
 											fieldLabel: me.translateText.bbk,
-											regex: /^\d+([\.а-я]\d+)+$/,
+											regex: /^[\(\)\d\.\-A-Яа-я/\+ ]+$/,
 											regexText: me.translateText.bbkError,
 											afterBodyEl:  '<span class="after-body">' + me.translateText.bbkError +
 											              '</span>'

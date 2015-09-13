@@ -92,13 +92,13 @@ Ext.define(
 					xtype: 'desc-fieldset-sequence'
 				},
 				{
-					xtype: 'desc-fieldset-annotation'
+					xtype: 'desc-fieldset-relations-subject'
 				},
 				{
 					xtype: 'desc-fieldset-classification'
 				},
 				{
-					xtype: 'desc-fieldset-relations-subject'
+					xtype: 'desc-fieldset-annotation'
 				},
 				{
 					xtype: 'desc-fieldset-periodical'

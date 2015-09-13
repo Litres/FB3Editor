@@ -28,6 +28,7 @@ Ext.define(
 			'<div class="boundlist-search-item-sub"><tpl for="persons">{[xindex > 1 ? " / " : ""]}{title}</tpl></div>',
 			'<div class="boundlist-search-item-sub"><tpl for="series">{[xindex > 1 ? " / " : ""]}{name}</tpl></div>',
 			'<div class="boundlist-search-item-sub">{uuid}</div>',
+			'<div class="boundlist-search-item-sub">{id}</div>',
 			'</div>',
 			'</tpl>'
 		),

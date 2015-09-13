@@ -410,6 +410,7 @@ Ext.define(
 				    parentPath = parentPath || '';
 				    item.path = parentPath + '/' + item._id;
 				    item.icon = ' ';
+				    item[me.displayField] = Ext.String.capitalize(item[me.displayField]);
 
 				    if (children)
 				    {
