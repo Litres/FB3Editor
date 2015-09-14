@@ -69,7 +69,7 @@ Ext.define(
 			zip = fb3file.zip;
 			zip.file('meta/core.xml');
 			zip.file('fb3/body.xml');
-			zip.file('cover.jpg');
+			//zip.file('cover.jpg');
 			me.callParent(arguments);
 		},
 

@@ -49,13 +49,24 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				winRes;
+				winRes,
+				winResTree;
 
+			// окно выбора ресурса
 			winRes = Ext.getCmp('window-resource');
+
+			// окно дерева ресурсов
+			winResTree = Ext.getCmp('window-resource-tree');
+
 			if (winRes && !winRes.isHidden())
 			{
 				// вставляем панель навигации ресурсов в открытое окно выбора ресурсов
 				winRes.getWindowPanelResourcesNavigation().add({xtype: 'panel-resources-navigation'});
+			}
+			else if (winResTree && !winResTree.isHidden())
+			{
+				// вставляем панель навигации ресурсов в открытое окно перемещения ресурсов
+				winResTree.getWindowPanelResourcesTreeNavigation().add({xtype: 'panel-resources-navigation'});
 			}
 			else
 			{

@@ -27,7 +27,12 @@ Ext.define(
 		 */
 		onAccessHub: function ()
 		{
-			Ext.getCmp('form-desc').fireEvent('accessHub');
+			var desc = Ext.getCmp('form-desc');
+
+			if (desc)
+			{
+				desc.fireEvent('accessHub');
+			}
 		},
 
 		/**

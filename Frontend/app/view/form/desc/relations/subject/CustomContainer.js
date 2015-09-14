@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.relations.subject.title.Title',
+			'FBEditor.view.form.desc.relations.subject.name.Name',
 			'FBEditor.view.form.desc.relations.subject.Link'
 		],
 		xtype: 'form-desc-relations-subject-container-custom',
@@ -24,8 +26,7 @@ Ext.define(
 			lastName: 'Фамилия',
 			titleMain: 'Стандартное написание',
 			titleAlt: 'Альтернативное написание',
-			percent: 'Процент владения',
-			desc: 'Написание'
+			percent: 'Процент владения'
 		},
 
 		initComponent: function ()
@@ -56,23 +57,24 @@ Ext.define(
 									fieldLabel: me.translateText.id,
 									name: 'relations-subject-id',
 									allowBlank: false,
-									//editable: false,
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
 									regexText: me.translateText.idError
 								},
 								{
-									xtype: 'textfield',
-									//allowBlank: false,
-									//cls: 'field-required',
+									xtype: 'form-desc-relations-subject-name',
 									fieldLabel: me.translateText.lastName,
-									name: 'relations-subject-last-name'
+									name: 'relations-subject-last-name',
+									allowBlank: false,
+									cls: 'field-required'
 								},
 								{
+									xtype: 'form-desc-relations-subject-name',
 									fieldLabel: me.translateText.firstName,
 									name: 'relations-subject-first-name',
 									cls: 'field-optional'
 								},
 								{
+									xtype: 'form-desc-relations-subject-name',
 									fieldLabel: me.translateText.middleName,
 									name: 'relations-subject-middle-name',
 									cls: 'field-optional'
@@ -85,12 +87,7 @@ Ext.define(
 									maxValue: 100,
 									autoStripChars: true,
 									cls: 'field-optional'
-								}/*,
-								 {
-								 fieldLabel: me.translateText.desc,
-								 name: 'relations-subject-description',
-								 cls: 'field-optional'
-								 }*/
+								}
 							]
 						},
 						{
@@ -103,19 +100,11 @@ Ext.define(
 							layout: 'anchor',
 							items: [
 								{
-									xtype: 'form-desc-title',
+									xtype: 'form-desc-relations-subject-title',
 									name: 'relations-subject-title',
-									cls: 'relations-subject-title',
-									layout: 'anchor',
-									enableSub: false,
 									translateText: {
 										main: me.translateText.titleMain,
 										alt: me.translateText.titleAlt
-									},
-									defaults: {
-										anchor: '100%',
-										labelWidth: 160,
-										labelAlign: 'right'
 									}
 								}
 							]

@@ -112,11 +112,11 @@ Ext.define(
 		beforeShow: function ()
 		{
 			var me = this,
-				windowPanelResourcesNavigation = me.getWindowPanelResourcesNavigation(),
+				windowPanelResourcesTreeNavigation = me.getWindowPanelResourcesTreeNavigation(),
 				panelResourcesNavigation = me.getPanelResourcesNavigation();
 
 			// перемещаем панель дерева ресурсов в окно
-			windowPanelResourcesNavigation.add(panelResourcesNavigation);
+			windowPanelResourcesTreeNavigation.add(panelResourcesNavigation);
 
 			me.callParent(arguments);
 		},
@@ -133,24 +133,28 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		getWindowPanelResourcesNavigation: function ()
+		getWindowPanelResourcesTreeNavigation: function ()
 		{
 			return Ext.getCmp('window-panel-resources-tree-navigation');
 		},
 
-		getWindowPanelResourcesName: function ()
+		getWindowPanelResourcesTreeName: function ()
 		{
 			return Ext.getCmp('window-panel-resources-tree-name');
 		},
 
 		getPanelTreenavigation: function ()
 		{
-			return Ext.getCmp('panel-treenavigation');
+			var bridgeNav = FBEditor.getBridgeNavigation();
+
+			return bridgeNav.Ext.getCmp('panel-treenavigation');
 		},
 
 		getPanelResourcesNavigation: function ()
 		{
-			return Ext.getCmp('panel-resources-navigation');
+			var bridgeNav = FBEditor.getBridgeNavigation();
+
+			return bridgeNav.Ext.getCmp('panel-resources-navigation');
 		},
 
 		/**
@@ -160,7 +164,7 @@ Ext.define(
 		setNameResource: function (name)
 		{
 			var me = this,
-				panel = me.getWindowPanelResourcesName();
+				panel = me.getWindowPanelResourcesTreeName();
 
 			me.nameResource = name;
 			panel.setData({name: name, folder: me.destinationFolder});
@@ -173,7 +177,7 @@ Ext.define(
 		setFolder: function (name)
 		{
 			var me = this,
-				panel = me.getWindowPanelResourcesName();
+				panel = me.getWindowPanelResourcesTreeName();
 
 			me.destinationFolder = name ? name : '/';
 			panel.setData({name: me.nameResource, folder: me.destinationFolder});

@@ -195,7 +195,7 @@ attributeFormDefault="unqualified">\
 			                        <element name="written" minOccurs="0">\
 				                        				                        <complexType mixed="false">\
 					                        <sequence>\
-						                        <element name="lang" type="language"/>\
+						                        <element name="lang" type="language" minOccurs="0"/>\
 						                        <element name="date" minOccurs="0">\
 							                        <complexType>\
 								                        <simpleContent>\
@@ -295,7 +295,7 @@ attributeFormDefault="unqualified">\
 </complexType>\
 <complexType name="ClassificationType" mixed="false">\
     <sequence>\
-      <element name="class">\
+      <element name="class" minOccurs="0">\
                     <complexType>\
 	          <simpleContent>\
 		          <extension base="fb3d:BookClassType">\
@@ -355,14 +355,14 @@ attributeFormDefault="unqualified">\
       <element name="udc" minOccurs="0" maxOccurs="unbounded">\
                     <simpleType>\
 	          <restriction base="token">\
-		          <pattern value="\d+(\.\d+)+(:\d+)?"/>\
+		          <pattern value="[\\d\\. \\*\\(\\)\\[\\]\\+:«»\'/A-Яа-я]+"/>\
 	          </restriction>\
           </simpleType>\
       </element>\
       <element name="bbk" minOccurs="0" maxOccurs="unbounded">\
                     <simpleType>\
 	          <restriction base="token">\
-		          <pattern value="\d+([\.а-я]\d+)+"/>\
+		          <pattern value="[\\(\\)\\d\\.\\-A-Яа-я/\\+ ]+"/>\
 	          </restriction>\
           </simpleType>\
       </element>\
