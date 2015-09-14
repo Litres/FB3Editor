@@ -229,7 +229,6 @@
 }
 
 .fb3 .textfieldclear-trigger {
-	/*display: inline;*/
 	font: normal normal normal 14px/1 FontAwesome;
 	font-size: 18px;
 	width: 18px;
@@ -237,12 +236,43 @@
 	background: none;
 }
 
-/*.fb3 .x-form-text-wrap {
-	width: 100%;
-}*/
-
 .fb3 .x-form-trigger-wrap-invalid .textfieldclear-trigger:before {
 	content: "\f00d";
+}
+
+.fb3 .langfield-trigger {
+	font-size: 10px;
+	width: 18px;
+	padding-top: 12px;
+	background: none;
+}
+
+.fb3 .langfield-trigger:before {
+	margin: 1px;
+	padding: 2px;
+	border-radius: 3px;
+	color: #fff;
+	background: #aaa;
+}
+
+.fb3 .langfield-trigger.x-form-trigger-over:before {
+	background: #999;
+}
+
+.fb3 .langfield-trigger-ru:before {
+	content: "рус";
+}
+
+.fb3 .langfield-trigger-en:before {
+	content: "eng";
+}
+
+.fb3 .langfield-trigger-fr:before {
+	content: "fre";
+}
+
+.fb3 .langfield-trigger-de:before {
+	content: "ger";
 }
 
 .plugin-fieldcontainerreplicator .x-form-item-body {
