@@ -1,6 +1,14 @@
 .desc-fieldcontainer:nth-child(even) {
-	padding: 10px 0 0 0;
+	padding: 5px 0 0 0;
 	background-color: #eee;
+}
+
+.desc-fieldcontainer:nth-child(odd) {
+	padding: 5px 0 0 0;
+}
+
+.fb3 .x-datepicker {
+	z-index: 999;
 }
 
 .fb3 .x-boundlist {
@@ -41,7 +49,15 @@
 }
 
 .fb3 .form-desc .x-fieldset-body-default {
-	padding: 10px 10px 5px 10px;
+	padding: 2px 5px 1px 5px;
+}
+
+.fb3 .desc-fieldset-title .x-fieldset-body-default {
+	padding-top: 10px;
+}
+
+.fb3 .x-anchor-form-item {
+	margin: 1px 0 0 0;
 }
 
 .fb3 .form-desc .x-fieldset-header-default {
@@ -169,6 +185,14 @@
 	margin: 0 0 15px 0;
 }
 
+.fb3 .form-desc-title-alt .x-field {
+	margin: 0 0 4px 0;
+}
+
+.fb3 .form-desc-relations-subject-link .x-field {
+	margin: 0 0 8px 0;
+}
+
 .fb3 .form-desc .field-optional .x-form-item-label-default {
 	color: #A89BA2;
 }
@@ -279,8 +303,12 @@
 	vertical-align: top;
 }
 
-.relations-subject-title .x-form-item-body {
+.form-desc-title .x-form-item-body {
 	vertical-align: top;
+}
+
+.form-desc-title .x-form-item-label-default {
+	padding-top: 0;
 }
 
 .resource-great-thumb, .resource-large-thumb, .resource-normal-thumb {

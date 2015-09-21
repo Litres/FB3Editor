@@ -43,7 +43,18 @@ Ext.define(
 							fieldLabel: me.translateText.lang,
 							allowBlank: false,
 							forceSelection: true,
-							cls: 'field-required'
+							value: 'ru',
+							cls: 'field-required',
+							listeners: {
+								afterrender: function ()
+								{
+									var me = this,
+										store = me.getStore();
+
+									// убираем первые две записи из списка
+									store.remove([0,1 ]);
+								}
+							}
 						},
 						{
 							xtype: 'langfield',

@@ -13,8 +13,9 @@ Ext.define(
 			'FBEditor.view.form.desc.title.alt.Alt'
 		],
 		xtype: 'form-desc-title',
+		cls: 'form-desc-title',
 
-		minHeight: 135,
+		//minHeight: 135,
 
 		/**
 		 * @property {Boolean} Необходимо ли показывать подзаголовок.

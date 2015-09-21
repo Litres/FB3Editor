@@ -11,7 +11,6 @@ Ext.define(
 		xtype: 'form-desc-relations-subject-title',
 		layout: 'anchor',
 		enableSub: false,
-		cls: 'relations-subject-title',
 		defaults: {
 			anchor: '100%',
 			labelWidth: 160,

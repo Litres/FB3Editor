@@ -13,6 +13,7 @@ Ext.define(
 		],
 		xtype: 'desc-fieldset-sequence',
 		title: 'Серия',
-		xtypeChild: 'sequence'
+		xtypeChild: 'sequence',
+		require: true
 	}
 );

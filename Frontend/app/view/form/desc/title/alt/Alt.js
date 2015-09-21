@@ -14,6 +14,7 @@ Ext.define(
 		xtype: 'form-desc-title-alt',
 		controller: 'form.desc.title.alt',
 		layout: 'hbox',
+		cls: 'form-desc-title-alt',
 		defaults: {
 			anchor: '100%',
 			flex: 1,
@@ -40,7 +41,7 @@ Ext.define(
 				ptype: 'fieldcontainerreplicator',
 					groupName: name,
 					btnStyle: {
-					margin: '3px 0 0 5px'
+					margin: '0 0 0 2px'
 				}
 			};
 			me.items = [

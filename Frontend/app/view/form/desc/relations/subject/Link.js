@@ -16,6 +16,7 @@ Ext.define(
 		xtype: 'form-desc-relations-subject-link',
 		controller: 'form.desc.relations.subject.link',
 		layout: 'hbox',
+		cls: 'field-required form-desc-relations-subject-link',
 		//viewModel: true,
 		//referenceHolder: true,
 		listeners: {

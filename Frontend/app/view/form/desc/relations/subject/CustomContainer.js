@@ -114,8 +114,7 @@ Ext.define(
 				{
 					xtype: 'form-desc-relations-subject-link',
 					labelWidth: 160,
-					labelAlign: 'right',
-					cls: 'field-required'
+					labelAlign: 'right'
 				}
 			];
 
