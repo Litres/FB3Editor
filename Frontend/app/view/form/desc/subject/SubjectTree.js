@@ -10,8 +10,7 @@ Ext.define(
 		extend: 'Ext.tree.Panel',
 		requires: [
 			'FBEditor.view.form.desc.subject.SubjectTreeController',
-			'FBEditor.view.form.desc.subject.SubjectStore',
-			'FBEditor.view.form.desc.subject.filter.Filter'
+			'FBEditor.view.form.desc.subject.SubjectStore'
 		],
 		id: 'form-desc-subjectTree',
 		xtype: 'form-desc-subjectTree',
@@ -33,11 +32,6 @@ Ext.define(
 
 		displayField: '_title',
 
-		/*tbar: [
-			{
-				xtype: 'form-desc-subject-filter'
-			}
-		],*/
 		listeners: {
 			filter: 'onFilter',
 			click: {
@@ -89,6 +83,12 @@ Ext.define(
 		 * @property {Object} Данные дерева.
 		 */
 		cacheData: null,
+
+		/**
+		 * @private
+		 * @property {Object} Кэш отфильтрованных данных.
+		 */
+		cacheFilteredData: {},
 
 		initComponent: function ()
 		{
@@ -587,16 +587,29 @@ Ext.define(
 			// фильтруем данные
 			if (val && !/^[0-9]+$/.test(val) && /[\wа-яА-Я]{2,}/.test(val))
 			{
-				// фильтруем данные
-				filteredData = me.filterFn(val, data[0]);
+				if (!me.cacheFilteredData[val])
+				{
+					// фильтруем данные
+					filteredData = me.filterFn(val, data[0]);
+
+					// сохраняем в кэш результаты фильтрации
+					me.cacheFilteredData[val] = Ext.clone(filteredData);
+				}
+				else
+				{
+					// из кэша
+					filteredData = Ext.clone(me.cacheFilteredData[val]);
+				}
 
 				if (filteredData)
 				{
 					// загружаем данные в хранилище
 					store.loadData([filteredData]);
 
+					me.getRootNode().expand();
+
 					// раскрываем все узлы
-					me.getRootNode().expand(true);
+					me.getRootNode().expandChildren();
 				}
 			}
 			else
@@ -623,19 +636,18 @@ Ext.define(
 		{
 			var me = this,
 				filteredData = null,
+				reg,
 				text;
 
-			if (data.leaf)
-			{
-				text = data[me.displayField].toLowerCase();
+			text = data[me.displayField] ? data[me.displayField].toLowerCase() : null;
+			reg = new RegExp('^' + val + '|[^а-яa-z0-9]' + val, 'i');
 
-				if (text.indexOf(val) === 0)
-				{
-					// клоинируем
-					filteredData = Ext.clone(data);
-				}
+			if (text && reg.test(text))
+			{
+				// клонируем
+				filteredData = Ext.clone(data);
 			}
-			else
+			else if (!data.leaf)
 			{
 				// клонируем
 				filteredData = Ext.clone(data);

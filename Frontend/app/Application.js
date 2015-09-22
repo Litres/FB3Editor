@@ -4,6 +4,35 @@
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
+/*
+Статические переменные и функции приложения.
+
+{String} Версия
+FBEditor.version
+
+{Boolean} Доступен ли хаб
+FBEditor.accessHub
+
+{Window} Родительское окно
+FBEditor.parentWindow
+
+{Object} Дочерние окна
+FBEditor.childWindow
+
+{Boolean} Флаг закрытия окна, чтобы избежать зацикливания
+FBEditor.closingWindow
+
+{Function} Мост для передачи событий в основное приложение
+FBEditor.getBridgeWindow()
+
+{Function} Мост для передачи событий в приложение панели свойств
+FBEditor.getBridgeProps()
+
+{Function} Мост для передачи событий в приложение панели навигации
+FBEditor.getBridgeNavigation()
+
+*/
+
 Ext.define(
 	'FBEditor.Application',
 	{
@@ -33,6 +62,9 @@ Ext.define(
 		init: function ()
 		{
 			var me = this;
+
+			// версия
+			FBEditor.version = Ext.manifest.loader.cache;
 
 			// родительское окно
 			FBEditor.parentWindow = window.opener;
