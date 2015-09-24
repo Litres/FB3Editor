@@ -28,10 +28,22 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				plugin,
+				btnAdd,
+				comboSearch,
 				data;
 
 			data = record[0].data;
 			//console.log('select', data);
+
+			// автоматически добавляем новый блок поиска
+			plugin = me.getPlugin();
+			btnAdd = plugin.getBtnAdd();
+			plugin.addFields(btnAdd);
+
+			// устанавливаем курсор в следующее поисковое поле
+			comboSearch = me.getNextComboSearch();
+			comboSearch.focus();
 
 			me.updateData(data);
 
@@ -39,27 +51,56 @@ Ext.define(
 			view.saveToStorage(data);
 		},
 
-		/**
-		 * Вызывается при установке фокуса в поле.
-		 */
-		onFocus: function (combo)
+		onClick: function ()
 		{
 			var me = this,
+				view = me.getView(),
 				val;
 
-			val = combo.getValue();
+			val = view.getValue();
 
-			//console.log('focus', combo);
 			if (val)
 			{
 				// разворачиваем список, если значение не пустое
-				combo.expand();
+				view.expand();
 			}
 			else
 			{
 				// при пустом поле показываем список, сохраненный локально
-				combo.expandStorage();
+				view.expandStorage();
 			}
+		},
+
+		/**
+		 * @private
+		 * Возвращает плагин.
+		 * @return {FBEditor.ux.FieldContainerReplicator}
+		 */
+		getPlugin: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				plugin;
+
+			plugin = view.up('[plugins]').getPlugin('fieldcontainerreplicator');
+
+			return plugin;
+		},
+
+		/**
+		 * @private
+		 * Возвращает следующее поисковое поле.
+		 * @return {FBEditor.view.field.combosearch.ComboSearch}
+		 */
+		getNextComboSearch: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				comboSearch;
+
+			comboSearch = view.up('[plugins]').nextSibling().down('combosearch');
+
+			return comboSearch;
 		}
 	}
 );

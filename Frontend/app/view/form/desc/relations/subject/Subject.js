@@ -16,6 +16,10 @@ Ext.define(
 		xtype: 'form-desc-relations-subject',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
+		translateText: {
+			error: 'Необходимо заполнить хотя бы одну персону'
+		},
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -64,6 +68,42 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		isValid: function ()
+		{
+			var me = this,
+				hiddenCount = 0,
+				items = me.query('form-desc-relations-subject-container-custom'),
+				combo = me.down('combosearch'),
+				isValid = true;
+
+			Ext.Array.each(
+				items,
+				function (item)
+				{
+					if (item.isHidden())
+					{
+						hiddenCount++;
+						isValid = true;
+					}
+					else if (!item.isValid())
+					{
+						isValid = false;
+
+						return false;
+					}
+				}
+			);
+
+			if (isValid && hiddenCount === items.length)
+			{
+				// если все поля скрыты
+				isValid = false;
+				combo.markInvalid(me.translateText.error);
+			}
+
+			return isValid;
 		},
 
 		getValues: function (d)

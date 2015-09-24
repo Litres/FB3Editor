@@ -11,24 +11,6 @@ Ext.define(
 		alias: 'controller.form.desc.relations.subject.search.name',
 
 		/**
-		 * Вызывается при установке фокуса в поле.
-		 */
-		onFocus: function (combo)
-		{
-			var me = this,
-				val;
-
-			val = combo.getValue();
-
-			//console.log('focus', combo);
-			if (!val)
-			{
-				// при пустом поле показываем список, сохраненный локально
-				combo.expandStorage();
-			}
-		},
-
-		/**
 		 * Заполняет данные полей.
 		 * @param {Object} data Данные.
 		 */

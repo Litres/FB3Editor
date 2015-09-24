@@ -22,11 +22,11 @@ Ext.define(
 		queryDelay: 200,
 		defaultListConfig: {
 			shadow: false,
-			maxHeight: 'auto'
+			maxHeight: 200
 		},
 		listeners: {
 			select: 'onSelect',
-			focus: 'onFocus'
+			click: 'onClick'
 		},
 
 		/**
@@ -71,6 +71,17 @@ Ext.define(
 		{
 			var me = this,
 				input = me.inputEl.dom;
+
+			// позволяем обрабатывать событие клика
+			me.getEl().on(
+				{
+					click: function ()
+					{
+						me.fireEvent('click');
+					},
+					scope: me
+				}
+			);
 
 			// регистрируем события клавиш, которые не должны передаваться в выпадающий список
 			input.addEventListener(
@@ -152,8 +163,10 @@ Ext.define(
 			//console.log('expand storage', data);
 			if (data.length)
 			{
+				store.setAutoSort(false);
 				store.loadData(data);
 				me.expand();
+				store.setAutoSort(true);
 			}
 		},
 
@@ -168,11 +181,11 @@ Ext.define(
 				storageData = me.getDataStorage(),
 				strValue;
 
-			storageData.push(data);
+			storageData.splice(0, 0, data);
 
 			if (storageData.length > me.localStorageLimit)
 			{
-				storageData.shift();
+				storageData.pop();
 			}
 
 			strValue = Ext.JSON.encode(storageData);
@@ -190,8 +203,9 @@ Ext.define(
 				data;
 
 			data = Ext.JSON.decode(storage.getItem(me.name));
+			data = data ? data : [];
 
-			return data || [];
+			return data;
 		}
 	}
 );
