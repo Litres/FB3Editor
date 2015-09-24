@@ -9,6 +9,7 @@ Ext.define(
 	{
 		override: 'Ext.form.field.Base',
 
+		// нельзя использовать значение qtip, так как вызывает баг "попрыгун"
 		msgTarget: 'title'
 	}
 );
