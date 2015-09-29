@@ -219,8 +219,9 @@
      */
     "production": {
         "loader": {
-            "cache": "298",
-            "cacheParam": "_v"
+            "cache": "1",
+            "cacheParam": "_v",
+            "version": "299"
         }
     },
     

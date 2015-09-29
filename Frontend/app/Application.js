@@ -63,8 +63,11 @@ Ext.define(
 		{
 			var me = this;
 
+			// инициализируем applicationCache
+			me.initApplicationCache();
+
 			// версия
-			FBEditor.version = Ext.manifest.loader.cache;
+			FBEditor.version = Ext.manifest.loader.version;
 
 			// родительское окно
 			FBEditor.parentWindow = window.opener;
@@ -146,6 +149,35 @@ Ext.define(
 		    // удаляем информационную заставку
 		    document.querySelector('.app-loading').parentNode.removeChild(document.querySelector('.app-loading'));
 	    },
+
+		/**
+		 * Инициализирует applicationCache.
+		 */
+		initApplicationCache: function ()
+		{
+			var cache;
+
+			if (window.applicationCache)
+			{
+				cache = window.applicationCache;
+
+				// после успешного обновления кэша, делаем swap
+				cache.addEventListener(
+					'updateready',
+					function (e)
+					{
+						var cache = window.applicationCache;
+
+						cache.swapCache();
+						console.log('Swap Application Cache');
+					},
+					false
+				);
+
+				// попытка обновления кэша
+				//cache.update();
+			}
+		},
 
 		/**
 		 * Отслеживает обращение к несуществующим хэшам роута.
