@@ -91,10 +91,14 @@ Ext.define(
 								// экранируем одинарную кавычку
 								contentBody = contentBody.replace(/'/g, "\\'");
 
+								// преобразуем сущность &nbsp; в пробел
+								contentBody = contentBody.replace(/&nbsp;/g, " ");
+
 								//console.log('contentBody', contentBody);
 
 								xslBody = FBEditor.xsl.Body.getXsl();
 								contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
+
 								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
 								Ext.suspendLayouts();
 

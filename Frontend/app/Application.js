@@ -67,7 +67,7 @@ Ext.define(
 			me.initApplicationCache();
 
 			// версия
-			FBEditor.version = Ext.manifest.loader.version;
+			FBEditor.version = Ext.manifest.loader.cache;
 
 			// родительское окно
 			FBEditor.parentWindow = window.opener;

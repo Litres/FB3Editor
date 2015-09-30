@@ -74,6 +74,10 @@ Ext.define(
 			);
 			text = Ext.String.htmlEncode(text);
 
+			// преобразуем последовательность пробелов в цепочку из пробелов и сущности &nbsp;
+			text = text.replace(/[ ]{2}/g, ' &nbsp;');
+			text = text.replace(/^ | $/g, '&nbsp;');
+
 			return text;
 		},
 
