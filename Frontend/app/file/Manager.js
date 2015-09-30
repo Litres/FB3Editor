@@ -77,15 +77,20 @@ Ext.define(
 								images = structure.getImages(bodies[0]);
 								contentBody = structure.getContent(bodies[0]);
 
-								// заменяем все br на пустые параграфы
-								contentBody = contentBody.replace(/<br\/>/gi, '<p><br/></p>');
-
 								//console.log('contentTypes', contentTypes);
 								//console.log('thumb', thumb);
 								//console.log('meta', meta);
 								//console.log('books', books);
 								//console.log('desc', desc);
 								//console.log('images', images);
+								//console.log('contentBody', contentBody);
+
+								// экранируем слэш
+								contentBody = contentBody.replace(/\\/g, "\\\\");
+
+								// экранируем одинарную кавычку
+								contentBody = contentBody.replace(/'/g, "\\'");
+
 								//console.log('contentBody', contentBody);
 
 								xslBody = FBEditor.xsl.Body.getXsl();

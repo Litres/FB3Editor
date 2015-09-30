@@ -119,9 +119,14 @@ Ext.define(
 			// сбрасываем историю
 			FBEditor.editor.HistoryManager.clear();
 
+			//console.log(content);
+
 			content = content.replace(/\n+|\t+/g, ' ');
 			content = content.replace(/\), ?]/g, ')]');
-			content = content.replace(/(\\\')/g, "\\$1");
+
+			// заменяем все br на пустые параграфы
+			content = content.replace(/<br\/>/gi, '<p><br/></p>');
+
 			//console.log(content);
 
 			// преобразование строки в объект

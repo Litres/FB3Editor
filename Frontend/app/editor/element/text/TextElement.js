@@ -37,6 +37,15 @@ Ext.define(
 			me.text = Ext.isString(text) ? text : me.text;
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
+
+			// заменяем сущности html на спецсимволы <, >
+			Ext.String.addCharacterEntities(
+				{
+					'&lt;': '<',
+					'&gt;': '>'
+				}
+			);
+			me.text = Ext.String.htmlDecode(me.text);
 		},
 
 		getNode: function (viewportId)
@@ -51,7 +60,21 @@ Ext.define(
 
 		getXml: function (withoutText)
 		{
-			return withoutText ? '' : this.text;
+			var me = this,
+				text;
+
+			text = withoutText ? '' : me.text;
+
+			// заменяем спецсимволы <, > на сущности html
+			Ext.String.addCharacterEntities(
+				{
+					'&lt;': '<',
+					'&gt;': '>'
+				}
+			);
+			text = Ext.String.htmlEncode(text);
+
+			return text;
 		},
 
 		/*sync: function (viewportId)
