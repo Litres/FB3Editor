@@ -38,14 +38,14 @@ Ext.define(
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
 
-			// заменяем сущности html на спецсимволы <, >
-			Ext.String.addCharacterEntities(
-				{
-					'&lt;': '<',
-					'&gt;': '>'
-				}
-			);
-			me.text = Ext.String.htmlDecode(me.text);
+			// заменяем сущности на спецсимволы <, >
+			me.text = me.text.replace(/&lt;/g, '<');
+			me.text = me.text.replace(/&gt;/g, '>');
+
+			// преобразуем сущность &nbsp; в пробел
+			me.text = me.text.replace(/&nbsp;/g, " ");
+
+
 		},
 
 		getNode: function (viewportId)
@@ -65,18 +65,13 @@ Ext.define(
 
 			text = withoutText ? '' : me.text;
 
-			// заменяем спецсимволы <, > на сущности html
-			Ext.String.addCharacterEntities(
-				{
-					'&lt;': '<',
-					'&gt;': '>'
-				}
-			);
-			text = Ext.String.htmlEncode(text);
+			// заменяем спецсимволы <, > на сущности
+			text = text.replace(/</g, '&#60;');
+			text = text.replace(/>/g, '&#62;');
 
 			// преобразуем последовательность пробелов в цепочку из пробелов и сущности &nbsp;
-			text = text.replace(/[ ]{2}/g, ' &nbsp;');
-			text = text.replace(/^ | $/g, '&nbsp;');
+			text = text.replace(/[ ]{2}/g, '  &#160;');
+			text = text.replace(/^ | $/g, ' &#160;');
 
 			return text;
 		},
