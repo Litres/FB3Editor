@@ -20,6 +20,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.epigraph.Editor',
 			'FBEditor.view.panel.main.props.body.editor.img.Editor',
 			'FBEditor.view.panel.main.props.body.editor.note.Editor',
+			'FBEditor.view.panel.main.props.body.editor.notebody.Editor',
 			'FBEditor.view.panel.main.props.body.editor.notes.Editor',
 			'FBEditor.view.panel.main.props.body.editor.ol.Editor',
 			'FBEditor.view.panel.main.props.body.editor.pre.Editor',

@@ -32,7 +32,8 @@ Ext.define(
 								<complexContent>\
 									<extension base="fb3b:TitledType">\
 										<sequence>\
-											<element name="note" type="fb3b:SemiSimpleBodyType" maxOccurs="unbounded"/>\
+											<element name="notebody" type="fb3b:SemiSimpleBodyType"\
+											 maxOccurs="unbounded"/>\
 										</sequence>\
 										<attribute name="show"/>\
 									</extension>\

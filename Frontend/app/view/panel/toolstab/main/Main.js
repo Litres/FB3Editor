@@ -18,6 +18,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.epigraph.Epigraph',
 			'FBEditor.view.panel.toolstab.main.button.img.Img',
 			'FBEditor.view.panel.toolstab.main.button.note.Note',
+			'FBEditor.view.panel.toolstab.main.button.notebody.Notebody',
 			'FBEditor.view.panel.toolstab.main.button.notes.Notes',
 			'FBEditor.view.panel.toolstab.main.button.ol.Ol',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
@@ -56,7 +57,7 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-notes'
 				},
 				{
-					xtype: 'panel-toolstab-main-button-note'
+					xtype: 'panel-toolstab-main-button-notebody'
 				},
 				{
 					xtype: 'tbspacer',

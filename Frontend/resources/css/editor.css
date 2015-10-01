@@ -31,7 +31,7 @@
 .panel-editor-viewport .el-poem,
 .panel-editor-viewport .el-stanza,
 .panel-editor-viewport .el-notes,
-.panel-editor-viewport .el-note
+.panel-editor-viewport .el-notebody
 {
 	display: block;
 	padding: 0em 0em 0em 0.4em;

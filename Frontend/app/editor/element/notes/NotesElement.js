@@ -30,10 +30,10 @@ Ext.define(
 			me.add(els.title);
 
 			// сноска
-			els.note = FBEditor.editor.Factory.createElement('note');
-			els = Ext.apply(els, els.note.createScaffold());
+			els.notebody = FBEditor.editor.Factory.createElement('notebody');
+			els = Ext.apply(els, els.notebody.createScaffold());
 
-			me.add(els.note);
+			me.add(els.notebody);
 
 			return els;
 		}
