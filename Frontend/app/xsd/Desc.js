@@ -236,6 +236,7 @@ attributeFormDefault="unqualified">\
 											<attribute name="publisher" type="token" use="optional"/>\
 											<attribute name="city" type="token" use="optional"/>\
 											<attribute name="year" type="gYear" use="optional"/>\
+											<attribute name="biblio-description" type="token" use="optional"/>\
 										</complexType>\
 									</element>\
 			                        <element name="custom-info" minOccurs="0" maxOccurs="unbounded">\

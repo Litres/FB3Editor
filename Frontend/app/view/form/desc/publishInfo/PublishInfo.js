@@ -20,7 +20,8 @@ Ext.define(
 			title: 'Название',
 			publisher: 'Издательство',
 			city: 'Город',
-			year: 'Год'
+			year: 'Год',
+			biblio: 'Библиограф. описание'
 		},
 
 		initComponent: function ()
@@ -73,6 +74,18 @@ Ext.define(
 									name: prefixName + '-city',
 									fieldLabel: me.translateText.city,
 									cls: 'field-optional'
+								},
+								{
+									xtype: 'textareafield',
+									name: prefixName + '-biblio-description',
+									fieldLabel: me.translateText.biblio,
+									cls: 'field-optional',
+									height: 70,
+									resizable: {
+										handles: 's',
+										minHeight: 50,
+										pinned: true
+									}
 								}
 							]
 						},
@@ -128,6 +141,7 @@ Ext.define(
 						_city: item.down('[name=' + prefixName + '-city]').getValue(),
 						_year: item.down('[name=' + prefixName + '-year]').getValue(),
 						_title: item.down('[name=' + prefixName + '-title]').getValue(),
+						"_biblio-description": item.down('[name=' + prefixName + '-biblio-description]').getValue(),
 						isbn: isbn
 					};
 					val = me.removeEmptyValues(val);
