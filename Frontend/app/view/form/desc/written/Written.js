@@ -18,7 +18,9 @@ Ext.define(
 			writtenLang: 'Язык оригинала',
 			date: 'Дата',
 			dateText: 'Дата текстом',
-			country: 'Страна'
+			country: 'Страна',
+			dateTranslation: 'Дата перевода',
+			datePublic: 'Дата публикации'
 		},
 
 		initComponent: function ()
@@ -52,7 +54,7 @@ Ext.define(
 										store = me.getStore();
 
 									// убираем первые две записи из списка
-									store.remove([0,1 ]);
+									store.remove([0, 1]);
 								}
 							}
 						},
@@ -60,7 +62,7 @@ Ext.define(
 							xtype: 'langfield',
 							name: prefixName + '-lang',
 							fieldLabel: me.translateText.writtenLang,
-							allowBlank: false,
+							//allowBlank: false,
 							forceSelection: true,
 							cls: 'field-optional'
 						},
@@ -96,6 +98,16 @@ Ext.define(
 							xtype: 'textfield',
 							name: prefixName + '-date-text',
 							fieldLabel: me.translateText.dateText
+						},
+						{
+							xtype: 'datefield',
+							name: prefixName + '-date-translation',
+							fieldLabel: me.translateText.dateTranslation
+						},
+						{
+							xtype: 'datefield',
+							name: prefixName + '-date-public',
+							fieldLabel: me.translateText.datePublic
 						}
 					]
 				}
@@ -129,7 +141,9 @@ Ext.define(
 			values = {
 				lang: me.down(me.down('[name=' + prefixName + '-lang]')).getValue(),
 				country: me.down(me.down('[name=' + prefixName + '-country]')).getValue(),
-				date: values
+				date: values,
+				'date-translation': Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-translation]')).getValue(), 'Y-m-d'),
+				'date-public': Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-public]')).getValue(), 'Y-m-d')
 			};
 			values = me.removeEmptyValues(values);
 			if (values)

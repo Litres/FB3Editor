@@ -193,7 +193,7 @@ attributeFormDefault="unqualified">\
 				                        			                        </element>\
 			                        <element name="lang" type="language"/>\
 			                        <element name="written" minOccurs="0">\
-				                        				                        <complexType mixed="false">\
+				                        <complexType mixed="false">\
 					                        <sequence>\
 						                        <element name="lang" type="language" minOccurs="0"/>\
 						                        <element name="date" minOccurs="0">\
@@ -212,11 +212,13 @@ attributeFormDefault="unqualified">\
 								                        </restriction>\
 							                        </simpleType>\
 						                        </element>\
+						                        <element name="date-translation" type="date" minOccurs="0"/>\
+						                        <element name="date-public" type="date" minOccurs="0"/>\
 					                        </sequence>\
 				                        </complexType>\
 			                        </element>\
 			                        <element name="document-info">\
-				                        				                        <complexType mixed="false">\
+				                        <complexType mixed="false">\
 					                        <attribute name="created" type="dateTime" use="required"/>\
 					                        <attribute name="updated" type="dateTime" use="required"/>\
 					                        <attribute name="program-used" type="normalizedString" use="optional"/>\

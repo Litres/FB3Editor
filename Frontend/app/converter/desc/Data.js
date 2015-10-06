@@ -187,13 +187,15 @@ Ext.define(
 
 			if (d.written)
 			{
-				d['written-lang'] = d.written.lang;
+				d['written-lang'] = d.written.lang ? d.written.lang : '';
 				if (d.written.date)
 				{
 					d['written-date-value'] = d.written.date.value ? d.written.date.value : '';
 					d['written-date-text'] = d.written.date.text ? d.written.date.text : '';
 				}
 				d['written-country'] = d.written.country ? d.written.country : '';
+				d['written-date-translation'] = d.written['date-translation'] ? d.written['date-translation'] : '';
+				d['written-date-public'] = d.written['date-public'] ? d.written['date-public'] : '';
 				delete d.written;
 			}
 
