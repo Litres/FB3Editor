@@ -37,6 +37,9 @@ Ext.define(
 				}
 			);
 
+			// устанавливаем название из поскового поля в поле ручного вввода
+			me.setNameFromSearchField();
+
 			me.switchContainers();
 		},
 
@@ -67,11 +70,36 @@ Ext.define(
 		setSequenceId: function (id)
 		{
 			var me = this,
-				container;
+				prefixName = me.prefixName,
+				data = {},
+				custom = me.customContainer;
+
+			data[prefixName + '-id'] = id;
 
 			// обновляем поле id
-			container = me.up('[name=plugin-fieldcontainerreplicator]');
-			container.updateData({'sequence-id': id});
+			custom.updateData(data);
+		},
+
+		/**
+		 * Устанавливает название в поле ручного ввода, копируя значение из поля поиска.
+		 */
+		setNameFromSearchField: function ()
+		{
+			var me = this,
+				prefixName = me.prefixName,
+				data = {},
+				search = me.searchContainer,
+				custom = me.customContainer,
+				searchVal;
+
+			// строка в поле поиска
+			searchVal = search.down('[name=' + prefixName + '-search]').getValue();
+			searchVal = searchVal ? searchVal.trim() : '';
+
+			data[prefixName + '-title-main'] = searchVal;
+
+			// обновляем поле названия
+			custom.updateData(data);
 		}
 	}
 );

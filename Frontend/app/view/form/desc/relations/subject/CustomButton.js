@@ -37,6 +37,9 @@ Ext.define(
 				}
 			);
 
+			// устанавливаем ФИО из поскового поля в поля ручного вввода
+			me.setNamesFromSearchField();
+
 			me.switchContainers();
 		},
 
@@ -47,12 +50,9 @@ Ext.define(
 		switchContainers: function (customToSearch)
 		{
 			var me = this,
-				hidden,
-				search,
-				custom;
-
-			search = me.searchContainer;
-			custom = me.customContainer;
+				search = me.searchContainer,
+				custom = me.customContainer,
+				hidden;
 
 			hidden = customToSearch ? true : false;
 
@@ -67,11 +67,38 @@ Ext.define(
 		setSubjectId: function (id)
 		{
 			var me = this,
-				container;
+				custom = me.customContainer;
 
 			// обновляем поле id
-			container = me.up('[name=plugin-fieldcontainerreplicator]');
-			container.updateData({'relations-subject-id': id});
+			custom.updateData({'relations-subject-id': id});
+		},
+
+		/**
+		 * Устанавливает ФИО в поля ручного ввода, копируя значение из поля поиска.
+		 */
+		setNamesFromSearchField: function ()
+		{
+			var me = this,
+				search = me.searchContainer,
+				custom = me.customContainer,
+				names,
+				searchVal;
+
+			// строка в поле поиска
+			searchVal = search.down('[name=relations-subject-search]').getValue();
+
+			// разбиваем строку на три значения, отделенных пробелами для получения ФИО
+			searchVal = searchVal ? searchVal.trim() : '';
+			names = searchVal.split(/[ ]+/, 3);
+
+			// обновляем поля ФИО
+			custom.updateData(
+				{
+					'relations-subject-last-name': names[0],
+					'relations-subject-first-name': names[1] || '',
+					'relations-subject-middle-name': names[2] || ''
+				}
+			);
 		}
 	}
 );

@@ -37,6 +37,9 @@ Ext.define(
 				}
 			);
 
+			// устанавливаем название из поскового поля в поле ручного вввода
+			me.setNameFromSearchField();
+
 			me.switchContainers();
 		},
 
@@ -47,12 +50,9 @@ Ext.define(
 		switchContainers: function (customToSearch)
 		{
 			var me = this,
-				hidden,
-				search,
-				custom;
-
-			search = me.searchContainer;
-			custom = me.customContainer;
+				search = me.searchContainer,
+				custom = me.customContainer,
+				hidden;
 
 			hidden = customToSearch ? true : false;
 
@@ -67,11 +67,32 @@ Ext.define(
 		setObjectId: function (id)
 		{
 			var me = this,
-				container;
+				custom = me.customContainer;
 
 			// обновляем поле id
-			container = me.up('[name=plugin-fieldcontainerreplicator]');
-			container.updateData({'relations-object-id': id});
+			custom.updateData({'relations-object-id': id});
+		},
+
+		/**
+		 * Устанавливает название в поле ручного ввода, копируя значение из поля поиска.
+		 */
+		setNameFromSearchField: function ()
+		{
+			var me = this,
+				search = me.searchContainer,
+				custom = me.customContainer,
+				searchVal;
+
+			// строка в поле поиска
+			searchVal = search.down('[name=relations-object-search]').getValue();
+			searchVal = searchVal ? searchVal.trim() : '';
+
+			// обновляем поле названия
+			custom.updateData(
+				{
+					'relations-object-title-main': searchVal
+				}
+			);
 		}
 	}
 );
