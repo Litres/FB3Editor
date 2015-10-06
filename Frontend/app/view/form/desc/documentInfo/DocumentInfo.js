@@ -164,8 +164,10 @@ Ext.define(
 									},
 									items: [
 										{
+											xtype: 'displayfield',
 											name: 'document-info-program-used',
-											fieldLabel: me.translateText.programUsed
+											fieldLabel: me.translateText.programUsed,
+											value: 'FB3Editor'
 										},
 										{
 											name: 'document-info-editor',
