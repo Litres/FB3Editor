@@ -31,6 +31,9 @@ FBEditor.getBridgeProps()
 {Function} Мост для передачи событий в приложение панели навигации
 FBEditor.getBridgeNavigation()
 
+{Function} Возвращает хранилище localStorage для приложения
+FBEditor.getLocalStorage()
+
 */
 
 Ext.define(
@@ -104,6 +107,12 @@ Ext.define(
 				       (FBEditor.childWindow.navigation || window);
 			};
 
+			// инициализируем localStorage
+			FBEditor.getLocalStorage = function ()
+			{
+				return Ext.util.LocalStorage.get('FBEditor') || new Ext.util.LocalStorage({id: 'FBEditor'});
+			};
+
 			// закрытие/обновление окна
 			window.onbeforeunload = function ()
 			{
@@ -113,12 +122,6 @@ Ext.define(
 			window.onfocus = function ()
 			{
 				me.onfocus();
-			};
-
-			// инициализируем localStorage
-			FBEditor.getLocalStorage = function ()
-			{
-				return Ext.util.LocalStorage.get('FBEditor') || new Ext.util.LocalStorage({id: 'FBEditor'});
 			};
 
 			FBEditor.webworker.Manager.init();

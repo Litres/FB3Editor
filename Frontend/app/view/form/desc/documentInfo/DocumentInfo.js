@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.form.desc.documentInfo.DocumentInfo',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		requires: [
+			'FBEditor.view.form.desc.documentInfo.editor.Editor'
+		],
 		xtype: 'form-desc-documentInfo',
 
 		translateText: {
@@ -170,6 +173,7 @@ Ext.define(
 											value: 'FB3Editor'
 										},
 										{
+											xtype: 'form-desc-documentInfo-editor',
 											name: 'document-info-editor',
 											fieldLabel: me.translateText.editor
 										}
