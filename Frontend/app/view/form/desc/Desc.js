@@ -21,11 +21,12 @@ Ext.define(
 			'FBEditor.view.form.desc.fieldset.Title',
 			'FBEditor.view.form.desc.fieldset.Sequence',
 			'FBEditor.view.form.desc.fieldset.annotation.Annotation',
+			'FBEditor.view.form.desc.fieldset.history.History',
 			'FBEditor.view.form.desc.fieldset.periodical.Periodical',
+			'FBEditor.view.form.desc.fieldset.preamble.Preamble',
 			'FBEditor.view.form.desc.fieldset.Classification',
 			'FBEditor.view.form.desc.fieldset.RelationsSubject',
 			'FBEditor.view.form.desc.fieldset.RelationsObject',
-			'FBEditor.view.form.desc.fieldset.history.History',
 			'FBEditor.view.form.desc.fieldset.CustomInfo',
 			'FBEditor.view.form.desc.fieldset.PublishInfo',
 			'FBEditor.view.form.desc.fieldset.DocumentInfo'
@@ -99,6 +100,9 @@ Ext.define(
 				},
 				{
 					xtype: 'desc-fieldset-annotation'
+				},
+				{
+					xtype: 'desc-fieldset-preamble'
 				},
 				{
 					xtype: 'desc-fieldset-periodical'

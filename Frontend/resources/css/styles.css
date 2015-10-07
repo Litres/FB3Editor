@@ -86,6 +86,10 @@
 	background-color: #D9D9D9;
 }
 
+.fb3 .form-desc .desc-fieldset-preamble .x-fieldset-header-default {
+	background-color: #cfb7b9;
+}
+
 .fb3 .form-desc .desc-fieldset-periodical .x-fieldset-header-default {
 	background-color: #C4BD97;
 }
@@ -111,7 +115,7 @@
 }
 
 .fb3 .form-desc .desc-fieldset-customInfo .x-fieldset-header-default {
-	background-color: #F2F2F2;
+	background-color: #dee3ea;
 }
 
 .fb3 .form-desc .desc-fieldset-documentInfo .x-fieldset-header-default {

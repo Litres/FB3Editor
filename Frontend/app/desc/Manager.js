@@ -323,6 +323,7 @@ Ext.define(
 				form = Ext.getCmp('form-desc'),
 				desc,
 				annotation,
+				preamble,
 				history,
 				delay;
 
@@ -338,11 +339,16 @@ Ext.define(
 				desc = FBEditor.util.xml.Json.xmlToJson(xml);
 				desc = desc['fb3-description'];
 
+				// получаем данные для полей на основе htmleditor
 				xml = xml.replace(/[\n\r\t]/g, '');
 				annotation = xml.match(/<annotation>(.*?)<\/annotation>/);
 				desc.annotation = annotation ? annotation[1] : '';
+				preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
+				desc.preamble = preamble ? preamble[1] : '';
 				history = xml.match(/<history>(.*?)<\/history>/);
 				desc.history = history ? history[1] : '';
+
+				// конвертируем данные для формы
 				desc = converter.toForm(desc);
 			}
 			catch (e)

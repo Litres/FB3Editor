@@ -256,8 +256,8 @@ attributeFormDefault="unqualified">\
 					                        </simpleContent>\
 				                        </complexType>\
 			                        </element>\
-			                        <element name="annotation" type="fb3d:AnnotationType" minOccurs="0">\
-				                        			                        </element>\
+			                        <element name="annotation" type="fb3d:AnnotationType" minOccurs="0"/>\
+			                        <element name="preamble" type="fb3d:AnnotationType" minOccurs="0"/>\
 		                        </sequence>\
 		                        <attribute name="id" type="fb3d:UUIDType" use="required">\
 			                        		                        </attribute>\
