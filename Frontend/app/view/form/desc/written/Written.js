@@ -16,10 +16,11 @@ Ext.define(
 		translateText: {
 			lang: 'Язык',
 			writtenLang: 'Язык оригинала',
-			date: 'Дата',
+			date: 'Дата ',
 			dateText: 'Дата текстом',
 			country: 'Страна',
-			dateTranslation: 'Дата перевода',
+			translated: 'Дата перевода',
+			translatedText: 'Дата перевода текстом',
 			datePublic: 'Дата публикации'
 		},
 
@@ -62,7 +63,6 @@ Ext.define(
 							xtype: 'langfield',
 							name: prefixName + '-lang',
 							fieldLabel: me.translateText.writtenLang,
-							//allowBlank: false,
 							forceSelection: true,
 							cls: 'field-optional'
 						},
@@ -101,8 +101,13 @@ Ext.define(
 						},
 						{
 							xtype: 'datefield',
-							name: prefixName + '-date-translation',
-							fieldLabel: me.translateText.dateTranslation
+							name: 'translated-value',
+							fieldLabel: me.translateText.translated
+						},
+						{
+							xtype: 'textfield',
+							name: 'translated-text',
+							fieldLabel: me.translateText.translatedText
 						},
 						{
 							xtype: 'datefield',
@@ -138,18 +143,30 @@ Ext.define(
 				__text: me.down(me.down('[name=' + prefixName + '-date-text]')).getValue()
 			};
 			values = me.removeEmptyValues(values);
+
 			values = {
 				lang: me.down(me.down('[name=' + prefixName + '-lang]')).getValue(),
 				country: me.down(me.down('[name=' + prefixName + '-country]')).getValue(),
-				date: values,
-				'date-translation': Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-translation]')).getValue(), 'Y-m-d'),
-				'date-public': Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-public]')).getValue(), 'Y-m-d')
+				date: values
 			};
 			values = me.removeEmptyValues(values);
+
 			if (values)
 			{
 				data[prefixName] = values;
 			}
+
+			values = {
+				_value: Ext.Date.format(me.down(me.down('[name=translated-value]')).getValue(), 'Y-m-d'),
+				__text: me.down(me.down('[name=translated-text]')).getValue()
+			};
+			values = me.removeEmptyValues(values);
+
+			if (values)
+			{
+				data.translated = values;
+			}
+
 			data.lang = me.down(me.down('[name=lang]')).getValue();
 
 			return data;

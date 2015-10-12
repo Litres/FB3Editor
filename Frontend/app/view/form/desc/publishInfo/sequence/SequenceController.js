@@ -1,20 +1,22 @@
 /**
- * Контроллер ISBN.
+ * Контроллер Серии.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.publishInfo.isbn.IsbnController',
+	'FBEditor.view.form.desc.publishInfo.sequence.SequenceController',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
-		alias: 'controller.form.desc.publishInfo.isbn',
+		alias: 'controller.form.desc.publishInfo.sequence',
 
 		onLoadData:  function (data)
 		{
 			var me = this,
 				nextContainer = me.getView(),
 				plugin;
+
+			//console.log('sequence', data);
 
 			Ext.Object.each(
 				data,

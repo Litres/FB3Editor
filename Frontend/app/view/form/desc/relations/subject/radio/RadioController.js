@@ -10,6 +10,15 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.form.desc.relations.subject.link.radio',
 
+		onLoadData:  function (data)
+		{
+			var me = this,
+				view = me.getView();
+
+			//console.log('load', data);
+			view.setValue(data);
+		},
+
 		/**
 		 * Вызывается при изменении значения.
 		 * @param {FBEditor.view.form.desc.relations.subject.radio.Radio} radio Радиобатоны.
@@ -20,7 +29,12 @@ Ext.define(
 		{
 			var me = this,
 				listVal,
-				val;
+				val,
+				percents,
+				percent,
+				sumPercents = 0;
+
+			//console.log('change', radio);
 
 			val = Ext.Object.getValues(newVal)[0];
 			if (val === 'other-list')
@@ -31,6 +45,28 @@ Ext.define(
 				{
 					// если селект пустой, то возвращаем предыдущее значение радиобатанов
 					radio.setValue(oldVal);
+				}
+			}
+			else if (val === 'agent')
+			{
+				// проценты владения персон
+				percents = Ext.getCmp('form-desc-relations-subject').query('[name=relations-subject-percent]');
+
+				Ext.Array.each(
+					percents,
+				    function (item)
+				    {
+					    // подсчитываем сумму процентов всех персон
+					    sumPercents += item.getValue();
+				    }
+				);
+
+				if (!sumPercents)
+				{
+					// если проценты не установлены у других персон, то ставим по умолчанию агенту 100%
+					percent = radio.up('form-desc-relations-subject-container-custom').
+						down('[name=relations-subject-percent]');
+					percent.setValue(100);
 				}
 			}
 		}

@@ -9,9 +9,11 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.documentInfo.editor.Editor'
+			'FBEditor.view.form.desc.documentInfo.editor.Editor',
+			'FBEditor.view.form.desc.documentInfo.isbn.Isbn'
 		],
 		xtype: 'form-desc-documentInfo',
+		id: 'form-desc-documentInfo',
 
 		translateText: {
 			created: 'Файл создан',
@@ -22,7 +24,8 @@ Ext.define(
 			programUsed: 'Программа',
 			srcUrl: 'URL',
 			ocr: 'OCR',
-			editor: 'Редактор'
+			editor: 'Редактор',
+			isbn: 'ISBN'
 		},
 
 		initComponent: function ()
@@ -210,6 +213,16 @@ Ext.define(
 							]
 						}
 					]
+				},
+				{
+					xtype: 'desc-fieldsetinner',
+					title: me.translateText.isbn,
+					items: [
+						{
+							xtype: 'form-desc-documentInfo-isbn',
+							fieldName: 'document-info-isbn'
+						}
+					]
 				}
 			];
 			me.callParent(arguments);
@@ -222,7 +235,8 @@ Ext.define(
 				created,
 				updated,
 				time,
-				values;
+				values,
+				isbn;
 
 			created = Ext.Date.format(me.down('[name=document-info-created-date]').getValue(), 'Y-m-d');
 			time = Ext.Date.format(me.down('[name=document-info-created-time]').getValue(), 'H:i:s');
@@ -233,13 +247,16 @@ Ext.define(
 			time = Ext.Date.format(new Date(), 'H:i:s');
 			updated = updated && time ? updated + 'T' + time : null;
 
+			isbn = me.down('form-desc-documentInfo-isbn').getValues();
+
 			values = {
 				_created: created,
 				_updated: updated,
 				'_program-used': me.down('[name=document-info-program-used]').getValue(),
 				'_src-ur': me.down('[name=document-info-src-url]').getValue(),
 				_ocr: me.down('[name=document-info-ocr]').getValue(),
-				_editor: me.down('[name=document-info-editor]').getValue()
+				_editor: me.down('[name=document-info-editor]').getValue(),
+				isbn: isbn
 			};
 			data['document-info'] = me.removeEmptyValues(values);
 

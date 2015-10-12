@@ -107,7 +107,10 @@ Ext.define(
 				    item['relations-subject-link-radio-' + index] = {};
 				    item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] =
 				        item['relations-subject-link'];
-				    if (item['relations-subject-link'] !== 'author' && item['relations-subject-link'] !== 'translator')
+
+				    if (item['relations-subject-link'] !== 'author' &&
+				        item['relations-subject-link'] !== 'translator'&&
+				        item['relations-subject-link'] !== 'agent')
 				    {
 					    item['relations-subject-link-list'] = item['relations-subject-link'];
 					    item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] = 'other-list';
@@ -199,6 +202,13 @@ Ext.define(
 				delete d.written;
 			}
 
+			if (d.translated)
+			{
+				d['translated-value'] = d.translated.value ? d.translated.value : '';
+				d['translated-text'] = d.translated.text ? d.translated.text : '';
+				delete d.translated;
+			}
+
 			return d;
 		},
 
@@ -210,8 +220,10 @@ Ext.define(
 		 */
 		convertDocumentInfo: function (data)
 		{
-			var d = data;
+			var me = this,
+				d = data;
 
+			d['document-info-isbn'] = d['document-info'].isbn;
 			d['document-info-created-date'] = d['document-info'].created.split('T')[0];
 			d['document-info-created-time'] = d['document-info'].created.split('T')[1];
 			d['document-info-updated-date'] = d['document-info'].updated.split('T')[0];

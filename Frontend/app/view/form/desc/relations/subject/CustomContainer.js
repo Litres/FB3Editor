@@ -83,6 +83,7 @@ Ext.define(
 									xtype: 'numberfield',
 									fieldLabel: me.translateText.percent,
 									name: 'relations-subject-percent',
+									hideTrigger: true,
 									minValue: 0,
 									maxValue: 100,
 									autoStripChars: true,

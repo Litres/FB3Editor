@@ -9,7 +9,9 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.publishInfo.isbn.Isbn'
+			'FBEditor.view.form.desc.publishInfo.isbn.Isbn',
+			'FBEditor.view.form.desc.publishInfo.sequence.Sequence',
+			'FBEditor.view.form.desc.publishInfo.title.Title'
 		],
 		id: 'form-desc-publishInfo',
 		xtype: 'form-desc-publishInfo',
@@ -57,7 +59,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfieldclear',
+									xtype: 'form-desc-publishInfo-title',
 									name: prefixName + '-title',
 									allowBlank: false,
 									fieldLabel: me.translateText.title,
@@ -112,6 +114,10 @@ Ext.define(
 								{
 									xtype: 'form-desc-publishInfo-isbn',
 									fieldName: prefixName + '-isbn'
+								},
+								{
+									xtype: 'form-desc-publishInfo-sequence',
+									fieldName: prefixName + '-sequence'
 								}
 							]
 						}
@@ -133,16 +139,19 @@ Ext.define(
 				function (item)
 				{
 					var val,
-						isbn;
+						isbn,
+						sequence;
 
 					isbn = item.down('form-desc-publishInfo-isbn').getValues();
+					sequence = item.down('form-desc-publishInfo-sequence').getValues();
 					val = {
 						_publisher: item.down('[name=' + prefixName + '-publisher]').getValue(),
 						_city: item.down('[name=' + prefixName + '-city]').getValue(),
 						_year: item.down('[name=' + prefixName + '-year]').getValue(),
 						_title: item.down('[name=' + prefixName + '-title]').getValue(),
 						"_biblio-description": item.down('[name=' + prefixName + '-biblio-description]').getValue(),
-						isbn: isbn
+						isbn: isbn,
+						sequence: sequence
 					};
 					val = me.removeEmptyValues(val);
 					if (val)

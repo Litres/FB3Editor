@@ -136,6 +136,7 @@ Ext.define(
 			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
+			Ext.getCmp('form-desc-documentInfo-isbn').fireEvent('loadData', data['document-info-isbn']);
 			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);
 			me.expandFieldset(data);
 		},

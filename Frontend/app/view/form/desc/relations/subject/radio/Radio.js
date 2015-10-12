@@ -15,7 +15,8 @@ Ext.define(
 		controller: 'form.desc.relations.subject.link.radio',
 		allowBlank: false,
 		listeners: {
-			change: 'onChange'
+			change: 'onChange',
+			loadData: 'onLoadData'
 		},
 
 		statics:
@@ -28,6 +29,7 @@ Ext.define(
 
 		translateText: {
 			author: 'Автор',
+			agent: 'Агент',
 			translator: 'Переводчик'
 		},
 
@@ -49,6 +51,12 @@ Ext.define(
 					name: 'rel-subject-link-' + numberGroup,
 					inputValue: 'translator',
 					boxLabel: me.translateText.translator,
+					margin: '0 20 0 0'
+				},
+				{
+					name: 'rel-subject-link-' + numberGroup,
+					inputValue: 'agent',
+					boxLabel: me.translateText.agent,
 					margin: '0 20 0 0'
 				},
 				{

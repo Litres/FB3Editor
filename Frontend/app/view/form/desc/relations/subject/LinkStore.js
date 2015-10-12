@@ -39,10 +39,6 @@ Ext.define(
 				name: 'Верстальщик'
 			},
 			{
-				value: 'agent',
-				name: 'Агент'
-			},
-			{
 				value: 'adapter',
 				name: 'Адаптация'
 			},

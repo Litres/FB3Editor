@@ -23,7 +23,8 @@ Ext.define(
 				element: 'el',
 				fn: 'onClick'
 			},
-			change: 'onChange'
+			change: 'onChange',
+			blur: 'onBlur'
 		},
 
 		afterRender: function ()

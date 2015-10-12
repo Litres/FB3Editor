@@ -46,6 +46,60 @@ Ext.define(
 
 			// Фильтруем дерево жанров
 			subjectTree.fireEvent('filter', value.trim());
+		},
+
+		onBlur: function (field)
+		{
+			var me = this;
+
+			// разбиваем введенные через запятую значения на отдельные поля
+			me.splitField(field);
+		},
+
+		/**
+		 * Разбивает введеные через запятую значения на отдельные поля.
+		 * @param {Ext.form.field.Text} field Текстовое поле.
+		 */
+		splitField: function (field)
+		{
+			var val = field.getValue(),
+				container,
+				plugin,
+				values;
+
+			// разбиваем строку на массив значений
+			values = val.split(/,[ ]*/);
+
+			if (values.length > 1)
+			{
+				container = field.ownerCt;
+
+				Ext.Array.each(
+					values,
+					function (item, index)
+					{
+						var f;
+
+						// плагин
+						plugin = container.getPlugin('fieldcontainerreplicator');
+
+						// поле
+						f = container.down('textfield');
+
+						// устаналвиваем значение
+						f.setValue(item);
+
+						if (index + 1 < values.length)
+						{
+							// добавляем новый контейнер
+							plugin.addFields();
+
+							// ссылка на новый контейнер
+							container = container.nextSibling();
+						}
+					}
+				);
+			}
 		}
 	}
 );

@@ -212,11 +212,19 @@ attributeFormDefault="unqualified">\
 								                        </restriction>\
 							                        </simpleType>\
 						                        </element>\
-						                        <element name="date-translation" type="date" minOccurs="0"/>\
 						                        <element name="date-public" type="date" minOccurs="0"/>\
 					                        </sequence>\
 				                        </complexType>\
 			                        </element>\
+			                        <element name="translated" minOccurs="0">\
+                                        <complexType>\
+	                                        <simpleContent>\
+		                                        <extension base="string">\
+			                                        <attribute name="value" type="date" use="optional"/>\
+		                                        </extension>\
+	                                        </simpleContent>\
+                                        </complexType>\
+                                    </element>\
 			                        <element name="document-info">\
 				                        <complexType mixed="false">\
 					                        <attribute name="created" type="dateTime" use="required"/>\
@@ -233,6 +241,13 @@ attributeFormDefault="unqualified">\
 										<complexType mixed="false">\
 											<sequence>\
 												<element name="isbn" type="fb3d:ISBNType" minOccurs="0" maxOccurs="unbounded"/>\
+												<element name="sequence" minOccurs="0" maxOccurs="unbounded">\
+			                                        <simpleType>\
+				                                        <restriction base="string">\
+															<minLength value="1"/>\
+		                                                </restriction>\
+													</simpleType>\
+												</element>\
 											</sequence>\
 											<attribute name="title" type="token" use="required"/>\
 											<attribute name="publisher" type="token" use="optional"/>\
@@ -356,16 +371,16 @@ attributeFormDefault="unqualified">\
           </complexType>\
       </element>\
       <element name="udc" minOccurs="0" maxOccurs="unbounded">\
-                    <simpleType>\
+        <simpleType>\
 	          <restriction base="token">\
-		          <pattern value="[\\d\\. \\*\\(\\)\\[\\]\\+:«»\'/A-Яа-я]+"/>\
+	            <pattern value="[\\d\\. \\-\\*\\(\\)\\[\\]\\+:«»\'/A-Яа-я]+"/>\
 	          </restriction>\
-          </simpleType>\
+         </simpleType>\
       </element>\
       <element name="bbk" minOccurs="0" maxOccurs="unbounded">\
-                    <simpleType>\
+          <simpleType>\
 	          <restriction base="token">\
-		          <pattern value="[\\(\\)\\d\\.\\-A-Яа-я/\\+ ]+"/>\
+	            <pattern value="[\\(\\)=\\d\\.\\-A-Яа-я/\\+ ]+"/>\
 	          </restriction>\
           </simpleType>\
       </element>\
