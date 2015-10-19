@@ -71,10 +71,13 @@ Ext.define(
 			var me = this,
 				d = data;
 
-			d['title-main'] = d.title.main;
-			d['title-sub'] = d.title.sub ? d.title.sub : '';
-			d['title-alt'] = Ext.isString(d.title.alt) ? {0: d.title.alt} : d.title.alt;
-			delete d.title;
+			if (d.title)
+			{
+				d['title-main'] = d.title.main ? d.title.main : '';
+				d['title-sub'] = d.title.sub ? d.title.sub : '';
+				d['title-alt'] = Ext.isString(d.title.alt) ? {0: d.title.alt} : d.title.alt;
+				delete d.title;
+			}
 
 			return d;
 		},
@@ -90,35 +93,39 @@ Ext.define(
 			var me = this,
 				d = data;
 
-			d.relations = {
-				'relations-subject': d['fb3-relations'].subject,
-				'relations-object': d['fb3-relations'].object ? d['fb3-relations'].object : ''
-			};
-			d.relations['relations-subject'] = me._convertPropertyName(d.relations['relations-subject'],
-			                                                           'relations-subject');
-			d.relations['relations-object'] = me._convertPropertyName(d.relations['relations-object'],
-			                                                           'relations-object');
+			if (d['fb3-relations'])
+			{
+				d.relations = {
+					'relations-subject': d['fb3-relations'].subject ? d['fb3-relations'].subject : '',
+					'relations-object': d['fb3-relations'].object ? d['fb3-relations'].object : ''
+				};
+				d.relations['relations-subject'] = me._convertPropertyName(d.relations['relations-subject'],
+				                                                           'relations-subject');
+				d.relations['relations-object'] = me._convertPropertyName(d.relations['relations-object'],
+				                                                          'relations-object');
 
-			Ext.Object.each(
-				d.relations['relations-subject'],
-			    function (index, item)
-			    {
-				    // конвертируем данные для типа связи
-				    item['relations-subject-link-radio-' + index] = {};
-				    item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] =
-				        item['relations-subject-link'];
+				Ext.Object.each(
+					d.relations['relations-subject'],
+					function (index, item)
+					{
+						// конвертируем данные для типа связи
+						item['relations-subject-link-radio-' + index] = {};
+						item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] =
+							item['relations-subject-link'];
 
-				    if (item['relations-subject-link'] !== 'author' &&
-				        item['relations-subject-link'] !== 'translator'&&
-				        item['relations-subject-link'] !== 'agent')
-				    {
-					    item['relations-subject-link-list'] = item['relations-subject-link'];
-					    item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] = 'other-list';
-				    }
-				    delete item['relations-subject-link'];
-			    }
-			);
-			delete d['fb3-relations'];
+						if (item['relations-subject-link'] !== 'author' &&
+						    item['relations-subject-link'] !== 'translator'&&
+						    item['relations-subject-link'] !== 'agent')
+						{
+							item['relations-subject-link-list'] = item['relations-subject-link'];
+							item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] = 'other-list';
+						}
+						delete item['relations-subject-link'];
+					}
+				);
+				delete d['fb3-relations'];
+			}
+
 
 			return d;
 		},
@@ -134,46 +141,54 @@ Ext.define(
 			var me = this,
 				d = data;
 
-			d['classification-class-contents'] = d['fb3-classification']['class'].contents;
-			d['classification-class-text'] = d['fb3-classification']['class'].text;
-			d['classification-subject'] = me._convertValToObj(d['fb3-classification'].subject,
-			                                                  'classification-subject');
-			/*d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?
-			                                     d['fb3-classification']['custom-subject'] : '';*/
-			d['classification-udc'] = me._convertValToObj(d['fb3-classification'].udc, 'classification-udc');
-			d['classification-bbk'] = me._convertValToObj(d['fb3-classification'].bbk, 'classification-bbk');
-			if (d['fb3-classification']['target-audience'])
+			if (d['fb3-classification'])
 			{
-				d['classification-target-audience-text'] = d['fb3-classification']['target-audience'].text ?
-				                                           d['fb3-classification']['target-audience'].text : '';
-				d['classification-target-audience-education'] =
-					d['fb3-classification']['target-audience'].education ?
-					d['fb3-classification']['target-audience'].education : '';
-				d['classification-target-audience-age-min'] =
-					d['fb3-classification']['target-audience']['age-min'] ?
-					d['fb3-classification']['target-audience']['age-min'] : '';
-				d['classification-target-audience-age-max'] =
-					d['fb3-classification']['target-audience']['age-max'] ?
-					d['fb3-classification']['target-audience']['age-max'] : '';
+				if (d['fb3-classification']['class'])
+				{
+					d['classification-class-contents'] = d['fb3-classification']['class'].contents ?
+					                                     d['fb3-classification']['class'].contents : '';
+					d['classification-class-text'] = d['fb3-classification']['class'].text ?
+					                                 d['fb3-classification']['class'].text : '';
+				}
+				d['classification-subject'] = me._convertValToObj(d['fb3-classification'].subject,
+				                                                  'classification-subject');
+				/*d['classification-custom-subject'] = d['fb3-classification']['custom-subject'] ?
+				 d['fb3-classification']['custom-subject'] : '';*/
+				d['classification-udc'] = me._convertValToObj(d['fb3-classification'].udc, 'classification-udc');
+				d['classification-bbk'] = me._convertValToObj(d['fb3-classification'].bbk, 'classification-bbk');
+				if (d['fb3-classification']['target-audience'])
+				{
+					d['classification-target-audience-text'] = d['fb3-classification']['target-audience'].text ?
+					                                           d['fb3-classification']['target-audience'].text : '';
+					d['classification-target-audience-education'] =
+						d['fb3-classification']['target-audience'].education ?
+						d['fb3-classification']['target-audience'].education : '';
+					d['classification-target-audience-age-min'] =
+						d['fb3-classification']['target-audience']['age-min'] ?
+						d['fb3-classification']['target-audience']['age-min'] : '';
+					d['classification-target-audience-age-max'] =
+						d['fb3-classification']['target-audience']['age-max'] ?
+						d['fb3-classification']['target-audience']['age-max'] : '';
+				}
+				if (d['fb3-classification'].setting)
+				{
+					d['classification-setting-text'] = d['fb3-classification'].setting.text ?
+					                                   d['fb3-classification'].setting.text : '';
+					d['classification-setting-country'] = d['fb3-classification'].setting.country ?
+					                                      d['fb3-classification'].setting.country : '';
+					d['classification-setting-place'] = d['fb3-classification'].setting.place ?
+					                                    d['fb3-classification'].setting.place : '';
+					d['classification-setting-date'] = d['fb3-classification'].setting.date ?
+					                                   d['fb3-classification'].setting.date : '';
+					d['classification-setting-age'] = d['fb3-classification'].setting.age ?
+					                                  d['fb3-classification'].setting.age : '';
+					d['classification-setting-date-from'] = d['fb3-classification'].setting['date-from'] ?
+					                                        d['fb3-classification'].setting['date-from'] : '';
+					d['classification-setting-date-to'] = d['fb3-classification'].setting['date-to'] ?
+					                                      d['fb3-classification'].setting['date-to'] : '';
+				}
+				delete d['fb3-classification'];
 			}
-			if (d['fb3-classification'].setting)
-			{
-				d['classification-setting-text'] = d['fb3-classification'].setting.text ?
-				                                    d['fb3-classification'].setting.text : '';
-				d['classification-setting-country'] = d['fb3-classification'].setting.country ?
-				                                       d['fb3-classification'].setting.country : '';
-				d['classification-setting-place'] = d['fb3-classification'].setting.place ?
-				                                     d['fb3-classification'].setting.place : '';
-				d['classification-setting-date'] = d['fb3-classification'].setting.date ?
-				                                    d['fb3-classification'].setting.date : '';
-				d['classification-setting-age'] = d['fb3-classification'].setting.age ?
-				                                   d['fb3-classification'].setting.age : '';
-				d['classification-setting-date-from'] = d['fb3-classification'].setting['date-from'] ?
-				                                         d['fb3-classification'].setting['date-from'] : '';
-				d['classification-setting-date-to'] = d['fb3-classification'].setting['date-to'] ?
-				                                       d['fb3-classification'].setting['date-to'] : '';
-			}
-			delete d['fb3-classification'];
 
 			return d;
 		},
@@ -223,18 +238,25 @@ Ext.define(
 			var me = this,
 				d = data;
 
-			d['document-info-isbn'] = d['document-info'].isbn;
-			d['document-info-created-date'] = d['document-info'].created.split('T')[0];
-			d['document-info-created-time'] = d['document-info'].created.split('T')[1];
-			d['document-info-updated-date'] = d['document-info'].updated.split('T')[0];
-			d['document-info-updated-time'] = d['document-info'].updated.split('T')[1];
-			d['document-info-program-used'] = d['document-info']['program-used'] ?
-			                                  d['document-info']['program-used'] : '';
-			d['document-info-src-url'] = d['document-info']['src-url'] ?
-			                                  d['document-info']['src-url'] : '';
-			d['document-info-ocr'] = d['document-info'].ocr ? d['document-info'].ocr : '';
-			d['document-info-editor'] = d['document-info'].editor ? d['document-info'].editor : '';
-			delete d['document-info'];
+			if (d['document-info'])
+			{
+				if (d['document-info'].isbn)
+				{
+					d['document-info-isbn'] = d['document-info'].isbn[0] ?
+					                          d['document-info'].isbn : {0: d['document-info'].isbn};
+				}
+				d['document-info-created-date'] = d['document-info'].created.split('T')[0];
+				d['document-info-created-time'] = d['document-info'].created.split('T')[1];
+				d['document-info-updated-date'] = d['document-info'].updated.split('T')[0];
+				d['document-info-updated-time'] = d['document-info'].updated.split('T')[1];
+				d['document-info-program-used'] = d['document-info']['program-used'] ?
+				                                  d['document-info']['program-used'] : '';
+				d['document-info-src-url'] = d['document-info']['src-url'] ?
+				                             d['document-info']['src-url'] : '';
+				d['document-info-ocr'] = d['document-info'].ocr ? d['document-info'].ocr : '';
+				d['document-info-editor'] = d['document-info'].editor ? d['document-info'].editor : '';
+				delete d['document-info'];
+			}
 
 			return d;
 		},

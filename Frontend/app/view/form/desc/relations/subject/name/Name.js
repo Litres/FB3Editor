@@ -13,6 +13,7 @@ Ext.define(
 		],
 		controller: 'form.desc.relations.subject.name',
 		xtype: 'form-desc-relations-subject-name',
+		checkChangeBuffer: 200,
 
 		/**
 		 * @private

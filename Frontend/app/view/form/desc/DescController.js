@@ -129,8 +129,14 @@ Ext.define(
 			Ext.getCmp('form-desc-title').down('form-desc-title-alt').fireEvent('loadData', data['title-alt']);
 			Ext.getCmp('form-desc-periodical').down('form-desc-title-alt').
 				fireEvent('loadData', data['periodical-title-alt']);
-			Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations['relations-subject']);
-			Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
+			if (data.relations && data.relations['relations-subject'])
+			{
+				Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations['relations-subject']);
+			}
+			if (data.relations && data.relations['relations-object'])
+			{
+				Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
+			}
 			Ext.getCmp('form-desc-classification-udc').fireEvent('loadData', data['classification-udc']);
 			Ext.getCmp('form-desc-classification-bbk').fireEvent('loadData', data['classification-bbk']);
 			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);

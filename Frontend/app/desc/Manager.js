@@ -27,19 +27,19 @@ Ext.define(
 		init: function ()
 		{
 			var me = this,
-				hash,
-				reg;
+				routeManager = FBEditor.route.Manager,
+				params;
 
-			reg = /^#desc\//;
-			hash = location.hash;
+			params = routeManager.params;
 
-			if (reg.test(hash))
+			if (params.desc)
 			{
 				// запоминаем url загрузки описания
-				me.loadUrl = hash.substring(6);
+				me.loadUrl = params.desc;
 			}
-			else if (hash === '#desc')
+			else if (params.desc === null)
 			{
+				// признак первоначальной загрузки страницы описания
 				me.loadUrl = 'undefined';
 			}
 		},
@@ -349,7 +349,9 @@ Ext.define(
 				desc.history = history ? history[1] : '';
 
 				// конвертируем данные для формы
+				//console.log('desc', desc);
 				desc = converter.toForm(desc);
+				//console.log('desc convert', desc);
 			}
 			catch (e)
 			{

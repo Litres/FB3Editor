@@ -8,7 +8,6 @@ Ext.define(
 	'FBEditor.view.form.desc.publishInfo.isbn.Isbn',
 	{
 		extend: 'FBEditor.view.form.desc.isbn.Isbn',
-		xtype: 'form-desc-publishInfo-isbn',
-		id: 'form-desc-publishInfo-isbn'
+		xtype: 'form-desc-publishInfo-isbn'
 	}
 );

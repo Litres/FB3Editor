@@ -47,6 +47,7 @@ Ext.define(
 			'FBEditor.editor.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
+			'FBEditor.route.Manager',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',
 			'FBEditor.webworker.Manager',
@@ -128,6 +129,7 @@ Ext.define(
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
 			Ext.tip.QuickTipManager.init();
 			FBEditor.command.HistoryCommand.init();
+			FBEditor.route.Manager.init();
 			FBEditor.desc.Manager.init();
 			FBEditor.editor.Manager.init();
 

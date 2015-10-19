@@ -216,6 +216,7 @@ Ext.define(
 				},
 				{
 					xtype: 'desc-fieldsetinner',
+					id: 'form-desc-documentInfo-isbn',
 					title: me.translateText.isbn,
 					items: [
 						{
