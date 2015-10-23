@@ -25,7 +25,8 @@ Ext.define(
 		handler: function ()
 		{
 			var me = this,
-				manager = FBEditor.desc.Manager;
+				manager = FBEditor.desc.Manager,
+				searchContainer = me.searchContainer;
 
 			// получаем новый id
 			manager.getNewId(
@@ -41,6 +42,9 @@ Ext.define(
 			me.setNamesFromSearchField();
 
 			me.switchContainers();
+
+			// удаляем контейнер поиска
+			searchContainer.destroy();
 		},
 
 		/**

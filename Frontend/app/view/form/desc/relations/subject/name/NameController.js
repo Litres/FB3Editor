@@ -16,7 +16,7 @@ Ext.define(
 				view = me.getView(),
 				loading = FBEditor.desc.Manager.loadingProcess,
 				title,
-				name;
+				names;
 
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading)
@@ -24,65 +24,29 @@ Ext.define(
 				title = view.getTitle();
 				title.autoValue();
 				title = view.getTitle();
-				name = title.getNames();
-
-				if (name.length > 1)
-				{
-					// делаем поиск от 2 символов
-					me.searchName(name);
-				}
+				names = title.getNames();
+				me.searchName(names);
 			}
 		},
 
 		/**
 		 * Ищет персоны по ФИО.
-		 * @param {String} name ФИО.
+		 * @param names ФИО.
+		 * @param {String} names.last
+		 * @param {String} names.first
+		 * @param {String} names.middle
 		 */
-		searchName: function (name)
+		searchName: function (names)
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.webworker.Manager,
-				params,
-				values,
-				url,
-				master;
+				resultContainer;
 
-			// разбиваем строку на три значения, отделенных пробелами
-			values = name.split(/[ ]+/, 3);
-
-			// формируем параметры для запроса
-			params = {
-				last: values[0],
-				first: values[1] ? values[1] : '',
-				middle: values[2] ? values[2] : ''
-			};
-
-			url = 'https://hub.litres.ru/pages/machax_persons/?';
-			url += 'last=' + params.last;
-			url += '&first=' + params.first;
-			url += '&middle=' + params.middle;
-
-			console.log('params', params, url);
-
-			// владелец потока
-			master = manager.factory('httpRequest');
-
-			// запрос на поиск персон
-			master.post(
-				{
-					url: url
-				},
-				function (response, data)
-				{
-					console.log('response, data', response, data);
-
-					if (response)
-					{
-
-					}
-				}
-			);
+			if (names.last.length > 1 || names.first.length > 1 || names.middle.length > 1)
+			{
+				resultContainer = view.getResultContainer();
+				resultContainer.fireEvent('loadData', names);
+			}
 		}
 	}
 );

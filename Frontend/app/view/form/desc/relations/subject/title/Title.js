@@ -85,24 +85,18 @@ Ext.define(
 
 		/**
 		 * Возвращает ФИО.
-		 * @return {String}
+		 * @return {Object}
 		 */
 		getNames: function ()
 		{
 			var me = this,
-				val = {},
-				value;
+				val = {};
 
 			val.last = me.getLastName().getValue();
 			val.middle = me.getMiddleName().getValue();
 			val.first = me.getFirstName().getValue();
 
-			value = val.first ? val.first + ' ' : '';
-			value += val.middle ? val.middle + ' ' : '';
-			value += val.last ? val.last : '';
-			value = value.trim();
-
-			return value;
+			return val;
 		},
 
 		getLastName: function ()

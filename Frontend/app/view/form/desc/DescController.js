@@ -61,10 +61,24 @@ Ext.define(
 		 */
 		onScroll: function (evt, el)
 		{
-			var me = this;
+			var me = this,
+				personsContainers;
 
 			// корректируем положение окна выбора жанра
 			Ext.getCmp('form-desc-subjectTree').fireEvent('alignTo');
+
+			// корректируем положение окна с результатами поиска персон
+			personsContainers = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
+			Ext.Array.each(
+				personsContainers,
+			    function (item)
+			    {
+				    if (item.isShow)
+				    {
+					    item.fireEvent('alignTo');
+				    }
+			    }
+			);
 		},
 
 		/**
@@ -77,10 +91,25 @@ Ext.define(
 		 */
 		onResize: function (cmp, width, height, oldWidth, oldHeight)
 		{
+			var personsContainers;
+
 			if (width !== oldWidth)
 			{
 				// корректируем положение окна выбора жанра
 				Ext.getCmp('form-desc-subjectTree').fireEvent('alignTo');
+
+				// корректируем положение окна с результатами поиска персон
+				personsContainers = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
+				Ext.Array.each(
+					personsContainers,
+					function (item)
+					{
+						if (item.isShow)
+						{
+							item.fireEvent('alignTo');
+						}
+					}
+				);
 			}
 		},
 

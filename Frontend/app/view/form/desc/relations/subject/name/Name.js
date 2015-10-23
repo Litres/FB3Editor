@@ -21,6 +21,11 @@ Ext.define(
 		 */
 		titleMain: null,
 
+		/**
+		 * @private {FBEditor.view.panel.main.props.desc.persons.Persons} Контейнер для отображения результатов поиска.
+		 */
+		resultContainer: null,
+
 		listeners: {
 			change: 'onChange'
 		},
@@ -40,6 +45,20 @@ Ext.define(
 				            down('form-desc-relations-subject-title');
 
 			return titleMain;
+		},
+
+		/**
+		 * Возвращает контейнер для отображения результатов поиска.
+		 * @return {FBEditor.view.panel.main.props.desc.persons.Persons}
+		 */
+		getResultContainer: function ()
+		{
+			var me = this,
+				container;
+
+			container = me.resultContainer || Ext.getCmp('props-desc-persons');
+
+			return container;
 		}
 	}
 );

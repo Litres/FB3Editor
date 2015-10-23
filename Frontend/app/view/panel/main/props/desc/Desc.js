@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.props.desc.DescController',
+			'FBEditor.view.panel.main.props.desc.persons.Persons',
 			'FBEditor.view.button.desc.Load',
 			'FBEditor.view.button.desc.Save'
 		],
@@ -97,6 +98,9 @@ Ext.define(
 				{
 					xtype: 'button-desc-save',
 					disabled: saveUrl ? false : true
+				},
+				{
+					xtype: 'props-desc-persons'
 				}
 			];
 

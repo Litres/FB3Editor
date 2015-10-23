@@ -775,3 +775,65 @@
 	font-size: 13px;
 	color: #666;
 }
+
+/* Панель данных персон */
+
+.panel-persons-item {
+	border: 1px solid #000;
+	margin: 4px 0;
+}
+
+.panel-persons-item-common {
+	padding: 4px;
+}
+
+.panel-persons-item-fio {
+	display: inline-block;
+	width: 250px;
+}
+
+.panel-persons-item-fio span {
+	border-bottom: 1px dotted;
+	cursor: pointer;
+	color: #2e7ed5;
+	font-size: 14px;
+}
+
+.panel-persons-item-creator {
+	display: inline-block;
+	margin-left: 5px;
+	font-size: 14px;
+}
+
+.panel-persons-item-desc,
+.panel-persons-item-time {
+	color: gray;
+	font-size: 12px;
+}
+
+.panel-persons-item-books {
+	padding: 0;
+}
+
+.panel-persons-item-book {
+	padding: 0 0 0 8px;
+}
+
+.panel-persons-item-book a {
+	color: #2e7ed5;
+}
+
+.panel-persons .x-fieldset-default {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+.panel-persons .x-fieldset-body-default {
+	padding: 0;
+}
+
+.panel-persons .x-fieldset-header-default {
+	padding: 0;
+	color: #2e7ed5;
+}

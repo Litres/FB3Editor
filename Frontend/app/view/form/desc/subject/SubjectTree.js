@@ -95,7 +95,6 @@ Ext.define(
 			var me = this,
 				store;
 
-
 			store = Ext.create('FBEditor.view.form.desc.subject.SubjectStore');
 			me.store = store;
 			me.defaultRootProperty = store.getDefaultRootProperty();
@@ -135,8 +134,6 @@ Ext.define(
 			Ext.getBody().on('click', me.onClickBody, me);
 
 			me.callParent(arguments);
-
-
 		},
 
 		afterHide: function ()
