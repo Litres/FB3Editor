@@ -45,11 +45,20 @@ Ext.define(
 		onAlignTo: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				posY = view.inputField.getY(),
+				height = view.getHeight();
 
 			if (view.isVisible() && view.inputField && view.rendered)
 			{
-				view.alignTo(view.inputField, 'tr', [-view.getWidth(), -view.getHeight()]);
+				if (posY - height > 0)
+				{
+					view.alignTo(view.inputField, 'tl', [0, -height]);
+				}
+				else
+				{
+					view.alignTo(view.inputField, 'bl', [0, 0]);
+				}
 			}
 		},
 

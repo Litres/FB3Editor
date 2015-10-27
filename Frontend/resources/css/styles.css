@@ -796,27 +796,36 @@
 	border-bottom: 1px dotted;
 	cursor: pointer;
 	color: #2e7ed5;
-	font-size: 14px;
+	font-size: 16px;
 }
 
-.panel-persons-item-creator {
+.panel-persons-item-creator,
+.panel-persons-item-copyrighters {
 	display: inline-block;
 	margin-left: 5px;
 	font-size: 14px;
 }
 
+.panel-persons-item-copyrighters {
+	min-width: 100px;
+}
+
 .panel-persons-item-desc,
 .panel-persons-item-time {
+	padding: 4px 0 0 0;
 	color: gray;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .panel-persons-item-books {
 	padding: 0;
+	margin: 0;
+	list-style-position: inside;
+	font-size: 14px;
 }
 
 .panel-persons-item-book {
-	padding: 0 0 0 8px;
+	padding: 3px 0 3px 8px;
 }
 
 .panel-persons-item-book a {

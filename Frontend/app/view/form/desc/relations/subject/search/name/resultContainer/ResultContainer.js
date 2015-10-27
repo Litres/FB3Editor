@@ -15,7 +15,7 @@ Ext.define(
 		controller: 'form.desc.relations.subject.searchName.resultContainer',
 
 		floating: true,
-		width: 450,
+		width: 600,
 		height: 300,
 		maxHeight: 300,
 		closeAction: 'hide',

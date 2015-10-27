@@ -27,6 +27,12 @@ Ext.define(
 		 */
 		selectFn: Ext.emptyFn,
 
+		translateText: {
+			creator: 'Создатель',
+			copyrighter: 'Правообладатель',
+			no: 'нет'
+		},
+
 		initComponent: function ()
 		{
 			var me = this,
@@ -65,7 +71,8 @@ Ext.define(
 					function (item)
 					{
 						var person,
-							personItems;
+							personItems,
+							booksTotal;
 
 						if (item)
 						{
@@ -83,10 +90,13 @@ Ext.define(
 							if (item.arts && item.arts.length)
 							{
 								// книги
+
+								booksTotal = item.arts.length >= 30 ? '29+' : item.arts.length;
+
 								personItems.push(
 									{
 										xtype: 'fieldset',
-										title: 'Книги (' + item.arts.length + ')',
+										title: 'Книги (' + booksTotal + ')',
 										collapsible: true,
 										collapsed: true,
 										html: me.getHtmlBooks(item)
@@ -163,7 +173,16 @@ Ext.define(
 				'   <div class="panel-persons-item-fio" person-id="{id}">' +
 				'       <span style="color: {link_color}">{fio}</span>' +
 				'   </div>' +
-				'   <div class="panel-persons-item-creator" style="color: {link_color}">{creator_login}</div>' +
+				'   <div class="panel-persons-item-copyrighters" title="' + me.translateText.copyrighter + '"' +
+				'       style="color: {link_color}">' +
+				'   <tpl if="copyrighters">' +
+				'       <tpl for="copyrighters">' +
+				'           <span>{full_name}</span><br />' +
+				'       </tpl>' +
+				'   <tpl else>(' + me.translateText.no + ')</tpl>' +
+				'   </div>' +
+				'   <div class="panel-persons-item-creator" title="' + me.translateText.creator + '"' +
+				'       style="color: {link_color}">{creator_login}</div>' +
 				'   <div class="panel-persons-item-desc">{description}</div>' +
 				'   <div class="panel-persons-item-time">{last_action_time}</div>' +
 				'</div>'
@@ -191,6 +210,7 @@ Ext.define(
 			data.bgcolor = 'white';
 			data.bgcolor = Number(data.unchecked) ? '#f8f8f8' : data.bgcolor;
 			data.bgcolor = data.creator_login == 'reader_release' ? '#F3DBDA' : data.bgcolor;
+			data.bgcolor = data.copyrighters ? '#FFFD9A' : data.bgcolor;
 
 			data.link_color = '#2e7ed5';
 			data.link_color = Number(data.unchecked) ? 'gray' : data.link_color;
@@ -213,14 +233,14 @@ Ext.define(
 				html;
 
 			tpl = new Ext.XTemplate(
-				'<div class="panel-persons-item-books">' +
+				'<ul class="panel-persons-item-books">' +
 				'<tpl for="arts">' +
-				'<div class="panel-persons-item-book" style="background-color: {bgcolor}">' +
+				'<li class="panel-persons-item-book" style="background-color: {bgcolor}">' +
 				'   <a style="color: {link_color}" target="_blank" ' +
 				'       href="https://hub.litres.ru/pages/edit_object/?art={id}">{name}</a>' +
-				'</div>' +
+				'</li>' +
 				'</tpl>' +
-			    '</div>'
+			    '</ul>'
 			);
 
 			Ext.Array.each(
@@ -229,7 +249,7 @@ Ext.define(
 			    {
 				    item.bgcolor = 'white';
 				    item.bgcolor = Number(item.unchecked) ? '#f8f8f8' : item.bgcolor;
-				    item.bgcolor = Number(item.sell_open) ? '##FFFD9A' : item.bgcolor;
+				    item.bgcolor = Number(item.sell_open) ? '#FFFD9A' : item.bgcolor;
 
 				    item.link_color = '#2e7ed5';
 				    item.link_color = Number(data.unchecked) ? 'gray' : item.link_color;
