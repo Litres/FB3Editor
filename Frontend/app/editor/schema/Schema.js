@@ -214,7 +214,7 @@ Ext.define(
 			}
 
 			seq = el.sequence.length ? Ext.clone(el.sequence) : null;
-			choice = el.choice.elements && el.choice.elements.length ? Ext.clone(el.choice) : null;
+			choice = el.choice && el.choice.elements && el.choice.elements.length ? Ext.clone(el.choice) : null;
 
 			disableDebug || console.log('VERIFY name, srcEls, el', name, srcEls, el);
 

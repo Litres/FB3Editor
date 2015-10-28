@@ -69,9 +69,18 @@ Ext.define(
 			</element>\
 			<element name="epigraph" minOccurs="0" maxOccurs="25">\
 				<complexType>\
-					<complexContent>\
-						<extension base="fb3b:SimpleTextType"/>\
-					</complexContent>\
+					<sequence>\
+					    <choice>\
+					        <element name="poem" type="fb3b:PoemType"/>\
+				            <element name="p" type="fb3b:StyleType"/>\
+				        </choice>\
+				        <choice minOccurs="0" maxOccurs="unbounded">\
+			                <element name="poem" type="fb3b:PoemType"/>\
+			                <element name="p" type="fb3b:StyleType"/>\
+			                <element name="br" type="fb3b:BRType"/>\
+			            </choice>\
+			            <element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
+			        </sequence>\
 				</complexType>\
 			</element>\
 		</sequence>\
@@ -261,6 +270,7 @@ Ext.define(
 					</complexContent>\
 				</complexType>\
 			</element>\
+			<element name="note" type="fb3b:NoteType"/>\
 			<element name="a" type="fb3b:LinkType"/>\
 			<element name="img" type="fb3b:ImgType"/>\
 			<element name="paper-page-break" type="fb3b:PaperPageBreakType"/>\
@@ -343,6 +353,7 @@ Ext.define(
 			<extension base="fb3b:TitledType">\
 				<sequence>\
 					<element name="stanza" type="fb3b:PHolderType" maxOccurs="unbounded"/>\
+					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
 				</sequence>\
 				<attribute name="id" type="ID" use="optional"/>\
 			</extension>\

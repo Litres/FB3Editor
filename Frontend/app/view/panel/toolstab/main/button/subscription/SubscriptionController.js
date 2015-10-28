@@ -15,13 +15,12 @@ Ext.define(
 			var me = this,
 				btn = me.getView(),
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				nodes = {},
 				els = {},
 				name = btn.elementName,
 				range,
-				nameElements,
-				sch,
-				enable;
+				xml;
 
 			range = manager.getRange();
 
@@ -53,31 +52,49 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 			}
 
-			nameElements = manager.getNamesElements(els.parent);
+			// создаем временный элемент для проверки новой структуры
+			els.newEl = factory.createElement(name);
+			els.newEl.createScaffold();
 
-			if (nameElements[nameElements.length - 1] === name)
-			{
-				enable = false;
-			}
-			else
-			{
-				nameElements.push(name);
+			els.parent.children.push(els.newEl);
 
-				// проверяем элемент по схеме
-				sch = manager.getSchema();
-				name = els.parent.getName();
-				//console.log('name, nameElements', name, nameElements);
-				enable = sch.verify(name, nameElements);
+			if (!range.collapsed)
+			{
+				// переносим выделенный параграф
+
+				els.p = range.start.getElement();
+				els.isRoot = els.p.isRoot;
+				while (els.p && !els.p.isP)
+				{
+					els.p = els.isRoot ? els.p.first() : els.p.parent;
+				}
+
+				els.parentP = els.p.parent;
+				els.next = els.p.next();
+				els.newEl.add(els.p);
 			}
 
-			if (enable)
+			// получаем xml
+			xml = manager.getContent().getXml(true);
+
+			if (!range.collapsed)
 			{
-				btn.enable();
+				// возвращаем параграф на старое место
+				if (els.next)
+				{
+					els.parentP.insertBefore(els.p, els.next);
+				}
+				else
+				{
+					els.parentP.add(els.p);
+				}
 			}
-			else
-			{
-				btn.disable();
-			}
+
+			// удаляем временный элемент
+			els.parent.children.pop();
+
+			// проверяем по схеме
+			me.verify(xml);
 		}
 	}
 );
