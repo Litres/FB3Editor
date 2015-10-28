@@ -59,7 +59,7 @@ Ext.define(
 		{
 			var me = this;
 
-			console.log('load', data);
+			//console.log('load', data);
 
 			Ext.suspendLayouts();
 			me.removeAll();
