@@ -212,7 +212,15 @@ attributeFormDefault="unqualified">\
 								                        </restriction>\
 							                        </simpleType>\
 						                        </element>\
-						                        <element name="date-public" type="date" minOccurs="0"/>\
+						                        <element name="date-public" minOccurs="0">\
+							                        <complexType>\
+								                        <simpleContent>\
+									                        <extension base="string">\
+										                        <attribute name="value" type="date" use="optional"/>\
+									                        </extension>\
+								                        </simpleContent>\
+							                        </complexType>\
+						                        </element>\
 					                        </sequence>\
 				                        </complexType>\
 			                        </element>\

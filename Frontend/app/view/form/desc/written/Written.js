@@ -8,6 +8,14 @@ Ext.define(
 	'FBEditor.view.form.desc.written.Written',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		requires: [
+			'FBEditor.view.form.desc.written.date.date.DateText',
+			'FBEditor.view.form.desc.written.date.date.DateValue',
+			'FBEditor.view.form.desc.written.date.publicated.DateText',
+			'FBEditor.view.form.desc.written.date.publicated.DateValue',
+			'FBEditor.view.form.desc.written.date.translated.DateText',
+			'FBEditor.view.form.desc.written.date.translated.DateValue'
+		],
 		xtype: 'form-desc-written',
 		id: 'form-desc-written',
 		layout: 'hbox',
@@ -21,7 +29,8 @@ Ext.define(
 			country: 'Страна',
 			translated: 'Дата перевода',
 			translatedText: 'Дата перевода текстом',
-			datePublic: 'Дата публикации'
+			datePublic: 'Дата публикации',
+			datePublicText: 'Дата публикации текстом'
 		},
 
 		initComponent: function ()
@@ -90,29 +99,34 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'datefield',
+							xtype: 'form-desc-written-date-value',
 							name: prefixName + '-date-value',
 							fieldLabel: me.translateText.date
 						},
 						{
-							xtype: 'textfield',
+							xtype: 'form-desc-written-date-text',
 							name: prefixName + '-date-text',
 							fieldLabel: me.translateText.dateText
 						},
 						{
-							xtype: 'datefield',
+							xtype: 'form-desc-written-date-translated-value',
 							name: 'translated-value',
 							fieldLabel: me.translateText.translated
 						},
 						{
-							xtype: 'textfield',
+							xtype: 'form-desc-written-date-translated-text',
 							name: 'translated-text',
 							fieldLabel: me.translateText.translatedText
 						},
 						{
-							xtype: 'datefield',
-							name: prefixName + '-date-public',
+							xtype: 'form-desc-written-date-publicated-value',
+							name: prefixName + '-date-public-value',
 							fieldLabel: me.translateText.datePublic
+						},
+						{
+							xtype: 'form-desc-written-date-publicated-text',
+							name: prefixName + '-date-public-text',
+							fieldLabel: me.translateText.datePublicText
 						}
 					]
 				}
@@ -136,7 +150,8 @@ Ext.define(
 			var me = this,
 				prefixName = me.prefixName,
 				data = d,
-				values;
+				values,
+				datePublic;
 
 			values = {
 				_value: Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-value]')).getValue(), 'Y-m-d'),
@@ -144,10 +159,17 @@ Ext.define(
 			};
 			values = me.removeEmptyValues(values);
 
+			datePublic = {
+				_value: Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-public-value]')).getValue(), 'Y-m-d'),
+				__text: me.down(me.down('[name=' + prefixName + '-date-public-text]')).getValue()
+			};
+			datePublic = me.removeEmptyValues(datePublic);
+
 			values = {
 				lang: me.down(me.down('[name=' + prefixName + '-lang]')).getValue(),
 				country: me.down(me.down('[name=' + prefixName + '-country]')).getValue(),
-				date: values
+				date: values,
+				'date-public': datePublic
 			};
 			values = me.removeEmptyValues(values);
 

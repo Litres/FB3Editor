@@ -9,6 +9,8 @@ Ext.define(
 	{
 		override: 'Ext.form.field.Date',
 
+		format: 'Y-m-d',
+
 		createPicker: function ()
 		{
 			var me = this,

@@ -211,9 +211,13 @@ Ext.define(
 					d['written-date-value'] = d.written.date.value ? d.written.date.value : '';
 					d['written-date-text'] = d.written.date.text ? d.written.date.text : '';
 				}
+				if (d.written['date-public'])
+				{
+					d['written-date-public-value'] = d.written['date-public'].value ? d.written.date.value : '';
+					d['written-date-public-text'] = d.written['date-public'].text ? d.written.date.text : '';
+				}
 				d['written-country'] = d.written.country ? d.written.country : '';
 				d['written-date-translation'] = d.written['date-translation'] ? d.written['date-translation'] : '';
-				d['written-date-public'] = d.written['date-public'] ? d.written['date-public'] : '';
 				delete d.written;
 			}
 
