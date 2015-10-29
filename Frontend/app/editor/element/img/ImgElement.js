@@ -234,7 +234,7 @@ Ext.define(
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
-			resource = FBEditor.resource.Manager.getResourceByName(attributes.src);
+			resource = FBEditor.resource.Manager.getResourceByFileId(attributes.src);
 			if (resource)
 			{
 				attributes.src = resource.url;

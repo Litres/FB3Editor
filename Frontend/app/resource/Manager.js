@@ -61,6 +61,7 @@ Ext.define(
 			var me = this,
 				data = [];
 
+			//console.log('images', images);
 			Ext.each(
 				images,
 				function (item)
@@ -71,6 +72,7 @@ Ext.define(
 
 					name = item.getFileName().substring(me.rootPath.length + 1);
 					resData = {
+						fileId: item.getId(),
 						content: item.getArrayBuffer(),
 						url: item.getUrl(),
 						name: name,
@@ -85,6 +87,7 @@ Ext.define(
 					data.push(res);
 				}
 			);
+			//console.log('data', data);
 			me.data = data;
 			me.sortData();
 			me.updateNavigation();
@@ -527,6 +530,7 @@ Ext.define(
 
 		/**
 		 * Возвращает данные ресурса по его имени.
+		 * @param {String} name Имя ресурса.
 		 * @return {FBEditor.resource.Resource} Ресурс.
 		 */
 		getResourceByName: function (name)
@@ -537,6 +541,25 @@ Ext.define(
 				resource;
 
 			resourceIndex = me.getResourceIndexByName(name);
+			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
+			resource = resource && resource[0] ? resource[0] : null;
+
+			return resource;
+		},
+
+		/**
+		 * Возвращает данные ресурса по айди.
+		 * @param {String} id Айди ресурса.
+		 * @return {FBEditor.resource.Resource} Ресурс.
+		 */
+		getResourceByFileId: function (id)
+		{
+			var me = this,
+				data = me.data,
+				resourceIndex,
+				resource;
+
+			resourceIndex = me.getResourceIndexByFileId(id);
 			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 			resource = resource && resource[0] ? resource[0] : null;
 
@@ -811,6 +834,33 @@ Ext.define(
 					resourceIndex = index;
 
 					return item.name === name;
+				}
+			);
+			resourceIndex = res ? resourceIndex : null;
+
+			return resourceIndex;
+		},
+
+		/**
+		 * @private
+		 * Возвращает индекс ресурса из массива ресурсов.
+		 * @param {String} id Айди ресурса.
+		 * @return {Number|null} Индекс ресурса.
+		 */
+		getResourceIndexByFileId: function (id)
+		{
+			var me = this,
+				data = me.data,
+				resourceIndex,
+				res;
+
+			res = Ext.Array.findBy(
+				data,
+				function (item, index)
+				{
+					resourceIndex = index;
+
+					return item.fileId === id;
 				}
 			);
 			resourceIndex = res ? resourceIndex : null;

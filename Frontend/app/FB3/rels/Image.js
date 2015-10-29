@@ -14,6 +14,11 @@ Ext.define(
 		 */
 		isCover: false,
 
+		/**
+		 * @property {String} Айди изображения в архиве.
+		 */
+		id: null,
+
 		getRels: function ()
 		{
 			return null;
@@ -26,6 +31,24 @@ Ext.define(
 		getIsCover: function ()
 		{
 			return this.isCover;
+		},
+
+		/**
+		 * Возвращает айди.
+		 * @return {String}
+		 */
+		getId: function ()
+		{
+			return this.id;
+		},
+
+		/**
+		 * Устанавливает айди.
+		 * @param {String} id
+		 */
+		setId: function (id)
+		{
+			this.id = id;
 		}
 	}
 );

@@ -58,7 +58,12 @@ Ext.define(
 					bodies,
 					function (item, i, selfBodies)
 					{
-						var fileName = parentRelsDir + '/' + item[me.prefix + 'Target'];
+						var targetName = item[me.prefix + 'Target'],
+							fileName;
+
+						// путь может быть абсолютным или относительным
+						fileName = targetName.substring(0, 1) !== '/' ?
+						           parentRelsDir + '/' + targetName : targetName.substring(1);
 
 						selfBodies[i] = Ext.create('FBEditor.FB3.rels.Body', me.getStructure(), fileName);
 					}

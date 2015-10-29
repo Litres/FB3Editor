@@ -7,6 +7,7 @@
 Ext.define(
 	'FBEditor.resource.Resource',
 	{
+		fileId: null, // айди ресурса в архиве
 		content: null, // содержимое файла ArrayBuffer
 		url: '', // адрес в памяти браузера
 		name: '', // полное имя файла относительно корневой директории ресурсов в архиве
@@ -43,6 +44,7 @@ Ext.define(
 			var me = this,
 				img = new Image();
 
+			me.fileId = data.fileId;
 			me.content = data.content;
 			me.url = data.url;
 			me.name = data.name;

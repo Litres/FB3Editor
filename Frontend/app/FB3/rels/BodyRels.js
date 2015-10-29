@@ -57,9 +57,16 @@ Ext.define(
 					images,
 					function (item, i, selfImages)
 					{
-						var fileName = parentRelsDir + '/' + item[me.prefix + 'Target'];
+						var id = item[me.prefix + 'Id'],
+							targetName = item[me.prefix + 'Target'],
+							fileName;
+
+						// путь может быть абсолютным или относительным
+						fileName = targetName.substring(0, 1) !== '/' ?
+						           parentRelsDir + '/' + targetName : targetName.substring(1);
 
 						selfImages[i] = Ext.create('FBEditor.FB3.rels.Image', me.getStructure(), fileName);
+						selfImages[i].setId(id);
 					}
 				);
 			}

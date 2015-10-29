@@ -110,8 +110,12 @@ Ext.define(
 					books,
 				    function (item, i, selfBooks)
 				    {
-					    selfBooks[i] = Ext.create('FBEditor.FB3.rels.Book', me.getStructure(),
-					                                  item[me.prefix + 'Target']);
+					    var targetName = item[me.prefix + 'Target'];
+
+					    // путь может быть абсолютным или относительным
+					    targetName = targetName.replace(/^[/]/, '');
+
+					    selfBooks[i] = Ext.create('FBEditor.FB3.rels.Book', me.getStructure(), targetName);
 				    }
 				);
 			}
