@@ -38,6 +38,47 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
+		afterRender: function ()
+		{
+			var me = this,
+				names = me.getStorageNames();
+
+			if (names)
+			{
+				me.fireEvent('loadData', names);
+			}
+
+			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает ФИО из локального хранилища.
+		 * @return {Object}
+		 */
+		getStorageNames: function ()
+		{
+			var me = this,
+				storage = FBEditor.getLocalStorage(),
+				names;
+
+			names = storage.getItem(me.id + '-lastNames');
+			names = JSON.parse(names);
+
+			return names;
+		},
+
+		/**
+		 * Сохраняет ФИО в локальном хранилище.
+		 * @param {Object} names
+		 */
+		setStorageNames: function (names)
+		{
+			var me = this,
+				storage = FBEditor.getLocalStorage();
+
+			storage.setItem(me.id + '-lastNames', JSON.stringify(names));
+		},
+
 		/**
 		 * Удаляет все данные из контейнера.
 		 */

@@ -11,6 +11,8 @@ Ext.define(
 
 		name: 'xmllint',
 
+		needInit: true,
+
 		message: function (e)
 		{
 			var data = e.data,

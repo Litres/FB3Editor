@@ -35,9 +35,15 @@ Ext.define(
 		callback: null,
 
 		/**
-		 * @property {Array} Данные хранилища.
+		 * @property {Array} Последние полученные данные хранилища.
 		 */
 		data: null,
+
+		/**
+		 * @private
+		 * @property {Object} Кэш запросов.
+		 */
+		cacheData: {},
 
 		setParams: function (data)
 		{
@@ -61,29 +67,41 @@ Ext.define(
 
 			//console.log('url', url);
 
-			// владелец потока
-			master = manager.factory('httpRequest');
+			if (!me.cacheData[url])
+			{
+				// владелец потока
+				master = manager.factory('httpRequest');
 
-			// запрос на поиск персон
-			master.post(
-				{
-					url: url
-				},
-				function (response, data)
-				{
-					var json;
-
-					json = response ? JSON.parse(response) : null;
-
-					if (json && me.rootProperty)
+				// запрос на поиск персон
+				master.post(
 					{
-						json = json[me.rootProperty] ? json[me.rootProperty] : null;
-					}
+						url: url
+					},
+					function (response, data)
+					{
+						var json;
 
-					me.data = json;
-					me.afterLoad(json);
-				}
-			);
+						json = response ? JSON.parse(response) : null;
+
+						if (json && me.rootProperty)
+						{
+							json = json[me.rootProperty] ? json[me.rootProperty] : null;
+						}
+
+						// кэшируем данные
+						me.cacheData[url] = json;
+
+						me.data = json;
+						me.afterLoad(json);
+					}
+				);
+			}
+			else
+			{
+				me.data = me.cacheData[url];
+				me.afterLoad(me.data);
+			}
+
 		},
 
 		/**

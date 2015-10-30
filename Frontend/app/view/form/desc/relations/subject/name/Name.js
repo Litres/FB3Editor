@@ -21,13 +21,19 @@ Ext.define(
 		 */
 		titleMain: null,
 
-		/**
-		 * @private {FBEditor.view.panel.main.props.desc.persons.Persons} Контейнер для отображения результатов поиска.
-		 */
-		resultContainer: null,
-
 		listeners: {
-			change: 'onChange'
+			change: 'onChange',
+			cleanResultContainer: 'onCleanResultContainer'
+		},
+
+		afterRender: function ()
+		{
+			var me = this;
+
+			me.callParent(arguments);
+
+			// сбрасываем ФИО, сохраненные в локальном хранилище
+			me.fireEvent('cleanResultContainer');
 		},
 
 		/**
@@ -53,12 +59,9 @@ Ext.define(
 		 */
 		getResultContainer: function ()
 		{
-			var me = this,
-				container;
+			var bridge = FBEditor.getBridgeProps();
 
-			container = me.resultContainer || Ext.getCmp('props-desc-persons');
-
-			return container;
+			return bridge.Ext.getCmp('props-desc-persons');
 		}
 	}
 );

@@ -14,6 +14,11 @@ Ext.define(
 		name: '',
 
 		/**
+		 * @property {Boolean} Нужна ли инициализация потока перед использованием.
+		 */
+		needInit: false,
+
+		/**
 		 * @protected
 		 * @property {Worker} Поток.
 		 */
@@ -52,14 +57,16 @@ Ext.define(
 
 				me.worker = worker;
 
-				// инициализируем поток
-				callbackInit = function (data)
+				if (me.needInit)
 				{
-					me.initialized = data ? true : false;
-					//console.log('init', data);
-				};
+					callbackInit = function (data)
+					{
+						me.initialized = data ? true : false;
+						//console.log('init', data);
+					};
 
-				me.post(null, callbackInit, me);
+					me.post(null, callbackInit, me);
+				}
 			}
 			catch (e)
 			{

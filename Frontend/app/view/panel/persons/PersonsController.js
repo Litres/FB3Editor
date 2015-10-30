@@ -20,9 +20,12 @@ Ext.define(
 				view = me.getView(),
 				store = view.store;
 
-			store.setParams(data);
-			//console.log('url', store.getUrl());
-			store.load();
+			if (data)
+			{
+				store.setParams(data);
+				//console.log('url', store.getUrl());
+				store.load();
+			}
 		}
 	}
 );

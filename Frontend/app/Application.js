@@ -269,13 +269,10 @@ Ext.define(
 				function (response, data)
 				{
 					//console.log('response, data', response, data);
-
 					if (response)
 					{
 						FBEditor.accessHub = response.substring(0, 1) === '{' ? true : false;
-
 						Ext.log({msg: 'Хаб доступен', level: 'info'});
-
 						if (FBEditor.accessHub)
 						{
 							// оповещаем все необходимые компоненты, что хаб доступен

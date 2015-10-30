@@ -30,6 +30,19 @@ Ext.define(
 		},
 
 		/**
+		 * Очищает контейнер результатов поиска.
+		 */
+		onCleanResultContainer: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				resultContainer = view.getResultContainer();
+
+				resultContainer.clean();
+				resultContainer.setStorageNames(null);
+		},
+
+		/**
 		 * Ищет персоны по ФИО.
 		 * @param names ФИО.
 		 * @param {String} names.last
@@ -46,6 +59,9 @@ Ext.define(
 			{
 				resultContainer = view.getResultContainer();
 				resultContainer.fireEvent('loadData', names);
+
+				// сохраняем имена в локальном хранилище
+				resultContainer.setStorageNames(names);
 			}
 		}
 	}

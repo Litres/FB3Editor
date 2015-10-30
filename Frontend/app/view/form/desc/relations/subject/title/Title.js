@@ -71,12 +71,16 @@ Ext.define(
 		autoValue: function ()
 		{
 			var me = this,
+				names = me.getNames(),
 				titleMain,
 				value;
 
 			if (me.autoFilled)
 			{
-				value = me.getNames();
+				value = names.first ? names.first + ' ' : '';
+				value += names.middle ? names.middle + ' ' : '';
+				value += names.last ? names.last : '';
+				value = value.trim();
 
 				titleMain = me.getTitleMain();
 				titleMain.setRawValue(value);

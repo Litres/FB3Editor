@@ -16,12 +16,6 @@ Ext.define(
 		xtype: 'form-desc-relations-subject-searchName',
 		checkChangeBuffer: 200,
 
-		/**
-		 * @private {FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainer}
-		 * Контейнер для отображения результатов поиска.
-		 */
-		resultContainer: null,
-
 		listeners: {
 			select: 'onSelect',
 			click: {
@@ -30,6 +24,17 @@ Ext.define(
 			},
 			change: 'onChange'
 		},
+
+		/**
+		 * @property {Number} Максимальное количество записей хранящихся в локальном хранилище.
+		 */
+		localStorageLimit: 10,
+
+		/**
+		 * @private {FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainer}
+		 * Контейнер для отображения результатов поиска.
+		 */
+		resultContainer: null,
 
 		initComponent: function ()
 		{
@@ -118,16 +123,30 @@ Ext.define(
 			var me = this,
 				storage = FBEditor.getLocalStorage(),
 				storageData = me.getDataStorage(),
+				saveData = [],
 				strValue;
 
 			storageData.splice(0, 0, data);
 
+			// обрезаем список, если количество превышает лимит
 			if (storageData.length > me.localStorageLimit)
 			{
-				storageData.pop();
+				storageData.splice(me.localStorageLimit, storageData.length - me.localStorageLimit);
 			}
 
-			strValue = Ext.JSON.encode(storageData);
+			// удаляем дубликаты добавляемой записи
+			Ext.Array.each(
+				storageData,
+			    function (item, index)
+			    {
+				    if (item.id !== data.id || index == 0)
+				    {
+					    saveData.push(item);
+				    }
+			    }
+			);
+
+			strValue = Ext.JSON.encode(saveData);
 			storage.setItem(me.name, strValue);
 		},
 
