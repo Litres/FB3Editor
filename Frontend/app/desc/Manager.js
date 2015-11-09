@@ -30,7 +30,7 @@ Ext.define(
 				routeManager = FBEditor.route.Manager,
 				params;
 
-			params = routeManager.params;
+			params = routeManager.getParams();
 
 			if (params.desc)
 			{
@@ -42,6 +42,8 @@ Ext.define(
 				// признак первоначальной загрузки страницы описания
 				me.loadUrl = 'undefined';
 			}
+
+			me.saveUrl = params.save_desc || null;
 		},
 
 		/**

@@ -45,6 +45,15 @@ Ext.define(
 			}
 
 			//console.log('url params', me.params);
+		},
+
+		/**
+		 * Возвращает параметры.
+		 * @return {Object}
+		 */
+		getParams: function ()
+		{
+			return this.params;
 		}
 	}
 );
