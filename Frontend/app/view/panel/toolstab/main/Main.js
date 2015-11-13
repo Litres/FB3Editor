@@ -115,6 +115,9 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-a'
 				},
 				{
+					xtype: 'panel-toolstab-main-button-note'
+				},
+				{
 					xtype: 'tbspacer',
 					width: 20
 				},

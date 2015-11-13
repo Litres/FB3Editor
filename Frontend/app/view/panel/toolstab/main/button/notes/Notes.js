@@ -14,7 +14,7 @@ Ext.define(
 		id: 'panel-toolstab-main-button-notes',
 		xtype: 'panel-toolstab-main-button-notes',
 		controller: 'panel.toolstab.main.button.notes',
-		html: '<i class="fa fa-comments-o"></i>',
+		html: '<i class="fa fa-clone"></i>',
 		tooltip: 'Сноски',
 		elementName: 'notes'
 	}

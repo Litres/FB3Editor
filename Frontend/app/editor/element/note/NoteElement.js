@@ -7,32 +7,40 @@
 Ext.define(
 	'FBEditor.editor.element.note.NoteElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
+		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
-			'FBEditor.editor.command.note.CreateCommand',
-			'FBEditor.editor.element.note.NoteElementController'
+			'FBEditor.editor.element.note.NoteElementController',
+			'FBEditor.editor.command.note.CreateRangeCommand',
+			'FBEditor.editor.command.note.DeleteWrapperCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.note.NoteElementController',
 		htmlTag: 'note',
 		xmlTag: 'note',
 		cls: 'el-note',
-		permit: {
-			splittable: true
+		showedOnTree: false,
+		defaultAttributes: {
+			href: 'undefined'
 		},
 
-		isNote: true,
-
-		createScaffold: function ()
+		getAttributesXml: function (withoutText)
 		{
 			var me = this,
-				els = {};
+				attr = '';
 
-			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Сноска');
-			els.p.add(els.t);
-			me.add(els.p);
+			Ext.Object.each(
+				me.attributes,
+				function (key, val)
+				{
+					attr += (key === 'href' && !withoutText ? 'l:' : '') + key + '="' + val + '" ';
+				}
+			);
 
-			return els;
+			return attr;
+		},
+
+		getBlock: function ()
+		{
+			return this;
 		}
 	}
 );

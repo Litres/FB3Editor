@@ -79,6 +79,15 @@ Ext.define(
 				}
 			},
 			{
+				key: 'N',
+				ctrl: true,
+				alt: true,
+				fn: 'onBtn',
+				args: {
+					name: 'note'
+				}
+			},
+			{
 				key: 'P',
 				ctrl: true,
 				fn: 'onBtn',

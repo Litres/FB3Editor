@@ -61,6 +61,13 @@
 	color: #570110;
 }
 
+.panel-editor-viewport .el-note
+{
+	vertical-align: super;
+	font-size: 0.8em;
+	color: #aaa;
+}
+
 .panel-editor-viewport .el-code
 {
 	display: inline;
@@ -70,7 +77,6 @@
 	color: #4d4d4d;
 	background: rgb(238,238,238);
 }
-
 
 .panel-editor-viewport .el-pre
 {

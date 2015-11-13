@@ -14,7 +14,7 @@ Ext.define(
 		id: 'panel-toolstab-main-button-notebody',
 		xtype: 'panel-toolstab-main-button-notebody',
 		controller: 'panel.toolstab.main.button.notebody',
-		html: '<i class="fa fa-comment"></i>',
+		html: '<i class="fa fa-sticky-note"></i>',
 		tooltip: 'Текст сноски',
 		elementName: 'notebody'
 	}

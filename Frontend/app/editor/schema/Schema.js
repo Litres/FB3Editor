@@ -138,6 +138,7 @@ Ext.define(
 			callback = me.getCallback();
 
 			!callback.scopeData.debug || console.log('xmllint', data.res, data.valid, data);
+			//console.log('xmllint', data.res, data.valid, data);
 
 			if (callback)
 			{

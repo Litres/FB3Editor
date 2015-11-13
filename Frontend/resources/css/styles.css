@@ -620,11 +620,11 @@
 }
 
 .treenavigation-children-el-notes span:before {
-	content: "\f0e6";
+	content: "\f24d";
 }
 
-.treenavigation-children-el-note span:before {
-	content: "\f075";
+.treenavigation-children-el-notebody span:before {
+	content: "\f249";
 }
 
 .treenavigation-children-el-marker span:before {
