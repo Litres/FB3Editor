@@ -12,7 +12,7 @@ Ext.define(
 		/**
 		 * @property {String} Адрес загрузки/сохранения описания.
 		 */
-		url: 'http://hub.litres.ru/pages/get_fb3_meta/',
+		url: 'https://hub.litres.ru/pages/get_fb3_meta/',
 
 		/**
 		 * @property {String} Адрес загрузки описания.
