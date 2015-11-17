@@ -15,22 +15,11 @@ Ext.define(
 		xtype: 'panel-toolstab-file-button-savedesc',
 		controller: 'panel.toolstab.file.button.savedesc',
 		text: 'Сохранить описание',
+		hidden: true,
+
 		listeners: {
-			click: 'onClick'
-		},
-
-		initComponent: function ()
-		{
-			var me = this,
-				routeManager = FBEditor.route.Manager,
-				params = routeManager.getParams();
-
-			if (!params.save_desc)
-			{
-				me.hidden = true;
-			}
-
-			me.callParent(arguments);
+			click: 'onClick',
+			accessHub: 'onAccessHub'
 		}
 	}
 );

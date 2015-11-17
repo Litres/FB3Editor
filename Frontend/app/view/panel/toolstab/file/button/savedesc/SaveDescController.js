@@ -29,6 +29,14 @@ Ext.define(
 			{
 				bridge.FBEditor.HistoryCommand.add(cmd);
 			}
+		},
+
+		onAccessHub: function ()
+		{
+			var me = this,
+				view = me.getView();
+
+			view.setHidden(false);
 		}
 	}
 );

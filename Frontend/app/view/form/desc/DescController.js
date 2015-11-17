@@ -34,18 +34,19 @@ Ext.define(
 		 */
 		onAccessHub: function ()
 		{
-			var cmpArr = [
-				'form-desc-sequence',
-				'form-desc-relations-subject',
-				'form-desc-relations-object'
+			var bridgeProps = FBEditor.getBridgeProps(),
+				cmpArr = [
+				Ext.getCmp('form-desc-sequence'),
+				Ext.getCmp('form-desc-relations-subject'),
+				Ext.getCmp('form-desc-relations-object'),
+				Ext.getCmp('panel-toolstab-file-button-savedesc'),
+				bridgeProps.Ext.getCmp('panel-props-desc')
 			];
 
 			Ext.Array.each(
 				cmpArr,
-			    function (id)
+			    function (cmp)
 			    {
-				    var cmp = Ext.getCmp(id);
-
 				    if (cmp)
 				    {
 					    cmp.fireEvent('accessHub');

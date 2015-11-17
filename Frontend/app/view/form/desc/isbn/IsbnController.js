@@ -16,26 +16,28 @@ Ext.define(
 				nextContainer = me.getView(),
 				plugin;
 
-			//console.log('isbn', data);
-
-			Ext.Object.each(
-				data,
-				function (index, obj)
-				{
-					plugin = nextContainer.getPlugin('fieldcontainerreplicator');
-					var field = nextContainer.down('textfield');
-
-					if (field)
+			if (data)
+			{
+				data = Ext.isString(data) ? {0: data} : data;
+				Ext.Object.each(
+					data,
+					function (index, obj)
 					{
-						field.setValue(obj);
+						plugin = nextContainer.getPlugin('fieldcontainerreplicator');
+						var field = nextContainer.down('textfield');
+
+						if (field)
+						{
+							field.setValue(obj);
+						}
+						if (data[parseInt(index) + 1])
+						{
+							plugin.addFields();
+							nextContainer = nextContainer.nextSibling();
+						}
 					}
-					if (data[parseInt(index) + 1])
-					{
-						plugin.addFields();
-						nextContainer = nextContainer.nextSibling();
-					}
-				}
-			);
+				);
+			}
 		}
 	}
 );

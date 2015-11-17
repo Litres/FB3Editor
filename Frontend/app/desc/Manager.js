@@ -10,6 +10,11 @@ Ext.define(
 		singleton: true,
 
 		/**
+		 * @property {String} Адрес загрузки/сохранения описания.
+		 */
+		url: 'http://hub.litres.ru/pages/get_fb3_meta/',
+
+		/**
 		 * @property {String} Адрес загрузки описания.
 		 */
 		loadUrl: null,
@@ -32,7 +37,11 @@ Ext.define(
 
 			params = routeManager.getParams();
 
-			if (params.desc)
+			if (params.art)
+			{
+				me.loadUrl = me.url + '?art=' + params.art;
+			}
+			else if (params.desc)
 			{
 				// запоминаем url загрузки описания
 				me.loadUrl = params.desc;
@@ -43,7 +52,7 @@ Ext.define(
 				me.loadUrl = 'undefined';
 			}
 
-			me.saveUrl = params.save_desc || null;
+			me.saveUrl = params.save_desc || me.url || null;
 		},
 
 		/**
@@ -168,14 +177,14 @@ Ext.define(
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeProps(),
-				btn = bridge.Ext.getCmp('button-desc-save'),
-				field = bridge.Ext.getCmp('panel-props-desc').getSaveField(),
+				btn = Ext.getCmp('panel-toolstab-file-button-savedesc'),
+				//field = bridge.Ext.getCmp('panel-props-desc').getSaveField(),
 				xml;
 
 			xml = me.getXml();
 			Ext.log({level: 'info', msg: 'Сохранение описания в ' + url});
 			btn.disable();
-			field.disable();
+			//field.disable();
 
 			try
 			{
@@ -191,7 +200,7 @@ Ext.define(
 						{
 							Ext.log({level: 'info', msg: 'Описание сохранено'});
 							btn.enable();
-							field.enable();
+							//field.enable();
 						},
 						failure: function (response)
 						{
@@ -199,7 +208,7 @@ Ext.define(
 
 							status = response.statusText ? ' (' + response.statusText + ')' : '';
 							btn.enable();
-							field.enable();
+							//field.enable();
 
 							Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: response});
 							Ext.Msg.show(

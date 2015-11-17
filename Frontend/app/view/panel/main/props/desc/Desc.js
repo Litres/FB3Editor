@@ -18,8 +18,12 @@ Ext.define(
 		id: 'panel-props-desc',
 		xtype: 'panel-props-desc',
 
+		listeners: {
+			accessHub: 'onAccessHub'
+		},
+
 		translateText: {
-			loadUrl: 'URL для загрузки описания',
+			loadUrl: 'ID произведения для загрузки описания',
 			saveUrl: 'URL для сохранения описания'
 		},
 
@@ -28,28 +32,34 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
 				manager = bridge.FBEditor.desc.Manager,
+				routeManager = bridge.FBEditor.route.Manager,
+				params = routeManager.getParams(),
+				hiddenLoadUrl,
 				loadUrl,
 				saveUrl;
 
-			loadUrl = manager.isLoadUrl() ? manager.loadUrl : '';
+			hiddenLoadUrl = bridge.Ext.getCmp('main') && bridge.FBEditor.accessHub ? false : true;
+			loadUrl = params.art ? params.art : '';
 			saveUrl = manager.saveUrl ? manager.saveUrl : '';
 
 			me.items = [
 				{
-					xtype: 'textfield',
+					xtype: 'numberfield',
 					labelAlign: 'top',
 					name: 'desc-load-url',
 					fieldLabel: me.translateText.loadUrl,
 					value: loadUrl,
 					width: '100%',
+					hideTrigger: true,
 					allowBlank: false,
 					checkChangeBuffer: 200,
+					hidden: hiddenLoadUrl,
 					listeners: {
 						change: function (self, newVal)
 						{
 							var btn = Ext.getCmp('button-desc-load');
 
-							manager.loadUrl = newVal;
+							manager.loadUrl = manager.url + '?art=' + newVal;
 
 							if (newVal && self.isValid())
 							{
@@ -64,8 +74,10 @@ Ext.define(
 				},
 				{
 					xtype: 'button-desc-load',
-					disabled: loadUrl ? false : true
+					disabled: loadUrl ? false : true,
+					hidden: hiddenLoadUrl
 				},
+				/*,
 				{
 					xtype: 'textfield',
 					vtype: 'url',
@@ -98,7 +110,7 @@ Ext.define(
 				{
 					xtype: 'button-desc-save',
 					disabled: saveUrl ? false : true
-				},
+				}*/
 				{
 					xtype: 'props-desc-persons'
 				}
