@@ -15,9 +15,23 @@ Ext.define(
 			'FBEditor.editor.command.li.JoinNextNodeCommand',
 			'FBEditor.editor.command.li.JoinPrevNodeCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.li.LiElementController',
 		htmlTag: 'li',
 		xmlTag: 'li',
-		isLi: true
+		isLi: true,
+
+		getXml: function ()
+		{
+			var me = this,
+				xml;
+
+			xml = me.callParent(arguments);
+
+			// удаляем все одиночные br
+			xml = xml.replace(/<li><br\/><\/li>/gi, '<li><\/li>');
+
+			return xml;
+		}
 	}
 );

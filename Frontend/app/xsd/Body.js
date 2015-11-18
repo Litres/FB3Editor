@@ -338,7 +338,7 @@ Ext.define(
 			<extension base="fb3b:TitledType">\
 				<sequence>\
 					<element name="li" type="fb3b:StyleType"/>\
-					<choice maxOccurs="unbounded">\
+					<choice minOccurs="0" maxOccurs="unbounded">\
 						<element name="li" type="fb3b:StyleType"/>\
 						<element name="ol" type="fb3b:LiHolderType"/>\
 						<element name="ul" type="fb3b:LiHolderType"/>\

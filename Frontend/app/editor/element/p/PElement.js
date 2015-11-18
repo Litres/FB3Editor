@@ -15,6 +15,7 @@ Ext.define(
 			'FBEditor.editor.command.p.JoinNextNodeCommand',
 			'FBEditor.editor.command.p.JoinPrevNodeCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.p.PElementController',
 		htmlTag: 'p',
 		xmlTag: 'p',
