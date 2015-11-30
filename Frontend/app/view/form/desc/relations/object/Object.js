@@ -68,9 +68,38 @@ Ext.define(
 
 		isValid: function ()
 		{
-			var me = this;
+			var me = this,
+				hiddenCount = 0,
+				items = me.query('form-desc-relations-object-container-custom'),
+				combo = me.down('combosearch'),
+				isValid = true;
 
-			return me.getValid('fb3-relations');
+			Ext.Array.each(
+				items,
+				function (item)
+				{
+					if (item.isHidden())
+					{
+						hiddenCount++;
+						isValid = true;
+					}
+					else if (!item.isValid())
+					{
+						isValid = false;
+
+						return false;
+					}
+				}
+			);
+
+			if (isValid && hiddenCount === items.length)
+			{
+				// если все поля скрыты
+				isValid = false;
+				combo.markInvalid(me.translateText.error);
+			}
+
+			return isValid;
 		},
 
 		getValues: function (d)
@@ -90,16 +119,18 @@ Ext.define(
 						_link: item.down('form-desc-relations-object-link').getValue()
 					};
 					val = me.removeEmptyValues(val);
-					if (val)
+
+					if (val && val._id)
 					{
-						val.description = item.down('[name=relations-object-description]').getValue();
 						val.title = item.down('[name=relations-object-title]').getValues();
+						val.description = item.down('[name=relations-object-description]').getValue();
 						val = me.removeEmptyValues(val);
 						values = values || [];
 						values.push(val);
 					}
 				}
 			);
+
 			if (values)
 			{
 				data['fb3-relations'] = data['fb3-relations'] || {};

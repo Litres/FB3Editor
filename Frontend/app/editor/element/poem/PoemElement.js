@@ -9,8 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			/*'FBEditor.editor.command.poem.CreateCommand',
-			'FBEditor.editor.command.poem.DeleteWrapperCommand',*/
+			'FBEditor.editor.command.poem.CreateCommand',
+			//'FBEditor.editor.command.poem.DeleteWrapperCommand',
 			'FBEditor.editor.element.poem.PoemElementController'
 		],
 
@@ -21,7 +21,7 @@ Ext.define(
 
 		isPoem: true,
 
-		getOnlyStylesChildren: function (fragment)
+		/*getOnlyStylesChildren: function (fragment)
 		{
 			var me = this;
 
@@ -44,7 +44,7 @@ Ext.define(
 			);
 
 			fragment.add(me);
-		},
+		},*/
 
 		convertToText: function (fragment)
 		{

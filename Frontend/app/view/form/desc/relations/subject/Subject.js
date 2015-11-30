@@ -121,16 +121,15 @@ Ext.define(
 					val = {
 						_id: item.down('[name=relations-subject-id]').getValue(),
 						_link: item.down('form-desc-relations-subject-link').getValue(),
-						'last-name': item.down('[name=relations-subject-last-name]').getValue(),
+						_percent: item.down('[name=relations-subject-percent]').getValue(),
+						title: item.down('[name=relations-subject-title]').getValues(),
 						'first-name': item.down('[name=relations-subject-first-name]').getValue(),
 						'middle-name': item.down('[name=relations-subject-middle-name]').getValue(),
-						percent: item.down('[name=relations-subject-percent]').getValue(),
-						title: item.down('[name=relations-subject-title]').getValues()
+						'last-name': item.down('[name=relations-subject-last-name]').getValue()
 					};
 					val = me.removeEmptyValues(val);
-					if (val)
+					if (val && val._id)
 					{
-						val._id = val._id ? val._id : '';
 						values = values || [];
 						values.push(val);
 					}

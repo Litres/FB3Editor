@@ -29,6 +29,11 @@ Ext.define(
 		 */
 		loadingProcess: false,
 
+		/**
+		 * @property {String} Id корневого элемента fb3-description.
+		 */
+		fb3DescId: '',
+
 		init: function ()
 		{
 			var me = this,
@@ -179,61 +184,69 @@ Ext.define(
 				bridge = FBEditor.getBridgeProps(),
 				btn = Ext.getCmp('panel-toolstab-file-button-savedesc'),
 				//field = bridge.Ext.getCmp('panel-props-desc').getSaveField(),
-				xml;
+				routeManager = FBEditor.route.Manager,
+				xml,
+				art;
 
-			xml = me.getXml();
-			Ext.log({level: 'info', msg: 'Сохранение описания в ' + url});
-			btn.disable();
-			//field.disable();
+			art = routeManager.getParams().art;
 
-			try
+			if (art)
 			{
-				Ext.Ajax.request(
-					{
-						url: url,
-						params: {
-							action: 'update_hub_on_fb3_meta',
-							fb3_meta: xml
-						},
-						disableCaching: true,
-						success: function (response)
-						{
-							Ext.log({level: 'info', msg: 'Описание сохранено'});
-							btn.enable();
-							//field.enable();
-						},
-						failure: function (response)
-						{
-							var status;
+				xml = me.getXml();
+				Ext.log({level: 'info', msg: 'Сохранение описания в ' + url});
+				btn.disable();
+				//field.disable();
 
-							status = response.statusText ? ' (' + response.statusText + ')' : '';
-							btn.enable();
-							//field.enable();
+				try
+				{
+					Ext.Ajax.request(
+						{
+							url: url,
+							params: {
+								action: 'update_hub_on_fb3_meta',
+								fb3_meta: xml,
+								art: art
+							},
+							disableCaching: true,
+							success: function (response)
+							{
+								Ext.log({level: 'info', msg: 'Описание сохранено'});
+								btn.enable();
+								//field.enable();
+							},
+							failure: function (response)
+							{
+								var status;
 
-							Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: response});
-							Ext.Msg.show(
-								{
-									title: 'Ошибка',
-									message: 'Невозможно сохранить описание книги по адресу ' + url + status,
-									buttons: Ext.MessageBox.OK,
-									icon: Ext.MessageBox.ERROR
-								}
-							);
+								status = response.statusText ? ' (' + response.statusText + ')' : '';
+								btn.enable();
+								//field.enable();
+
+								Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: response});
+								Ext.Msg.show(
+									{
+										title: 'Ошибка',
+										message: 'Невозможно сохранить описание книги по адресу ' + url + status,
+										buttons: Ext.MessageBox.OK,
+										icon: Ext.MessageBox.ERROR
+									}
+								);
+							}
 						}
-					}
-				);
-			}
-			catch (e)
-			{
-				Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: e});
-				Ext.Msg.show(
-					{
-						title: 'Ошибка',
-						message: 'Невозможно сохранить описание книги по адресу ' + url + status,
-						buttons: Ext.MessageBox.OK,
-						icon: Ext.MessageBox.ERROR
-					}
-				);
+					);
+				}
+				catch (e)
+				{
+					Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: e});
+					Ext.Msg.show(
+						{
+							title: 'Ошибка',
+							message: 'Невозможно сохранить описание книги по адресу ' + url + status,
+							buttons: Ext.MessageBox.OK,
+							icon: Ext.MessageBox.ERROR
+						}
+					);
+				}
 			}
 		},
 
@@ -349,6 +362,7 @@ Ext.define(
 
 				desc = FBEditor.util.xml.Json.xmlToJson(xml);
 				desc = desc['fb3-description'];
+				me.fb3DescId = desc._id;
 
 				// получаем данные для полей на основе htmleditor
 				xml = xml.replace(/[\n\r\t]/g, '');
@@ -438,7 +452,7 @@ Ext.define(
 				'fb3-description': data
 			};
 			data['fb3-description']._xmlns = 'http://www.fictionbook.org/FictionBook3/description';
-			data['fb3-description']._id = '';
+			data['fb3-description']._id = me.fb3DescId;
 			data['fb3-description']._version = '1.0';
 			xml = FBEditor.util.xml.Json.jsonToXml(data);
 
@@ -446,7 +460,7 @@ Ext.define(
 			xml = xml.replace(me.getRegexpUtf(), '');
 
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
-			//console.log(xml);
+			console.log('xml desc', xml);
 
 			// проверка xml по схеме отложена на будущее
 			/*xsd = FBEditor.xsd.Desc.getXsd();

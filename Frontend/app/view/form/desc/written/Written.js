@@ -153,6 +153,8 @@ Ext.define(
 				values,
 				datePublic;
 
+			data.lang = me.down(me.down('[name=lang]')).getValue();
+
 			values = {
 				_value: Ext.Date.format(me.down(me.down('[name=' + prefixName + '-date-value]')).getValue(), 'Y-m-d'),
 				__text: me.down(me.down('[name=' + prefixName + '-date-text]')).getValue()
@@ -188,8 +190,6 @@ Ext.define(
 			{
 				data.translated = values;
 			}
-
-			data.lang = me.down(me.down('[name=lang]')).getValue();
 
 			return data;
 		}

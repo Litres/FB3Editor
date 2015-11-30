@@ -237,6 +237,7 @@ Ext.define(
 					height: '100%',
 					defaults: {
 						xtype: 'button',
+						tabIndex: -1,
 						style: btnStyle
 					},
 					items: items

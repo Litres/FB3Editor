@@ -34,9 +34,13 @@ Ext.define(
 		onAccessHub: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				descManager = FBEditor.desc.Manager;
 
-			view.setHidden(false);
+			if (descManager.isLoadUrl())
+			{
+				view.setHidden(false);
+			}
 		}
 	}
 );

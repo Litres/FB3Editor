@@ -240,22 +240,29 @@ Ext.define(
 		{
 			var me = this,
 				data = d,
-				keywords,
-				values;
+				values = {},
+				//keywords,
+				classText;
 
-			values = {
-				subject: me.getDataFields(me.query('[name=classification-subject]')),
-				'class': {
+			classText = me.down('form-desc-bookClass').getValue();
+
+			if (classText)
+			{
+				values['class'] = {
 					_contents: me.down('[name=classification-class-contents]').getValue(),
-					__text: me.down('form-desc-bookClass').getValue()
-				},
-				'target-audience': me.down('form-desc-classification-target').getValues(),
-				setting: me.down('form-desc-classification-setting').getValues(),
-				udc: me.getDataFields(me.query('[name=classification-udc]')),
-				bbk: me.getDataFields(me.query('[name=classification-bbk]'))
-			};
+					__text: classText
+				}
+			}
+
+			values.subject = me.getDataFields(me.query('[name=classification-subject]'));
+			values['target-audience'] = me.down('form-desc-classification-target').getValues();
+			values.setting = me.down('form-desc-classification-setting').getValues();
+			values.udc = me.getDataFields(me.query('[name=classification-udc]'));
+			values.bbk = me.getDataFields(me.query('[name=classification-bbk]'));
+
 			data['fb3-classification'] = me.removeEmptyValues(values);
 			data = me.down('form-desc-written').getValues(data);
+
 			/*keywords = me.down('[name=keywords]').getValue();
 			if (keywords)
 			{

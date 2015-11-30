@@ -14,13 +14,18 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				bridge = FBEditor.getBridgeWindow(),
+				descManager = bridge.FBEditor.desc.Manager,
 				cmpLoadUrl,
 				btnLoadUrl;
 
-			cmpLoadUrl = view.down('[name=desc-load-url]');
-			cmpLoadUrl.setHidden(false);
-			btnLoadUrl = view.down('button-desc-load');
-			btnLoadUrl.setHidden(false);
+			if (descManager.isLoadUrl())
+			{
+				cmpLoadUrl = view.down('[name=desc-load-url]');
+				cmpLoadUrl.setHidden(false);
+				btnLoadUrl = view.down('button-desc-load');
+				btnLoadUrl.setHidden(false);
+			}
 		}
 	}
 );

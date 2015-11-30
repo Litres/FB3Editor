@@ -25,6 +25,8 @@ Ext.define(
 			d = me.convertPublishInfo(d);
 			d = me.convertCustomInfo(d);
 
+			d.lang = d.lang ? d.lang : 'ru';
+
 			//console.log('open desc', d);
 
 			return d;
@@ -240,7 +242,8 @@ Ext.define(
 		convertDocumentInfo: function (data)
 		{
 			var me = this,
-				d = data;
+				d = data,
+				dateTime;
 
 			if (d['document-info'])
 			{
@@ -249,6 +252,11 @@ Ext.define(
 					d['document-info-isbn'] = d['document-info'].isbn[0] ?
 					                          d['document-info'].isbn : {0: d['document-info'].isbn};
 				}
+
+				dateTime = Ext.Date.format(new Date(), 'Y-m-d') + 'T' + Ext.Date.format(new Date(), 'H:i:s');
+				d['document-info'].created = d['document-info'].created ? d['document-info'].created : dateTime;
+				d['document-info'].updated = d['document-info'].updated ? d['document-info'].updated : dateTime;
+
 				d['document-info-created-date'] = d['document-info'].created.split('T')[0];
 				d['document-info-created-time'] = d['document-info'].created.split('T')[1];
 				d['document-info-updated-date'] = d['document-info'].updated.split('T')[0];

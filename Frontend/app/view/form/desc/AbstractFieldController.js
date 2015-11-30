@@ -66,12 +66,17 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				btn;
+				btn,
+				nextContainer,
+				plugin;
 
 			btn = view.down('[cls=form-desc-customBtn]');
+			plugin = me.getPluginContainerReplicator(view);
+			nextContainer = plugin.getCmp();
 
-			if (btn)
+			if (!nextContainer.getValues() && btn)
 			{
+				// переключаем ручной ввод на блок поиска, если в нем нет данных
 				btn.switchContainers(true);
 			}
 		},

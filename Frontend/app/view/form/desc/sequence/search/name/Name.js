@@ -26,7 +26,7 @@ Ext.define(
 			'<tpl for=".">',
 			'<div class="x-boundlist-item boundlist-search-item">',
 			'<div class="boundlist-search-item-name">{name}</div>',
-			'<div class="boundlist-search-item-sub">{uuid}</div>',
+			'<div class="boundlist-search-item-sub">{id}</div>',
 			'</div>',
 			'</tpl>'
 		),
