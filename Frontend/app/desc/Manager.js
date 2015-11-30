@@ -181,7 +181,7 @@ Ext.define(
 		saveToUrl: function (url)
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeProps(),
+				//bridge = FBEditor.getBridgeProps(),
 				btn = Ext.getCmp('panel-toolstab-file-button-savedesc'),
 				//field = bridge.Ext.getCmp('panel-props-desc').getSaveField(),
 				routeManager = FBEditor.route.Manager,
@@ -210,9 +210,36 @@ Ext.define(
 							disableCaching: true,
 							success: function (response)
 							{
-								Ext.log({level: 'info', msg: 'Описание сохранено'});
+								var errMsg,
+									xmlResponse;
+
 								btn.enable();
 								//field.enable();
+
+								if (response.responseXML)
+								{
+									Ext.log({level: 'info', msg: 'Описание сохранено'});
+									xmlResponse = response.responseText;
+									me.loadDataToForm(xmlResponse);
+								}
+								else
+								{
+									errMsg = response.responseText.match(/(unknown.*?)\n/ig);
+									//console.log(errMsg);
+
+									Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги ' + art, dump: errMsg});
+									errMsg = errMsg.length ? '<p>Ошибки:</p>' + errMsg.join('</br></br>') : '';
+
+									Ext.Msg.show(
+										{
+											title: 'Ошибка',
+											message: 'Невозможно сохранить описание книги по адресу ' +
+											         url + errMsg,
+											buttons: Ext.MessageBox.OK,
+											icon: Ext.MessageBox.ERROR
+										}
+									);
+								}
 							},
 							failure: function (response)
 							{
@@ -222,7 +249,7 @@ Ext.define(
 								btn.enable();
 								//field.enable();
 
-								Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: response});
+								Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги ' + art, dump: response});
 								Ext.Msg.show(
 									{
 										title: 'Ошибка',
@@ -444,7 +471,7 @@ Ext.define(
 			var me = this,
 				form = Ext.getCmp('form-desc'),
 				xml,
-				xsd,
+				//xsd,
 				data;
 
 			data = values || form.getValues();
