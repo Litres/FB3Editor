@@ -68,6 +68,12 @@ Ext.define(
 		 */
 		btnPutCfg: null,
 
+		/**
+		 * @private
+		 * @property {Boolean} Всегда ли добавлять новые поля в начало контейнера.
+		 */
+		alwaysInsertFirst: false,
+
 		translateText: {
 			add: 'Добавить',
 			remove: 'Удалить',
@@ -110,6 +116,8 @@ Ext.define(
 			me.enableBtnPut = config.enableBtnPut || me.enableBtnPut;
 			me.btnPutCfg = config.btnPutCfg ? Ext.apply(me.btnPutCfg, config.btnPutCfg) : me.btnPutCfg;
 			me.btnCls = config.btnCls || me.btnCls;
+			me.alwaysInsertFirst = config.alwaysInsertFirst || me.alwaysInsertFirst;
+
 			me.callParent(arguments);
 		},
 
@@ -249,7 +257,7 @@ Ext.define(
 
 		/**
 		 * Добавляет поля.
-		 * @param {[Ext.button.Button]} Кнопка добавления.
+		 * @param {[Ext.button.Button]} btn Кнопка добавления.
 		 */
 		addFields: function (btn)
 		{
@@ -270,7 +278,18 @@ Ext.define(
 			ownerCt = container.ownerCt;
 			clone = container.cloneConfig({replicatorId: replicatorId});
 			idx = ownerCt.items.indexOf(container);
-			ownerCt.add(idx + 1, clone);
+
+			if (me.alwaysInsertFirst)
+			{
+				// добавляем в начало контейнера
+				ownerCt.insert(0, clone);
+			}
+			else
+			{
+				// добавляем после текущего поля
+				ownerCt.add(idx + 1, clone);
+			}
+
 			me.checkLastInGroup(ownerCt, replicatorId);
 		},
 

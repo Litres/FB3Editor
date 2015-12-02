@@ -38,7 +38,8 @@ Ext.define(
 							margin: '0 0 0 5px',
 							width: '40px',
 							height: '65px'
-						}
+						},
+						alwaysInsertFirst: true
 					},
 					listeners: {
 						resetContainer: function ()

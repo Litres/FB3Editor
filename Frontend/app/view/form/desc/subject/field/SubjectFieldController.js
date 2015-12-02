@@ -62,13 +62,17 @@ Ext.define(
 		 */
 		splitField: function (field)
 		{
-			var val = field.getValue(),
+			var me = this,
+				view = me.getView(),
+				val = field.getValue(),
 				container,
 				plugin,
-				values;
+				values,
+				reg;
 
 			// разбиваем строку на массив значений
-			values = val.split(/,[ ]*/);
+			reg = new RegExp(view.separator + '[ ]*')
+			values = val.split(reg);
 
 			if (values.length > 1)
 			{

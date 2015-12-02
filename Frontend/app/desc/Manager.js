@@ -442,7 +442,6 @@ Ext.define(
 				},
 			    delay
 			);
-
 		},
 
 		/**

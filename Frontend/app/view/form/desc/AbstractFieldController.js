@@ -49,10 +49,12 @@ Ext.define(
 					        }
 				        }
 				    );
+
 				    if (data[parseInt(index) + 1])
 				    {
 					    plugin.addFields();
-					    nextContainer = nextContainer.nextSibling();
+					    nextContainer = plugin.alwaysInsertFirst ? nextContainer.previousSibling() :
+					                    nextContainer.nextSibling();
 					    plugin = nextContainer.getPlugin('fieldcontainerreplicator');
 				    }
 			    }
@@ -218,7 +220,7 @@ Ext.define(
 		/**
 		 * @private
 		 * Возвращает плагин контейнера fieldcontainerreplicator.
-		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} Контейнер.
+		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} container Контейнер.
 		 * @return {FBEditor.ux.FieldContainerReplicator} Плагин fieldcontainerreplicator.
 		 */
 		getPluginContainerReplicator: function (container)

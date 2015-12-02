@@ -27,6 +27,11 @@ Ext.define(
 			blur: 'onBlur'
 		},
 
+		/**
+		 * @property {String} Сепаратор, который разделяет содержимое поля на несколько полей.
+		 */
+		separator: ';',
+
 		afterRender: function ()
 		{
 			var me = this,
