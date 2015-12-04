@@ -21,6 +21,9 @@ Ext.define(
 		listConfig: {
 			maxHeight: 'auto'
 		},
+
+		keyEnterAsTab: true,
+
 		listeners: {
 			change: function ()
 			{

@@ -42,6 +42,7 @@ Ext.define(
 					name: name + '-main',
 					fieldLabel: me.translateText.main,
 					cls: 'field-required',
+					keyEnterAsTab: true,
 					listeners: {
 						change: function (field, newVal, oldVal)
 						{
@@ -58,6 +59,7 @@ Ext.define(
 						xtype: 'textfield',
 						name: name + '-sub',
 						cls: 'field-optional',
+						keyEnterAsTab: true,
 						fieldLabel: me.translateText.sub
 					}
 				);

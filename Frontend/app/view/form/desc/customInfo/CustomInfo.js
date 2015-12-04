@@ -30,7 +30,8 @@ Ext.define(
 					defaults: {
 						anchor: '100%',
 						labelAlign: 'right',
-						cls: 'field-required'
+						cls: 'field-required',
+						keyEnterAsTab: true
 					},
 					plugins: {
 						ptype: 'fieldcontainerreplicator',

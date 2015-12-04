@@ -51,6 +51,7 @@ Ext.define(
 					regexText: me.translateText.isbnError,
 					fieldLabel: me.translateText.isbn,
 					cls: 'field-optional',
+					keyEnterAsTab: true,
 					afterBodyEl:  '<span class="after-body">' + me.translateText.isbnError + '</span>',
 					listeners: {
 						loadData: function (data)

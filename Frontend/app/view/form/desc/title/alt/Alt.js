@@ -50,6 +50,7 @@ Ext.define(
 					name: name,
 					fieldLabel: me.fieldLabelAlt,
 					cls: 'field-optional',
+					keyEnterAsTab: true,
 					listeners: {
 						loadData: function (data)
 						{

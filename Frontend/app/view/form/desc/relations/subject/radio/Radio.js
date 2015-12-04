@@ -14,6 +14,12 @@ Ext.define(
 		xtype: 'relations-subject-link-radio',
 		controller: 'form.desc.relations.subject.link.radio',
 		allowBlank: false,
+
+		defaults:
+		{
+			keyEnterAsTab: true
+		},
+
 		listeners: {
 			change: 'onChange',
 			loadData: 'onLoadData'

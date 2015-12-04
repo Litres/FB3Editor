@@ -56,7 +56,8 @@ Ext.define(
 							defaults: {
 								anchor: '100%',
 								labelWidth: 100,
-								labelAlign: 'right'
+								labelAlign: 'right',
+								keyEnterAsTab: true
 							},
 							items: [
 								{

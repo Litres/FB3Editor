@@ -24,6 +24,9 @@ Ext.define(
 			shadow: false,
 			maxHeight: 200
 		},
+
+		keyEnterAsTab: true,
+
 		listeners: {
 			select: 'onSelect',
 			click: 'onClick'

@@ -49,7 +49,8 @@ Ext.define(
 									defaults: {
 										anchor: '100%',
 										labelAlign: 'right',
-										labelWidth: 160
+										labelWidth: 160,
+										keyEnterAsTab: true
 									},
 									items: [
 										{
@@ -73,7 +74,8 @@ Ext.define(
 									defaults: {
 										anchor: '100%',
 										labelAlign: 'right',
-										labelWidth: 110
+										labelWidth: 110,
+										keyEnterAsTab: true
 									},
 									items: [
 										{
@@ -107,7 +109,8 @@ Ext.define(
 									defaults: {
 										anchor: '100%',
 										labelAlign: 'right',
-										labelWidth: 160
+										labelWidth: 160,
+										keyEnterAsTab: true
 									},
 									items: [
 										{
@@ -131,7 +134,8 @@ Ext.define(
 									defaults: {
 										anchor: '100%',
 										labelAlign: 'right',
-										labelWidth: 110
+										labelWidth: 110,
+										keyEnterAsTab: true
 									},
 									items: [
 										{
@@ -166,7 +170,8 @@ Ext.define(
 										anchor: '100%',
 										labelAlign: 'right',
 										labelWidth: 160,
-										cls: 'field-optional'
+										cls: 'field-optional',
+										keyEnterAsTab: true
 									},
 									items: [
 										{
@@ -195,7 +200,8 @@ Ext.define(
 										anchor: '100%',
 										labelAlign: 'right',
 										labelWidth: 110,
-										cls: 'field-optional'
+										cls: 'field-optional',
+										keyEnterAsTab: true
 									},
 									items: [
 										{

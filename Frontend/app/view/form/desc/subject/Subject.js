@@ -23,6 +23,7 @@ Ext.define(
 				margin: '0 0 0 5px'
 			}
 		},
+
 		listeners: {
 			selectSubject: 'onSelectSubject',
 			showSubjectTree: 'onShowSubjectTree'
@@ -49,7 +50,8 @@ Ext.define(
 					flex: 1,
 					fieldLabel: me.translateText.subject,
 					labelAlign: 'right',
-					labelWidth: 110
+					labelWidth: 110,
+					keyEnterAsTab: true
 				}/*,
 				{
 					xtype: 'button',

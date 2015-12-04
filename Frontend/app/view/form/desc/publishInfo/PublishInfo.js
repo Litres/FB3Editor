@@ -55,7 +55,8 @@ Ext.define(
 							defaults: {
 								anchor: '100%',
 								labelWidth: 130,
-								labelAlign: 'right'
+								labelAlign: 'right',
+								keyEnterAsTab: true
 							},
 							items: [
 								{
@@ -102,7 +103,8 @@ Ext.define(
 							defaults: {
 								anchor: '100%',
 								labelWidth: 60,
-								labelAlign: 'right'
+								labelAlign: 'right',
+								keyEnterAsTab: true
 							},
 							items: [
 								{

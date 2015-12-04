@@ -49,7 +49,8 @@ Ext.define(
 								anchor: '100%',
 								labelWidth: 160,
 								labelAlign: 'right',
-								xtype: 'textfield'
+								xtype: 'textfield',
+								keyEnterAsTab: true
 							},
 							items: [
 								{

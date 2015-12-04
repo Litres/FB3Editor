@@ -16,6 +16,8 @@ Ext.define(
 		xtype: 'form-desc-relations-subject-searchName',
 		checkChangeBuffer: 200,
 
+		keyEnterAsTab: true,
+
 		listeners: {
 			select: 'onSelect',
 			click: {
@@ -73,6 +75,14 @@ Ext.define(
 				}
 			);
 
+			me.callParent(arguments);
+		},
+
+		checkEnterKey: function ()
+		{
+			var me = this;
+
+			me.getResultContainer().close();
 			me.callParent(arguments);
 		},
 
