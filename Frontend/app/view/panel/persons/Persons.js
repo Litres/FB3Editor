@@ -22,10 +22,17 @@ Ext.define(
 		},
 
 		/**
-		 * Вызывается при выборе персоны из списка.
+		 * @property {Function} Вызывается при выборе персоны из списка.
 		 * @param {Object} Данные персоны.
 		 */
 		selectFn: Ext.emptyFn,
+
+		/**
+		 * @private
+		 * @property {Number} Счетчик потворных запрос поиска в случае нулевого результата, поменяв местами фамилию и
+		 * имя.
+		 */
+		countRepeatRequest: 0,
 
 		translateText: {
 			creator: 'Создатель',
@@ -57,64 +64,95 @@ Ext.define(
 		 */
 		load: function (data)
 		{
-			var me = this;
+			var me = this,
+				store = me.store,
+				params;
 
-			//console.log('load', data);
-
-			Ext.suspendLayouts();
-			me.removeAll();
-
-			if (data && data.length)
+			if (me.countRepeatRequest < 2)
 			{
-				Ext.Array.each(
-					data,
-					function (item)
-					{
-						var person,
-							personItems,
-							booksTotal;
+				// увеличиваем счетчик запросов
+				me.countRepeatRequest++;
 
-						if (item)
+				if (data && data.length)
+				{
+					Ext.suspendLayouts();
+					me.removeAll();
+
+					// обнуляем счетчик запросов
+					me.countRepeatRequest = 0;
+
+
+					Ext.Array.each(
+						data,
+						function (item)
 						{
-							personItems = [
-								{
-									xtype: 'component',
-									html: me.getHtmlPerson(item),
-									afterRender: function ()
-									{
-										me.afterRenderPerson(this);
-									}
-								}
-							];
+							var person,
+								personItems,
+								booksTotal;
 
-							if (item.arts && item.arts.length)
+							if (item)
 							{
-								// книги
-
-								booksTotal = item.arts.length >= 30 ? '29+' : item.arts.length;
-
-								personItems.push(
+								personItems = [
 									{
-										xtype: 'fieldset',
-										title: 'Книги (' + booksTotal + ')',
-										collapsible: true,
-										collapsed: true,
-										html: me.getHtmlBooks(item)
+										xtype: 'component',
+										html: me.getHtmlPerson(item),
+										afterRender: function ()
+										{
+											me.afterRenderPerson(this);
+										}
 									}
-								);
+								];
+
+								if (item.arts && item.arts.length)
+								{
+									// книги
+
+									booksTotal = item.arts.length >= 30 ? '29+' : item.arts.length;
+
+									personItems.push(
+										{
+											xtype: 'fieldset',
+											title: 'Книги (' + booksTotal + ')',
+											collapsible: true,
+											collapsed: true,
+											html: me.getHtmlBooks(item)
+										}
+									);
+								}
+
+								person = {
+									xtype: 'container',
+									width: '100%',
+									cls: 'panel-persons-item',
+									items: personItems
+								};
+
+								me.add(person);
 							}
-
-							person = {
-								xtype: 'container',
-								width: '100%',
-								cls: 'panel-persons-item',
-								items: personItems
-							};
-
-							me.add(person);
 						}
+					);
+				}
+				else
+				{
+					params = store.getParams();
+
+					if (params.first)
+					{
+						// меняем местами фамилию и имя и делаем повторный запрос
+						params.tmp = params.first;
+						params.first = params.last;
+						params.last = params.tmp;
+						delete params.tmp;
+						me.fireEvent('loadData', params);
 					}
-				);
+				}
+			}
+			else
+			{
+				Ext.suspendLayouts();
+				me.removeAll();
+
+				me.countRepeatRequest = 0;
 			}
 
 			Ext.resumeLayouts();

@@ -50,6 +50,11 @@ Ext.define(
 			this.params = data;
 		},
 
+		getParams: function ()
+		{
+			return this.params;
+		},
+
 		setCallback: function (data)
 		{
 			this.callback = data;
