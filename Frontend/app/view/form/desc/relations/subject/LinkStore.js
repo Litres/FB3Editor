@@ -31,10 +31,6 @@ Ext.define(
 				name: 'Составитель'
 			},
 			{
-				value: 'publisher',
-				name: 'Публикатор'
-			},
-			{
 				value: 'maker-up',
 				name: 'Верстальщик'
 			},

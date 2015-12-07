@@ -46,9 +46,13 @@ Ext.define(
 						{
 							var btn;
 
-							// скрываем поля поиска, показываем поля данных
 							btn = this.down('form-desc-relations-subject-customBtn');
-							btn.switchContainers();
+
+							if (btn)
+							{
+								// скрываем поля поиска, показываем поля данных
+								btn.switchContainers();
+							}
 						}
 					},
 					items: [

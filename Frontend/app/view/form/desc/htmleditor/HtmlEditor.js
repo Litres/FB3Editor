@@ -17,6 +17,35 @@ Ext.define(
 		enableLists: false,
 		height: 150,
 
+		getValues: function (d)
+		{
+			var me = this,
+				val = me.getValue(),
+				data = d;
+
+			if (val)
+			{
+				val = val.replace(/<b>/gi, '<strong>');
+				val = val.replace(/<\/b>/gi, '</strong>');
+				val = val.replace(/<i>/gi, '<em>');
+				val = val.replace(/<\/i>/gi, '</em>');
+				val = val.replace(/<div>/gi, '<p>');
+				val = val.replace(/<\/div>/gi, '</p>');
+				//console.log('val1', val);
+				val = val.split('<p>');
+				//console.log('val2', val);
+				val[0] = '<p>' + val[0] + '</p>';
+				val = val.join('<p>');
+				val = val.replace(/<p><\/p>/gi, '');
+				//console.log('val3', val);
+				val = val.replace(/<p><br><\/p>/gi, '<br/>');
+				val = val.replace(/^<br\/>/gi, '<p></p>');
+				data[me.name] = val;
+			}
+
+			return data;
+		},
+
 		/**
 		 * Перезаписан стандартный метод.
 		 */

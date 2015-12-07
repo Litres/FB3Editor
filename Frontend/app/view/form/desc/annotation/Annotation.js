@@ -15,20 +15,6 @@ Ext.define(
 			handles: 's',
 			minHeight: 100,
 			pinned: true
-		},
-
-		getValues: function (d)
-		{
-			var me = this,
-				val = me.getValue(),
-				data = d;
-
-			if (val)
-			{
-				data.annotation = val;
-			}
-
-			return data;
 		}
 	}
 );

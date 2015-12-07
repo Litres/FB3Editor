@@ -36,16 +36,20 @@ Ext.define(
 				view = me.getView(),
 				subject = view.up('form-desc-subject'),
 				subjectTree = subject.subjectTree,
-				value = view.getValue();
+				value = view.getValue(),
+				managerDesc = FBEditor.desc.Manager;
 
-			if (!subjectTree.isShow)
+			if (!managerDesc.loadingProcess)
 			{
-				// открываем окно
-				subjectTree.show();
-			}
+				if (!subjectTree.isShow)
+				{
+					// открываем окно
+					subjectTree.show();
+				}
 
-			// Фильтруем дерево жанров
-			subjectTree.fireEvent('filter', value.trim());
+				// Фильтруем дерево жанров
+				subjectTree.fireEvent('filter', value.trim());
+			}
 		},
 
 		onBlur: function (field)

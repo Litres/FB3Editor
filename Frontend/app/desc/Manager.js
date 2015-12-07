@@ -228,7 +228,7 @@ Ext.define(
 									//console.log(errMsg);
 
 									Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги ' + art, dump: errMsg});
-									errMsg = errMsg.length ? '<p>Ошибки:</p>' + errMsg.join('</br></br>') : '';
+									errMsg = errMsg && errMsg.length ? '<p>Ошибки:</p>' + errMsg.join('</br></br>') : response.responseText;
 
 									Ext.Msg.show(
 										{

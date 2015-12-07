@@ -47,7 +47,7 @@ Ext.define(
 					radio.setValue(oldVal);
 				}
 			}
-			else if (val === 'agent')
+			else if (val === 'publisher')
 			{
 				// проценты владения персон
 				percents = Ext.getCmp('form-desc-relations-subject').query('[name=relations-subject-percent]');

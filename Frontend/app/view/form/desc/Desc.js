@@ -157,7 +157,11 @@ Ext.define(
 		{
 			var me = this,
 				items = me.items,
-				data = {};
+				data = {},
+				orderData = {},
+				orderNames = ['_id', '_version', '_xmlns', 'periodical', 'title', 'sequence', 'fb3-relations',
+				              'fb3-classification', 'lang', 'written', 'translated', 'document-info', 'history',
+				              'publish-info', 'custom-info', 'annotation', 'preamble'];
 
 			items.each(
 				function (item)
@@ -169,7 +173,19 @@ Ext.define(
 				}
 			);
 
-			return data;
+			// упорядочиваем данные
+			Ext.Array.each(
+				orderNames,
+			    function (item)
+			    {
+				    if (data[item])
+				    {
+					    orderData[item] = data[item];
+				    }
+			    }
+			);
+
+			return orderData;
 		}
 	}
 );

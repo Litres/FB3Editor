@@ -171,8 +171,8 @@ Ext.define(
 
 			values = {
 				lang: me.down(me.down('[name=' + prefixName + '-lang]')).getValue(),
-				country: me.down(me.down('[name=' + prefixName + '-country]')).getValue(),
 				date: values,
+				country: me.down(me.down('[name=' + prefixName + '-country]')).getValue(),
 				'date-public': datePublic
 			};
 			values = me.removeEmptyValues(values);

@@ -259,7 +259,7 @@ Ext.define(
 				_created: created,
 				_updated: updated,
 				'_program-used': me.down('[name=document-info-program-used]').getValue(),
-				'_src-ur': me.down('[name=document-info-src-url]').getValue(),
+				'_src-url': me.down('[name=document-info-src-url]').getValue(),
 				_ocr: me.down('[name=document-info-ocr]').getValue(),
 				_editor: me.down('[name=document-info-editor]').getValue(),
 				isbn: isbn

@@ -41,9 +41,13 @@ Ext.define(
 			btnAdd = plugin.getBtnAdd();
 			plugin.addFields(btnAdd);
 
-			// устанавливаем курсор в следующее поисковое поле
 			comboSearch = me.getNextComboSearch();
-			comboSearch.focus();
+
+			if (comboSearch)
+			{
+				// устанавливаем курсор в следующее поисковое поле
+				comboSearch.focus();
+			}
 
 			me.updateData(data);
 
@@ -96,9 +100,11 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				comboSearch;
+				comboSearch,
+				next;
 
-			comboSearch = view.up('[plugins]').nextSibling().down('combosearch');
+			next = view.up('[plugins]').nextSibling();
+			comboSearch = next ? next.down('combosearch') : null;
 
 			return comboSearch;
 		}

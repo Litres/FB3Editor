@@ -35,7 +35,7 @@ Ext.define(
 
 		translateText: {
 			author: 'Автор',
-			agent: 'Агент',
+			publisher: 'Издатель',
 			translator: 'Переводчик'
 		},
 
@@ -61,8 +61,8 @@ Ext.define(
 				},
 				{
 					name: 'rel-subject-link-' + numberGroup,
-					inputValue: 'agent',
-					boxLabel: me.translateText.agent,
+					inputValue: 'publisher',
+					boxLabel: me.translateText.publisher,
 					margin: '0 20 0 0'
 				},
 				{

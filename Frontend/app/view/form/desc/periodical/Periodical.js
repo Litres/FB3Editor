@@ -154,18 +154,20 @@ Ext.define(
 					val = me.removeEmptyValues(val);
 					val = {
 						_id: item.down('[name=' + prefixName + '-id]').getValue(),
+						title: item.down('[name=' + prefixName + '-title]').getValues(),
 						issn: item.down('[name=' + prefixName + '-issn]').getValue(),
-						number: val
+						issue: val
 					};
 					val = me.removeEmptyValues(val);
+
 					if (val)
 					{
-						val.title = item.down('[name=' + prefixName + '-title]').getValues();
 						values = values || [];
 						values.push(val);
 					}
 				}
 			);
+
 			if (values)
 			{
 				data[prefixName] = values;

@@ -271,26 +271,30 @@ Ext.define(
 				idx;
 
 			btn = btn || me.getBtnAdd();
-			removeBtn = btn.prev();
-			removeBtn.enable();
-			container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
-			replicatorId =  container.replicatorId;
-			ownerCt = container.ownerCt;
-			clone = container.cloneConfig({replicatorId: replicatorId});
-			idx = ownerCt.items.indexOf(container);
 
-			if (me.alwaysInsertFirst)
+			if (btn)
 			{
-				// добавляем в начало контейнера
-				ownerCt.insert(0, clone);
-			}
-			else
-			{
-				// добавляем после текущего поля
-				ownerCt.add(idx + 1, clone);
-			}
+				removeBtn = btn.prev();
+				removeBtn.enable();
+				container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
+				replicatorId =  container.replicatorId;
+				ownerCt = container.ownerCt;
+				clone = container.cloneConfig({replicatorId: replicatorId});
+				idx = ownerCt.items.indexOf(container);
 
-			me.checkLastInGroup(ownerCt, replicatorId);
+				if (me.alwaysInsertFirst)
+				{
+					// добавляем в начало контейнера
+					ownerCt.insert(0, clone);
+				}
+				else
+				{
+					// добавляем после текущего поля
+					ownerCt.add(idx + 1, clone);
+				}
+
+				me.checkLastInGroup(ownerCt, replicatorId);
+			}
 		},
 
 		/**
