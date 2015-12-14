@@ -9,8 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.fieldset.AbstractFieldset',
 		requires: [
-			'FBEditor.view.form.desc.title.Title',
-			'FBEditor.view.form.desc.sequence.Sequence',
+			'FBEditor.view.form.desc.titleArt.TitleArt',
 		    'FBEditor.view.panel.cover.Cover'
 		],
 		xtype: 'desc-fieldset-title',
@@ -24,8 +23,7 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'form-desc-title',
-					id: 'form-desc-title',
+					xtype: 'form-desc-titleArt',
 					flex: 1,
 					name: 'title',
 					layout: 'anchor',
@@ -33,12 +31,6 @@ Ext.define(
 						anchor: '100%',
 						labelWidth: 160,
 						labelAlign: 'right'
-					},
-					listeners: {
-						changeTitle: function ()
-						{
-							//console.log(arguments);
-						}
 					}
 				},
 				{

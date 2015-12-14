@@ -15,12 +15,17 @@ Ext.define(
 		xtype: 'form-desc-title',
 		cls: 'form-desc-title',
 
-		//minHeight: 135,
+		checkChangeBuffer: 200,
 
 		/**
 		 * @property {Boolean} Необходимо ли показывать подзаголовок.
 		 */
 		enableSub: true,
+
+		/**
+		 * @property {Boolean} Необходимо ли показывать альтернативное название.
+		 */
+		enableAlt: true,
 
 		translateText: {
 			main: 'Основное название',
@@ -38,7 +43,7 @@ Ext.define(
 				{
 					xtype: 'textfieldclear',
 					allowBlank: false,
-					checkChangeBuffer: 500,
+					checkChangeBuffer: me.checkChangeBuffer,
 					name: name + '-main',
 					fieldLabel: me.translateText.main,
 					cls: 'field-required',
@@ -47,6 +52,10 @@ Ext.define(
 						change: function (field, newVal, oldVal)
 						{
 							this.ownerCt.fireEvent('changeTitle', field, newVal, oldVal);
+						},
+						blur: function (field)
+						{
+							this.ownerCt.fireEvent('blurTitle', field);
 						}
 					}
 				}
@@ -65,16 +74,34 @@ Ext.define(
 				);
 			}
 
-			items.push(
-				{
-					xtype: 'form-desc-title-alt',
-					fieldName: name,
-					fieldLabelAlt: me.translateText.alt
-				}
-			);
+			if (me.enableAlt)
+			{
+				items.push(
+					{
+						xtype: 'form-desc-title-alt',
+						fieldName: name,
+						fieldLabelAlt: me.translateText.alt
+					}
+				);
+			}
 
 			me.items = items;
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает основное название.
+		 * @return {Ext.Component}
+		 */
+		getMain: function ()
+		{
+			var me = this,
+				name = me.name,
+				main;
+
+			main = me.main || me.down('[name=' + name + '-main]');
+
+			return main;
 		},
 
 		getValues: function (d)
@@ -89,7 +116,7 @@ Ext.define(
 			sub = me.down('[name=' + name + '-sub]');
 			alt = me.down('form-desc-title-alt');
 			values = {
-				main: me.down('[name=' + name + '-main]').getValue(),
+				main: me.getMain().getValue(),
 				sub: sub ? sub.getValue() : null,
 				alt: alt ? alt.getValues() : null
 			};
