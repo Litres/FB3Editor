@@ -34,10 +34,16 @@ Ext.define(
 		 */
 		countRepeatRequest: 0,
 
+		/**
+		 * @property {Object} Исходные параметры запроса.
+		 */
+		params: null,
+
 		translateText: {
 			creator: 'Создатель',
 			copyrighter: 'Правообладатель',
-			no: 'нет'
+			no: 'нет',
+			noPersons: 'Ничего не найдено'
 		},
 
 		initComponent: function ()
@@ -64,11 +70,11 @@ Ext.define(
 		 */
 		load: function (data)
 		{
-			var me = this,
-				store = me.store,
-				params;
+			var me = this;
 
-			if (me.countRepeatRequest < 2)
+			//console.log('load', me.countRepeatRequest, me.params, data);
+
+			if (me.countRepeatRequest < 3)
 			{
 				// увеличиваем счетчик запросов
 				me.countRepeatRequest++;
@@ -134,25 +140,17 @@ Ext.define(
 				}
 				else
 				{
-					params = store.getParams();
+					// делаем повторные запросы, изменяя параметры поиска по ФИО
+					me.repeatRequestSearch();
 
-					if (params.first)
-					{
-						// меняем местами фамилию и имя и делаем повторный запрос
-						params.tmp = params.first;
-						params.first = params.last;
-						params.last = params.tmp;
-						delete params.tmp;
-						me.fireEvent('loadData', params);
-					}
+					me.noPersons();
 				}
 			}
 			else
 			{
 				Ext.suspendLayouts();
-				me.removeAll();
-
 				me.countRepeatRequest = 0;
+				me.noPersons();
 			}
 
 			Ext.resumeLayouts();
@@ -190,6 +188,63 @@ Ext.define(
 				    record = me.store.getRecord('id', personId);
 				    me.selectFn(record);
 			    }
+			);
+		},
+
+		/**
+		 * Делает повторный запрос поиска, изменяя параметры ФИО.
+		 */
+		repeatRequestSearch: function ()
+		{
+			var me = this,
+				params = Ext.clone(me.params);
+
+			//console.log('me.countRepeatRequest', me.countRepeatRequest, params);
+
+			if (me.countRepeatRequest == 1)
+			{
+				if (params.first)
+				{
+					// меняем местами фамилию и имя
+					params.tmp = params.first;
+					params.first = params.last;
+					params.last = params.tmp;
+					delete params.tmp;
+				}
+				else
+				{
+					me.countRepeatRequest++;
+				}
+			}
+
+			if (me.countRepeatRequest == 2)
+			{
+				// ищем только по первому слову, считая, что это фамилия
+				params = {
+					last: params.last
+				};
+			}
+
+			//console.log('params', params);
+			me.fireEvent('loadData', params);
+		},
+
+		/**
+		 * @private
+		 * Выводит сообщение о том, что ничего не найдено.
+		 */
+		noPersons: function ()
+		{
+			var me = this;
+
+			me.clean();
+			me.add(
+				{
+					border: true,
+					layout: 'fit',
+					style: 'text-align: center',
+					html: me.translateText.noPersons
+				}
 			);
 		},
 

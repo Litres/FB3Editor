@@ -78,23 +78,20 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		checkEnterKey: function ()
+		/**
+		 * Проверяет нажатие Enter.
+		 * @param {Ext.Component} field Поле.
+		 * @param {Object} e Объект события.
+		 */
+		checkEnterKey: function (field, e)
 		{
 			var me = this;
 
-			me.getResultContainer().close();
-			me.callParent(arguments);
-		},
-
-		/**
-		 * Устанавливает курсор в конец поля.
-		 */
-		focusToEnd: function ()
-		{
-			var me = this,
-				val = me.getValue();
-
-			me.focus([val.length, val.length]);
+			if (e.getKey() === e.ENTER)
+			{
+				// закрываем окно результатов
+				me.getResultContainer().close();
+			}
 		},
 
 		/**

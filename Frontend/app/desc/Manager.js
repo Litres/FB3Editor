@@ -430,6 +430,12 @@ Ext.define(
 					form.fireEvent('loadDesc', desc);
 					me.loadingProcess = false;
 
+					if (FBEditor.accessHub)
+					{
+						// если доступ к хабу есть, то показываем поля поиска
+						form.fireEvent('accessHub')
+					}
+
 					if (me.needShowForm)
 					{
 						// переключаемся на текст для инициализации необходимых компонентов

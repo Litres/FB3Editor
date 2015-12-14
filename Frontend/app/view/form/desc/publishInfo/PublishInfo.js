@@ -108,7 +108,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'numberfield',
+									xtype: 'textfield',
 									name: prefixName + '-year',
 									fieldLabel: me.translateText.year,
 									cls: 'field-optional'

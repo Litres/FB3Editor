@@ -28,8 +28,9 @@ Ext.define(
 			btnAdd = plugin.getBtnAdd();
 			plugin.addFields(btnAdd);
 
-			// устанавливаем курсор в следующее поисковое поле
-			inputSearch = me.getNextSearch();
+			// устанавливаем курсор в первое поисковое поле
+			inputSearch = me.getFirstSearch();
+			//inputSearch = me.getNextSearch();
 			inputSearch.focus();
 
 			// вырезаем теги жирности из фио
@@ -102,6 +103,8 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				val = view.getValue(),
+				reg1,
+				reg2,
 				values,
 				params;
 
@@ -121,9 +124,35 @@ Ext.define(
 			}
 			else
 			{
-				// разбиваем строку на три значения, отделенных пробелами
 				val = val.trim();
-				values = val.split(/[ ]+/, 3);
+				reg1 = /^(.*?)[ ]+(.?)\.(?:[ ]?(.?)\.)?$/i;
+				reg2 = /^(.?)\.(?:[ ]?(.?)\.)?[ ]+(.*?)$/i;
+
+				if (reg1.test(val))
+				{
+					// разбиваем строку типа Фамилия И.О. | Фамилия И.
+					values = val.match(reg1);
+					values = {
+						0: values[1],
+						1: values[2],
+						2: values[3]
+					};
+				}
+				else if (reg2.test(val))
+				{
+					// разбиваем строку типа И.О. Фамилия | И. Фамилия
+					values = val.match(reg2);
+					values = {
+						0: values[3],
+						1: values[1],
+						2: values[2]
+					};
+				}
+				else
+				{
+					// разбиваем строку на три значения, отделенных пробелами
+					values = val.split(/[ ]+/, 3);
+				}
 
 				//console.log('val', val, values);
 
@@ -177,6 +206,22 @@ Ext.define(
 
 		/**
 		 * @private
+		 * Возвращает первое поисковое поле.
+		 * @return {FBEditor.view.form.desc.relations.subject.search.name.Name}
+		 */
+		getFirstSearch: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				inputSearch;
+
+			inputSearch = view.up('form-desc-relations-subject').down('form-desc-relations-subject-searchName');
+
+			return inputSearch;
+		},
+
+		/**
+		 * @private
 		 * Возвращает следующее поисковое поле.
 		 * @return {FBEditor.view.form.desc.relations.subject.search.name.Name}
 		 */
@@ -184,9 +229,11 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				inputSearch;
+				inputSearch,
+				next;
 
-			inputSearch = view.up('[plugins]').nextSibling().down('form-desc-relations-subject-searchName');
+			next = view.up('[plugins]').nextSibling();
+			inputSearch = next.down('form-desc-relations-subject-searchName');
 
 			return inputSearch;
 		},

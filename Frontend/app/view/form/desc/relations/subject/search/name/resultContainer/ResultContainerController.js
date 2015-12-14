@@ -24,6 +24,7 @@ Ext.define(
 				panelPersons;
 
 			panelPersons = view.getPanelPersons();
+			panelPersons.params = Ext.clone(data);
 			panelPersons.fireEvent('loadData', data);
 		},
 

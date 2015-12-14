@@ -47,7 +47,7 @@ Ext.define(
 
 		setParams: function (data)
 		{
-			this.params = data;
+			this.params = Ext.clone(data);
 		},
 
 		getParams: function ()
@@ -70,9 +70,9 @@ Ext.define(
 				url = me.getUrl(),
 				master;
 
-			//console.log('url', url);
+			//console.log('to url', url, me.cacheData[url]);
 
-			if (!me.cacheData[url])
+			if (true/*!me.cacheData[url]*/) // TODO непонятная ошибка с кэшированием запросов
 			{
 				// владелец потока
 				master = manager.factory('httpRequest');
@@ -96,6 +96,7 @@ Ext.define(
 						// кэшируем данные
 						me.cacheData[url] = json;
 
+						//console.log('from url', url, json);
 						me.data = json;
 						me.afterLoad(json);
 					}

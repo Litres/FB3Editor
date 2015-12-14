@@ -103,8 +103,7 @@ Ext.define(
 
 		afterHide: function ()
 		{
-			var me = this,
-				inputField = me.inputField;
+			var me = this;
 
 			me.isShow = false;
 
@@ -112,8 +111,6 @@ Ext.define(
 			Ext.getBody().un('click', me.onClickBody, me);
 
 			me.callParent(arguments);
-
-			inputField.focusToEnd();
 		},
 
 		/**
