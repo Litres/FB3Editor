@@ -40,6 +40,7 @@ Ext.define(
 				//console.log('val3', val);
 				val = val.replace(/<p><br><\/p>/gi, '<br/>');
 				val = val.replace(/^<br\/>/gi, '<p></p>');
+				val = val.replace(/&nbsp;/gi, '&#160;');
 				data[me.name] = val;
 			}
 
