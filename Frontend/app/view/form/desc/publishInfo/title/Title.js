@@ -14,8 +14,8 @@ Ext.define(
 		xtype: 'form-desc-publishInfo-title',
 		controller: 'form.desc.publishInfo.title',
 		listeners: {
-			focus: 'onFocus',
-			change: 'onChange'
+			change: 'onChange',
+			copyTitle: 'onCopyTitle'
 		},
 
 		/**

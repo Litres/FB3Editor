@@ -5,15 +5,21 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.fieldset.PublishInfo',
+	'FBEditor.view.form.desc.fieldset.publishInfo.PublishInfo',
 	{
 		extend: 'FBEditor.view.form.desc.fieldset.AbstractFieldset',
 		requires: [
+			'FBEditor.view.form.desc.fieldset.publishInfo.PublishInfoController',
 			'FBEditor.view.form.desc.publishInfo.PublishInfo'
 		],
 		xtype: 'desc-fieldset-publishInfo',
 		id: 'desc-fieldset-publishInfo',
+		controller: 'desc.fieldset.publishInfo',
 		title: 'Информация о бумажной публикации',
-		xtypeChild: 'publishInfo'
+		xtypeChild: 'publishInfo',
+
+		listeners: {
+			expand: 'onExpand'
+		}
 	}
 );

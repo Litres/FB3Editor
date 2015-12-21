@@ -10,18 +10,6 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.form.desc.publishInfo.title',
 
-		onFocus: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				val = view.getValue();
-
-			if (!view.isChanged && !val)
-			{
-				me.copyTitle();
-			}
-		},
-
 		onChange: function ()
 		{
 			var me = this,
@@ -33,7 +21,7 @@ Ext.define(
 		/**
 		 * Копирует название книги в поле.
 		 */
-		copyTitle: function ()
+		onCopyTitle: function ()
 		{
 			var me = this,
 				view = me.getView(),
