@@ -218,6 +218,39 @@
 	font-size: 15px;
 }
 
+/* затемнение для конечной части поля ввода */
+
+.fb3 .form-desc .input-fade,
+.fb3 .form-desc .input-fade-triggers {
+	position: absolute;
+	display: inline-block;
+	right: 6px;
+	width: 16px;
+	height: 22px;
+	background: #fff; /* Old browsers */
+	background: -moz-linear-gradient(left, transparent, #fff 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, transparent, #fff 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, transparent, #fff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.fb3 .form-desc .field-required .input-fade,
+.fb3 .form-desc .field-required .input-fade-triggers {
+	background: #fbe4fa; /* Old browsers */
+	background: -moz-linear-gradient(left, transparent, #fbe4fa 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, transparent, #fbe4fa 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, transparent, #fbe4fa 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.fb3 .form-desc .field-langfield .input-fade-triggers {
+	background: none;
+}
+
+.fb3 .form-desc .input-fade-triggers {
+	right: 25px;
+}
+
+/* <<< затемнение для конечной части поля ввода */
+
 .fb3 .btn-minus.x-btn-default-small,
 .fb3 .btn-minus.x-btn-over.x-btn-default-small,
 .fb3 .btn-minus.x-btn-focus.x-btn-default-small,

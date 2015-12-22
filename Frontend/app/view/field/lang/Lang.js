@@ -21,6 +21,7 @@ Ext.define(
 		typeAhead: true,
 		value: '',
 		hideTrigger: true,
+		componentCls: 'field-langfield',
 		listConfig: {
 			maxHeight: 210,
 			tpl : '<tpl for="."><tpl if="value!=\'line\'"><div class="x-boundlist-item">{name}</div>' +
