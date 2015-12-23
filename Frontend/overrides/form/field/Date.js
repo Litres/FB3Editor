@@ -9,6 +9,7 @@ Ext.define(
 	{
 		override: 'Ext.form.field.Date',
 
+		altFormats: 'Y-m-d|d.m.Y',
 		format: 'Y-m-d',
 
 		createPicker: function ()
@@ -19,7 +20,7 @@ Ext.define(
 			picker = me.callParent(arguments);
 
 			// фикс для повторяющегося события show
-			picker.fireHierarchyEvent = function (eventName) {};
+			//picker.fireHierarchyEvent = function (eventName) {};
 
 			return picker;
 		}

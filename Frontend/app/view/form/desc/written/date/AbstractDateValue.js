@@ -13,7 +13,7 @@ Ext.define(
 		listeners: {
 			blur: function ()
 			{
-				this.onBlur();
+				this.onBlurField();
 			}
 		},
 
@@ -23,7 +23,7 @@ Ext.define(
 		 */
 		fieldDateText: null,
 
-		onBlur: function ()
+		onBlurField: function ()
 		{
 			var me = this,
 				dateVal = me.getRawValue(),
@@ -32,6 +32,13 @@ Ext.define(
 
 			field = me.getFieldDateText();
 			textVal = field.getRawValue();
+
+			if (/^[0-9]{4}$/.test(dateVal))
+			{
+				// приводим год к виду Y-01-01
+				me.setValue(dateVal + '-01-01');
+				dateVal = me.getRawValue();
+			}
 
 			if (!textVal)
 			{
