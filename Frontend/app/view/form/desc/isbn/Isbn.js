@@ -50,6 +50,7 @@ Ext.define(
 					regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
 					regexText: me.translateText.isbnError,
 					fieldLabel: me.translateText.isbn,
+					labelWidth: me.labelWidth || me.defaults.labelWidth,
 					cls: 'field-optional',
 					keyEnterAsTab: true,
 					afterBodyEl:  '<span class="after-body">' + me.translateText.isbnError + '</span>',

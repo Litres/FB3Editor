@@ -15,7 +15,10 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			view.isChanged = true;
+			if (view.getValue())
+			{
+				view.isChanged = true;
+			}
 		},
 
 		/**

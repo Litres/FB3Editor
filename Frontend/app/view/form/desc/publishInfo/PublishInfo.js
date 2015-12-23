@@ -67,6 +67,18 @@ Ext.define(
 									cls: 'field-required'
 								},
 								{
+									xtype: 'textareafield',
+									name: prefixName + '-biblio-description',
+									fieldLabel: me.translateText.biblio,
+									cls: 'field-optional',
+									height: 70,
+									resizable: {
+										handles: 's',
+										minHeight: 50,
+										pinned: true
+									}
+								},
+								{
 									xtype: 'textfield',
 									name: prefixName + '-publisher',
 									fieldLabel: me.translateText.publisher,
@@ -79,47 +91,32 @@ Ext.define(
 									cls: 'field-optional'
 								},
 								{
-									xtype: 'textareafield',
-									name: prefixName + '-biblio-description',
-									fieldLabel: me.translateText.biblio,
-									cls: 'field-optional',
-									height: 70,
-									resizable: {
-										handles: 's',
-										minHeight: 50,
-										pinned: true
-									}
-								}
-							]
-						},
-						{
-							xtype: 'fieldcontainer',
-							width: 20
-						},
-						{
-							xtype: 'desc-fieldcontainer',
-							flex: 1,
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%',
-								labelWidth: 60,
-								labelAlign: 'right',
-								keyEnterAsTab: true
-							},
-							items: [
-								{
-									xtype: 'textfield',
-									name: prefixName + '-year',
-									fieldLabel: me.translateText.year,
-									cls: 'field-optional'
-								},
-								{
-									xtype: 'form-desc-publishInfo-isbn',
-									fieldName: prefixName + '-isbn'
-								},
-								{
-									xtype: 'form-desc-publishInfo-sequence',
-									fieldName: prefixName + '-sequence'
+									xtype: 'desc-fieldcontainer',
+									flex: 1,
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%',
+										labelWidth: 130,
+										labelAlign: 'right',
+										keyEnterAsTab: true
+									},
+									items: [
+										{
+											xtype: 'textfield',
+											name: prefixName + '-year',
+											fieldLabel: me.translateText.year,
+											cls: 'field-optional'
+										},
+										{
+											xtype: 'form-desc-publishInfo-isbn',
+											fieldName: prefixName + '-isbn',
+											labelWidth: 130
+										},
+										{
+											xtype: 'form-desc-publishInfo-sequence',
+											fieldName: prefixName + '-sequence'
+										}
+									]
 								}
 							]
 						}

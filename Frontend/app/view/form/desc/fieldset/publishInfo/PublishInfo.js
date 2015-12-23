@@ -20,6 +20,27 @@ Ext.define(
 
 		listeners: {
 			expand: 'onExpand'
+		},
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.publishInfo.title.Title} Название.
+		 */
+		publishTitle: null,
+
+		/**
+		 * Возвращает название бумажной публикации.
+		 * @return {FBEditor.view.form.desc.publishInfo.title.Title}
+		 */
+		getPublishTitle: function ()
+		{
+			var me = this,
+				publishTitle;
+
+			publishTitle = me.publishTitle || me.down('form-desc-publishInfo-title');
+			me.publishTitle = publishTitle;
+
+			return publishTitle;
 		}
 	}
 );

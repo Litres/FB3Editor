@@ -10,13 +10,26 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.fieldset.AbstractFieldsetController',
 		alias: 'controller.desc.fieldset.publishInfo',
 
+		resetFieldset:  function (data)
+		{
+			var me = this,
+				view = me.getView(),
+				title;
+
+			// сбрасываем флаг изменения поля названия
+			title = view.getPublishTitle();
+			title.isChanged = false;
+
+			me.callParent(arguments);
+		},
+
 		onExpand: function ()
 		{
 			var me = this,
 				view = me.getView(),
 				title;
 
-			title = view.down('form-desc-publishInfo-title');
+			title = view.getPublishTitle();
 
 			if (!title.isChanged && !title.getValue())
 			{
