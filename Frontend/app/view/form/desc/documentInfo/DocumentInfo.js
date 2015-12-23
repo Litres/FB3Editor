@@ -54,7 +54,7 @@ Ext.define(
 									},
 									items: [
 										{
-											xtype: 'datefield',
+											xtype: 'desc-date',
 											allowBlank: false,
 											name: 'document-info-created-date',
 											value: new Date(),

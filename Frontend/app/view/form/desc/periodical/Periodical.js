@@ -84,7 +84,7 @@ Ext.define(
 									cls: 'field-required'
 								},
 								{
-									xtype: 'datefield',
+									xtype: 'desc-date',
 									name: prefixName + '-date',
 									fieldLabel: me.translateText.date,
 									cls: 'field-optional'

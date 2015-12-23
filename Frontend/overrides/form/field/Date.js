@@ -7,11 +7,9 @@
 Ext.define(
 	'FBEditor.override.form.field.Date',
 	{
-		override: 'Ext.form.field.Date',
+		override: 'Ext.form.field.Date'
 
-		altFormats: 'Y-m-d|d.m.Y',
-		format: 'Y-m-d',
-
+		/*,
 		createPicker: function ()
 		{
 			var me = this,
@@ -23,6 +21,6 @@ Ext.define(
 			//picker.fireHierarchyEvent = function (eventName) {};
 
 			return picker;
-		}
+		}*/
 	}
 );

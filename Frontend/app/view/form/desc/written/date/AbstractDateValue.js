@@ -8,7 +8,7 @@
 Ext.define(
 	'FBEditor.view.form.desc.written.date.AbstractDateValue',
 	{
-		extend: 'Ext.form.Date',
+		extend: 'FBEditor.view.form.desc.date.Date',
 
 		listeners: {
 			blur: function ()
@@ -19,7 +19,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.view.form.desc.written.date.AbstractDateText}
+		 * @property {FBEditor.view.form.desc.written.date.AbstractDateText} Текстовая дата.
 		 */
 		fieldDateText: null,
 
@@ -32,13 +32,6 @@ Ext.define(
 
 			field = me.getFieldDateText();
 			textVal = field.getRawValue();
-
-			if (/^[0-9]{4}$/.test(dateVal))
-			{
-				// приводим год к виду Y-01-01
-				me.setValue(dateVal + '-01-01');
-				dateVal = me.getRawValue();
-			}
 
 			if (!textVal)
 			{

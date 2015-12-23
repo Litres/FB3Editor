@@ -72,17 +72,17 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'datefield',
+							xtype: 'desc-date',
 							name: 'classification-setting-date',
 							fieldLabel: me.translateText.date
 						},
 						{
-							xtype: 'datefield',
+							xtype: 'desc-date',
 							name: 'classification-setting-date-from',
 							fieldLabel: me.translateText.dateFrom
 						},
 						{
-							xtype: 'datefield',
+							xtype: 'desc-date',
 							name: 'classification-setting-date-to',
 							fieldLabel: me.translateText.dateTo
 						},

@@ -17,6 +17,7 @@ Ext.define(
 			'FBEditor.view.field.datetime.Datetime',
 			'FBEditor.view.field.textfieldclear.TextFieldClear',
 			'FBEditor.view.form.desc.AbstractFieldContainer',
+			'FBEditor.view.form.desc.date.Date',
 			'FBEditor.view.form.desc.fieldset.annotation.Annotation',
 			'FBEditor.view.form.desc.fieldset.history.History',
 			'FBEditor.view.form.desc.fieldset.periodical.Periodical',
@@ -41,6 +42,7 @@ Ext.define(
 		//minWidth: 730,
 		bodyPadding: 0,
 		cls: 'form-desc',
+
 		listeners: {
 			accessHub: 'onAccessHub',
 			loadDesc: 'onLoadData',
