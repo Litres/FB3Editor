@@ -95,8 +95,8 @@ Ext.define(
 			if (isValid && hiddenCount === items.length)
 			{
 				// если все поля скрыты
-				isValid = false;
-				combo.markInvalid(me.translateText.error);
+				//isValid = false;
+				//combo.markInvalid(me.translateText.error);
 			}
 
 			return isValid;
