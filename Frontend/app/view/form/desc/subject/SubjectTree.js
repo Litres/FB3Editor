@@ -90,6 +90,12 @@ Ext.define(
 		 */
 		cacheFilteredData: {},
 
+		/**
+		 * @private
+		 * @property {Number} Хранит позицию скролла, для его корректировки после открытия/закртыия узлов дерева.
+		 */
+		scrollTop: 0,
+
 		initComponent: function ()
 		{
 			var me = this,
@@ -98,6 +104,27 @@ Ext.define(
 			store = Ext.create('FBEditor.view.form.desc.subject.SubjectStore');
 			me.store = store;
 			me.defaultRootProperty = store.getDefaultRootProperty();
+
+			me.callParent(arguments);
+		},
+
+		afterLayout: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				el = view.getEl();
+
+			// восстанавливаем позицию скролла после открытия/закрытия узла дерева
+			el.setScrollTop(me.scrollTop);
+		},
+
+		handleFocusEnter: function (e)
+		{
+			var me = this,
+				view = me.getView();
+
+			// сохраняем позицию скролла
+			me.scrollTop = view.getEl().getScrollTop();
 
 			me.callParent(arguments);
 		},
@@ -150,6 +177,9 @@ Ext.define(
 			me.callParent(arguments);
 
 			textfield.focusToEnd();
+
+			// сбрасываем позицию скролла в начало
+			me.scrollTop = 0;
 		},
 
 		/**
@@ -291,6 +321,7 @@ Ext.define(
 			rootTreeData = me.getTreeData(json.genres.genre);
 			me.cacheData = Ext.clone(rootTreeData);
 			store.loadData(rootTreeData);
+			me.fireEvent('afterLoadData');
 			//console.log('load data', rootTreeData);
 
 			me.dataLoaded = true;

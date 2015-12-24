@@ -19,6 +19,8 @@ Ext.define(
 				br = view.bufferedRenderer,
 				firstRecord;
 
+			//console.log('over', me.body.dom);
+
 			if (!me.containsFocus) {
 				lastFocused = focusPosition = view.getLastFocused();
 
