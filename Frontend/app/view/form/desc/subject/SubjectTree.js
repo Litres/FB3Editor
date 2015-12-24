@@ -601,6 +601,7 @@ Ext.define(
 				store = me.getStore(),
 				val = value.toLowerCase(),
 				data = Ext.clone(me.cacheData),
+				maxChildrenGenres = 3,
 				filteredData;
 
 			if (!data || me.filterProcess)
@@ -636,8 +637,17 @@ Ext.define(
 
 					me.getRootNode().expand();
 
-					// раскрываем все узлы
-					me.getRootNode().expandChildren();
+					// это условие необходимо, чтобы браузер не повис при большом количестве узлов,
+					// которые будут открываться
+					if (filteredData.genre.length > maxChildrenGenres)
+					{
+						// раскрываем только первые потомки корневого узла
+						me.getRootNode().expandChildren();
+					}
+					else{
+						// раскрываем все узлы
+						me.getRootNode().expand(true);
+					}
 				}
 			}
 			else
