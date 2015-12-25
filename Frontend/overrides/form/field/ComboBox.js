@@ -16,7 +16,7 @@ Ext.define(
 
 			picker = me.callParent(arguments);
 
-			// фикс для повторяющегося события show
+			// фикс для повторяющегося события show, чтобы избежать скачков фокуса при открытии списка
 			picker.fireHierarchyEvent = function (eventName) {};
 
 			return picker;
