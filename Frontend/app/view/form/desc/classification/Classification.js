@@ -16,6 +16,7 @@ Ext.define(
 			'FBEditor.view.form.desc.written.Written'
 		],
 		xtype: 'form-desc-classification',
+		cls: 'desc-fieldcontainer',
 
 		translateText: {
 			info: 'Общая информация',

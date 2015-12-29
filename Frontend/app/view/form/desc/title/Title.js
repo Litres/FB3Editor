@@ -41,7 +41,7 @@ Ext.define(
 
 			items.push(
 				{
-					xtype: 'textfieldclear',
+					xtype: 'textfield',
 					allowBlank: false,
 					checkChangeBuffer: me.checkChangeBuffer,
 					name: name + '-main',

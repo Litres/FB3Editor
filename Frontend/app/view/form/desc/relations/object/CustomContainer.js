@@ -34,6 +34,7 @@ Ext.define(
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
+					cls: 'block-container', // необходим для выделения блока полей
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',

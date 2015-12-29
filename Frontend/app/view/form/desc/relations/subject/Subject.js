@@ -16,6 +16,8 @@ Ext.define(
 		xtype: 'form-desc-relations-subject',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
+		prefixName: 'relations-subject',
+
 		translateText: {
 			error: 'Необходимо заполнить хотя бы одну персону'
 		},
@@ -62,7 +64,8 @@ Ext.define(
 							flex: 1,
 							items: [
 								{
-									xtype: 'form-desc-relations-subject-container-custom'
+									xtype: 'form-desc-relations-subject-container-custom',
+									prefixName: me.prefixName
 								},
 								{
 									xtype: 'form-desc-relations-subject-container-search'
@@ -80,8 +83,9 @@ Ext.define(
 			var me = this,
 				hiddenCount = 0,
 				items = me.query('form-desc-relations-subject-container-custom'),
-				combo = me.down('combosearch'),
-				isValid = true;
+				searchName = me.down('form-desc-relations-subject-searchName'),
+				isValid = true,
+				manager = FBEditor.desc.Manager;
 
 			Ext.Array.each(
 				items,
@@ -105,7 +109,8 @@ Ext.define(
 			{
 				// если все поля скрыты
 				isValid = false;
-				combo.markInvalid(me.translateText.error);
+				searchName.markInvalid(me.translateText.error);
+				manager.fieldsError.push(searchName);
 			}
 
 			return isValid;

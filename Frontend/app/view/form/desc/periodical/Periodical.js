@@ -13,6 +13,7 @@ Ext.define(
 		id: 'form-desc-periodical',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 		prefixName: 'periodical',
+		cls: 'desc-fieldcontainer',
 
 		translateText: {
 			id: 'ID',
@@ -35,7 +36,7 @@ Ext.define(
 			me.items=  [
 				{
 					xtype: 'desc-fieldcontainer',
-					cls: 'desc-fieldcontainer',
+					cls: 'block-container', // необходим для выделения блока полей
 					layout: 'hbox',
 					plugins: {
 						ptype: 'fieldcontainerreplicator',

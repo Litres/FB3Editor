@@ -16,6 +16,8 @@ Ext.define(
 		xtype: 'form-desc-relations-object',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
+		prefixName: 'relations-object',
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -53,7 +55,8 @@ Ext.define(
 							flex: 1,
 							items: [
 								{
-									xtype: 'form-desc-relations-object-container-custom'
+									xtype: 'form-desc-relations-object-container-custom',
+									prefixName: me.prefixName
 								},
 								{
 									xtype: 'form-desc-relations-object-container-search'

@@ -22,16 +22,41 @@ Ext.define(
 			editable: 'onEditable'
 		},
 
+		/**
+		 * @private
+		 * @property {Ext.Component} Кэширует поля, к которым уже привязано событие blur.
+		 */
+		fieldEventCache: [],
+
 		afterRender: function ()
 		{
 			var me = this,
-				plugin;
+				plugin,
+				fields;
 
+			// поля
+			fields = me.query('field');
+
+			// регистрируем событие blur для полей
+			Ext.Array.each(
+				fields,
+				function (item)
+				{
+					if (!me.fieldEventCache[item.id])
+					{
+						me.initEventBlur(item);
+					}
+				}
+			);
+
+			// плагин
 			plugin = me.getPlugin('fieldcontainerreplicator');
+
 			if (plugin)
 			{
 				me.name = 'plugin-fieldcontainerreplicator';
 			}
+
 			me.callParent(arguments);
 		},
 
@@ -46,9 +71,10 @@ Ext.define(
 		clearInvalid: function ()
 		{
 			var me = this,
-				items = me.items;
+				fields = me.query('field');
 
-			items.each(
+			Ext.Array.each(
+				fields,
 				function (item)
 				{
 					if (item.clearInvalid)
@@ -66,35 +92,69 @@ Ext.define(
 		isValid: function ()
 		{
 			var me = this,
-				items = me.items,
-				isValid = true;
+				isValid = true,
+				isEmptyBlock = false,
+				descManager = FBEditor.desc.Manager,
+				fieldset,
+				blockContainer,
+				value,
+				items;
 
-			if (me.prefixName)
-			{
-				isValid = me.getValid(me.prefixName);
-			}
-			else
-			{
-				items.each(
-					function (item)
+			items = me.query('field');
+
+			Ext.Array.each(
+				items,
+				function (item)
+				{
+					value = item.getValue();
+
+					if (!value)
 					{
-						if (item.isValid && !item.isValid())
+						// контейнер блока полей
+						blockContainer = item.up('[cls=block-container]');
+
+						// пустые ли поля в блоке
+						isEmptyBlock = blockContainer ? blockContainer.isEmptyBlock() : false;
+
+						if (isEmptyBlock)
 						{
+							// убираем индикацию ошибок в пустом блоке
+							blockContainer.clearInvalid();
+						}
+					}
+
+					if (!isEmptyBlock && item.isValid)
+					{
+						if (!item.isValid())
+						{
+							// сохраняем ошибочный элемент
+							descManager.fieldsError.push(item);
+
+							// разворачиваем спойлер ошибочного элемента
+							fieldset = item.up('desc-fieldset');
+							fieldset.expand();
+							fieldset = item.up('desc-fieldsetinner');
+
+							if (fieldset)
+							{
+								fieldset.expand();
+							}
+
 							isValid = false;
 						}
 					}
-				);
-			}
+				}
+			);
 
 			return isValid;
 		},
 
 		/**
-		 * Возвращает валидность полей опрделенного контейнера.
+		 * Возвращает валидность полей определенного контейнера.
 		 * @property {String} Имя контейнера.
 		 * @return {Boolean} Валидны ли поля.
 		 */
-		getValid: function (name)
+		/*getValid: function (name)
 		{
 			var me = this,
 				items = me.items,
@@ -117,7 +177,7 @@ Ext.define(
 			);
 
 			return isValid;
-		},
+		},*/
 
 		/**
 		 * Возвращает новые данные формы.
@@ -218,6 +278,68 @@ Ext.define(
 						else
 						{
 							field.setValue(value);
+						}
+					}
+				}
+			);
+		},
+
+		/**
+		 * Все ли поля пустые в блоке.
+		 * @return {Boolean}
+		 */
+		isEmptyBlock: function ()
+		{
+			var me = this,
+				empty = true,
+				fields;
+
+			fields = me.query('field');
+
+			//console.log('fields', fields);
+			Ext.Array.each(
+				fields,
+			    function (field)
+			    {
+				    if (field.getValue())
+				    {
+					    empty = false;
+
+					    return false;
+				    }
+			    }
+			);
+
+			return empty;
+		},
+
+		/**
+		 * @private
+		 * Регистрирует событие blur для полей.
+		 * @param {Ext.Component} field
+		 */
+		initEventBlur: function (field)
+		{
+			var me = this;
+
+			me.fieldEventCache[field.id] = true;
+
+			field.on(
+				'blur',
+				function ()
+				{
+					var self = this,
+						val = self.getValue(),
+						blockContainer;
+
+					if (!val)
+					{
+						// контейнер блока полей
+						blockContainer = self.up('[cls=block-container]');
+
+						if (blockContainer && blockContainer.isEmptyBlock())
+						{
+							blockContainer.clearInvalid();
 						}
 					}
 				}

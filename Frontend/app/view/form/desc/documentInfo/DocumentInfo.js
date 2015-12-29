@@ -14,6 +14,7 @@ Ext.define(
 		],
 		xtype: 'form-desc-documentInfo',
 		id: 'form-desc-documentInfo',
+		cls: 'desc-fieldcontainer',
 
 		translateText: {
 			created: 'Файл создан',

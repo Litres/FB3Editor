@@ -14,8 +14,8 @@ Ext.define(
 		],
 		controller: 'form.desc.titleArt',
 		xtype: 'form-desc-titleArt',
-
 		id: 'form-desc-title',
+		cls: 'container-valid',
 
 		/**
 		 * @property {Boolean} Необходимо ли показывать подзаголовок.

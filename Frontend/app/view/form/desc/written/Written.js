@@ -141,7 +141,8 @@ Ext.define(
 			var me = this,
 				isValid;
 
-			isValid = me.getValid(me.prefixName);
+			//isValid = me.getValid(me.prefixName);
+			isValid = me.callParent();
 			me.down('langfield').isValid();
 
 			return isValid;

@@ -11,8 +11,10 @@ Ext.define(
 		id: 'form-desc-customInfo',
 		xtype: 'form-desc-customInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
+		cls: 'desc-fieldcontainer',
 
 		prefixName: 'custom-info',
+
 		translateText: {
 			infoType: 'Тип',
 			desc: 'Описание'
@@ -27,10 +29,10 @@ Ext.define(
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
+					cls: 'block-container', // необходим для выделения блока полей
 					defaults: {
 						anchor: '100%',
 						labelAlign: 'right',
-						cls: 'field-required',
 						keyEnterAsTab: true
 					},
 					plugins: {
@@ -43,8 +45,9 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'textfieldclear',
+							xtype: 'textfield',
 							name: prefixName + '-info-type',
+							cls: 'field-required',
 							flex: 1,
 							allowBlank: false,
 							labelWidth: 60,
@@ -64,6 +67,7 @@ Ext.define(
 								{
 									xtype: 'textareafield',
 									name: prefixName + '-text',
+									cls: 'field-required',
 									flex: 1,
 									//grow: true,
 									//growMin: 1,

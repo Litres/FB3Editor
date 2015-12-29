@@ -40,6 +40,7 @@ Ext.define(
 				{
 					xtype: 'desc-fieldcontainer',
 					layout: 'hbox',
+					cls: 'block-container', // необходим для выделения блока полей
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
@@ -59,7 +60,8 @@ Ext.define(
 									name: 'relations-subject-id',
 									allowBlank: false,
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-									regexText: me.translateText.idError
+									regexText: me.translateText.idError,
+									cls: 'field-required'
 								},
 								{
 									xtype: 'form-desc-relations-subject-name',

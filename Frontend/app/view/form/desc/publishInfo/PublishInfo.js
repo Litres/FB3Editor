@@ -50,6 +50,7 @@ Ext.define(
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
+							cls: 'block-container', // необходим для выделения блока полей
 							flex: 1,
 							layout: 'anchor',
 							defaults: {

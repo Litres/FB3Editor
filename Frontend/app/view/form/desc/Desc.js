@@ -136,7 +136,11 @@ Ext.define(
 		{
 			var me = this,
 				items = me.items,
-				isValid = true;
+				isValid = true,
+				manager = FBEditor.desc.Manager,
+				firstError;
+
+			manager.fieldsError = [];
 
 			items.each(
 				function (item)
@@ -147,6 +151,17 @@ Ext.define(
 					}
 				}
 			);
+
+			if (manager.fieldsError.length)
+			{
+				firstError = manager.fieldsError[0];
+				firstError = firstError.getEl().dom;
+
+				//console.log(firstError);
+
+				// прокручиваем скролл к первому ошибочному элементу
+				firstError.scrollIntoView();
+			}
 
 			return isValid;
 		},
