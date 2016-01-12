@@ -18,9 +18,9 @@ Ext.define(
 		title: 'Информация о бумажной публикации',
 		xtypeChild: 'publishInfo',
 
-		listeners: {
+		/*listeners: {
 			expand: 'onExpand'
-		},
+		},*/
 
 		/**
 		 * @private

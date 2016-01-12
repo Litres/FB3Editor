@@ -21,8 +21,19 @@ Ext.define(
 			}
 		},
 
+		onFocus: function ()
+		{
+			var me = this,
+				view = me.getView();
+
+			if (!view.isChanged && !view.getValue())
+			{
+				me.onCopyTitle();
+			}
+		},
+
 		/**
-		 * Копирует название книги в поле.
+		 * Копирует поле название произведения.
 		 */
 		onCopyTitle: function ()
 		{
@@ -30,7 +41,7 @@ Ext.define(
 				view = me.getView(),
 				title;
 
-			title = Ext.getCmp('panel-filename-field').getValue();
+			title = Ext.getCmp('form-desc-title').getMain().getValue();
 			view.setValue(title);
 			Ext.defer(
 				function ()
