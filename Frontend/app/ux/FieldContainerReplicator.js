@@ -104,7 +104,7 @@ Ext.define(
 				cls: 'btn-minus'
 			};
 			me.btnPutCfg = {
-				html: '<i class="fa fa-level-down" title="' + me.translateText.put + '"></i>',
+				html: '<i class="fa fa-level-up fa-rotate-90" title="' + me.translateText.put + '"></i>',
 				cls: 'btn-put'
 			};
 			me.groupName = config.groupName || me.groupName;
