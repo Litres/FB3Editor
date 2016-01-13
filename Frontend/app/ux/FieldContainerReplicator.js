@@ -268,6 +268,7 @@ Ext.define(
 				replicatorId,
 				ownerCt,
 				clone,
+				focusField,
 				idx;
 
 			btn = btn || me.getBtnAdd();
@@ -285,13 +286,19 @@ Ext.define(
 				if (me.alwaysInsertFirst)
 				{
 					// добавляем в начало контейнера
-					ownerCt.insert(0, clone);
+					idx = 0;
+					ownerCt.insert(idx, clone);
 				}
 				else
 				{
 					// добавляем после текущего поля
-					ownerCt.add(idx + 1, clone);
+					idx = idx + 1;
+					ownerCt.add(idx, clone);
 				}
+
+				// ставим фокус
+				focusField = ownerCt.items.getAt(idx).down('field:focusable');
+				focusField.focus();
 
 				me.checkLastInGroup(ownerCt, replicatorId);
 			}
@@ -311,6 +318,7 @@ Ext.define(
 				container,
 				removeBtn,
 				replicatorId,
+				focusField,
 				clone;
 
 			btn = btn || me.getBtnPut();
@@ -332,6 +340,10 @@ Ext.define(
 			);
 			container.add(clone);
 			clone.fireEvent('putFields', btn);
+
+			// ставим фокус
+			focusField = clone.down('field:focusable');
+			focusField.focus();
 
 			return clone;
 		},
