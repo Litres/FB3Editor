@@ -21,6 +21,7 @@ Ext.define(
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading)
 			{
+				me.abortSearch();
 				me.onCleanResultContainer();
 				title = view.getTitle();
 				title.autoValue();
@@ -74,6 +75,19 @@ Ext.define(
 				// сохраняем имена в локальном хранилище
 				resultContainer.setStorageNames(names);
 			}
+		},
+
+		/**
+		 * Прерывает предыдущий поиск.
+		 */
+		abortSearch: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				resultContainer;
+
+			resultContainer = view.getResultContainer();
+			resultContainer.abort();
 		}
 	}
 );

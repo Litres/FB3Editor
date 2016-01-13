@@ -92,6 +92,18 @@ Ext.define(
 		},
 
 		/**
+		 * Прерывает поиск.
+		 */
+		abort: function ()
+		{
+			var me = this,
+				panel;
+
+			panel = me.getPanelArts();
+			panel.abort();
+		},
+
+		/**
 		 * Возвращает панель произведений.
 		 * @return {FBEditor.view.panel.arts.Arts}
 		 */

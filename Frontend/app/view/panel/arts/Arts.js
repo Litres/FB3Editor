@@ -60,7 +60,8 @@ Ext.define(
 
 			//console.log('load', data);
 			me.setLoading(false);
-			
+			//me.clean();
+
 			if (data && data.length)
 			{
 				Ext.Array.each(
@@ -114,6 +115,18 @@ Ext.define(
 			me.removeAll();
 			Ext.resumeLayouts();
 			me.doLayout();
+		},
+
+		/**
+		 * Прерывает поиск.
+		 */
+		abort: function ()
+		{
+			var me = this,
+				store = me.store;
+
+			me.setLoading(false);
+			store.abort();
 		},
 
 		/**

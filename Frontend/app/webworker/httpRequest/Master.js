@@ -11,20 +11,35 @@ Ext.define(
 
 		name: 'httpRequest',
 
+		/**
+		 * Прерывает запрос.
+		 */
+		abort: function ()
+		{
+			var me = this;
+
+			me.post(
+				{
+					abort: true
+				}
+			);
+		},
+
 		message: function (e)
 		{
 			var data = e.data,
 				manager = FBEditor.webworker.Manager,
 				me = manager.getMaster(data.masterName),
 				response = data.data.response,
+				callbackId = data.data.callbackId || null,
 				callback;
 
 			//console.log('Поток ' + data.masterName + ' сообщил:', data, me);
 
-			// первый колбэк
-			callback = me.getCallback();
+			// колбэк
+			callback = me.getCallback(callbackId);
 
-			if (callback)
+			if (callback && !data.data.abort)
 			{
 				callback.fn.call(callback.scope, response, data.data);
 			}

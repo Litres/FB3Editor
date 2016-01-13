@@ -22,7 +22,7 @@ Ext.define(
 
 			if (data)
 			{
-				view.clean();
+				//view.clean();
 				view.setLoading({msg: view.translateText.loading});
 				store.setParams(data);
 				//console.log('url', store.getUrl());

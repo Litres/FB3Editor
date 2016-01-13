@@ -141,7 +141,7 @@ Ext.define(
 					// делаем повторные запросы, изменяя параметры поиска по ФИО
 					me.repeatRequestSearch();
 
-					me.noPersons();
+					//me.noPersons();
 				}
 			}
 			else
@@ -164,6 +164,18 @@ Ext.define(
 			me.removeAll();
 			Ext.resumeLayouts();
 			me.doLayout();
+		},
+
+		/**
+		 * Прерывает поиск.
+		 */
+		abort: function ()
+		{
+			var me = this,
+				store = me.store;
+
+			me.setLoading(false);
+			store.abort();
 		},
 
 		/**

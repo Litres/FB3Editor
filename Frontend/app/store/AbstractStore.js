@@ -74,17 +74,27 @@ Ext.define(
 
 			if (true/*!me.cacheData[url]*/) // TODO непонятная ошибка с кэшированием запросов
 			{
-				// владелец потока
-				master = manager.factory('httpRequest');
+				if (me._master)
+				{
+					// прерываем предыдущий поиск
+					me.abort();
+				}
 
-				// запрос на поиск персон
+				// создаем поток
+				master = manager.factory('httpRequest');
+				me._master = master;
+
+				// запрос на поиск
 				master.post(
 					{
+						callbackId: me.url,
 						url: url
 					},
 					function (response, data)
 					{
 						var json;
+
+						//console.log('load', data);
 
 						json = response ? JSON.parse(response) : null;
 
@@ -99,7 +109,8 @@ Ext.define(
 						//console.log('from url', url, json);
 						me.data = json;
 						me.afterLoad(json);
-					}
+					},
+				    me
 				);
 			}
 			else
@@ -107,7 +118,6 @@ Ext.define(
 				me.data = me.cacheData[url];
 				me.afterLoad(me.data);
 			}
-
 		},
 
 		/**
@@ -134,6 +144,19 @@ Ext.define(
 			if (callback)
 			{
 				callback.fn.apply(callback.scope, [data]);
+			}
+		},
+
+		/**
+		 * Прерывает выполнение запроса.
+		 */
+		abort: function ()
+		{
+			var me = this;
+
+			if (me._master)
+			{
+				me._master.abort();
 			}
 		},
 

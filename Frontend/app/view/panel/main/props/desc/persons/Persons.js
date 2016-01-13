@@ -92,6 +92,18 @@ Ext.define(
 		},
 
 		/**
+		 * Прерывает поиск.
+		 */
+		abort: function ()
+		{
+			var me = this,
+				panel;
+
+			panel = me.getPanelPersons();
+			panel.abort();
+		},
+
+		/**
 		 * Возвращает панель персон.
 		 * @return {FBEditor.view.panel.persons.Persons}
 		 */

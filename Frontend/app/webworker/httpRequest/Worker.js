@@ -53,33 +53,26 @@ function W ()
 		/**
 		 * Обрабатывает полученные данные от владельца.
 		 * @param data Данные.
-		 * @param {String} data.url Адрес сервера.
+		 * @param {String} [data.url] Адрес сервера.
 		 * @param {String} [data.method] Метод отправки данных (GET|POST).
+		 * @param {Boolean} [data.abort] Прервать ли запрос.
 		 */
 		message: function (data)
 		{
-			var me = this,
-				time,
-				transport;
+			var me = this;
 
 			me.data = data;
-			data.method = data.method || 'GET';
-			time = new Date().getTime();
-			data.url += /[?]/.test(data.url) ? '&_d=' + time : '?_d=' + time;
 
-			transport = me.getXmlHttp();
-			transport.open(data.method, data.url, true);
-
-			transport.onreadystatechange = function ()
+			if (data.abort)
 			{
-				if (transport.readyState == 4)
-				{
-					data.response = transport.response;
-					me.post();
-				}
-			};
-
-			transport.send();
+				// прерываем запрос
+				me.abort();
+			}
+			else
+			{
+				// делаем запрос
+				me.send();
+			}
 		},
 
 		/**
@@ -98,6 +91,58 @@ function W ()
 			self.postMessage(res);
 		},
 
+		/**
+		 * Отправляет запрос.
+		 */
+		send: function ()
+		{
+			var me = this,
+				data = me.data,
+				time,
+				transport;
+
+			data.method = data.method || 'GET';
+			time = new Date().getTime();
+			data.url += /[?]/.test(data.url) ? '&_d=' + time : '?_d=' + time;
+
+			transport = me.getXmlHttp();
+			self._transport = transport;
+			transport.open(data.method, data.url, true);
+
+			transport.onreadystatechange = function ()
+			{
+				if (transport.readyState == 4)
+				{
+					data.response = transport.response;
+					me.post();
+				}
+			};
+
+			transport.send();
+		},
+
+		/**
+		 * Прерывает запрос.
+		 */
+		abort: function ()
+		{
+			var me = this,
+				transport;
+
+			transport = self._transport;
+
+			if (transport)
+			{
+				me.data.state = transport.readyState;
+				transport.abort();
+				//me.post();
+			}
+		},
+
+		/**
+		 * Возвращает объект запроса.
+		 * @return {Object}
+		 */
 		getXmlHttp: function ()
 		{
 			try

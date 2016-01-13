@@ -98,8 +98,23 @@ Ext.define(
 				worker = me.worker,
 				name = me.name;
 
-			me.callback[name] = me.callback[name] || [];
-			me.callback[name].push({fn: callback, scope: scope});
+			//console.log(name, data, callback, scope);
+			if (callback)
+			{
+				if (data && data.callbackId)
+				{
+					// сохраняем колбэк по уникальному ключу
+					me.callback[data.callbackId] = {fn: callback, scope: scope};
+				}
+				else
+				{
+					// добавляем колбэк в общую очередь мастера, если для него не указан айди
+					me.callback[name] = me.callback[name] || [];
+					me.callback[name].push({fn: callback, scope: scope});
+				}
+
+			}
+
 			worker.postMessage(data);
 		},
 
@@ -116,16 +131,21 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает первый колбэк из очереди.
+		 * Возвращает колбэк по айди или первый колбэк из очереди.
+		 * @param {String} [callbackId] Айди колбэка.
 		 * @return {Function|null} Колбэк.
 		 */
-		getCallback: function ()
+		getCallback: function (callbackId)
 		{
 			var me = this,
 				name = me.name,
 				callback = null;
 
-			if (me.callback[name].length)
+			if (callbackId)
+			{
+				callback = me.callback[callbackId] || null;
+			}
+			else if (me.callback[name].length)
 			{
 				// первый колбэк
 				callback = me.callback[name].splice(0, 1)[0];
