@@ -10,6 +10,9 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 		alias: 'controller.form.desc.titleArt',
 
+		/**
+		 * Вызывается при изменении названия.
+		 */
 		onChangeTitle: function ()
 		{
 			var me = this,
@@ -20,21 +23,29 @@ Ext.define(
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading)
 			{
+				me.onCleanResultContainer();
 				me.searchName(name);
 			}
 		},
 
 		/**
-		 * Очищает контейнер результатов поиска.
+		 * Вызывается при установке фокуса.
 		 */
-		onBlurTitle: function ()
+		onFocusTitle: function ()
 		{
 			var me = this,
 				view = me.getView(),
-				resultContainer = view.getResultContainer();
+				personsContainer;
 
-			resultContainer.clean();
+			personsContainer = view.getPersonsContainer();
+			personsContainer.clean();
 		},
+
+		/**
+		 * Вызывается при потери фокуса.
+		 */
+		onBlurTitle: function ()
+		{},
 
 		/**
 		 * Очищает контейнер результатов поиска и хранилище.

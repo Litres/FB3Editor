@@ -85,8 +85,11 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				resultContainer,
 				params;
 
+			resultContainer = view.getResultContainer();
+			resultContainer.clean();
 			params = me.getParams();
 			me.searchName(params);
 		},

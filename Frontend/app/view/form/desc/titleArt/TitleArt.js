@@ -30,6 +30,7 @@ Ext.define(
 		listeners: {
 			changeTitle: 'onChangeTitle',
 			blurTitle: 'onBlurTitle',
+			focusTitle: 'onFocusTitle',
 			cleanResultContainer: 'onCleanResultContainer'
 		},
 
@@ -52,6 +53,17 @@ Ext.define(
 			var bridge = FBEditor.getBridgeProps();
 
 			return bridge.Ext.getCmp('props-desc-arts');
+		},
+
+		/**
+		 * Возвращает контейнер для отображения персон.
+		 * @return {FBEditor.view.panel.main.props.desc.persons.Persons}
+		 */
+		getPersonsContainer: function ()
+		{
+			var bridge = FBEditor.getBridgeProps();
+
+			return bridge.Ext.getCmp('props-desc-persons');
 		}
 	}
 );

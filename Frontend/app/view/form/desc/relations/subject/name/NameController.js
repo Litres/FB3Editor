@@ -21,12 +21,23 @@ Ext.define(
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading)
 			{
+				me.onCleanResultContainer();
 				title = view.getTitle();
 				title.autoValue();
 				title = view.getTitle();
 				names = title.getNames();
 				me.searchName(names);
 			}
+		},
+
+		onFocus: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				artsContainer;
+
+			artsContainer = view.getArtsContainer();
+			artsContainer.clean();
 		},
 
 		/**

@@ -56,6 +56,10 @@ Ext.define(
 						blur: function (field)
 						{
 							this.ownerCt.fireEvent('blurTitle', field);
+						},
+						focus: function (field)
+						{
+							this.ownerCt.fireEvent('focusTitle', field);
 						}
 					}
 				}

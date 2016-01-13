@@ -141,6 +141,18 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет все данные из контейнера.
+		 */
+		clean: function ()
+		{
+			var me = this,
+				panel;
+
+			panel = me.getPanelPersons();
+			panel.clean();
+		},
+
+		/**
 		 * Возвращает панель персон.
 		 * @return {FBEditor.view.panel.persons.Persons}
 		 */

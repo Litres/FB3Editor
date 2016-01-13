@@ -28,7 +28,8 @@ Ext.define(
 		selectFn: Ext.emptyFn,
 
 		translateText: {
-			noArts: 'Ничего не найдено'
+			notFound: 'Ничего не найдено',
+			loading: 'Загрузка...'
 		},
 
 		initComponent: function ()
@@ -58,12 +59,10 @@ Ext.define(
 			var me = this;
 
 			//console.log('load', data);
+			me.setLoading(false);
 			
 			if (data && data.length)
 			{
-				Ext.suspendLayouts();
-				me.removeAll();
-
 				Ext.Array.each(
 					data,
 					function (item)
@@ -101,7 +100,6 @@ Ext.define(
 				me.noArts();
 			}
 
-			Ext.resumeLayouts();
 			me.doLayout();
 		},
 
@@ -112,7 +110,10 @@ Ext.define(
 		{
 			var me = this;
 
+			Ext.suspendLayouts();
 			me.removeAll();
+			Ext.resumeLayouts();
+			me.doLayout();
 		},
 
 		/**
@@ -153,7 +154,7 @@ Ext.define(
 					border: true,
 					layout: 'fit',
 					style: 'text-align: center',
-					html: me.translateText.noArts
+					html: me.translateText.notFound
 				}
 			);
 		},

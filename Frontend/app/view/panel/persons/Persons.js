@@ -43,7 +43,8 @@ Ext.define(
 			creator: 'Создатель',
 			copyrighter: 'Правообладатель',
 			no: 'нет',
-			noPersons: 'Ничего не найдено'
+			notFound: 'Ничего не найдено',
+			loading: 'Загрузка...'
 		},
 
 		initComponent: function ()
@@ -73,6 +74,7 @@ Ext.define(
 			var me = this;
 
 			//console.log('load', me.countRepeatRequest, me.params, data);
+			me.setLoading(false);
 
 			if (me.countRepeatRequest < 3)
 			{
@@ -81,12 +83,8 @@ Ext.define(
 
 				if (data && data.length)
 				{
-					Ext.suspendLayouts();
-					me.removeAll();
-
 					// обнуляем счетчик запросов
 					me.countRepeatRequest = 0;
-
 
 					Ext.Array.each(
 						data,
@@ -148,12 +146,10 @@ Ext.define(
 			}
 			else
 			{
-				Ext.suspendLayouts();
 				me.countRepeatRequest = 0;
 				me.noPersons();
 			}
 
-			Ext.resumeLayouts();
 			me.doLayout();
 		},
 
@@ -164,7 +160,10 @@ Ext.define(
 		{
 			var me = this;
 
+			Ext.suspendLayouts();
 			me.removeAll();
+			Ext.resumeLayouts();
+			me.doLayout();
 		},
 
 		/**
@@ -243,7 +242,7 @@ Ext.define(
 					border: true,
 					layout: 'fit',
 					style: 'text-align: center',
-					html: me.translateText.noPersons
+					html: me.translateText.notFound
 				}
 			);
 		},

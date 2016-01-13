@@ -23,6 +23,7 @@ Ext.define(
 
 		listeners: {
 			change: 'onChange',
+			focus: 'onFocus',
 			cleanResultContainer: 'onCleanResultContainer'
 		},
 
@@ -62,6 +63,17 @@ Ext.define(
 			var bridge = FBEditor.getBridgeProps();
 
 			return bridge.Ext.getCmp('props-desc-persons');
+		},
+
+		/**
+		 * Возвращает контейнер для отображения произведений.
+		 * @return {FBEditor.view.panel.main.props.desc.arts.Arts}
+		 */
+		getArtsContainer: function ()
+		{
+			var bridge = FBEditor.getBridgeProps();
+
+			return bridge.Ext.getCmp('props-desc-arts');
 		}
 	}
 );

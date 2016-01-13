@@ -47,6 +47,10 @@ Ext.define(
 		 */
 		localStorageLimit: 10,
 
+		translateText: {
+			notFound: 'Ничего не найдено'
+		},
+
 		/**
 		 * @template
 		 * Возвращает созданное хранилище.
@@ -62,12 +66,11 @@ Ext.define(
 		{
 			var me = this;
 
+			me.defaultListConfig.emptyText = me.translateText.notFound;
 			me.store = me.getCreateStore();
-
 			me.localStorage = FBEditor.getLocalStorage();
 
 			me.callParent(arguments);
-
 		},
 
 		afterRender: function ()
