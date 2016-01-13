@@ -48,11 +48,12 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				posY = view.inputField.getY(),
-				height = view.getHeight();
+				height = view.getHeight(),
+				bodyHeight = Ext.getBody().getHeight();
 
 			if (view.isVisible() && view.inputField && view.rendered)
 			{
-				if (posY - height > 0)
+				if (bodyHeight - posY < height)
 				{
 					view.alignTo(view.inputField, 'tl', [0, -height]);
 				}
