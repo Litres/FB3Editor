@@ -76,7 +76,8 @@ Ext.define(
 			    {
 				    if (item.isShow)
 				    {
-					    item.fireEvent('alignTo');
+					    //item.fireEvent('alignTo');
+					    item.close();
 				    }
 			    }
 			);
