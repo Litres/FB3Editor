@@ -181,13 +181,16 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				resultContainer;
+				resultContainer = view.getResultContainer();
 
 			if (names.last.length > 1 || names.first.length > 1 || names.middle.length > 1)
 			{
-				resultContainer = view.getResultContainer();
 				resultContainer.fireEvent('loadData', names);
 				resultContainer.show();
+			}
+			else
+			{
+				resultContainer.abort();
 			}
 		},
 

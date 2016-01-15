@@ -27,6 +27,17 @@ Ext.define(
 		 */
 		selectFn: Ext.emptyFn,
 
+		/**
+		 * @property {Object} Индикатор загрузки.
+		 */
+		loadMask: null,
+
+		/**
+		 * @private
+		 * @property {Object} Индикатор загрузки по умолчанию.
+		 */
+		defaultLoadMask: null,
+
 		translateText: {
 			notFound: 'Ничего не найдено',
 			loading: 'Загрузка...'
@@ -47,7 +58,25 @@ Ext.define(
 			);
 			me.store = store;
 
+			// индикатор загрузки
+			me.loadMask = {
+				msg: me.translateText.loading,
+				margin: '25 0 0 0'
+			};
+			me.defaultLoadMask = me.loadMask;
+
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Устанавливает индикатор загрузки.
+		 * @param {Object} loadMask
+		 */
+		setLoadMask: function (loadMask)
+		{
+			var me = this;
+
+			me.loadMask = loadMask || me.defaultLoadMask;
 		},
 
 		/**

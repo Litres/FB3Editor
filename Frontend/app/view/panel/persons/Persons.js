@@ -28,6 +28,17 @@ Ext.define(
 		selectFn: Ext.emptyFn,
 
 		/**
+		 * @property {Object} Индикатор загрузки.
+		 */
+		loadMask: null,
+
+		/**
+		 * @private
+		 * @property {Object} Индикатор загрузки по умолчанию.
+		 */
+		defaultLoadMask: null,
+
+		/**
 		 * @private
 		 * @property {Number} Счетчик потворных запрос поиска в случае нулевого результата, поменяв местами фамилию и
 		 * имя.
@@ -62,11 +73,30 @@ Ext.define(
 			);
 			me.store = store;
 
+			// индикатор загрузки
+			me.loadMask = {
+				msg: me.translateText.loading,
+				margin: '25 0 0 0'
+			};
+			me.defaultLoadMask = me.loadMask;
+
 			me.callParent(arguments);
 		},
 
 		/**
+		 * Устанавливает индикатор загрузки.
+		 * @param {Object} loadMask
+		 */
+		setLoadMask: function (loadMask)
+		{
+			var me = this;
+
+			me.loadMask = loadMask || me.defaultLoadMask;
+		},
+
+		/**
 		 * Загружает данные персон в панель.
+		 * @event load Вбрасывается после загрузки данных.
 		 * @param {Array} data Данные персон.
 		 */
 		load: function (data)
@@ -75,6 +105,7 @@ Ext.define(
 
 			//console.log('load', me.countRepeatRequest, me.params, data);
 			me.setLoading(false);
+			me.fireEvent('load', data);
 
 			if (me.countRepeatRequest < 3)
 			{
@@ -168,6 +199,7 @@ Ext.define(
 
 		/**
 		 * Прерывает поиск.
+		 * @event abort Вбрасывается после прерывания запроса.
 		 */
 		abort: function ()
 		{
@@ -176,6 +208,7 @@ Ext.define(
 
 			me.setLoading(false);
 			store.abort();
+			me.fireEvent('abort');
 		},
 
 		/**

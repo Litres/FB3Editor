@@ -21,9 +21,26 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				input = view.inputField,
 				panelPersons;
 
+			// скрываем индикатор загрузки, который показывается по умолчанию в панели результатов
+			data.hideLoadMask = true;
+
 			panelPersons = view.getPanelPersons();
+
+			// настраиваем индикатор загрузки
+			panelPersons.setLoadMask(
+				{
+					msg: '',
+					target: input,
+					cls: 'mask-persons-loading',
+					style: {
+						width: input.getWidth() - 4 + 'px'
+					}
+				}
+			);
+
 			panelPersons.params = Ext.clone(data);
 			panelPersons.fireEvent('loadData', data);
 		},

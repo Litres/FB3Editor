@@ -116,6 +116,7 @@ Ext.define(
 			//console.log('expand storage', data);
 			if (data.length)
 			{
+				resultContainer.clean();
 				store.loadData(data);
 				resultContainer.show();
 			}

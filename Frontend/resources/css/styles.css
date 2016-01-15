@@ -249,6 +249,12 @@
 	right: 25px;
 }
 
+/* индикатор загрузки при поиске персон */
+.mask-persons-loading .x-mask-msg-text {
+	background-position: right 4px;
+}
+
+
 /* <<< затемнение для конечной части поля ввода */
 
 .fb3 .btn-minus.x-btn-default-small,
