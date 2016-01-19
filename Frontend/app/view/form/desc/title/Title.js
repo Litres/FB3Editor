@@ -27,6 +27,11 @@ Ext.define(
 		 */
 		enableAlt: true,
 
+		/**
+		 * @property {Object} Конфиг для поля главного заголовка.
+		 */
+		mainConfig: {},
+
 		translateText: {
 			main: 'Основное название',
 			sub: 'Подзаголовок',
@@ -37,33 +42,36 @@ Ext.define(
 		{
 			var me = this,
 				name = me.name,
-				items = [];
+				items = [],
+				main;
 
-			items.push(
-				{
-					xtype: 'textfield',
-					allowBlank: false,
-					checkChangeBuffer: me.checkChangeBuffer,
-					name: name + '-main',
-					fieldLabel: me.translateText.main,
-					cls: 'field-required',
-					keyEnterAsTab: true,
-					listeners: {
-						change: function (field, newVal, oldVal)
-						{
-							this.ownerCt.fireEvent('changeTitle', field, newVal, oldVal);
-						},
-						blur: function (field)
-						{
-							this.ownerCt.fireEvent('blurTitle', field);
-						},
-						focus: function (field)
-						{
-							this.ownerCt.fireEvent('focusTitle', field);
-						}
+
+			main = {
+				xtype: 'textfield',
+				allowBlank: false,
+				checkChangeBuffer: me.checkChangeBuffer,
+				name: name + '-main',
+				fieldLabel: me.translateText.main,
+				cls: 'field-required',
+				keyEnterAsTab: true,
+				listeners: {
+					change: function (field, newVal, oldVal)
+					{
+						this.ownerCt.fireEvent('changeTitle', field, newVal, oldVal);
+					},
+					blur: function (field)
+					{
+						this.ownerCt.fireEvent('blurTitle', field);
+					},
+					focus: function (field)
+					{
+						this.ownerCt.fireEvent('focusTitle', field);
 					}
 				}
-			);
+			};
+
+			Ext.apply(main, me.mainConfig);
+			items.push(main);
 
 			if (me.enableSub)
 			{

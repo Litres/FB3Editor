@@ -10,8 +10,8 @@ Ext.define(
 		extend: 'Ext.form.Panel',
 		requires: [
 			'FBEditor.view.form.desc.DescController',
-			'Ext.ux.FieldReplicator',
 			'FBEditor.ux.FieldContainerReplicator',
+			'FBEditor.ux.SearchField',
 			'FBEditor.view.field.country.Country',
 			'FBEditor.view.field.lang.Lang',
 			'FBEditor.view.field.datetime.Datetime',

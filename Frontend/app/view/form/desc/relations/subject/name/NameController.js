@@ -10,6 +10,24 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.form.desc.relations.subject.name',
 
+		onAfterRender: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				resultContainer = view.getResultContainer(),
+				personsContainer = resultContainer.getPanelPersons();
+
+			// сбрасываем ФИО, сохраненные в локальном хранилище
+			me.onCleanResultContainer();
+
+			personsContainer.on(
+				{
+					scope: view,
+					afterLoad: view.afterLoad
+				}
+			);
+		},
+
 		onChange: function ()
 		{
 			var me = this,
@@ -65,10 +83,15 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				plugin,
 				resultContainer;
 
 			if (names.last.length > 1 || names.first.length > 1 || names.middle.length > 1)
 			{
+				// показываем индикатор загрузки
+				plugin = view.getPlugin('searchField');
+				plugin.showLoader();
+
 				resultContainer = view.getResultContainer();
 				resultContainer.fireEvent('loadData', names);
 
@@ -84,10 +107,15 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				resultContainer;
+				resultContainer,
+				plugin;
 
 			resultContainer = view.getResultContainer();
 			resultContainer.abort();
+
+			// скрываем индикатор загрузки
+			plugin = view.getPlugin('searchField');
+			plugin.hideLoader();
 		}
 	}
 );

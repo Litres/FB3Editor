@@ -14,6 +14,10 @@ Ext.define(
 		controller: 'form.desc.relations.subject.name',
 		xtype: 'form-desc-relations-subject-name',
 		checkChangeBuffer: 200,
+		plugins: {
+			ptype: 'searchField',
+			style: 'right: 2px'
+		},
 
 		/**
 		 * @private
@@ -24,17 +28,8 @@ Ext.define(
 		listeners: {
 			change: 'onChange',
 			focus: 'onFocus',
+			afterrender: 'onAfterRender',
 			cleanResultContainer: 'onCleanResultContainer'
-		},
-
-		afterRender: function ()
-		{
-			var me = this;
-
-			me.callParent(arguments);
-
-			// сбрасываем ФИО, сохраненные в локальном хранилище
-			me.fireEvent('cleanResultContainer');
 		},
 
 		/**
@@ -74,6 +69,30 @@ Ext.define(
 			var bridge = FBEditor.getBridgeProps();
 
 			return bridge.Ext.getCmp('props-desc-arts');
+		},
+
+		/**
+		 * @private
+		 * Вызывается после загрузки данных.
+		 * @param {Array} data Данные.
+		 */
+		afterLoad: function (data)
+		{
+			var me = this,
+				plugin;
+
+			plugin = me.getPlugin('searchField');
+
+			if (data)
+			{
+				// скрываем индикатор загрузки
+				plugin.hideLoader();
+			}
+			else
+			{
+				// меняем индикатор
+				plugin.emptyLoader();
+			}
 		}
 	}
 );

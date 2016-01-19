@@ -27,6 +27,13 @@ Ext.define(
 		 */
 		enableAlt: true,
 
+		mainConfig: {
+			plugins: {
+				ptype: 'searchField',
+				style: 'right: 2px'
+			}
+		},
+
 		listeners: {
 			changeTitle: 'onChangeTitle',
 			blurTitle: 'onBlurTitle',
@@ -36,12 +43,21 @@ Ext.define(
 
 		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+				resultContainer = me.getResultContainer(),
+				artsContainer = resultContainer.getPanelArts();
 
 			me.callParent(arguments);
 
 			// сбрасываем названия, сохраненные в локальном хранилище
 			me.fireEvent('cleanResultContainer');
+
+			artsContainer.on(
+				{
+					scope: this,
+					afterLoad: me.afterLoad
+				}
+			)
 		},
 
 		/**
@@ -64,6 +80,31 @@ Ext.define(
 			var bridge = FBEditor.getBridgeProps();
 
 			return bridge.Ext.getCmp('props-desc-persons');
+		},
+
+		/**
+		 * @private
+		 * Вызывается после загрузки данных.
+		 * @param {Array} data Данные.
+		 */
+		afterLoad: function (data)
+		{
+			var me = this,
+				input = me.getMain(),
+				plugin;
+
+			plugin = input.getPlugin('searchField');
+
+			if (data)
+			{
+				// скрываем индикатор загрузки
+				plugin.hideLoader();
+			}
+			else
+			{
+				// меняем индикатор
+				plugin.emptyLoader();
+			}
 		}
 	}
 );

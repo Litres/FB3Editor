@@ -69,11 +69,17 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				input = view.getMain(),
+				plugin,
 				resultContainer,
 				params;
 
 			if (name.length > 1)
 			{
+				// показываем индикатор загрузки
+				plugin = input.getPlugin('searchField');
+				plugin.showLoader();
+
 				resultContainer = view.getResultContainer();
 				params = {q: name};
 				resultContainer.fireEvent('loadData', params);
@@ -90,10 +96,16 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				input = view.getMain(),
+				plugin,
 				resultContainer;
 
 			resultContainer = view.getResultContainer();
 			resultContainer.abort();
+
+			// скрываем индикатор загрузки
+			plugin = input.getPlugin('searchField');
+			plugin.hideLoader();
 		}
 	}
 );

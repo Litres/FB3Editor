@@ -10,6 +10,34 @@ Ext.define(
 		extend: 'FBEditor.view.field.combosearch.ComboSearchController',
 		alias: 'controller.form.desc.relations.subject.search.name',
 
+		onAfterRender: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				resultContainer = view.getResultContainer(),
+				personsContainer = resultContainer.getPanelPersons();
+
+			// обрабатываем esc в поле ввода
+			view.keyNav = new Ext.util.KeyNav(
+				{
+					target: view.inputEl,
+					//forceKeyDown: true,
+					esc: function ()
+					{
+						this.onEsc();
+					},
+					scope: resultContainer
+				}
+			);
+
+			personsContainer.on(
+				{
+					scope: view,
+					afterLoad: view.afterLoad
+				}
+			);
+		},
+
 		/**
 		 * Вызывается при выборе персоны из списка.
 		 * @param {Object} data Данные персоны.

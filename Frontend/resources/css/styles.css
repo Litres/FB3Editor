@@ -249,9 +249,11 @@
 	right: 25px;
 }
 
-/* индикатор загрузки при поиске персон */
-.mask-persons-loading .x-mask-msg-text {
-	background-position: right 4px;
+/* плагин для индикатор загрузки в полях поиска */
+.fb3 .form-desc .plugin-searchField-loader {
+	position: absolute;
+	margin-top: -17px;
+	color: #aaa;
 }
 
 

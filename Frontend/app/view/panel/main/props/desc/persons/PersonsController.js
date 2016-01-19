@@ -17,6 +17,10 @@ Ext.define(
 				panelPersons;
 
 			panelPersons = view.getPanelPersons();
+
+			// ставим индикатор загрузки по умолчанию
+			panelPersons.setLoadMask();
+
 			panelPersons.params = Ext.clone(data);
 			panelPersons.fireEvent('loadData', data);
 		}

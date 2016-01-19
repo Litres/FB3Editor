@@ -78,7 +78,7 @@ Ext.define(
 				msg: me.translateText.loading,
 				margin: '25 0 0 0'
 			};
-			me.defaultLoadMask = me.loadMask;
+			me.defaultLoadMask = Ext.clone(me.loadMask);
 
 			me.callParent(arguments);
 		},
@@ -89,14 +89,15 @@ Ext.define(
 		 */
 		setLoadMask: function (loadMask)
 		{
-			var me = this;
+			var me = this,
+				mask = loadMask || me.defaultLoadMask;
 
-			me.loadMask = loadMask || me.defaultLoadMask;
+			me.loadMask = Ext.clone(mask);
 		},
 
 		/**
 		 * Загружает данные персон в панель.
-		 * @event load Вбрасывается после загрузки данных.
+		 * @event afterLoad Вбрасывается после загрузки данных.
 		 * @param {Array} data Данные персон.
 		 */
 		load: function (data)
@@ -105,7 +106,7 @@ Ext.define(
 
 			//console.log('load', me.countRepeatRequest, me.params, data);
 			me.setLoading(false);
-			me.fireEvent('load', data);
+			me.fireEvent('afterLoad', data);
 
 			if (me.countRepeatRequest < 3)
 			{
@@ -282,14 +283,19 @@ Ext.define(
 			var me = this;
 
 			me.clean();
-			me.add(
-				{
-					border: true,
-					layout: 'fit',
-					style: 'text-align: center',
-					html: me.translateText.notFound
-				}
-			);
+
+			if (me.loadMask)
+			{
+				// если есть индикатор загрузки, то показываем надпись
+				me.add(
+					{
+						border: true,
+						layout: 'fit',
+						style: 'text-align: center',
+						html: me.translateText.notFound
+					}
+				);
+			}
 		},
 
 		/**

@@ -15,11 +15,16 @@ Ext.define(
 		controller: 'form.desc.relations.subject.search.name',
 		xtype: 'form-desc-relations-subject-searchName',
 		checkChangeBuffer: 200,
+		plugins: {
+			ptype: 'searchField',
+			style: 'margin-left: 280px'
+		},
 
 		keyEnterAsTab: true,
 
 		listeners: {
 			select: 'onSelect',
+			afterrender: 'onAfterRender',
 			click: {
 				element: 'el',
 				fn: 'onClick'
@@ -54,26 +59,6 @@ Ext.define(
 			resultContainer.inputField = me;
 
 			me.resultContainer = resultContainer;
-
-			me.callParent(arguments);
-		},
-
-		afterRender: function ()
-		{
-			var me = this;
-
-			// обрабатываем esc в поле ввода
-			me.keyNav = new Ext.util.KeyNav(
-				{
-					target: me.inputEl,
-					//forceKeyDown: true,
-					esc: function ()
-					{
-						this.onEsc();
-					},
-					scope: me.resultContainer
-				}
-			);
 
 			me.callParent(arguments);
 		},
@@ -189,6 +174,33 @@ Ext.define(
 			store = panelPersons.store;
 
 			return store;
+		},
+
+		/**
+		 * @private
+		 * Вызывается после загрузки данных.
+		 * @param {Array} data Данные.
+		 */
+		afterLoad: function (data)
+		{
+			var me = this,
+				resultContainer = me.getResultContainer(),
+				plugin;
+
+			plugin = me.getPlugin('searchField');
+
+			if (data)
+			{
+				// скрываем индикатор
+				plugin.hideLoader();
+			}
+			else
+			{
+				// меняем индикатор
+				plugin.emptyLoader();
+
+				resultContainer.close();
+			}
 		}
 	}
 );

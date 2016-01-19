@@ -24,6 +24,10 @@ Ext.define(
 			shadow: false,
 			maxHeight: 200
 		},
+		plugins: {
+			ptype: 'searchField',
+			style: 'margin-left: 280px'
+		},
 
 		keyEnterAsTab: true,
 
@@ -47,10 +51,6 @@ Ext.define(
 		 */
 		localStorageLimit: 10,
 
-		translateText: {
-			notFound: 'Ничего не найдено'
-		},
-
 		/**
 		 * @template
 		 * Возвращает созданное хранилище.
@@ -66,7 +66,6 @@ Ext.define(
 		{
 			var me = this;
 
-			me.defaultListConfig.emptyText = me.translateText.notFound;
 			me.store = me.getCreateStore();
 			me.localStorage = FBEditor.getLocalStorage();
 
@@ -108,52 +107,6 @@ Ext.define(
 			);
 
 			me.callParent(arguments);
-
-		},
-
-		onPaste: function ()
-		{
-			var me = this,
-				val = me.getValue();
-
-			if (!me.isValid())
-			{
-				me.collapse();
-				return;
-			}
-
-			// определяем задержку запроса, в зависимости от количества введенных символов
-			me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
-
-			me.callParent(arguments);
-		},
-
-		onKeyUp: function (e)
-		{
-			var me = this,
-				k = e.getKey(),
-				val = me.getValue(),
-				pos;
-
-			if (!me.isValid())
-			{
-				me.collapse();
-				return;
-			}
-
-			// позиция курсора в поле
-			pos = me.inputEl.dom.selectionStart;
-
-			// запрос не отправится, если введен пробел в конце строки
-			if (k !== e.SPACE || k === e.SPACE && pos !== val.length)
-			{
-				// определяем задержку запроса, в зависимости от количества введенных символов
-				me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
-
-				//me.setValue(val.trim());
-
-				me.callParent(arguments);
-			}
 
 		},
 
@@ -212,6 +165,121 @@ Ext.define(
 			data = data ? data : [];
 
 			return data;
+		},
+
+		onPaste: function ()
+		{
+			var me = this,
+				val = me.getValue();
+
+			if (!me.isValid())
+			{
+				me.collapse();
+				return;
+			}
+
+			// определяем задержку запроса, в зависимости от количества введенных символов
+			me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
+
+			me.callParent(arguments);
+		},
+
+		onKeyUp: function (e)
+		{
+			var me = this,
+				k = e.getKey(),
+				val = me.getValue(),
+				pos;
+
+			if (!me.isValid())
+			{
+				me.collapse();
+				return;
+			}
+
+			// позиция курсора в поле
+			pos = me.inputEl.dom.selectionStart;
+
+			// запрос не отправится, если введен пробел в конце строки
+			if (k !== e.SPACE || k === e.SPACE && pos !== val.length)
+			{
+				// определяем задержку запроса, в зависимости от количества введенных символов
+				me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
+
+				//me.setValue(val.trim());
+
+				me.callParent(arguments);
+			}
+
+		},
+
+		/**
+		 * @private
+		 * Переписываем стандартный метод, чтобы скрыть список и стандартный индикатор загрузки в списке.
+		 * @param queryPlan
+		 */
+		doRemoteQuery: function(queryPlan)
+		{
+			var me = this,
+				loadCallback = function() {
+					me.afterQuery(queryPlan);
+				},
+				plugin;
+
+			// показываем индикатор поиска
+			plugin = me.getPlugin('searchField');
+			plugin.showLoader();
+
+			// fix
+			//me.expand();
+			me.collapse();
+
+			// In queryMode: 'remote', we assume Store filters are added by the developer as remote filters,
+			// and these are automatically passed as params with every load call, so we do *not* call clearFilter.
+			if (me.pageSize) {
+				// if we're paging, we've changed the query so start at page 1.
+				me.loadPage(1, {
+					rawQuery: queryPlan.rawQuery,
+					callback: loadCallback
+				});
+			} else {
+				me.store.load({
+					params: me.getParams(queryPlan.query),
+					rawQuery: queryPlan.rawQuery,
+					callback: loadCallback
+				});
+			}
+		},
+
+		/**
+		 * @private
+		 * Переписываем стандартный метод, чтобы показать список и спрятать индикатор.
+		 * @param queryPlan
+		 */
+		afterQuery: function(queryPlan)
+		{
+			var me = this,
+				data,
+				plugin;
+
+			data = me.store.getData().items.length ? me.store.getData().items : null;
+			plugin = me.getPlugin('searchField');
+
+			if (data)
+			{
+				// скрываем индикатор
+				plugin.hideLoader();
+			}
+			else
+			{
+				// меняем индикатор
+				plugin.emptyLoader();
+			}
+
+			// fix
+			me.expand();
+
+			me.callParent(arguments);
 		}
 	}
 );

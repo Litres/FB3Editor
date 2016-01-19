@@ -63,7 +63,7 @@ Ext.define(
 				msg: me.translateText.loading,
 				margin: '25 0 0 0'
 			};
-			me.defaultLoadMask = me.loadMask;
+			me.defaultLoadMask = Ext.clone(me.loadMask);
 
 			me.callParent(arguments);
 		},
@@ -74,13 +74,15 @@ Ext.define(
 		 */
 		setLoadMask: function (loadMask)
 		{
-			var me = this;
+			var me = this,
+				mask = loadMask || me.defaultLoadMask;
 
-			me.loadMask = loadMask || me.defaultLoadMask;
+			me.loadMask = Ext.clone(mask);
 		},
 
 		/**
 		 * Загружает данные произведений в панель.
+		 * @event afterLoad Вбрасывается после загрузки данных.
 		 * @param {Array} data Данные произведений.
 		 */
 		load: function (data)
@@ -89,7 +91,7 @@ Ext.define(
 
 			//console.log('load', data);
 			me.setLoading(false);
-			//me.clean();
+			me.fireEvent('afterLoad', data);
 
 			if (data && data.length)
 			{
@@ -148,6 +150,7 @@ Ext.define(
 
 		/**
 		 * Прерывает поиск.
+		 * @event abort Вбрасывается после прерывания запроса.
 		 */
 		abort: function ()
 		{
@@ -156,6 +159,7 @@ Ext.define(
 
 			me.setLoading(false);
 			store.abort();
+			me.fireEvent('abort');
 		},
 
 		/**
