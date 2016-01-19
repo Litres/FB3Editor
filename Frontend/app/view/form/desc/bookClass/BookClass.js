@@ -9,9 +9,11 @@ Ext.define(
 	{
 		extend: 'Ext.form.field.ComboBox',
 		requires: [
-			'FBEditor.view.form.desc.bookClass.BookClassStore'
+			'FBEditor.view.form.desc.bookClass.BookClassStore',
+			'FBEditor.view.form.desc.bookClass.BookClassController'
 		],
 		xtype: 'form-desc-bookClass',
+		controller: 'form.desc.bookClass',
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
@@ -19,6 +21,10 @@ Ext.define(
 		editable: false,
 		listConfig: {
 			maxHeight: 'auto'
+		},
+
+		listeners: {
+			change: 'onChange'
 		},
 
 		initComponent: function ()

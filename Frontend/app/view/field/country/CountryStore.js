@@ -13,6 +13,7 @@ Ext.define(
 			'name'
 		],
 		data: [
+			{value: '', name: 'Неизвестно'},
 			{"value": "RU", "name": "\u0420\u043e\u0441\u0441\u0438\u044f"},
 			{"value": "AU", "name": "\u0410\u0432\u0441\u0442\u0440\u0430\u043b\u0438\u044f"},
 			{"value": "AT", "name": "\u0410\u0432\u0441\u0442\u0440\u0438\u044f"},

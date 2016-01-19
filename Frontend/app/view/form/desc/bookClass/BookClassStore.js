@@ -13,10 +13,7 @@ Ext.define(
 			'name'
 		],
 		data: [
-			{
-				value: '',
-				name: 'Неизвестно'
-			},
+			{value: '', name: 'Неизвестно'},
 			{
 				value: 'novel',
 				name: 'Роман'

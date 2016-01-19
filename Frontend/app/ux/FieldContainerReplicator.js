@@ -296,9 +296,13 @@ Ext.define(
 					ownerCt.add(idx, clone);
 				}
 
-				// ставим фокус
 				focusField = ownerCt.items.getAt(idx).down('field:focusable');
-				focusField.focus();
+
+				if (focusField)
+				{
+					// ставим фокус
+					focusField.focus();
+				}
 
 				me.checkLastInGroup(ownerCt, replicatorId);
 			}

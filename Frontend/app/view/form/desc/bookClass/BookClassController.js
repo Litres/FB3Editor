@@ -1,18 +1,18 @@
 /**
- * Контроллер поля выбора страны.
+ * Контроллер списка литературных форм.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.field.country.CountryController',
+	'FBEditor.view.form.desc.bookClass.BookClassController',
 	{
 		extend: 'Ext.app.ViewController',
-		alias: 'controller.countryfield',
+		alias: 'controller.form.desc.bookClass',
 
 		/**
 		 * Очищает поле, если новое значение не содержится в списке или пустое.
-		 * @param {FBEditor.view.field.country.Country} cmp Поле.
+		 * @param {FBEditor.view.form.desc.bookClass.BookClass} cmp Поле.
 		 * @param {String} newValue Новое значение.
 		 */
 		onChange: function (cmp, newValue)

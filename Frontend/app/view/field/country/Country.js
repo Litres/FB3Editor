@@ -21,6 +21,7 @@ Ext.define(
 		listConfig: {
 			maxHeight: 'auto'
 		},
+
 		listeners: {
 			change: 'onChange'
 		},
