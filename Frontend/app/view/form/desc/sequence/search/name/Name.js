@@ -27,6 +27,8 @@ Ext.define(
 			'<div class="x-boundlist-item boundlist-search-item">',
 			'<div class="boundlist-search-item-name">{name}</div>',
 			'<div class="boundlist-search-item-sub">{id}</div>',
+			'<a style="position: absolute; right: -20px;" class="boundlist-search-item-link" target="_blank',
+			' href="https://hub.litres.ru/pages/edit_subject/?subject={id}"><i class="fa fa-external-link"></i></a>',
 			'</div>',
 			'</tpl>'
 		),

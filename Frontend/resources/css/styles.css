@@ -869,6 +869,13 @@
 	padding: 3px 0 3px 8px;
 }
 
+.panel-persons-item-link {
+	position: absolute;
+	top: 25px;
+	right: 2px;
+	color: #2e7ed5;
+}
+
 .panel-persons-item-book a {
 	color: #2e7ed5;
 }

@@ -120,6 +120,7 @@ Ext.define(
 					xtype: 'desc-fieldsetinner',
 					layout: 'hbox',
 					title: me.translateText.codes,
+					require: true,
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',

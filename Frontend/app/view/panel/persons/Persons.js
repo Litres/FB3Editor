@@ -55,7 +55,8 @@ Ext.define(
 			copyrighter: 'Правообладатель',
 			no: 'нет',
 			notFound: 'Ничего не найдено',
-			loading: 'Загрузка...'
+			loading: 'Загрузка...',
+			link: 'Страница редактирования'
 		},
 
 		initComponent: function ()
@@ -328,6 +329,11 @@ Ext.define(
 				'       style="color: {link_color}">{creator_login}</div>' +
 				'   <div class="panel-persons-item-desc">{description}</div>' +
 				'   <div class="panel-persons-item-time">{last_action_time}</div>' +
+				'   <a class="panel-persons-item-link" target="_blank"' +
+				'           title="' + me.translateText.link + '"' +
+				'           href="https://hub.litres.ru/pages/edit_subject/?subject={id}">' +
+				'       <i class="fa fa-external-link"></i>' +
+				'   </a>' +
 				'</div>'
 			);
 
