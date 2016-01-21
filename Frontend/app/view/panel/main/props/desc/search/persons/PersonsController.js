@@ -1,14 +1,14 @@
 /**
- * Контроллер контейнера с результатами поиска персон.
+ * Контроллер родительского контейнера с результатами поиска персон.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.desc.persons.PersonsController',
+	'FBEditor.view.panel.main.props.desc.search.persons.PersonsController',
 	{
-		extend: 'Ext.app.ViewController',
-		alias: 'controller.props.desc.persons',
+		extend: 'FBEditor.view.panel.main.props.desc.search.ContainerController',
+		alias: 'controller.props.desc.search.persons',
 
 		onLoadData: function (params)
 		{
@@ -16,6 +16,7 @@ Ext.define(
 				view = me.getView(),
 				containerItems;
 
+			view.setVisible(true);
 			containerItems = view.getContainerItems();
 
 			// сохраняем параметры запроса для повторных запросов

@@ -126,7 +126,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Вызывается после добавления записи персоны и рендеринга в контейнер.
+		 * Вызывается после добавления записи персоны в контейнер.
 		 * @param {Ext.Component} personCmp Компонент персоны.
 		 */
 		afterRenderPerson: function (personCmp)

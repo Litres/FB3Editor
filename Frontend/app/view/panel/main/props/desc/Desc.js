@@ -10,8 +10,8 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.props.desc.DescController',
-			'FBEditor.view.panel.main.props.desc.arts.Arts',
-			'FBEditor.view.panel.main.props.desc.persons.Persons',
+			'FBEditor.view.panel.main.props.desc.search.arts.Arts',
+			'FBEditor.view.panel.main.props.desc.search.persons.Persons',
 			'FBEditor.view.button.desc.Load',
 			'FBEditor.view.button.desc.Save'
 		],
@@ -113,10 +113,10 @@ Ext.define(
 					disabled: saveUrl ? false : true
 				}*/
 				{
-					xtype: 'props-desc-arts'
+					xtype: 'props-desc-search-arts'
 				},
 				{
-					xtype: 'props-desc-persons'
+					xtype: 'props-desc-search-persons'
 				}
 			];
 

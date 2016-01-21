@@ -1,23 +1,23 @@
 /**
- * Контейнер с результатами поиска персон.
+ * Родительский контейнер с результатами поиска.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.desc.persons.Persons',
+	'FBEditor.view.panel.main.props.desc.search.Container',
 	{
 		extend: 'Ext.Container',
 		requires: [
-			'FBEditor.view.panel.main.props.desc.persons.PersonsController',
-			'FBEditor.view.container.desc.search.persons.Persons'
+			'FBEditor.view.panel.main.props.desc.search.ContainerController'
 		],
 		mixins: {
 			behavior: 'FBEditor.view.container.desc.search.OwnerContainerBehavior'
 		},
-		controller: 'props.desc.persons',
-		xtype: 'props-desc-persons',
-		id: 'props-desc-persons',
+		controller: 'props.desc.search.container',
+		xtype: 'props-desc-search-container',
+
+		hidden: true,
 
 		listeners: {
 			loadData: 'onLoadData'
@@ -26,7 +26,7 @@ Ext.define(
 		/**
 		 * @property {String} xtype контейнера с результатми поиска.
 		 */
-		xtypeContainerItems: 'container-desc-search-persons',
+		xtypeContainerItems: '',
 
 		/**
 		 * @property {Ext.Container} Панель персон.
@@ -69,7 +69,7 @@ Ext.define(
 				storage = FBEditor.getLocalStorage(),
 				names;
 
-			names = storage.getItem(me.id + '-lastNames');
+			names = storage.getItem(me.id);
 			names = JSON.parse(names);
 
 			return names;
@@ -84,16 +84,18 @@ Ext.define(
 			var me = this,
 				storage = FBEditor.getLocalStorage();
 
-			storage.setItem(me.id + '-lastNames', JSON.stringify(names));
+			storage.setItem(me.id, JSON.stringify(names));
 		},
 
 		clean: function ()
 		{
+			this.setVisible(false);
 			this.mixins.behavior.clean.call(this);
 		},
 
 		abort: function ()
 		{
+			this.setVisible(false);
 			this.mixins.behavior.abort.call(this);
 		},
 

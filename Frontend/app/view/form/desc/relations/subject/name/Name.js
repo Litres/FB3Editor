@@ -57,18 +57,18 @@ Ext.define(
 		{
 			var bridge = FBEditor.getBridgeProps();
 
-			return bridge.Ext.getCmp('props-desc-persons');
+			return bridge.Ext.getCmp('props-desc-search-persons');
 		},
 
 		/**
 		 * Возвращает контейнер для отображения произведений.
-		 * @return {FBEditor.view.panel.main.props.desc.arts.Arts}
+		 * @return {Ext.Container}
 		 */
 		getArtsContainer: function ()
 		{
 			var bridge = FBEditor.getBridgeProps();
 
-			return bridge.Ext.getCmp('props-desc-arts');
+			return bridge.Ext.getCmp('props-desc-search-arts');
 		},
 
 		/**

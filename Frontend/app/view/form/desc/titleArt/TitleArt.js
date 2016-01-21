@@ -10,12 +10,19 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.title.Title',
 		requires: [
 			'FBEditor.view.form.desc.titleArt.TitleArtController',
-			'FBEditor.view.panel.main.props.desc.arts.Arts'
+			'FBEditor.view.panel.main.props.desc.search.arts.Arts'
 		],
 		controller: 'form.desc.titleArt',
 		xtype: 'form-desc-titleArt',
 		id: 'form-desc-title',
 		cls: 'container-valid',
+
+		listeners: {
+			changeTitle: 'onChangeTitle',
+			blurTitle: 'onBlurTitle',
+			focusTitle: 'onFocusTitle',
+			cleanResultContainer: 'onCleanResultContainer'
+		},
 
 		/**
 		 * @property {Boolean} Необходимо ли показывать подзаголовок.
@@ -34,25 +41,18 @@ Ext.define(
 			}
 		},
 
-		listeners: {
-			changeTitle: 'onChangeTitle',
-			blurTitle: 'onBlurTitle',
-			focusTitle: 'onFocusTitle',
-			cleanResultContainer: 'onCleanResultContainer'
-		},
-
 		afterRender: function ()
 		{
 			var me = this,
 				resultContainer = me.getResultContainer(),
-				artsContainer = resultContainer.getPanelArts();
+				containerItems = resultContainer.getContainerItems();
 
 			me.callParent(arguments);
 
 			// сбрасываем названия, сохраненные в локальном хранилище
 			me.fireEvent('cleanResultContainer');
 
-			artsContainer.on(
+			containerItems.on(
 				{
 					scope: this,
 					afterLoad: me.afterLoad
@@ -62,13 +62,13 @@ Ext.define(
 
 		/**
 		 * Возвращает контейнер для отображения результатов поиска.
-		 * @return {FBEditor.view.panel.main.props.desc.arts.Arts}
+		 * @return {Ext.container}
 		 */
 		getResultContainer: function ()
 		{
 			var bridge = FBEditor.getBridgeProps();
 
-			return bridge.Ext.getCmp('props-desc-arts');
+			return bridge.Ext.getCmp('props-desc-search-arts');
 		},
 
 		/**
@@ -79,7 +79,7 @@ Ext.define(
 		{
 			var bridge = FBEditor.getBridgeProps();
 
-			return bridge.Ext.getCmp('props-desc-persons');
+			return bridge.Ext.getCmp('props-desc-search-persons');
 		},
 
 		/**

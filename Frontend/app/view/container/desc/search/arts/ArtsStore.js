@@ -5,13 +5,10 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.arts.ArtsStore',
+	'FBEditor.view.container.desc.search.arts.ArtsStore',
 	{
 		extend: 'FBEditor.store.AbstractStore',
 
-		/**
-		 * @property {String} URL запроса.
-		 */
 		url: 'https://hub.litres.ru/pages/machax_arts/',
 
 		rootProperty: 'arts'
