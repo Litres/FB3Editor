@@ -250,12 +250,24 @@
 }
 
 /* плагин для индикатор загрузки в полях поиска */
-.fb3 .form-desc .plugin-searchField-loader {
+.fb3 .plugin-searchField-loader {
 	position: absolute;
 	margin-top: -17px;
 	color: #aaa;
 }
 
+/* индикатор поиска для контейнера результатов поиска в описании */
+.mask-container-desc-search {
+	padding-top: 45px;
+	text-align: center;
+	color: #aaa;
+}
+.mask-container-desc-search i {
+	position: absolute;
+	top: 0;
+	left: -20px;
+	margin-left: 50%;
+}
 
 /* <<< затемнение для конечной части поля ввода */
 
@@ -818,79 +830,66 @@
 }
 
 /* Панель данных персон */
-
-.panel-persons-item {
+.container-search-persons-item {
 	border: 1px solid #000;
 	margin: 4px 0;
 }
-
-.panel-persons-item-common {
+.container-search-persons-item-common {
 	padding: 4px;
 }
-
-.panel-persons-item-fio {
+.container-search-persons-item-fio {
 	display: inline-block;
 	width: 250px;
 }
-
-.panel-persons-item-fio span {
+.container-search-persons-item-fio span {
 	border-bottom: 1px dotted;
 	cursor: pointer;
 	color: #2e7ed5;
 	font-size: 16px;
 }
-
-.panel-persons-item-creator,
-.panel-persons-item-copyrighters {
+.container-search-persons-item-creator,
+.container-search-persons-item-copyrighters {
 	display: inline-block;
 	margin-left: 5px;
 	font-size: 14px;
 }
-
-.panel-persons-item-copyrighters {
+.container-search-persons-item-copyrighters {
 	min-width: 100px;
 }
-
-.panel-persons-item-desc,
-.panel-persons-item-time {
+.container-search-persons-item-desc,
+.container-search-persons-item-time {
 	padding: 4px 0 0 0;
 	color: gray;
 	font-size: 13px;
 }
-
-.panel-persons-item-books {
+.container-search-persons-item-books {
 	padding: 0;
 	margin: 0;
 	list-style-position: inside;
 	font-size: 14px;
 }
-
-.panel-persons-item-book {
+.container-search-persons-item-book {
 	padding: 3px 0 3px 8px;
 }
 
-.panel-persons-item-link {
+.container-search-persons-item-link {
 	position: absolute;
 	top: 25px;
 	right: 2px;
 	color: #2e7ed5;
 }
-
-.panel-persons-item-book a {
+.container-search-persons-item-book a {
 	color: #2e7ed5;
 }
-
-.panel-persons .x-fieldset-default {
+.container-search-persons .x-fieldset-default {
 	border: none;
 	padding: 0;
 	margin: 0;
 }
-
-.panel-persons .x-fieldset-body-default {
+.container-search-persons .x-fieldset-body-default {
 	padding: 0;
 }
-
-.panel-persons .x-fieldset-header-default {
+.container-search-persons .x-fieldset-header-default {
 	padding: 0;
 	color: #2e7ed5;
 }

@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.searchField.SearchField',
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.search.name.NameController',
-		    'FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainer'
+		    'FBEditor.view.form.desc.relations.subject.search.name.window.Window'
 		],
 		controller: 'form.desc.relations.subject.search.name',
 		xtype: 'form-desc-relations-subject-searchName',
@@ -22,7 +22,7 @@ Ext.define(
 
 			win = Ext.create(
 				{
-					xtype: 'form-desc-relations-subject-searchName-resultContainer',
+					xtype: 'form-desc-relations-subject-searchName-window',
 					alignTarget: me.getId()
 				}
 			);
@@ -39,11 +39,10 @@ Ext.define(
 			if (params.last.length > 1 || params.first.length > 1 || params.middle.length > 1)
 			{
 				win.fireEvent('loadData', params);
-				win.show();
 			}
 			else
 			{
-				win.abort();
+				me.abortSearch();
 			}
 		},
 

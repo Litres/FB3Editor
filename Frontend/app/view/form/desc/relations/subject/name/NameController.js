@@ -15,7 +15,7 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				resultContainer = view.getResultContainer(),
-				personsContainer = resultContainer.getPanelPersons();
+				personsContainer = resultContainer.getContainerItems();
 
 			// сбрасываем ФИО, сохраненные в локальном хранилище
 			me.onCleanResultContainer();

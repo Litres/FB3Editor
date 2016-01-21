@@ -5,9 +5,9 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainerController',
+	'FBEditor.view.form.desc.relations.subject.search.name.window.WindowController',
 	{
 		extend: 'FBEditor.view.form.desc.searchField.WindowController',
-		alias: 'controller.form.desc.relations.subject.searchName.resultContainer'
+		alias: 'controller.form.desc.relations.subject.searchName.window'
 	}
 );

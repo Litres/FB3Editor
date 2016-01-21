@@ -143,9 +143,6 @@ Ext.define(
 			);
 			me.loader = loader;
 			me.hideLoader();
-
-			//console.log('loader', inputWrap.getWidth(), inputWrap);
-
 		}
 	}
 );

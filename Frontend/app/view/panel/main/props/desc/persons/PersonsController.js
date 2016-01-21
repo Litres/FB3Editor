@@ -10,19 +10,18 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.props.desc.persons',
 
-		onLoadData: function (data)
+		onLoadData: function (params)
 		{
 			var me = this,
 				view = me.getView(),
-				panelPersons;
+				containerItems;
 
-			panelPersons = view.getPanelPersons();
+			containerItems = view.getContainerItems();
 
-			// ставим индикатор загрузки по умолчанию
-			panelPersons.setLoadMask();
+			// сохраняем параметры запроса для повторных запросов
+			containerItems.params = Ext.clone(params);
 
-			panelPersons.params = Ext.clone(data);
-			panelPersons.fireEvent('loadData', data);
+			containerItems.fireEvent('loadData', params);
 		}
 	}
 );

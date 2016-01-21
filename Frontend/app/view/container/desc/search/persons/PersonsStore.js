@@ -5,7 +5,7 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.persons.PersonsStore',
+	'FBEditor.view.container.desc.search.persons.PersonsStore',
 	{
 		extend: 'FBEditor.store.AbstractStore',
 

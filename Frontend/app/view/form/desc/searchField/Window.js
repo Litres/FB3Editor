@@ -11,6 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.searchField.WindowController'
 		],
+		mixins: {
+			behavior: 'FBEditor.view.container.desc.search.OwnerContainerBehavior'
+		},
 		xtype: 'form-desc-searchField-window',
 		controller: 'form.desc.searchField.window',
 
@@ -34,7 +37,7 @@ Ext.define(
 		},
 
 		/**
-		 * @property {String} xtype Контейнера с результатми поиска.
+		 * @property {String} xtype контейнера с результатми поиска.
 		 */
 		xtypeContainerItems: '',
 
@@ -149,42 +152,21 @@ Ext.define(
 			}
 		},
 
-		/**
-		 * Удаляет все данные из контейнера.
-		 */
 		clean: function ()
 		{
-			var me = this,
-				containerItems;
-
-			containerItems = me.getContainerItems();
-			containerItems.clean();
+			this.close();
+			this.mixins.behavior.clean.call(this);
 		},
 
-		/**
-		 * Прерывает поиск.
-		 */
 		abort: function ()
 		{
-			var me = this,
-				containerItems;
-
-			containerItems = me.getContainerItems();
-			containerItems.abort();
+			this.close();
+			this.mixins.behavior.abort.call(this);
 		},
 
-		/**
-		 * Возвращает контейнер.
-		 * @return {FBEditor.view.containerItems.persons.Persons}
-		 */
 		getContainerItems: function ()
 		{
-			var me = this,
-				containerItems;
-
-			containerItems = me.containerItems || me.down(me.xtypeContainerItems);
-
-			return containerItems;
+			return this.mixins.behavior.getContainerItems.call(this);
 		}
 	}
 );

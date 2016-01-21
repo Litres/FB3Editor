@@ -10,8 +10,11 @@ Ext.define(
 		extend: 'Ext.Container',
 		requires: [
 			'FBEditor.view.panel.main.props.desc.persons.PersonsController',
-			'FBEditor.view.panel.persons.Persons'
+			'FBEditor.view.container.desc.search.persons.Persons'
 		],
+		mixins: {
+			behavior: 'FBEditor.view.container.desc.search.OwnerContainerBehavior'
+		},
 		controller: 'props.desc.persons',
 		xtype: 'props-desc-persons',
 		id: 'props-desc-persons',
@@ -21,9 +24,14 @@ Ext.define(
 		},
 
 		/**
-		 * @property {FBEditor.view.panel.persons.Persons} Панель персон.
+		 * @property {String} xtype контейнера с результатми поиска.
 		 */
-		panelPersons: null,
+		xtypeContainerItems: 'container-desc-search-persons',
+
+		/**
+		 * @property {Ext.Container} Панель персон.
+		 */
+		containerItems: null,
 
 		initComponent: function ()
 		{
@@ -31,7 +39,7 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'panel-persons'
+					xtype: me.xtypeContainerItems
 				}
 			];
 
@@ -79,42 +87,19 @@ Ext.define(
 			storage.setItem(me.id + '-lastNames', JSON.stringify(names));
 		},
 
-		/**
-		 * Удаляет все данные из контейнера.
-		 */
 		clean: function ()
 		{
-			var me = this,
-				panel;
-
-			panel = me.getPanelPersons();
-			panel.clean();
+			this.mixins.behavior.clean.call(this);
 		},
 
-		/**
-		 * Прерывает поиск.
-		 */
 		abort: function ()
 		{
-			var me = this,
-				panel;
-
-			panel = me.getPanelPersons();
-			panel.abort();
+			this.mixins.behavior.abort.call(this);
 		},
 
-		/**
-		 * Возвращает панель персон.
-		 * @return {FBEditor.view.panel.persons.Persons}
-		 */
-		getPanelPersons: function ()
+		getContainerItems: function ()
 		{
-			var me = this,
-				panel;
-
-			panel = me.panelPersons || me.down('panel-persons');
-
-			return panel;
+			return this.mixins.behavior.getContainerItems.call(this);
 		}
 	}
 );

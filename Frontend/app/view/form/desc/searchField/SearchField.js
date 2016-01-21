@@ -169,6 +169,26 @@ Ext.define(
 		},
 
 		/**
+		 * Прерывает предыдущий поиск.
+		 */
+		abortSearch: function ()
+		{
+			var me = this,
+				win = me.getWindow(),
+				plugin;
+
+			if (win)
+			{
+				win.abort();
+
+				// скрываем индикатор загрузки
+				plugin = me.getPlugin('searchField');
+				plugin.hideLoader();
+			}
+
+		},
+
+		/**
 		 * Проверяет нажатие Enter.
 		 * @param {Ext.form.Field} field Поле.
 		 * @param {Object} e Объект события.
@@ -272,6 +292,8 @@ Ext.define(
 			{
 				// скрываем индикатор
 				plugin.hideLoader();
+
+				win.show();
 			}
 			else
 			{

@@ -17,7 +17,11 @@ Ext.define(
 		onSelect: function (data)
 		{},
 
-		onLoadData: function (data)
+		/**
+		 * Выполняет запрос и загрузку данных.
+		 * @param {Object} params Параметры запроса.
+		 */
+		onLoadData: function (params)
 		{
 			var me = this,
 				view = me.getView(),
@@ -29,11 +33,8 @@ Ext.define(
 			plugin = input.getPlugin('searchField');
 			plugin.showLoader();
 
-			// скрываем индикатор загрузки внутри списка
-			containerItems.loadMask = false;
-
-			containerItems.params = Ext.clone(data);
-			containerItems.fireEvent('loadData', data);
+			containerItems.params = Ext.clone(params);
+			containerItems.fireEvent('loadData', params);
 		},
 
 		/**
