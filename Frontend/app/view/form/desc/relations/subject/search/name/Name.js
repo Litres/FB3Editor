@@ -7,200 +7,162 @@
 Ext.define(
 	'FBEditor.view.form.desc.relations.subject.search.name.Name',
 	{
-		extend: 'Ext.form.field.Text',
+		extend: 'FBEditor.view.form.desc.searchField.SearchField',
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.search.name.NameController',
 		    'FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainer'
 		],
 		controller: 'form.desc.relations.subject.search.name',
 		xtype: 'form-desc-relations-subject-searchName',
-		checkChangeBuffer: 200,
-		plugins: {
-			ptype: 'searchField',
-			style: 'margin-left: 280px'
-		},
 
-		keyEnterAsTab: true,
-
-		listeners: {
-			select: 'onSelect',
-			afterrender: 'onAfterRender',
-			click: {
-				element: 'el',
-				fn: 'onClick'
-			},
-			change: 'onChange'
-		},
-
-		/**
-		 * @property {Number} Максимальное количество записей хранящихся в локальном хранилище.
-		 */
-		localStorageLimit: 10,
-
-		/**
-		 * @private {FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainer}
-		 * Контейнер для отображения результатов поиска.
-		 */
-		resultContainer: null,
-
-		initComponent: function ()
+		createWindow: function ()
 		{
 			var me = this,
-				resultContainer;
+				win;
 
-			resultContainer = Ext.create(
+			win = Ext.create(
 				{
 					xtype: 'form-desc-relations-subject-searchName-resultContainer',
 					alignTarget: me.getId()
 				}
 			);
-
-			// устанваливаем связь контейнера с полем
-			resultContainer.inputField = me;
-
-			me.resultContainer = resultContainer;
-
-			me.callParent(arguments);
+			
+			return win;
 		},
 
-		/**
-		 * Проверяет нажатие Enter.
-		 * @param {Ext.Component} field Поле.
-		 * @param {Object} e Объект события.
-		 */
-		checkEnterKey: function (field, e)
+		search: function ()
 		{
-			var me = this;
+			var me = this,
+				win = me.getWindow(),
+				params = me.getParams();
 
-			if (e.getKey() === e.ENTER)
+			if (params.last.length > 1 || params.first.length > 1 || params.middle.length > 1)
 			{
-				// закрываем окно результатов
-				me.getResultContainer().close();
-			}
-		},
-
-		/**
-		 * Возвращает контейнер для отображения результатов поиска.
-		 * @return {FBEditor.view.form.desc.relations.subject.search.name.resultContainer.ResultContainer}
-		 */
-		getResultContainer: function ()
-		{
-			return this.resultContainer;
-		},
-
-		/**
-		 * Показывает список персон, сохраненных локально.
-		 */
-		expandStorage: function ()
-		{
-			var me = this,
-				data = me.getDataStorage(),
-				store = me.getStore(),
-				resultContainer = me.getResultContainer();
-
-			//console.log('expand storage', data);
-			if (data.length)
-			{
-				resultContainer.clean();
-				store.loadData(data);
-				resultContainer.show();
-			}
-		},
-
-		/**
-		 * Сохраняет данные персоны в localStorage.
-		 * @param {Object} data Данные.
-		 */
-		saveToStorage: function (data)
-		{
-			var me = this,
-				storage = FBEditor.getLocalStorage(),
-				storageData = me.getDataStorage(),
-				saveData = [],
-				strValue;
-
-			storageData.splice(0, 0, data);
-
-			// обрезаем список, если количество превышает лимит
-			if (storageData.length > me.localStorageLimit)
-			{
-				storageData.splice(me.localStorageLimit, storageData.length - me.localStorageLimit);
-			}
-
-			// удаляем дубликаты добавляемой записи
-			Ext.Array.each(
-				storageData,
-			    function (item, index)
-			    {
-				    if (item.id !== data.id || index == 0)
-				    {
-					    saveData.push(item);
-				    }
-			    }
-			);
-
-			strValue = Ext.JSON.encode(saveData);
-			storage.setItem(me.name, strValue);
-		},
-
-		/**
-		 * Возвращает данные персон из localStorage.
-		 * @return {Array}
-		 */
-		getDataStorage: function ()
-		{
-			var me = this,
-				storage = FBEditor.getLocalStorage(),
-				data;
-
-			data = Ext.JSON.decode(storage.getItem(me.name));
-			data = data ? data : [];
-
-			return data;
-		},
-
-		/**
-		 * Возвращает хранилище данных.
-		 * @return {FBEditor.view.panel.persons.PersonsStore}
-		 */
-		getStore: function ()
-		{
-			var me = this,
-				resultContainer = me.getResultContainer(),
-				panelPersons,
-				store;
-
-			panelPersons = resultContainer.getPanelPersons();
-			store = panelPersons.store;
-
-			return store;
-		},
-
-		/**
-		 * @private
-		 * Вызывается после загрузки данных.
-		 * @param {Array} data Данные.
-		 */
-		afterLoad: function (data)
-		{
-			var me = this,
-				resultContainer = me.getResultContainer(),
-				plugin;
-
-			plugin = me.getPlugin('searchField');
-
-			if (data)
-			{
-				// скрываем индикатор
-				plugin.hideLoader();
+				win.fireEvent('loadData', params);
+				win.show();
 			}
 			else
 			{
-				// меняем индикатор
-				plugin.emptyLoader();
-
-				resultContainer.close();
+				win.abort();
 			}
+		},
+
+		getParams: function ()
+		{
+			var me = this,
+				val = me.getValue(),
+				reg1,
+				reg2,
+				values,
+				params;
+
+			// параметры запроса зависят от введенного значения
+
+			if (/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/.test(val))
+			{
+				params = {
+					uuid: val
+				};
+			}
+			else if (/^[0-9]{2,}$/.test(val))
+			{
+				params = {
+					person: val
+				};
+			}
+			else
+			{
+				val = val.trim();
+				reg1 = /^(.*?)[ ]+(.?)\.(?:[ ]?(.?)\.)?$/i;
+				reg2 = /^(.?)\.(?:[ ]?(.?)\.)?[ ]+(.*?)$/i;
+
+				if (reg1.test(val))
+				{
+					// разбиваем строку типа Фамилия И.О. | Фамилия И.
+					values = val.match(reg1);
+					values = {
+						0: values[1],
+						1: values[2],
+						2: values[3]
+					};
+				}
+				else if (reg2.test(val))
+				{
+					// разбиваем строку типа И.О. Фамилия | И. Фамилия
+					values = val.match(reg2);
+					values = {
+						0: values[3],
+						1: values[1],
+						2: values[2]
+					};
+				}
+				else
+				{
+					// разбиваем строку на три значения, отделенных пробелами
+					values = val.split(/[ ]+/, 3);
+				}
+
+				// формируем параметры для запроса
+				params = {
+					last: values[0],
+					first: values[1] ? values[1] : '',
+					middle: values[2] ? values[2] : ''
+				};
+			}
+
+			return params;
+		},
+
+		updateData: function (data)
+		{
+			var me = this,
+				descManager = FBEditor.desc.Manager,
+				btn,
+				d,
+				container;
+
+			container = me.up('[name=plugin-fieldcontainerreplicator]');
+			d = {
+				'relations-subject-id': data.uuid,
+				'relations-subject-last-name': data['last_name'] ? data['last_name'] : '',
+				'relations-subject-first-name': data['first_name'] ? data['first_name'] : '',
+				'relations-subject-middle-name': data['middle_name'] ? data['middle_name'] : '',
+				'relations-subject-title-main': data['title'] ? data['title'] : ''
+			};
+
+			// заполняем фому ручного ввода
+			descManager.loadingProcess = true;
+			container.updateData(d);
+			descManager.loadingProcess = false;
+
+			// убираем редактируемость полей
+			container.fireEvent('editable', false);
+
+			// скрываем поля поиска и показываем данные
+			btn = me.up('desc-fieldcontainer').down('form-desc-relations-subject-customBtn');
+			btn.switchContainers();
+		},
+
+		getFirstSearch: function ()
+		{
+			var me = this,
+				searchField;
+
+			searchField = me.up('form-desc-relations-subject').down('form-desc-relations-subject-searchName');
+
+			return searchField;
+		},
+
+		getNextSearch: function ()
+		{
+			var me = this,
+				searchField,
+				next;
+
+			next = me.up('[plugins]').nextSibling();
+			searchField = next.down('form-desc-relations-subject-searchName');
+
+			return searchField;
 		}
 	}
 );

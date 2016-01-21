@@ -68,18 +68,6 @@ Ext.define(
 			btn.customContainer = me.customContainer;
 
 			me.callParent(arguments);
-		},
-
-		destroy: function ()
-		{
-			var me = this,
-				resultContainer;
-
-			// удаляем окно с результатами описка
-			resultContainer = me.down('form-desc-relations-subject-searchName').resultContainer;
-			resultContainer.destroy();
-
-			me.callParent(arguments);
 		}
 	}
 );
