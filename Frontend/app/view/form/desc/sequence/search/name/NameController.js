@@ -1,5 +1,5 @@
 /**
- * Контроллер поискового поля по названию.
+ * Контроллер поискового поля серии.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,34 +7,44 @@
 Ext.define(
 	'FBEditor.view.form.desc.sequence.search.name.NameController',
 	{
-		extend: 'FBEditor.view.field.combosearch.ComboSearchController',
+		extend: 'FBEditor.view.form.desc.searchField.SearchFieldController',
 		alias: 'controller.form.desc.sequence.search.name',
 
-		/**
-		 * Заполняет данные полей.
-		 * @param {Object} data Данные.
-		 */
-		updateData: function (data)
+		onSelect: function (data)
 		{
 			var me = this,
 				view = me.getView(),
-				btn,
-				d,
-				container;
+				win = view.getWindow(),
+				plugin,
+				btnAdd,
+				searchField;
 
-			container = view.up('[name=plugin-fieldcontainerreplicator]');
-			d = {
-				'sequence-id': data.uuid,
-				'sequence-title-main': data['name'] ? data['name'] : ''
-			};
-			container.updateData(d);
+			// автоматически добавляем новый блок поиска
+			plugin = me.getPlugin();
+			btnAdd = plugin.getBtnAdd();
+			plugin.addFields(btnAdd);
 
-			// убираем редактируемость полей
-			container.fireEvent('editable', false);
+			// устанавливаем курсор в следующее поисковое поле
+			searchField = view.getNextSearch();
+			searchField.focus();
 
-			// скрываем поля поиска и показываем данные
-			btn = view.up('desc-fieldcontainer').down('form-desc-sequence-customBtn');
-			btn.switchContainers();
+			// вырезаем теги жирности из названия
+			Ext.Object.each(
+				data,
+				function (key, val)
+				{
+					data[key] = Ext.isString(val) ? val.replace(/<[/]?b>/ig, '') : val;
+				}
+			);
+
+			// обновляем поля
+			view.updateData(data);
+
+			// закрываем окно
+			win.close();
+
+			// сохраняем выбранную запись
+			view.saveToStorage(data);
 		}
 	}
 );

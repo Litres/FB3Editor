@@ -105,6 +105,9 @@ Ext.define(
 			me.store = store;
 			me.defaultRootProperty = store.getDefaultRootProperty();
 
+			// fix
+			me.fireHierarchyEvent = function (eventName) {};
+
 			me.callParent(arguments);
 		},
 
@@ -149,7 +152,7 @@ Ext.define(
 				me.filterData(val);
 
 				// фокус в конец текстового поля
-				textfield.focusToEnd();
+				//textfield.focusToEnd();
 			}
 		},
 
@@ -176,7 +179,7 @@ Ext.define(
 
 			me.callParent(arguments);
 
-			textfield.focusToEnd();
+			//textfield.focusToEnd();
 
 			// сбрасываем позицию скролла в начало
 			me.scrollTop = 0;

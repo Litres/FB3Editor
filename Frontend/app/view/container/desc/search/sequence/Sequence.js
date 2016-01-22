@@ -1,36 +1,36 @@
 /**
- * Контейнер для отображения данных произведений.
+ * Контейнер для отображения данных серий.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.container.desc.search.arts.Arts',
+	'FBEditor.view.container.desc.search.sequence.Sequence',
 	{
 		extend: 'FBEditor.view.container.desc.search.Container',
 		requires: [
-			'FBEditor.view.container.desc.search.arts.ArtsController',
-			'FBEditor.view.container.desc.search.arts.ArtsStore'
+			'FBEditor.view.container.desc.search.sequence.SequenceController',
+			'FBEditor.view.container.desc.search.sequence.SequenceStore'
 		],
-		controller: 'container.desc.search.arts',
-		xtype: 'container-desc-search-arts',
-		cls: 'container-search-arts',
+		controller: 'container.desc.search.sequence',
+		xtype: 'container-desc-search-sequence',
+		cls: 'container-search-sequence',
 
 		translateText: {
-			searching: 'Поиск произведений...',
+			link: 'Страница редактирования',
+			searching: 'Поиск серий...',
 			notFound: 'Ничего не найдено'
 		},
 
 		createStore: function ()
 		{
-			return Ext.create('FBEditor.view.container.desc.search.arts.ArtsStore');
+			return Ext.create('FBEditor.view.container.desc.search.sequence.SequenceStore');
 		},
 
 		load: function (data)
 		{
 			var me = this;
 
-			console.log('data', data);
 			me.maskSearching(false);
 			me.fireEvent('afterLoad', data);
 
@@ -40,12 +40,12 @@ Ext.define(
 					data,
 					function (item)
 					{
-						var art,
-							artItems;
+						var container,
+							items;
 
 						if (item)
 						{
-							artItems = [
+							items = [
 								{
 									xtype: 'component',
 									html: me.getHtmlItems(item),
@@ -56,14 +56,14 @@ Ext.define(
 								}
 							];
 
-							art = {
+							container = {
 								xtype: 'container',
 								width: '100%',
-								cls: 'panel-arts-item',
-								items: artItems
+								cls: 'container-sequence-item',
+								items: items
 							};
 
-							me.add(art);
+							me.add(container);
 						}
 					}
 				);
@@ -79,24 +79,24 @@ Ext.define(
 		/**
 		 * @private
 		 * Вызывается после добавления записи в контейнер.
-		 * @param {Ext.Component} artCmp Компонент записи.
+		 * @param {Ext.Component} cmp Компонент записи.
 		 */
-		afterRenderItem: function (artCmp)
+		afterRenderItem: function (cmp)
 		{
 			var me = this,
 				name;
 
 			// добалвяем обработчик события при клике по названию
-			name = artCmp.getEl().query('.panel-arts-item-name')[0];
+			name = cmp.getEl().query('.container-sequence-item-name')[0];
 			name.addEventListener(
 				'click',
 				function ()
 				{
 					var record,
-						artId;
+						id;
 
-					artId = this.getAttribute('art-id');
-					record = me.store.getRecord('id', artId);
+					id = this.getAttribute('sequence-id');
+					record = me.store.getRecord('id', id);
 					me.selectFn(record);
 				}
 			);
@@ -104,8 +104,8 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает html для отображения данных записи.
-		 * @param {Object} data Данные записи.
+		 * Возвращает html для отображения данных.
+		 * @param {Object} data Данные.
 		 * @return {String} Строка html.
 		 */
 		getHtmlItems: function (data)
@@ -116,19 +116,19 @@ Ext.define(
 				html;
 
 			tpl = new Ext.XTemplate(
-				'<div class="panel-arts-item-common " style="background-color: {bgcolor}">' +
-				'   <div class="panel-arts-item-name" art-id="{id}">' +
-				'       <a style="color: {link_color}" target="_blank" ' +
-				'           href="https://hub.litres.ru/pages/edit_object/?art={id}">{name}</a>' +
-				'   </div>' +
+				'<div class="container-sequence-item-common">' +
+				'   <div class="container-sequence-item-name" sequence-id="{id}">{name}</div>' +
+				'   <div class="container-sequence-item-id">{id}</div>' +
+				'   <a class="container-sequence-item-link" target="_blank"' +
+				'           title="' + me.translateText.link + '"' +
+				'           href="https://hub.litres.ru/pages/edit_serie/?id={id}">' +
+				'       <i class="fa fa-external-link"></i>' +
+				'   </a>' +
 				'</div>'
 			);
 
 			data.name = data.name ? data.name.replace(new RegExp('(' + params.q + ')', 'i'), '<b>$1</b>') : '';
 			data.name = data.name.trim();
-
-			data.bgcolor = 'white';
-			data.link_color = '#2e7ed5';
 
 			html = tpl.apply(data);
 

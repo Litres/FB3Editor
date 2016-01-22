@@ -34,6 +34,9 @@ Ext.define(
 		 */
 		enableAlt: true,
 
+		/**
+		 * @property {Object} Конфиг поля основного названия.
+		 */
 		mainConfig: {
 			plugins: {
 				ptype: 'searchField',
@@ -97,7 +100,7 @@ Ext.define(
 
 			if (data)
 			{
-				// скрываем индикатор загрузки
+				// скрываем индикатор
 				plugin.hideLoader();
 			}
 			else

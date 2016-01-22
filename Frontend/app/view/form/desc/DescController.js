@@ -63,15 +63,14 @@ Ext.define(
 		onScroll: function (evt, el)
 		{
 			var me = this,
-				personsContainers;
+				wins = [];
 
-			// корректируем положение окна выбора жанра
-			Ext.getCmp('form-desc-subjectTree').fireEvent('alignTo');
+			// окна
+			wins.push(Ext.getCmp('form-desc-subjectTree'));
+			wins.push(Ext.ComponentQuery.query('form-desc-searchField-window'));
 
-			// корректируем положение окна с результатами поиска персон
-			personsContainers = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
 			Ext.Array.each(
-				personsContainers,
+				wins,
 			    function (item)
 			    {
 				    if (item.isShow)

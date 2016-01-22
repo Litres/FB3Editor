@@ -7,47 +7,53 @@
 Ext.define(
 	'FBEditor.view.form.desc.sequence.search.name.Name',
 	{
-		extend: 'FBEditor.view.field.combosearch.ComboSearch',
+		extend: 'FBEditor.view.form.desc.searchField.SearchField',
 		requires: [
-			'FBEditor.store.desc.sequence.Sequence',
-			'FBEditor.view.form.desc.sequence.search.name.NameController'
+			'FBEditor.view.form.desc.sequence.search.name.NameController',
+			'FBEditor.view.form.desc.sequence.search.name.window.Window'
 		],
 		controller: 'form.desc.sequence.search.name',
 		xtype: 'form-desc-sequence-searchName',
 
-		displayField: 'name',
-		valueField: 'name',
-		listConfig: {
-			cls: 'boundlist-sequence'
+		createWindow: function ()
+		{
+			var me = this,
+				win;
+
+			win = Ext.create(
+				{
+					xtype: 'form-desc-sequence-searchName-window',
+					alignTarget: me.getId()
+				}
+			);
+
+			return win;
 		},
 
-		tpl: Ext.create(
-			'Ext.XTemplate',
-			'<tpl for=".">',
-			'<div class="x-boundlist-item boundlist-search-item">',
-			'<div class="boundlist-search-item-name">{name}</div>',
-			'<div class="boundlist-search-item-sub">{id}</div>',
-			'<a style="position: absolute; right: -20px;" class="boundlist-search-item-link" target="_blank',
-			' href="https://hub.litres.ru/pages/edit_subject/?subject={id}"><i class="fa fa-external-link"></i></a>',
-			'</div>',
-			'</tpl>'
-		),
-
-		getCreateStore: function ()
+		search: function ()
 		{
-			var store;
+			var me = this,
+				val = me.getValue(),
+				win = me.getWindow(),
+				params = me.getParams();
 
-			store = Ext.data.StoreManager.lookup('desc-sequence');
-			store = store || Ext.create('FBEditor.store.desc.sequence.Sequence');
-
-			return store;
+			if (val.length > 1)
+			{
+				win.fireEvent('loadData', params);
+			}
+			else
+			{
+				me.abortSearch();
+			}
 		},
 
-		getParams: function (val)
+		getParams: function ()
 		{
-			var params;
+			var me = this,
+				val = me.getValue(),
+				params;
 
-			// параметр запроса зависит от введенного значения
+			// параметры запроса зависят от введенного значения
 
 			if (/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/.test(val))
 			{
@@ -69,6 +75,55 @@ Ext.define(
 			}
 
 			return params;
+		},
+
+		updateData: function (data)
+		{
+			var me = this,
+				descManager = FBEditor.desc.Manager,
+				btn,
+				d,
+				container;
+
+			container = me.up('[name=plugin-fieldcontainerreplicator]');
+			d = {
+				'sequence-id': data.uuid,
+				'sequence-title-main': data['name'] ? data['name'] : ''
+			};
+
+			// заполняем фому ручного ввода
+			descManager.loadingProcess = true;
+			container.updateData(d);
+			descManager.loadingProcess = false;
+
+			// убираем редактируемость полей
+			container.fireEvent('editable', false);
+
+			// скрываем поля поиска и показываем данные
+			btn = me.up('desc-fieldcontainer').down('form-desc-sequence-customBtn');
+			btn.switchContainers();
+		},
+
+		getFirstSearch: function ()
+		{
+			var me = this,
+				searchField;
+
+			searchField = me.up('form-desc-sequence').down('form-desc-sequence-searchName');
+
+			return searchField;
+		},
+
+		getNextSearch: function ()
+		{
+			var me = this,
+				searchField,
+				next;
+
+			next = me.up('[plugins]').nextSibling();
+			searchField = next.down('form-desc-sequence-searchName');
+
+			return searchField;
 		}
 	}
 );

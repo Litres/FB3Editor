@@ -89,6 +89,9 @@ Ext.define(
 				}
 			];
 
+			// fix
+			me.fireHierarchyEvent = function (eventName) {};
+
 			me.callParent(arguments);
 		},
 

@@ -24,7 +24,7 @@ Ext.define(
 			val = data[view.subjectTree.displayField];
 			textfield = view.down('textfield');
 			textfield.setValue(val);
-			textfield.focusToEnd();
+			//textfield.focusToEnd();
 		},
 
 		/**

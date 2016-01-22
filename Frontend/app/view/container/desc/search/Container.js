@@ -66,7 +66,6 @@ Ext.define(
 					tag: 'div',
 					html: me.translateText.searching,
 					class: 'mask-container-desc-search',
-					//style: 'display: none',
 					children: [
 						{
 							tag: 'i',
@@ -75,6 +74,7 @@ Ext.define(
 					]
 				}
 			);
+			maskEl.setVisibilityMode(Ext.dom.Element.DISPLAY);
 			me.maskEl = maskEl;
 			me.maskSearching(false);
 		},
@@ -111,6 +111,7 @@ Ext.define(
 			if (maskEl)
 			{
 				maskEl.setVisible(show);
+				me.doLayout();
 			}
 		},
 

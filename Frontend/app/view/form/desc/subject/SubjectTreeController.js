@@ -63,11 +63,25 @@ Ext.define(
 		onAlignTo: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				subject = view.subjectView,
+				bodyHeight,
+				height,
+				posY;
 
-			if (view.isVisible() && view.subjectView && view.rendered)
+			if (view.isVisible() && subject && view.rendered)
 			{
-				view.alignTo(view.subjectView, 'tr', [-view.getWidth(), -view.getHeight()]);
+				posY = subject.getY();
+				height = view.getHeight() + 2;
+				bodyHeight = Ext.getBody().getHeight();
+				if (bodyHeight - posY < height)
+				{
+					view.alignTo(subject, 'tl', [0, -height]);
+				}
+				else
+				{
+					view.alignTo(subject, 'bl', [0, -10]);
+				}
 			}
 		},
 

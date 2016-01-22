@@ -33,6 +33,7 @@ Ext.define(
 			plugin = input.getPlugin('searchField');
 			plugin.showLoader();
 
+			containerItems.maskSearching(false);
 			containerItems.params = Ext.clone(params);
 			containerItems.fireEvent('loadData', params);
 		},

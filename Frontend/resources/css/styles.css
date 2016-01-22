@@ -258,6 +258,7 @@
 
 /* индикатор поиска для контейнера результатов поиска в описании */
 .mask-container-desc-search {
+	position: relative;
 	padding-top: 45px;
 	text-align: center;
 	color: #aaa;
@@ -829,7 +830,7 @@
 	color: #666;
 }
 
-/* Панель данных персон */
+/* контейнер данных персон */
 .container-search-persons-item {
 	border: 1px solid #000;
 	margin: 4px 0;
@@ -871,7 +872,6 @@
 .container-search-persons-item-book {
 	padding: 3px 0 3px 8px;
 }
-
 .container-search-persons-item-link {
 	position: absolute;
 	top: 25px;
@@ -891,5 +891,31 @@
 }
 .container-search-persons .x-fieldset-header-default {
 	padding: 0;
+	color: #2e7ed5;
+}
+
+/* контейнер данных серий */
+.container-sequence-item-common
+{
+	border: 1px solid #000;
+	margin: 2px 0;
+	padding: 2px;
+}
+.container-sequence-item-name
+{
+	font-size: 15px;
+	color: #2e7ed5;
+	cursor: pointer;
+}
+.container-sequence-item-id
+{
+	font-size: 13px;
+	color: gray;
+}
+.container-sequence-item-link
+{
+	position: absolute;
+	top: 4px;
+	right: 4px;
 	color: #2e7ed5;
 }

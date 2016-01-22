@@ -72,10 +72,10 @@ Ext.define(
 								personItems = [
 									{
 										xtype: 'component',
-										html: me.getHtmlPerson(item),
+										html: me.getHtmlItems(item),
 										afterRender: function ()
 										{
-											me.afterRenderPerson(this);
+											me.afterRenderItem(this);
 										}
 									}
 								];
@@ -126,32 +126,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Вызывается после добавления записи персоны в контейнер.
-		 * @param {Ext.Component} personCmp Компонент персоны.
-		 */
-		afterRenderPerson: function (personCmp)
-		{
-			var me = this,
-				fio;
-
-			// добалвяем обработчик события при клике по ФИО
-			fio = personCmp.getEl().query('.container-search-persons-item-fio')[0];
-			fio.addEventListener(
-				'click',
-				function ()
-				{
-					var record,
-						personId;
-
-					personId = this.getAttribute('person-id');
-					record = me.store.getRecord('id', personId);
-					me.selectFn(record);
-				}
-			);
-		},
-
-		/**
-		 * @private
 		 * Делает повторный запрос поиска, изменяя параметры ФИО.
 		 */
 		repeatRequestSearch: function ()
@@ -188,11 +162,37 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает html для отображения данных персоны.
-		 * @param {Object} data Данные персоны.
+		 * Вызывается после добавления записи в контейнер.
+		 * @param {Ext.Component} personCmp Компонент записи.
+		 */
+		afterRenderItem: function (personCmp)
+		{
+			var me = this,
+				fio;
+
+			// добалвяем обработчик события при клике по ФИО
+			fio = personCmp.getEl().query('.container-search-persons-item-fio')[0];
+			fio.addEventListener(
+				'click',
+				function ()
+				{
+					var record,
+						personId;
+
+					personId = this.getAttribute('person-id');
+					record = me.store.getRecord('id', personId);
+					me.selectFn(record);
+				}
+			);
+		},
+
+		/**
+		 * @private
+		 * Возвращает html для отображения данных.
+		 * @param {Object} data Данные.
 		 * @return {String} Строка html.
 		 */
-		getHtmlPerson: function (data)
+		getHtmlItems: function (data)
 		{
 			var me = this,
 				names = me.store.params,

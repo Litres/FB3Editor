@@ -96,8 +96,7 @@ Ext.define(
 		},
 
 		/**
-		 * @private
-		 * Возвращает плагин.
+		 * Возвращает плагин fieldcontainerreplicator.
 		 * @return {FBEditor.ux.FieldContainerReplicator}
 		 */
 		getPlugin: function ()
