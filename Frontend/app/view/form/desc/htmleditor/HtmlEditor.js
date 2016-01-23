@@ -1,6 +1,5 @@
 /**
  * Редактор html, использующийся в форме описания.
- * Перезаписывает методы стандартного редактора, чтобы извлечь из него кнопку underline.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -9,13 +8,109 @@ Ext.define(
 	'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 	{
 		extend: 'Ext.form.field.HtmlEditor',
+		requires: [
+			'FBEditor.view.form.desc.htmleditor.HtmlEditorController'
+		],
+		controller: 'form.desc.htmleditor',
 		xtype: 'form-desc-htmleditor',
+
 		enableColors: false,
 		enableAlignments: false,
 		enableFont: false,
 		enableFontSize: false,
 		enableLists: false,
 		height: 150,
+
+		listeners: {
+			paste: 'onPaste'
+		},
+
+		/**
+		 * @property {Array} Список разрешенных тегов.
+		 */
+		allowTags: ['strong', 'em', 'a', 'br', 'p'],
+
+		afterRender: function ()
+		{
+			var me = this,
+				iframeEl;
+
+			me.callParent(arguments);
+
+			// добавляем возможность отслеживания события вставки paste
+			iframeEl = me.iframeEl.dom;
+			iframeEl.addEventListener(
+				'load',
+				function ()
+				{
+					var doc = this.contentWindow.document,
+						body = doc.body;
+
+					body.addEventListener(
+						'paste',
+						function (data)
+						{
+							Ext.defer(
+								function ()
+								{
+									me.fireEvent('paste', data);
+								},
+							    1
+							);
+						}
+					);
+				}
+			);
+		},
+
+		/**
+		 * Вырезает лишние теги.
+		 */
+		stripTags: function ()
+		{
+			var me = this,
+				val = me.getValue(),
+				tmp,
+				reg;
+
+			function replacer (str, tag, attr)
+			{
+				//console.log(arguments);
+				if (!Ext.Array.contains(me.allowTags, tag))
+				{
+					str = '';
+				}
+				else if (attr)
+				{
+					attr = attr.match(/href=".*?"/);
+					attr = attr ? ' ' + attr[0] : '';
+					str = '<' + tag + attr + '>';
+				}
+
+				return str;
+			}
+
+			reg = new RegExp('</?([a-z0-9]+)( .*?|/)?>', 'ig');
+			val = val.replace(reg, replacer);
+			val = /^<p>/.test(val) ? val : '<p>' + val + '</p>';
+			val = val.replace(/<br>/gi, '</p><p>');
+			val = val.replace(/> </gi, '>&nbsp;<');
+			val = val.replace(/[ ]{2}/gi, ' &nbsp;');
+			val = val.replace(/<p><\/p>/gi, '<p><br><\/p>');
+
+			// оборачиваем текст в p
+			val = val.replace(
+				/<\/p>(.*?)<p>/gi,
+			    function (str, text)
+			    {
+				    str = str ? '<p>' + text : str;
+
+				    return str;
+			    }
+			);
+
+			me.setValue(val);
+		},
 
 		getValues: function (d)
 		{
@@ -39,8 +134,11 @@ Ext.define(
 				val = val.replace(/<p><\/p>/gi, '');
 				//console.log('val3', val);
 				val = val.replace(/<p><br><\/p>/gi, '<br/>');
+				val = val.replace(/<br>/gi, '<br/>');
 				val = val.replace(/^<br\/>/gi, '<p></p>');
 				val = val.replace(/&nbsp;/gi, '&#160;');
+				val = val.replace(/&lt;/gi, '&#60;');
+				val = val.replace(/&gt;/gi, '&#62;');
 				data[me.name] = val;
 			}
 
@@ -48,7 +146,7 @@ Ext.define(
 		},
 
 		/**
-		 * Перезаписан стандартный метод.
+		 * Перезаписан стандартный метод, чтобы извлечь из него кнопку underline.
 		 */
 		getToolbarCfg: function(){
 			var me = this,
@@ -250,7 +348,7 @@ Ext.define(
 		},
 
 		/**
-		 * Перезаписан стандартный метод.
+		 * Перезаписан стандартный метод, чтобы извлечь из него кнопку underline.
 		 */
 		updateToolbar: function() {
 			var me = this,
