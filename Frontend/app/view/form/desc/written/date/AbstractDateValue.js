@@ -11,7 +11,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.date.Date',
 
 		listeners: {
-			blur: function ()
+			beforeblur: function ()
 			{
 				this.onBlurField();
 			}

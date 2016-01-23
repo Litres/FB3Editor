@@ -36,7 +36,7 @@ Ext.define(
 			if (/^[0-9]{4}$/.test(textVal))
 			{
 				// приводим год к виду Y-01-01
-				me.setValue(textVal + '-01-01');
+				//me.setValue(textVal + '-01-01');
 				textVal = me.getValue();
 			}
 

@@ -10,6 +10,9 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.form.desc.date',
 
+		/**
+		 * @event beforeblur
+		 */
 		onBlur: function ()
 		{
 			var me = this,
@@ -18,11 +21,11 @@ Ext.define(
 				dateVal = view.getRawValue(),
 				now = new Date();
 
-			if (/^[0-9]{4}$/.test(dateVal))
-			{
-				// приводим год к виду Y-01-01
-				view.setValue(dateVal + '-01-01');
-			}
+			// вброс события необходим для совершения необходимых операций до выполнения текущих
+			view.fireEvent('beforeblur');
+
+			// приводим год к виду Y-01-01
+			view.setValue(dateVal + '-01-01');
 
 			if (/^[0-9]{2}\.[0-9]{2}\.[0-9]{2}$/.test(dateVal))
 			{
