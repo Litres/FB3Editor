@@ -19,12 +19,24 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				val,
-				textfield;
+				textfield,
+				plugin,
+				nextSubject;
 
 			val = data[view.subjectTree.displayField];
 			textfield = view.down('textfield');
 			textfield.setValue(val);
 			//textfield.focusToEnd();
+
+			// следующий жанр
+			nextSubject = view.nextSibling();
+
+			if (!nextSubject)
+			{
+				// добавляем новое поле жанра
+				plugin = view.getPlugin('fieldcontainerreplicator');
+				plugin.addFields();
+			}
 		},
 
 		/**

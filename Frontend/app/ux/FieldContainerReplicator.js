@@ -309,10 +309,9 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * @event putFields
 		 * Вкладывает поля.
-		 * @param {Ext.button.Button} Кнопка вложения.
+		 * @param {Ext.button.Button} btn Кнопка вложения.
 		 * @return {Ext.container.Container} Возвращает вложенный контейнер.
 		 */
 		putFields: function (btn)
@@ -353,10 +352,9 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * @event removeFields
 		 * Удаляет поля.
-		 * @param {Ext.button.Button} Кнопка удаления.
+		 * @param {Ext.button.Button} btn Кнопка удаления.
 		 */
 		removeFields: function (btn)
 		{

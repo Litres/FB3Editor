@@ -34,9 +34,9 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				value = view.getValue(),
 				subject = view.up('form-desc-subject'),
 				subjectTree = subject.subjectTree,
-				value = view.getValue(),
 				managerDesc = FBEditor.desc.Manager;
 
 			if (!managerDesc.loadingProcess)
@@ -52,12 +52,36 @@ Ext.define(
 			}
 		},
 
+		/**
+		 * Вызывается при потери фокуса полем.
+		 */
 		onBlur: function (field)
 		{
-			var me = this;
+			var me = this,
+				view = me.getView(),
+				val = view.getValue(),
+				subject = view.ownerCt,
+				nextSubject = subject.nextSibling(),
+				prevSubject = subject.previousSibling(),
+				subjectTree = subject.subjectTree;
 
-			// разбиваем введенные через запятую значения на отдельные поля
-			me.splitField(field);
+			//console.log('nextSubject && prevSubject', subject, nextSubject, prevSubject);
+			if (!nextSubject && prevSubject && !val && !subjectTree.isShow)
+			{
+				// удаляем поле, если оно последнее, пустое и список закрыт
+				Ext.defer(
+					function ()
+					{
+						subject.ownerCt.remove(subject);
+					},
+				    100 // задержка удаления необходима, чтобы отработали другие методы фреймворка onBlur
+				);
+			}
+			else
+			{
+				// разбиваем введенные через запятую значения на отдельные поля
+				me.splitField(field);
+			}
 		},
 
 		/**
