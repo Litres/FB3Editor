@@ -24,23 +24,33 @@ Ext.define(
 			cleanResultContainer: 'onCleanResultContainer'
 		},
 
-		/**
-		 * @property {Boolean} Необходимо ли показывать подзаголовок.
-		 */
 		enableSub: true,
-
-		/**
-		 * @property {Boolean} Необходимо ли показывать альтернативное название.
-		 */
 		enableAlt: true,
-
-		/**
-		 * @property {Object} Конфиг поля основного названия.
-		 */
 		mainConfig: {
+			plugins: [
+				{
+					ptype: 'searchField',
+					style: 'right: 2px'
+				},
+				{
+					ptype: 'fieldCleaner'
+				}
+			]
+		},
+		subConfig: {
+			plugins: 'fieldCleaner'
+		},
+		altConfig: {
 			plugins: {
-				ptype: 'searchField',
-				style: 'right: 2px'
+				btnStyle: {
+					margin: '3px 0 0 2px'
+				}
+			},
+			fieldConfig: {
+				plugins: {
+					ptype: 'fieldCleaner'
+				},
+				margin: '0 30px 0 0'
 			}
 		},
 
@@ -60,7 +70,7 @@ Ext.define(
 					scope: this,
 					afterLoad: me.afterLoad
 				}
-			)
+			);
 		},
 
 		/**

@@ -14,10 +14,16 @@ Ext.define(
 		controller: 'form.desc.searchField',
 		xtype: 'form-desc-searchField',
 		checkChangeBuffer: 200,
-		plugins: {
-			ptype: 'searchField',
-			style: 'margin-left: 280px'
-		},
+		plugins: [
+			{
+				ptype: 'fieldCleaner',
+				style: 'left: 468px; right: auto'
+			},
+			{
+				ptype: 'searchField',
+				style: 'margin-left: 280px'
+			}
+		],
 
 		keyEnterAsTab: true,
 

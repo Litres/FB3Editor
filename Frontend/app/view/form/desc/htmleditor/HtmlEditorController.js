@@ -16,6 +16,21 @@ Ext.define(
 				view = me.getView();
 
 			view.stripTags();
+		},
+
+		/**
+		 * Вызывается при нажатии на кнопку "Уборка".
+		 */
+		onAfterFieldCleaner: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				val = view.getValue(),
+				reg = /^(.{0,49}?)-?\n/igm;
+
+			// объединяем короткие строки менее 49 символов
+			val = val.replace(reg, '$1');
+			view.setValue(val);
 		}
 	}
 );

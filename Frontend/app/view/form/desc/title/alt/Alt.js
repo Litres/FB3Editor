@@ -35,58 +35,63 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				name = me.fieldName + '-alt';
+				name = me.fieldName + '-alt',
+				field,
+				plugins;
 
-			me.plugins = {
+			plugins = {
 				ptype: 'fieldcontainerreplicator',
-					groupName: name,
-					btnStyle: {
+				groupName: name,
+				btnStyle: {
 					margin: '0 0 0 2px'
 				}
 			};
-			me.items = [
-				{
-					xtype: 'textfield',
-					name: name,
-					fieldLabel: me.fieldLabelAlt,
-					cls: 'field-optional',
-					keyEnterAsTab: true,
-					listeners: {
-						loadData: function (data)
+			Ext.applyIf(me.plugins, plugins);
+			field = {
+				xtype: 'textfield',
+				name: name,
+				fieldLabel: me.fieldLabelAlt,
+				cls: 'field-optional',
+				keyEnterAsTab: true,
+				listeners: {
+					loadData: function (data)
+					{
+						me.fireEvent('loadData', data);
+					},
+					resize: function (self, width)
+					{
+						var label,
+							span;
+
+						label = self.labelEl;
+						span = label.first();
+
+						// исходные параметры метки
+						self._label = self._label ? self._label : {width: null, fontSize: null};
+
+						// настраиваем отображение метки в зависимости от ширины поля
+
+						if (width < 300)
 						{
-							me.fireEvent('loadData', data);
-						},
-						resize: function (self, width)
+							self._label.width = self._label.width || label.getWidth();
+							self._label.fontSize = self._label.fontSize || span.getStyle('fontSize');
+							//console.log(self._label);
+							label.setWidth(100);
+							span.setWidth(100);
+							span.setStyle('fontSize', '11px');
+						}
+						else if (self._label.width)
 						{
-							var label,
-								span;
-
-							label = self.labelEl;
-							span = label.first();
-
-							// исходные параметры метки
-							self._label = self._label ? self._label : {width: null, fontSize: null};
-
-							// настраиваем отображение метки в зависимости от ширины поля
-
-							if (width < 300)
-							{
-								self._label.width = self._label.width || label.getWidth();
-								self._label.fontSize = self._label.fontSize || span.getStyle('fontSize');
-								//console.log(self._label);
-								label.setWidth(100);
-								span.setWidth(100);
-								span.setStyle('fontSize', '11px');
-							}
-							else if (self._label.width)
-							{
-								label.setWidth(self._label.width);
-								span.setWidth(self._label.width);
-								span.setStyle('fontSize', self._label.fontSize);
-							}
+							label.setWidth(self._label.width);
+							span.setWidth(self._label.width);
+							span.setStyle('fontSize', self._label.fontSize);
 						}
 					}
 				}
+			};
+			Ext.apply(field, me.fieldConfig);
+			me.items = [
+				field
 			];
 			me.callParent(arguments);
 		},

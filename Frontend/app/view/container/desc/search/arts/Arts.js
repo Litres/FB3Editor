@@ -30,7 +30,6 @@ Ext.define(
 		{
 			var me = this;
 
-			console.log('data', data);
 			me.maskSearching(false);
 			me.fireEvent('afterLoad', data);
 

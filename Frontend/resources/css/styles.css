@@ -249,13 +249,6 @@
 	right: 25px;
 }
 
-/* плагин для индикатор загрузки в полях поиска */
-.fb3 .plugin-searchField-loader {
-	position: absolute;
-	margin-top: -17px;
-	color: #aaa;
-}
-
 /* индикатор поиска для контейнера результатов поиска в описании */
 .mask-container-desc-search {
 	position: relative;
@@ -918,4 +911,41 @@
 	top: 4px;
 	right: 4px;
 	color: #2e7ed5;
+}
+
+/* плагин для индикатор загрузки в полях поиска */
+.fb3 .plugin-searchField-loader {
+	position: absolute;
+	margin-top: -17px;
+	color: #aaa;
+}
+
+/* плагин "Уборка" для полей */
+.fb3 .plugin-fieldCleaner {
+	position: absolute;
+	right: -29px;
+	margin-top: -23px;
+	padding: 4px 5px;
+	cursor: pointer;
+	border-radius: 3px;
+	border: 1px solid;
+	color: #fff;
+	border-color:#2e7ed5;
+	background-color: #39a4e6 /*#5fa9ed*/;
+}
+.fb3 .plugin-fieldCleaner:hover {
+	border-color: #2a6fc0;
+	background-color: #3892d3;
+	/*border-color:#2b937a;
+	background-image:none;
+	background-color:#4eb59c;
+	background-image:-webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#5fbca5),color-stop(50%,#4eb59c),color-stop(51%,#4aab94),color-stop(100%,#4eb59c));
+	background-image:-webkit-linear-gradient(top,#5fbca5,#4eb59c 50%,#4aab94 51%,#4eb59c);
+	background-image:-moz-linear-gradient(top,#5fbca5,#4eb59c 50%,#4aab94 51%,#4eb59c);
+	background-image:-o-linear-gradient(top,#5fbca5,#4eb59c 50%,#4aab94 51%,#4eb59c);
+	background-image:-ms-linear-gradient(top,#5fbca5,#4eb59c 50%,#4aab94 51%,#4eb59c);
+	background-image:linear-gradient(top,#5fbca5,#4eb59c 50%,#4aab94 51%,#4eb59c)*/
+}
+.plugin-fieldCleaner-pressed {
+	box-shadow: #d8e9e5 1px 1px inset, #d8e9e5 0px -1px inset, #d8e9e5 -1px 0px inset;
 }

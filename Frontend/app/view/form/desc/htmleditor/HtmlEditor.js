@@ -22,13 +22,21 @@ Ext.define(
 		height: 150,
 
 		listeners: {
-			paste: 'onPaste'
+			paste: 'onPaste',
+			afterFieldCleaner: 'onAfterFieldCleaner'
 		},
 
 		/**
 		 * @property {Array} Список разрешенных тегов.
 		 */
 		allowTags: ['strong', 'em', 'a', 'br', 'p'],
+
+		plugins: [
+			{
+				ptype: 'fieldCleaner',
+				style: 'top: -7px; right: 5px'
+			}
+		],
 
 		afterRender: function ()
 		{

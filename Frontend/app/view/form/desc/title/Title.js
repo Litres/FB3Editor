@@ -32,6 +32,16 @@ Ext.define(
 		 */
 		mainConfig: {},
 
+		/**
+		 * @property {Object} Конфиг для поля подзаголовка.
+		 */
+		subConfig: {},
+
+		/**
+		 * @property {Object} Конфиг для поля альтернативного названия.
+		 */
+		altConfig: {},
+
 		translateText: {
 			main: 'Основное название',
 			sub: 'Подзаголовок',
@@ -43,8 +53,9 @@ Ext.define(
 			var me = this,
 				name = me.name,
 				items = [],
-				main;
-
+				main,
+				sub,
+				alt;
 
 			main = {
 				xtype: 'textfield',
@@ -69,32 +80,31 @@ Ext.define(
 					}
 				}
 			};
-
 			Ext.apply(main, me.mainConfig);
 			items.push(main);
 
 			if (me.enableSub)
 			{
-				items.push(
-					{
-						xtype: 'textfield',
-						name: name + '-sub',
-						cls: 'field-optional',
-						keyEnterAsTab: true,
-						fieldLabel: me.translateText.sub
-					}
-				);
+				sub = {
+					xtype: 'textfield',
+					name: name + '-sub',
+					cls: 'field-optional',
+					keyEnterAsTab: true,
+					fieldLabel: me.translateText.sub
+				};
+				items.push(sub);
+				Ext.apply(sub, me.subConfig);
 			}
 
 			if (me.enableAlt)
 			{
-				items.push(
-					{
-						xtype: 'form-desc-title-alt',
-						fieldName: name,
-						fieldLabelAlt: me.translateText.alt
-					}
-				);
+				alt = {
+					xtype: 'form-desc-title-alt',
+					fieldName: name,
+					fieldLabelAlt: me.translateText.alt
+				};
+				items.push(alt);
+				Ext.apply(alt, me.altConfig);
 			}
 
 			me.items = items;

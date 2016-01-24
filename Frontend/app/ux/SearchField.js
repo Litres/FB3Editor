@@ -54,17 +54,12 @@ Ext.define(
 
 			me.field = field;
 
-			field.afterRender = function ()
-			{
-				me.afterRenderField();
-			};
-
 			field.on(
 				{
 					scope: me,
-					blur: me.blurField
+					afterrender: me.afterRenderField
 				}
-			)
+			);
 		},
 
 		/**
@@ -131,16 +126,16 @@ Ext.define(
 		{
 			var me = this,
 				field = me.field,
-				inputWrap = field.inputWrap,
 				loader;
 
-			loader = inputWrap.createChild(
+			loader = Ext.dom.Element.create(
 				{
 					tag: 'i',
 					class: 'plugin-searchField-loader fa fa-spinner fa-pulse fa-lg',
 					style: me.style
 				}
 			);
+			loader.insertAfter(field.inputEl);
 			me.loader = loader;
 			me.hideLoader();
 		}
