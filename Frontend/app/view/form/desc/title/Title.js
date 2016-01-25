@@ -65,6 +65,9 @@ Ext.define(
 				fieldLabel: me.translateText.main,
 				cls: 'field-required',
 				keyEnterAsTab: true,
+				plugins: {
+					ptype: 'fieldCleaner'
+				},
 				listeners: {
 					change: function (field, newVal, oldVal)
 					{
@@ -90,7 +93,10 @@ Ext.define(
 					name: name + '-sub',
 					cls: 'field-optional',
 					keyEnterAsTab: true,
-					fieldLabel: me.translateText.sub
+					fieldLabel: me.translateText.sub,
+					plugins: {
+						ptype: 'fieldCleaner'
+					}
 				};
 				items.push(sub);
 				Ext.apply(sub, me.subConfig);

@@ -53,6 +53,9 @@ Ext.define(
 				fieldLabel: me.fieldLabelAlt,
 				cls: 'field-optional',
 				keyEnterAsTab: true,
+				plugins: {
+					ptype: 'fieldCleaner'
+				},
 				listeners: {
 					loadData: function (data)
 					{

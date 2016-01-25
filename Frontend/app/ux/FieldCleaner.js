@@ -56,6 +56,8 @@ Ext.define(
 		},
 
 		/**
+		 * @event beforeFieldCleaner
+		 * @event afterFieldCleaner
 		 * Обработчик клика по иконке.
 		 */
 		handler: function ()
@@ -71,7 +73,7 @@ Ext.define(
 			if (val)
 			{
 				val = val.toLowerCase();
-				val = val.replace(/[^a-z0-9а-яА-Я,.!?:;<>"'`~+=&@#$%*(){}[]_^№|\\ \/-]/ig, '');
+				val = val.replace(reg, '');
 				field.setValue(val);
 			}
 
@@ -91,14 +93,15 @@ Ext.define(
 			btn = Ext.dom.Element.create(
 				{
 					tag: 'i',
-					class: 'plugin-fieldCleaner fa fa-paint-brush',
+					class: 'plugin-fieldCleaner fa fa-paint-brush x-btn x-btn-plain-toolbar-small',
 					style: me.style,
 					title: me.translateText.cleaning
 				}
 			);
 			me.btn = btn;
 			btn.insertAfter(field.inputEl);
-			btn.addClsOnClick('plugin-fieldCleaner-pressed');
+			btn.addClsOnClick('x-btn-pressed');
+			btn.addClsOnOver('x-btn-over');
 			btn.on(
 				{
 					scope: me,

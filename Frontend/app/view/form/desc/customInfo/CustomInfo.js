@@ -74,6 +74,10 @@ Ext.define(
 									allowBlank: false,
 									//minHeight: 200,
 									height: 100,
+									plugins: {
+										ptype: 'fieldCleaner',
+										style: 'right: 17px; margin-top: -20px'
+									},
 									resizable: {
 										handles: 's',
 										minHeight: 50,

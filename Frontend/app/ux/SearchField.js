@@ -57,7 +57,8 @@ Ext.define(
 			field.on(
 				{
 					scope: me,
-					afterrender: me.afterRenderField
+					afterrender: me.afterRenderField,
+					blur: me.blurField
 				}
 			);
 		},

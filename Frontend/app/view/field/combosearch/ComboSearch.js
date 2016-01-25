@@ -24,10 +24,16 @@ Ext.define(
 			shadow: false,
 			maxHeight: 200
 		},
-		plugins: {
-			ptype: 'searchField',
-			style: 'margin-left: 280px'
-		},
+		plugins: [
+			{
+				ptype: 'fieldCleaner',
+				style: 'left: 441px; right: auto'
+			},
+			{
+				ptype: 'searchField',
+				style: 'margin-left: 258px'
+			}
+		],
 
 		keyEnterAsTab: true,
 

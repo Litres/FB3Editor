@@ -17,11 +17,11 @@ Ext.define(
 		plugins: [
 			{
 				ptype: 'fieldCleaner',
-				style: 'left: 468px; right: auto'
+				style: 'left: 441px; right: auto'
 			},
 			{
 				ptype: 'searchField',
-				style: 'margin-left: 280px'
+				style: 'margin-left: 258px'
 			}
 		],
 

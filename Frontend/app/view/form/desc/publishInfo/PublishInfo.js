@@ -65,7 +65,8 @@ Ext.define(
 									name: prefixName + '-title',
 									allowBlank: false,
 									fieldLabel: me.translateText.title,
-									cls: 'field-required'
+									cls: 'field-required',
+									plugins: 'fieldCleaner'
 								},
 								{
 									xtype: 'textareafield',
@@ -73,6 +74,10 @@ Ext.define(
 									fieldLabel: me.translateText.biblio,
 									cls: 'field-optional',
 									height: 70,
+									plugins: {
+										ptype: 'fieldCleaner',
+										style: 'right: 18px; margin-top: -18px'
+									},
 									resizable: {
 										handles: 's',
 										minHeight: 50,
@@ -83,13 +88,15 @@ Ext.define(
 									xtype: 'textfield',
 									name: prefixName + '-publisher',
 									fieldLabel: me.translateText.publisher,
-									cls: 'field-optional'
+									cls: 'field-optional',
+									plugins: 'fieldCleaner'
 								},
 								{
 									xtype: 'textfield',
 									name: prefixName + '-city',
 									fieldLabel: me.translateText.city,
-									cls: 'field-optional'
+									cls: 'field-optional',
+									plugins: 'fieldCleaner'
 								},
 								{
 									xtype: 'desc-fieldcontainer',
@@ -106,7 +113,8 @@ Ext.define(
 											xtype: 'textfield',
 											name: prefixName + '-year',
 											fieldLabel: me.translateText.year,
-											cls: 'field-optional'
+											cls: 'field-optional',
+											plugins: 'fieldCleaner'
 										},
 										{
 											xtype: 'form-desc-publishInfo-isbn',

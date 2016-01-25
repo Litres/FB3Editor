@@ -9,6 +9,7 @@ Ext.define(
 	'FBEditor.view.form.desc.written.date.AbstractDateText',
 	{
 		extend: 'Ext.form.Text',
+		plugins: 'fieldCleaner',
 
 		listeners: {
 			blur: function ()

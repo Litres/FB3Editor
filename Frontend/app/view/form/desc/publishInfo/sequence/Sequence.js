@@ -49,6 +49,7 @@ Ext.define(
 					fieldLabel: me.translateText.sequence,
 					cls: 'field-optional',
 					keyEnterAsTab: true,
+					plugins: 'fieldCleaner',
 					listeners: {
 						loadData: function (data)
 						{

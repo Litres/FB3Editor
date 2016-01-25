@@ -30,27 +30,18 @@ Ext.define(
 			plugins: [
 				{
 					ptype: 'searchField',
-					style: 'right: 2px'
+					style: 'right: 24px'
 				},
 				{
 					ptype: 'fieldCleaner'
 				}
 			]
 		},
-		subConfig: {
-			plugins: 'fieldCleaner'
-		},
 		altConfig: {
 			plugins: {
 				btnStyle: {
-					margin: '3px 0 0 2px'
+					margin: '4px 0 0 5px'
 				}
-			},
-			fieldConfig: {
-				plugins: {
-					ptype: 'fieldCleaner'
-				},
-				margin: '0 30px 0 0'
 			}
 		},
 

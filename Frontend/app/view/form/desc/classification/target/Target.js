@@ -75,7 +75,8 @@ Ext.define(
 						{
 							xtype: 'textfield',
 							name: 'classification-target-audience-text',
-							fieldLabel: me.translateText.desc
+							fieldLabel: me.translateText.desc,
+							plugins: 'fieldCleaner'
 						}
 					]
 				}

@@ -34,7 +34,7 @@ Ext.define(
 		plugins: [
 			{
 				ptype: 'fieldCleaner',
-				style: 'top: -7px; right: 5px'
+				style: 'top: -8px; right: 5px'
 			}
 		],
 

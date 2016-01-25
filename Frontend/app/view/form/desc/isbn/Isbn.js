@@ -22,6 +22,11 @@ Ext.define(
 		},
 
 		/**
+		 * @property {Object} Конфиг поля.
+		 */
+		fieldConfig: {},
+
+		/**
 		 * @property {String} Имя поля.
 		 */
 		fieldName: '',
@@ -34,7 +39,8 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				name = me.fieldName;
+				name = me.fieldName,
+				field;
 
 			me.plugins = {
 				ptype: 'fieldcontainerreplicator',
@@ -43,29 +49,31 @@ Ext.define(
 					margin: '0 0 0 5px'
 				}
 			};
-			me.items = [
-				{
-					xtype: 'textfield',
-					name: name,
-					regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
-					regexText: me.translateText.isbnError,
-					fieldLabel: me.translateText.isbn,
-					labelWidth: me.labelWidth || me.defaults.labelWidth,
-					cls: 'field-optional',
-					keyEnterAsTab: true,
-					afterBodyEl:  '<span class="after-body">' + me.translateText.isbnError + '</span>',
-					listeners: {
-						loadData: function (data)
-						{
-							me.fireEvent('loadData', data);
-						},
-						blur: function (field)
-						{
-							// разбиваем введенные через запятую значения на отдельные поля
-							me.splitField(field);
-						}
+			field = {
+				xtype: 'textfield',
+				name: name,
+				regex: /^([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]$/,
+				regexText: me.translateText.isbnError,
+				fieldLabel: me.translateText.isbn,
+				labelWidth: me.labelWidth || me.defaults.labelWidth,
+				cls: 'field-optional',
+				keyEnterAsTab: true,
+				afterBodyEl:  '<span class="after-body">' + me.translateText.isbnError + '</span>',
+				listeners: {
+					loadData: function (data)
+					{
+						me.fireEvent('loadData', data);
+					},
+					blur: function (field)
+					{
+						// разбиваем введенные через запятую значения на отдельные поля
+						me.splitField(field);
 					}
 				}
+			};
+			Ext.apply(field, me.fieldConfig);
+			me.items = [
+				field
 			];
 			me.callParent(arguments);
 		},

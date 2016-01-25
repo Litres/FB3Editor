@@ -64,7 +64,8 @@ Ext.define(
 								{
 									fieldLabel: me.translateText.desc,
 									name: 'relations-object-description',
-									cls: 'field-optional'
+									cls: 'field-optional',
+									plugins: 'fieldCleaner'
 								}
 							]
 						},

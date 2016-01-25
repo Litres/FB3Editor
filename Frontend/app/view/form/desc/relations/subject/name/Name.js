@@ -14,10 +14,15 @@ Ext.define(
 		controller: 'form.desc.relations.subject.name',
 		xtype: 'form-desc-relations-subject-name',
 		checkChangeBuffer: 200,
-		plugins: {
-			ptype: 'searchField',
-			style: 'right: 2px'
-		},
+		plugins: [
+			{
+				ptype: 'searchField',
+				style: 'right: 24px'
+			},
+			{
+				ptype: 'fieldCleaner'
+			}
+		],
 
 		/**
 		 * @private

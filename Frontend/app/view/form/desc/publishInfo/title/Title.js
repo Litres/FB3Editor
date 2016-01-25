@@ -13,6 +13,7 @@ Ext.define(
 		],
 		xtype: 'form-desc-publishInfo-title',
 		controller: 'form.desc.publishInfo.title',
+
 		listeners: {
 			change: 'onChange',
 			focus: 'onFocus',

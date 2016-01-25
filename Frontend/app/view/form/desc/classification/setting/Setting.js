@@ -51,7 +51,8 @@ Ext.define(
 						{
 							xtype: 'textfield',
 							name: 'classification-setting-place',
-							fieldLabel: me.translateText.place
+							fieldLabel: me.translateText.place,
+							plugins: 'fieldCleaner'
 						}
 					]
 				},
@@ -89,7 +90,8 @@ Ext.define(
 						{
 							xtype: 'textfield',
 							name: 'classification-setting-text',
-							fieldLabel: me.translateText.desc
+							fieldLabel: me.translateText.desc,
+							plugins: 'fieldCleaner'
 						}
 					]
 				}
