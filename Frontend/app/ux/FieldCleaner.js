@@ -68,12 +68,24 @@ Ext.define(
 				descManager = FBEditor.desc.Manager,
 				reg = descManager.getRegexpUtf();
 
+			/* переводит первый символ предложения в верхний регистр */
+			function capitalizer (str, tag, val, end)
+			{
+				str = tag ? tag : '';
+				str += Ext.String.capitalize(val) + end;
+				str += end === '</p>' ? '' : ' ';
+
+				return str;
+			}
+
 			field.fireEvent('beforeFieldCleaner');
 
 			if (val)
 			{
 				val = val.toLowerCase();
 				val = val.replace(reg, '');
+				val = val.replace(/(<p>)? *(.+?)([.!?]+|<\/p>|$)/g, capitalizer);
+				val = val.trim();
 				field.setValue(val);
 			}
 
