@@ -657,7 +657,12 @@
 .treenavigation-children-el-title span:before {
 	content: "\f1dc";
 }
-
+.treenavigation-children-el-poem span:before {
+	content: "\f0d2";
+}
+.treenavigation-children-el-stanza span:before {
+	content: "\f0d3";
+}
 .treenavigation-children-el-img span:before {
 	content: "\f03e";
 }

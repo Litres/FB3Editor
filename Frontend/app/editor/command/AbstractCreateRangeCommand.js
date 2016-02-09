@@ -24,7 +24,6 @@ Ext.define(
 				nodes = {},
 				offset = {},
 				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory(),
 				sel,
 				collapsed,
 				range,
@@ -123,34 +122,7 @@ Ext.define(
 				els.endContainer = nodes.endContainer.getElement();
 
 				// создаем новый элемент
-				els.node = factory.createElement(me.elementName);
-				nodes.node = els.node.getNode(data.viewportId);
-
-				//console.log('nodes', nodes, range);
-				//return;
-
-				// вставляем новый элемент
-				els.common.insertBefore(els.node, els.startContainer);
-				nodes.common.insertBefore(nodes.node, nodes.startContainer);
-
-				// переносим элементы, которые находятся в текущем выделении в новый элемент
-				nodes.next = nodes.startContainer;
-				els.next = nodes.next.getElement();
-				while (els.next && els.next.elementId !== els.endContainer.elementId)
-				{
-					nodes.buf = nodes.next.nextSibling;
-
-					els.node.add(els.next);
-					nodes.node.appendChild(nodes.next);
-
-					nodes.next = nodes.buf;
-					els.next = nodes.next ? nodes.next.getElement() : null;
-				}
-				if (els.next && els.next.elementId === els.endContainer.elementId && !joinEndContainer)
-				{
-					els.node.add(els.next);
-					nodes.node.appendChild(nodes.next);
-				}
+				me.createNewElement(els, nodes);
 
 				// синхронизируем
 				els.common.sync(data.viewportId);
@@ -269,6 +241,48 @@ Ext.define(
 			}
 
 			return res;
+		},
+
+		/**
+		 * Создает новый элемент.
+		 * @param {Object} els
+		 * @param {Object} nodes
+		 */
+		createNewElement: function (els, nodes)
+		{
+			var me = this,
+				data = me.getData(),
+				manager = FBEditor.editor.Manager,
+				factory = manager.getFactory();
+
+			els.node = factory.createElement(me.elementName);
+			nodes.node = els.node.getNode(data.viewportId);
+
+			//console.log('nodes', nodes, range);
+			//return;
+
+			// вставляем новый элемент
+			els.common.insertBefore(els.node, els.startContainer);
+			nodes.common.insertBefore(nodes.node, nodes.startContainer);
+
+			// переносим элементы, которые находятся в текущем выделении в новый элемент
+			nodes.next = nodes.startContainer;
+			els.next = nodes.next.getElement();
+			while (els.next && els.next.elementId !== els.endContainer.elementId)
+			{
+				nodes.buf = nodes.next.nextSibling;
+
+				els.node.add(els.next);
+				nodes.node.appendChild(nodes.next);
+
+				nodes.next = nodes.buf;
+				els.next = nodes.next ? nodes.next.getElement() : null;
+			}
+			if (els.next && els.next.elementId === els.endContainer.elementId && !data.range.joinEndContainer)
+			{
+				els.node.add(els.next);
+				nodes.node.appendChild(nodes.next);
+			}
 		}
 	}
 );

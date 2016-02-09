@@ -21,6 +21,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.notebody.Notebody',
 			'FBEditor.view.panel.toolstab.main.button.notes.Notes',
 			'FBEditor.view.panel.toolstab.main.button.ol.Ol',
+			'FBEditor.view.panel.toolstab.main.button.poem.Poem',
 			'FBEditor.view.panel.toolstab.main.button.pre.Pre',
 			'FBEditor.view.panel.toolstab.main.button.section.Section',
 			'FBEditor.view.panel.toolstab.main.button.spacing.Spacing',
@@ -97,6 +98,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-pre'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-poem'
 				},
 				{
 					xtype: 'panel-toolstab-main-button-ul'

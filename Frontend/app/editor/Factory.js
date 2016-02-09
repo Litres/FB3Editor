@@ -35,6 +35,7 @@ Ext.define(
 			'FBEditor.editor.element.section.SectionElement',
 			'FBEditor.editor.element.spacing.SpacingElement',
 			'FBEditor.editor.element.span.SpanElement',
+			'FBEditor.editor.element.stanza.StanzaElement',
 			'FBEditor.editor.element.strikethrough.StrikethroughElement',
 			'FBEditor.editor.element.strong.StrongElement',
 			'FBEditor.editor.element.sub.SubElement',

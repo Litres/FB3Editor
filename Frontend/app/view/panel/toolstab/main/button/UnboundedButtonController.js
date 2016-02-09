@@ -182,6 +182,7 @@ Ext.define(
 				els.parent.children.splice(pos, 1);
 
 				// проверяем по схеме
+				//console.log('xml', xml);
 				me.verify(xml);
 			}
 		}

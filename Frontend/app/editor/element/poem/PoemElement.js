@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
 			'FBEditor.editor.command.poem.CreateCommand',
-			//'FBEditor.editor.command.poem.DeleteWrapperCommand',
+			'FBEditor.editor.command.poem.CreateRangeCommand',
 			'FBEditor.editor.element.poem.PoemElementController'
 		],
 
@@ -21,30 +21,20 @@ Ext.define(
 
 		isPoem: true,
 
-		/*getOnlyStylesChildren: function (fragment)
+		createScaffold: function ()
 		{
-			var me = this;
+			var me = this,
+				els = {};
 
-			// если в stanza содержится p, то переносим из p всех потомков в stanza
-			Ext.Array.each(
-				me.children,
-				function (stanza)
-				{
-					var p = stanza.children[0];
+			els.stanza = FBEditor.editor.Factory.createElement('stanza');
+			els.p = FBEditor.editor.Factory.createElement('p');
+			els.t = FBEditor.editor.Factory.createElementText('Поэма');
+			els.p.add(els.t);
+			els.stanza.add(els.p);
+			me.add(els.stanza);
 
-					if (p.isP)
-					{
-						while (p.children.length)
-						{
-							stanza.add(p.children[0]);
-						}
-						stanza.remove(p);
-					}
-				}
-			);
-
-			fragment.add(me);
-		},*/
+			return els;
+		},
 
 		convertToText: function (fragment)
 		{
