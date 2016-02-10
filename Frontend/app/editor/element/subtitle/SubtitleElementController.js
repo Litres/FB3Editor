@@ -1,14 +1,13 @@
 /**
- * Абстрактный класс контроллера элементов блочного типа неограниченных по количеству.
+ * Контроллер элемента subtitle.
  *
- * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.AbstractUnboundedElementController',
+	'FBEditor.editor.element.subtitle.SubtitleElementController',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController',
+		extend: 'FBEditor.editor.element.AbstractStyleHolderElementController',
 
 		createFromRange: true,
 

@@ -1,5 +1,5 @@
 /**
- * Кнотроллер элемента p.
+ * Контроллер элемента p.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */

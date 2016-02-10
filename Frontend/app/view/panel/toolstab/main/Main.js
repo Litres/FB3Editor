@@ -29,6 +29,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.strong.Strong',
 			'FBEditor.view.panel.toolstab.main.button.sub.Sub',
 			'FBEditor.view.panel.toolstab.main.button.subscription.Subscription',
+			'FBEditor.view.panel.toolstab.main.button.subtitle.Subtitle',
 			'FBEditor.view.panel.toolstab.main.button.sup.Sup',
 			'FBEditor.view.panel.toolstab.main.button.title.Title',
 			'FBEditor.view.panel.toolstab.main.button.titlebody.TitleBody',
@@ -92,6 +93,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-main-button-div'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-subtitle'
 				},
 				{
 					xtype: 'panel-toolstab-main-button-blockquote'

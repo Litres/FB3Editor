@@ -26,15 +26,16 @@ Ext.define(
 		setAttributesHtml: function (element)
 		{
 			var me = this,
-				children = me.children,
 				first;
 
-			first = children.length ? children[0] : null;
+			first = me.first();
+
 			if (first && first.isImg)
 			{
-				// не должно быть отсупа
+				// не должно быть отступа
 				me.cls += ' el-p-no-indent';
 			}
+
 			element = me.callParent(arguments);
 
 			return element;

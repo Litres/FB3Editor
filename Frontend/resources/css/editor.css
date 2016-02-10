@@ -97,7 +97,7 @@
 	display: inline;
 	text-align: center;
 	font-weight: bold;
-	text-indent: 0em;
+	text-indent: 0;
 	background-color: #B2B2B2; /*## Фоновый цвет подзаголовка*/
 }
 
