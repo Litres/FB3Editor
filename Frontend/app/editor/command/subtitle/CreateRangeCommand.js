@@ -13,9 +13,107 @@ Ext.define(
 
 		unExecute: function ()
 		{
-			console.log('Отмена subtitle нереализована');
+			var me = this,
+				data = me.getData(),
+				res = false,
+				els = {},
+				nodes = {},
+				manager = FBEditor.editor.Manager,
+				range,
+				viewportId;
 
-			return false;
+			try
+			{
+				manager.suspendEvent = true;
+
+				range = data.range;
+				nodes = data.saveNodes;
+				viewportId = nodes.node.viewportId;
+
+				console.log('undo create range ' + me.elementName, range, nodes);
+
+				els.node = nodes.node.getElement();
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				// переносим все элементы обратно в исходный контейнер
+				Ext.Array.each(
+					nodes.links,
+					function (item)
+					{
+						var p = item.el,
+							elP = p.getElement();
+
+						// переносим параграф
+						els.parent.insertBefore(elP, els.node);
+						nodes.parent.insertBefore(p, nodes.node);
+
+						// переносим дочерние элементы параграфа
+						Ext.Array.each(
+							item.children,
+						    function (child)
+						    {
+							    var elChild = child.getElement();
+
+							    elP.add(elChild);
+							    p.appendChild(child);
+						    }
+						);
+					}
+				);
+
+				// удаляем новый элемент
+				els.parent.remove(els.node);
+				nodes.parent.removeChild(nodes.node);
+
+				// объединяем элементы в точках разделения
+				if (range.joinStartContainer)
+				{
+					manager.joinNode(nodes.startContainer);
+				}
+				if (range.joinEndContainer)
+				{
+					manager.joinNode(nodes.endContainer);
+				}
+
+				// синхронизируем
+				els.parent.sync(viewportId);
+
+				manager.suspendEvent = false;
+
+				// устанавливаем выделение
+				if (!range.joinStartContainer)
+				{
+					range.start = nodes.startContainer;
+					range.common = range.start.getElement().isText ? range.start.parentNode : range.start;
+				}
+				else
+				{
+					range.common = range.common.getElement().isText ? range.common.parentNode : range.common;
+				}
+
+				range.common = range.common ? range.common : range.prevParentStart.parentNode;
+				range.start = range.start.parentNode ? range.start : range.prevParentStart.nextSibling;
+				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
+				range.end = !range.collapsed && range.end.firstChild ? range.end.firstChild : range.end;
+
+				data.saveRange = {
+					startNode: range.start,
+					endNode: range.end,
+					startOffset: range.offset.start,
+					endOffset: range.offset.end
+				};
+				manager.setCursor(data.saveRange);
+
+				res = true;
+			}
+			catch (e)
+			{
+				Ext.log({level: 'warn', msg: e, dump: e});
+				FBEditor.editor.HistoryManager.remove();
+			}
+
+			return res;
 		},
 
 		createNewElement: function (els, nodes)
@@ -23,13 +121,17 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory();
+				factory = manager.getFactory(),
+				saveP;
 
 			els.node = factory.createElement(me.elementName);
 			nodes.node = els.node.getNode(data.viewportId);
 
 			//console.log('nodes', nodes);
 			//return;
+
+			// ссылки на параграфы
+			nodes.links = [];
 
 			// вставляем новый элемент
 			els.common.insertBefore(els.node, els.startContainer);
@@ -42,11 +144,20 @@ Ext.define(
 			{
 				nodes.buf = nodes.next.nextSibling;
 
+				// ссылки на параграф и его дочерние элементы
+				saveP = {
+					el: nodes.next,
+					children: []
+				};
+
 				// переносим элементы из параграфа в subtitle
 				nodes.first = nodes.next.firstChild;
 				els.first = nodes.first ? nodes.first.getElement() : null;
 				while (els.first)
 				{
+					// ссылка на дочерний элемент параграфа
+					saveP.children.push(nodes.first);
+
 					els.node.add(els.first);
 					nodes.node.appendChild(nodes.first);
 
@@ -54,8 +165,12 @@ Ext.define(
 					els.first = nodes.first ? nodes.first.getElement() : null;
 				}
 
+				// удаляем параграф
 				els.common.remove(els.next);
 				nodes.common.removeChild(nodes.next);
+
+				// сохраняем ссылки
+				nodes.links.push(saveP);
 
 				nodes.next = nodes.buf;
 				els.next = nodes.next ? nodes.next.getElement() : null;
