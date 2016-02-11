@@ -56,8 +56,6 @@ Ext.define(
 			els.newEl = factory.createElement(name);
 			els.newEl.createScaffold();
 
-			els.parent.children.push(els.newEl);
-
 			if (!range.collapsed)
 			{
 				// переносим выделенный параграф
@@ -69,13 +67,25 @@ Ext.define(
 					els.p = els.isRoot ? els.p.first() : els.p.parent;
 				}
 
+				if (!els.p)
+				{
+					btn.disable();
+
+					return;
+				}
+
 				els.parentP = els.p.parent;
 				els.next = els.p.next();
 				els.newEl.add(els.p);
 			}
 
+			els.parent.children.push(els.newEl);
+
 			// получаем xml
 			xml = manager.getContent().getXml(true);
+
+			// удаляем временный элемент
+			els.parent.children.pop();
 
 			if (!range.collapsed)
 			{
@@ -89,9 +99,6 @@ Ext.define(
 					els.parentP.add(els.p);
 				}
 			}
-
-			// удаляем временный элемент
-			els.parent.children.pop();
 
 			// проверяем по схеме
 			me.verify(xml);

@@ -56,7 +56,6 @@ Ext.define(
 
 			els.newEl = factory.createElement(name);
 			els.newEl.createScaffold();
-			els.parent.children.unshift(els.newEl);
 
 			if (!range.collapsed)
 			{
@@ -69,10 +68,19 @@ Ext.define(
 					els.p = els.isRoot ? els.p.first() : els.p.parent;
 				}
 
+				if (!els.p)
+				{
+					btn.disable();
+
+					return;
+				}
+
 				els.parentP = els.p.parent;
 				els.next = els.p.next();
 				els.newEl.add(els.p);
 			}
+
+			els.parent.children.unshift(els.newEl);
 
 			// получаем xml
 			xml = manager.getContent().getXml(true);

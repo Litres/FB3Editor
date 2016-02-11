@@ -94,7 +94,8 @@
 
 .panel-editor-viewport .el-subtitle
 {
-	display: inline;
+	display: block;
+	margin: 0.5em 0;
 	text-align: center;
 	font-weight: bold;
 	text-indent: 0;
