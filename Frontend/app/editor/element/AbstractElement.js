@@ -437,7 +437,7 @@ Ext.define(
 		},
 
 		/**
-		 * @param {Boolean} [[withoutText] Надо ли исключить текст из xml.
+		 * @param {Boolean} [withoutText] Надо ли исключить текст из xml.
 		 * @return {String}
 		 */
 		getXml: function (withoutText)
@@ -967,8 +967,7 @@ Ext.define(
 		setAttributesHtml: function (element)
 		{
 			var me = this,
-				el = element,
-				cls;
+				el = element;
 
 			Ext.Object.each(
 				me.attributes,
@@ -977,18 +976,38 @@ Ext.define(
 					el.setAttribute(key, val);
 				}
 			);
+
 			if (me.style)
 			{
 				el.setAttribute('style', me.style);
 			}
+
+			me.initCls();
+
+			if (me.cls)
+			{
+				el.setAttribute('class', me.cls);
+			}
+
+			return el;
+		},
+
+		/**
+		 * @protected
+		 * Инициализирует CSS-класс элемента.
+		 */
+		initCls: function ()
+		{
+			var me = this,
+				cls = '';
+
 			if (me.baseCls || me.cls)
 			{
 				cls = me.baseCls ? me.baseCls : '';
 				cls += cls ? ' ' + me.cls : me.cls;
-				el.setAttribute('class', cls);
 			}
 
-			return el;
+			me.cls = cls;
 		},
 
 		/**

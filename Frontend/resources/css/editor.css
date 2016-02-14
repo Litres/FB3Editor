@@ -56,6 +56,20 @@
 	background-color: #F4EEE3; /*## Основной фоновый цвет тела книги в редакторе*/
 }
 
+.panel-editor-viewport .el-div-align-center p {
+	text-align: center;
+}
+.panel-editor-viewport .el-div-align-right p {
+	text-align: right;
+}
+.panel-editor-viewport .el-div-align-left p {
+	text-align: left;
+}
+.panel-editor-viewport .el-div-align-justify p {
+	text-align: justify;
+}
+
+
 .panel-editor-viewport .el-blockquote
 {
 	color: #570110;

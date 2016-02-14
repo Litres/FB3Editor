@@ -33,6 +33,55 @@ Ext.define(
 			me.add(els.p);
 
 			return els;
+		},
+
+		getAttributesXml: function (withoutText)
+		{
+			var me = this,
+				attr = '';
+
+			Ext.Object.each(
+				me.attributes,
+				function (key, val)
+				{
+					if (key !== 'marker')
+					{
+						attr += key + '="' + val + '" ';
+					}
+				}
+			);
+
+			return attr;
+		},
+
+		setStyleHtml: function ()
+		{
+			var me = this,
+				attributes = me.attributes,
+				style;
+
+			style = me.callParent();
+			style += style ? ' ' : '';
+			style += attributes.width ? 'width: ' + attributes.width + '; ' : '';
+			style += attributes['min-width'] ? 'min-width: ' + attributes['min-width'] + '; ' : '';
+			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
+			style += attributes['float'] ? 'float: ' + attributes['float'] + '; ' : '';
+			style += attributes.align ? 'text-align: ' + attributes.align + '; ' : '';
+			style += attributes.border ? 'border: 1px solid black; ' : '';
+			me.style = style;
+
+			return style;
+		},
+
+		initCls: function ()
+		{
+			var me = this,
+				attributes = me.attributes,
+				cls;
+
+			cls = attributes.align ? ' el-div-align-' + attributes.align : '';
+			cls = 'el-div' + cls;
+			me.cls = cls;
 		}
 	}
 );

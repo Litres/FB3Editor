@@ -54,7 +54,7 @@ Ext.define(
 							{value: 'left', text: 'слева'},
 							{value: 'right', text: 'справа'},
 							{value: 'center', text: 'по центру'},
-							{value: 'default', text: 'по ширине'}
+							{value: 'justify', text: 'по ширине'}
 						]
 					}
 				)
