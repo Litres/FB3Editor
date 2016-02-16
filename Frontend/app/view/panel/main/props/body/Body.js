@@ -27,6 +27,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.section.Editor',
 			'FBEditor.view.panel.main.props.body.editor.stanza.Editor',
 			'FBEditor.view.panel.main.props.body.editor.subscription.Editor',
+			'FBEditor.view.panel.main.props.body.editor.td.Editor',
 			'FBEditor.view.panel.main.props.body.editor.title.Editor',
 			'FBEditor.view.panel.main.props.body.editor.ul.Editor'
 		],

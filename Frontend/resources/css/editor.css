@@ -254,24 +254,23 @@
 	font-size: 90%;
 }
 
-/*
-div.table {
-	border-color: teal;
+.panel-editor-viewport .el-table {
+	width: 100%;
 }
-div.tr {
-	border-color: rgb(150,120,20);
-}
-p.th {
+.panel-editor-viewport .el-th {
 	text-align: center;
 	background: rgb(117,255,255);
 	text-indent: 0em;
 	margin-bottom: 0em;
 	color: purple;
 }
-p.td {
+.panel-editor-viewport .el-td {
 	text-indent: 0em;
 	margin-bottom: 0em;
 	background: rgb(186,213,237);
 	color: navy;
+	border: 1px solid teal;
 }
-*/
+.panel-editor-viewport .el-td p {
+	text-indent: 0em;
+}
