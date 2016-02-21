@@ -9,6 +9,9 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.toolstab.main.button.ButtonController',
 
+		/**
+		 *  @return {Boolean}
+		 */
 		onSync: function ()
 		{
 			var me = this,
@@ -28,7 +31,7 @@ Ext.define(
 			if (!range)
 			{
 				btn.disable();
-				return;
+				return false;
 			}
 
 			if (!range.collapsed)
@@ -38,7 +41,7 @@ Ext.define(
 				if (!nodes.common.getElement || nodes.common.getElement().isRoot)
 				{
 					btn.disable();
-					return;
+					return false;
 				}
 
 				els.common = nodes.common.getElement();
@@ -55,7 +58,7 @@ Ext.define(
 					if (els.common.isRoot)
 					{
 						btn.disable();
-						return;
+						return false;
 					}
 				}
 
@@ -147,7 +150,7 @@ Ext.define(
 				if (!nodes.node.getElement || nodes.node.getElement().isRoot)
 				{
 					btn.disable();
-					return;
+					return false;
 				}
 
 				els.node = nodes.node.getElement();
@@ -185,6 +188,8 @@ Ext.define(
 				//console.log('xml', xml);
 				me.verify(xml);
 			}
+
+			return true;
 		}
 	}
 );

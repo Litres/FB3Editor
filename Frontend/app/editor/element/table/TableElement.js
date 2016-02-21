@@ -10,7 +10,6 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
 			'FBEditor.editor.command.table.CreateCommand',
-			//'FBEditor.editor.command.table.CreateRangeCommand',
 			'FBEditor.editor.element.table.TableElementController'
 		],
 

@@ -13,6 +13,45 @@ Ext.define(
 		onClick: function ()
 		{
 			// ничего не делаем
+		},
+
+		verifyResult: function (enable, scopeData)
+		{
+			var me = this,
+				btn = me.getView(),
+				manager = FBEditor.editor.Manager,
+				nodes = {},
+				els = {},
+				range,
+				insertTableItem;
+
+			me.callParent(arguments);
+
+			insertTableItem = btn.down('panel-toolstab-main-button-table-menu-insertTable');
+
+			// синхронизируем пункты меню
+			btn.menu.fireEvent('sync');
+
+			if (!enable)
+			{
+				range = manager.getRange();
+				nodes.node = range.common;
+				els.node = nodes.node.getElement();
+
+				if (!els.node.hasParentName('table'))
+				{
+					return false;
+				}
+
+				// если курсор в таблице, активируем кнопку принудительно
+				btn.enable();
+
+				insertTableItem.disable();
+			}
+			else
+			{
+				insertTableItem.enable();
+			}
 		}
 	}
 );

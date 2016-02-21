@@ -7,6 +7,8 @@
 Ext.define(
 	'FBEditor.editor.element.table.TableElementController',
 	{
-		extend: 'FBEditor.editor.element.AbstractUnboundedElementController'
+		extend: 'FBEditor.editor.element.AbstractUnboundedElementController',
+
+		createFromRange: false
 	}
 );

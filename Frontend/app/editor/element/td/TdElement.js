@@ -21,6 +21,7 @@ Ext.define(
 		showedOnTree: false,
 
 		isTd: true,
+		isCell: true,
 
 		createScaffold: function ()
 		{
@@ -28,7 +29,7 @@ Ext.define(
 				els = {};
 
 			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Строка');
+			els.t = FBEditor.editor.Factory.createElementText(' ');
 			els.p.add(els.t);
 			me.add(els.p);
 

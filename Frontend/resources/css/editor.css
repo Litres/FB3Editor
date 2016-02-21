@@ -232,30 +232,26 @@
 	text-align: center;
 	text-indent: 0em;
 }
-
 .panel-editor-viewport .el-marker
 {
 	float: left;
 }
-
 .panel-editor-viewport .el-marker + p
 {
 	padding-left: 1.7em;
 	text-indent: 0em; /* абзац следующий за маркером, имеет меньший отступ  */
 }
-
 .panel-editor-viewport .el-ol
 {
 	padding-left: 3em;
 }
-
 .panel-editor-viewport .el-notes
 {
 	font-size: 90%;
 }
-
 .panel-editor-viewport .el-table {
 	width: 100%;
+	border: 1px solid teal;
 }
 .panel-editor-viewport .el-th {
 	text-align: center;
@@ -269,7 +265,7 @@
 	margin-bottom: 0em;
 	background: rgb(186,213,237);
 	color: navy;
-	border: 1px solid teal;
+	border: 1px solid #2e7ed5;
 }
 .panel-editor-viewport .el-td p {
 	text-indent: 0em;

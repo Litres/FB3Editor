@@ -9,13 +9,25 @@ Ext.define(
 	{
 		extend: 'Ext.menu.Menu',
 		requires: [
-			'FBEditor.view.panel.toolstab.main.button.table.menu.size.SizeMenu'
+			'FBEditor.view.panel.toolstab.main.button.table.menu.MenuController',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.delCol.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.delRow.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.delTable.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.joinCells.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertColNext.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertColPrev.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertRowNext.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertRowPrev.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertTable.Item',
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.sepCells.Item'
+
 		],
 		id: 'panel-toolstab-main-button-table-menu',
 		xtype: 'panel-toolstab-main-button-table-menu',
+		controller: 'panel.toolstab.main.button.table.menu',
 
-		translateText: {
-			insertTable: 'Вставить таблицу'
+		listeners: {
+			sync: 'onSync'
 		},
 
 		initComponent: function ()
@@ -24,8 +36,43 @@ Ext.define(
 
 			me.items = [
 				{
-					text: me.translateText.insertTable,
-					menu: Ext.create('FBEditor.view.panel.toolstab.main.button.table.menu.size.SizeMenu')
+					xtype: 'panel-toolstab-main-button-table-menu-insertTable'
+				},
+				{
+					xtype: 'menuseparator'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-insertRowPrev'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-insertRowNext'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-insertColPrev'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-insertColNext'
+				},
+				{
+					xtype: 'menuseparator'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-delRow'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-delCol'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-delTable'
+				},
+				{
+					xtype: 'menuseparator'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-joinCells'
+				},
+				{
+					xtype: 'panel-toolstab-main-button-table-menu-sepCells'
 				}
 			];
 

@@ -29,7 +29,7 @@ Ext.define(
 
 			els.td = FBEditor.editor.Factory.createElement('td');
 			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Строка');
+			els.t = FBEditor.editor.Factory.createElementText(' ');
 			els.p.add(els.t);
 			els.td.add(els.p);
 			me.add(els.td);
