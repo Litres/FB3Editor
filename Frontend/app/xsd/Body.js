@@ -328,6 +328,10 @@ Ext.define(
 			<extension base="fb3b:TitledType">\
 				<sequence maxOccurs="unbounded">\
 					<element name="p" type="fb3b:StyleType"/>\
+					<choice minOccurs="0" maxOccurs="unbounded">\
+			            <element name="p" type="fb3b:StyleType"/>\
+                        <element name="br" type="fb3b:BRType"/>\
+                    </choice>\
 					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
 				</sequence>\
 			</extension>\
