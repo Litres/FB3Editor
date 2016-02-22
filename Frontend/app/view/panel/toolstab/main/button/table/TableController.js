@@ -36,6 +36,12 @@ Ext.define(
 			{
 				range = manager.getRange();
 				nodes.node = range.common;
+
+				if (!nodes.node.getElement || nodes.node.getElement().isRoot)
+				{
+					return false;
+				}
+
 				els.node = nodes.node.getElement();
 
 				if (!els.node.hasParentName('table'))

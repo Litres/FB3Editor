@@ -32,7 +32,9 @@ Ext.define(
 					collapsed: range.collapsed,
 					offset: range.offset
 				};
+
 				manager.suspendEvent = true;
+
 				nodes.node = data.node;
 
 				//console.log('data', data);

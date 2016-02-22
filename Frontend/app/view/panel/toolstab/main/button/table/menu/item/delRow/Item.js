@@ -8,9 +8,14 @@ Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.table.menu.item.delRow.Item',
 	{
 		extend: 'FBEditor.view.panel.toolstab.main.button.table.menu.item.AbstractItem',
+		requires: [
+			'FBEditor.editor.command.table.DelRowCommand'
+		],
 		id: 'panel-toolstab-main-button-table-menu-delRow',
 		xtype: 'panel-toolstab-main-button-table-menu-delRow',
 
-		text: 'Удалить строку'
+		text: 'Удалить строку',
+
+		cmdName: 'DelRowCommand'
 	}
 );
