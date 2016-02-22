@@ -95,8 +95,8 @@ Ext.define(
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
 
-				// сохраняем узел
-				data.saveNode = nodes.node;
+				// сохраняем ссылку на новый узел
+				data.saveNode = nodes.tr;
 
 				// проверяем по схеме
 				me.verifyElement(els.parent);
@@ -128,7 +128,6 @@ Ext.define(
 				manager.suspendEvent = true;
 
 				range = data.range;
-
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
 				viewportId = nodes.node.viewportId;
