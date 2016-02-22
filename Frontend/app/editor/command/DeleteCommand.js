@@ -16,8 +16,8 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
-				range,
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.editor.Manager,
+				range;
 
 			try
 			{
