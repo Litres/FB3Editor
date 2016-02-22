@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.table.AbstractInsertColCommand',
 
-		insertCol: function (elTd, newElTd, els, nodes)
+		insertCol: function (elTd, nodeNewTd, els, nodes)
 		{
 			var me = this,
 				data = me.getData(),
@@ -18,8 +18,8 @@ Ext.define(
 
 			e.td = elTd;
 			n.td = e.td.nodes[data.viewportId];
-			e.newTd = newElTd;
-			n.newTd = e.newTd.getNode(data.viewportId);
+			n.newTd = nodeNewTd;
+			e.newTd = n.newTd.getElement();
 			n.tr = n.td.parentNode;
 			e.tr = n.tr.getElement();
 

@@ -69,7 +69,10 @@ Ext.define(
 				els.table = nodes.table.getElement();
 				els.pos = els.parent.getChildPosition(els.node);
 
-				Ext.Array.each(
+				// хранит все ссылки на новые td
+				data.saveNode = [];
+
+					Ext.Array.each(
 					els.table.children,
 					function (elTr)
 					{
@@ -77,15 +80,20 @@ Ext.define(
 							elTr.children,
 							function (child, index)
 							{
-								var elTd;
+								var elTd,
+									nodeTd;
 
 								if (index === els.pos)
 								{
 									elTd = factory.createElement(child.xmlTag);
 									elTd.createScaffold();
+									nodeTd = elTd.getNode(data.viewportId);
+
+									// сохраняем ссылку на новый td
+									data.saveNode.push(nodeTd);
 
 									// вставляем новый столбец
-									me.insertCol(child, elTd, els, nodes);
+									me.insertCol(child, nodeTd, els, nodes);
 
 									return false;
 								}
@@ -103,9 +111,6 @@ Ext.define(
 
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
-
-				// сохраняем узел
-				data.saveNode = nodes.node;
 
 				// проверяем по схеме
 				me.verifyElement(els.parent);
@@ -132,23 +137,27 @@ Ext.define(
 				range,
 				viewportId;
 
-			console.log('Нереализована отмена вставки столбца');
-			return false;
-
 			try
 			{
 				manager.suspendEvent = true;
 
 				range = data.range;
 
-				nodes.node = data.saveNode;
-				els.node = nodes.node.getElement();
-				viewportId = nodes.node.viewportId;
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
+				// удаляем все td
+				Ext.Array.each(
+					data.saveNode,
+				    function (td)
+				    {
+					    nodes.node = td;
+					    els.node = nodes.node.getElement();
+					    viewportId = nodes.node.viewportId;
+					    nodes.parent = nodes.node.parentNode;
+					    els.parent = nodes.parent.getElement();
 
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+					    els.parent.remove(els.node);
+					    nodes.parent.removeChild(nodes.node);
+				    }
+				);
 
 				els.parent.sync(viewportId);
 
@@ -175,13 +184,13 @@ Ext.define(
 
 		/**
 		 * @abstract
-		 * Вставляем столбец td.
+		 * Вставляет столбец td во все строки tr.
 		 * @param {FBEditor.editor.element.AbstractElement} elTd Текущий элемент td.
-		 * @param {FBEditor.editor.element.AbstractElement} elNewTd Новый элемент td.
+		 * @param {Node} nodeNewTd Новый узел td.
 		 * @param {Object} els Элементы.
 		 * @param {Object} nodes Узлы.
 		 */
-		insertCol: function (elTd, elNewTd, els, nodes)
+		insertCol: function (elTd, nodeNewTd, els, nodes)
 		{
 			//
 		},

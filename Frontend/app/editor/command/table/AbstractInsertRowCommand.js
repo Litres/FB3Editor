@@ -162,7 +162,7 @@ Ext.define(
 
 		/**
 		 * @abstract
-		 * Вставляем строку tr.
+		 * Вставляет строку tr.
 		 * @param {Object} els Элементы.
 		 * @param {Object} nodes Узлы.
 		 */
