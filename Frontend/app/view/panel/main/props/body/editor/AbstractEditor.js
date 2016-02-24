@@ -71,6 +71,33 @@ Ext.define(
 			form.reset();
 			form.setValues(data);
 			me.isLoad = false;
+		},
+
+		/**
+		 * Показывает/скрывает кнопки конвертирования и удаления.
+		 * @param {Boolean} visible Показывать ли кнопки.
+		 */
+		setVisibleButtons: function (visible)
+		{
+			var me = this,
+				propsBody,
+				cnvBtn,
+				delBtn;
+
+			propsBody = me.getPanelPropsBody();
+			cnvBtn = propsBody.getConvertBtn();
+			delBtn = propsBody.getDeleteBtn();
+			cnvBtn.setVisible(visible);
+			delBtn.setVisible(visible);
+		},
+
+		/**
+		 * Возвращает панель свойств редактора текста.
+		 * @return {FBEditor.view.panel.main.props.body.Body}
+		 */
+		getPanelPropsBody: function ()
+		{
+			return this.up('panel-props-body');
 		}
 	}
 );

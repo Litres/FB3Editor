@@ -23,11 +23,12 @@ Ext.define(
 			Ext.getCmp('props-element-info').update();
 
 			// кнопки
-			convertBtn = view.down('button-editor-convert-element');
-			deleteBtn = view.down('button-editor-delete-element');
+			convertBtn = view.getConvertBtn();
+			deleteBtn = view.getDeleteBtn();
 			convertBtn.setVisible(false);
 			deleteBtn.setVisible(false);
 			editor = view.editor;
+
 			if (editor)
 			{
 				// удаляем старую панель редактирования
@@ -45,6 +46,7 @@ Ext.define(
 
 			// если есть активный элемент в тексте, то показываем его данные
 			focusEl = bridge.FBEditor.editor.Manager.getFocusElement();
+
 			if (focusEl)
 			{
 				data = focusEl.getData();
@@ -76,22 +78,25 @@ Ext.define(
 				el = data.el;
 
 				// кнопки
-				convertBtn = view.down('button-editor-convert-element');
-				deleteBtn = view.down('button-editor-delete-element');
+				convertBtn = view.getConvertBtn();
+				deleteBtn = view.getDeleteBtn();
 				convertBtn.element = el;
 				deleteBtn.element = el;
 				convertBtn.setVisible(true);
 				deleteBtn.setVisible(true);
+
 				if (el.isRoot)
 				{
 					deleteBtn.setVisible(false);
 				}
+
 				if (el.isImg || el.isRoot || !convertBtn.verify())
 				{
 					convertBtn.setVisible(false);
 				}
 
 				editor = view.editor;
+
 				if (!editor || editor && editor.elementName !== data.elementName)
 				{
 					if (editor)
@@ -118,6 +123,7 @@ Ext.define(
 					// обновляем даные панели редактирования
 					editor.updateData(data, true);
 				}
+
 				view.editor = editor;
 			}
 		}

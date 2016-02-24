@@ -27,8 +27,10 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.section.Editor',
 			'FBEditor.view.panel.main.props.body.editor.stanza.Editor',
 			'FBEditor.view.panel.main.props.body.editor.subscription.Editor',
+			'FBEditor.view.panel.main.props.body.editor.table.Editor',
 			'FBEditor.view.panel.main.props.body.editor.td.Editor',
 			'FBEditor.view.panel.main.props.body.editor.title.Editor',
+			'FBEditor.view.panel.main.props.body.editor.tr.Editor',
 			'FBEditor.view.panel.main.props.body.editor.ul.Editor'
 		],
 		controller: 'panel.props.body',
@@ -73,12 +75,31 @@ Ext.define(
 					}
 				}
 			];
+
 			me.callParent(arguments);
 		},
 
 		getContentId: function ()
 		{
 			return 'main-editor';
+		},
+
+		/**
+		 * Возвращает кнопку "конвертировать в текст".
+		 * @return {FBEditor.view.button.editor.ConvertElement}
+		 */
+		getConvertBtn: function ()
+		{
+			return this.down('button-editor-convert-element');
+		},
+
+		/**
+		 * Возвращает кнопку "удалить элемент".
+		 * @return {FBEditor.view.button.editor.DeleteElement}
+		 */
+		getDeleteBtn: function ()
+		{
+			return this.down('button-editor-delete-element');
 		}
 	}
 );
