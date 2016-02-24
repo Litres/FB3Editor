@@ -63,6 +63,9 @@ Ext.define(
 					nodes.next = nodes.node.nextSibling;
 					nodes.prev = nodes.node.previousSibling;
 
+					// хранит ссылки на удаленные td
+					data.saveNode = [];
+
 					console.log('del col', data, range);
 
 					// перебираем все tr и удаляем td в нужной позиции
@@ -74,6 +77,9 @@ Ext.define(
 							nodes.tr = els.tr.nodes[data.viewportId];
 							els.td = els.tr.children[els.pos];
 							nodes.td = els.td.nodes[data.viewportId];
+
+							// сохраняем ссылку на td
+							data.saveNode.push(nodes.td);
 
 							els.tr.remove(els.td);
 							nodes.tr.removeChild(nodes.td);
@@ -130,10 +136,61 @@ Ext.define(
 			}
 			else
 			{
-				console.log('Нереализована отмена удаления столбца');
-				res = false;
-				els = data.els;
-				nodes.node = els.node.nodes[data.viewportId];
+				try
+				{
+					manager.suspendEvent = true;
+
+					range = data.range;
+					els = data.els;
+
+					console.log('undo del col', nodes, els, range);
+
+					// перебираем все tr и восстанавливаем td в нужной позиции
+					Ext.Array.each(
+						els.table.children,
+						function (tr)
+						{
+							els.tr = tr;
+							nodes.tr = els.tr.nodes[data.viewportId];
+
+							// удаленный td
+							nodes.undoTd = data.saveNode.shift();
+							els.undoTd = nodes.undoTd.getElement();
+
+							if (els.tr.children[els.pos])
+							{
+								els.td = els.tr.children[els.pos];
+								nodes.td = els.td.nodes[data.viewportId];
+								els.tr.insertBefore(els.undoTd, els.td);
+								nodes.tr.insertBefore(nodes.undoTd, nodes.td);
+							}
+							else
+							{
+								els.tr.add(els.undoTd);
+								nodes.tr.appendChild(nodes.undoTd);
+							}
+						}
+					);
+
+					els.table.sync(data.viewportId);
+
+					manager.suspendEvent = false;
+
+					// устанавливаем курсор
+					data.saveRange = {
+						startNode: range.start,
+						startOffset: range.offset.start,
+						focusElement: els.node
+					};
+					manager.setCursor(data.saveRange);
+
+					res = true;
+				}
+				catch (e)
+				{
+					Ext.log({level: 'warn', msg: e, dump: e});
+					FBEditor.editor.HistoryManager.remove();
+				}
 			}
 
 			return res;

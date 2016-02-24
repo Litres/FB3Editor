@@ -251,6 +251,7 @@
 }
 .panel-editor-viewport .el-table {
 	width: 100%;
+	table-layout: fixed;
 	border: 1px solid teal;
 }
 .panel-editor-viewport .el-th {
@@ -261,12 +262,13 @@
 	color: purple;
 }
 .panel-editor-viewport .el-td {
-	text-indent: 0em;
-	margin-bottom: 0em;
+	margin-bottom: 0;
+	padding: 0.2em;
+	text-indent: 0;
 	background: rgb(186,213,237);
 	color: navy;
 	border: 1px solid #2e7ed5;
 }
 .panel-editor-viewport .el-td p {
-	text-indent: 0em;
+	text-indent: 0;
 }
