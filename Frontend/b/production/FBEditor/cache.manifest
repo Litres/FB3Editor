@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1 377
+# v1 378
 
 CACHE:
 
@@ -15,15 +15,15 @@ app/webworker/xmllint/lib/index.js
 
 # version resources
 
-resources/css/loader.css?_v=377
-resources/css/font-awesome.css?_v=377
-resources/css/styles.css?_v=377
-resources/css/editor.css?_v=377
-resources/css/htmleditor.css?_v=377
-resources/FBEditor-all.css?_v=377
-app.js?_v=377
-bower_components/jsxml/jsxml.js?_v=377
-bower_components/jsxml/stand.js?_v=377
+resources/css/loader.css?_v=378
+resources/css/font-awesome.css?_v=378
+resources/css/styles.css?_v=378
+resources/css/editor.css?_v=378
+resources/css/htmleditor.css?_v=378
+resources/FBEditor-all.css?_v=378
+app.js?_v=378
+bower_components/jsxml/jsxml.js?_v=378
+bower_components/jsxml/stand.js?_v=378
 
 
 NETWORK:
