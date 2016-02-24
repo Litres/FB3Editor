@@ -40,8 +40,8 @@ Ext.define(
 				{
 					els.td = FBEditor.editor.Factory.createElement('td');
 					els.p = FBEditor.editor.Factory.createElement('p');
-					els.t = FBEditor.editor.Factory.createElementText(' ');
-					els.p.add(els.t);
+					els.br = FBEditor.editor.Factory.createElement('br');
+					els.p.add(els.br);
 					els.td.add(els.p);
 					els.tr.add(els.td);
 

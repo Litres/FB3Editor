@@ -122,7 +122,7 @@ Ext.define(
 				}
 
 				// получаем xml
-				xml = manager.getContent().getXml(true);
+				xml = me.getContentXml();
 
 				// возвращаем все выделенные элементы обратно
 				for (i = 0; i < pos.count; i++)
@@ -179,7 +179,7 @@ Ext.define(
 				els.parent.children.splice(pos, 0, els.newEl);
 
 				// получаем xml
-				xml = manager.getContent().getXml(true);
+				xml = me.getContentXml();
 
 				// удаляем временный элемент
 				els.parent.children.splice(pos, 1);

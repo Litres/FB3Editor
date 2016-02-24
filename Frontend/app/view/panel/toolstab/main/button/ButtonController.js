@@ -25,8 +25,7 @@ Ext.define(
 		onSync: function ()
 		{
 			var me = this,
-				btn = me.getView(),
-				manager = FBEditor.editor.Manager;
+				btn = me.getView();
 
 			if (!btn.isActiveSelection())
 			{
@@ -56,6 +55,18 @@ Ext.define(
 
 			// вызываем проверку по схеме
 			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+		},
+
+		/**
+		 * Возвращает xml контента без текстовых элементов для проверки по схеме.
+		 * @return {String} Xml контента.
+		 */
+		getContentXml: function ()
+		{
+			var me = this,
+				manager = FBEditor.editor.Manager;
+
+			return manager.getContent().getXml(true);
 		},
 
 		/**

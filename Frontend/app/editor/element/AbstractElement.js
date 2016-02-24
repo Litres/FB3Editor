@@ -451,10 +451,12 @@ Ext.define(
 			attr = me.getAttributesXml(withoutText);
 			xml = '<' + tag;
 			xml += attr ? ' ' + attr : '';
+
 			if (me.marker)
 			{
 				xml += '>' + me.marker.getXml(withoutText);
 			}
+
 			if (children && children.length)
 			{
 				xml += me.marker ? '' : '>';

@@ -29,31 +29,24 @@ Ext.define(
 				els = {};
 
 			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText(' ');
-			els.p.add(els.t);
+			els.br = FBEditor.editor.Factory.createElement('br');
+			els.p.add(els.br);
 			me.add(els.p);
 
 			return els;
 		},
 
-		convertToText: function (fragment)
+		getXml: function ()
 		{
 			var me = this,
-				factory = FBEditor.editor.Factory,
-				p;
+				xml;
 
-			// переносим из td всех потомков в p и добавляем во фрагмент
-			p = factory.createElement('p');
+			xml = me.callParent(arguments);
 
-			Ext.Array.each(
-				td.children,
-				function (child)
-				{
-					p.add(child);
-				}
-			);
+			// заменяем первый br на пустой параграф согласно схеме
+			xml = xml.replace(/<td><br\/>/gi, '<td><p></p>');
 
-			fragment.add(p);
+			return xml;
 		}
 	}
 );
