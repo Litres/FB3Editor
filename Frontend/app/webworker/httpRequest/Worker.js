@@ -135,7 +135,6 @@ function W ()
 			{
 				me.data.state = transport.readyState;
 				transport.abort();
-				//me.post();
 			}
 		},
 
