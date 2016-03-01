@@ -17,6 +17,16 @@ Ext.define(
 		style: '',
 
 		/**
+		 * @property {Boolean} Преобразовывать ли значение к нижнему регистру.
+		 */
+		toLowerCase: true,
+
+		/**
+		 * @property {Boolean} Капитилизировать ли значение.
+		 */
+		capitalize: true,
+
+		/**
 		 * @private
 		 * @property {Ext.dom.Element} Кнопка.
 		 */
@@ -36,8 +46,6 @@ Ext.define(
 		{
 			var me = this;
 
-			me.style = me.style || config.style;
-
 			me.callParent(arguments);
 		},
 
@@ -56,17 +64,32 @@ Ext.define(
 		},
 
 		/**
-		 * @event beforeFieldCleaner
-		 * @event afterFieldCleaner
 		 * Обработчик клика по иконке.
 		 */
 		handler: function ()
+		{
+			var me = this,
+				field = me.field;
+
+			field.fireEvent('beforeFieldCleaner');
+
+			// конвертируем значение
+			me.convertVal();
+
+			field.fireEvent('afterFieldCleaner');
+		},
+
+		/**
+		 * Преобразует значение.
+		 */
+		convertVal: function ()
 		{
 			var me = this,
 				field = me.field,
 				val = field.getValue(),
 				descManager = FBEditor.desc.Manager,
 				reg = descManager.getRegexpUtf();
+
 
 			/* переводит первый символ предложения в верхний регистр */
 			function capitalizer (str, tag, val, end)
@@ -78,18 +101,14 @@ Ext.define(
 				return str;
 			}
 
-			field.fireEvent('beforeFieldCleaner');
-
 			if (val)
 			{
-				val = val.toLowerCase();
+				val = me.toLowerCase ? val.toLowerCase() : val;
 				val = val.replace(reg, '');
-				val = val.replace(/(<p>)? *(.+?)([.!?]+|<\/p>|$)/g, capitalizer);
+				val = me.capitalize ? val.replace(/(<p>)? *(.+?)([.!?]+|<\/p>|$)/ig, capitalizer) : val;
 				val = val.trim();
 				field.setValue(val);
 			}
-
-			field.fireEvent('afterFieldCleaner');
 		},
 
 		/**

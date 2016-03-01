@@ -23,6 +23,7 @@ Ext.define(
 
 		listeners: {
 			paste: 'onPaste',
+			beforeFieldCleaner: 'onBeforeFieldCleaner',
 			afterFieldCleaner: 'onAfterFieldCleaner'
 		},
 
@@ -34,6 +35,8 @@ Ext.define(
 		plugins: [
 			{
 				ptype: 'fieldCleaner',
+				toLowerCase: false,
+				capitalize: false,
 				style: 'top: -8px; right: 5px'
 			}
 		],
@@ -78,7 +81,6 @@ Ext.define(
 		{
 			var me = this,
 				val = me.getValue(),
-				tmp,
 				reg;
 
 			function replacer (str, tag, attr)
@@ -123,8 +125,21 @@ Ext.define(
 		getValues: function (d)
 		{
 			var me = this,
-				val = me.getValue(),
 				data = d;
+
+			data[me.name] = me.normalizeValue();
+
+			return data;
+		},
+
+		/**
+		 * Нормализует значение.
+		 * @return {String}
+		 */
+		normalizeValue: function ()
+		{
+			var me = this,
+				val = me.getValue();
 
 			if (val)
 			{
@@ -134,7 +149,6 @@ Ext.define(
 				val = val.replace(/<\/i>/gi, '</em>');
 				val = val.replace(/<div>/gi, '<p>');
 				val = val.replace(/<\/div>/gi, '</p>');
-				//console.log('val1', val);
 				val = val.split('<p>');
 				//console.log('val2', val);
 				val[0] = '<p>' + val[0] + '</p>';
@@ -147,10 +161,11 @@ Ext.define(
 				val = val.replace(/&nbsp;/gi, '&#160;');
 				val = val.replace(/&lt;/gi, '&#60;');
 				val = val.replace(/&gt;/gi, '&#62;');
-				data[me.name] = val;
+
+				me.setValue(val);
 			}
 
-			return data;
+			return val;
 		},
 
 		/**
