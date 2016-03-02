@@ -34,6 +34,8 @@ Ext.define(
 
 		listeners: {
 			filter: 'onFilter',
+			nodeExpand: 'onNodeExpand',
+			nodeCollapse: 'onNodeCollapse',
 			click: {
 				element: 'el',
 				fn: 'onClick'
@@ -109,16 +111,21 @@ Ext.define(
 			me.fireHierarchyEvent = function (eventName) {};
 
 			me.callParent(arguments);
-		},
 
-		afterLayout: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				el = view.getEl();
-
-			// восстанавливаем позицию скролла после открытия/закрытия узла дерева
-			el.setScrollTop(me.scrollTop);
+			// регистрируем событие разворачивания узла
+			store.on(
+				{
+					scope: me,
+					nodeexpand: function (node)
+					{
+						this.fireEvent('nodeExpand', node);
+					},
+					nodecollapse: function (node)
+					{
+						this.fireEvent('nodeCollapse', node);
+					}
+				}
+			);
 		},
 
 		handleFocusEnter: function (e)

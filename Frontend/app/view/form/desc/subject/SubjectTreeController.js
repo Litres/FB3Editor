@@ -23,13 +23,82 @@ Ext.define(
 		},
 
 		/**
+		 * Вызывается при разворачивании узла.
+		 * @param {Ext.data.NodeInterface} dataNode Узел.
+		 */
+		onNodeExpand: function (dataNode)
+		{
+			var me = this,
+				view = me.getView(),
+				viewTable = view.getView(),
+				el = viewTable.getEl(),
+				scrollTop = view.scrollTop,
+				height = view.getHeight(),
+				nodeHeight = 24,
+				visibleNodes,
+				children,
+				visibleChildrenHeight,
+				hiddenChildrenHeight,
+				marginTopHeight,
+				node,
+				posY;
+
+			// узел html
+			node = viewTable.getNode(dataNode);
+
+			// позиция узла
+			posY = node.offsetTop;
+
+			// количество дочерних узлов
+			children = dataNode.childNodes.length;
+
+			// максимальное количество видимых узлов в окне
+			visibleNodes = Math.floor(height / nodeHeight) - 2;
+
+			// высота видимой части дочерних узлов
+			visibleChildrenHeight = scrollTop + height - posY;
+
+			// высота скрытой части дочерних узлов
+			hiddenChildrenHeight = children * nodeHeight - visibleChildrenHeight;
+
+			// дополнительный отступ скролла сверху, чтобы прокручивать узел не к самой верхней части окна
+			marginTopHeight = posY - scrollTop < nodeHeight ? 0 : nodeHeight;
+
+			console.log(children, scrollTop, posY, hiddenChildrenHeight, marginTopHeight);
+
+			scrollTop = children > visibleNodes ? posY :
+			            (posY + children * nodeHeight > scrollTop + height ?
+			             scrollTop + hiddenChildrenHeight : scrollTop);
+
+			scrollTop -= marginTopHeight;
+			console.log(scrollTop);
+
+			// корректируем скролл с развернутым узлом
+			me.scrollTop = scrollTop;
+			el.setScrollTop(scrollTop);
+		},
+
+		/**
+		 * Вызывается при сворачивании узла.
+		 * @param {Ext.data.NodeInterface} dataNode Узел.
+		 */
+		onNodeCollapse: function (dataNode)
+		{
+			var me = this,
+				view = me.getView(),
+				viewTable = view.getView(),
+				el = viewTable.getEl();
+
+			// восстанавливаем позицию скролла после закрытия узла дерева
+			el.setScrollTop(view.scrollTop);
+		},
+
+		/**
 		 * Вызывается при клике на панели дерева.
 		 * @param {Object} evt Объект события.
 		 */
 		onClick: function (evt)
 		{
-			var me = this;
-
 			// останавливаем всплытие события, чтобы не допустить закрытия окна
 			evt.stopPropagation();
 		},
@@ -48,6 +117,7 @@ Ext.define(
 				data;
 
 			node.toggle(record);
+
 			if (!record.isExpandable())
 			{
 				data = record.getData();

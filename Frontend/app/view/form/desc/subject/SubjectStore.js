@@ -14,6 +14,5 @@ Ext.define(
 		proxy: {
 			type: 'memory'
 		}
-
 	}
 );
