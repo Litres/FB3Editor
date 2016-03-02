@@ -64,14 +64,13 @@ Ext.define(
 			// дополнительный отступ скролла сверху, чтобы прокручивать узел не к самой верхней части окна
 			marginTopHeight = posY - scrollTop < nodeHeight ? 0 : nodeHeight;
 
-			console.log(children, scrollTop, posY, hiddenChildrenHeight, marginTopHeight);
+			//console.log(children, scrollTop, posY, hiddenChildrenHeight, marginTopHeight);
 
-			scrollTop = children > visibleNodes ? posY :
+			scrollTop = children > visibleNodes ? posY - marginTopHeight :
 			            (posY + children * nodeHeight > scrollTop + height ?
 			             scrollTop + hiddenChildrenHeight : scrollTop);
 
-			scrollTop -= marginTopHeight;
-			console.log(scrollTop);
+			//console.log(scrollTop);
 
 			// корректируем скролл с развернутым узлом
 			me.scrollTop = scrollTop;
