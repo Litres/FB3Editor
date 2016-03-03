@@ -25,9 +25,12 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				val = view.getValue();
+				val;
 
+			// нормализуем значение
 			view.normalizeValue();
+
+			val = view.getValue();
 
 			// объединяем короткие строки менее 49 символов
 			val = val.replace(/-\n/igm, '');

@@ -85,7 +85,7 @@ Ext.define(
 
 			function replacer (str, tag, attr)
 			{
-				//console.log(arguments);
+				//console.log(arguments, Ext.Array.contains(me.allowTags, tag));
 				if (!Ext.Array.contains(me.allowTags, tag))
 				{
 					str = '';
@@ -100,7 +100,7 @@ Ext.define(
 				return str;
 			}
 
-			reg = new RegExp('</?([a-z0-9]+)( .*?|/)?>', 'ig');
+			reg = new RegExp('</?(.*?)( .*?|/)?>', 'ig');
 			val = val.replace(reg, replacer);
 			val = /^<p>/.test(val) ? val : '<p>' + val + '</p>';
 			val = val.replace(/<br>/gi, '</p><p>');
@@ -143,6 +143,12 @@ Ext.define(
 
 			if (val)
 			{
+				// вырезаем лишние теги
+				me.stripTags();
+
+				val = me.getValue();
+				//console.log('val', val);
+
 				val = val.replace(/<b>/gi, '<strong>');
 				val = val.replace(/<\/b>/gi, '</strong>');
 				val = val.replace(/<i>/gi, '<em>');
