@@ -99,6 +99,9 @@ Ext.define(
 			// убираем редактируемость полей
 			container.fireEvent('editable', false);
 
+			// восстанавливаем редактируемость поля номера
+			container.down('numberfield').setEditable(true);
+
 			// скрываем поля поиска и показываем данные
 			btn = me.up('desc-fieldcontainer').down('form-desc-sequence-customBtn');
 			btn.switchContainers();

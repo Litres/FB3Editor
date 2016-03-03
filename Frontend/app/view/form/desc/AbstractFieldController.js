@@ -92,10 +92,10 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				fields,
-				plugin,
-				radios;
+				plugin;
 
 			plugin = view.down('form-desc-title-alt').getPlugin('fieldcontainerreplicator');
+
 			if (plugin)
 			{
 				if (editable)
@@ -109,19 +109,6 @@ Ext.define(
 					plugin.getBtnAdd().disable();
 				}
 			}
-
-			/*radios = view.down('radiogroup');
-			if (radios)
-			{
-				if (editable)
-				{
-					radios.enable();
-				}
-				else
-				{
-					radios.disable();
-				}
-			}*/
 
 			fields = view.query('[name]');
 			Ext.Array.each(
