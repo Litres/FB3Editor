@@ -91,10 +91,13 @@ Ext.define(
 				'sequence-title-main': data['name'] ? data['name'] : ''
 			};
 
-			// заполняем фому ручного ввода
+			// заполняем форму ручного ввода
 			descManager.loadingProcess = true;
 			container.updateData(d);
 			descManager.loadingProcess = false;
+
+			// ссылка на страницу редактирования
+			container.down('[name=sequence-link]').setData({uuid: data.uuid});
 
 			// убираем редактируемость полей
 			container.fireEvent('editable', false);

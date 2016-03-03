@@ -16,7 +16,8 @@ Ext.define(
 			id: 'ID',
 			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
-			number: 'Номер'
+			number: 'Номер',
+			pageEditor: 'Страница редактирования'
 		},
 
 		initComponent: function ()
@@ -53,6 +54,15 @@ Ext.define(
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
 									regexText: me.translateText.idError,
 									cls: 'field-required'
+								},
+								{
+									xtype: 'component',
+									name: prefixName + '-link',
+									tpl: '<a href="https://hub.litres.ru/pages/any_uuid_redir/?uuid={uuid}"' +
+									     ' class="sequence-page-link"' +
+									     ' target="_blank" title="' + me.translateText.pageEditor + '">' +
+									     '<i class="fa fa-external-link"></i>' +
+									     '</a>'
 								},
 								{
 									xtype: 'numberfield',

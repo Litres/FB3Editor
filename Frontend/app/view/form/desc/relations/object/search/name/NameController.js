@@ -18,6 +18,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				descManager = FBEditor.desc.Manager,
 				btn,
 				d,
 				container;
@@ -27,7 +28,14 @@ Ext.define(
 				'relations-object-id': data.uuid,
 				'relations-object-title-main': data['name'] ? data['name'] : ''
 			};
+
+			// заполняем фому ручного ввода
+			descManager.loadingProcess = true;
 			container.updateData(d);
+			descManager.loadingProcess = false;
+
+			// ссылка на страницу редактирования
+			container.down('[name=relations-object-page-link]').setData({uuid: data.uuid});
 
 			// убираем редактируемость полей
 			container.fireEvent('editable', false);

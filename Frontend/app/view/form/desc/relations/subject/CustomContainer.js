@@ -26,7 +26,8 @@ Ext.define(
 			lastName: 'Фамилия',
 			titleMain: 'Стандартное написание',
 			titleAlt: 'Альтернативное написание',
-			percent: 'Процент владения'
+			percent: 'Процент владения',
+			pageEditor: 'Страница редактирования'
 		},
 
 		initComponent: function ()
@@ -62,6 +63,15 @@ Ext.define(
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
 									regexText: me.translateText.idError,
 									cls: 'field-required'
+								},
+								{
+									xtype: 'component',
+									name: 'relations-subject-link',
+									tpl: '<a href="https://hub.litres.ru/pages/any_uuid_redir/?uuid={uuid}"' +
+									     ' class="relations-subject-page-link"' +
+									     ' target="_blank" title="' + me.translateText.pageEditor + '">' +
+									     '<i class="fa fa-external-link"></i>' +
+									     '</a>'
 								},
 								{
 									xtype: 'form-desc-relations-subject-name',
