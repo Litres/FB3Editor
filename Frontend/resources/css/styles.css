@@ -942,13 +942,13 @@
 /* ссылки на страницу редактирования */
 .sequence-page-link {
 	position: absolute;
-	top: -34px;
+	top: -38px;
 	left: 15px;
 	color: #2e7ed5;
 }
 .relations-subject-page-link {
 	position: absolute;
-	top: -34px;
+	top: -38px;
 	left: 93px;
 	color: #2e7ed5;
 }

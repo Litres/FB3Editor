@@ -47,13 +47,9 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfieldclear',
+									xtype: 'displayfield',
 									fieldLabel: me.translateText.id,
-									name: prefixName + '-id',
-									allowBlank: false,
-									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-									regexText: me.translateText.idError,
-									cls: 'field-required'
+									name: prefixName + '-id'
 								},
 								{
 									xtype: 'component',
