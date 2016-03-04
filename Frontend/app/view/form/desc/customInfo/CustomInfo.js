@@ -45,11 +45,9 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'textfield',
+							xtype: 'desc-field-text-required',
 							name: prefixName + '-info-type',
-							cls: 'field-required',
 							flex: 1,
-							allowBlank: false,
 							labelWidth: 60,
 							fieldLabel: me.translateText.infoType
 						},
@@ -65,13 +63,11 @@ Ext.define(
 									labelWidth: 160
 								},
 								{
-									xtype: 'textareafield',
+									xtype: 'desc-field-textarea-required',
 									name: prefixName + '-text',
-									cls: 'field-required',
 									flex: 1,
 									//grow: true,
 									//growMin: 1,
-									allowBlank: false,
 									//minHeight: 200,
 									height: 100,
 									plugins: {

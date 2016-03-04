@@ -7,17 +7,16 @@
 Ext.define(
 	'FBEditor.view.form.desc.subject.field.SubjectField',
 	{
-		extend: 'Ext.form.field.Text',
+		extend: 'FBEditor.view.form.desc.field.text.required.Required',
 		requires: [
 			'FBEditor.view.form.desc.subject.field.SubjectFieldController'
 		],
 		xtype: 'form-desc-subject-field',
 		controller: 'form.desc.subject.field',
 		name: 'classification-subject',
-		allowBlank: false,
 		selectOnFocus: true,
 		checkChangeBuffer: 200,
-		cls: 'field-required',
+
 		listeners: {
 			click: {
 				element: 'el',

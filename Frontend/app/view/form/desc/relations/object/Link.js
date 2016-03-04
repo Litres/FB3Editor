@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.form.desc.relations.object.Link',
 	{
-		extend: 'Ext.form.field.ComboBox',
+		extend: 'FBEditor.view.form.desc.field.combobox.required.Required',
 		requires: [
 			'FBEditor.view.form.desc.relations.object.LinkStore'
 		],

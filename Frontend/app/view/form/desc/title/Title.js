@@ -58,12 +58,10 @@ Ext.define(
 				alt;
 
 			main = {
-				xtype: 'textfield',
-				allowBlank: false,
+				xtype: 'desc-field-text-required',
 				checkChangeBuffer: me.checkChangeBuffer,
 				name: name + '-main',
 				fieldLabel: me.translateText.main,
-				cls: 'field-required',
 				keyEnterAsTab: true,
 				plugins: {
 					ptype: 'fieldCleaner'
@@ -83,6 +81,7 @@ Ext.define(
 					}
 				}
 			};
+
 			Ext.apply(main, me.mainConfig);
 			items.push(main);
 

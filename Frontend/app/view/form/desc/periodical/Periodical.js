@@ -62,27 +62,21 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'textfieldclear',
+									xtype: 'desc-field-text-required',
 									fieldLabel: me.translateText.id,
 									name: prefixName + '-id',
-									allowBlank: false,
 									regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
-									regexText: me.translateText.idError,
-									cls: 'field-required'
+									regexText: me.translateText.idError
 								},
 								{
-									xtype: 'numberfield',
+									xtype: 'desc-field-number-required',
 									name: prefixName + '-number',
-									allowBlank: false,
-									fieldLabel: me.translateText.number,
-									cls: 'field-required'
+									fieldLabel: me.translateText.number
 								},
 								{
-									xtype: 'numberfield',
+									xtype: 'desc-field-number-required',
 									name: prefixName + '-year',
-									allowBlank: false,
-									fieldLabel: me.translateText.year,
-									cls: 'field-required'
+									fieldLabel: me.translateText.year
 								},
 								{
 									xtype: 'desc-date',

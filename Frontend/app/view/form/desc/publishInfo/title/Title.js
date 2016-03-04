@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.view.form.desc.publishInfo.title.Title',
 	{
-		extend: 'Ext.form.field.Text',
+		extend: 'FBEditor.view.form.desc.field.text.required.Required',
 		requires: [
 			'FBEditor.view.form.desc.publishInfo.title.TitleController'
 		],

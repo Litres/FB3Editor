@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.documentInfo.createdDate.CreatedDate',
 			'FBEditor.view.form.desc.documentInfo.editor.Editor',
 			'FBEditor.view.form.desc.documentInfo.isbn.Isbn'
 		],
@@ -55,12 +56,9 @@ Ext.define(
 									},
 									items: [
 										{
-											xtype: 'desc-date',
-											allowBlank: false,
+											xtype: 'form-desc-documentInfo-createdDate',
 											name: 'document-info-created-date',
-											value: new Date(),
-											fieldLabel: me.translateText.date,
-											cls: 'field-required'
+											fieldLabel: me.translateText.date
 										}
 									]
 								},
@@ -80,13 +78,11 @@ Ext.define(
 									},
 									items: [
 										{
-											xtype: 'timefield',
-											allowBlank: false,
+											xtype: 'desc-field-time-required',
 											name: 'document-info-created-time',
 											value: new Date(),
 											format: 'H:i:s',
-											fieldLabel: me.translateText.time,
-											cls: 'field-required'
+											fieldLabel: me.translateText.time
 										}
 									]
 								}

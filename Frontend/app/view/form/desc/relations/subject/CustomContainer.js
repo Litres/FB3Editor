@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.title.Title',
 			'FBEditor.view.form.desc.relations.subject.name.Name',
+			'FBEditor.view.form.desc.relations.subject.name.main.Main',
 			'FBEditor.view.form.desc.relations.subject.Link'
 		],
 		xtype: 'form-desc-relations-subject-container-custom',
@@ -56,7 +57,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: FBEditor.accessHub ? 'textfieldclear' : 'displayfield',
+									xtype: 'displayfield',
 									fieldLabel: me.translateText.id,
 									name: 'relations-subject-id',
 									allowBlank: false,
@@ -74,11 +75,9 @@ Ext.define(
 									     '</a>'
 								},
 								{
-									xtype: 'form-desc-relations-subject-name',
+									xtype: 'form-desc-relations-subject-name-main',
 									fieldLabel: me.translateText.lastName,
-									name: 'relations-subject-last-name',
-									allowBlank: false,
-									cls: 'field-required'
+									name: 'relations-subject-last-name'
 								},
 								{
 									xtype: 'form-desc-relations-subject-name',

@@ -57,7 +57,7 @@ Ext.define(
 							allowBlank: false,
 							forceSelection: true,
 							value: 'ru',
-							cls: 'field-required',
+							//cls: 'field-required',
 							listeners: {
 								afterrender: function ()
 								{

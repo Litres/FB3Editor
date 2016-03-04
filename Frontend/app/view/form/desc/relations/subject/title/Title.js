@@ -84,6 +84,7 @@ Ext.define(
 
 				titleMain = me.getTitleMain();
 				titleMain.setRawValue(value);
+				titleMain.checkChangeCls();
 			}
 		},
 
