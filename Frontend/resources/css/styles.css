@@ -849,6 +849,43 @@
 	color: #666;
 }
 
+/* контейнер данных произведений */
+.panel-arts-item-common {
+	display: flex;
+	border: 1px solid #000;
+	margin: 4px 0;
+	padding: 4px;
+	font-size: 1.2em;
+}
+.panel-arts-item-sale span {
+	margin-right: 4px;
+	padding: 1px;
+	color: #fff537;
+	background-color: #000;
+}
+.panel-arts-item-type span {
+	margin-right: 4px;
+	padding: 1px;
+	color: #d00000;
+}
+.panel-arts-item-center {
+	flex: 1;
+}
+.panel-arts-item-author,
+.panel-arts-item-date {
+	padding-top: 4px;
+	font-size: 0.8em;
+	line-height: 1.25em;
+	color: gray;
+}
+.panel-arts-item-author ul {
+	padding: 0;
+	margin: 0;
+}
+.panel-arts-item-author li {
+	list-style-position: inside;
+}
+
 /* контейнер данных персон */
 .container-search-persons-item {
 	border: 1px solid #000;

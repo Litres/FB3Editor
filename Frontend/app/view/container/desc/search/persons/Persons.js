@@ -244,7 +244,7 @@ Ext.define(
 			data.fio = data.fio.trim();
 
 			data.bgcolor = 'white';
-			data.bgcolor = Number(data.unchecked) ? '#f8f8f8' : data.bgcolor;
+			data.bgcolor = Number(data.unchecked) ? '#f0f0f0' : data.bgcolor;
 			data.bgcolor = data.creator_login == 'reader_release' ? '#F3DBDA' : data.bgcolor;
 			data.bgcolor = data.copyrighters ? '#FFFD9A' : data.bgcolor;
 
@@ -284,7 +284,7 @@ Ext.define(
 				function (item)
 				{
 					item.bgcolor = 'white';
-					item.bgcolor = Number(item.unchecked) ? '#f8f8f8' : item.bgcolor;
+					item.bgcolor = Number(item.unchecked) ? '#f0f0f0' : item.bgcolor;
 					item.bgcolor = Number(item.sell_open) ? '#FFFD9A' : item.bgcolor;
 
 					item.link_color = '#2e7ed5';
