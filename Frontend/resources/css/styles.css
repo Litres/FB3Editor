@@ -239,7 +239,7 @@
 	background: linear-gradient(to right, transparent, #fbe4fa 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 .fb3 .form-desc .field-langfield .input-fade-triggers {
-	background: none;
+	display: none;
 }
 .fb3 .form-desc .input-fade-triggers {
 	right: 25px;
