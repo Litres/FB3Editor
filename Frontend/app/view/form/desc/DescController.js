@@ -21,37 +21,12 @@ Ext.define(
 
 			// регистрируем событие скролла
 			el.on(
-				'scroll',
-			    function (evt, el)
-			    {
-				    view.fireEvent('scroll', evt, el);
-			    }
-			);
-		},
-
-		/**
-		 * Xаб доступен.
-		 */
-		onAccessHub: function ()
-		{
-			var bridgeProps = FBEditor.getBridgeProps(),
-				cmpArr = [
-				Ext.getCmp('form-desc-sequence'),
-				Ext.getCmp('form-desc-relations-subject'),
-				Ext.getCmp('form-desc-relations-object'),
-				Ext.getCmp('panel-toolstab-file-button-savedesc'),
-				bridgeProps.Ext.getCmp('panel-props-desc')
-			];
-
-			Ext.Array.each(
-				cmpArr,
-			    function (cmp)
-			    {
-				    if (cmp)
-				    {
-					    cmp.fireEvent('accessHub');
-				    }
-			    }
+				{
+					scroll:	function (evt, el)
+					{
+						view.fireEvent('scroll', evt, el);
+					}
+				}
 			);
 		},
 
@@ -63,20 +38,55 @@ Ext.define(
 		onScroll: function (evt, el)
 		{
 			var me = this,
-				wins = [];
+				wins = me._scrollWins || [],
+				scrollManager = FBEditor.view.form.desc.ScrollManager;
 
+			// передаем событие менеджеру скролла
+			scrollManager.event.apply(scrollManager, arguments);
+
+			// TODO рефакторинг
 			// окна
-			wins.push(Ext.getCmp('form-desc-subjectTree'));
-			wins.push(Ext.ComponentQuery.query('form-desc-searchField-window'));
+			if (!me._scrollWins)
+			{
+				wins.push(Ext.getCmp('form-desc-subjectTree'));
+				wins.push(Ext.ComponentQuery.query('form-desc-searchField-window'));
+				me._scrollWins = wins;
+			}
 
 			Ext.Array.each(
 				wins,
-			    function (item)
+				function (item)
+				{
+					if (item.isShow)
+					{
+						//item.fireEvent('alignTo');
+						item.close();
+					}
+				}
+			);
+		},
+
+		/**
+		 * Xаб доступен.
+		 */
+		onAccessHub: function ()
+		{
+			var bridgeProps = FBEditor.getBridgeProps(),
+				cmpArr = [
+					Ext.getCmp('form-desc-sequence'),
+					Ext.getCmp('form-desc-relations-subject'),
+					Ext.getCmp('form-desc-relations-object'),
+					Ext.getCmp('panel-toolstab-file-button-savedesc'),
+					bridgeProps.Ext.getCmp('panel-props-desc')
+				];
+
+			Ext.Array.each(
+				cmpArr,
+			    function (cmp)
 			    {
-				    if (item.isShow)
+				    if (cmp)
 				    {
-					    //item.fireEvent('alignTo');
-					    item.close();
+					    cmp.fireEvent('accessHub');
 				    }
 			    }
 			);

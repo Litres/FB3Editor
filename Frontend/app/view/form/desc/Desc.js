@@ -9,7 +9,6 @@ Ext.define(
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
-			'FBEditor.view.form.desc.DescController',
 			'FBEditor.ux.FieldCleaner',
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.ux.SearchField',
@@ -18,6 +17,8 @@ Ext.define(
 			'FBEditor.view.field.datetime.Datetime',
 			'FBEditor.view.field.textfieldclear.TextFieldClear',
 			'FBEditor.view.form.desc.AbstractFieldContainer',
+			'FBEditor.view.form.desc.DescController',
+			'FBEditor.view.form.desc.ScrollManager',
 			'FBEditor.view.form.desc.date.Date',
 			'FBEditor.view.form.desc.field.combobox.required.Required',
 			'FBEditor.view.form.desc.field.number.required.Required',

@@ -121,7 +121,8 @@ Ext.define(
 				'   <tpl if="type"><div class="panel-arts-item-type"><span>{type_code}</span></div></tpl>' +
 				'   <div class="panel-arts-item-center">' +
 				'       <div class="panel-arts-item-name" art-id="{id}">' +
-				'           <a style="color: {link_color}" target="_blank" ' +
+				'           <a style="color: {link_color}" target="_blank"' +
+				'               title="{owner_login}"' +
 				'               href="https://hub.litres.ru/pages/edit_object/?art={id}">{name}</a>' +
 				'       </div>' +
 				'       <div class="panel-arts-item-author">{authors}</div>' +
@@ -139,8 +140,8 @@ Ext.define(
 			data.link_color = '#2e7ed5';
 			data.link_color = Number(data.unchecked) ? 'gray' : data.link_color;
 
-			data.sale = Ext.Array.contains([0, 1, 4], Number(data.on_sale));
 			data.type = data.type ? Number(data.type) : 0;
+			data.sale = Ext.Array.contains([0, 1, 4], data.type) ? Boolean(Number(data.on_sale)) : false;
 
 			switch (data.type)
 			{
