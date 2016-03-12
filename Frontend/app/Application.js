@@ -48,6 +48,7 @@ Ext.define(
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
+			'FBEditor.scroll.Scroll',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',
 			'FBEditor.webworker.Manager',

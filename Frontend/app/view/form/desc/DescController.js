@@ -13,36 +13,13 @@ Ext.define(
 		],
 		alias: 'controller.form.desc',
 
-		onAfterRender: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				el = view.body;
-
-			// регистрируем событие скролла
-			el.on(
-				{
-					scroll:	function (evt, el)
-					{
-						view.fireEvent('scroll', evt, el);
-					}
-				}
-			);
-		},
-
 		/**
-		 * Выполняется при прокручивании скролла.
-		 * @param {Ext.event.Event} evt Объект события.
-		 * @param {HTMLElement} el Элемент.
+		 * Выполняется в момент начала скролинга.
 		 */
-		onScroll: function (evt, el)
+		onStartScroll: function ()
 		{
 			var me = this,
-				wins = me._scrollWins || [],
-				scrollManager = FBEditor.view.form.desc.ScrollManager;
-
-			// передаем событие менеджеру скролла
-			scrollManager.event.apply(scrollManager, arguments);
+				wins = me._scrollWins || [];
 
 			// TODO рефакторинг
 			// окна

@@ -18,7 +18,6 @@ Ext.define(
 			'FBEditor.view.field.textfieldclear.TextFieldClear',
 			'FBEditor.view.form.desc.AbstractFieldContainer',
 			'FBEditor.view.form.desc.DescController',
-			'FBEditor.view.form.desc.ScrollManager',
 			'FBEditor.view.form.desc.date.Date',
 			'FBEditor.view.form.desc.field.combobox.required.Required',
 			'FBEditor.view.form.desc.field.number.required.Required',
@@ -55,9 +54,9 @@ Ext.define(
 			loadDesc: 'onLoadData',
 			reset: 'onReset',
 			activate: 'onActivate',
-			afterrender: 'onAfterRender',
-			scroll: 'onScroll',
-			resize: 'onResize'
+			resize: 'onResize',
+			startScroll: 'onStartScroll',
+			endScroll: 'onEndScroll'
 		},
 
 		/**
@@ -93,6 +92,9 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this;
+
+			// регистрируем управление скролом
+			Ext.create('FBEditor.scroll.Scroll', me);
 
 			me.items = [
 				{
@@ -132,6 +134,22 @@ Ext.define(
 					xtype: 'desc-fieldset-documentInfo'
 				}
 			];
+
+			me.callParent(arguments);
+		},
+
+		afterRender: function ()
+		{
+			var me = this,
+				innerCt;
+
+			if (Ext.browser.is.WebKit)
+			{
+				// иправляем баг с тормозным скролом
+				innerCt = me.body.down('.x-autocontainer-innerCt');
+				innerCt.setStyle('opacity', '0.99');
+			}
+
 			me.callParent(arguments);
 		},
 
