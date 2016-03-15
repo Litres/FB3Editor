@@ -16,6 +16,21 @@ Ext.define(
 		xtype: 'props-desc-search-persons',
 		id: 'props-desc-search-persons',
 
-		xtypeContainerItems: 'container-desc-search-persons'
+		xtypeContainerItems: 'container-desc-search-persons',
+
+		afterRender: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				refCmp;
+
+			// связываем первое поле из списка
+			refCmp = bridge.Ext.ComponentQuery.query('form-desc-relations-subject-name')[0];
+
+			// устанавливаем связанный компонент
+			me.setReferenceCmp(refCmp);
+
+			me.callParent(arguments);
+		}
 	}
 );

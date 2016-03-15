@@ -16,6 +16,20 @@ Ext.define(
 		xtype: 'props-desc-search-arts',
 		id: 'props-desc-search-arts',
 
-		xtypeContainerItems: 'container-desc-search-arts'
+		xtypeContainerItems: 'container-desc-search-arts',
+
+		afterRender: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				refCmp;
+
+			refCmp = bridge.Ext.getCmp('form-desc-title');
+
+			// устанавливаем связанный компонент
+			me.setReferenceCmp(refCmp);
+
+			me.callParent(arguments);
+		}
 	}
 );

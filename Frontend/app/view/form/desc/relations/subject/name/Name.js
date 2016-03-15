@@ -33,8 +33,8 @@ Ext.define(
 		listeners: {
 			change: 'onChange',
 			focus: 'onFocus',
-			afterrender: 'onAfterRender',
-			cleanResultContainer: 'onCleanResultContainer'
+			cleanResultContainer: 'onCleanResultContainer',
+			abortSearch: 'onAbortSearch'
 		},
 
 		/**

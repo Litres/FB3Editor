@@ -33,6 +33,18 @@ Ext.define(
 		 */
 		containerItems: null,
 
+		/**
+		 * @private
+		 * @property {Object} Кэш зарегистрированных событий для связанных компонентов.
+		 */
+		_cacheEvents: {},
+
+		/**
+		 * @private
+		 * @property {Ext.Component} Компонент поля ввода, связанный с данным контейнером.
+		 */
+		//_referenceCmp: null,
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -49,6 +61,8 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				descManager = bridge.FBEditor.desc.Manager,
 				names = me.getStorageNames();
 
 			if (names)
@@ -56,7 +70,46 @@ Ext.define(
 				me.fireEvent('loadData', names);
 			}
 
+			// надо ли очищать результаты в локальном хранилище
+			if (!descManager.cleanResultContainer[me.getXType()])
+			{
+				me.cleanContainer();
+			}
+
+			// при новом рендеринге окна свойств, результаты не должны очищаться
+			descManager.cleanResultContainer[me.getXType()] = true;
+
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает компонент поля ввода, связанный с данным контейнером.
+		 * @return {Ext.Component}
+		 */
+		getReferenceCmp: function ()
+		{
+			var cmp = this._referenceCmp;
+
+			if (!cmp)
+			{
+				throw Error('Необходимо определить связанный компонент методом #setReferenceCmp()');
+			}
+
+			return cmp;
+		},
+
+		/**
+		 * Устанавливает компонент поля ввода, связанный с данным контейнером.
+		 * @param {Ext.Component} cmp
+		 */
+		setReferenceCmp: function (cmp)
+		{
+			var me = this;
+
+			me._referenceCmp = cmp;
+
+			// регистрируем событие загрузки данных в контейнер
+			me.registerEventAfterLoad();
 		},
 
 		/**
@@ -87,6 +140,17 @@ Ext.define(
 			storage.setItem(me.id, JSON.stringify(names));
 		},
 
+		/**
+		 * Сбрасывает названия, сохраненные в локальном хранилище.
+		 */
+		cleanContainer: function ()
+		{
+			var me = this;
+
+			me.clean();
+			me.setStorageNames(null);
+		},
+
 		clean: function ()
 		{
 			this.setVisible(false);
@@ -102,6 +166,33 @@ Ext.define(
 		getContainerItems: function ()
 		{
 			return this.mixins.behavior.getContainerItems.call(this);
+		},
+
+		/**
+		 * @private
+		 * Регистрирует событие загрузки данных в контейнер для связанного поля ввода.
+		 */
+		registerEventAfterLoad: function ()
+		{
+			var me = this,
+				containerItems = me.getContainerItems(),
+				refCmp = me.getReferenceCmp(),
+				refId = refCmp.getId(),
+				cacheEvent;
+
+			cacheEvent = me._cacheEvents[refId];
+
+			if (!cacheEvent)
+			{
+				me._cacheEvents[refId] = true;
+
+				containerItems.on(
+					{
+						scope: refCmp,
+						afterLoad: refCmp.afterLoad
+					}
+				);
+			}
 		}
 	}
 );

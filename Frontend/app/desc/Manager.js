@@ -39,6 +39,11 @@ Ext.define(
 		 */
 		fieldsError: [],
 
+		/**
+		 * @property {Object} Нужно ли очищать контейнеры с результатами поиска.
+		 */
+		cleanResultContainer: {},
+
 		init: function ()
 		{
 			var me = this,
@@ -99,10 +104,18 @@ Ext.define(
 				);
 			}
 
-			btn = bridge.Ext.getCmp('button-desc-load');
 			me.loadUrl = url;
 			Ext.log({level: 'info', msg: 'Загрузка описания из ' + url});
-			btn.disable();
+
+			try
+			{
+				btn = bridge.Ext.getCmp('button-desc-load');
+				btn.disable();
+			}
+			catch (e)
+			{
+				// кнопка загрузки пока еще не рендерилась
+			}
 
 			Ext.Ajax.request(
 				{
@@ -112,7 +125,10 @@ Ext.define(
 						var xml,
 							msg;
 
-						btn.enable();
+						if (btn)
+						{
+							btn.enable();
+						}
 
 						try
 						{

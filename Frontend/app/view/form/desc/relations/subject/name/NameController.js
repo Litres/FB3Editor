@@ -10,41 +10,38 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.form.desc.relations.subject.name',
 
-		onAfterRender: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				resultContainer = view.getResultContainer(),
-				personsContainer = resultContainer.getContainerItems();
-
-			// сбрасываем ФИО, сохраненные в локальном хранилище
-			me.onCleanResultContainer();
-
-			personsContainer.on(
-				{
-					scope: view,
-					afterLoad: view.afterLoad
-				}
-			);
-		},
-
 		onChange: function ()
 		{
 			var me = this,
 				view = me.getView(),
 				loading = FBEditor.desc.Manager.loadingProcess,
+				resultContainer,
+				refCmp,
 				title,
 				names;
 
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading)
 			{
-				me.abortSearch();
-				me.onCleanResultContainer();
+				resultContainer = view.getResultContainer();
+
+				// старое связанное поле
+				refCmp = resultContainer.getReferenceCmp();
+
+				// сбрасываем поиск старого связанного поля
+				refCmp.fireEvent('abortSearch');
+				refCmp.fireEvent('cleanResultContainer');
+
+				// связываем текущее поле с контейнером результатов
+				resultContainer.setReferenceCmp(view);
+
+				// получаем данные из полей
 				title = view.getTitle();
 				title.autoValue();
 				title = view.getTitle();
 				names = title.getNames();
+
+				// ищем
 				me.searchName(names);
 			}
 		},
@@ -55,6 +52,7 @@ Ext.define(
 				view = me.getView(),
 				artsContainer;
 
+			// очищаем контейнер с результатами поиска названий
 			artsContainer = view.getArtsContainer();
 			artsContainer.clean();
 		},
@@ -68,8 +66,25 @@ Ext.define(
 				view = me.getView(),
 				resultContainer = view.getResultContainer();
 
-				resultContainer.clean();
-				resultContainer.setStorageNames(null);
+			resultContainer.cleanContainer();
+		},
+
+		/**
+		 * Прерывает предыдущий поиск.
+		 */
+		onAbortSearch: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				resultContainer,
+				plugin;
+
+			resultContainer = view.getResultContainer();
+			resultContainer.abort();
+
+			// скрываем индикатор загрузки
+			plugin = view.getPlugin('searchField');
+			plugin.hideLoader();
 		},
 
 		/**
@@ -98,24 +113,6 @@ Ext.define(
 				// сохраняем имена в локальном хранилище
 				resultContainer.setStorageNames(names);
 			}
-		},
-
-		/**
-		 * Прерывает предыдущий поиск.
-		 */
-		abortSearch: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				resultContainer,
-				plugin;
-
-			resultContainer = view.getResultContainer();
-			resultContainer.abort();
-
-			// скрываем индикатор загрузки
-			plugin = view.getPlugin('searchField');
-			plugin.hideLoader();
 		}
 	}
 );

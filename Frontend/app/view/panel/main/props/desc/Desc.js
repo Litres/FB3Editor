@@ -39,9 +39,9 @@ Ext.define(
 				loadUrl,
 				saveUrl;
 
-			hiddenLoadUrl = bridge.Ext.getCmp('main') && bridge.FBEditor.accessHub ? false : true;
+			hiddenLoadUrl = bridge.Ext.getCmp('main') && bridge.FBEditor.accessHub && manager.isLoadUrl() ? false : true;
 			loadUrl = params.art ? params.art : '';
-			saveUrl = manager.saveUrl ? manager.saveUrl : '';
+			//saveUrl = manager.saveUrl ? manager.saveUrl : '';
 
 			me.items = [
 				{

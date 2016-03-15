@@ -45,25 +45,6 @@ Ext.define(
 			}
 		},
 
-		afterRender: function ()
-		{
-			var me = this,
-				resultContainer = me.getResultContainer(),
-				containerItems = resultContainer.getContainerItems();
-
-			me.callParent(arguments);
-
-			// сбрасываем названия, сохраненные в локальном хранилище
-			me.fireEvent('cleanResultContainer');
-
-			containerItems.on(
-				{
-					scope: this,
-					afterLoad: me.afterLoad
-				}
-			);
-		},
-
 		/**
 		 * Возвращает контейнер для отображения результатов поиска.
 		 * @return {Ext.container}
@@ -87,7 +68,6 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * Вызывается после загрузки данных.
 		 * @param {Array} data Данные.
 		 */

@@ -55,8 +55,7 @@ Ext.define(
 			reset: 'onReset',
 			activate: 'onActivate',
 			resize: 'onResize',
-			startScroll: 'onStartScroll',
-			endScroll: 'onEndScroll'
+			startScroll: 'onStartScroll'
 		},
 
 		/**

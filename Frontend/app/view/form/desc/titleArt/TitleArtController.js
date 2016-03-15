@@ -57,8 +57,7 @@ Ext.define(
 				view = me.getView(),
 				resultContainer = view.getResultContainer();
 
-			resultContainer.clean();
-			resultContainer.setStorageNames(null);
+			resultContainer.cleanContainer();
 		},
 
 		/**
