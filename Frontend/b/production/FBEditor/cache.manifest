@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1 397
+# v1 398
 
 CACHE:
 
@@ -9,21 +9,21 @@ app.json
 resources/FBEditor-all_01.css
 resources/FBEditor-all_02.css
 resources/images/favicon.ico
-app/webworker/httpRequest/Worker.js
-app/webworker/xmllint/Worker.js
 app/webworker/xmllint/lib/index.js
 
 # version resources
 
-resources/css/loader.css?_v=397
-resources/css/font-awesome.css?_v=397
-resources/css/styles.css?_v=397
-resources/css/editor.css?_v=397
-resources/css/htmleditor.css?_v=397
-resources/FBEditor-all.css?_v=397
-app.js?_v=397
-bower_components/jsxml/jsxml.js?_v=397
-bower_components/jsxml/stand.js?_v=397
+resources/css/loader.css?_v=398
+resources/css/font-awesome.css?_v=398
+resources/css/styles.css?_v=398
+resources/css/editor.css?_v=398
+resources/css/htmleditor.css?_v=398
+resources/FBEditor-all.css?_v=398
+app.js?_v=398
+app/webworker/httpRequest/Worker.js?_v=398
+app/webworker/xmllint/Worker.js?_v=398
+bower_components/jsxml/jsxml.js?_v=398
+bower_components/jsxml/stand.js?_v=398
 
 
 NETWORK:

@@ -47,7 +47,7 @@ Ext.define(
 				callbackInit;
 
 			// скрипт потока
-			name = 'app/' + manager.path + '/' + me.name + '/Worker.js';
+			name = 'app/' + manager.path + '/' + me.name + '/Worker.js?' + FBEditor.versionParam;
 
 			try
 			{

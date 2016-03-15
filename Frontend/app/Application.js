@@ -73,6 +73,7 @@ Ext.define(
 
 			// версия
 			FBEditor.version = Ext.manifest.loader.cache;
+			FBEditor.versionParam = Ext.manifest.loader.cacheParam + '=' + FBEditor.version;
 
 			// родительское окно
 			FBEditor.parentWindow = window.opener;
