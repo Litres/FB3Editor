@@ -69,8 +69,11 @@ Ext.define(
 			var me = this,
 				custom = me.customContainer;
 
-			// обновляем поле id
+			// обновляем поле ссылки id
 			custom.updateData({'relations-object-id': id});
+
+			// делаем ссылку неактивной
+			custom.down('[name=relations-object-id]').disableLink();
 		},
 
 		/**

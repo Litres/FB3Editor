@@ -96,9 +96,6 @@ Ext.define(
 			container.updateData(d);
 			descManager.loadingProcess = false;
 
-			// ссылка на страницу редактирования
-			container.down('[name=sequence-link]').setData({uuid: data.uuid});
-
 			// убираем редактируемость полей
 			container.fireEvent('editable', false);
 

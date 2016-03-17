@@ -34,9 +34,6 @@ Ext.define(
 			container.updateData(d);
 			descManager.loadingProcess = false;
 
-			// ссылка на страницу редактирования
-			container.down('[name=relations-object-page-link]').setData({uuid: data.uuid});
-
 			// убираем редактируемость полей
 			container.fireEvent('editable', false);
 

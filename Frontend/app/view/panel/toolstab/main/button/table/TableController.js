@@ -25,6 +25,13 @@ Ext.define(
 				range,
 				insertTableItem;
 
+			range = manager.getRange();
+
+			if (!range)
+			{
+				return;
+			}
+
 			me.callParent(arguments);
 
 			insertTableItem = btn.down('panel-toolstab-main-button-table-menu-insertTable');
@@ -34,7 +41,6 @@ Ext.define(
 
 			if (!enable)
 			{
-				range = manager.getRange();
 				nodes.node = range.common;
 
 				if (!nodes.node.getElement || nodes.node.getElement().isRoot)

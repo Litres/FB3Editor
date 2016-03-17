@@ -976,26 +976,6 @@
 	color: #2e7ed5;
 }
 
-/* ссылки на страницу редактирования */
-.sequence-page-link {
-	position: absolute;
-	top: -38px;
-	left: 15px;
-	color: #2e7ed5;
-}
-.relations-subject-page-link {
-	position: absolute;
-	top: -38px;
-	left: 93px;
-	color: #2e7ed5;
-}
-.relations-object-page-link {
-	position: absolute;
-	top: -38px;
-	left: 30px;
-	color: #2e7ed5;
-}
-
 /* плагин для индикатор загрузки в полях поиска */
 .fb3 .plugin-searchField-loader {
 	position: absolute;

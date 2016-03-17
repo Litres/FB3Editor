@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		xtype: 'form-desc-sequence-container-custom',
+
 		layout: 'anchor',
 		flex: 1,
 
@@ -16,8 +17,7 @@ Ext.define(
 			id: 'ID',
 			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
-			number: 'Номер',
-			pageEditor: 'Страница редактирования'
+			number: 'Номер'
 		},
 
 		initComponent: function ()
@@ -47,18 +47,9 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'displayfield',
+									xtype: 'form-desc-field-link-uuid',
 									fieldLabel: me.translateText.id,
 									name: prefixName + '-id'
-								},
-								{
-									xtype: 'component',
-									name: prefixName + '-link',
-									tpl: '<a href="https://hub.litres.ru/pages/any_uuid_redir/?uuid={uuid}"' +
-									     ' class="sequence-page-link"' +
-									     ' target="_blank" title="' + me.translateText.pageEditor + '">' +
-									     '<i class="fa fa-external-link"></i>' +
-									     '</a>'
 								},
 								{
 									xtype: 'numberfield',

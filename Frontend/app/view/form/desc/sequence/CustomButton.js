@@ -76,8 +76,11 @@ Ext.define(
 
 			data[prefixName + '-id'] = id;
 
-			// обновляем поле id
+			// обновляем ссылку id
 			custom.updateData(data);
+
+			// делаем ссылку неактивной
+			custom.down('[name=sequence-id]').disableLink();
 		},
 
 		/**

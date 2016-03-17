@@ -20,6 +20,8 @@ Ext.define(
 			'FBEditor.view.form.desc.DescController',
 			'FBEditor.view.form.desc.date.Date',
 			'FBEditor.view.form.desc.field.combobox.required.Required',
+			'FBEditor.view.form.desc.field.link.Link',
+			'FBEditor.view.form.desc.field.link.uuid.Link',
 			'FBEditor.view.form.desc.field.number.required.Required',
 			'FBEditor.view.form.desc.field.text.required.Required',
 			'FBEditor.view.form.desc.field.textarea.required.Required',
