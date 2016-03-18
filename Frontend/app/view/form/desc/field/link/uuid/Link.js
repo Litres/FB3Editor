@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.field.link.Link',
 		xtype: 'form-desc-field-link-uuid',
+		cls: 'form-desc-field-link-uuid',
 
 		linkTpl: '<a href="https://hub.litres.ru/pages/any_uuid_redir/?uuid={href}" target="_blank"' +
 		         ' title="{title}">{value}</a>',

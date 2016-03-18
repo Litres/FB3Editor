@@ -7,10 +7,6 @@
 	padding: 5px 0 0 0;
 }
 
-/*.fb3 .x-datepicker {
-	z-index: 999;
-}*/
-
 .fb3 .x-boundlist {
 	z-index: 9999999999;
 }
@@ -243,6 +239,14 @@
 }
 .fb3 .form-desc .input-fade-triggers {
 	right: 25px;
+}
+
+/* поле ссылки id */
+.form-desc-field-link-uuid {
+	overflow: hidden;
+}
+.form-desc-field-link-uuid a {
+	white-space: nowrap;
 }
 
 /* индикатор поиска для контейнера результатов поиска в описании */
