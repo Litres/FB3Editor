@@ -66,9 +66,10 @@ Ext.define(
 
 			//console.log(children, scrollTop, posY, hiddenChildrenHeight, marginTopHeight);
 
-			scrollTop = children > visibleNodes ? posY - marginTopHeight :
+			scrollTop = posY;
+			/*scrollTop = children > visibleNodes ? posY - marginTopHeight :
 			            (posY + children * nodeHeight > scrollTop + height ?
-			             scrollTop + hiddenChildrenHeight : scrollTop);
+			             scrollTop + hiddenChildrenHeight : scrollTop);*/
 
 			//console.log(scrollTop);
 
