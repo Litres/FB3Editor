@@ -364,6 +364,7 @@ Ext.define(
 				ownerCt,
 				replicatorId;
 
+			btn = btn || me.getBtnRemove();
 			container = enableBtnPut ? btn.ownerCt.ownerCt.ownerCt : btn.ownerCt.ownerCt;
 			ownerCt = container.ownerCt;
 			replicatorId = container.replicatorId;

@@ -117,7 +117,7 @@ Ext.define(
 
 						if (item['relations-subject-link'] !== 'author' &&
 						    item['relations-subject-link'] !== 'translator'&&
-						    item['relations-subject-link'] !== 'agent')
+						    item['relations-subject-link'] !== 'publisher')
 						{
 							item['relations-subject-link-list'] = item['relations-subject-link'];
 							item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] = 'other-list';

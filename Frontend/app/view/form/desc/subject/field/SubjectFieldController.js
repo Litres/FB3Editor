@@ -63,7 +63,8 @@ Ext.define(
 				subject = view.ownerCt,
 				nextSubject = subject.nextSibling(),
 				prevSubject = subject.previousSibling(),
-				subjectTree = subject.subjectTree;
+				subjectTree = subject.subjectTree,
+				plugin;
 
 			//console.log('nextSubject && prevSubject', subject, nextSubject, prevSubject);
 			if (!nextSubject && prevSubject && !val && !subjectTree.isShow)
@@ -72,7 +73,10 @@ Ext.define(
 				Ext.defer(
 					function ()
 					{
-						subject.ownerCt.remove(subject);
+						// плагин
+						plugin = subject.getPlugin('fieldcontainerreplicator');
+
+						plugin.removeFields();
 					},
 				    100 // задержка удаления необходима, чтобы отработали другие методы фреймворка onBlur
 				);
