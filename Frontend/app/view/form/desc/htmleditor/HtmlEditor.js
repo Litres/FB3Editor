@@ -100,6 +100,9 @@ Ext.define(
 				return str;
 			}
 
+			// заменяем все символы новой строки на пробелы
+			//val = val.replace(/\n+/gi, ' ');
+
 			reg = new RegExp('</?(.*?)( .*?|/)?>', 'ig');
 			val = val.replace(reg, replacer);
 			val = /^<p>/.test(val) ? val : '<p>' + val + '</p>';

@@ -247,6 +247,7 @@
 }
 .form-desc-field-link-uuid a {
 	white-space: nowrap;
+	color: #666;
 }
 
 /* индикатор поиска для контейнера результатов поиска в описании */
