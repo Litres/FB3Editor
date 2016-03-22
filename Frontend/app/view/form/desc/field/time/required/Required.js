@@ -23,6 +23,15 @@ Ext.define(
 			}
 		},
 
+		afterRender: function ()
+		{
+			var me = this;
+
+			me.callParent(arguments);
+
+			me.checkChangeCls();
+		},
+
 		/**
 		 * Изменяет класс в зависимости от валидности.
 		 */

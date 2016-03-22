@@ -23,13 +23,13 @@ Ext.define(
 			}
 		},
 
-		initComponent: function ()
+		afterRender: function ()
 		{
 			var me = this;
 
-			me.cls = me._cls;
-
 			me.callParent(arguments);
+
+			me.checkChangeCls();
 		},
 
 		/**

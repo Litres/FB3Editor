@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.relations.subject.name.Name',
 		mixins: {
-			fieldRequired: 'FBEditor.view.form.desc.field.text.required.Required'
+			required: 'FBEditor.view.form.desc.field.Required'
 		},
 		xtype: 'form-desc-relations-subject-name-main',
 		allowBlank: false,
@@ -23,13 +23,13 @@ Ext.define(
 			}
 		},
 
-		initComponent: function ()
+		afterRender: function ()
 		{
 			var me = this;
 
-			me.cls = me._cls;
-
 			me.callParent(arguments);
+
+			me.checkChangeCls();
 		},
 
 		/**
@@ -37,7 +37,7 @@ Ext.define(
 		 */
 		checkChangeCls: function ()
 		{
-			this.mixins.fieldRequired.checkChangeCls.call(this);
+			this.mixins.required.checkChangeCls.call(this);
 		}
 	}
 );
