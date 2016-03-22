@@ -15,7 +15,7 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			view.stripTags();
+			view.cleanTags();
 		},
 
 		/**

@@ -32,6 +32,13 @@ Ext.define(
 		 */
 		allowTags: ['strong', 'em', 'a', 'br', 'p'],
 
+		/**
+		 * @property {Array} Список блочных тегов, которые будут заменены на p.
+		 */
+		blockTags: ['address', 'article', 'aside', 'audio', 'blockquote', 'caption', 'dd', 'details', 'div', 'fieldset',
+		            'figcaption', 'form', 'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header',
+		            'legend', 'li', 'meter', 'output', 'pre', 'summary', 'td', 'th'],
+
 		plugins: [
 			{
 				ptype: 'fieldCleaner',
@@ -75,23 +82,30 @@ Ext.define(
 		},
 
 		/**
-		 * Вырезает лишние теги.
+		 * Приводит в порядок теги согласно схеме.
 		 */
-		stripTags: function ()
+		cleanTags: function ()
 		{
 			var me = this,
 				val = me.getValue(),
 				reg;
 
-			function replacer (str, tag, attr)
+			function replacer (str, slash, tag, attr)
 			{
-				//console.log(arguments, Ext.Array.contains(me.allowTags, tag));
-				if (!Ext.Array.contains(me.allowTags, tag))
+				//console.log(arguments);
+				if (Ext.Array.contains(me.blockTags, tag))
 				{
+					// заменяем блочный тег на p
+					str = slash ? '</p>' : '<p>';
+				}
+				else if (!Ext.Array.contains(me.allowTags, tag))
+				{
+					// удаляем неразрешенный тег
 					str = '';
 				}
 				else if (attr)
 				{
+					// корректируем аттрибуты
 					attr = attr.match(/href=".*?"/);
 					attr = attr ? ' ' + attr[0] : '';
 					str = '<' + tag + attr + '>';
@@ -100,10 +114,7 @@ Ext.define(
 				return str;
 			}
 
-			// заменяем все символы новой строки на пробелы
-			//val = val.replace(/\n+/gi, ' ');
-
-			reg = new RegExp('</?(.*?)( .*?|/)?>', 'ig');
+			reg = new RegExp('<(/)?(.*?)( .*?|/)?>', 'ig');
 			val = val.replace(reg, replacer);
 			val = /^<p>/.test(val) ? val : '<p>' + val + '</p>';
 			val = val.replace(/<br>/gi, '</p><p>');
@@ -147,7 +158,7 @@ Ext.define(
 			if (val)
 			{
 				// вырезаем лишние теги
-				me.stripTags();
+				me.cleanTags();
 
 				val = me.getValue();
 				//console.log('val', val);
