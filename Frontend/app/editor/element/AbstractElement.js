@@ -11,6 +11,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.InterfaceElement',
 		requires: [
 			'FBEditor.editor.element.AbstractElementController',
+			'FBEditor.editor.element.AbstractSelection',
 			'FBEditor.editor.command.PasteCommand',
 			'FBEditor.editor.command.RemoveNodesCommand'
 		],
@@ -54,12 +55,19 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.AbstractElementController',
 
 		/**
+		 * @property {String} Класс для обработки выделения.
+		 * Если не указан, то не используется.
+		 */
+		selectionClass: '',
+
+		/**
 		 * @property {Object} Обработчики событий контроллера.
 		 */
 		customListeners: {
 			keydown: 'onKeyDown',
 			keyup: 'onKeyUp',
 			mouseup: 'onMouseUp',
+			mousemove: 'onMouseMove',
 			DOMNodeInserted: 'onNodeInserted',
 			DOMNodeRemoved: 'onNodeRemoved',
 			DOMCharacterDataModified: 'onTextModified',
@@ -161,6 +169,12 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {FBEditor.editor.element.AbstractSelection} Выделение элемента.
+		 */
+		//selection: null,
+
+		/**
+		 * @private
 		 * @property {Object} Узлы html, привязанные к своим окнам.
 		 * Ключ каждого свойства представляет id окна, а значение - узел html.
 		 */
@@ -199,7 +213,12 @@ Ext.define(
 			me.attributes = Ext.clone(attributes) || me.attributes;
 			me.attributes = me.defaultAttributes ? Ext.applyIf(attributes, me.defaultAttributes) : me.attributes;
 			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
+
+			// создаем класс контроллера
 			me.createController();
+
+			// создаем класс выделения
+			me.createSelection();
 		},
 
 		add: function (el)
@@ -1019,9 +1038,17 @@ Ext.define(
 		 */
 		createController: function (scope)
 		{
-			var me = this;
+			this.controller = Ext.create(this.controllerClass, scope || this);
+		},
 
-			me.controller = Ext.create(me.controllerClass, scope || me);
+		/**
+		 * @protected
+		 * Создает класс для обработки выделения элемента.
+		 * @param {FBEditor.editor.element.AbstractSelection} scope Элемент, к которому привязан класс.
+		 */
+		createSelection: function (scope)
+		{
+			this.selection = this.selectionClass ? Ext.create(this.selectionClass, scope || this) : null;
 		},
 
 		/**

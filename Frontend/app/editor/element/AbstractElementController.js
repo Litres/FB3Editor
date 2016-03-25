@@ -382,6 +382,23 @@ Ext.define(
 		},
 
 		/**
+		 * Вызывается при движении курсора на элементе.
+		 * @param {Event} e Объект события.
+		 */
+		onMouseMove: function (e)
+		{
+			var me = this,
+				el = me.el,
+				selection = el.selection;
+
+			if (selection && e.which == 1)
+			{
+				// обрабатываем выделение
+				selection.execute();
+			}
+		},
+
+		/**
 		 * Вставка нового узла.
 		 * @param {Event} e Объект события.
 		 */

@@ -27,8 +27,8 @@ Ext.define(
 			codes: 'Коды',
 			udc: 'Код УДК',
 			bbk: 'Код ББК',
-			udcError: 'По шаблону [\\d\\. \\-\\*\\(\\)\\[\\]\\+:«»\'/A-Яа-я]+',
-			bbkError: 'По шаблону [\\(\\)=\\d\\.\\-A-Яа-я/\\+ ]+',
+			udcError: 'По шаблону [\\d\\. \\-\\*\\(\\):\\[\\]\\+:=&quot;«»\'/A-Яа-я]+',
+			bbkError: 'По шаблону [\\(\\)=:\\d\\.\\-A-Яа-я/\\+ "]+',
 			written: 'Дата и место написания',
 			keywords: 'Ключевые слова',
 			keywordsHelp: 'Перечислите через запятую. Например 1912, война, роман, отечественная, наполеон, кутузов'
@@ -153,7 +153,7 @@ Ext.define(
 											name: 'classification-udc',
 											flex: 1,
 											fieldLabel: me.translateText.udc,
-											regex: /^[\d\. \-\*\(\)\[\]\+:«»'/A-Яа-я]+$/,
+											regex: /^[\d\. \-\*\(\):\[\]\+:=&quot;«»'/A-Яа-я]+$/,
 											regexText: me.translateText.udcError,
 											afterBodyEl:  '<span class="after-body">' + me.translateText.udcError +
 											              '</span>'
@@ -198,7 +198,7 @@ Ext.define(
 											name: 'classification-bbk',
 											flex: 1,
 											fieldLabel: me.translateText.bbk,
-											regex: /^[\(\)=\d\.\-A-Яа-я/\+ ]+$/,
+											regex: /^[\(\)=:\d\.\-A-Яа-я/\+ "]+$/,
 											regexText: me.translateText.bbkError,
 											afterBodyEl:  '<span class="after-body">' + me.translateText.bbkError +
 											              '</span>'

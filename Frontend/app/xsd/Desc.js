@@ -233,6 +233,33 @@ attributeFormDefault="unqualified">\
 	                                        </simpleContent>\
                                         </complexType>\
                                     </element>\
+                                    <element name="copyrights" minOccurs="0">\
+										<complexType>\
+											<sequence>\
+												<element name="copyright-owner" maxOccurs="unbounded">\
+												    <complexType mixed="false">\
+														<attribute name="title" use="required">\
+															<simpleType>\
+																<restriction base="normalizedString">\
+																	<minLength value="1"/>\
+																</restriction>\
+															</simpleType>\
+														</attribute>\
+														<attribute name="uuid" type="fb3d:UUIDType"/>\
+														<attribute name="url" type="anyURI"/>\
+														<attribute name="percent">\
+															<simpleType>\
+																<restriction base="float">\
+																	<minInclusive value="0"/>\
+																	<maxInclusive value="100"/>\
+																</restriction>\
+															</simpleType>\
+														</attribute>\
+													</complexType>\
+												</element>\
+											</sequence>\
+										</complexType>\
+									</element>\
 			                        <element name="document-info">\
 				                        <complexType mixed="false">\
 					                        <attribute name="created" type="dateTime" use="required"/>\
@@ -381,14 +408,14 @@ attributeFormDefault="unqualified">\
       <element name="udc" minOccurs="0" maxOccurs="unbounded">\
         <simpleType>\
 	          <restriction base="token">\
-	            <pattern value="[\\d\\. \\-\\*\\(\\)\\[\\]\\+:«»\'/A-Яа-я]+"/>\
+	            <pattern value="[\\d\\. \\-\\*\\(\\):\\[\\]\\+:=&quot;«»\'/A-Яа-я]+"/>\
 	          </restriction>\
          </simpleType>\
       </element>\
       <element name="bbk" minOccurs="0" maxOccurs="unbounded">\
           <simpleType>\
 	          <restriction base="token">\
-	            <pattern value="[\\(\\)=\\d\\.\\-A-Яа-я/\\+ ]+"/>\
+	            <pattern value=\'[\\(\\)=:\\d\\.\\-A-Яа-я/\\+ "]+\'/>\
 	          </restriction>\
           </simpleType>\
       </element>\

@@ -10,10 +10,12 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
 			'FBEditor.editor.command.table.CreateCommand',
+			'FBEditor.editor.element.table.TableSelection',
 			'FBEditor.editor.element.table.TableElementController'
 		],
 
 		controllerClass: 'FBEditor.editor.element.table.TableElementController',
+		selectionClass: 'FBEditor.editor.element.table.TableSelection',
 		htmlTag: 'table',
 		xmlTag: 'table',
 		cls: 'el-table',
