@@ -46,6 +46,11 @@ Ext.define(
 			// узел html
 			node = viewTable.getNode(dataNode);
 
+			if (!node)
+			{
+				return;
+			}
+
 			// позиция узла
 			posY = node.offsetTop;
 
@@ -113,7 +118,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				subjectView,
+				subjectField,
 				data;
 
 			node.toggle(record);
@@ -121,8 +126,8 @@ Ext.define(
 			if (!record.isExpandable())
 			{
 				data = record.getData();
-				subjectView = view.subjectView;
-				subjectView.fireEvent('selectSubject', data);
+				subjectField = view.subjectField;
+				subjectField.fireEvent('selectSubject', data);
 				view.close();
 			}
 		},
@@ -134,24 +139,15 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				subject = view.subjectView,
-				bodyHeight,
-				height,
-				posY;
+				subject = view.subjectField,
+				height;
 
 			if (view.isVisible() && subject && view.rendered)
 			{
-				posY = subject.getY();
 				height = view.getHeight() + 2;
-				bodyHeight = Ext.getBody().getHeight();
-				if (bodyHeight - posY < height)
-				{
-					view.alignTo(subject, 'tl', [0, -height]);
-				}
-				else
-				{
-					view.alignTo(subject, 'bl', [0, -10]);
-				}
+
+				// выравниваем окно сверху от поля
+				view.alignTo(subject, 'tl', [115, -height]);
 			}
 		},
 

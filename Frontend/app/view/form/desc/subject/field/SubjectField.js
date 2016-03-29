@@ -33,35 +33,36 @@ Ext.define(
 
 		afterRender: function ()
 		{
-			var me = this,
-				subject = me.up('form-desc-subject'),
-				subjectTree = subject.subjectTree;
+			var me = this;
 
 			// обрабатываем esc в поле ввода
 			me.keyNav = new Ext.util.KeyNav(
 				{
 					target: me.inputEl,
-					//forceKeyDown: true,
 					esc: function ()
 					{
-						this.onEsc();
+						var field = this,
+							subjectTree = field.getSubjectTree(),
+							tag = field.getTag();
+
+						subjectTree.onEsc();
+						tag.onEsc();
 					},
-					scope: subjectTree
+					scope: me
 				}
 			);
 
 			me.callParent(arguments);
 		},
 
-		/**
-		 * Устанавливает курсор в конец поля.
-		 */
-		focusToEnd: function ()
+		getSubjectTree: function ()
 		{
-			var me = this,
-				val = me.getValue();
+			return this.up('form-desc-subject').getSubjectTree() || null;
+		},
 
-			me.focus([val.length, val.length]);
+		getTag: function ()
+		{
+			return this.up('form-desc-subject').getTag() || null;
 		}
 	}
 );

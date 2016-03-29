@@ -356,6 +356,9 @@
 }
 
 /* дерево жанров */
+.form-desc-subjectTree {
+	z-index: 999999;
+}
 .treenavigation-root-genres div {
 	height: 1px;
 	padding: 0
@@ -499,6 +502,20 @@
 	top: 4px;
 	right: 4px;
 	color: #2e7ed5;
+}
+
+/* контейнер данных тегов */
+.container-search-tag {
+	padding: 2px;
+	background-color: #eeeeee;
+}
+.panel-tag-item-common {
+	margin: 2px 0;
+	padding: 2px;
+}
+.panel-tag-item-name {
+	font-size: 1em;
+	cursor: pointer;
 }
 
 /* Выпадающий список поиска для объектов  */

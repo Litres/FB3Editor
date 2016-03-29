@@ -48,7 +48,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Ext.Container} Контейнер с результатми поиска.
+		 * @property {Ext.Container} Контейнер с результатами поиска.
 		 */
 		containerItems: null,
 
@@ -144,15 +144,7 @@ Ext.define(
 		{
 			var me = this;
 
-			// isShow ставится в false при изменении размеров окна, чтобы оно не закрылось (см. контроллер #onResize())
-			if (!me.isShow)
-			{
-				me.isShow = true;
-			}
-			else
-			{
-				me.close();
-			}
+			me.close();
 		},
 
 		clean: function ()

@@ -17,14 +17,19 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				subject = view.up('form-desc-subject'),
-				subjectTree = subject.subjectTree;
+				subject = view.up('form-desc-subject');
 
 			// останавливаем всплытие события, чтобы не допустить закрытия окна
 			e.stopPropagation();
 
-			// показываем дерево жанров
-			subject.fireEvent('showSubjectTree');
+			if (FBEditor.accessHub)
+			{
+				// показываем дерево жанров
+				subject.fireEvent('showSubjectTree');
+
+				// показываем список тегов
+				subject.fireEvent('showTag');
+			}
 		},
 
 		/**
@@ -36,7 +41,7 @@ Ext.define(
 				view = me.getView(),
 				value = view.getValue(),
 				subject = view.up('form-desc-subject'),
-				subjectTree = subject.subjectTree,
+				subjectTree = view.getSubjectTree(),
 				managerDesc = FBEditor.desc.Manager;
 
 			if (!managerDesc.loadingProcess)
@@ -49,6 +54,9 @@ Ext.define(
 
 				// Фильтруем дерево жанров
 				subjectTree.fireEvent('filter', value.trim());
+
+				// показываем список тегов
+				subject.fireEvent('showTag');
 			}
 		},
 
@@ -64,10 +72,11 @@ Ext.define(
 				nextSubject = subject.nextSibling(),
 				prevSubject = subject.previousSibling(),
 				subjectTree = subject.subjectTree,
+				isShow = subjectTree && subjectTree.isShow,
 				plugin;
 
 			//console.log('nextSubject && prevSubject', subject, nextSubject, prevSubject);
-			if (!nextSubject && prevSubject && !val && !subjectTree.isShow)
+			if (!nextSubject && prevSubject && !val && !isShow)
 			{
 				// удаляем поле, если оно последнее, пустое и список закрыт
 				Ext.defer(

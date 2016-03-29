@@ -25,8 +25,9 @@ Ext.define(
 			// окна
 			if (!me._scrollWins)
 			{
-				wins.push(Ext.getCmp('form-desc-subjectTree'));
-				wins.push(Ext.ComponentQuery.query('form-desc-searchField-window'));
+				wins = Ext.ComponentQuery.query('form-desc-searchField-window');
+				wins.push(Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree'));
+				wins.push(Ext.getCmp('form-desc-tag') || Ext.widget('form-desc-tag'));
 				me._scrollWins = wins;
 			}
 
@@ -34,9 +35,8 @@ Ext.define(
 				wins,
 				function (item)
 				{
-					if (item.isShow)
+					if (item)
 					{
-						//item.fireEvent('alignTo');
 						item.close();
 					}
 				}
@@ -79,20 +79,24 @@ Ext.define(
 		 */
 		onResize: function (cmp, width, height, oldWidth, oldHeight)
 		{
-			var personsContainers;
+			var me = this,
+				wins = me._resizeWins || [];
+
+			if (!me._resizeWins)
+			{
+				wins = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
+				wins.push(Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree'));
+				wins.push(Ext.getCmp('form-desc-tag') || Ext.widget('form-desc-tag'));
+				me._resizeWins = wins;
+			}
 
 			if (width !== oldWidth)
 			{
-				// корректируем положение окна выбора жанра
-				Ext.getCmp('form-desc-subjectTree').fireEvent('alignTo');
-
-				// корректируем положение окна с результатами поиска персон
-				personsContainers = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
 				Ext.Array.each(
-					personsContainers,
+					wins,
 					function (item)
 					{
-						if (item.isShow)
+						if (item)
 						{
 							item.fireEvent('alignTo');
 						}

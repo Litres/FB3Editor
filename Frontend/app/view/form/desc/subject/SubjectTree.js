@@ -1,5 +1,5 @@
 /**
- * Список жанров.
+ * Дерево жанров.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -15,11 +15,11 @@ Ext.define(
 		id: 'form-desc-subjectTree',
 		xtype: 'form-desc-subjectTree',
 		controller: 'form.desc.subjectTree',
+		cls: 'form-desc-subjectTree',
+
 		resizable: true,
 		floating: true,
-		//closable: true,
 		closeAction: 'hide',
-		//title: 'Выберите жанр',
 		width: 450,
 		height: 300,
 		minHeight: 200,
@@ -60,7 +60,7 @@ Ext.define(
 		/**
 		 * @property {FBEditor.view.form.desc.subject.Subject} Поле жанра.
 		 */
-		subjectView: null,
+		subjectField: null,
 
 		/**
 		 * @private
@@ -145,10 +145,11 @@ Ext.define(
 				textfield,
 				val;
 
-			if (me.subjectView)
+			if (me.subjectField)
 			{
 				me.callParent(arguments);
 
+				// выравниваем окно относительно поля ввода
 				me.fireEvent('alignTo');
 
 				me.isShow = true;
@@ -157,9 +158,6 @@ Ext.define(
 				textfield = me.getTextField();
 				val = textfield.getValue();
 				me.filterData(val);
-
-				// фокус в конец текстового поля
-				//textfield.focusToEnd();
 			}
 		},
 
@@ -175,21 +173,20 @@ Ext.define(
 
 		afterHide: function ()
 		{
-			var me = this,
-				textfield = me.getTextField();
+			var me = this;
 
 			me.isShow = false;
-			me.getRootNode().collapse(true);
 
 			// удаляем обработчки клика по всему документу, чтобы не висел зря
 			Ext.getBody().un('click', me.onClickBody, me);
 
 			me.callParent(arguments);
 
-			//textfield.focusToEnd();
-
 			// сбрасываем позицию скролла в начало
 			me.scrollTop = 0;
+
+			// сворачиваем узлы
+			me.getRootNode().collapse(true);
 		},
 
 		/**
@@ -197,29 +194,7 @@ Ext.define(
 		 */
 		onEsc: function ()
 		{
-			var me = this;
-
-			me.close();
-		},
-
-		/**
-		 * Закрывает список, если клик произошел не по области списка и при этом не происходит изменение размеров
-		 * дерева.
-		 */
-		onClickBody: function (e, input)
-		{
-			var me = this;
-
-			// isShow ставится в false при изменении размеров окна, чтобы оно не закрылось (см. контроллер #onResize())
-			if (!me.isShow)
-			{
-				me.isShow = true;
-			}
-			else
-			{
-				me.close();
-			}
-
+			this.close();
 		},
 
 		/**
@@ -588,20 +563,6 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает текстовое поле.
-		 * @return {FBEditor.view.form.desc.subject.field.SubjectField}
-		 */
-		getTextField: function ()
-		{
-			var me = this,
-				textfield;
-
-			textfield = me.subjectView.down('form-desc-subject-field');
-
-			return textfield;
-		},
-
-		/**
 		 * Фильтрует дерево.
 		 * @param {String} value Значение для фильтрации.
 		 */
@@ -659,6 +620,10 @@ Ext.define(
 						me.getRootNode().expand(true);
 					}
 				}
+				else
+				{
+					me.close();
+				}
 			}
 			else
 			{
@@ -694,6 +659,7 @@ Ext.define(
 			{
 				// клонируем
 				filteredData = Ext.clone(data);
+				filteredData[me.displayField] = text.replace(new RegExp('(' + val + ')', 'i'), '<b>$1</b>');
 			}
 			else if (!data.leaf)
 			{
@@ -726,6 +692,37 @@ Ext.define(
 			}
 
 			return filteredData;
+		},
+
+		/**
+		 * @private
+		 * Возвращает текстовое поле.
+		 * @return {FBEditor.view.form.desc.subject.field.SubjectField}
+		 */
+		getTextField: function ()
+		{
+			return this.subjectField.down('form-desc-subject-field');
+		},
+
+		/**
+		 * @private
+		 * Закрывает список, если клик произошел не по области списка и при этом не происходит изменение размеров
+		 * дерева.
+		 */
+		onClickBody: function (e, input)
+		{
+			var me = this;
+
+			// isShow ставится в false при изменении размеров окна, чтобы оно не закрылось
+			// (см. в контроллере #onResize())
+			if (!me.isShow)
+			{
+				me.isShow = true;
+			}
+			else
+			{
+				me.close();
+			}
 		}
 	}
 );
