@@ -7,6 +7,7 @@
 /*.form-desc .x-anchor-form-item {
 	margin: 1px 0 0 0;
 }*/
+
 .form-desc .x-field {
 	margin: 0 0 15px 0;
 }
@@ -48,12 +49,12 @@
 .form-desc .x-fieldset-default {
 	padding: 0;
 	margin: 0 0 6px;
-	background-color: #fff;
 	border-radius: 8px;
 	box-shadow: 0 1px 1px 0 #ccc;
 }
 .form-desc .x-fieldset-body-default {
 	padding: 2px 5px 1px 5px;
+	background-color: #fff;
 }
 .form-desc .x-fieldset-default.x-fieldset-collapsed {
 	border: none;
@@ -75,41 +76,59 @@
 	height: auto;
 	padding: 10px;
 }
-.form-desc .desc-fieldset-title .x-fieldset-header-default {
-	background-color: rgba(152, 193, 206, 0.50);
-}
-.form-desc .desc-fieldset-sequence .x-fieldset-header-default {
-	background-color: rgba(198, 246, 220, 0.50);
-}
-.form-desc .desc-fieldset-annotation .x-fieldset-header-default {
-	background-color: rgba(217, 217, 217, 0.50);
-}
-.form-desc .desc-fieldset-preamble .x-fieldset-header-default {
-	background-color: rgba(207, 183, 185, 0.50);
-}
-.form-desc .desc-fieldset-periodical .x-fieldset-header-default {
-	background-color: rgba(196, 189, 151, 0.50);
-}
-.form-desc .desc-fieldset-classification .x-fieldset-header-default {
-	background-color: rgba(118, 147, 60, 0.50);
-}
-.form-desc .desc-fieldset-relations-subject .x-fieldset-header-default {
-	background-color: rgba(247, 171, 171, 0.50);
-}
-.form-desc .desc-fieldset-relations-object .x-fieldset-header-default {
-	background-color: rgba(255, 255, 139, 0.5);
-}
-.form-desc .desc-fieldset-publishInfo .x-fieldset-header-default {
-	background-color: rgba(157, 123, 211, 0.5);
-}
-.form-desc .desc-fieldset-history .x-fieldset-header-default {
-	background-color: rgba(217, 217, 217, 0.5);
-}
+/* Название произведений */
+.form-desc .desc-fieldset-title .x-fieldset-body-default{background-color: #c9f1ff;}
+.form-desc .desc-fieldset-title .x-fieldset-header-default{background-color: #a0d3e7;}
+
+/* серия */
+.form-desc .desc-fieldset-sequence .x-fieldset-header-default{background-color: #a2f0c8;}
+.form-desc .desc-fieldset-sequence .x-fieldset-body-default{background-color: #d2ffea;}
+.form-desc .desc-fieldset-sequence .desc-fieldcontainer:nth-child(even){background-color: #C6EFDC;}
+
+/* аннотация */
+.form-desc .desc-fieldset-annotation .x-fieldset-header-default {background-color: #def4a9;}
+.form-desc .desc-fieldset-annotation .x-fieldset-body-default{background-color: #ecffbb;}
+
+/* преамбула */
+.form-desc .desc-fieldset-preamble .x-fieldset-header-default{background-color: #e1ccce;}
+.form-desc .desc-fieldset-preamble .x-fieldset-body-default{background-color: #f9eeef;}
+
+
+/* Периодическое издание */
+.form-desc .desc-fieldset-periodical .x-fieldset-header-default{background-color: #bcbf96;}
+.form-desc .desc-fieldset-periodical .x-fieldset-body-default{background-color: #d4dbbc;}
+.form-desc .desc-fieldset-periodical .x-form-fieldcontainer:nth-child(even){background-color: #bac1a3;}
+
+/* Классификация произведения */
+.form-desc .desc-fieldset-classification .x-fieldset-header-default{background-color: #ded8e0;}
+.form-desc .desc-fieldset-classification .x-fieldset-body-default{background-color: #e9e9e9;}
+
+/* связанные персоны */
+.form-desc .desc-fieldset-relations-subject .x-fieldset-header-default{background-color: #c4cafc;}
+.form-desc .desc-fieldset-relations-subject .x-fieldset-body-default{background-color: #dfcffe;}
+.form-desc .desc-fieldset-relations-subject .desc-fieldcontainer:nth-child(even){background-color: #D6C6F3;}
+
+/* связанные объекты */
+.form-desc .desc-fieldset-relations-object .x-fieldset-header-default{background-color: #fefe9a;}
+.form-desc .desc-fieldset-relations-object .x-fieldset-body-default{background-color: #fefec7;}
+.form-desc .desc-fieldset-relations-object .desc-fieldcontainer:nth-child(even){background-color: #EFEF99;}
+
+/* Информация о бумажной публикации */
+.form-desc .desc-fieldset-publishInfo .x-fieldset-header-default{background-color: #eec8f9;}
+.form-desc .desc-fieldset-publishInfo .x-fieldset-body-default{background-color: #fbdfff;}
+.form-desc .desc-fieldset-publishInfo .desc-fieldcontainer:nth-child(even){background-color: #d9c0dc;}
+
+/* комментарии редактора */
+.form-desc .desc-fieldset-history .x-fieldset-body-default{background-color: #fee0e0;}
+.form-desc .desc-fieldset-history .x-fieldset-header-default{background-color: #f7bfbb;}
 .form-desc .desc-fieldset-customInfo .x-fieldset-header-default {
 	background-color: rgba(222, 227, 234, 0.5);
 }
+
+/* информация о файле */
+.form-desc .desc-fieldset-documentInfo .x-fieldset-body-default{background-color: #ffeecd;}
 .form-desc .desc-fieldset-documentInfo .x-fieldset-header-default {
-	background-color: rgba(128, 128, 128, 0.5);
+	background-color: #facb84;
 }
 .form-desc .x-fieldset-default.x-fieldset-collapsed .x-fieldset-header-default {
 	border-radius: 8px;
@@ -130,10 +149,10 @@
 
 /* необязательный блок*/
 .form-desc .field-optional .x-form-item-label-default {
-	color: #A89BA2;
+	color: #999;
 }
 .form-desc .fieldset-optional .x-fieldset-header-text {
-	color: #A89BA2;
+	color: #999;
 }
 .form-desc .fieldset-optional .x-fieldset-header-tool-default > .x-tool-toggle {
 	background-image: url("../images/fieldset/collapse-tool-gray.png");
@@ -158,9 +177,10 @@
 }
 .form-desc .fieldset-inner .x-fieldset-header-default {
 	padding: 0;
-	background-color: #fff;
+	background-color: transparent;
 	border-radius: 0;
 }
+
 .form-desc .fieldset-inner .x-fieldset-header-default > .x-fieldset-header-text {
 	font-size: 15px;
 	font-weight: normal;
@@ -209,7 +229,7 @@
 }
 .form-desc .form-desc-field-link-uuid a {
 	white-space: nowrap;
-	color: #666;
+	color: #00c;
 }
 
 /* кнопки в описании */
@@ -234,11 +254,11 @@
 	border-color: #959595;
 	border-width: 1px;
 }
-.form-desc .x-btn-over.x-btn-default-small {
+.form-desc .x-btn.x-btn-disabled.x-btn-default-small {
 	background: #9c9c9c none;
 	border-color: #878787;
 }
-.form-desc .x-btn-disabled.x-btn-default-small {
+.form-desc .x-btn.x-btn-disabled.x-btn-default-small {
 	background-image: -moz-linear-gradient(center top, #e9e9e9, #e9e9e9 50%, #e9e9e9 51%, #e9e9e9);
 	background-image: none;
 	background-color: #959595;
@@ -416,8 +436,9 @@
 
 /* контейнер данных персон */
 .container-search-persons-item {
-	border: 1px solid #000;
+	border: 1px solid #9b9b9b;
 	margin: 4px 0;
+	box-shadow: 0 4px 7px rgba(0,0,0,0.25);
 }
 .container-search-persons-item-common {
 	padding: 4px;
@@ -460,7 +481,7 @@
 	position: absolute;
 	top: 25px;
 	right: 2px;
-	color: #2e7ed5;
+	color: #3b393f;
 }
 .container-search-persons-item-book a {
 	color: #2e7ed5;
@@ -484,6 +505,7 @@
 	border: 1px solid #000;
 	margin: 2px 0;
 	padding: 2px;
+	background-color: #fff;
 }
 .container-sequence-item-name
 {
@@ -530,3 +552,9 @@
 	font-size: 13px;
 	color: #666;
 }
+
+.x-panel-body-default{background: #ecebec;}
+.container-search-sequence{background: #fff;}
+
+/* задний фон в текстарее */
+.form-desc .x-toolbar-default{background-color: transparent;}

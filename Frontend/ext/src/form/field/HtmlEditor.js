@@ -990,7 +990,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
         }
 
         dbody = me.getEditorBody();
-        ss = me.textareaEl.getStyle(['font-size', 'font-family', 'background-image', 'background-repeat', 'background-color', 'color']);
+        ss = me.textareaEl.getStyle(['font-size', 'font-family', 'background-image', 'background-repeat', /*'background-color', */'color']);
 
         ss['background-attachment'] = 'fixed'; // w3c
         dbody.bgProperties = 'fixed'; // ie

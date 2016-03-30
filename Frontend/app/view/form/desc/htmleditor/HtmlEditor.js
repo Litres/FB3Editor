@@ -468,7 +468,7 @@ Ext.define(
 				+ (Ext.isOpera ? 'p{margin:0;}' : '')
 				+ 'body{border:0;margin:0;padding:{0}px;direction:' + (me.rtl ? 'rtl;' : 'ltr;')
 				+ (Ext.isIE8 ? Ext.emptyString : 'min-')
-				+ 'height:{1}px;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:text;background-color:white;'
+				+ 'height:{1}px;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:text;'/* background-color:white; */
 				+ (Ext.isIE ? '' : 'font-size:12px;font-family:{2}')
 				+ '}</style></head><body></body></html>'
 				, me.iframePad, h, me.defaultFont);
