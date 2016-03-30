@@ -33,15 +33,15 @@ Ext.define(
 			val = view.getValue();
 
 			// объединяем короткие строки менее 49 символов
-			val = val.replace(/-\n/igm, '');
-			val = val.replace(/^(.{0,49}?)\n/igm, '$1 ');
+			val = val.replace(/-<br\/>/igm, '');
+			val = val.replace(/^(.{0,49}?)<br\/>/igm, '$1 ');
 			val = val.replace(/-<\/p><p>/ig, '');
 			val = val.replace(/<p>(.{0,49}?)<\/p><p>/ig, '<p>$1');
 
 			// объединяем строки заканчивающиеся не на знак припенания
-			while (/^(.*?)[^.,!?]+\n/igm.test(val))
+			while (/^(.*?)[^.,!?]+<br\/>/igm.test(val))
 			{
-				val = val.replace(/^(.*?[^.,!?]+)\n/igm, '$1 ');
+				val = val.replace(/^(.*?[^.,!?]+)<br\/>/igm, '$1 ');
 			}
 
 			while (/<p>(.*?)[^.,!?]+<\/p><p>/ig.test(val))

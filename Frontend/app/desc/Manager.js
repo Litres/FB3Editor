@@ -394,9 +394,6 @@ Ext.define(
 				content = Ext.getCmp('panel-main-content'),
 				form = Ext.getCmp('form-desc'),
 				desc,
-				annotation,
-				preamble,
-				history,
 				delay;
 
 			try
@@ -411,15 +408,7 @@ Ext.define(
 				desc = FBEditor.util.xml.Json.xmlToJson(xml);
 				desc = desc['fb3-description'];
 				me.fb3DescId = desc._id;
-
-				// получаем данные для полей на основе htmleditor
-				xml = xml.replace(/[\n\r\t]/g, '');
-				annotation = xml.match(/<annotation>(.*?)<\/annotation>/);
-				desc.annotation = annotation ? annotation[1] : '';
-				preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
-				desc.preamble = preamble ? preamble[1] : '';
-				history = xml.match(/<history>(.*?)<\/history>/);
-				desc.history = history ? history[1] : '';
+				desc.xml = xml;
 
 				// конвертируем данные для формы
 				//console.log('desc', desc);

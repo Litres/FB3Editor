@@ -27,6 +27,15 @@ Ext.define(
 			afterFieldCleaner: 'onAfterFieldCleaner'
 		},
 
+		plugins: [
+			{
+				ptype: 'fieldCleaner',
+				toLowerCase: false,
+				capitalize: false,
+				style: 'top: -8px; right: 5px'
+			}
+		],
+
 		/**
 		 * @property {Array} Список разрешенных тегов.
 		 */
@@ -39,14 +48,10 @@ Ext.define(
 		            'figcaption', 'form', 'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header',
 		            'legend', 'li', 'meter', 'output', 'pre', 'summary', 'td', 'th'],
 
-		plugins: [
-			{
-				ptype: 'fieldCleaner',
-				toLowerCase: false,
-				capitalize: false,
-				style: 'top: -8px; right: 5px'
-			}
-		],
+		/**
+		 * @property {String} Значение по умолчанию для пустого поля.
+		 */
+		emptyValue: '<p><br/></p>',
 
 		afterRender: function ()
 		{
@@ -117,7 +122,6 @@ Ext.define(
 			reg = new RegExp('<(/)?(.*?)( .*?|/)?>', 'ig');
 			val = val.replace(reg, replacer);
 			val = /^<p>/.test(val) ? val : '<p>' + val + '</p>';
-			val = val.replace(/<br>/gi, '</p><p>');
 			val = val.replace(/> </gi, '>&nbsp;<');
 			val = val.replace(/[ ]{2}/gi, ' &nbsp;');
 			val = val.replace(/<p><\/p>/gi, '<p><br><\/p>');
@@ -157,35 +161,49 @@ Ext.define(
 
 			if (val)
 			{
-				// вырезаем лишние теги
-				me.cleanTags();
-
-				val = me.getValue();
-				//console.log('val', val);
-
+				// заменяем теги на разрешенные в схеме
 				val = val.replace(/<b>/gi, '<strong>');
 				val = val.replace(/<\/b>/gi, '</strong>');
 				val = val.replace(/<i>/gi, '<em>');
 				val = val.replace(/<\/i>/gi, '</em>');
-				val = val.replace(/<div>/gi, '<p>');
-				val = val.replace(/<\/div>/gi, '</p>');
-				val = val.split('<p>');
-				//console.log('val2', val);
-				val[0] = '<p>' + val[0] + '</p>';
-				val = val.join('<p>');
-				val = val.replace(/<p><\/p>/gi, '');
-				//console.log('val3', val);
-				val = val.replace(/<p><br><\/p>/gi, '<br/>');
+				me.setValue(val);
+
+				// вырезаем лишние теги
+				me.cleanTags();
+
+				val = me.getValue();
+
+				// корректируем тег br для xml
 				val = val.replace(/<br>/gi, '<br/>');
-				val = val.replace(/^<br\/>/gi, '<p></p>');
+
+				// заменяем \n на тег br
+				val = val.replace(/\n/gi, '<br/>');
+
+				// корректируем сущности для xml
 				val = val.replace(/&nbsp;/gi, '&#160;');
 				val = val.replace(/&lt;/gi, '&#60;');
 				val = val.replace(/&gt;/gi, '&#62;');
 
 				me.setValue(val);
+
+				if (/^(<p><br\/?><\/p>)+$/gi.test(val))
+				{
+					// возвращаем пустое значение, если в поле только пустые абзацы
+					val = '';
+				}
 			}
 
 			return val;
+		},
+
+		setValue: function (val)
+		{
+			var me = this;
+
+			// корректируем пустое значение
+			val = val ? val : me.emptyValue;
+			arguments[0] = val;
+			me.callParent(arguments);
 		},
 
 		/**

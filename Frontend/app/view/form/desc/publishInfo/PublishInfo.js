@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.publishInfo.biblio.Biblio',
 			'FBEditor.view.form.desc.publishInfo.isbn.Isbn',
 			'FBEditor.view.form.desc.publishInfo.sequence.Sequence',
 			'FBEditor.view.form.desc.publishInfo.title.Title'
@@ -16,7 +17,7 @@ Ext.define(
 		id: 'form-desc-publishInfo',
 		xtype: 'form-desc-publishInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
-		prefixName: 'publish-info',
+		prefixName: 'paper-publish-info',
 
 		translateText: {
 			title: 'Название',
@@ -69,20 +70,10 @@ Ext.define(
 									plugins: 'fieldCleaner'
 								},
 								{
-									xtype: 'textareafield',
+									xtype: 'form-desc-publishInfo-biblio',
 									name: prefixName + '-biblio-description',
 									fieldLabel: me.translateText.biblio,
-									cls: 'field-optional',
-									height: 70,
-									plugins: {
-										ptype: 'fieldCleaner',
-										style: 'right: 18px; margin-top: -18px'
-									},
-									resizable: {
-										handles: 's',
-										minHeight: 50,
-										pinned: true
-									}
+									cls: 'field-optional'
 								},
 								{
 									xtype: 'textfield',
@@ -157,11 +148,12 @@ Ext.define(
 						_city: item.down('[name=' + prefixName + '-city]').getValue(),
 						_year: item.down('[name=' + prefixName + '-year]').getValue(),
 						_title: item.down('[name=' + prefixName + '-title]').getValue(),
-						"_biblio-description": item.down('[name=' + prefixName + '-biblio-description]').getValue(),
+						'biblio-description': item.down('[name=' + prefixName + '-biblio-description]').normalizeValue(),
 						isbn: isbn,
 						sequence: sequence
 					};
 					val = me.removeEmptyValues(val);
+
 					if (val)
 					{
 						values = values || [];
@@ -169,6 +161,7 @@ Ext.define(
 					}
 				}
 			);
+
 			if (values)
 			{
 				data[prefixName] = values;

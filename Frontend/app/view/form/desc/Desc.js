@@ -204,7 +204,7 @@ Ext.define(
 				orderData = {},
 				orderNames = ['_id', '_version', '_xmlns', 'periodical', 'title', 'sequence', 'fb3-relations',
 				              'fb3-classification', 'lang', 'written', 'translated', 'document-info', 'history',
-				              'publish-info', 'custom-info', 'annotation', 'preamble'];
+				              'paper-publish-info', 'custom-info', 'annotation', 'preamble'];
 
 			items.each(
 				function (item)

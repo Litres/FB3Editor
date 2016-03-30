@@ -150,21 +150,23 @@ Ext.define(
 			Ext.getCmp('form-desc-title').down('form-desc-title-alt').fireEvent('loadData', data['title-alt']);
 			Ext.getCmp('form-desc-periodical').down('form-desc-title-alt').
 				fireEvent('loadData', data['periodical-title-alt']);
+
 			if (data.relations && data.relations['relations-subject'])
 			{
 				Ext.getCmp('form-desc-relations-subject').fireEvent('loadData', data.relations['relations-subject']);
 			}
+
 			if (data.relations && data.relations['relations-object'])
 			{
 				Ext.getCmp('form-desc-relations-object').fireEvent('loadData', data.relations['relations-object']);
 			}
+
 			Ext.getCmp('form-desc-classification-udc').fireEvent('loadData', data['classification-udc']);
 			Ext.getCmp('form-desc-classification-bbk').fireEvent('loadData', data['classification-bbk']);
 			Ext.getCmp('form-desc-subject').fireEvent('loadData', data['classification-subject']);
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
-			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['publish-info']);
+			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['paper-publish-info']);
 			Ext.getCmp('form-desc-documentInfo-isbn').fireEvent('loadData', data['document-info-isbn']);
-			//Ext.getCmp('classification-custom-subject').fireEvent('loadData', data['classification-custom-subject']);
 			me.expandFieldset(data);
 		},
 

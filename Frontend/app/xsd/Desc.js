@@ -272,7 +272,7 @@ attributeFormDefault="unqualified">\
 				                        </complexType>\
 			                        </element>\
 			                        <element name="history" type="fb3d:AnnotationType" minOccurs="0"/>\
-			                        <element name="publish-info" minOccurs="0" maxOccurs="unbounded">\
+			                        <element name="paper-publish-info" minOccurs="0" maxOccurs="unbounded">\
 										<complexType mixed="false">\
 											<sequence>\
 												<element name="isbn" type="fb3d:ISBNType" minOccurs="0" maxOccurs="unbounded"/>\
@@ -283,12 +283,12 @@ attributeFormDefault="unqualified">\
 		                                                </restriction>\
 													</simpleType>\
 												</element>\
+												<element name="biblio-description" type="fb3d:AnnotationType" minOccurs="0"/>\
 											</sequence>\
 											<attribute name="title" type="token" use="required"/>\
 											<attribute name="publisher" type="token" use="optional"/>\
 											<attribute name="city" type="token" use="optional"/>\
 											<attribute name="year" type="gYear" use="optional"/>\
-											<attribute name="biblio-description" type="token" use="optional"/>\
 										</complexType>\
 									</element>\
 			                        <element name="custom-info" minOccurs="0" maxOccurs="unbounded">\

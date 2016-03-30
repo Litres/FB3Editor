@@ -13,7 +13,21 @@ Ext.define(
 		toForm: function (data)
 		{
 			var me = this,
+				xml = data.xml,
+				annotation,
+				preamble,
+				history,
 				d;
+
+
+			// преобразуем данные для полей на основе htmleditor
+			xml = xml.replace(/[\n\r\t]/g, '');
+			annotation = xml.match(/<annotation>(.*?)<\/annotation>/);
+			data.annotation = annotation ? annotation[1] : '';
+			preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
+			data.preamble = preamble ? preamble[1] : '';
+			history = xml.match(/<history>(.*?)<\/history>/);
+			data.history = history ? history[1] : '';
 
 			d = me.normalize(data);
 			d = me.convertPeriodical(d);
@@ -26,6 +40,8 @@ Ext.define(
 			d = me.convertCustomInfo(d);
 
 			d.lang = d.lang ? d.lang : 'ru';
+
+			delete d.xml;
 
 			//console.log('open desc', d);
 
@@ -275,16 +291,41 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Пребразует данные для поля publish-info.
+		 * Пребразует данные для поля paper-publish-info.
 		 * @param {Object} data Исходные данные.
 		 * @return {Object} Преобразованные данные.
 		 */
 		convertPublishInfo: function (data)
 		{
 			var me = this,
-				d = data;
+				d = data,
+				xml = d.xml,
+				biblio;
 
-			d['publish-info'] = me._convertPropertyName(d['publish-info'], 'publish-info');
+			// преобразуем поле библиографического описания
+			biblio = xml.match(/<biblio-description>(.*?)<\/biblio-description>/g);
+
+			if (biblio)
+			{
+				d['paper-publish-info'] = d['paper-publish-info'][0] ?
+				                          d['paper-publish-info'] : {0: d['paper-publish-info']};
+
+				Ext.Object.each(
+					d['paper-publish-info'],
+				    function (i, item)
+				    {
+					    var b;
+
+					    if (item['biblio-description'])
+					    {
+						    b = biblio.shift();
+						    item['biblio-description'] = b.replace(/<\/?biblio-description>/g, '');
+					    }
+				    }
+				);
+			}
+
+			d['paper-publish-info'] = me._convertPropertyName(d['paper-publish-info'], 'paper-publish-info');
 
 			return d;
 		},
