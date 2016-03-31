@@ -472,6 +472,110 @@ Ext.define(
 				+ (Ext.isIE ? '' : 'font-size:12px;font-family:{2}')
 				+ '}</style></head><body></body></html>'
 				, me.iframePad, h, me.defaultFont);
+		},
+		
+		/*
+		 * Перзаписан стандартный метод.
+		 * Чтобы убрать белый бэкграунд в тестовом поле
+		*/
+		initEditor: function(){
+
+			var me = this,
+				dbody, ss, doc, docEl, fn;
+	
+			//Destroying the component during/before initEditor can cause issues.
+			if (me.destroying || me.isDestroyed) {
+				 return;
+			}
+	
+			dbody = me.getEditorBody();
+			ss = me.textareaEl.getStyle(['font-size', 'font-family', 'background-image', 'background-repeat', 'color']); // убрал 'background-color'
+	
+			ss['background-attachment'] = 'fixed'; // w3c
+			dbody.bgProperties = 'fixed'; // ie
+	
+			Ext.DomHelper.applyStyles(dbody, ss);
+	
+			doc = me.getDoc();
+			docEl = Ext.get(doc);
+	
+			if (docEl) {
+				try {
+					docEl.clearListeners();
+				} catch(e) {}
+	
+				/*
+				 * We need to use createDelegate here, because when using buffer, the delayed task is added
+				 * as a property to the function. When the listener is removed, the task is deleted from the function.
+				 * Since onEditorEvent is shared on the prototype, if we have multiple html editors, the first time one of the editors
+				 * is destroyed, it causes the fn to be deleted from the prototype, which causes errors. Essentially, we're just anonymizing the function.
+				 */
+				fn = me.onEditorEvent.bind(me);
+				docEl.on({
+					mousedown: fn,
+					dblclick: fn,
+					click: fn,
+					keyup: fn,
+					delegated: false,
+					buffer:100
+				});
+	
+				// These events need to be relayed from the inner document (where they stop
+				// bubbling) up to the outer document. This has to be done at the DOM level so
+				// the event reaches listeners on elements like the document body. The effected
+				// mechanisms that depend on this bubbling behavior are listed to the right
+				// of the event.
+				fn = me.onRelayedEvent;
+				docEl.on({
+					mousedown: fn, // menu dismisal (MenuManager) and Window onMouseDown (toFront)
+					mousemove: fn, // window resize drag detection
+					mouseup: fn,   // window resize termination
+					click: fn,     // not sure, but just to be safe
+					dblclick: fn,  // not sure again
+					delegated: false,
+					scope: me
+				});
+	
+				if (Ext.isGecko) {
+					docEl.on('keypress', me.applyCommand, me);
+				}
+	
+				if (me.fixKeys) {
+					docEl.on('keydown', me.fixKeys, me);
+				}
+				if (me.fixKeysAfter) {
+					docEl.on('keyup', me.fixKeysAfter, me);
+				}
+	
+				if (Ext.isIE9) {
+					Ext.get(doc.documentElement).on('focus', me.focus, me);
+				}
+	
+				// In old IEs, clicking on a toolbar button shifts focus from iframe
+				// and it loses selection. To avoid this, we save current selection
+				// and restore it.
+				if (Ext.isIE8) {
+					docEl.on('focusout', function() {
+						me.savedSelection = doc.selection.type !== 'None' ? doc.selection.createRange() : null;
+					}, me);
+	
+					docEl.on('focusin', function() {
+						if (me.savedSelection) {
+							me.savedSelection.select();
+						}
+					}, me);
+				}
+	
+				// We need to be sure we remove all our events from the iframe on unload or we're going to LEAK!
+				Ext.getWin().on('beforeunload', me.beforeDestroy, me);
+				doc.editorInitialized = true;
+	
+				me.initialized = true;
+				me.pushValue();
+				me.setReadOnly(me.readOnly);
+				me.fireEvent('initialize', me);
+			}
 		}
+		
 	}
 );

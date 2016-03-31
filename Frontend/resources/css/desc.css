@@ -77,56 +77,108 @@
 	padding: 10px;
 }
 /* Название произведений */
-.form-desc .desc-fieldset-title .x-fieldset-body-default{background-color: #c9f1ff;}
-.form-desc .desc-fieldset-title .x-fieldset-header-default{background-color: #a0d3e7;}
+.form-desc .desc-fieldset-title .x-fieldset-body-default{
+	background-color: #c9f1ff;
+}
+.form-desc .desc-fieldset-title .x-fieldset-header-default{
+	background-color: #a0d3e7;
+}
 
 /* серия */
-.form-desc .desc-fieldset-sequence .x-fieldset-header-default{background-color: #a2f0c8;}
-.form-desc .desc-fieldset-sequence .x-fieldset-body-default{background-color: #d2ffea;}
-.form-desc .desc-fieldset-sequence .desc-fieldcontainer:nth-child(even){background-color: #C6EFDC;}
+.form-desc .desc-fieldset-sequence .x-fieldset-header-default{
+	background-color: #a2f0c8;
+}
+.form-desc .desc-fieldset-sequence .x-fieldset-body-default{
+	background-color: #d2ffea;
+}
+.form-desc .desc-fieldset-sequence .desc-fieldcontainer:nth-child(even){
+	background-color: #C6EFDC;
+}
 
 /* аннотация */
-.form-desc .desc-fieldset-annotation .x-fieldset-header-default {background-color: #def4a9;}
-.form-desc .desc-fieldset-annotation .x-fieldset-body-default{background-color: #ecffbb;}
+.form-desc .desc-fieldset-annotation .x-fieldset-header-default {
+	background-color: #def4a9;
+}
+.form-desc .desc-fieldset-annotation .x-fieldset-body-default{
+	background-color: #ecffbb;
+}
 
 /* преамбула */
-.form-desc .desc-fieldset-preamble .x-fieldset-header-default{background-color: #e1ccce;}
-.form-desc .desc-fieldset-preamble .x-fieldset-body-default{background-color: #f9eeef;}
+.form-desc .desc-fieldset-preamble .x-fieldset-header-default{
+	background-color: #e1ccce;
+}
+.form-desc .desc-fieldset-preamble .x-fieldset-body-default{
+	background-color: #f9eeef;
+}
 
 
 /* Периодическое издание */
-.form-desc .desc-fieldset-periodical .x-fieldset-header-default{background-color: #bcbf96;}
-.form-desc .desc-fieldset-periodical .x-fieldset-body-default{background-color: #d4dbbc;}
-.form-desc .desc-fieldset-periodical .x-form-fieldcontainer:nth-child(even){background-color: #bac1a3;}
+.form-desc .desc-fieldset-periodical .x-fieldset-header-default{
+	background-color: #bcbf96;
+}
+.form-desc .desc-fieldset-periodical .x-fieldset-body-default{
+	background-color: #d4dbbc;
+}
+.form-desc .desc-fieldset-periodical .x-form-fieldcontainer:nth-child(even){
+	background-color: #bac1a3;
+}
 
 /* Классификация произведения */
-.form-desc .desc-fieldset-classification .x-fieldset-header-default{background-color: #ded8e0;}
-.form-desc .desc-fieldset-classification .x-fieldset-body-default{background-color: #e9e9e9;}
+.form-desc .desc-fieldset-classification .x-fieldset-header-default{
+	background-color: #ded8e0;
+}
+.form-desc .desc-fieldset-classification .x-fieldset-body-default{
+	background-color: #e9e9e9;
+}
 
 /* связанные персоны */
-.form-desc .desc-fieldset-relations-subject .x-fieldset-header-default{background-color: #c4cafc;}
-.form-desc .desc-fieldset-relations-subject .x-fieldset-body-default{background-color: #dfcffe;}
-.form-desc .desc-fieldset-relations-subject .desc-fieldcontainer:nth-child(even){background-color: #D6C6F3;}
+.form-desc .desc-fieldset-relations-subject .x-fieldset-header-default{
+	background-color: #c4cafc;
+}
+.form-desc .desc-fieldset-relations-subject .x-fieldset-body-default{
+	background-color: #dfcffe;
+}
+.form-desc .desc-fieldset-relations-subject .desc-fieldcontainer:nth-child(even){
+	background-color: #D6C6F3;
+}
 
 /* связанные объекты */
-.form-desc .desc-fieldset-relations-object .x-fieldset-header-default{background-color: #fefe9a;}
-.form-desc .desc-fieldset-relations-object .x-fieldset-body-default{background-color: #fefec7;}
-.form-desc .desc-fieldset-relations-object .desc-fieldcontainer:nth-child(even){background-color: #EFEF99;}
+.form-desc .desc-fieldset-relations-object .x-fieldset-header-default{
+	background-color: #fefe9a;
+}
+.form-desc .desc-fieldset-relations-object .x-fieldset-body-default{
+	background-color: #fefec7;
+}
+.form-desc .desc-fieldset-relations-object .desc-fieldcontainer:nth-child(even){
+	background-color: #EFEF99;
+}
 
 /* Информация о бумажной публикации */
-.form-desc .desc-fieldset-publishInfo .x-fieldset-header-default{background-color: #eec8f9;}
-.form-desc .desc-fieldset-publishInfo .x-fieldset-body-default{background-color: #fbdfff;}
-.form-desc .desc-fieldset-publishInfo .desc-fieldcontainer:nth-child(even){background-color: #d9c0dc;}
+.form-desc .desc-fieldset-publishInfo .x-fieldset-header-default{
+	background-color: #eec8f9;
+}
+.form-desc .desc-fieldset-publishInfo .x-fieldset-body-default{
+	background-color: #fbdfff;
+}
+.form-desc .desc-fieldset-publishInfo .desc-fieldcontainer:nth-child(even){
+	background-color: #d9c0dc;
+}
 
 /* комментарии редактора */
-.form-desc .desc-fieldset-history .x-fieldset-body-default{background-color: #fee0e0;}
-.form-desc .desc-fieldset-history .x-fieldset-header-default{background-color: #f7bfbb;}
+.form-desc .desc-fieldset-history .x-fieldset-body-default{
+	background-color: #fee0e0;
+}
+.form-desc .desc-fieldset-history .x-fieldset-header-default{
+	background-color: #f7bfbb;
+}
 .form-desc .desc-fieldset-customInfo .x-fieldset-header-default {
 	background-color: rgba(222, 227, 234, 0.5);
 }
 
 /* информация о файле */
-.form-desc .desc-fieldset-documentInfo .x-fieldset-body-default{background-color: #ffeecd;}
+.form-desc .desc-fieldset-documentInfo .x-fieldset-body-default{
+	background-color: #ffeecd;
+}
 .form-desc .desc-fieldset-documentInfo .x-fieldset-header-default {
 	background-color: #facb84;
 }
@@ -553,8 +605,14 @@
 	color: #666;
 }
 
-.x-panel-body-default{background: #ecebec;}
-.container-search-sequence{background: #fff;}
+.x-panel-body-default{
+	background: #ecebec;
+}
+.container-search-sequence{
+	background: #fff;
+}
 
 /* задний фон в текстарее */
-.form-desc .x-toolbar-default{background-color: transparent;}
+.form-desc .x-toolbar-default{
+	background-color: transparent;
+}
