@@ -2,8 +2,7 @@
 Ситли для редактора текста.
 */
 
-.panel-editor-viewport
-{
+.panel-editor-viewport {
 	font-family: 'Arial Unicode MS';
 	font-size: 150%;
 	line-height: 150%;
@@ -11,8 +10,7 @@
 	background-color: #fff;
 }
 
-.panel-editor-viewport p
-{
+.panel-editor-viewport p {
 	text-indent: 3em;
 	margin-top: 0em;
 	margin-bottom: 0.2em;
@@ -72,7 +70,6 @@
 .panel-editor-viewport .el-div-align-justify p {
 	text-align: justify;
 }
-
 
 .panel-editor-viewport .el-blockquote
 {
@@ -275,4 +272,8 @@
 }
 .panel-editor-viewport .el-td p {
 	text-indent: 0;
+}
+
+.panel-editor-viewport .el-td.mode-select {
+	background-color: orangered;
 }

@@ -128,7 +128,8 @@ Ext.define(
 		 */
 		onSplitElement: function (node, isEmpty)
 		{
-			var el,
+			var manager = FBEditor.editor.Manager,
+				el,
 				sch,
 				elements,
 				parentEl,
@@ -143,10 +144,10 @@ Ext.define(
 			// разрешена ли разбивка блока на два
 			if (el.permit.splittable)
 			{
-				sch = FBEditor.editor.Manager.getSchema();
+				sch = manager.getSchema();
 				parentNode = node.parentNode;
 				parentEl = parentNode.getElement();
-				elements = FBEditor.editor.Manager.getNamesElements(parentEl);
+				elements = manager.getNamesElements(parentEl);
 				name = el.xmlTag;
 				pos = parentEl.getChildPosition(el);
 				elements.splice(pos + 1, 0, name);
@@ -355,6 +356,22 @@ Ext.define(
 		},
 
 		/**
+		 * Нажатие кнопки мыши.
+		 * @param {Event} e Объект события.
+		 */
+		onMouseDown: function (e)
+		{
+			var manager = FBEditor.editor.Manager,
+				viewportId;
+
+			e.stopPropagation();
+
+			// снимаем выделение с элементов
+			viewportId = e.target.viewportId;
+			manager.clearSelectNodes(viewportId);
+		},
+
+		/**
 		 * Отпускание кнопки мыши определяет элемент, на котором находится фокус.
 		 * @param {Event} e Объект события.
 		 */
@@ -364,13 +381,15 @@ Ext.define(
 				bridgeNav = FBEditor.getBridgeNavigation(),
 				manager = FBEditor.editor.Manager,
 				focusNode,
-				focusElement;
+				focusElement,
+				viewportId;
 
 			e.stopPropagation();
 			focusNode = me.getFocusNode(e.target);
 
 			if (focusNode && focusNode.getElement)
 			{
+				viewportId = focusNode.viewportId;
 				focusElement = focusNode.getElement();
 
 				// фокус на элементе
@@ -378,6 +397,9 @@ Ext.define(
 
 				// разворачиваем узел элемента в дереве навигации по тексту
 				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(focusElement);
+
+				// проверяем есть лы выделенные элементы
+				manager.checkSelectNodes(viewportId);
 			}
 		},
 
@@ -393,6 +415,8 @@ Ext.define(
 
 			if (selection && e.which == 1)
 			{
+				e.stopPropagation();
+
 				// обрабатываем выделение
 				selection.execute();
 			}

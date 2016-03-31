@@ -14,6 +14,8 @@ Ext.define(
 			'FBEditor.editor.HistoryManager'
 		],
 
+		selectCls: 'mode-select',
+
 		/**
 		 * @property {FBEditor.editor.schema.Schema} Правила проверки элементов.
 		 */
@@ -1166,6 +1168,45 @@ Ext.define(
 					}
 					pos++;
 				}
+			}
+		},
+
+		/**
+		 * Снимает выделение со всех элементов.
+		 * @param {String} viewportId Айди окна.
+		 */
+		clearSelectNodes: function (viewportId)
+		{
+			var me = this,
+				nodes;
+
+			nodes = document.querySelectorAll('.' + me.selectCls);
+
+			Ext.Array.each(
+				nodes,
+			    function (node)
+			    {
+				    var el = node.getElement();
+
+				    el.selectNode(false, viewportId);
+			    }
+			)
+		},
+
+		/**
+		 * Проверяет есть ли выделенные элементы.
+		 */
+		checkSelectNodes: function ()
+		{
+			var me = this,
+				nodes;
+
+			nodes = document.querySelectorAll('.' + me.selectCls);
+
+			if (nodes.length)
+			{
+				// снимаем выделение браузера
+				window.getSelection().removeAllRanges();
 			}
 		}
 	}

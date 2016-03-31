@@ -47,6 +47,32 @@ Ext.define(
 			xml = xml.replace(/<td><br\/>/gi, '<td><p></p>');
 
 			return xml;
+		},
+
+		/**
+		 * Возвращает позицию ячейки в таблице.
+		 * Позиция ячейки отсчитывается от 0.
+		 *
+		 * @example
+		 * Есть таблица размером 5 на 6 ячеек.
+		 * Тогда левая верхняя ячейка будет иметь позицию [0, 0], а правая нижняя - [4, 5].
+		 *
+		 * @return {Array}
+		 */
+		getPosition: function ()
+		{
+			var me = this,
+				parent = me.parent,
+				posCol,
+				posRow;
+
+			// позиция td
+			posCol = parent.getChildPosition(me);
+
+			// позииция tr
+			posRow = parent.parent.getChildPosition(parent);
+
+			return [posCol, posRow];
 		}
 	}
 );

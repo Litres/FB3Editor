@@ -8,7 +8,6 @@
 Ext.define(
 	'FBEditor.editor.element.AbstractElement',
 	{
-		extend: 'FBEditor.editor.element.InterfaceElement',
 		requires: [
 			'FBEditor.editor.element.AbstractElementController',
 			'FBEditor.editor.element.AbstractSelection',
@@ -57,6 +56,9 @@ Ext.define(
 		/**
 		 * @property {String} Класс для обработки выделения.
 		 * Если не указан, то не используется.
+		 *
+		 * @example
+		 * Смотрите пример реализации FBEditor.editor.element.table.TableSelection
 		 */
 		selectionClass: '',
 
@@ -67,6 +69,7 @@ Ext.define(
 			keydown: 'onKeyDown',
 			keyup: 'onKeyUp',
 			mouseup: 'onMouseUp',
+			mousedown: 'onMouseDown',
 			mousemove: 'onMouseMove',
 			DOMNodeInserted: 'onNodeInserted',
 			DOMNodeRemoved: 'onNodeRemoved',
@@ -221,6 +224,10 @@ Ext.define(
 			me.createSelection();
 		},
 
+		/**
+		 * Добавляет новый дочерний элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 */
 		add: function (el)
 		{
 			var me = this;
@@ -243,6 +250,11 @@ Ext.define(
 			}
 		},
 
+		/**
+		 * Вставляет новый дочерний элемент перед другим дочерним элементом.
+		 * @param {FBEditor.editor.element.AbstractElement} el Вставляемый элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} nextEl Элемент, перед которым происходит вставка.
+		 */
 		insertBefore: function (el, nextEl)
 		{
 			var me = this,
@@ -260,6 +272,11 @@ Ext.define(
 			me.children = children;
 		},
 
+		/**
+		 * Заменяет дочерний элемент на новый.
+		 * @param {FBEditor.editor.element.AbstractElement} el Новый элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} replacementEl Заменяемый элемент.
+		 */
 		replace: function (el, replacementEl)
 		{
 			var me = this,
@@ -278,7 +295,11 @@ Ext.define(
 			me.children = children;
 		},
 
-		remove: function (el, opts)
+		/**
+		 * Удаляет дочерний элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 */
+		remove: function (el)
 		{
 			var me = this,
 				children = me.children,
@@ -301,6 +322,10 @@ Ext.define(
 			}
 		},
 
+		/**
+		 * Возвращает первый элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Первый элемент.
+		 */
 		first: function ()
 		{
 			var me = this,
@@ -312,6 +337,10 @@ Ext.define(
 			return first;
 		},
 
+		/**
+		 * Возвращает следующий элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Следующий элемент.
+		 */
 		next: function ()
 		{
 			var me = this,
@@ -325,6 +354,9 @@ Ext.define(
 			return next;
 		},
 
+		/**
+		 * Удаляет все дочерние элементы.
+		 */
 		removeAll: function ()
 		{
 			var me = this,
@@ -338,23 +370,28 @@ Ext.define(
 			}
 		},
 
-		clear: function ()
+		/**
+		 * Перебирает всех потомков, передавая их в функцию.
+		 * @param {Function} fn Функция-итератор.
+		 */
+		each: function (fn)
 		{
-			var me = this,
-				children = me.children;
-
-			/*Ext.Array.each(
-				children,
-				function (el)
-				{
-					if (el)
-					{
-						el.clear(el);
-					}
-				}
-			);*/
+			Ext.Array.each(this.children, fn);
 		},
 
+		/**
+		 * Удаляет все связи элемента на используемые объекты.
+		 */
+		clear: function ()
+		{
+			//
+		},
+
+		/**
+		 * Клонирует элемент.
+		 * @param {Object} opts Опции клонирования..
+		 * @return {FBEditor.editor.element.AbstractElement} Клонированный элемент.
+		 */
 		clone: function (opts)
 		{
 			var me = this,
@@ -394,6 +431,10 @@ Ext.define(
 			return newEl;
 		},
 
+		/**
+		 * Устанавливает узел для элемента.
+		 * @param {Node} node Узел html.
+		 */
 		setNode: function (node)
 		{
 			var me = this;
@@ -409,6 +450,11 @@ Ext.define(
 			me.nodes[node.viewportId] = node;
 		},
 
+		/**
+		 * Создает и возвращает узел для отображения элемента.
+		 * @param {String} viewportId Id окна.
+		 * @return {Node} Узел html.
+		 */
 		getNode: function (viewportId)
 		{
 			var me = this,
@@ -437,6 +483,10 @@ Ext.define(
 			return node;
 		},
 
+		/**
+		 * Удаляет все ссылки на узлы окна.
+		 * @param {String} viewportId Id окна.
+		 */
 		removeNodes: function (viewportId)
 		{
 			var me = this,
@@ -456,6 +506,39 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает или сбрасывает выделение узла в окне.
+		 * @param {Boolean} selected Установить ли выделение.
+		 * @param {String} viewportId Id окна.
+		 */
+		selectNode: function (selected, viewportId)
+		{
+			var me = this,
+				node = me.nodes[viewportId],
+				cls = me.cls,
+				selectCls = FBEditor.editor.Manager.selectCls,
+				reg;
+
+			reg = new RegExp(selectCls);
+
+			if (!reg.test(cls) && selected)
+			{
+				// выделяем узел
+				cls = cls + ' ' + selectCls;
+				node.setAttribute('class', cls);
+			}
+
+			if (reg.test(cls) && !selected)
+			{
+				// убираем выделение
+				cls = cls.replace(' ' + selectCls, '');
+				node.setAttribute('class', cls);
+			}
+
+			me.cls = cls;
+		},
+
+		/**
+		 * Возвращает элемент в виде строки xml.
 		 * @param {Boolean} [withoutText] Надо ли исключить текст из xml.
 		 * @return {String}
 		 */
@@ -496,6 +579,10 @@ Ext.define(
 			return xml;
 		},
 
+		/**
+		 * Возвращает данные об элементе.
+		 * @return {Object} Данные элемента.
+		 */
 		getData: function ()
 		{
 			var me = this,
@@ -526,6 +613,10 @@ Ext.define(
 			return data;
 		},
 
+		/**
+		 * Синхронизирует узлы элемента в окнах.
+		 * @param {String} viewportId Id окна источника.
+		 */
 		sync: function (viewportId)
 		{
 			var me = this,
@@ -551,6 +642,12 @@ Ext.define(
 			FBEditor.editor.Manager.updateTree();
 		},
 
+		/**
+		 * Обновляет данные элемента и его отображение.
+		 * @param {Object} data Новые данные для элемента.
+		 * @param {Object} [opts] Опции.
+		 * @param {Boolean} opts.withoutView true - обновить только данные, без обновления отображения.
+		 */
 		update: function (data, opts)
 		{
 			var me = this,
@@ -875,7 +972,7 @@ Ext.define(
 		/**
 		 * Имеет ли элемент родителя с именем name. Поиск происходит по всем родителям, вплоть до корня.
 		 * @param {String} name Имя родительского элемента.
-		 * @returns {Boolean}
+		 * @return {Boolean}
 		 */
 		hasParentName: function (name)
 		{
@@ -893,6 +990,29 @@ Ext.define(
 			}
 
 			return false;
+		},
+
+		/**
+		 * Возвращает элемент родителя с именем name. Поиск происходит по всем родителям, вплоть до корня.
+		 * @param {String} name Имя родительского элемента.
+		 * @return {FBEditor.editor.element.AbstractElement|null}
+		 */
+		getParentName: function (name)
+		{
+			var me = this,
+				el = me.parent;
+
+			while (el)
+			{
+				if (el.hisName(name))
+				{
+					return el;
+				}
+
+				el = el.parent;
+			}
+
+			return null;
 		},
 
 		/**
