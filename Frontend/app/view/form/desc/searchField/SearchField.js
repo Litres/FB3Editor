@@ -16,8 +16,7 @@ Ext.define(
 		checkChangeBuffer: 200,
 		plugins: [
 			{
-				ptype: 'fieldCleaner',
-				style: 'left: 441px; right: auto'
+				ptype: 'fieldCleaner'
 			},
 			{
 				ptype: 'searchField',

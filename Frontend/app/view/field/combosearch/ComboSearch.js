@@ -26,8 +26,7 @@ Ext.define(
 		},
 		plugins: [
 			{
-				ptype: 'fieldCleaner',
-				style: 'left: 441px; right: auto'
+				ptype: 'fieldCleaner'
 			},
 			{
 				ptype: 'searchField',

@@ -14,6 +14,7 @@
 .form-desc .x-form-text-field-body-default {
 	max-width: none;
 	width: 100%;
+	position: relative;
 }
 .form-desc .x-panel-body-default {
 	background-color: #F1F2F6;
@@ -270,9 +271,6 @@
 }
 .form-desc .field-langfield .input-fade-triggers {
 	display: none;
-}
-.form-desc .input-fade-triggers {
-	right: 25px;
 }
 
 /* поле ссылки uuid */
