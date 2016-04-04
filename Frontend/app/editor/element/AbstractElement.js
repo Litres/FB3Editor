@@ -448,6 +448,11 @@ Ext.define(
 			};
 			me.nodes = me.nodes || {};
 			me.nodes[node.viewportId] = node;
+
+			if (me.isHide)
+			{
+				me.hide();
+			}
 		},
 
 		/**
@@ -465,10 +470,12 @@ Ext.define(
 			node = document.createElement(tag);
 			node.viewportId = viewportId;
 			me.setNode(node);
+
 			if (me.marker)
 			{
 				node.appendChild(me.marker.getNode(viewportId));
 			}
+
 			if (children && children.length)
 			{
 				Ext.Array.each(
@@ -620,10 +627,11 @@ Ext.define(
 		sync: function (viewportId)
 		{
 			var me = this,
+				manager = FBEditor.editor.Manager,
 				newNode;
 
-			FBEditor.editor.Manager.suspendEvent = true;
-			//console.log('sync ' + viewportId, me.nodes);
+			manager.suspendEvent = true;
+
 			Ext.Object.each(
 				me.nodes,
 			    function (id, oldNode)
@@ -636,10 +644,11 @@ Ext.define(
 				    }
 			    }
 			);
-			FBEditor.editor.Manager.suspendEvent = false;
+
+			manager.suspendEvent = false;
 
 			// обновляем дерево навигации по тексту
-			FBEditor.editor.Manager.updateTree();
+			manager.updateTree();
 		},
 
 		/**
@@ -884,6 +893,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает объект выделения.
+		 * @return {FBEditor.editor.element.AbstractSelection}
+		 */
+		getSelection: function ()
+		{
+			return this.selection;
+		},
+
+		/**
 		 * Создает внутреннее содержимое элемента.
 		 * @return {Object} Элементы.
 		 */
@@ -1065,6 +1083,47 @@ Ext.define(
 					pos++;
 				}
 			}
+		},
+
+		/**
+		 * Скрывает узел элемента.
+		 */
+		hide: function ()
+		{
+			var me = this,
+				nodes = me.nodes;
+
+			me.isHide = true;
+
+			Ext.Object.each(
+				nodes,
+				function (key, node)
+				{
+					// сохраняем свойство видимости узла
+					me.styleDisplay = node.style.display;
+
+					node.style.display = 'none';
+				}
+			);
+		},
+
+		/**
+		 * Показывает узел элемента.
+		 */
+		show: function ()
+		{
+			var me = this,
+				nodes = me.nodes;
+
+			me.isHide = false;
+
+			Ext.Object.each(
+				nodes,
+				function (key, node)
+				{
+					node.style.display = me.styleDisplay;
+				}
+			);
 		},
 
 		/**

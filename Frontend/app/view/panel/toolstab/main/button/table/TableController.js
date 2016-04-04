@@ -50,15 +50,14 @@ Ext.define(
 
 				els.node = nodes.node.getElement();
 
-				if (!els.node.hasParentName('table'))
+				if (els.node.hasParentName('table') || els.node.isTable)
 				{
-					return false;
+
+					// если курсор в таблице, активируем кнопку принудительно
+					btn.enable();
+
+					insertTableItem.disable();
 				}
-
-				// если курсор в таблице, активируем кнопку принудительно
-				btn.enable();
-
-				insertTableItem.disable();
 			}
 			else
 			{

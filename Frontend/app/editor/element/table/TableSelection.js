@@ -78,6 +78,22 @@ Ext.define(
 			}
 		},
 
+		isActive: function ()
+		{
+			var me = this;
+
+			return me.size ? true : false;
+		},
+
+		/**
+		 * Возвращает размерность веделения.
+		 * @return {Object }
+		 */
+		getSize: function ()
+		{
+			return this.size;
+		},
+
 		/**
 		 * @private
 		 * Возвращает размерность выделения.

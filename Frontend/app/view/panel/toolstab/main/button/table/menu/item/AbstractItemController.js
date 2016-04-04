@@ -63,13 +63,17 @@ Ext.define(
 				range,
 				cmd;
 
-			range = manager.getRange();
-			node = range.start;
-
-			cmd = Ext.create('FBEditor.editor.command.table.' + cmdName, {node: node, opts: cmdOpts});
-			if (cmd.execute())
+			if (cmdName)
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				range = manager.getRange();
+				node = range.start;
+
+				cmd = Ext.create('FBEditor.editor.command.table.' + cmdName, {node: node, opts: cmdOpts});
+
+				if (cmd.execute())
+				{
+					FBEditor.editor.HistoryManager.add(cmd);
+				}
 			}
 		}
 	}

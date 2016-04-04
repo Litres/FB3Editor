@@ -9,12 +9,15 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.toolstab.main.button.table.menu.item.AbstractItem',
 		requires: [
-			'FBEditor.view.panel.toolstab.main.button.table.menu.item.joinCells.ItemController'
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.joinCells.ItemController',
+			'FBEditor.editor.command.table.JoinCells'
 		],
 		id: 'panel-toolstab-main-button-table-menu-joinCells',
 		xtype: 'panel-toolstab-main-button-table-menu-joinCells',
 		controller: 'panel.toolstab.main.button.table.menu.item.joinCells',
 
-		text: 'Объединить ячейки'
+		text: 'Объединить ячейки',
+
+		cmdName: 'JoinCells'
 	}
 );

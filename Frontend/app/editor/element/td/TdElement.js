@@ -9,8 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			//'FBEditor.editor.command.td.CreateCommand',
-			//'FBEditor.editor.command.td.CreateRangeCommand',
 			'FBEditor.editor.element.td.TdElementController'
 		],
 
@@ -44,7 +42,7 @@ Ext.define(
 			xml = me.callParent(arguments);
 
 			// заменяем первый br на пустой параграф согласно схеме
-			xml = xml.replace(/<td><br\/>/gi, '<td><p></p>');
+			xml = xml.replace(/<td( .*?)?><br\/?>/gi, '<td$1><p></p>');
 
 			return xml;
 		},
@@ -73,6 +71,82 @@ Ext.define(
 			posRow = parent.parent.getChildPosition(parent);
 
 			return [posCol, posRow];
+		},
+
+		/**
+		 * Устанавливает аттрибут colspan.
+		 * @param {Number} [count] Количество объединяемых ячеек по горизонтали.
+		 */
+		setColSpan: function (count)
+		{
+			var me = this,
+				attr = me.attributes,
+				nodes = me.nodes;
+
+			if (count && count > 1)
+			{
+				attr.colspan = count;
+
+				Ext.Object.each(
+					nodes,
+					function (key, node)
+					{
+						node.setAttribute('colspan', count);
+					}
+				);
+			}
+			else if (attr.colspan)
+			{
+				delete attr.colspan;
+
+				Ext.Object.each(
+					nodes,
+					function (key, node)
+					{
+						node.removeAttribute('colspan');
+					}
+				);
+			}
+
+			me.attributes = attr;
+		},
+
+		/**
+		 * Устанавливает аттрибут colspan.
+		 * @param {Number} [count] Количество объединяемых ячеек по горизонтали.
+		 */
+		setRowSpan: function (count)
+		{
+			var me = this,
+				attr = me.attributes,
+				nodes = me.nodes;
+
+			if (count && count > 1)
+			{
+				attr.rowspan = count;
+
+				Ext.Object.each(
+					nodes,
+					function (key, node)
+					{
+						node.setAttribute('rowspan', count);
+					}
+				);
+			}
+			else if (attr.rowspan)
+			{
+				delete attr.rowspan;
+
+				Ext.Object.each(
+					nodes,
+					function (key, node)
+					{
+						node.removeAttribute('rowspan');
+					}
+				);
+			}
+
+			me.attributes = attr;
 		}
 	}
 );

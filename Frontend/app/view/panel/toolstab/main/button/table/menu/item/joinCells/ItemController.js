@@ -36,14 +36,24 @@ Ext.define(
 			}
 
 			els.node = nodes.node.getElement();
+			els.table = els.node.isTable ? els.node : els.node.getParentName('table');
 
-			if (!els.node.hasParentName('table'))
+			if (!els.table.getSelection().isActive())
 			{
+				// выеделение неактивно
 				view.disable();
+
 				return false;
 			}
 
 			view.enable();
+
+			// ссылка на таблицу для передачи в команду объединения ячеек
+			view.cmdOpts = {
+				table: els.table.nodes[nodes.node.viewportId],
+				viewportId: nodes.node.viewportId,
+				size: els.table.getSelection().getSize()
+			};
 
 			return true;
 		}
