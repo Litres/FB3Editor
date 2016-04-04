@@ -339,7 +339,7 @@
 	font-size: 18px;
 	width: 18px;
 	padding-top: 2px;
-	background: none;
+	background: #fff;
 }
 .form-desc .x-form-trigger-wrap-invalid .textfieldclear-trigger:before {
 	content: "\f00d";

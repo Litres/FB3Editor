@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.toolstab.main.button.table.menu.item.AbstractItem',
 		requires: [
 			'FBEditor.view.panel.toolstab.main.button.table.menu.item.joinCells.ItemController',
-			'FBEditor.editor.command.table.JoinCells'
+			'FBEditor.editor.command.table.JoinCellsCommand'
 		],
 		id: 'panel-toolstab-main-button-table-menu-joinCells',
 		xtype: 'panel-toolstab-main-button-table-menu-joinCells',
@@ -18,6 +18,6 @@ Ext.define(
 
 		text: 'Объединить ячейки',
 
-		cmdName: 'JoinCells'
+		cmdName: 'JoinCellsCommand'
 	}
 );

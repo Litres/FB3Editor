@@ -19,7 +19,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertRowNext.Item',
 			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertRowPrev.Item',
 			'FBEditor.view.panel.toolstab.main.button.table.menu.item.insertTable.Item',
-			'FBEditor.view.panel.toolstab.main.button.table.menu.item.sepCells.Item'
+			'FBEditor.view.panel.toolstab.main.button.table.menu.item.splitCells.Item'
 
 		],
 		id: 'panel-toolstab-main-button-table-menu',
@@ -72,7 +72,7 @@ Ext.define(
 					xtype: 'panel-toolstab-main-button-table-menu-joinCells'
 				},
 				{
-					xtype: 'panel-toolstab-main-button-table-menu-sepCells'
+					xtype: 'panel-toolstab-main-button-table-menu-splitCells'
 				}
 			];
 

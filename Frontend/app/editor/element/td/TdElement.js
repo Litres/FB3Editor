@@ -21,6 +21,18 @@ Ext.define(
 		isTd: true,
 		isCell: true,
 
+		/**
+		 * @private
+		 * @property {Array} Список ссылок на дочерние элементы ячеек, которые были объединены в текущую.
+		 */
+		links: null,
+
+		/**
+		 * @private
+		 * @property {Object} Размерность выделения для объединенной ячейки.
+		 */
+		_sizeSelection: null,
+
 		createScaffold: function ()
 		{
 			var me = this,
@@ -147,6 +159,35 @@ Ext.define(
 			}
 
 			me.attributes = attr;
+		},
+
+		/**
+		 * Сохраняет ссылки на дочерние элементы ячеек, которые юыли объединены в текущую.
+		 * @param {Array} links
+		 */
+		addLinks: function (links)
+		{
+			var me = this;
+
+			me.links = me.links || [];
+			me.links.push(links);
+		},
+
+		/**
+		 * Возвращает ссылки на ячейки.
+		 * @returns {null}
+		 */
+		getLinks: function ()
+		{
+			return this.links;
+		},
+
+		/**
+		 * Удаляет ссылки на ячейки.
+		 */
+		removeLinks: function ()
+		{
+			this.links = null;
 		}
 	}
 );
