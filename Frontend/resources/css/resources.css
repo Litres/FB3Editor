@@ -2,15 +2,41 @@
 Стили для редактора ресурсов.
 */
 
+.resource-great-thumb:before,
+.resource-large-thumb:before,
+.resource-normal-thumb:before {
+	margin: 0 auto;
+	right: 0;
+	left: 0;
+	width: auto;
+	position: absolute;
+	z-index: 0;
+	content: "";
+
+	background-color: #fff;
+	background-size: 20px 20px;
+	background-position: 0 0, 10px 10px;
+	background-image: -webkit-linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0),
+										-webkit-linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0);
+	background-image: -moz-linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0),
+										-moz-linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0);
+	background-image: linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0),
+										linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0);
+	box-shadow: 2px 2px 4px 0px #ccc;
+}
 .resource-great-thumb,
 .resource-large-thumb,
 .resource-normal-thumb {
 	position: relative;
 	float: left;
-	overflow: hidden;
+	/* overflow: hidden; */
 	margin: 10px;
 	padding: 5px;
 	text-align: center;
+}
+.resource-great-thumb:before {
+	max-width: 320px;
+	height: 160px;
 }
 .window-panel-resources .resource-thumb-img {
 	cursor: pointer;
@@ -21,7 +47,8 @@
 .resource-great-thumb .resource-thumb-img {
 	max-width: 320px;
 	height: 160px;
-	box-shadow: 2px 2px 4px 0 #ccc;
+	/* box-shadow: 2px 2px 4px 0 #ccc; */
+	position: relative;
 }
 .resource-great-thumb .resource-thumb-img-folder {
 	height: 160px;
@@ -42,7 +69,12 @@
 .resource-large-thumb .resource-thumb-img {
 	max-width: 140px;
 	height: 70px;
-	box-shadow: 1px 1px 2px 0px #ccc;
+	/* box-shadow: 2px 2px 4px 0 #ccc; */
+	position: relative;
+}
+.resource-large-thumb:before {
+	max-width: 140px;
+	height: 70px;
 }
 .resource-large-thumb .resource-thumb-name {
 	position: relative;
@@ -64,7 +96,12 @@
 .resource-normal-thumb .resource-thumb-img {
 	max-width: 80px;
 	height: 40px;
-	box-shadow: 1px 1px 1px 0px #ccc;
+	/* box-shadow: 1px 1px 1px 0px #ccc; */
+	position: relative;
+}
+.resource-normal-thumb:before {
+	max-width: 80px;
+	height: 40px;
 }
 .resource-normal-thumb .resource-thumb-name {
 	position: relative;
