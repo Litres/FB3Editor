@@ -135,10 +135,10 @@ Ext.define(
 			data.name = data.name.trim();
 
 			data.bgcolor = 'white';
-			data.bgcolor = Number(data.unchecked) ? '#f0f0f0' : data.bgcolor;
+			data.bgcolor = Number(data.unchecked) ? '#dadada' : data.bgcolor;
 
-			data.link_color = '#2e7ed5';
-			data.link_color = Number(data.unchecked) ? 'gray' : data.link_color;
+			data.link_color = '#106edc';
+			//data.link_color = Number(data.unchecked) ? 'gray' : data.link_color;
 
 			data.type = data.type ? Number(data.type) : 0;
 			data.sale = Ext.Array.contains([0, 1, 4], data.type) ? Boolean(Number(data.on_sale)) : false;

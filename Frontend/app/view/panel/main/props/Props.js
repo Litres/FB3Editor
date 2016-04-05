@@ -18,6 +18,7 @@ Ext.define(
 		panelName: 'props',
         title: 'Свойства',
 		overflowY: 'auto',
+		cls: 'x-panel-main-props',
 
 		initComponent: function ()
 		{
