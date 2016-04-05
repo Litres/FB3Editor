@@ -272,6 +272,9 @@
 .form-desc .field-langfield .input-fade-triggers {
 	display: none;
 }
+.form-desc .input-fade-triggers {
+	right: 25px;
+}
 
 /* поле ссылки uuid */
 .form-desc .form-desc-field-link-uuid {
