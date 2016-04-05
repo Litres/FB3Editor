@@ -245,3 +245,7 @@
 	border: 1px solid #9b9b9b;
 	box-shadow: 0 4px 7px rgba(0,0,0,0.25);
 }
+
+.panel-main-props .x-panel-body-default {
+	background: #ecebec;
+}
