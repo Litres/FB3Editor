@@ -196,6 +196,9 @@
         },
         {
             "path": "resources/css/desc.css"
+        },
+        {
+            "path": "resources/css/resources.css"
         }
     ],
 
@@ -228,7 +231,7 @@
      */
     "production": {
         "loader": {
-            "cache": "421",
+            "cache": "422",
             "cacheParam": "_v"
         }
     },
