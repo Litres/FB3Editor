@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v 422
+# v 423
 
 CACHE:
 
@@ -13,17 +13,17 @@ app/webworker/xmllint/lib/index.js
 
 # version resources
 
-resources/css/loader.css?_v=422
-resources/css/font-awesome.css?_v=422
-resources/css/styles.css?_v=422
-resources/css/editor.css?_v=422
-resources/css/htmleditor.css?_v=422
-resources/FBEditor-all.css?_v=422
-app.js?_v=422
-app/webworker/httpRequest/Worker.js?_v=422
-app/webworker/xmllint/Worker.js?_v=422
-bower_components/jsxml/jsxml.js?_v=422
-bower_components/jsxml/stand.js?_v=422
+resources/css/loader.css?_v=423
+resources/css/font-awesome.css?_v=423
+resources/css/styles.css?_v=423
+resources/css/editor.css?_v=423
+resources/css/htmleditor.css?_v=423
+resources/FBEditor-all.css?_v=423
+app.js?_v=423
+app/webworker/httpRequest/Worker.js?_v=423
+app/webworker/xmllint/Worker.js?_v=423
+bower_components/jsxml/jsxml.js?_v=423
+bower_components/jsxml/stand.js?_v=423
 
 
 NETWORK:
