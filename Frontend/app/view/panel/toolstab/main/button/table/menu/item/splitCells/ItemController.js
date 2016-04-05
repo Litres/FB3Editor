@@ -38,7 +38,7 @@ Ext.define(
 			els.node = nodes.node.getElement();
 			els.table = els.node.isTable ? els.node : els.node.getParentName('table');
 
-			if (!els.table.getSelection().isActive())
+			if (!els.table || !els.table.getSelection().isActive())
 			{
 				// выеделение неактивно
 				view.disable();
