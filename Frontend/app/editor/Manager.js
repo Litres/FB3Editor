@@ -348,6 +348,17 @@ Ext.define(
 		},
 
 		/**
+		 * Деактиврует кнопки элементов
+		 */
+		disableButtons: function ()
+		{
+			var me = this;
+
+			me.panelToolstab = me.panelToolstab || Ext.getCmp('panel-toolstab-main');
+			me.panelToolstab.fireEvent('disableButtons');
+		},
+
+		/**
 		 * Удаляет все ссылки на узлы для конкретного окна.
 		 * @param {String} viewportId Id окна.
 		 */
