@@ -11,17 +11,16 @@
 }
 
 .panel-editor-viewport p {
-	text-indent: 3em;
 	margin-top: 0em;
 	margin-bottom: 0.2em;
 	text-align: justify;
 }
 
-.panel-editor-viewport .el-p-no-indent,
+/*.panel-editor-viewport .el-p-no-indent,
 .panel-editor-viewport p .el-img
 {
-	text-indent: 0; /* некоторые параграфы не должны иметь отступа  */
-}
+	text-indent: 0; некоторые параграфы не должны иметь отступа
+}*/
 
 .panel-editor-viewport .el-div,
 .panel-editor-viewport .el-title,
@@ -137,6 +136,7 @@
 .panel-editor-viewport .el-section
 {
 	border-color: #009600;
+	padding: 0 3em;
 }
 
 .panel-editor-viewport .el-em
@@ -243,10 +243,7 @@
 	padding-left: 1.7em;
 	text-indent: 0em; /* абзац следующий за маркером, имеет меньший отступ  */
 }
-.panel-editor-viewport .el-ol
-{
-	padding-left: 3em;
-}
+
 .panel-editor-viewport .el-notes
 {
 	font-size: 90%;
@@ -277,4 +274,9 @@
 
 .panel-editor-viewport .el-td.mode-select {
 	background-color: orangered;
+}
+
+.panel-editor-viewport .el-ol,
+.panel-editor-viewport .el-ul {
+	padding: 0 0.5em;
 }
