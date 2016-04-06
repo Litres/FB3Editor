@@ -35,8 +35,6 @@ Ext.define(
 			{
 				btn.enable();
 			}
-
-			//console.log('sync', btn.elementName);
 		},
 
 		/**
@@ -70,7 +68,7 @@ Ext.define(
 		},
 
 		/**
-		 * @private
+		 * @protected
 		 * Получает результат проверки по схеме.
 		 * @param {Boolean} enable Прошла ли проверка.
 		 * @param {Object} [scopeData]
@@ -78,9 +76,8 @@ Ext.define(
 		verifyResult: function (enable, scopeData)
 		{
 			var me = this,
-				btn = me.getView();
-
-			//console.log('btn', enable, btn);
+				btn = me.getView(),
+				sequence = btn.getSequence();
 
 			if (enable)
 			{
@@ -89,6 +86,25 @@ Ext.define(
 			else
 			{
 				btn.disable();
+			}
+
+			if (sequence)
+			{
+				// синхронизируем однотипные кнопки
+				Ext.Array.each(
+					sequence,
+					function (seqBtn)
+					{
+						if (enable)
+						{
+							seqBtn.enable();
+						}
+						else
+						{
+							seqBtn.disable();
+						}
+					}
+				);
 			}
 		}
 	}

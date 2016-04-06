@@ -1,6 +1,8 @@
 /**
  * Вкладка Форматирование.
  *
+ * Синхронизация кнопок вызывается из менеджера FBEditor.editor.Manager#syncButtons().
+ *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
@@ -9,6 +11,7 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
+			'FBEditor.view.panel.toolstab.main.MainController',
 			'FBEditor.view.panel.toolstab.main.button.a.A',
 			'FBEditor.view.panel.toolstab.main.button.annotation.Annotation',
 			'FBEditor.view.panel.toolstab.main.button.blockquote.Blockquote',
@@ -39,7 +42,22 @@ Ext.define(
 		],
 		id:'panel-toolstab-main',
 		xtype: 'panel-toolstab-main',
+		controller: 'panel.toolstab.main',
+
 		title: 'Форматирование',
+
+		listeners: {
+			syncButtons: 'onSyncButtons',
+			disableButtons: 'onDisableButtons'
+		},
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.toolstab.main.button.AbstractButton[]} Кнопки элементов.
+		 * @property {FBEditor.view.panel.toolstab.main.button.AbstractButton[]} [Object.sequence] Список кнопок.
+		 * Список sequence содержит в себе однотипные кнопки элементов, которые проверяются по схеме одинаково.
+		 */
+		buttons: [],
 
 		translateText: {
 			loading: 'Загрузка xmllint ...'
@@ -186,10 +204,61 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
+		afterRender: function ()
+		{
+			var me = this;
+
+			me.callParent(arguments);
+
+			// создаем список кнопок
+			me.buttons = [
+				me.down('panel-toolstab-main-button-notes'),
+				me.down('panel-toolstab-main-button-notebody'),
+				me.down('panel-toolstab-main-button-titlebody'),
+				me.down('panel-toolstab-main-button-section'),
+				me.down('panel-toolstab-main-button-title'),
+				me.down('panel-toolstab-main-button-epigraph'),
+				me.down('panel-toolstab-main-button-annotation'),
+				me.down('panel-toolstab-main-button-subscription'),
+				{
+					sequence: [
+						me.down('panel-toolstab-main-button-div'),
+						me.down('panel-toolstab-main-button-subtitle'),
+						me.down('panel-toolstab-main-button-blockquote'),
+						me.down('panel-toolstab-main-button-pre'),
+						me.down('panel-toolstab-main-button-poem'),
+						me.down('panel-toolstab-main-button-table')
+					]
+				},
+				me.down('panel-toolstab-main-button-ul'),
+				me.down('panel-toolstab-main-button-ol'),
+				me.down('panel-toolstab-main-button-img'),
+				me.down('panel-toolstab-main-button-a'),
+				me.down('panel-toolstab-main-button-note'),
+				me.down('panel-toolstab-main-button-strong'),
+				me.down('panel-toolstab-main-button-em'),
+				me.down('panel-toolstab-main-button-underline'),
+				me.down('panel-toolstab-main-button-strikethrough'),
+				me.down('panel-toolstab-main-button-spacing'),
+				me.down('panel-toolstab-main-button-sub'),
+				me.down('panel-toolstab-main-button-sup'),
+				me.down('panel-toolstab-main-button-code')
+			];
+		},
+
+		/**
+		 * Возвращает список кнопок.
+		 * @return {Object[]}
+		 */
+		getButtons: function ()
+		{
+			return this.buttons;
+		},
+
 		/**
 		 * Получает результат проверки xmllint.
 		 * @param {Boolean} res
-		 * @param data
+		 * @param {Object} data
 		 * @param {Boolean} data.loaded Загружен ли xmllint.
 		 */
 		verifyResult: function (res, data)

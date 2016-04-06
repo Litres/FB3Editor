@@ -14,27 +14,24 @@ Ext.define(
 		],
 		controller: 'panel.toolstab.main.button',
 
+		disabled: true,
+
 		listeners: {
 			click: 'onClick',
 			sync: 'onSync'
 		},
 
-		disabled: true,
+		config: {
+			/**
+			 * @property {FBEditor.view.panel.toolstab.main.button.AbstractButton[]} Список однотипных кнопок.
+			 */
+			sequence: null
+		},
 
 		/**
 		 * @property {Object} Опции, которые передаются в команду создания элемента.
 		 */
 		createOpts: null,
-
-		initComponent: function ()
-		{
-			var me = this,
-				manager = FBEditor.editor.Manager;
-
-			me.callParent(arguments);
-
-			manager.addButtons(me);
-		},
 
 		/**
 		 * Проверяет должна ли быть кнопка активной для текущего выделения в тексте.
@@ -42,11 +39,7 @@ Ext.define(
 		 */
 		isActiveSelection: function ()
 		{
-			var me = this,
-				res = false;
-
-
-			return res;
+			return false;
 		}
 	}
 );

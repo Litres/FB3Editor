@@ -42,6 +42,11 @@ Ext.define(
 		suspendEvent: false,
 
 		/**
+		 * @property {Boolean} Идет ли процесс синхронизации кнопок.
+		 */
+		processSyncButtons: false,
+
+		/**
 		 * @property {Ext.button.Button[]} Кнопки элементов.
 		 */
 		buttons: [],
@@ -336,44 +341,10 @@ Ext.define(
 		 */
 		syncButtons: function ()
 		{
-			var me = this,
-				buttons = me.buttons;
+			var me = this;
 
-			//console.log('sync buttons');
-			Ext.Array.each(
-				buttons,
-			    function (btn)
-			    {
-				    btn.fireEvent('sync');
-			    }
-			);
-		},
-
-		/**
-		 * Деактивирует кнопки элементов.
-		 */
-		disableButtons: function ()
-		{
-			var me = this,
-				buttons = me.buttons;
-
-			//console.log('disable buttons');
-			Ext.Array.each(
-				buttons,
-				function (btn)
-				{
-					btn.disable();
-				}
-			);
-		},
-
-		/**
-		 * Добавляет кнопку элемента в список для синхронизации с текцщим выделением.
-		 * @param btn
-		 */
-		addButtons: function (btn)
-		{
-			this.buttons.push(btn);
+			me.panelToolstab = me.panelToolstab || Ext.getCmp('panel-toolstab-main');
+			me.panelToolstab.fireEvent('syncButtons');
 		},
 
 		/**

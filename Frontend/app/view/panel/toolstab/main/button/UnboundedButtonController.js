@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.toolstab.main.button.ButtonController',
 
 		/**
-		 *  @return {Boolean}
+		 * Синхронизирует кнопку, используя проверку по схему.
 		 */
 		onSync: function ()
 		{
