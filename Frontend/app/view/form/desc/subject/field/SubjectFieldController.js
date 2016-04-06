@@ -39,13 +39,15 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				value = view.getValue(),
+				value = view.getValue().trim(),
 				subject = view.up('form-desc-subject'),
 				subjectTree = view.getSubjectTree(),
-				managerDesc = FBEditor.desc.Manager;
+				managerDesc = FBEditor.desc.Manager,
+				fieldLabel;
 
 			if (!managerDesc.loadingProcess)
 			{
+				// значение имзенилось в результате ручного ввода
 				if (!subjectTree.isShow)
 				{
 					// открываем окно
@@ -53,10 +55,18 @@ Ext.define(
 				}
 
 				// Фильтруем дерево жанров
-				subjectTree.fireEvent('filter', value.trim());
+				subjectTree.fireEvent('filter', value);
 
 				// показываем список тегов
 				subject.fireEvent('showTag');
+			}
+			else
+			{
+				// значение имзенилось в результате загрузки описания
+
+				// синхронизируем метку поля со значением (Тег или Жанр)
+				fieldLabel = subjectTree.existValue(value) ? subject.translateText.subject : subject.translateText.tag;
+				view.setFieldLabel(fieldLabel);
 			}
 		},
 

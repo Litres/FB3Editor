@@ -82,7 +82,8 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Object} Данные дерева.
+		 * @property {Object} Данные дерева в необработанном виде.
+		 * @property {String} cacheData.xml Строка xml.
 		 */
 		cacheData: null,
 
@@ -443,111 +444,6 @@ Ext.define(
 		},
 
 		/**
-		 * @private
-		 * Используется в сортировке для определения необходимости поменять соседние жанры местами.
-		 * @param {Object} rec1 Данные жанра.
-		 * @param {Object} rec2 Данные следующего жанра.
-		 * @return {Boolean} Необходимо ли поменять местами жанры.
-		 */
-		sortFn: function (rec1, rec2)
-		{
-			var me = this,
-				field = me.displayField,
-				childrenField = me.defaultRootProperty,
-				change = false;
-
-			//console.log(rec1[field], rec1[childrenField], rec2[field], rec2[childrenField]);
-			if (rec2[childrenField] && rec1[childrenField] || !rec2[childrenField] && !rec1[childrenField])
-			{
-				change = rec1[field] > rec2[field] ? true : false;
-			}
-			else if (!rec1[childrenField] && rec2[childrenField])
-			{
-				change = true;
-			}
-
-			return change;
-		},
-
-		/**
-		 * Возвращает данные жанра по его значению.
-		 * @param {String} val Значение жанра.
-		 * @return {Object} Данные жанра.
-		 */
-		getItemByValue: function (val)
-		{
-			var me = this,
-				store = me.getStore(),
-				itemStore = null;
-
-			store.findBy(
-				function (rec)
-				{
-					var data = rec.data,
-						text = data[me.displayField],
-						children = data[me.defaultRootProperty];
-
-					if (text === val)
-					{
-						itemStore = data;
-
-						return true;
-					}
-
-					if (children)
-					{
-						itemStore = me._findItemByValue(val, children);
-
-						return itemStore ? true : false;
-					}
-				}
-			);
-
-			return itemStore;
-		},
-
-		/**
-		 * @private
-		 * Ищет данные записи в потомках узла по названию.
-		 * @param {String} val Название.
-		 * @param {Array} data Потомки узла.
-		 * @return {Object} Данные записи.
-		 */
-		_findItemByValue: function (val, data)
-		{
-			var me = this,
-				itemStore = null;
-
-			Ext.Array.each(
-				data,
-				function (item)
-				{
-					var text = item[me.displayField],
-						children = item[me.defaultRootProperty];
-
-					if (text === val)
-					{
-						itemStore = item;
-
-						return false;
-					}
-
-					if (children)
-					{
-						itemStore = me._findItemByValue(val, children);
-
-						if (itemStore)
-						{
-							return false;
-						}
-					}
-				}
-			);
-
-			return itemStore;
-		},
-
-		/**
 		 * Переписывает стандартный метод, возвращающий корневой узел.
 		 * @return {Ext.data.TreeModel} Корневой узел.
 		 */
@@ -560,6 +456,30 @@ Ext.define(
 			root = store && store.first() ? store.first() : me.callParent();
 
 			return root;
+		},
+
+		/**
+		 * Существует ли значение в дереве жанров.
+		 * @param {String} value Искомое значение.
+		 * @return {Boolean}
+		 */
+		existValue: function (value)
+		{
+			var me = this,
+				val = value.toLowerCase().trim(),
+				data = me.getLocalData(),
+				res = false,
+				reg;
+
+			data = data ? data.data : null;
+
+			if (data)
+			{
+				reg = new RegExp('title="' + val + '"', 'ig');
+				res = reg.test(data);
+			}
+
+			return res;
 		},
 
 		/**
@@ -636,6 +556,112 @@ Ext.define(
 			// процесс фильтрации закончен
 			me.filterProcess = false;
 			me.setLoading(false);
+		},
+
+		/**
+		 * @private
+		 * Используется в сортировке для определения необходимости поменять соседние жанры местами.
+		 * @param {Object} rec1 Данные жанра.
+		 * @param {Object} rec2 Данные следующего жанра.
+		 * @return {Boolean} Необходимо ли поменять местами жанры.
+		 */
+		sortFn: function (rec1, rec2)
+		{
+			var me = this,
+				field = me.displayField,
+				childrenField = me.defaultRootProperty,
+				change = false;
+
+			//console.log(rec1[field], rec1[childrenField], rec2[field], rec2[childrenField]);
+			if (rec2[childrenField] && rec1[childrenField] || !rec2[childrenField] && !rec1[childrenField])
+			{
+				change = rec1[field] > rec2[field] ? true : false;
+			}
+			else if (!rec1[childrenField] && rec2[childrenField])
+			{
+				change = true;
+			}
+
+			return change;
+		},
+
+		/**
+		 * @private
+		 * Возвращает данные жанра по его значению.
+		 * @param {String} val Значение жанра.
+		 * @return {Object} Данные жанра.
+		 */
+		getItemByValue: function (val)
+		{
+			var me = this,
+				store = me.getStore(),
+				itemStore = null;
+
+			store.findBy(
+				function (rec)
+				{
+					var data = rec.data,
+						text = data[me.displayField],
+						children = data[me.defaultRootProperty];
+
+					if (text === val)
+					{
+						itemStore = data;
+
+						return true;
+					}
+
+					if (children)
+					{
+						itemStore = me._findItemByValue(val, children);
+
+						return itemStore ? true : false;
+					}
+				}
+			);
+
+			return itemStore;
+		},
+
+		/**
+		 * @private
+		 * Ищет данные записи в потомках узла по названию.
+		 * @param {String} val Название.
+		 * @param {Array} data Потомки узла.
+		 * @return {Object} Данные записи.
+		 */
+		_findItemByValue: function (val, data)
+		{
+			var me = this,
+				itemStore = null;
+
+			Ext.Array.each(
+				data,
+				function (item)
+				{
+					var text = item[me.displayField],
+						children = item[me.defaultRootProperty];
+
+					if (text === val)
+					{
+						itemStore = item;
+
+						return false;
+					}
+
+					if (children)
+					{
+						itemStore = me._findItemByValue(val, children);
+
+						if (itemStore)
+						{
+							return false;
+						}
+					}
+				}
+			);
+
+			return itemStore;
 		},
 
 		/**

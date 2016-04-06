@@ -34,7 +34,8 @@ Ext.define(
 
 		translateText: {
 			subject: 'Жанр',
-			tag: 'Тег'
+			tag: 'Тег',
+			undefined: 'Жанр/Тег'
 		},
 
 		/**
@@ -55,7 +56,7 @@ Ext.define(
 				{
 					xtype: 'form-desc-subject-field',
 					flex: 1,
-					fieldLabel: me.translateText.subject,
+					fieldLabel: me.translateText.undefined,
 					labelAlign: 'right',
 					labelWidth: 110,
 					keyEnterAsTab: true
