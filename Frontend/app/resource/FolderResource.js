@@ -26,6 +26,7 @@ Ext.define(
 			me.extension = 'folder';
 			me.isFolder = true;
 			me.type = 'папка с файлами';
+			me.cls = 'resource-folder-wrap';
 		}
 	}
 );

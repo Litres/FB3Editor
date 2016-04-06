@@ -24,6 +24,9 @@
 										linear-gradient(45deg, #d0d0d0 25%, transparent 25%, transparent 75%, #d0d0d0 75%, #d0d0d0);
 	box-shadow: 2px 2px 4px 0px #ccc;
 }
+.resource-folder-wrap:before {
+	display: none;
+}
 .resource-great-thumb,
 .resource-large-thumb,
 .resource-normal-thumb {
