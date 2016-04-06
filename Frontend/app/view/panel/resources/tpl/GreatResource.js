@@ -14,7 +14,8 @@ Ext.define(
 			var me = this;
 
 			me.html = '<tpl for=".">' +
-				'<div class="resource-thumb-wrap resource-great-thumb {cls}">' +
+				'<tpl if="isFolder"><div class="resource-thumb-wrap resource-great-thumb resource-folder-wrap">' +
+				'<tpl else><div class="resource-thumb-wrap resource-great-thumb"></tpl>' +
 				'<tpl if="url"><img src="{url}" class="resource-thumb-img resource-thumb-img-{extension}" />' +
 				'<tpl else><span class="resource-thumb-img-folder fa"></span></tpl>' +
 				'<br/><span class="resource-thumb-name" title="{name}">{baseName}</span>' +

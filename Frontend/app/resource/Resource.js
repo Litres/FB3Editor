@@ -24,7 +24,6 @@ Ext.define(
 		isFolder: false, // папка ли
 		isCover: false, // обложка ли
 		totalElements: 0, // количество ссылок на изображения в тексте книги
-		cls: '',
 
 		/**
 		 * @property {String} Формат даты.
