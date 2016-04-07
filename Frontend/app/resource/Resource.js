@@ -44,7 +44,7 @@ Ext.define(
 			var me = this,
 				img = new Image();
 
-			me.fileId = data.fileId;
+			me.fileId = data.fileId || data.name;
 			me.content = data.content;
 			me.url = data.url;
 			me.name = data.name;

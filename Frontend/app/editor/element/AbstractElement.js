@@ -666,13 +666,12 @@ Ext.define(
 
 			opts = opts || {};
 
-			//console.log('EL update', me.xmlTag, data, opts);
-
 			if (data.marker && data.marker === 'true')
 			{
 				markerData = {};
 				delete data.marker;
 			}
+
 			Ext.Object.each(
 				data,
 				function (key, val)

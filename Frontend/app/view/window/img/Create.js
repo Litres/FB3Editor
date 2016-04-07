@@ -75,7 +75,8 @@ Ext.define(
 							text: me.translateText.create,
 							handler: function ()
 							{
-								var form,
+								var manager = FBEditor.editor.Manager,
+									form,
 									values;
 
 								// данные формы окна
@@ -88,12 +89,13 @@ Ext.define(
 								me.close();
 
 								// создаем изображение
-								FBEditor.editor.Manager.createElement('img', values);
+								manager.createElement('img', values);
 							}
 						}
 					]
 				}
 			];
+
 			me.callParent(arguments);
 		},
 

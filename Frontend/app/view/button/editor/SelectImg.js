@@ -29,6 +29,7 @@ Ext.define(
 			data.win = bridge.FBEditor.resource.ExplorerManager.getWindow();
 			data.scope = btn.scope;
 			cmd = bridge.Ext.create('FBEditor.command.SelectImg', data);
+
 			if (cmd.execute())
 			{
 				bridge.FBEditor.HistoryCommand.add(cmd);

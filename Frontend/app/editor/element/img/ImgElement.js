@@ -146,9 +146,6 @@ Ext.define(
 			    }
 			);
 
-			// создаем ссылку на новый ресурс
-			me.linkResource();
-
 			// отображение
 			me.callParent(arguments);
 		},
@@ -231,10 +228,12 @@ Ext.define(
 		{
 			var me = this,
 				attributes = me.attributes,
+				manager = FBEditor.resource.Manager,
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
-			resource = FBEditor.resource.Manager.getResourceByFileId(attributes.src);
+			resource = manager.getResourceByFileId(attributes.src);
+
 			if (resource)
 			{
 				attributes.src = resource.url;
@@ -254,6 +253,7 @@ Ext.define(
 				manager = FBEditor.editor.Manager;
 
 			manager.suspendEvent = true;
+
 			Ext.Object.each(
 				me.nodes,
 				function (key, node)
@@ -261,6 +261,7 @@ Ext.define(
 					node.setAttribute('src', src);
 				}
 			);
+
 			manager.suspendEvent = false;
 		}
 	}

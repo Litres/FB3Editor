@@ -61,6 +61,7 @@ Ext.define(
 					name = me.getNameElement();
 					cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand',
 					                 {node: node, sel: sel, opts: opts});
+
 					if (cmd.execute())
 					{
 						FBEditor.editor.HistoryManager.add(cmd);

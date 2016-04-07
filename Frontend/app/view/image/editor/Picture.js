@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.Img',
 		xtype: 'image-editor-picture',
+
 		style: {
 			maxWidth: '150px',
 			maxHeight: '200px'

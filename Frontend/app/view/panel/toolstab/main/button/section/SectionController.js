@@ -20,6 +20,7 @@ Ext.define(
 				manager = FBEditor.editor.Manager,
 				els = {},
 				nodes = {},
+				viewportId,
 				range;
 
 			range = manager.getRange();
@@ -27,7 +28,6 @@ Ext.define(
 			if (!range)
 			{
 				btn.disable();
-
 				return;
 			}
 
@@ -36,20 +36,25 @@ Ext.define(
 			if (!nodes.node.getElement || nodes.node.getElement().isRoot)
 			{
 				btn.disable();
-
 				return;
 			}
+
+			viewportId = nodes.node.viewportId;
 
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
 
-			while (!els.parent.isSection && !els.parent.isRoot)
+			els.parent = els.node.getParentName('section');
+			els.parent = els.parent ? els.parent : els.node.getParentName('main');
+
+			if (!els.parent)
 			{
-				// ищем родительскую секцию или корневой элемент
-				nodes.parent = nodes.parent.parentNode;
-				els.parent = nodes.parent.getElement();
+				btn.disable();
+				return;
 			}
+
+			nodes.parent = els.parent.nodes[viewportId];
 
 			// ищем существующую вложенную секцию
 			nodes.next = nodes.parent.firstChild;

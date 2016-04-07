@@ -13,32 +13,34 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
+				result = false,
+				manager = FBEditor.resource.Manager,
 				scope,
-				win,
-				result = false;
+				win;
 
 			// функция-колбэк для выбора ресурса
 			function selectFn (data)
 			{
 				var res,
-					resourceManager = FBEditor.resource.Manager;
+					manager = FBEditor.resource.Manager;
 
 				win.close();
-				res = resourceManager.getResourceByName(data.name);
+				res = manager.getResourceByName(data.name);
 
 				// отправляем данные в необходимый компонент
 				scope.updateData({url: res.url, name: res.name});
 
-				resourceManager.setSelectFunction(null);
+				manager.setSelectFunction(null);
 			}
 
 			scope = data.scope;
 			win = data.win;
+
 			if (win.show)
 			{
 				result = true;
 				win.show();
-				FBEditor.resource.Manager.setSelectFunction(selectFn);
+				manager.setSelectFunction(selectFn);
 			}
 
 			return result;

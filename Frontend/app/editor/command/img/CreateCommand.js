@@ -19,6 +19,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				range;
 
 			try
@@ -27,7 +28,7 @@ Ext.define(
 
 				range = data.opts.range;
 
-				console.log('create img', range);
+				console.log('create img', data.opts);
 
 				data.viewportId = range.start.viewportId;
 				data.oldValue = range.start.nodeValue;
@@ -36,7 +37,7 @@ Ext.define(
 				els.start = nodes.start.getElement();
 
 				// новый элемент изображения
-				els.node = FBEditor.editor.Factory.createElement(me.elementName, {src: data.opts.name});
+				els.node = factory.createElement(me.elementName, {src: data.opts.name});
 				nodes.node = els.node.getNode(data.viewportId);
 
 				// вставляем изображение внутри текста
@@ -81,7 +82,7 @@ Ext.define(
 				// новый текстовый элемент c последней частью текста
 				if (els.endValue)
 				{
-					els.t = FBEditor.editor.Factory.createElementText(els.endValue);
+					els.t = factory.createElementText(els.endValue);
 					nodes.t = els.t.getNode(data.viewportId);
 
 					if (els.next)

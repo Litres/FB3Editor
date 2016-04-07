@@ -293,38 +293,45 @@ Ext.define(
 				sel = window.getSelection(),
 				viewportId;
 
-			data.focusElement = data.focusElement || data.startNode.getElement();
-			data.startOffset = data.startOffset || 0;
-			data.startOffset = data.startOffset > data.startNode.length ? data.startNode.length : data.startOffset;
-
-			// устанавливаем фокус браузера в окно текста
-			viewportId = data.startNode.viewportId;
-			me.content.nodes[viewportId].focus();
-
-			// перематываем скролл
-			if (data.focusElement.nodes[viewportId].scrollIntoView)
+			try
 			{
-				//TODO сделать прокрутку только, если элемент не виден, иначе прокрутка не требуется
-				//data.focusElement.nodes[viewportId].scrollIntoView();
-			}
+				data.focusElement = data.focusElement || data.startNode.getElement();
+				data.startOffset = data.startOffset || 0;
+				data.startOffset = data.startOffset > data.startNode.length ? data.startNode.length : data.startOffset;
 
-			// выделение
-			if (data.startNode.getElement().isText)
-			{
-				sel.collapse(data.startNode, data.startOffset);
-			}
-			else
-			{
-				sel.collapse(data.startNode, 0);
-			}
-			if (data.endNode)
-			{
-				data.endOffset = data.endOffset || 0;
-				sel.extend(data.endNode, data.endOffset);
-			}
+				// устанавливаем фокус браузера в окно текста
+				viewportId = data.startNode.viewportId;
+				me.content.nodes[viewportId].focus();
 
-			// сохраняем фокусный элемент
-			me.setFocusElement(data.focusElement, sel);
+				// перематываем скролл
+				if (data.focusElement.nodes[viewportId].scrollIntoView)
+				{
+					//TODO сделать прокрутку только, если элемент не виден, иначе прокрутка не требуется
+					//data.focusElement.nodes[viewportId].scrollIntoView();
+				}
+
+				// выделение
+				if (data.startNode.getElement().isText)
+				{
+					sel.collapse(data.startNode, data.startOffset);
+				}
+				else
+				{
+					sel.collapse(data.startNode, 0);
+				}
+				if (data.endNode)
+				{
+					data.endOffset = data.endOffset || 0;
+					sel.extend(data.endNode, data.endOffset);
+				}
+
+				// сохраняем фокусный элемент
+				me.setFocusElement(data.focusElement, sel);
+			}
+			catch (e)
+			{
+				//
+			}
 		},
 
 		/**
