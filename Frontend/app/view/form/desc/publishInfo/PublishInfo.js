@@ -144,13 +144,13 @@ Ext.define(
 					isbn = item.down('form-desc-publishInfo-isbn').getValues();
 					sequence = item.down('form-desc-publishInfo-sequence').getValues();
 					val = {
+						isbn: isbn,
+						sequence: sequence,
 						_publisher: item.down('[name=' + prefixName + '-publisher]').getValue(),
 						_city: item.down('[name=' + prefixName + '-city]').getValue(),
 						_year: item.down('[name=' + prefixName + '-year]').getValue(),
 						_title: item.down('[name=' + prefixName + '-title]').getValue(),
-						'biblio-description': item.down('[name=' + prefixName + '-biblio-description]').normalizeValue(),
-						isbn: isbn,
-						sequence: sequence
+						'biblio-description': item.down('[name=' + prefixName + '-biblio-description]').normalizeValue()
 					};
 					val = me.removeEmptyValues(val);
 
