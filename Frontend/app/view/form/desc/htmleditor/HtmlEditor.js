@@ -124,18 +124,21 @@ Ext.define(
 			val = /^<p>/.test(val) ? val : '<p>' + val + '</p>';
 			val = val.replace(/> </gi, '>&nbsp;<');
 			val = val.replace(/[ ]{2}/gi, ' &nbsp;');
-			val = val.replace(/<p><\/p>/gi, '<p><br><\/p>');
 
 			// оборачиваем текст в p
 			val = val.replace(
 				/<\/p>(.*?)<p>/gi,
 			    function (str, text)
 			    {
-				    str = str ? '<p>' + text : str;
+				    str = text && !/(<br\/?>)+/.test(text)  ? '</p><p>' + text + '</p><p>' : str;
 
 				    return str;
 			    }
 			);
+
+			// пустые строки
+			val = val.replace(/<p><\/p>|<p><br\/?><\/p>/gi, '<br>');
+			val = val.replace(/^(<br\/?>)+/gi, '');
 
 			me.setValue(val);
 		},
@@ -186,7 +189,7 @@ Ext.define(
 
 				me.setValue(val);
 
-				if (/^(<p><br\/?><\/p>)+$/gi.test(val))
+				if (/^<p><br\/><\/p>(<br\/?>)*$/gi.test(val))
 				{
 					// возвращаем пустое значение, если в поле только пустые абзацы
 					val = '';
