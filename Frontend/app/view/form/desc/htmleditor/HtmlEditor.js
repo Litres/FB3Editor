@@ -210,7 +210,9 @@ Ext.define(
 		},
 
 		/**
-		 * Перезаписан стандартный метод, чтобы извлечь из него кнопку underline.
+		 * Перезаписан стандартный метод.
+		 * Извлекается кнопку underline.
+		 * Исправлен тип всплывающей подсказки
 		 */
 		getToolbarCfg: function(){
 			var me = this,
@@ -229,6 +231,7 @@ Ext.define(
 					handler:handler||me.relayBtnCmd,
 					clickEvent: 'mousedown',
 					tooltip: tipsEnabled ? me.buttonTips[id] || undef : undef,
+					tooltipType: 'title',
 					overflowText: me.buttonTips[id].title || undef,
 					tabIndex: -1
 				};
