@@ -34,8 +34,8 @@
 .panel-editor-viewport .el-notes,
 .panel-editor-viewport .el-notebody {
 	display: block;
-	padding: 0em 0em 0em 0.4em;
-	margin: 0.5em 0em 0.5em 0em;
+	padding: 0 0 0 0.4em;
+	margin: 0.5em 0 0.5em 0;
 	border-left: solid 1px;
 	clear: both;
 }
@@ -48,10 +48,19 @@
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 	border: none;
 	background-color: #F4EEE3; /*## Основной фоновый цвет тела книги в редакторе*/
+}
+
+.panel-editor-viewport .el-section {
+	border-color: #009600;
+	padding: 0 2.4em;
+}
+
+.panel-editor-viewport .el-div {
+	padding: 0 2.4em;
 }
 
 .panel-editor-viewport .el-div-align-center p {
@@ -93,7 +102,7 @@
 
 .panel-editor-viewport .el-subscription {
 	display: block;
-	padding: 0.1em;
+	padding: 0.1em 2.4em;
 	color: rgb(192,64,64);
 	background-color: #F7FFBF; /*## Фоновый цвет*/
 }
@@ -118,13 +127,9 @@
 .panel-editor-viewport .el-stanza p {
 	text-align: left;
 	text-indent: 3em;
-	margin-bottom: 0em;
+	margin-bottom: 0;
 }
 
-.panel-editor-viewport .el-section {
-	border-color: #009600;
-	padding: 0 3em;
-}
 
 .panel-editor-viewport .el-em {
 	font-style: italic;
@@ -165,6 +170,7 @@
 }
 
 .panel-editor-viewport .el-annotation {
+	padding: 0 2.4em;
 	border-color: black;
 	color: black; /*## Цвет текста аннотации*/
 	background-color: #DBD1FF; /*## Фоновый цвет аннотации*/
@@ -180,6 +186,7 @@
 	outline-offset: -1px;
 }
 
+/* заголовок */
 .panel-editor-viewport .el-title {
 	font-size: 130%;
 	border-color: rgb(0,150,0);
@@ -187,22 +194,17 @@
 	color: white;
 	padding: 0.3em;
 }
-
 .panel-editor-viewport .el-title p {
 	text-align: center;
 	text-indent: 0;
 }
-.panel-editor-viewport .el-marker {
-	float: left;
-}
-.panel-editor-viewport .el-marker + p {
-	padding-left: 1.7em;
-	text-indent: 0; /* абзац следующий за маркером, имеет меньший отступ  */
-}
 
+/* блок примечаний */
 .panel-editor-viewport .el-notes {
 	font-size: 90%;
 }
+
+/* таблица */
 .panel-editor-viewport .el-table {
 	width: 100%;
 	table-layout: fixed;
@@ -226,19 +228,29 @@
 .panel-editor-viewport .el-td p {
 	text-indent: 0;
 }
-
 .panel-editor-viewport .el-td.mode-select {
 	background-color: orangered;
 }
 
-/* списки */
+/* список */
 .panel-editor-viewport .el-ol,
 .panel-editor-viewport .el-ul {
-	padding: 0 0.5em;
+	padding-left: 0;
 }
 .panel-editor-viewport .el-ol .el-ol,
 .panel-editor-viewport .el-ul .el-ul,
 .panel-editor-viewport .el-ol .el-ul,
 .panel-editor-viewport .el-ul .el-ol {
 	padding-left: 1.2em;
+}
+
+/* маркер */
+.panel-editor-viewport .el-marker {
+	float: left;
+	margin-left: -2em;
+}
+
+/*элементы следующие за маркером */
+.panel-editor-viewport .el-marker ~ * {
+	padding-left: 1.4em;
 }
