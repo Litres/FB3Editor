@@ -11,46 +11,31 @@ Ext.define(
 
 		getNodeVerify: function (sel)
 		{
-			var me = this,
-				els = {},
+			var els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
-				res,
-				range,
-				nameElements,
-				sch;
+				viewportId,
+				range;
 
-			// получаем данные из выделения
 			range = sel.getRangeAt(0);
+			nodes.node = range.startContainer;
+			viewportId = nodes.node.viewportId;
+			els.node = nodes.node.getElement ? nodes.node.getElement() : null;
+			els.p = els.node ? els.node.getParentName('p') : null;
+			nodes.p = els.p ? els.p.nodes[viewportId] : null;
 
-			// первый параграф
-			nodes.first = range.startContainer;
-			els.first = nodes.first.getElement();
-			while (!els.first.isP && !els.first.isRoot)
+			if (!nodes.p)
 			{
-				nodes.first = nodes.first.parentNode;
-				els.first = nodes.first.getElement();
+				// родительский список
+				els.li = els.node ? els.node.getParentName('li')  : null;
+				nodes.node = els.li ? els.li.nodes[viewportId] : null;
+			}
+			else
+			{
+				nodes.node = nodes.p;
 			}
 
-			if (!els.first.isP)
-			{
-				return false;
-			}
-
-			nodes.parent = nodes.first.parentNode;
-			els.parent = nodes.parent.getElement();
-			els.pos = els.parent.getChildPosition(els.first);
-
-			// получаем дочерние имена элементов для проверки по схеме
-			nameElements = manager.getNamesElements(els.parent);
-			nameElements.splice(els.pos, 1, me.getNameElement());
-
-			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			els.name = els.parent.getName();
-			res = sch.verify(els.name, nameElements) ? nodes.first : false;
-
-			return res;
+			// можно не делать дополнительную проверку, так как кнопки на панели уже проверяют схему при синхронизации
+			return nodes.node;
 		}
 	}
 );

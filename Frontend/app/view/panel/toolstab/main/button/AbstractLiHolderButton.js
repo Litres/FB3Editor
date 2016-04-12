@@ -8,7 +8,7 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.AbstractLiHolderButton',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
+		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractButton',
 
 		isActiveSelection: function ()
 		{
@@ -17,6 +17,7 @@ Ext.define(
 				nodes = {},
 				els = {},
 				name = me.elementName,
+				viewportId,
 				range,
 				nameElements,
 				sch,
@@ -31,24 +32,16 @@ Ext.define(
 
 			// первый параграф
 			nodes.first = range.start;
+			viewportId = nodes.first.viewportId;
+			els.first = nodes.first.getElement ? nodes.first.getElement() : null;
+			els.first = els.first ? els.first.getParentName('p') : null;
 
-			if (!nodes.first.getElement || nodes.first.getElement().isRoot)
+			if (!els.first)
 			{
 				return false;
 			}
 
-			els.first = nodes.first.getElement();
-			while (!els.first.isP && !els.first.isRoot)
-			{
-				nodes.first = nodes.first.parentNode;
-				els.first = nodes.first.getElement();
-			}
-
-			if (!els.first.isP)
-			{
-				return false;
-			}
-
+			nodes.first = els.first.nodes[viewportId];
 			nodes.parent = nodes.first.parentNode;
 			els.parent = nodes.parent.getElement();
 			els.pos = els.parent.getChildPosition(els.first);
@@ -60,7 +53,6 @@ Ext.define(
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
 			name = els.parent.getName();
-			//console.log('name, nameElements', name, nameElements);
 			enable = sch.verify(name, nameElements);
 
 			return enable;

@@ -20,6 +20,8 @@ Ext.define(
 				nodes = {},
 				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				isInner,
+				viewportId,
 				sel,
 				range;
 
@@ -38,6 +40,7 @@ Ext.define(
 				range = sel.getRangeAt(0);
 
 				data.viewportId = data.node.viewportId;
+				viewportId = data.viewportId;
 
 				data.range = {
 					common: range.commonAncestorContainer,
@@ -51,43 +54,47 @@ Ext.define(
 					}
 				};
 
-				// получаем все параграфы p, которые затрагивают текущее выделение
+				// получаем все узлы p/li, которые затрагивают текущее выделение
 
 				nodes.pp = [];
 
-				// первый параграф
+				// первый узел p/li
 				nodes.firstP = data.node;
 				els.firstP = nodes.firstP.getElement();
 				nodes.pp.push(nodes.firstP);
 
-				// последний параграф
+				// если в качестве узла в команду был передан узел li, то создается внутренний список
+				// если в качестве узла передан узел p, значит создается обычный список
+				isInner = els.firstP.isLi;
+				data.isInner = isInner;
+
+				// последний узел p/li
 				nodes.lastP = range.endContainer;
 				els.lastP = nodes.lastP.getElement();
-				while (!els.lastP.isP)
-				{
-					nodes.lastP = nodes.lastP.parentNode;
-					els.lastP = nodes.lastP.getElement();
-				}
+				els.lastP = isInner ? els.lastP.getParentName('li') : els.lastP.getParentName('p');
+				nodes.lastP = els.lastP ? els.lastP.nodes[viewportId] : null;
 
 				if (els.firstP.elementId !== els.lastP.elementId)
 				{
-					// находим список параграфов в контейнере
+					// находим список узлов p/li в контейнере
 					nodes.next = nodes.firstP.nextSibling;
 					els.next = nodes.next ? nodes.next.getElement() : null;
+
 					while (els.next && els.next.isP && els.next.elementId !== els.lastP.elementId)
 					{
 						nodes.pp.push(nodes.next);
 						nodes.next = nodes.next.nextSibling;
 						els.next = nodes.next ? nodes.next.getElement() : null;
 					}
+
 					if (els.next && els.next.elementId === els.lastP.elementId)
 					{
-						// добавляем последний параграф перед выходом из цикла
+						// добавляем последний узел p/li перед выходом из цикла
 						nodes.pp.push(nodes.next);
 					}
 				}
 
-				// родительский элемент параграфов
+				// родительский элемент узлов p/li
 				nodes.parent = nodes.firstP.parentNode;
 				els.parent = nodes.parent.getElement();
 
@@ -97,7 +104,7 @@ Ext.define(
 				els.parent.insertBefore(els.node, els.firstP);
 				nodes.parent.insertBefore(nodes.node, nodes.firstP);
 
-				// перебираем все параграфы, которые входят в выделение
+				// перебираем все узлы p/li, которые входят в выделение
 				// и помещаем их содержимое в список
 				Ext.Array.each(
 					nodes.pp,
@@ -117,9 +124,10 @@ Ext.define(
 						els.node.add(elsLi.node);
 						nodes.node.appendChild(nodesLi.node);
 
-						// заполняем новый элемент li элементами из праграфа
+						// заполняем новый элемент li элементами из узла p/li
 						nodesLi.first = nodesLi.p.firstChild;
 						elsLi.first = nodesLi.first ? nodesLi.first.getElement() : null;
+
 						while (elsLi.first)
 						{
 							elsLi.node.add(elsLi.first);
@@ -128,7 +136,7 @@ Ext.define(
 							elsLi.first = nodesLi.first ? nodesLi.first.getElement() : null;
 						}
 
-						// удаляем параграф
+						// удаляем узел p/li
 						els.parent.remove(elsLi.p);
 						nodes.parent.removeChild(nodesLi.p);
 					}
@@ -175,7 +183,8 @@ Ext.define(
 				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
 				range,
-				viewportId;
+				viewportId,
+				isInner;
 
 			try
 			{
@@ -184,8 +193,9 @@ Ext.define(
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
+				isInner = data.isInner;
 
-				console.log('undo create ' + me.elementName, range, nodes);
+				//console.log('undo create ' + me.elementName, range, nodes);
 
 				els.node = nodes.node.getElement();
 				els.parent = nodes.parent.getElement();
@@ -194,11 +204,12 @@ Ext.define(
 				nodes.pp = [];
 				nodes.li = nodes.node.firstChild;
 				els.li = nodes.li ? nodes.li.getElement() : null;
+
 				while (els.li)
 				{
-					// новый параграф
-					els.p = factory.createElement('p');
-					nodes.p = els.p.getNode(data.viewportId);
+					// новый узел p/li
+					els.p = isInner ? factory.createElement('li') : factory.createElement('p');
+					nodes.p = els.p.getNode(viewportId);
 					nodes.pp.push(nodes.p);
 
 					els.parent.insertBefore(els.p, els.node);
@@ -206,6 +217,7 @@ Ext.define(
 
 					nodes.first = nodes.li.firstChild;
 					els.first = nodes.first ? nodes.first.getElement() : null;
+
 					while (els.first)
 					{
 						els.p.add(els.first);
@@ -236,7 +248,7 @@ Ext.define(
 				};
 				manager.setCursor(data.saveRange);
 
-				// сохраняем ссылку на первый параграф
+				// сохраняем ссылку на первый узел p/li
 				data.node = nodes.pp[0];
 
 				res = true;

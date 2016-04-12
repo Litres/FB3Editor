@@ -338,6 +338,23 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает предыдущий элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Предыдущий элемент.
+		 */
+		prev: function ()
+		{
+			var me = this,
+				parent = me.parent,
+				pos,
+				prev;
+
+			pos = parent.getChildPosition(me);
+			prev = (pos - 1) >= 0 && parent.children[pos - 1] ? parent.children[pos - 1] : null;
+
+			return prev;
+		},
+
+		/**
 		 * Возвращает следующий элемент.
 		 * @return {FBEditor.editor.element.AbstractElement} Следующий элемент.
 		 */
