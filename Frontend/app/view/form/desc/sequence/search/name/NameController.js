@@ -26,7 +26,11 @@ Ext.define(
 
 			// устанавливаем курсор в следующее поисковое поле
 			searchField = view.getNextSearch();
-			searchField.focus();
+
+			if (searchField)
+			{
+				searchField.focus();
+			}
 
 			// вырезаем теги жирности из названия
 			Ext.Object.each(

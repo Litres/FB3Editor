@@ -124,7 +124,7 @@ Ext.define(
 				next;
 
 			next = me.up('[plugins]').nextSibling();
-			searchField = next.down('form-desc-sequence-searchName');
+			searchField = next ? next.down('form-desc-sequence-searchName') : null;
 
 			return searchField;
 		}
