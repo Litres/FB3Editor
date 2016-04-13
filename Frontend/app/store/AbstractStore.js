@@ -178,7 +178,10 @@ Ext.define(
 					params,
 					function (key, val)
 					{
-						url += key + '=' + val + '&';
+						var v;
+
+						v = encodeURI(val);
+						url += key + '=' + v + '&';
 					}
 				);
 
