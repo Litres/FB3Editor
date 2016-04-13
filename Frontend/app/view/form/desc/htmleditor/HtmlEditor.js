@@ -140,6 +140,9 @@ Ext.define(
 			val = val.replace(/<p><\/p>|<p><br\/?><\/p>/gi, '<br>');
 			val = val.replace(/^(<br\/?>)+/gi, '');
 
+			// не допускается иметь внутри параграфа тег br, поэтому делаем разрыв параграфа вместо br
+			val = val.replace(/(<p>.*?)<br\/?>+(.*?<\/p>)/gi, '$1</p><p>$2');
+
 			me.setValue(val);
 		},
 
@@ -206,13 +209,14 @@ Ext.define(
 			// корректируем пустое значение
 			val = val ? val : me.emptyValue;
 			arguments[0] = val;
+
 			me.callParent(arguments);
 		},
 
 		/**
 		 * Перезаписан стандартный метод.
-		 * Извлекается кнопку underline.
-		 * Исправлен тип всплывающей подсказки
+		 * @fix 1 Извлекает кнопку underline.
+		 * @fix 2 Исправляет тип всплывающей подсказки.
 		 */
 		getToolbarCfg: function(){
 			var me = this,
@@ -231,12 +235,14 @@ Ext.define(
 					handler:handler||me.relayBtnCmd,
 					clickEvent: 'mousedown',
 					tooltip: tipsEnabled ? me.buttonTips[id] || undef : undef,
+
+					// fix 2
 					tooltipType: 'title',
+
 					overflowText: me.buttonTips[id].title || undef,
 					tabIndex: -1
 				};
 			}
-
 
 			if (me.enableFont && !Ext.isSafari2) {
 				fontSelectItem = Ext.widget('component', {
@@ -284,6 +290,7 @@ Ext.define(
 				items.push(
 					btn('bold'),
 					btn('italic')
+				    // fix 1
 				);
 			}
 
@@ -415,7 +422,8 @@ Ext.define(
 		},
 
 		/**
-		 * Перезаписан стандартный метод, чтобы извлечь из него кнопку underline.
+		 * Перезаписан стандартный метод.
+		 * @fix 1 Извлекает из панели кнопку underline.
 		 */
 		updateToolbar: function() {
 			var me = this,
@@ -453,6 +461,7 @@ Ext.define(
 				}
 			}
 			if(me.enableFormat){
+				// fix 1
 				updateButtons('bold', 'italic');
 			}
 			me.syncValue();
@@ -460,6 +469,7 @@ Ext.define(
 
 		/**
 		 * Перезаписан стандартный метод.
+		 * @fix 1 Добавляет кодировку и файл стилей.
 		 */
 		getDocMarkup: function() {
 			var me = this,
@@ -469,6 +479,7 @@ Ext.define(
 			return Ext.String.format(
 				'<!DOCTYPE html>'
 				+ '<html><head>'
+				+ '<meta charset="UTF-8">'
 				+ '<link rel="stylesheet" type="text/css" href="resources/css/htmleditor.css?_v=' + FBEditor.version + '">'
 				+ '<style type="text/css">'
 				+ (Ext.isOpera ? 'p{margin:0;}' : '')
@@ -482,7 +493,7 @@ Ext.define(
 		
 		/*
 		 * Перзаписан стандартный метод.
-		 * Чтобы убрать белый бэкграунд в тестовом поле
+		 * @fix 1 Убирает белый бэкграунд в тестовом поле.
 		*/
 		initEditor: function(){
 
@@ -495,7 +506,9 @@ Ext.define(
 			}
 	
 			dbody = me.getEditorBody();
-			ss = me.textareaEl.getStyle(['font-size', 'font-family', 'background-image', 'background-repeat', 'color']); // убрал 'background-color'
+
+			// fix 1 - убран 'background-color'
+			ss = me.textareaEl.getStyle(['font-size', 'font-family', 'background-image', 'background-repeat', 'color']);
 	
 			ss['background-attachment'] = 'fixed'; // w3c
 			dbody.bgProperties = 'fixed'; // ie
@@ -580,6 +593,40 @@ Ext.define(
 				me.pushValue();
 				me.setReadOnly(me.readOnly);
 				me.fireEvent('initialize', me);
+			}
+		},
+
+		/*
+		 * Перзаписан стандартный метод.
+		 * @fix 1 Исравляет создание ссылки для FF.
+		 */
+		createLink: function()
+		{
+			var url = prompt(this.createLinkText, this.defaultLinkValue);
+
+			if (url && url !== 'http:/'+'/') {
+
+				// fix 1 - кодируем исходный адрес
+				url = Ext.isFirefox ? encodeURI(url) : url;
+
+				this.relayCmd('createlink', url);
+
+				// fix 1 - находим закодированный адрес ссылки в теле документа и заменяем на исходный
+				if (Ext.isFirefox)
+				{
+					Ext.defer(
+						function ()
+						{
+							var doc = this.getDoc(),
+								link;
+
+							link = doc.querySelectorAll('a')[0];
+							link.setAttribute('href', decodeURI(url));
+						},
+						10, // нужна задержка, чтобы браузер успел изменить DOM при создании ссылки
+						this
+					);
+				}
 			}
 		}
 		
