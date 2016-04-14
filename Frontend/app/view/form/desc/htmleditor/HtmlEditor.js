@@ -620,7 +620,7 @@ Ext.define(
 							var doc = this.getDoc(),
 								link;
 
-							link = doc.querySelectorAll('a')[0];
+							link = doc.querySelectorAll('a[href="' + url + '"]')[0];
 							link.setAttribute('href', decodeURI(url));
 						},
 						10, // нужна задержка, чтобы браузер успел изменить DOM при создании ссылки

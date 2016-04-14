@@ -11,7 +11,7 @@
 }
 
 .panel-editor-viewport p {
-	margin-top: 0em;
+	margin-top: 0;
 	margin-bottom: 0.2em;
 	text-align: justify;
 }
@@ -34,12 +34,13 @@
 .panel-editor-viewport .el-notes,
 .panel-editor-viewport .el-notebody {
 	display: block;
-	padding: 0 0 0 0.4em;
+	padding: 0 0 0 0.2em;
 	margin: 0.5em 0 0.5em 0;
 	border-left: solid 1px;
 	clear: both;
 }
 
+/* неопределенный элемент */
 .panel-editor-viewport .el-undefined {
 	border: 1px dashed red;
 }
@@ -51,16 +52,23 @@
 	padding: 0;
 	margin: 0;
 	border: none;
-	background-color: #F4EEE3; /*## Основной фоновый цвет тела книги в редакторе*/
+	background-color: #F4EEE3; /* Основной фоновый цвет тела книги в редакторе */
 }
 
+/* секция */
 .panel-editor-viewport .el-section {
 	border-color: #009600;
-	padding: 0 2.4em;
+}
+.panel-editor-viewport .el-section > * {
+	padding: 0 1.2em;
+}
+.panel-editor-viewport .el-section > .el-section  {
+	padding: 0 0.2em;
 }
 
+/* блок */
 .panel-editor-viewport .el-div {
-	padding: 0 2.4em;
+	padding: 0 1.2em;
 }
 
 .panel-editor-viewport .el-div-align-center p {
@@ -80,6 +88,7 @@
 	color: #570110;
 }
 
+/* ссылка на примечание */
 .panel-editor-viewport .el-note {
 	vertical-align: super;
 	font-size: 0.8em;
@@ -102,7 +111,7 @@
 
 .panel-editor-viewport .el-subscription {
 	display: block;
-	padding: 0.1em 2.4em;
+	padding: 0.1em 1.2em;
 	color: rgb(192,64,64);
 	background-color: #F7FFBF; /*## Фоновый цвет*/
 }
@@ -169,11 +178,12 @@
 	text-indent: 0; /* элемент, содержащий в себе первым потомком изображение, не должен иметь отступ  */
 }
 
+/* аннотация */
 .panel-editor-viewport .el-annotation {
-	padding: 0 2.4em;
+	padding: 0 1.4em;
 	border-color: black;
-	color: black; /*## Цвет текста аннотации*/
-	background-color: #DBD1FF; /*## Фоновый цвет аннотации*/
+	color: black; /* Цвет текста аннотации */
+	background-color: #DBD1FF; /* Фоновый цвет аннотации */
 }
 
 .panel-editor-viewport .el-img:hover,
@@ -202,6 +212,9 @@
 /* блок примечаний */
 .panel-editor-viewport .el-notes {
 	font-size: 90%;
+}
+.panel-editor-viewport .el-notebody {
+	padding: 0 1.4em;
 }
 
 /* таблица */
@@ -247,10 +260,11 @@
 /* маркер */
 .panel-editor-viewport .el-marker {
 	float: left;
-	margin-left: -2em;
+	margin-left: -1em;
+	padding: 0 1.2em 0 0;
 }
 
 /*элементы следующие за маркером */
 .panel-editor-viewport .el-marker ~ * {
-	padding-left: 1.4em;
+	padding-left: 1.6em;
 }
