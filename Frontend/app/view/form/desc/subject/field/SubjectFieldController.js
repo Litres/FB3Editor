@@ -47,14 +47,14 @@ Ext.define(
 
 			if (!managerDesc.loadingProcess)
 			{
-				// значение имзенилось в результате ручного ввода
+				// значение изменилось в результате ручного ввода
 				if (!subjectTree.isShow)
 				{
 					// открываем окно
 					subjectTree.show();
 				}
 
-				// Фильтруем дерево жанров
+				// фильтруем дерево жанров
 				subjectTree.fireEvent('filter', value);
 
 				// показываем список тегов
@@ -64,9 +64,19 @@ Ext.define(
 			{
 				// значение имзенилось в результате загрузки описания
 
-				// синхронизируем метку поля со значением (Тег или Жанр)
-				fieldLabel = subjectTree.existValue(value) ? subject.translateText.subject : subject.translateText.tag;
-				view.setFieldLabel(fieldLabel);
+				if (view.isEmptyValue())
+				{
+					// очищаем поле
+					view.setRawValue('');
+					view.setFieldLabel(subject.translateText.undefined);
+				}
+				else if (value)
+				{
+					// синхронизируем метку поля со значением (Тег или Жанр)
+					fieldLabel = subjectTree.existValue(value) ? subject.translateText.subject : subject.translateText.tag;
+					view.setFieldLabel(fieldLabel);
+				}
+
 			}
 		},
 

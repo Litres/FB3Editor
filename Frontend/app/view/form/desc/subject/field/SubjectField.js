@@ -31,6 +31,11 @@ Ext.define(
 		 */
 		separator: ';',
 
+		/**
+		 * @property {String} Заглушка для пустого поля.
+		 */
+		emptyValue: 'Не определён',
+
 		afterRender: function ()
 		{
 			var me = this;
@@ -63,6 +68,21 @@ Ext.define(
 		getTag: function ()
 		{
 			return this.up('form-desc-subject').getTag() || null;
+		},
+
+		/**
+		 * Определяет пустое ли значение находится в поле.
+		 * @return {Boolean}
+		 */
+		isEmptyValue: function ()
+		{
+			var me = this,
+				val = me.getValue(),
+				res;
+
+			res = val === me.emptyValue;
+
+			return res;
 		}
 	}
 );
