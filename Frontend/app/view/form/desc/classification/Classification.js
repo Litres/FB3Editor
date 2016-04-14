@@ -10,11 +10,14 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.bookClass.BookClass',
-			'FBEditor.view.form.desc.subject.Subject',
-			'FBEditor.view.form.desc.classification.target.Target',
+			'FBEditor.view.form.desc.classification.bbk.Bbk',
 			'FBEditor.view.form.desc.classification.setting.Setting',
+			'FBEditor.view.form.desc.classification.target.Target',
+			'FBEditor.view.form.desc.classification.udc.Udc',
+			'FBEditor.view.form.desc.subject.Subject',
 			'FBEditor.view.form.desc.written.Written'
 		],
+
 		xtype: 'form-desc-classification',
 		cls: 'desc-fieldcontainer',
 
@@ -123,89 +126,14 @@ Ext.define(
 					require: true,
 					items: [
 						{
-							xtype: 'desc-fieldcontainer',
-							name: 'form-desc-plugin-fieldcontainerreplicator',
-							id: 'form-desc-classification-udc',
-							flex: 1,
-							layout: 'anchor',
-							items: [
-								{
-									xtype: 'desc-fieldcontainer',
-									layout: 'hbox',
-									anchor: '100%',
-									defaults: {
-										anchor: '100%',
-										labelAlign: 'right',
-										labelWidth: 100,
-										cls: 'field-optional',
-										keyEnterAsTab: true
-									},
-									plugins: {
-										ptype: 'fieldcontainerreplicator',
-										groupName: 'classification-udc',
-										btnStyle: {
-											margin: '0 0 0 5px'
-										}
-									},
-									items: [
-										{
-											xtype: 'textfieldclear',
-											name: 'classification-udc',
-											flex: 1,
-											fieldLabel: me.translateText.udc,
-											regex: /^[\d\. \-\*\(\):\[\]\+:=&quot;«»'/A-Яа-я]+$/,
-											regexText: me.translateText.udcError,
-											afterBodyEl:  '<span class="after-body">' + me.translateText.udcError +
-											              '</span>'
-										}
-									]
-								}
-
-							]
+							xtype: 'form-desc-classification-udc'
 						},
 						{
 							xtype: 'fieldcontainer',
 							width: 10
 						},
 						{
-							xtype: 'desc-fieldcontainer',
-							name: 'form-desc-plugin-fieldcontainerreplicator',
-							id: 'form-desc-classification-bbk',
-							flex: 1,
-							layout: 'anchor',
-							items: [
-								{
-									xtype: 'desc-fieldcontainer',
-									layout: 'hbox',
-									anchor: '100%',
-									defaults: {
-										anchor: '100%',
-										labelAlign: 'right',
-										labelWidth: 100,
-										cls: 'field-optional',
-										keyEnterAsTab: true
-									},
-									plugins: {
-										ptype: 'fieldcontainerreplicator',
-										groupName: 'classification-bbk',
-										btnStyle: {
-											margin: '0 0 0 5px'
-										}
-									},
-									items: [
-										{
-											xtype: 'textfieldclear',
-											name: 'classification-bbk',
-											flex: 1,
-											fieldLabel: me.translateText.bbk,
-											regex: /^[\(\)=:\d\.\-A-Яа-я/\+ "]+$/,
-											regexText: me.translateText.bbkError,
-											afterBodyEl:  '<span class="after-body">' + me.translateText.bbkError +
-											              '</span>'
-										}
-									]
-								}
-							]
+							xtype: 'form-desc-classification-bbk'
 						}
 					]
 				},

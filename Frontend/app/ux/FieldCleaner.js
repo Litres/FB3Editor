@@ -19,12 +19,12 @@ Ext.define(
 		/**
 		 * @property {Boolean} Преобразовывать ли значение к нижнему регистру.
 		 */
-		toLowerCase: true,
+		toLowerCase: false,
 
 		/**
 		 * @property {Boolean} Капитилизировать ли значение.
 		 */
-		capitalize: true,
+		capitalize: false,
 
 		/**
 		 * @private

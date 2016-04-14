@@ -338,11 +338,15 @@
 
 /* поле с триггером очистки */
 .form-desc .textfieldclear-trigger {
+	display: none;
 	font: normal normal normal 14px/1 FontAwesome;
 	font-size: 18px;
 	width: 18px;
 	padding-top: 2px;
 	background: #fff;
+}
+.form-desc .x-form-trigger-wrap-invalid .textfieldclear-trigger {
+	display: table-cell;
 }
 .form-desc .x-form-trigger-wrap-invalid .textfieldclear-trigger:before {
 	content: "\f00d";

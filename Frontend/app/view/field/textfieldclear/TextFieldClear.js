@@ -8,7 +8,9 @@ Ext.define(
 	'FBEditor.view.field.textfieldclear.TextFieldClear',
 	{
 		extend: 'Ext.form.field.Text',
+
 		xtype: 'textfieldclear',
+
 		triggers: {
 			foo: {
 				cls: 'textfieldclear-trigger',

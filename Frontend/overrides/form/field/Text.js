@@ -28,12 +28,34 @@ Ext.define(
 			}
 		],
 
+		/**
+		 * @event paste
+		 */
+		afterRender: function ()
+		{
+			var me = this;
+
+			me.callParent(arguments);
+
+			// регистрируем событие вставки
+			me.inputEl.on(
+				{
+					scope: this,
+					paste: function (data)
+					{
+						this.fireEvent('paste', data);
+					}
+				}
+			);
+		},
+
 		getValue: function ()
 		{
 			var me = this,
 				val;
 
 			val = me.callSuper(arguments);
+
 			if (val && Ext.isString(val))
 			{
 				val = val.trim();
