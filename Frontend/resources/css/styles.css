@@ -70,28 +70,30 @@
 }
 
 /* Дерево текста */
-
+.window-panel-body-tree-name {
+	padding: 10px;
+}
+.window-panel-body-tree-name span {
+	font-weight: bold;
+	color: #3a7461;
+}
 .treenavigation-root-body,
 .treenavigation-children-body,
 .treenavigation-root-body.x-grid-item-focused,
 .treenavigation-children-body.x-grid-item-focused {
 	color: #3a7461;
 }
-
 .treenavigation-root-body span:before {
 	content: "\f044";
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
-
 .treenavigation-children-body span:before {
 	content: "\f06c";
 }
-
 .treenavigation-children-el-section span:before {
 	content: "\f1b2";
 }
-
 .treenavigation-children-el-title span:before {
 	content: "\f1dc";
 }
@@ -104,60 +106,44 @@
 .treenavigation-children-el-img span:before {
 	content: "\f03e";
 }
-
 .treenavigation-children-el-div span:before {
 	content: "\f1b3";
 }
-
 .treenavigation-children-el-notes span:before {
 	content: "\f24d";
 }
-
 .treenavigation-children-el-notebody span:before {
 	content: "\f249";
 }
-
 .treenavigation-children-el-marker span:before {
 	content: "\f024";
 }
-
 .treenavigation-children-el-ol span:before {
 	content: "\f0cb";
 }
-
 .treenavigation-children-el-ul span:before {
 	content: "\f0ca";
 }
-
 .treenavigation-children-el-annotation span:before {
 	content: "\f031";
 }
-
 .treenavigation-children-el-subscription span:before {
 	content: "\f08d";
 }
-
 .treenavigation-children-el-blockquote span:before {
 	content: "\f10e";
 }
-
 .treenavigation-children-el-epigraph span:before {
 	content: "\f231";
+}
+.treenavigation-children-el-subtitle span:before {
+	content: "\f0fd";
 }
 .treenavigation-children-el-table span:before {
 	content: "\f0ce";
 }
 .treenavigation-children-el-undefined span:before {
 	content: "\f128";
-}
-
-.window-panel-body-tree-name {
-	padding: 10px;
-}
-
-.window-panel-body-tree-name span {
-	font-weight: bold;
-	color: #3a7461;
 }
 
 /* Дерево ресурсов */

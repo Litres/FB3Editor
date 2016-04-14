@@ -150,7 +150,7 @@ Ext.define(
 				defaultName = FBEditor.file.Manager.defaultFb3FileName,
 				name;
 
-			name = data.file ? data.file.name.replace(/(\.fb3\.zip)$/, '') : defaultName;
+			name = data.file ? data.file.name.replace(/(\.fb3(\.zip)?)$/, '') : defaultName;
 
 			return name;
 		},

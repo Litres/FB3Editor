@@ -25,6 +25,8 @@ Ext.define(
 
 		isSubtitle: true,
 
+		showedOnTree: true,
+
 		createScaffold: function ()
 		{
 			var me = this,

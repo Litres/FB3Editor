@@ -235,7 +235,7 @@ Ext.define(
 			}
 			me.fb3file = fb3file;
 			blob = fb3file.generateBlob();
-			fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3.zip';
+			fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3';
 			fs = window.saveAs(blob, fileName);
 
 			// данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются

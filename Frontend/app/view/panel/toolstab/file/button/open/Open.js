@@ -19,6 +19,6 @@ Ext.define(
 			change: 'onChange'
 		},
 
-		accept: 'application/zip'
+		accept: '' //'application/zip'
 	}
 );
