@@ -120,7 +120,7 @@
 .form-desc .desc-fieldset-periodical .x-fieldset-body-default {
 	background-color: #f2f4eb;
 }
-.form-desc .desc-fieldset-periodical .x-form-fieldcontainer:nth-child(even) {
+.form-desc .desc-fieldset-periodical .x-form-fieldcontainer.block-container:nth-child(even) {
 	background-color: #bac1a3;
 }
 
