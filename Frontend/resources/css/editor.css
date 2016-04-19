@@ -10,10 +10,26 @@
 	background-color: #fff;
 }
 
+/* корневой элемент */
+.panel-editor-viewport .el-body {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	padding: 0;
+	margin: 0;
+	border: none;
+	background-color: #F4EEE3; /* Основной фоновый цвет тела книги в редакторе */
+}
+
+/* абзац */
 .panel-editor-viewport p {
 	margin-top: 0;
 	margin-bottom: 0.2em;
 	text-align: justify;
+	border: none;
+}
+.panel-editor-viewport p:focus {
+	outline: none;
 }
 
 /*.panel-editor-viewport .el-p-no-indent,
@@ -43,16 +59,6 @@
 /* неопределенный элемент */
 .panel-editor-viewport .el-undefined {
 	border: 1px dashed red;
-}
-
-.panel-editor-viewport .el-body {
-	width: 100%;
-	height: 100%;
-	overflow-y: auto;
-	padding: 0;
-	margin: 0;
-	border: none;
-	background-color: #F4EEE3; /* Основной фоновый цвет тела книги в редакторе */
 }
 
 /* секция */
@@ -221,6 +227,7 @@
 .panel-editor-viewport .el-table {
 	width: 100%;
 	table-layout: fixed;
+	padding: 0;
 	border: 1px solid teal;
 }
 .panel-editor-viewport .el-th {
@@ -248,7 +255,7 @@
 /* список */
 .panel-editor-viewport .el-ol,
 .panel-editor-viewport .el-ul {
-	padding-left: 0;
+	padding-left: 1.2em;
 }
 .panel-editor-viewport .el-ol .el-ol,
 .panel-editor-viewport .el-ul .el-ul,

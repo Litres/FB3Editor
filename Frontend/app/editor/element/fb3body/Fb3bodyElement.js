@@ -40,14 +40,13 @@ Ext.define(
 		setAttributesHtml: function (element)
 		{
 			var me = this,
-				el = element;
+				el;
 
 			el = me.callParent(arguments);
-			el.setAttribute('contentEditable', true);
 
 			if (Ext.isWebKit)
 			{
-				// fix Chrome
+				// fix скролл WebKit
 				el.style.opacity = 0.9;
 			}
 

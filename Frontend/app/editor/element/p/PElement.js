@@ -26,7 +26,10 @@ Ext.define(
 		setAttributesHtml: function (element)
 		{
 			var me = this,
-				first;
+				first,
+				el;
+
+			el = me.callParent(arguments);
 
 			first = me.first();
 
@@ -36,9 +39,7 @@ Ext.define(
 				me.cls += ' el-p-no-indent';
 			}
 
-			element = me.callParent(arguments);
-
-			return element;
+			return el;
 		},
 
 		getXml: function ()

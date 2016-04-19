@@ -12,6 +12,19 @@ Ext.define(
 
 		isStyleHolder: true,
 		isStyleType: true,
-		showedOnTree: false
+		showedOnTree: false,
+
+		setAttributesHtml: function (element)
+		{
+			var me = this,
+				el;
+
+			el = me.callParent(arguments);
+
+			// устанавливаем редактируемость элемента
+			el.setAttribute('contentEditable', true);
+
+			return el;
+		}
 	}
 );

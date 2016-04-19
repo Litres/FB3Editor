@@ -226,12 +226,12 @@ Ext.define(
 						me.down('panel-toolstab-main-button-subtitle'),
 						me.down('panel-toolstab-main-button-blockquote'),
 						me.down('panel-toolstab-main-button-pre'),
-						me.down('panel-toolstab-main-button-poem'),
-						me.down('panel-toolstab-main-button-table')
+						me.down('panel-toolstab-main-button-poem')
 					]
 				},
 				me.down('panel-toolstab-main-button-ul'),
 				me.down('panel-toolstab-main-button-ol'),
+				me.down('panel-toolstab-main-button-table'),
 				me.down('panel-toolstab-main-button-img'),
 				me.down('panel-toolstab-main-button-a'),
 				me.down('panel-toolstab-main-button-note'),
