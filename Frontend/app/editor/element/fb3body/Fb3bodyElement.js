@@ -45,6 +45,12 @@ Ext.define(
 			el = me.callParent(arguments);
 			el.setAttribute('contentEditable', true);
 
+			if (Ext.isWebKit)
+			{
+				// fix Chrome
+				el.style.opacity = 0.9;
+			}
+
 			return el;
 		},
 
