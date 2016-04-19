@@ -76,27 +76,26 @@ Ext.define(
 			return text;
 		},
 
-		/*sync: function (viewportId)
+		sync: function (viewportId)
 		{
 			var me = this,
-				text;
+				manager = FBEditor.editor.Manager;
 
-			FBEditor.editor.Manager.suspendEvent = true;
-			text = me.nodes[viewportId].nodeValue;
-			console.log('sync ' + viewportId, me.nodes, text);
+			manager.suspendEvent = true;
+
 			Ext.Object.each(
 				me.nodes,
 				function (id, node)
 				{
 					if (id !== viewportId)
 					{
-						console.log('sync node', node);
-						node.nodeValue = text;
+						node.nodeValue = me.getText();
 					}
 				}
 			);
-			FBEditor.editor.Manager.suspendEvent = false;
-		},*/
+
+			manager.suspendEvent = false;
+		},
 
 		/**
 		 * Устанавливает текст элемента.

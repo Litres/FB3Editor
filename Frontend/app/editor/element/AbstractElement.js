@@ -656,7 +656,7 @@ Ext.define(
 				    if (id !== viewportId)
 				    {
 					    newNode = me.getNode(id);
-					    //console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
+					    console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
 					    oldNode.parentNode.replaceChild(newNode, oldNode);
 				    }
 			    }

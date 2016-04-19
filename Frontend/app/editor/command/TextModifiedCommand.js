@@ -63,31 +63,24 @@ Ext.define(
 				text = me.newValue;
 				viewportId = node.viewportId;
 
-				console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
+				//console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
 
-				node.nodeValue = text;
+				//node.nodeValue = text;
 				el = node.getElement();
 				el.setText(text);
 
-				if (!els.parent)
-				{
-					el.sync(viewportId);
-				}
-				else
-				{
-					els.parent.sync(viewportId);
-				}
+				el.sync(viewportId);
 
 				manager.suspendEvent = false;
 
 				// устанавливаем курсор
-				manager.setCursor(
+				/*manager.setCursor(
 					{
 						startNode: node,
 						startOffset: me.offset,
 						focusElement: node.getElement()
 					}
-				);
+				);*/
 
 				res = true;
 			}
@@ -130,7 +123,7 @@ Ext.define(
 
 				nodes.cursor = node;
 
-				console.log('undo exec text', node, el);
+				//console.log('undo exec text', node, el);
 
 				if (!text && els.parent.isStyleHolder)
 				{

@@ -185,19 +185,13 @@ Ext.define(
 			focusNode = me.getFocusNode(e.target);
 			//console.log('keyup', e.target, focusNode);
 			el = focusNode.getElement ? focusNode.getElement() : null;
+
 			if (el)
 			{
 				FBEditor.editor.Manager.setFocusElement(el);
 				controller = el && el.controller ? el.controller : me;
 
 				return controller.onKeyUpDefault(e);
-
-				/*console.log('keyup', e);
-				 switch (e.keyCode)
-				 {
-				 case Ext.event.Event.Z:
-				 return e.ctrlKey ? true : false;
-				 }*/
 			}
 
 			return false;
@@ -206,8 +200,6 @@ Ext.define(
 		onKeyUpDefault: function (e)
 		{
 			var me = this;
-
-			//console.log('onKeyUpDefault', e);
 		},
 
 		/**
@@ -273,8 +265,6 @@ Ext.define(
 				keymap = FBEditor.editor.KeyMap;
 
 			keymap.key(e);
-			//e.preventDefault();
-			//console.log('onKeyDownDefault', me.getElement());
 		},
 
 		/**
@@ -446,6 +436,7 @@ Ext.define(
 			if (relNode.firstChild.nodeName !== 'MAIN' && !manager.suspendEvent)
 			{
 				console.log('DOMNodeInserted:', Ext.Object.getValues(manager.content.nodes)[0].innerHTML);
+
 				if (node.nodeType === Node.TEXT_NODE)
 				{
 					newEl = factory.createElementText(node.nodeValue);
@@ -454,6 +445,7 @@ Ext.define(
 				{
 					newEl = factory.createElement(node.localName);
 				}
+
 				node.viewportId = viewportId;
 				newEl.setNode(node);
 				nextSibling = node.nextSibling;
@@ -700,21 +692,5 @@ Ext.define(
 				FBEditor.editor.HistoryManager.add(cmd);
 			}
 		}
-
-		/**
-		 * Проверяет получаемую схему.
-		 * @param {String} xml Строка xml, новой проверяемой структуры.
-		 * @return {Boolean}
-		 */
-		/*verify: function (xml, debug)
-		{
-			var manager = FBEditor.editor.Manager,
-				sch = manager.getSchema(),
-				res;
-
-			res = sch.validXml(xml, debug);
-
-			return res;
-		}*/
 	}
 );

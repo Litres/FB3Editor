@@ -20,6 +20,8 @@ Ext.define(
 		onTextModified: function (e)
 		{
 			var me = this,
+				manager = FBEditor.editor.Manager,
+				factory = FBEditor.editor.Factory,
 				node = e.target,
 				text = node.nodeValue,
 				viewportId = node.viewportId,
@@ -30,28 +32,41 @@ Ext.define(
 				el,
 				cmd;
 
-			if (FBEditor.editor.Manager.suspendEvent)
+			if (manager.suspendEvent)
 			{
 				return;
 			}
+
 			if (!parentNode.getElement)
 			{
-				Ext.defer(function () {me.onTextModified({target: node});}, 1);
+				Ext.defer(
+					function ()
+					{
+						this.onTextModified({target: node});
+					},
+					1,
+				    me
+				);
 
 				return;
 			}
+
 			el = node.getElement ? node.getElement() : null;
-			console.log('DOMCharacterDataModified:', e, me);
+
+			//console.log('DOMCharacterDataModified:', e, me);
+
 			if (!nextSibling && !previousSibling)
 			{
-				el = FBEditor.editor.Factory.createElementText(text);
+				el = factory.createElementText(text);
 				el.createNode(viewportId);
 				parentEl = parentNode.getElement();
 				parentEl.removeAll();
 				parentEl.add(el);
 			}
+
 			cmd = Ext.create('FBEditor.editor.command.TextModifiedCommand',
 			                 {node: node, newValue: e.newValue, oldValue: e.prevValue});
+
 			if (cmd.execute())
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
