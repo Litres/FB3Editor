@@ -9,9 +9,14 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			'FBEditor.editor.element.fb3body.Fb3bodyElementController'
+			'FBEditor.editor.element.fb3body.Fb3bodyElementController',
+			'FBEditor.editor.element.fb3body.Fb3bodySelection',
+			'FBEditor.editor.element.fb3body.Fb3bodySelectionWebKit'
 		],
+
 		controllerClass: 'FBEditor.editor.element.fb3body.Fb3bodyElementController',
+		selectionClass: 'FBEditor.editor.element.fb3body.Fb3bodySelection',
+
 		htmlTag: 'main',
 		xmlTag: 'fb3-body',
 		defaultAttributes: {
@@ -48,6 +53,11 @@ Ext.define(
 			{
 				// fix скролл WebKit
 				el.style.opacity = 0.9;
+			}
+			else
+			{
+				// устанавливаем редактируемость элемента
+				el.setAttribute('contentEditable', true);
 			}
 
 			return el;

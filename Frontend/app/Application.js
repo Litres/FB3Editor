@@ -127,12 +127,25 @@ Ext.define(
 				me.onfocus();
 			};
 
+			// вебворкеры
 			FBEditor.webworker.Manager.init();
+
+			// хранилище состояний компонентов
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
-			Ext.tip.QuickTipManager.init();
+
+			// всплывающие подсказки
+			//Ext.tip.QuickTipManager.init();
+
+			// глобальная история команд
 			FBEditor.command.HistoryCommand.init();
+
+			// роуты
 			FBEditor.route.Manager.init();
+
+			// редактор описания
 			FBEditor.desc.Manager.init();
+
+			// редактор текста
 			FBEditor.editor.Manager.init();
 
 			// определяем доступность хаба

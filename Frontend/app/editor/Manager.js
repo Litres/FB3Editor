@@ -1161,7 +1161,7 @@ Ext.define(
 		},
 
 		/**
-		 * Снимает выделение со всех элементов.
+		 * Снимает собственное выделение со всех элементов.
 		 * @param {String} viewportId Айди окна.
 		 */
 		clearSelectNodes: function (viewportId)

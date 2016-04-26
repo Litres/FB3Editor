@@ -355,11 +355,12 @@ Ext.define(
 			var manager = FBEditor.editor.Manager,
 				viewportId;
 
-			e.stopPropagation();
+			//e.stopPropagation();
 
-			// снимаем выделение с элементов
 			viewportId = e.target.viewportId;
-			manager.clearSelectNodes(viewportId);
+
+			// снимаем собственное выделение с элементов
+			//manager.clearSelectNodes(viewportId);
 		},
 
 		/**
@@ -375,12 +376,14 @@ Ext.define(
 				focusElement,
 				viewportId;
 
-			e.stopPropagation();
+			//e.stopPropagation();
+
+			viewportId = e.target.viewportId;
+
 			focusNode = me.getFocusNode(e.target);
 
 			if (focusNode && focusNode.getElement)
 			{
-				viewportId = focusNode.viewportId;
 				focusElement = focusNode.getElement();
 
 				// фокус на элементе
@@ -390,7 +393,7 @@ Ext.define(
 				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(focusElement);
 
 				// проверяем есть лы выделенные элементы
-				manager.checkSelectNodes(viewportId);
+				//manager.checkSelectNodes(viewportId);
 			}
 		},
 
@@ -400,17 +403,9 @@ Ext.define(
 		 */
 		onMouseMove: function (e)
 		{
-			var me = this,
-				el = me.el,
-				selection = el.selection;
+			var me = this;
 
-			if (selection && e.which == 1)
-			{
-				e.stopPropagation();
-
-				// обрабатываем выделение
-				selection.execute();
-			}
+			//e.stopPropagation();
 		},
 
 		/**

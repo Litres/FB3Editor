@@ -90,10 +90,10 @@ Ext.define(
 				}
 				pos.end = els.common.getChildPosition(els.end);
 
-				reg.start = new RegExp('^' + range.toString());
-				reg.start2 = new RegExp('^' + els.start.getText());
-				reg.end = new RegExp(range.toString() + '$');
-				reg.end2 = new RegExp(els.end.getText() + '$');
+				reg.start = new RegExp('^' + Ext.String.escapeRegex(range.toString()));
+				reg.start2 = new RegExp('^' + Ext.String.escapeRegex(els.start.getText()));
+				reg.end = new RegExp(Ext.String.escapeRegex(range.toString()) + '$');
+				reg.end2 = new RegExp(Ext.String.escapeRegex(els.end.getText()) + '$');
 
 				// позиция выделения относительно затронутых элементов
 				pos.isStart = reg.start.test(els.start.getText()) || reg.start2.test(range.toString());

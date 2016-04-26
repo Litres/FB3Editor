@@ -21,8 +21,11 @@ Ext.define(
 
 			el = me.callParent(arguments);
 
-			// устанавливаем редактируемость элемента
-			el.setAttribute('contentEditable', true);
+			if (Ext.isWebKit)
+			{
+				// устанавливаем редактируемость элемента
+				el.setAttribute('contentEditable', true);
+			}
 
 			return el;
 		}

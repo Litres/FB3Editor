@@ -9,10 +9,11 @@ Ext.define(
 	'FBEditor.editor.element.AbstractElement',
 	{
 		requires: [
+			'FBEditor.editor.command.PasteCommand',
+			'FBEditor.editor.command.RemoveNodesCommand',
 			'FBEditor.editor.element.AbstractElementController',
 			'FBEditor.editor.element.AbstractSelection',
-			'FBEditor.editor.command.PasteCommand',
-			'FBEditor.editor.command.RemoveNodesCommand'
+			'FBEditor.editor.helper.element.Node'
 		],
 		mixins: {
 			observable: 'Ext.util.Observable'
@@ -172,9 +173,15 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.element.AbstractSelection} Выделение элемента.
+		 * @property {FBEditor.editor.selection.Selection} Выделение элемента.
 		 */
 		//selection: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.helper.element.Node} Хэлпер для работы с отображением элемента.
+		 */
+		//nodeHelper: null,
 
 		/**
 		 * @private
@@ -219,9 +226,6 @@ Ext.define(
 
 			// создаем класс контроллера
 			me.createController();
-
-			// создаем класс выделения
-			me.createSelection();
 		},
 
 		/**
@@ -456,18 +460,33 @@ Ext.define(
 		{
 			var me = this;
 
+			// инициализируем стиль элемента
 			me.setStyleHtml();
+
+			// аттрибуты узла
 			node = me.setAttributesHtml(node);
+
+			// события узла
 			node = me.setEvents(node);
+
+			// дабавляем в узел обратную свзять с моделью элемента
 			node.getElement = function ()
 			{
 				return me;
 			};
+
+			// обработка выделения
+			me.setSelection(node);
+
+			// инициализируем список узлов из разных окон
 			me.nodes = me.nodes || {};
+
+			// сохраняем узел в списке для конкретного окна
 			me.nodes[node.viewportId] = node;
 
 			if (me.isHide)
 			{
+				// скрываем узел, если необходимо по умолчанию
 				me.hide();
 			}
 		},
@@ -918,6 +937,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает хэлпер для работы с отображением элемента.
+		 * @return {FBEditor.editor.helper.element.Node}
+		 */
+		getNodeHelper: function ()
+		{
+			return this.nodeHelper || this.createNodeHelper();
+		},
+
+		/**
 		 * Создает внутреннее содержимое элемента.
 		 * @return {Object} Элементы.
 		 */
@@ -1210,6 +1238,35 @@ Ext.define(
 
 		/**
 		 * @protected
+		 * Создает класс для обработки выделения элемента.
+		 * @param {Node} node Узел элемента.
+		 */
+		setSelection: function (node)
+		{
+			var me = this,
+				selectionClass = me.selectionClass;
+
+			if (selectionClass)
+			{
+				try
+				{
+					selectionClass = Ext.isWebKit ? selectionClass + 'WebKit' : selectionClass;
+					me.selection = Ext.create(selectionClass, node);
+				}
+				catch (e)
+				{
+					Ext.log(
+						{
+							msg: 'Необходимо создать класс ' + selectionClass,
+							level: 'error'
+						}
+					);
+				}
+			}
+		},
+
+		/**
+		 * @protected
 		 * Инициализирует CSS-класс элемента.
 		 */
 		initCls: function ()
@@ -1238,12 +1295,18 @@ Ext.define(
 
 		/**
 		 * @protected
-		 * Создает класс для обработки выделения элемента.
-		 * @param {FBEditor.editor.element.AbstractSelection} scope Элемент, к которому привязан класс.
+		 * Создает хэлпер для работы с отображением.
+		 * @return {FBEditor.editor.helper.element.Node}
 		 */
-		createSelection: function (scope)
+		createNodeHelper: function ()
 		{
-			this.selection = this.selectionClass ? Ext.create(this.selectionClass, scope || this) : null;
+			var me = this,
+				nodeHelper;
+
+			nodeHelper = Ext.create('FBEditor.editor.helper.element.Node', me);
+			me.nodeHelper = nodeHelper;
+
+			return nodeHelper;
 		},
 
 		/**
