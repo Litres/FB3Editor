@@ -52,6 +52,7 @@
 	height: 160px;
 	/* box-shadow: 2px 2px 4px 0 #ccc; */
 	position: relative;
+	padding: 3px;
 }
 .resource-great-thumb .resource-thumb-img-folder {
 	height: 160px;
@@ -74,6 +75,7 @@
 	height: 70px;
 	/* box-shadow: 2px 2px 4px 0 #ccc; */
 	position: relative;
+	padding: 3px;
 }
 .resource-large-thumb:before {
 	max-width: 140px;
@@ -101,6 +103,7 @@
 	height: 40px;
 	/* box-shadow: 1px 1px 1px 0px #ccc; */
 	position: relative;
+	padding: 3px;
 }
 .resource-normal-thumb:before {
 	max-width: 80px;
