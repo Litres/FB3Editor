@@ -10,14 +10,16 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.content.ContentController',
-			'FBEditor.view.panel.editor.Editor',
+			'FBEditor.view.panel.main.editor.Editor',
 			'FBEditor.view.form.desc.Desc',
 			'FBEditor.view.panel.resources.Resources',
 			'FBEditor.view.panel.empty.Empty'
 		],
+
 		id: 'panel-main-content',
 		xtype: 'panel-main-content',
 		controller: 'panel.main.content',
+
 		panelName: 'content',
 		region: 'center',
 		collapsible: false,
@@ -27,6 +29,7 @@ Ext.define(
 		margin: '0 2px 0 2px',
 		bodyPadding: 0,
 		//activeItem: 'main-editor',
+
 		items: [
 			{
 				xtype: 'form-desc'
@@ -41,6 +44,7 @@ Ext.define(
 				xtype: 'panel-empty'
 			}
 		],
+
 		listeners: {
 			resize: 'onResize',
 			contentBody: 'onContentBody',

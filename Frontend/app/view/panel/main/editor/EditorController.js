@@ -1,14 +1,14 @@
 /**
- * Контроллер редактора тела книги.
+ * Контроллер панели редактора текста книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.editor.EditorController',
+	'FBEditor.view.panel.main.editor.EditorController',
 	{
-		extend: 'Ext.app.ViewController',
-		alias: 'controller.view.editor',
+		extend: 'FBEditor.editor.view.EditorController',
+		alias: 'controller.view.main.editor',
 
 		/**
 		 * Загружает данные тела книги в окна редактора.
@@ -18,22 +18,29 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				viewports = me.getViewports(),
-				content = Ext.getCmp('panel-main-content'),
+				content = view.getPanelContent(),
+				manager = FBEditor.editor.Manager,
 				data,
 				north;
 
 			north = view.viewports.north;
+
 			Ext.Array.each(
 				viewports,
-			    function (item)
-			    {
-				    data = FBEditor.editor.Manager.getNode(item.id);
-				    item.loadData(data);
-				    if (item.id !== north.id && content.isActiveItem('main-editor'))
-				    {
-					    item.fireEvent('syncScroll', north);
-				    }
-			    }
+				function (item)
+				{
+					// получаем html тела книги
+					data = manager.getNode(item.id);
+
+					// загружаем в окно
+					item.loadData(data);
+
+					if (item.id !== north.id && content.isActiveItem('main-editor'))
+					{
+						// синхронизируем скролл между окнами
+						item.fireEvent('syncScroll', north);
+					}
+				}
 			);
 		},
 
@@ -68,6 +75,7 @@ Ext.define(
 		{
 			var me = this,
 				viewports = me.getViewports(),
+				manager = FBEditor.editor.Manager,
 				data;
 
 			Ext.Array.each(
@@ -76,7 +84,10 @@ Ext.define(
 				{
 					if (item.id !== viewport.id)
 					{
-						data = FBEditor.editor.Manager.getNode(item.id);
+						// получаем html данные из исходного окна
+						data = manager.getNode(item.id);
+
+						// загружаем данные в окно
 						item.loadData(data);
 					}
 				}
@@ -95,6 +106,7 @@ Ext.define(
 				viewports = [];
 
 			viewports.push(view.viewports.north);
+
 			if (view.viewports.south)
 			{
 				viewports.push(view.viewports.south);

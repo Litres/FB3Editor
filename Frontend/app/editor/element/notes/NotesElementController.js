@@ -11,38 +11,26 @@ Ext.define(
 
 		getNodeVerify: function (sel, opts)
 		{
-			var manager = FBEditor.editor.Manager,
-				rootNode,
-				root,
+			var els = {},
+				nodes = {},
 				range,
-				viewportId,
-				res;
+				viewportId;
 
 			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
 
-			root = manager.getContent();
-
-			if (range)
+			if (!range)
 			{
-				viewportId = range.startContainer.viewportId;
-			}
-			else
-			{
-				viewportId = Ext.Object.getKeys(root.nodes)[0];
+				return false;
 			}
 
-			rootNode = root.nodes[viewportId];
+			nodes.node = range.startContainer;
+			viewportId = nodes.node.viewportId;
+			els.node = nodes.node.getElement();
 
-			// ставим курсор в любое место текста
-			manager.setCursor(
-				{
-					startNode: rootNode.lastChild
-				}
-			);
+			els.root = els.node.getRoot();
+			nodes.root = els.root.nodes[viewportId];
 
-			res = root.getChildrenCountByProp('isNotes', true);
-
-			return !res ? rootNode : null;
+			return nodes.root;
 		}
 	}
 );

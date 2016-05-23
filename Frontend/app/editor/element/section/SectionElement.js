@@ -17,9 +17,7 @@ Ext.define(
 		htmlTag: 'section',
 		xmlTag: 'section',
 		cls: 'el-section',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		isSection: true,
 

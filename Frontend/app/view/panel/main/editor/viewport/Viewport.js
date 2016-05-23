@@ -1,22 +1,22 @@
 /**
- * Окно редактирования текста.
+ * Контейнер в панели редактора текста книги, в котором редактируются элементы.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.editor.viewport.Viewport',
+	'FBEditor.view.panel.main.editor.viewport.Viewport',
 	{
-		extend: 'Ext.container.Container',
+		extend: 'FBEditor.editor.view.viewport.Viewport',
 		requires: [
-			'FBEditor.view.panel.editor.viewport.ViewportController'
+			'FBEditor.view.panel.main.editor.viewport.ViewportController'
 		],
-		xtype: 'panel-editor-viewport',
-		controller: 'panel.editor.viewport',
-		layout: 'fit',
-		cls: 'panel-editor-viewport',
+
+		xtype: 'main-editor-viewport',
+		controller: 'main.editor.viewport',
+		cls: 'main-editor-viewport',
+
 		listeners: {
-			change: 'onChange',
 			syncScroll: 'onSyncScroll'
 		},
 
@@ -25,14 +25,14 @@ Ext.define(
 		 */
 		createRootElement: false,
 
-		afterRender: function ()
+		createRoot: function ()
 		{
 			var me = this,
 				manager = FBEditor.editor.Manager,
 				root,
 				rootNode;
 
-			me.callParent(this);
+			// надо ли создавать корневой элемент
 			if (me.createRootElement)
 			{
 				// инициализируем корневой узел
@@ -59,37 +59,6 @@ Ext.define(
 				// обновляем дерево навигации по тексту
 				manager.updateTree();
 			}
-		},
-
-		/**
-		 * Загружает данные тела книги в окно редактора.
-		 * @param {HTMLElement} data Тело книги.
-		 */
-		loadData: function (data)
-		{
-			var me = this,
-				dom,
-				content;
-
-			dom = me.getEl().dom;
-			content = me.getContent();
-			if (content)
-			{
-				dom.replaceChild(data, content);
-			}
-			else
-			{
-				dom.appendChild(data);
-			}
-		},
-
-		/**
-		 * Возвращает корневой элемент контента.
-		 * @return {FBEditor.editor.element.AbstractElement}
-		 */
-		getContent: function ()
-		{
-			return this.getEl().dom.firstChild;
 		}
 	}
 );

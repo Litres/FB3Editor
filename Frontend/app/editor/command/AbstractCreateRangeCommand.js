@@ -48,7 +48,7 @@ Ext.define(
 				els.common = nodes.common.getElement();
 
 				// ищем самый верхниий элемент, который может делиться на несколько
-				while (!els.common.permit.splittable)
+				while (!els.common.splittable)
 				{
 					nodes.common = nodes.common.parentNode;
 					els.common = nodes.common.getElement();

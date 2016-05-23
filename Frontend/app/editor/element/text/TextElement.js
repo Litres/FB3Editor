@@ -35,7 +35,6 @@ Ext.define(
 			me.elementId = Ext.id({prefix: me.prefixId});
 			me.mixins.observable.constructor.call(me, {});
 			me.text = Ext.isString(text) ? text : me.text;
-			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 			me.createController();
 
 			// заменяем сущности на спецсимволы <, >

@@ -1,11 +1,11 @@
 /**
- * Кнотроллер элемента fb3-body.
+ * Кнотроллер корневого элемента.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.element.fb3body.Fb3bodyElementController',
+	'FBEditor.editor.element.root.RootElementController',
 	{
 		extend: 'FBEditor.editor.element.AbstractElementController',
 		requires: [
@@ -45,7 +45,7 @@ Ext.define(
 						this.onTextModified({target: node});
 					},
 					1,
-				    me
+					me
 				);
 
 				return;
@@ -65,7 +65,7 @@ Ext.define(
 			}
 
 			cmd = Ext.create('FBEditor.editor.command.TextModifiedCommand',
-			                 {node: node, newValue: e.newValue, oldValue: e.prevValue});
+				{node: node, newValue: e.newValue, oldValue: e.prevValue});
 
 			if (cmd.execute())
 			{

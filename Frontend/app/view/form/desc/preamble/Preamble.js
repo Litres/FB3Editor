@@ -9,12 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		xtype: 'form-desc-preamble',
-		name: 'preamble',
-		height: 200,
-		resizable: {
-			handles: 's',
-			minHeight: 100,
-			pinned: true
-		}
+		name: 'preamble'
 	}
 );

@@ -5,7 +5,7 @@
  */
 
 Ext.define(
-	'FBEditor.editor.element.fb3body.Fb3bodySelectionWebKit',
+	'FBEditor.editor.element.root.RootSelectionWebKit',
 	{
 		extend: 'FBEditor.editor.selection.Selection',
 

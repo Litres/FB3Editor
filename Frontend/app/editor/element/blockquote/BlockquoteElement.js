@@ -19,9 +19,7 @@ Ext.define(
 		htmlTag: 'blockquote',
 		xmlTag: 'blockquote',
 		cls: 'el-blockquote',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		isBlockquote: true,
 

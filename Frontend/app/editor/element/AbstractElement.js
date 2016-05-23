@@ -82,17 +82,9 @@ Ext.define(
 		},
 
 		/**
-		 * @property {Object} Разрешения элемента. Перечисляются в самих элементах.
+		 * @property {Boolean} Разрешается ли разбивать элемент клавишами Ctrl/Shift+Enter.
 		 */
-		//permit: {},
-
-		/**
-		 * @property {Object} Разрешения элемента по умолчанию.
-		 */
-		permitDefault:
-		{
-			splittable: false // разрешается ли разбивать элемент клавишами Ctrl/Shift+Enter
-		},
+		splittable: false,
 
 		/**
 		 * @property {String} Имя тега для отображения в html.
@@ -222,7 +214,6 @@ Ext.define(
 			me.children = ch;
 			me.attributes = Ext.clone(attributes) || me.attributes;
 			me.attributes = me.defaultAttributes ? Ext.applyIf(attributes, me.defaultAttributes) : me.attributes;
-			me.permit = me.permit ? Ext.applyIf(me.permit, me.permitDefault) : me.permitDefault;
 
 			// создаем класс контроллера
 			me.createController();
@@ -829,7 +820,24 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает блочный элемент.
+		 * Возвращает корневой элемент.
+		 * @return {FBEditor.editor.element.root.RootElement}
+		 */
+		getRoot: function ()
+		{
+			var el = this,
+				parent = el.parent;
+
+			while (parent && !parent.isRoot)
+			{
+				parent = parent.parent;
+			}
+
+			return parent;
+		},
+
+		/**
+		 * Возвращает родительский блочный элемент.
 		 * @return {FBEditor.editor.element.AbstractElement}
 		 */
 		getBlock: function ()
@@ -1090,8 +1098,6 @@ Ext.define(
 				return true;
 			}
 
-			//me.removeEmptyText();
-
 			if (me.children.length === 1)
 			{
 				return me.children[0].isEmpty();
@@ -1255,6 +1261,8 @@ Ext.define(
 				}
 				catch (e)
 				{
+					me.selection = Ext.create(me.selectionClass, node);
+
 					Ext.log(
 						{
 							msg: 'Необходимо создать класс ' + selectionClass,

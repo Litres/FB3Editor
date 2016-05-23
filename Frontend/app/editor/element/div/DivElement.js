@@ -18,9 +18,7 @@ Ext.define(
 		htmlTag: 'div',
 		xmlTag: 'div',
 		cls: 'el-div',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		createScaffold: function ()
 		{

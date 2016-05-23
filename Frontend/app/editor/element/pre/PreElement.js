@@ -19,9 +19,7 @@ Ext.define(
 		htmlTag: 'pre',
 		xmlTag: 'pre',
 		cls: 'el-pre',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		isPre: true,
 

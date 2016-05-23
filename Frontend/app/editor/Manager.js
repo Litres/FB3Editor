@@ -156,9 +156,9 @@ Ext.define(
 				content = me.content,
 				node;
 
-			FBEditor.editor.Manager.suspendEvent = true;
+			me.suspendEvent = true;
 			node = content.getNode(viewportId);
-			FBEditor.editor.Manager.suspendEvent = false;
+			me.suspendEvent = false;
 
 			return node;
 		},

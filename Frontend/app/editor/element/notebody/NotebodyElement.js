@@ -16,9 +16,7 @@ Ext.define(
 		htmlTag: 'notebody',
 		xmlTag: 'notebody',
 		cls: 'el-notebody',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		isNotebody: true,
 

@@ -249,6 +249,15 @@
 	width: 100%;
 }
 
+/* редактор текста */
+.form-desc-editor {
+	border:  1px solid;
+	border-color: #cfd0d3 #e2e2e4 #e2e2e4;
+}
+.form-desc-editor-body .x-panel-body-default {
+	background: none;
+}
+
 /* затемнение для конечной части поля ввода */
 .form-desc .input-fade,
 .form-desc .input-fade-triggers {
@@ -574,26 +583,22 @@
 }
 
 /* контейнер данных серий */
-.container-sequence-item-common
-{
+.container-sequence-item-common {
 	border: 1px solid #000;
 	margin: 2px 0;
 	padding: 2px;
 	background-color: #fff;
 }
-.container-sequence-item-name
-{
+.container-sequence-item-name {
 	font-size: 15px;
 	color: #2e7ed5;
 	cursor: pointer;
 }
-.container-sequence-item-id
-{
+.container-sequence-item-id {
 	font-size: 13px;
 	color: gray;
 }
-.container-sequence-item-link
-{
+.container-sequence-item-link {
 	position: absolute;
 	top: 4px;
 	right: 4px;

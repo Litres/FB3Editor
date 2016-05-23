@@ -167,6 +167,8 @@ Ext.define(
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['paper-publish-info']);
 			Ext.getCmp('form-desc-documentInfo-isbn').fireEvent('loadData', data['document-info-isbn']);
+			console.log(Ext.getCmp('form-desc-history'));
+			Ext.getCmp('form-desc-history').setValue(data.history);
 			me.expandFieldset(data);
 		},
 

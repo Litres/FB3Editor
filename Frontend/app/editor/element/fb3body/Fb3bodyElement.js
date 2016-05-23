@@ -1,5 +1,5 @@
 /**
- * Корневой элемент.
+ * Корневой элемент текста книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,60 +7,31 @@
 Ext.define(
 	'FBEditor.editor.element.fb3body.Fb3bodyElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement',
-		requires: [
-			'FBEditor.editor.element.fb3body.Fb3bodyElementController',
-			'FBEditor.editor.element.fb3body.Fb3bodySelection',
-			'FBEditor.editor.element.fb3body.Fb3bodySelectionWebKit'
-		],
+		extend: 'FBEditor.editor.element.root.RootElement',
 
-		controllerClass: 'FBEditor.editor.element.fb3body.Fb3bodyElementController',
-		selectionClass: 'FBEditor.editor.element.fb3body.Fb3bodySelection',
-
-		htmlTag: 'main',
 		xmlTag: 'fb3-body',
+
 		defaultAttributes: {
 			'xmlns:l': 'http://www.w3.org/1999/xlink',
 			'xmlns': 'http://www.fictionbook.org/FictionBook3/body',
 			'xmlns:fb3d': 'http://www.fictionbook.org/FictionBook3/description'
 		},
+
 		cls: 'el-body',
 
 		/**
-		 * @property {Boolean} Признан корневого элемента.
+		 * @property {Boolean} Является ли элементом тела книги.
 		 */
-		isRoot: true,
+		isBody: true,
 
 		constructor: function ()
 		{
-			var me = this,
-				img;
+			var me = this;
 
 			me.callParent(arguments);
 
 			// генерируем новый uuid
 			me.attributes.id = Ext.data.identifier.Uuid.Global.generate();
-		},
-
-		setAttributesHtml: function (element)
-		{
-			var me = this,
-				el;
-
-			el = me.callParent(arguments);
-
-			if (Ext.isWebKit)
-			{
-				// fix скролл WebKit
-				el.style.opacity = 0.9;
-			}
-			else
-			{
-				// устанавливаем редактируемость элемента
-				el.setAttribute('contentEditable', true);
-			}
-
-			return el;
 		},
 
 		createScaffold: function ()

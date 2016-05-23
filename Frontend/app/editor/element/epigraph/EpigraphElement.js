@@ -16,9 +16,7 @@ Ext.define(
 		htmlTag: 'epigraph',
 		xmlTag: 'epigraph',
 		cls: 'el-epigraph',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		isEpigraph: true,
 

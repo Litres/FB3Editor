@@ -5,7 +5,7 @@
  */
 
 Ext.define(
-	'FBEditor.editor.element.fb3body.Fb3bodySelection',
+	'FBEditor.editor.element.root.RootSelection',
 	{
 		extend: 'FBEditor.editor.selection.Selection'
 	}

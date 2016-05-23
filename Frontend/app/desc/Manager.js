@@ -413,7 +413,7 @@ Ext.define(
 				// конвертируем данные для формы
 				//console.log('desc', desc);
 				desc = converter.toForm(desc);
-				//console.log('desc convert', desc);
+				console.log('desc convert', desc);
 			}
 			catch (e)
 			{

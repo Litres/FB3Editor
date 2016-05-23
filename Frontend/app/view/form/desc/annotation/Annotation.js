@@ -8,13 +8,12 @@ Ext.define(
 	'FBEditor.view.form.desc.annotation.Annotation',
 	{
 		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
+		//extend: 'FBEditor.view.form.desc.editor.Editor',
+
 		xtype: 'form-desc-annotation',
-		name: 'annotation',
-		height: 200,
-		resizable: {
-			handles: 's',
-			minHeight: 100,
-			pinned: true
-		}
+
+		rootElementName: 'desc/annotation',
+
+		name: 'annotation'
 	}
 );

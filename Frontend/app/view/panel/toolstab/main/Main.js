@@ -216,7 +216,7 @@ Ext.define(
 				me.down('panel-toolstab-main-button-notebody'),
 				me.down('panel-toolstab-main-button-titlebody'),
 				me.down('panel-toolstab-main-button-section'),
-				me.down('panel-toolstab-main-button-title'),
+				me.down('#panel-toolstab-main-button-title'),
 				me.down('panel-toolstab-main-button-epigraph'),
 				me.down('panel-toolstab-main-button-annotation'),
 				me.down('panel-toolstab-main-button-subscription'),

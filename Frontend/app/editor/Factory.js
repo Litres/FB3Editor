@@ -16,6 +16,8 @@ Ext.define(
 			'FBEditor.editor.element.body.BodyElement',
 			'FBEditor.editor.element.br.BrElement',
 			'FBEditor.editor.element.code.CodeElement',
+			'FBEditor.editor.element.desc.annotation.AnnotationElement',
+			'FBEditor.editor.element.desc.history.HistoryElement',
 			'FBEditor.editor.element.div.DivElement',
 			'FBEditor.editor.element.em.EmElement',
 			'FBEditor.editor.element.epigraph.EpigraphElement',
@@ -62,7 +64,7 @@ Ext.define(
 		 */
 		createElement: function (name, attributes, children)
 		{
-			var n = name.toLowerCase(),
+			var n = name,
 				nameEl,
 				el;
 
@@ -70,11 +72,29 @@ Ext.define(
 			{
 				throw Error('Невозможно создать элемент. Передано пустое назавние элемента.');
 			}
+
+			// преобразуем имя в реальное
+
+			n = n.toLowerCase();
+			n = n.replace(/-([a-z])/g, '$1');
+
+			if (/\//.test(n))
+			{
+				// учитываем директории
+				n = n.split('/');
+				n[n.length - 1] = n[n.length - 1] + '.' + Ext.String.capitalize(n[n.length - 1]);
+				n = n.join('.');
+			}
+			else
+			{
+				// без директории
+				n = n +'.' + Ext.String.capitalize(n);
+			}
+
+			nameEl = 'FBEditor.editor.element.' + n + 'Element';
+
 			try
 			{
-				n = n.replace(/-([a-z])/g, '$1');
-				n = n +'.' + Ext.String.capitalize(n);
-				nameEl = 'FBEditor.editor.element.' + n + 'Element';
 				attributes = attributes || {};
 				children = children || [];
 				el = Ext.create(nameEl, attributes, children);
@@ -104,6 +124,7 @@ Ext.define(
 			var el;
 
 			text = Ext.isString(text) ? text : '';
+
 			try
 			{
 				el = Ext.create('FBEditor.editor.element.text.TextElement', text);

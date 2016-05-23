@@ -1,21 +1,24 @@
 /**
- * Редактор тела книги.
+ * Панель редактора текста книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.editor.Editor',
+	'FBEditor.view.panel.main.editor.Editor',
 	{
-		extend: 'Ext.panel.Panel',
+		extend: 'FBEditor.editor.view.Editor',
 		requires: [
-			'FBEditor.view.panel.editor.EditorController',
-			'FBEditor.view.panel.editor.viewport.Viewport'
+			'FBEditor.view.panel.main.editor.EditorController',
+			'FBEditor.view.panel.main.editor.viewport.Viewport'
 		],
-		id: 'main-editor',
+
 		xtype: 'main-editor',
-		controller: 'view.editor',
+		id: 'main-editor',
+		controller: 'view.main.editor',
+
 		layout: 'border',
+
 		listeners: {
 			loadData: 'onLoadData',
 			split: 'onSplit',
@@ -25,8 +28,8 @@ Ext.define(
 
 		/**
 		 * @property {Object} Ссылки на активные окна редактирования.
-		 * @property {FBEditor.view.panel.editor.viewport.Viewport} Object.north Верхнее окно.
-		 * @property {FBEditor.view.panel.editor.viewport.Viewport} Object.south Нижнее окно.
+		 * @property {FBEditor.editor.view.viewport.Viewport} Object.north Верхнее окно.
+		 * @property {FBEditor.editor.view.viewport.Viewport} Object.south Нижнее окно.
 		 */
 		viewports: {
 			north: null,
@@ -38,7 +41,7 @@ Ext.define(
 		 * @property {Object} Конфиг дополнительного окна редактирования.
 		 */
 		southViewportConfig: {
-			xtype: 'panel-editor-viewport',
+			xtype: 'main-editor-viewport',
 			height: '50%',
 			split: {
 				size: 8
@@ -46,21 +49,30 @@ Ext.define(
 			region: 'south'
 		},
 
-		afterRender: function ()
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.content.Content} Панель контента.
+		 */
+		panelContent: null,
+
+		/**
+		 * Инициализирует редактор.
+		 */
+		initEditor: function ()
 		{
 			var me = this,
 				north;
 
 			north = Ext.widget(
 				{
-					xtype: 'panel-editor-viewport',
+					xtype: 'main-editor-viewport',
 					region: 'center',
 					createRootElement: true
 				}
 			);
+
 			me.viewports.north = north;
 			me.add(north);
-			me.callParent(this);
 		},
 
 		/**
@@ -81,17 +93,35 @@ Ext.define(
 		},
 
 		/**
-		 * Удалеят нижнее окно редактирования.
+		 * Удаляет нижнее окно редактирования.
 		 */
 		removeSouthViewport: function ()
 		{
 			var me = this,
+				manager = FBEditor.editor.Manager,
 				south;
 
 			south = me.viewports.south;
-			FBEditor.editor.Manager.removeNodes(south.id);
+
+			// удаляем ссылки на узлы
+			manager.removeNodes(south.id);
+
 			me.remove(south);
 			me.viewports.south = null;
+		},
+
+		/**
+		 * Возвращает панель контента.
+		 * @return {FBEditor.view.panel.main.content.Content}
+		 */
+		getPanelContent: function ()
+		{
+			var me = this,
+				panel;
+
+			panel = me.panelContent || Ext.getCmp('panel-main-content');
+
+			return panel;
 		}
 	}
 );

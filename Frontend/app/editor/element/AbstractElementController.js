@@ -103,10 +103,13 @@ Ext.define(
 		onInsertElement: function (node, isEmpty)
 		{
 			var cmd,
-				name;
+				name,
+				el;
 
 			isEmpty = isEmpty || false;
-			name = node.getElement().xmlTag;
+			el = node.getElement();
+			name = el.getName();
+
 			if (!isEmpty)
 			{
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.SplitCommand', {node: node});
@@ -115,6 +118,7 @@ Ext.define(
 			{
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand', {prevNode: node});
 			}
+
 			if (cmd.execute())
 			{
 				FBEditor.editor.HistoryManager.add(cmd);
@@ -129,43 +133,72 @@ Ext.define(
 		 */
 		onSplitElement: function (node, isEmpty)
 		{
-			var manager = FBEditor.editor.Manager,
-				el,
+			var me = this,
+				manager = FBEditor.editor.Manager,
+				factory = manager.getFactory(),
+				els = {},
+				nodes = {},
+				name,
+				xml,
 				sch,
-				elements,
-				parentEl,
-				parentNode,
-				pos,
-				name;
+				pos;
 
 			isEmpty = isEmpty || false;
-			el = node.getElement();
-			//console.log('splittable', el.permit.splittable, node);
+			nodes.node = node;
+			els.node = nodes.node.getElement();
 
-			// разрешена ли разбивка блока на два
-			if (el.permit.splittable)
+			// разрешена ли разбивка элемента
+			if (els.node.splittable)
 			{
+				// создаем временную будущую структуру и проверяем ее по схеме
+
+				els.root = els.node.getRoot();
+
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				// создаем временный элемент для проверки новой структуры
+				name = els.node.getName();
+				els.newEl = factory.createElement(name);
+				els.newEl.createScaffold();
+
+				pos = els.parent.getChildPosition(els.node) + 1;
+				els.parent.children.splice(pos, 0, els.newEl);
+
+				// получаем xml
+				xml = els.root.getXml(true);
+
+				// удаляем временный элемент
+				els.parent.children.splice(pos, 1);
+
 				sch = manager.getSchema();
-				parentNode = node.parentNode;
-				parentEl = parentNode.getElement();
-				elements = manager.getNamesElements(parentEl);
-				name = el.xmlTag;
-				pos = parentEl.getChildPosition(el);
-				elements.splice(pos + 1, 0, name);
-				if (sch.verify(parentEl.xmlTag, elements))
-				{
-					// вставляем новый элемент
-					el.fireEvent('insertElement', node, isEmpty);
-				}
+
+				// вызываем проверку по схеме
+				sch.validXml(
+					{
+						xml: xml,
+						callback: function (enable)
+						{
+							if (enable)
+							{
+								// вставляем новый элемент
+								els.node.fireEvent('insertElement', nodes.node, isEmpty);
+							}
+						},
+						scope: me
+					}
+				);
 			}
 			else
 			{
-				// пытаемся разбить родительский элемент до тех пор пока не встретим корневой элемент
-				node = node.parentNode;
-				if (node && node.getElement && !node.getElement().isRoot)
+				// пытаемся разбить родительский элемент до тех пор пока не получится или не встретим корневой элемент
+
+				nodes.node = nodes.node.parentNode;
+				els.node = nodes.node.getElement ? nodes.node.getElement() : null;
+
+				if (els.node && !els.node.isRoot)
 				{
-					el = node.getElement();
-					el.fireEvent('splitElement', node, isEmpty);
+					els.node.fireEvent('splitElement', nodes.node, isEmpty);
 				}
 			}
 		},
@@ -177,18 +210,27 @@ Ext.define(
 		onKeyUp: function (e)
 		{
 			var me = this,
-				focusNode,
+				node,
 				el,
-				controller;
+				root,
+				controller,
+				manager;
 
 			e.stopPropagation();
-			focusNode = me.getFocusNode(e.target);
-			//console.log('keyup', e.target, focusNode);
-			el = focusNode.getElement ? focusNode.getElement() : null;
+			node = me.getFocusNode(e.target);
+			el = node.getElement ? node.getElement() : null;
+			root = el ? el.getRoot() : null;
+			//console.log('keyup', e.target, node);
 
 			if (el)
 			{
-				FBEditor.editor.Manager.setFocusElement(el);
+				if (root.isBody)
+				{
+					// ставим фокус для тела книги
+					manager = FBEditor.editor.Manager;
+					manager.setFocusElement(el);
+				}
+
 				controller = el && el.controller ? el.controller : me;
 
 				return controller.onKeyUpDefault(e);
@@ -199,7 +241,7 @@ Ext.define(
 
 		onKeyUpDefault: function (e)
 		{
-			var me = this;
+			//
 		},
 
 		/**
@@ -209,18 +251,20 @@ Ext.define(
 		onKeyDown: function (e)
 		{
 			var me = this,
-				focusNode,
+				node,
 				el,
 				controller;
 
 			e.stopPropagation();
-			focusNode = me.getFocusNode(e.target);
-			//console.log('keydown', e.target, focusNode);
-			if (focusNode)
+			node = me.getFocusNode(e.target);
+			el = node.getElement ? node.getElement() : null;
+			//console.log('keydown', e.target, node);
+
+			if (el)
 			{
-				el = focusNode.getElement ? focusNode.getElement() : null;
 				controller = el && el.controller ? el.controller : me;
-				//console.log('keydown', e);
+				//console.log('keydown', e, controller);
+
 				switch (e.keyCode)
 				{
 					case Ext.event.Event.ENTER:
@@ -352,15 +396,7 @@ Ext.define(
 		 */
 		onMouseDown: function (e)
 		{
-			var manager = FBEditor.editor.Manager,
-				viewportId;
-
-			//e.stopPropagation();
-
-			viewportId = e.target.viewportId;
-
-			// снимаем собственное выделение с элементов
-			//manager.clearSelectNodes(viewportId);
+			//
 		},
 
 		/**
@@ -370,30 +406,27 @@ Ext.define(
 		onMouseUp: function (e)
 		{
 			var me = this,
-				bridgeNav = FBEditor.getBridgeNavigation(),
-				manager = FBEditor.editor.Manager,
-				focusNode,
-				focusElement,
-				viewportId;
+				bridgeNav,
+				manager,
+				node,
+				el,
+				root;
 
-			//e.stopPropagation();
+			node = me.getFocusNode(e.target);
+			el = node.getElement ? node.getElement() : null;
+			root = el.getRoot();
 
-			viewportId = e.target.viewportId;
-
-			focusNode = me.getFocusNode(e.target);
-
-			if (focusNode && focusNode.getElement)
+			// для тела книги
+			if (root && root.isBody)
 			{
-				focusElement = focusNode.getElement();
+				manager = FBEditor.editor.Manager;
+				bridgeNav = FBEditor.getBridgeNavigation();
 
 				// фокус на элементе
-				manager.setFocusElement(focusNode);
+				manager.setFocusElement(el);
 
 				// разворачиваем узел элемента в дереве навигации по тексту
-				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(focusElement);
-
-				// проверяем есть лы выделенные элементы
-				//manager.checkSelectNodes(viewportId);
+				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(el);
 			}
 		},
 
@@ -403,9 +436,7 @@ Ext.define(
 		 */
 		onMouseMove: function (e)
 		{
-			var me = this;
-
-			//e.stopPropagation();
+			//
 		},
 
 		/**
@@ -430,8 +461,6 @@ Ext.define(
 			// игнорируется вставка при включенной заморозке
 			if (relNode.firstChild.nodeName !== 'MAIN' && !manager.suspendEvent)
 			{
-				console.log('DOMNodeInserted:', Ext.Object.getValues(manager.content.nodes)[0].innerHTML);
-
 				if (node.nodeType === Node.TEXT_NODE)
 				{
 					newEl = factory.createElementText(node.nodeValue);
@@ -447,24 +476,22 @@ Ext.define(
 				previousSibling = node.previousSibling;
 				parentEl = relNode.getElement();
 
-				console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
+				//console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
 
 				if (nextSibling)
 				{
 					nextSiblingEl = nextSibling.getElement();
-					console.log('insert, nextSibling', nextSibling);
+					//console.log('insert, nextSibling', nextSibling);
 					parentEl.insertBefore(newEl, nextSiblingEl);
 				}
 				else if (previousSibling)
 				{
 					parentEl.add(newEl);
-					console.log('add, previousSibling', previousSibling);
+					//console.log('add, previousSibling', previousSibling);
 				}
 				else
 				{
-					//console.log('removeAll', node, node.parentNode);
-					console.log('add');
-					//parentEl.removeAll();
+					//console.log('add');
 					parentEl.add(newEl);
 				}
 
@@ -557,6 +584,21 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет выделенную часть текста.
+		 */
+		removeNodes: function ()
+		{
+			var cmd;
+
+			cmd = Ext.create('FBEditor.editor.command.RemoveNodesCommand');
+
+			if (cmd.execute())
+			{
+				FBEditor.editor.HistoryManager.add(cmd);
+			}
+		},
+
+		/**
 		 * @protected
 		 * Возвращает элемент контроллера.
 		 * @return {FBEditor.editor.element.AbstractElement} Элемент контроллера.
@@ -575,7 +617,7 @@ Ext.define(
 		{
 			var me = this;
 
-			return me.getElement().xmlTag;
+			return me.getElement().getName();
 		},
 
 		/**
@@ -616,7 +658,7 @@ Ext.define(
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
 			name = els.parent.getName();
-			//console.log('name, nameElements', name, nameElements);
+			console.log('name, nameElements', name, nameElements);
 			res = sch.verify(name, nameElements) ? nodes.node : false;
 
 			return res;
@@ -659,33 +701,14 @@ Ext.define(
 				range;
 
 			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
-			//console.log('node', node);
-			if (range && node.nodeName !== 'IMG'/* || range && node.nodeName === 'IMG' && !range.collapsed*/)
+
+			if (range && node.nodeName !== 'IMG')
 			{
 				node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ?
 				       range.commonAncestorContainer.parentNode : range.commonAncestorContainer;
 			}
-			//console.log('sel, range, node', sel, range, node);
-			/*if (node.getElement === undefined)
-			{
-				node = me.getFocusNode(node.parentNode);
-			}*/
 
 			return node;
-		},
-
-		/**
-		 * Удаляет выделенную часть текста.
-		 */
-		removeNodes: function ()
-		{
-			var cmd;
-
-			cmd = Ext.create('FBEditor.editor.command.RemoveNodesCommand');
-			if (cmd.execute())
-			{
-				FBEditor.editor.HistoryManager.add(cmd);
-			}
 		}
 	}
 );

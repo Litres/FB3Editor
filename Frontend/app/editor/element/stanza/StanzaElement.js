@@ -17,9 +17,7 @@ Ext.define(
 		htmlTag: 'stanza',
 		xmlTag: 'stanza',
 		cls: 'el-stanza',
-		permit: {
-			splittable: true
-		},
+		splittable: true,
 
 		createScaffold: function ()
 		{

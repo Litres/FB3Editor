@@ -19,7 +19,13 @@ Ext.define(
 		enableFont: false,
 		enableFontSize: false,
 		enableLists: false,
-		height: 150,
+
+		height: 200,
+		resizable: {
+			handles: 's',
+			minHeight: 100,
+			pinned: true
+		},
 
 		listeners: {
 			paste: 'onPaste',

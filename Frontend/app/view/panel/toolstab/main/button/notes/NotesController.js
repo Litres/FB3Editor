@@ -16,24 +16,9 @@ Ext.define(
 		onSync: function ()
 		{
 			var me = this,
-				btn = me.getView(),
-				manager = FBEditor.editor.Manager,
-				root,
-				name,
-				disable;
+				btn = me.getView();
 
-			root = manager.getContent();
-			name = btn.elementName;
-			disable = root.getChildrenCountByProp('xmlTag', name);
-
-			if (!disable)
-			{
-				btn.enable();
-			}
-			else
-			{
-				btn.disable();
-			}
+			btn.enable();
 		}
 	}
 );

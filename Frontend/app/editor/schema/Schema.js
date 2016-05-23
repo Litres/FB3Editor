@@ -209,6 +209,7 @@ Ext.define(
 				disableDebug = debug ? false : me.disableDebug;
 
 			el = me.getElement(name);
+
 			if (!el)
 			{
 				return false;

@@ -12,6 +12,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.toolstab.main.button.ButtonController'
 		],
+
 		controller: 'panel.toolstab.main.button',
 
 		disabled: true,

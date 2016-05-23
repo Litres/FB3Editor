@@ -2,7 +2,7 @@
 Ситли для редактора текста.
 */
 
-.panel-editor-viewport {
+.main-editor-viewport {
 	font-family: 'Arial Unicode MS';
 	font-size: 150%;
 	line-height: 150%;
@@ -11,7 +11,7 @@
 }
 
 /* корневой элемент */
-.panel-editor-viewport .el-body {
+.main-editor-viewport .el-body {
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
@@ -22,33 +22,33 @@
 }
 
 /* абзац */
-.panel-editor-viewport p {
+.main-editor-viewport p {
 	margin-top: 0;
 	margin-bottom: 0.2em;
 	text-align: justify;
 	border: none;
 }
-.panel-editor-viewport p:focus {
+.main-editor-viewport p:focus {
 	outline: none;
 }
 
-/*.panel-editor-viewport .el-p-no-indent,
-.panel-editor-viewport p .el-img
+/*.main-editor-viewport .el-p-no-indent,
+.main-editor-viewport p .el-img
 {
 	text-indent: 0; некоторые параграфы не должны иметь отступа
 }*/
 
-.panel-editor-viewport .el-div,
-.panel-editor-viewport .el-title,
-.panel-editor-viewport .el-section,
-.panel-editor-viewport .el-blockquote,
-.panel-editor-viewport .el-pre,
-.panel-editor-viewport .el-annotation,
-.panel-editor-viewport .el-epigraph,
-.panel-editor-viewport .el-poem,
-.panel-editor-viewport .el-stanza,
-.panel-editor-viewport .el-notes,
-.panel-editor-viewport .el-notebody {
+.main-editor-viewport .el-div,
+.main-editor-viewport .el-title,
+.main-editor-viewport .el-section,
+.main-editor-viewport .el-blockquote,
+.main-editor-viewport .el-pre,
+.main-editor-viewport .el-annotation,
+.main-editor-viewport .el-epigraph,
+.main-editor-viewport .el-poem,
+.main-editor-viewport .el-stanza,
+.main-editor-viewport .el-notes,
+.main-editor-viewport .el-notebody {
 	display: block;
 	padding: 0 0 0 0.2em;
 	margin: 0.5em 0 0.5em 0;
@@ -57,51 +57,51 @@
 }
 
 /* неопределенный элемент */
-.panel-editor-viewport .el-undefined {
+.main-editor-viewport .el-undefined {
 	border: 1px dashed red;
 }
 
 /* секция */
-.panel-editor-viewport .el-section {
+.main-editor-viewport .el-section {
 	border-color: #009600;
 }
-.panel-editor-viewport .el-section > * {
+.main-editor-viewport .el-section > * {
 	padding: 0 1.2em;
 }
-.panel-editor-viewport .el-section > .el-section  {
+.main-editor-viewport .el-section > .el-section  {
 	padding: 0 0.2em;
 }
 
 /* блок */
-.panel-editor-viewport .el-div {
+.main-editor-viewport .el-div {
 	padding: 0 1.2em;
 }
 
-.panel-editor-viewport .el-div-align-center p {
+.main-editor-viewport .el-div-align-center p {
 	text-align: center;
 }
-.panel-editor-viewport .el-div-align-right p {
+.main-editor-viewport .el-div-align-right p {
 	text-align: right;
 }
-.panel-editor-viewport .el-div-align-left p {
+.main-editor-viewport .el-div-align-left p {
 	text-align: left;
 }
-.panel-editor-viewport .el-div-align-justify p {
+.main-editor-viewport .el-div-align-justify p {
 	text-align: justify;
 }
 
-.panel-editor-viewport .el-blockquote {
+.main-editor-viewport .el-blockquote {
 	color: #570110;
 }
 
 /* ссылка на примечание */
-.panel-editor-viewport .el-note {
+.main-editor-viewport .el-note {
 	vertical-align: super;
 	font-size: 0.8em;
 	color: #aaa;
 }
 
-.panel-editor-viewport .el-code {
+.main-editor-viewport .el-code {
 	display: inline;
 	margin: 0;
 	font-family: monospace;
@@ -110,19 +110,19 @@
 	background: rgb(238,238,238);
 }
 
-.panel-editor-viewport .el-pre {
+.main-editor-viewport .el-pre {
 	font-family: monospace;
 	background: rgb(238,238,238);
 }
 
-.panel-editor-viewport .el-subscription {
+.main-editor-viewport .el-subscription {
 	display: block;
 	padding: 0.1em 1.2em;
 	color: rgb(192,64,64);
 	background-color: #F7FFBF; /*## Фоновый цвет*/
 }
 
-.panel-editor-viewport .el-subtitle {
+.main-editor-viewport .el-subtitle {
 	display: block;
 	margin: 0.5em 0;
 	text-align: center;
@@ -131,113 +131,113 @@
 	background-color: #B2B2B2; /*## Фоновый цвет подзаголовка*/
 }
 
-.panel-editor-viewport .el-poem {
+.main-editor-viewport .el-poem {
 	border-color: black;
 	background-color: #A0CFFF; /*## Фоновый цвет стиха*/
 }
-.panel-editor-viewport .el-stanza {
+.main-editor-viewport .el-stanza {
 	border-color: black;
 	background-color: #DBFFE8; /*## Фоновый цвет строфы*/
 }
-.panel-editor-viewport .el-stanza p {
+.main-editor-viewport .el-stanza p {
 	text-align: left;
 	text-indent: 3em;
 	margin-bottom: 0;
 }
 
 
-.panel-editor-viewport .el-em {
+.main-editor-viewport .el-em {
 	font-style: italic;
 	color: blue;
 }
 
-.panel-editor-viewport .el-spacing {
+.main-editor-viewport .el-spacing {
 	letter-spacing: 0.05em;
 }
 
-.panel-editor-viewport .el-strikethrough {
+.main-editor-viewport .el-strikethrough {
 	text-decoration: line-through;
 }
 
-.panel-editor-viewport .el-underline {
+.main-editor-viewport .el-underline {
 	text-decoration: underline;
 }
 
-.panel-editor-viewport .el-epigraph {
+.main-editor-viewport .el-epigraph {
 	font-size: 80%;
 	border-color: black;
 	color: black; /*## Цвет текста эпиграфа*/
 	background-color: #EEFAFE; /*## Фоновый цвет эпиграфа*/
 }
 
-.panel-editor-viewport .el-epigraph p {
+.main-editor-viewport .el-epigraph p {
 	text-indent: 3em;
 	margin: 0 1em 0.5em 25%;
 }
 
-.panel-editor-viewport .el-img,
-.panel-editor-viewport .el-img-marker {
+.main-editor-viewport .el-img,
+.main-editor-viewport .el-img-marker {
 	resize: none;
 }
 
-.panel-editor-viewport .el-parent-image {
+.main-editor-viewport .el-parent-image {
 	text-indent: 0; /* элемент, содержащий в себе первым потомком изображение, не должен иметь отступ  */
 }
 
 /* аннотация */
-.panel-editor-viewport .el-annotation {
+.main-editor-viewport .el-annotation {
 	padding: 0 1.4em;
 	border-color: black;
 	color: black; /* Цвет текста аннотации */
 	background-color: #DBD1FF; /* Фоновый цвет аннотации */
 }
 
-.panel-editor-viewport .el-img:hover,
-.panel-editor-viewport .el-img-marker:hover {
+.main-editor-viewport .el-img:hover,
+.main-editor-viewport .el-img-marker:hover {
 	cursor: default;
 }
 
-.panel-editor-viewport .el-img:focus {
+.main-editor-viewport .el-img:focus {
 	outline: 1px dashed #37BB9B;
 	outline-offset: -1px;
 }
 
 /* заголовок */
-.panel-editor-viewport .el-title {
+.main-editor-viewport .el-title {
 	font-size: 130%;
 	border-color: rgb(0,150,0);
 	background: rgb(0,150,0);
 	color: white;
 	padding: 0.3em;
 }
-.panel-editor-viewport .el-title p {
+.main-editor-viewport .el-title p {
 	text-align: center;
 	text-indent: 0;
 }
 
 /* блок примечаний */
-.panel-editor-viewport .el-notes {
+.main-editor-viewport .el-notes {
 	font-size: 90%;
 }
-.panel-editor-viewport .el-notebody {
+.main-editor-viewport .el-notebody {
 	padding: 0 1.4em;
 }
 
 /* таблица */
-.panel-editor-viewport .el-table {
+.main-editor-viewport .el-table {
 	width: 100%;
 	table-layout: fixed;
 	padding: 0;
 	border: 1px solid teal;
 }
-.panel-editor-viewport .el-th {
+.main-editor-viewport .el-th {
 	text-align: center;
 	background: rgb(117,255,255);
 	text-indent: 0;
 	margin-bottom: 0;
 	color: purple;
 }
-.panel-editor-viewport .el-td {
+.main-editor-viewport .el-td {
 	margin-bottom: 0;
 	padding: 0.2em;
 	text-indent: 0;
@@ -245,33 +245,33 @@
 	color: navy;
 	border: 1px solid #2e7ed5;
 }
-.panel-editor-viewport .el-td p {
+.main-editor-viewport .el-td p {
 	text-indent: 0;
 }
-.panel-editor-viewport .el-td.mode-select {
+.main-editor-viewport .el-td.mode-select {
 	background-color: orangered;
 }
 
 /* список */
-.panel-editor-viewport .el-ol,
-.panel-editor-viewport .el-ul {
+.main-editor-viewport .el-ol,
+.main-editor-viewport .el-ul {
 	padding-left: 1.2em;
 }
-.panel-editor-viewport .el-ol .el-ol,
-.panel-editor-viewport .el-ul .el-ul,
-.panel-editor-viewport .el-ol .el-ul,
-.panel-editor-viewport .el-ul .el-ol {
+.main-editor-viewport .el-ol .el-ol,
+.main-editor-viewport .el-ul .el-ul,
+.main-editor-viewport .el-ol .el-ul,
+.main-editor-viewport .el-ul .el-ol {
 	padding-left: 1.2em;
 }
 
 /* маркер */
-.panel-editor-viewport .el-marker {
+.main-editor-viewport .el-marker {
 	float: left;
 	margin-left: -1em;
 	padding: 0 1.2em 0 0;
 }
 
 /*элементы следующие за маркером */
-.panel-editor-viewport .el-marker ~ * {
+.main-editor-viewport .el-marker ~ * {
 	padding-left: 1.6em;
 }
