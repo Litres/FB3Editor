@@ -29,14 +29,19 @@ Ext.define(
 		{
 			var me = this,
 				manager = FBEditor.editor.Manager,
+				editor = me.getEditor(),
 				root,
 				rootNode;
 
-			// надо ли создавать корневой элемент
+			// надо ли создавать корневой элемент, так как при разделении окна содержимое копируется из оригинала
 			if (me.createRootElement)
 			{
 				// инициализируем корневой узел
+
 				root = manager.createRootElement();
+
+				editor.setRootElement(root);
+
 				rootNode = root.getNode(me.id);
 				me.loadData(rootNode);
 

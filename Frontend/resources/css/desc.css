@@ -257,6 +257,22 @@
 .form-desc-editor-body .x-panel-body-default {
 	background: none;
 }
+.form-desc-editor-body .editor-viewport {
+	font-size: 13px;
+	line-height: 150%;
+	white-space: pre-wrap;
+}
+.form-desc-editor-body .editor-viewport main {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+.form-desc-editor-body .editor-viewport .el-p {
+	margin: 0.2em 0;
+}
 
 /* затемнение для конечной части поля ввода */
 .form-desc .input-fade,

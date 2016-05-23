@@ -36,9 +36,10 @@ Ext.define(
 				cmd;
 
 			cmd = Ext.create('FBEditor.editor.command.DeleteCommand', {el: me.getElement()});
+
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory().add(cmd);
 			}
 		},
 

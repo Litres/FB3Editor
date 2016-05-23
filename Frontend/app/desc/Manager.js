@@ -15,6 +15,13 @@ Ext.define(
 		url: 'https://hub.litres.ru/pages/get_fb3_meta/',
 
 		/**
+		 * @property {String[]} Список имен полей редактора текста.
+		 */
+		editorNames: [
+			'history'
+		],
+
+		/**
 		 * @property {String} Адрес загрузки описания.
 		 */
 		loadUrl: null,
@@ -384,6 +391,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает список имен полей редактора текста.
+		 * @return {String[]}
+		 */
+		getEditorNames: function ()
+		{
+			return this.editorNames;
+		},
+
+		/**
 		 * Загружает данные в форму.
 		 * @param {String} xml Данные описания в виде строки xml.
 		 */
@@ -393,8 +409,11 @@ Ext.define(
 				converter = FBEditor.converter.desc.Data,
 				content = Ext.getCmp('panel-main-content'),
 				form = Ext.getCmp('form-desc'),
+				editorNames = me.getEditorNames(),
 				desc,
-				delay;
+				delay,
+				annotation,
+				preamble;
 
 			try
 			{
@@ -410,10 +429,18 @@ Ext.define(
 				me.fb3DescId = desc._id;
 				desc.xml = xml;
 
-				// конвертируем данные для формы
+				// преобразуем данные для полей на основе htmleditor
+				xml = xml.replace(/[\n\r\t]/g, '');
+				annotation = xml.match(/<annotation>(.*?)<\/annotation>/);
+				desc.annotation = annotation ? annotation[1] : '';
+				preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
+				desc.preamble = preamble ? preamble[1] : '';
+
 				//console.log('desc', desc);
+
+				// конвертируем данные для формы
 				desc = converter.toForm(desc);
-				console.log('desc convert', desc);
+				//console.log('desc convert', desc);
 			}
 			catch (e)
 			{
@@ -436,8 +463,36 @@ Ext.define(
 			Ext.defer(
 				function ()
 				{
+					// указываем, что данные вводятся не пользователям, а во время загрузки
 					me.loadingProcess = true;
+
+					// отправляем данные в форму описания
 					form.fireEvent('loadDesc', desc);
+
+					// создаем контент в полях редактора текста
+					Ext.Array.each(
+						editorNames,
+					    function (name)
+					    {
+						    var content,
+							    editor,
+							    data,
+							    reg;
+
+						    // нормализуем значение
+						    reg = new RegExp('(<' + name + '>.*?</' + name + '>)');
+						    data = xml.match(reg);
+						    data = data ? data[1] : '';
+
+						    // получаем элемент контент из строки
+						    content = me.createContent(data);
+
+						    editor = Ext.getCmp('form-desc-' + name);
+						    console.log(name, content, data);
+						    //editor.fireEvent('loadData', content);
+					    }
+					);
+
 					me.loadingProcess = false;
 
 					if (FBEditor.accessHub)
@@ -458,6 +513,21 @@ Ext.define(
 				},
 			    delay
 			);
+		},
+
+		/**
+		 * Создает и возвращает контент из описания загруженной книги.
+		 * @param {String} data Исходный xml элемента описания.
+		 * @return {FBEditor.editor.element.AbstractElement} Контент.
+		 */
+		createContent: function (data)
+		{
+			var me = this,
+				content,
+				creator,
+				xsl;
+
+			return content;
 		},
 
 		/**

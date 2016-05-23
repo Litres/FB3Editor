@@ -41,6 +41,7 @@ Ext.define(
 		onCreateElement: function (sel, opts)
 		{
 			var me = this,
+				el,
 				cmd,
 				name,
 				node;
@@ -64,7 +65,8 @@ Ext.define(
 
 					if (cmd.execute())
 					{
-						FBEditor.editor.HistoryManager.add(cmd);
+						el = node.getElement();
+						me.getHistory(el).add(cmd);
 					}
 				}
 			}
@@ -78,6 +80,7 @@ Ext.define(
 		createRangeElement: function (sel, opts)
 		{
 			var me = this,
+				el,
 				name,
 				cmd;
 
@@ -87,9 +90,11 @@ Ext.define(
 				// если элемент прошел проверку, то создаем его
 				name = me.getNameElement();
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateRangeCommand', {sel: sel, opts: opts});
+
 				if (cmd.execute())
 				{
-					FBEditor.editor.HistoryManager.add(cmd);
+					el = sel.getRangeAt(0).startContainer.getElement();
+					me.getHistory(el).add(cmd);
 				}
 			}
 		},
@@ -102,7 +107,8 @@ Ext.define(
 		 */
 		onInsertElement: function (node, isEmpty)
 		{
-			var cmd,
+			var me = this,
+				cmd,
 				name,
 				el;
 
@@ -121,7 +127,7 @@ Ext.define(
 
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory(el).add(cmd);
 			}
 		},
 
@@ -376,16 +382,20 @@ Ext.define(
 
 		onKeyDownCtrlZ: function (e)
 		{
+			var me = this;
+
 			e.preventDefault();
-			FBEditor.editor.HistoryManager.undo();
+			me.getHistory().undo();
 
 			return false;
 		},
 
 		onKeyDownCtrlShiftZ: function (e)
 		{
+			var me = this;
+
 			e.preventDefault();
-			FBEditor.editor.HistoryManager.redo();
+			me.getHistory().redo();
 
 			return false;
 		},
@@ -588,13 +598,14 @@ Ext.define(
 		 */
 		removeNodes: function ()
 		{
-			var cmd;
+			var me = this,
+				cmd;
 
 			cmd = Ext.create('FBEditor.editor.command.RemoveNodesCommand');
 
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory().add(cmd);
 			}
 		},
 
@@ -709,6 +720,23 @@ Ext.define(
 			}
 
 			return node;
+		},
+
+		/**
+		 * @private
+		 * Возвращает менеджер истории.
+		 * @param {FBEditor.editor.element.AbstractElement} [element] Элемент.
+		 * @return {FBEditor.editor.History}
+		 */
+		getHistory: function (element)
+		{
+			var me = this,
+				el = element || me.getElement(),
+				history;
+
+			history = el.getHistory();
+
+			return history;
 		}
 	}
 );

@@ -35,6 +35,22 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает менеджер истории редактора текста.
+		 * @param {FBEditor.editor.element.AbstractElement} el Эемент.
+		 * @return {FBEditor.editor.History}
+		 */
+		getHistory: function (el)
+		{
+			var editor,
+				history;
+
+			editor = el.getEditor();
+			history = editor.getHistory();
+
+			return history;
+		},
+
+		/**
 		 * Проверяет по схеме элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
 		 * @param {Boolean} [debug] Нужны ли отладочные сообщения.

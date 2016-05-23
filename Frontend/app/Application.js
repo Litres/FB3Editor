@@ -44,6 +44,8 @@ Ext.define(
 		requires: [
 			'FBEditor.command.HistoryCommand',
 			'FBEditor.desc.Manager',
+			'FBEditor.editor.CreateContent',
+			'FBEditor.editor.History',
 			'FBEditor.editor.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
@@ -52,8 +54,8 @@ Ext.define(
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',
 			'FBEditor.webworker.Manager',
-			'FBEditor.xsl.Body',
-			'FBEditor.xsd.Desc'
+			'FBEditor.xsd.Desc',
+			'FBEditor.xsl.Editor'
 		],
 	    stores: [],
 		listen: {

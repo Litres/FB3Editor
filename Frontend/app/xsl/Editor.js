@@ -1,11 +1,11 @@
 /**
- * Таблица преобразований XSLT для тела книги.
+ * Таблица преобразований XSLT для получения промежуточной строки, из которой будет создан контент редактора текста.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.xsl.Body',
+	'FBEditor.xsl.Editor',
 	{
 		singleton: true,
 
@@ -16,7 +16,7 @@ Ext.define(
 		getXsl: function ()
 		{
 			var xsl;
-			
+
 			xsl = '\
 <?xml version="1.0" encoding="UTF-8"?>\
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">\

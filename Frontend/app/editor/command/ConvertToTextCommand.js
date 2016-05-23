@@ -121,7 +121,7 @@ Ext.define(
 			catch (e)
 			{
 				Ext.log({level: 'warn', msg: e, dump: e});
-				FBEditor.editor.HistoryManager.removeNext();
+				me.getHistory(els.parent).removeNext();
 			}
 
 			return res;

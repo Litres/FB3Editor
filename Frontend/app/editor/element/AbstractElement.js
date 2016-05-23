@@ -18,6 +18,7 @@ Ext.define(
 		mixins: {
 			observable: 'Ext.util.Observable'
 		},
+
 		listeners: {
 			splitElement: function ()
 			{
@@ -826,7 +827,7 @@ Ext.define(
 		getRoot: function ()
 		{
 			var el = this,
-				parent = el.parent;
+				parent = el.isRoot ? el : el.parent;
 
 			while (parent && !parent.isRoot)
 			{
@@ -942,6 +943,36 @@ Ext.define(
 		getSelection: function ()
 		{
 			return this.selection;
+		},
+
+		/**
+		 * Возвращает редактор текста, которому принадлежит элемент.
+		 * @return {FBEditor.editor.view.Editor}
+		 */
+		getEditor: function ()
+		{
+			var me = this,
+				root = me.getRoot(),
+				editor;
+
+			editor = root.getEditor();
+
+			return editor;
+		},
+
+		/**
+		 * Возвращает менеджер истории редактора текста.
+		 * @return {FBEditor.editor.History}
+		 */
+		getHistory: function ()
+		{
+			var me = this,
+				editor = me.getEditor(),
+				history;
+
+			history = editor.getHistory();
+
+			return history;
 		},
 
 		/**

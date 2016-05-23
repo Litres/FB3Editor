@@ -10,6 +10,13 @@ Ext.define(
 		extend: 'FBEditor.editor.view.Editor',
 
 		xtype: 'form-desc-editor-body',
-		cls: 'form-desc-editor-body'
+		cls: 'form-desc-editor-body',
+
+		height: 170,
+		resizable: {
+			handles: 's',
+			minHeight: 100,
+			pinned: true
+		}
 	}
 );

@@ -13,21 +13,7 @@ Ext.define(
 		toForm: function (data)
 		{
 			var me = this,
-				xml = data.xml,
-				annotation,
-				preamble,
-				history,
 				d;
-
-
-			// преобразуем данные для полей на основе htmleditor
-			xml = xml.replace(/[\n\r\t]/g, '');
-			annotation = xml.match(/<annotation>(.*?)<\/annotation>/);
-			data.annotation = annotation ? annotation[1] : '';
-			preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
-			data.preamble = preamble ? preamble[1] : '';
-			history = xml.match(/<history>(.*?)<\/history>/);
-			data.history = history ? history[1] : '';
 
 			d = me.normalize(data);
 			d = me.convertPeriodical(d);

@@ -29,6 +29,12 @@ Ext.define(
 		 */
 		isRoot: true,
 
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.Editor} Редактор текста, которому принадлежит элемент.
+		 */
+		//editor: null,
+
 		setAttributesHtml: function (element)
 		{
 			var me = this,
@@ -48,6 +54,20 @@ Ext.define(
 			}
 
 			return el;
+		},
+
+		getEditor: function ()
+		{
+			return this.editor;
+		},
+
+		/**
+		 * Устанавливает связь элемента с редактором.
+		 * @param {FBEditor.editor.view.Editor} editor Редактор текста, которому принадлежит элемент.
+		 */
+		setEditor: function (editor)
+		{
+			this.editor = editor;
 		}
 	}
 );

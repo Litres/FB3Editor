@@ -16,12 +16,7 @@ Ext.define(
 		xtype: 'form-desc-editor',
 		cls: 'form-desc-editor',
 
-		height: 200,
-		resizable: {
-			handles: 's',
-			minHeight: 100,
-			pinned: true
-		},
+		layout: 'fit',
 		bodyStyle: {
 			background: 'none',
 			padding: '5px'
@@ -40,8 +35,7 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'form-desc-editor-body',
-					rootElementName: me.rootElementName,
-					flex: 1
+					rootElementName: me.rootElementName
 				}
 			];
 

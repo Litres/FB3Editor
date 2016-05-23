@@ -24,14 +24,19 @@ Ext.define(
 		{
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
-				cmd,
-				data = {};
+				data = {},
+				el = me.element,
+				history,
+				cmd;
 
-			data.el = me.element;
+			data.el = el;
 			cmd = bridge.Ext.create('FBEditor.editor.command.DeleteCommand', data);
+
 			if (cmd.execute())
 			{
-				bridge.FBEditor.editor.HistoryManager.add(cmd);
+				history = el.getHistory();
+				history.add(cmd);
+				//bridge.FBEditor.editor.HistoryManager.add(cmd);
 			}
 		}
 	}

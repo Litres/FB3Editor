@@ -18,18 +18,16 @@ Ext.define(
 
 		layout: 'fit',
 
-		/**
-		 * @private
-		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент.
-		 */
-		rootElement: null,
-
 		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+				editor = me.getEditor();
 
 			me.callParent(me);
 			me.createRoot();
+
+			// устанавливаем связь корневого элемента с редактором
+			editor.getRootElement().setEditor(editor);
 		},
 
 		/**
@@ -47,7 +45,9 @@ Ext.define(
 
 			rootElementName = editor.rootElementName;
 			root = factory.createElement(rootElementName);
-			me.rootElement = root;
+
+			editor.setRootElement(root);
+
 			rootNode = root.getNode(me.id);
 			me.loadData(rootNode);
 
@@ -100,21 +100,14 @@ Ext.define(
 		getXml: function ()
 		{
 			var me = this,
-				root = me.getRootElement(),
+				editor = me.getEditor(),
+				root,
 				xml;
 
+			root = editor.getRootElement();
 			xml = root.getXml();
 
 			return xml;
-		},
-
-		/**
-		 * Возвращает корневой элемент.
-		 * @return {FBEditor.editor.element.root.RootElement}
-		 */
-		getRootElement: function ()
-		{
-			return this.rootElement;
 		},
 
 		/**

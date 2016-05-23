@@ -10,8 +10,7 @@ Ext.define(
 		singleton: 'true',
 		requires: [
 			'FBEditor.editor.schema.Schema',
-			'FBEditor.editor.Factory',
-			'FBEditor.editor.HistoryManager'
+			'FBEditor.editor.Factory'
 		],
 
 		selectCls: 'mode-select',
@@ -47,14 +46,15 @@ Ext.define(
 		processSyncButtons: false,
 
 		/**
-		 * @property {Ext.button.Button[]} Кнопки элементов.
-		 */
-		buttons: [],
-
-		/**
 		 * @property {String} Имя пустого элемента.
 		 */
 		emptyElement: 'br',
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.Editor} Редактор текста.
+		 */
+		editor: null,
 
 		/**
 		 * @private
@@ -103,28 +103,27 @@ Ext.define(
 		},
 
 		/**
-		 * Создает контент из загруженной книги.
-		 * @param {String} content Исходный объект тела книги в виде строки, которую необходимо преобразовать
-		 * в настоящий объект.
+		 * Создает контент из тела загруженной книги.
+		 * @param {String} content Исходный xml тела книги.
 		 */
 		createContent: function (content)
 		{
 			var me = this,
-				ce,
-				ct;
+				editor,
+				creator,
+				xsl;
 
-			// сокращенные формы методов создания элементов
-			ce = function (el, attr, ch)
-			{
-				return FBEditor.editor.Factory.createElement(el, attr, ch);
-			};
-			ct = function (text)
-			{
-				return FBEditor.editor.Factory.createElementText(text);
-			};
+			// экранируем слэш
+			content = content.replace(/\\/g, "\\\\");
 
-			// сбрасываем историю
-			FBEditor.editor.HistoryManager.clear();
+			// экранируем одинарную кавычку
+			content = content.replace(/'/g, "\\'");
+
+			//console.log('content', content);
+
+			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
+			xsl = FBEditor.xsl.Editor.getXsl();
+			content = FBEditor.util.xml.Jsxml.trans(content, xsl);
 
 			//console.log(content);
 
@@ -136,14 +135,52 @@ Ext.define(
 
 			//console.log(content);
 
-			// преобразование строки в объект
-			eval('me.content = ' + content);
+			// преобразовываем строку в элемент
+			creator = Ext.create('FBEditor.editor.CreateContent', content);
+			me.content = creator.getContent();
 
-			// загружаем контент
-			Ext.getCmp('main-editor').fireEvent('loadData');
+			editor = me.getEditor();
+
+			// устанавливаем связь корневого элемента с редактором
+			me.content.setEditor(editor);
+
+			// сбрасываем историю редактора текста
+			me.getHistory().clear();
+
+			// загружаем контент в редактор
+			editor.fireEvent('loadData');
 
 			// обновляем дерево навигации по тексту
 			me.updateTree();
+		},
+
+		/**
+		 * Возвращает редактор текста.
+		 * @return {FBEditor.editor.view.Editor}
+		 */
+		getEditor: function ()
+		{
+			var me = this,
+				editor;
+
+			editor = me.editor || Ext.getCmp('main-editor');
+			me.editor = editor;
+
+			return editor;
+		},
+
+		/**
+		 * Возвращает менеджер истории.
+		 * @return {FBEditor.editor.History}
+		 */
+		getHistory: function ()
+		{
+			var me = this,
+				editor;
+
+			editor = me.getEditor();
+
+			return editor.getHistory();
 		},
 
 		/**
@@ -401,12 +438,14 @@ Ext.define(
 		 */
 		deleteWrapper: function (name, opts)
 		{
-			var cmd;
+			var me = this,
+				cmd;
 
 			cmd = Ext.create('FBEditor.editor.command.' + name + '.DeleteWrapperCommand', {opts: opts});
+
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory().add(cmd);
 			}
 		},
 

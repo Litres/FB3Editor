@@ -27,7 +27,7 @@ Ext.define(
 
 				if (cmd.execute())
 				{
-					//FBEditor.editor.HistoryManager.add(cmd);
+					//
 				}
 			}
 

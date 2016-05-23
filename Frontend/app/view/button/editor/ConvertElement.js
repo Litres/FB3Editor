@@ -24,9 +24,10 @@ Ext.define(
 
 			data.el = me.element;
 			cmd = bridge.Ext.create('FBEditor.editor.command.ConvertToTextCommand', data);
+
 			if (cmd.execute())
 			{
-				//bridge.FBEditor.editor.HistoryManager.add(cmd);
+				//
 			}
 		},
 

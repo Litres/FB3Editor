@@ -32,7 +32,7 @@ Ext.define(
 			cmd = Ext.create('FBEditor.editor.command.' + name + '.SplitNodeCommand');
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory().add(cmd);
 			}
 
 			return false;
@@ -99,9 +99,10 @@ Ext.define(
 
 				// соединяем параграф со следующим
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinNextNodeCommand');
+
 				if (cmd.execute())
 				{
-					FBEditor.editor.HistoryManager.add(cmd);
+					me.getHistory().add(cmd);
 				}
 			}
 			else
@@ -182,9 +183,10 @@ Ext.define(
 
 				// соединяем параграф с предыдущим
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinPrevNodeCommand');
+
 				if (cmd.execute())
 				{
-					FBEditor.editor.HistoryManager.add(cmd);
+					me.getHistory().add(cmd);
 				}
 			}
 			else
@@ -270,9 +272,10 @@ Ext.define(
 			//console.log('clipboard', htmlString);
 			html = parser.parseFromString(htmlString, 'text/html');
 			cmd = Ext.create('FBEditor.editor.command.PasteCommand', {html: html});
+
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory().add(cmd);
 			}
 
 		},
@@ -288,9 +291,10 @@ Ext.define(
 				cmd;
 
 			cmd = Ext.create('FBEditor.editor.command.' + name + '.RemoveRangeNodesCommand');
+
 			if (cmd.execute())
 			{
-				FBEditor.editor.HistoryManager.add(cmd);
+				me.getHistory().add(cmd);
 			}
 		},
 

@@ -46,6 +46,8 @@ Ext.define(
 						load: function (data)
 						{
 							var resourceManager = FBEditor.resource.Manager,
+								editorManager = FBEditor.editor.Manager,
+								descManager = FBEditor.desc.Manager,
 								structure,
 								thumb,
 								meta,
@@ -55,7 +57,6 @@ Ext.define(
 								images,
 								contentBody,
 								contentTypes,
-								xslBody,
 								fileName;
 
 							try
@@ -85,23 +86,12 @@ Ext.define(
 								//console.log('images', images);
 								//console.log('contentBody', contentBody);
 
-								// экранируем слэш
-								contentBody = contentBody.replace(/\\/g, "\\\\");
-
-								// экранируем одинарную кавычку
-								contentBody = contentBody.replace(/'/g, "\\'");
-
-								//console.log('contentBody', contentBody);
-
-								xslBody = FBEditor.xsl.Body.getXsl();
-								contentBody = FBEditor.util.xml.Jsxml.trans(contentBody, xslBody);
-
 								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
 								Ext.suspendLayouts();
 
 								// загружаем описание в форму
-								FBEditor.desc.Manager.loadUrl = null;
-								FBEditor.desc.Manager.loadDataToForm(desc);
+								descManager.loadUrl = null;
+								descManager.loadDataToForm(desc);
 
 								if (!resourceManager.checkThumbInResources(thumb))
 								{
@@ -109,8 +99,12 @@ Ext.define(
 									thumb.moveTo(resourceManager.getDefaultThumbPath());
 									images.push(thumb);
 								}
+
 								resourceManager.load(images);
 								resourceManager.setCover(thumb.getFileName());
+
+								editorManager.resetFocus();
+								editorManager.createContent(contentBody);
 							}
 							catch (e)
 							{
@@ -130,9 +124,6 @@ Ext.define(
 									}
 								);
 							}
-
-							FBEditor.editor.Manager.resetFocus();
-							FBEditor.editor.Manager.createContent(contentBody);
 
 							// фокус на дерево текста
 							Ext.getCmp('panel-body-navigation').selectRoot();

@@ -1,14 +1,12 @@
 /**
- * Менеджер упрпавления историей редактора тела книги.
+ * Менеджер упрпавления историей редактора текста.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	//'FBEditor.editor.HistoryManager',
+	'FBEditor.editor.History',
 	{
-		singleton: 'true',
-
 		/**
 		 * @property {Array} Стек команд.
 		 */
@@ -53,6 +51,7 @@ Ext.define(
 				data = me.data;
 
 			console.log('remove cmd');
+
 			if (me.pos !== -1)
 			{
 				data.splice(me.pos, 1);
@@ -69,6 +68,7 @@ Ext.define(
 				data = me.data;
 
 			console.log('remove next cmd');
+
 			if (me.pos + 1 < data.length)
 			{
 				data.splice(me.pos + 1, 1);

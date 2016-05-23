@@ -60,6 +60,8 @@ Ext.define(
 				cmdOpts = view.cmdOpts,
 				manager = FBEditor.editor.Manager,
 				node,
+				el,
+				history,
 				range,
 				cmd;
 
@@ -72,7 +74,10 @@ Ext.define(
 
 				if (cmd.execute())
 				{
-					FBEditor.editor.HistoryManager.add(cmd);
+					el = node.getElement();
+					history = el.getHistory();
+
+					history.add(cmd);
 				}
 			}
 		}
