@@ -35,6 +35,33 @@ Ext.define(
 			me.regexText = me.translateText.widthError;
 			me.callParent(arguments);
 		},
+		
+		setValue: function (val)
+		{
+			var me = this;
+			
+			if (val)
+			{
+				var tmp = val.match(/^(\d+(\.\d+)?)(em|ex|%|mm)?$/),
+					form = me.up('form');
+
+				if (tmp !== null)
+				{
+					arguments[0] = tmp[1];
+
+					if (tmp[3])
+					{
+						form.down('combobox[name=' + me.getName() + '-size]').setValue(tmp[3]);
+					}
+				}
+				else
+				{
+					arguments[0] = val;
+				}
+			}
+
+			me.callParent(arguments);
+		},
 
 		getSubmitValue: function ()
 		{
