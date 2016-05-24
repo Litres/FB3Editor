@@ -20,6 +20,7 @@ Ext.define(
 
 			if (fieldValue == '')
 			{
+				form.fireEvent('change');
 				return;
 			}
 
