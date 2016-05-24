@@ -5,7 +5,7 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.body.editor.sizeselect.Store',
+	'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.Store',
 	{
 		extend: 'Ext.data.Store',
 		sorters: [

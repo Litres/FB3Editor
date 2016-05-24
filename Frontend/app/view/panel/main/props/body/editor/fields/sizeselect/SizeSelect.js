@@ -5,14 +5,14 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.body.editor.sizeselect.SizeSelect',
+	'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.SizeSelect',
 	{
 		extend: 'Ext.form.FieldContainer',
 		requires: [
-			'FBEditor.view.panel.main.props.body.editor.sizeselect.Input',
-			'FBEditor.view.panel.main.props.body.editor.sizeselect.Store'
+			'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.input.Input',
+			'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.Store'
 		],
-		xtype: 'panel-props-body-editor-sizeselect',
+		xtype: 'panel-props-body-editor-fields-sizeselect',
 		layout: {
 			type: 'hbox',
 			pack: 'start',
@@ -23,11 +23,12 @@ Ext.define(
 		{
 			var me = this,
 				store;
-			store = Ext.create('FBEditor.view.panel.main.props.body.editor.sizeselect.Store');
+
+			store = Ext.create('FBEditor.view.panel.main.props.body.editor.fields.sizeselect.Store');
 
 			me.items = [
 				{
-					xtype: 'panel-props-body-editor-sizeselect-input',
+					xtype: 'panel-props-body-editor-fields-sizeselect-input',
 					width: 53,
 					name: me.name
 				},

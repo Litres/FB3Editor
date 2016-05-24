@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 		requires: [
-			'FBEditor.view.panel.main.props.body.editor.sizeselect.SizeSelect'
+			'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.SizeSelect'
 		],
 		xtype: 'panel-props-body-editor-img',
 
@@ -64,19 +64,19 @@ Ext.define(
 					anchor: '100%'
 				},
 				{
-					xtype: 'panel-props-body-editor-sizeselect',
+					xtype: 'panel-props-body-editor-fields-sizeselect',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.width,
 					name: me.prefixName + 'width'
 				},
 				{
-					xtype: 'panel-props-body-editor-sizeselect',
+					xtype: 'panel-props-body-editor-fields-sizeselect',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.minWidth,
 					name: me.prefixName + 'min-width'
 				},
 				{
-					xtype: 'panel-props-body-editor-sizeselect',
+					xtype: 'panel-props-body-editor-fields-sizeselect',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.maxWidth,
 					name: me.prefixName + 'max-width'
