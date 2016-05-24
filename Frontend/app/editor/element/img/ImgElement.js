@@ -90,19 +90,12 @@ Ext.define(
 
 			style = me.callParent();
 			style += style ? ' ' : '';
-			style += attributes.width ? 'width: ' + me.addAttributeSize('width') + '; ' : '';
-			style += attributes['min-width'] ? 'min-width: ' + me.addAttributeSize('min-width') + '; ' : '';
-			style += attributes['max-width'] ? 'max-width: ' + me.addAttributeSize('max-width') + '; ' : '';
+			style += attributes.width ? 'width: ' + attributes['width'] + '; ' : '';
+			style += attributes['min-width'] ? 'min-width: ' + attributes['min-width'] + '; ' : '';
+			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
 			me.style = style;
 
 			return style;
-		},
-		
-		addAttributeSize: function (index)
-		{
-			var me = this,
-				attributes = me.attributes;
-			return attributes[index] + attributes[index + '-size'];
 		},
 
 		getData: function ()

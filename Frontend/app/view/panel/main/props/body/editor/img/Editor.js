@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.main.props.body.editor.img.Editor',
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
+		requires: [
+			'FBEditor.view.panel.main.props.body.editor.sizeselect.SizeSelect'
+		],
 		xtype: 'panel-props-body-editor-img',
 
 		/**
@@ -20,29 +23,12 @@ Ext.define(
 			alt: 'Альтернативный текст',
 			width: 'Ширина',
 			minWidth: 'Мин. ширина',
-			maxWidth: 'Макс. ширина',
-			widthError: 'По шаблону \d+(\.\d+)?(em|ex|%|mm). Например: 1.5em'
+			maxWidth: 'Макс. ширина'
 		},
 
 		initComponent: function ()
 		{
-			var me = this,
-				store;
-
-			store = {
-				sizeStore: Ext.create(
-					'Ext.data.Store',
-					{
-						fields: ['value', 'text'],
-						data: [
-							{ value: 'em', text: 'em' },
-							{ value: 'ex', text: 'ex' },
-							{ value: '%', text: '%' },
-							{ value: 'mm', text: 'mm' }
-						]
-					}
-				)
-			};
+			var me = this;
 
 			me.items = [
 				{
@@ -78,171 +64,26 @@ Ext.define(
 					anchor: '100%'
 				},
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'panel-props-body-editor-sizeselect',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.width,
-					layout: {
-						type: 'hbox',
-						pack: 'start',
-						align: 'stretch'
-					},
-					defaults: {
-						checkChangeBuffer: 200,
-						listeners: {
-							change: function () {
-								this.up('form').fireEvent('change');
-							}
-						}
-					},
-					style: {
-						marginTop: '15px'
-					},
-					items: [
-						{
-							xtype: 'textfield',
-							width: 53,
-							name: me.prefixName + 'width',
-							regex: /^\d+(\.\d+)?/,
-							regexText: me.translateText.widthError,
-							listeners: {
-								blur: function () {
-									me.stripWidthInput(this.id);
-								},
-								change: function () {
-									this.up('form').fireEvent('change');
-								}
-							}
-						},
-						{
-							xtype: 'combo',
-							width: 60,
-							name: me.prefixName + 'width-size',
-							store: store.sizeStore,
-							queryMode: 'local',
-							valueField: 'value',
-							displayField: 'text',
-							value: 'em',
-							editable: false
-						}
-					]
+					name: me.prefixName + 'width'
 				},
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'panel-props-body-editor-sizeselect',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.minWidth,
-					layout: {
-						type: 'hbox',
-						pack: 'start',
-						align: 'stretch'
-					},
-					defaults: {
-						xtype: 'textfield',
-						checkChangeBuffer: 200,
-						listeners: {
-							change: function () {
-								this.up('form').fireEvent('change');
-							}
-						}
-					},
-					items: [
-						{
-							xtype: 'textfield',
-							width: 53,
-							name: me.prefixName + 'min-width',
-							regex: /^\d+(\.\d+)?/,
-							regexText: me.translateText.widthError,
-							listeners: {
-								blur: function () {
-									me.stripWidthInput(this.id);
-								},
-								change: function () {
-									this.up('form').fireEvent('change');
-								}
-							}
-						},
-						{
-							xtype: 'combo',
-							width: 60,
-							name: me.prefixName + 'min-width-size',
-							store: store.sizeStore,
-							queryMode: 'local',
-							valueField: 'value',
-							displayField: 'text',
-							value: 'em',
-							editable: false
-						}
-					]
+					name: me.prefixName + 'min-width'
 				},
 				{
-					xtype: 'fieldcontainer',
+					xtype: 'panel-props-body-editor-sizeselect',
 					labelAlign: 'left',
 					fieldLabel: me.translateText.maxWidth,
-					layout: {
-						type: 'hbox',
-						pack: 'start',
-						align: 'stretch'
-					},
-					defaults: {
-						xtype: 'textfield',
-						checkChangeBuffer: 200,
-						listeners: {
-							change: function () {
-								this.up('form').fireEvent('change');
-							}
-						}
-					},
-					items: [
-						{
-							xtype: 'textfield',
-							width: 53,
-							name: me.prefixName + 'max-width',
-							regex: /^\d+(\.\d+)?/,
-							regexText: me.translateText.widthError,
-							listeners: {
-								blur: function () {
-									me.stripWidthInput(this.id);
-								},
-								change: function () {
-									this.up('form').fireEvent('change');
-								}
-							}
-						},
-						{
-							xtype: 'combo',
-							width: 60,
-							name: me.prefixName + 'max-width-size',
-							store: store.sizeStore,
-							queryMode: 'local',
-							valueField: 'value',
-							displayField: 'text',
-							value: 'em',
-							editable: false
-						}
-					]
+					name: me.prefixName + 'max-width'
 				}
 			];
 
 			me.callParent(arguments);
-		},
-
-		stripWidthInput: function (id)
-		{
-			var me = this;
-			var form = me.getForm();
-			var field = form.findField(id);
-			var fieldValue = field.getValue();
-			if (fieldValue == '') {
-				return;
-			}
-			var tmp = fieldValue.match(/^(\d+(\.\d+)?)(em|ex|%|mm)$/);
-			if (tmp === null) {
-				tmp = fieldValue.match(/^(\d+(\.\d+)?)/);
-			} else {
-				form.findField(field.getName() + '-size').setValue(tmp[3]);
-			}
-			if (tmp !== null) {
-				field.setValue(tmp[1]);
-			}
 		},
 
 		updateData: function (data, isLoad)
