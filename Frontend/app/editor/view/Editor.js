@@ -9,7 +9,6 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
-			'FBEditor.editor.History',
 			'FBEditor.editor.Manager',
 			'FBEditor.editor.view.EditorController',
 			'FBEditor.editor.view.viewport.Viewport'
@@ -41,27 +40,12 @@ Ext.define(
 		 */
 		//manager: null,
 
-		/**
-		 * @private
-		 * @property {FBEditor.editor.History} История редактора.
-		 */
-		//history: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент редактора.
-		 */
-		//rootElement: null,
-
 		afterRender: function ()
 		{
 			var me = this;
 
 			// создаем менеджер
 			me.createManager();
-
-			// создаем историю
-			me.history = Ext.create('FBEditor.editor.History');
 
 			// инициализируем вид редактора
 			me.initEditor();
@@ -106,8 +90,8 @@ Ext.define(
 
 			root = manager.createRootElement(me.rootElementName);
 
-			// устанавливаем связи с корневым элементом
-			me.setRootElement(root);
+			// устанавливаем связь с корневым элементом
+			root.setEditor(me);
 		},
 
 		/**
@@ -117,19 +101,20 @@ Ext.define(
 		getValue: function ()
 		{
 			var me = this,
-				viewport = me.getViewport(),
+				manager = me.getManager(),
 				root,
-				name,
-				val;
+				xml;
 
-			root = me.getRootElement();
-			name = root.getName();
-			val = viewport.getXml();
+			// корневой элемент
+			root = manager.getContent();
 
-			// преобразуем пустой элемент
-			val = val.replace('<' + name + '></' + name + '>', '');
+			// получаем xml-строку
+			xml = root.getXml();
 
-			return val;
+			// вырезаем корневой элемент, оставляя только его содержимое
+			xml = xml.replace(/^<.*?>(.*)<\/.*?>$/g, '$1');
+
+			return xml;
 		},
 
 		/**
@@ -169,28 +154,10 @@ Ext.define(
 		 */
 		getHistory: function ()
 		{
-			return this.history;
-		},
+			var me = this,
+				manager = me.getManager();
 
-		/**
-		 * Возвращает корневой элемент.
-		 * @return {FBEditor.editor.element.root.RootElement}
-		 */
-		getRootElement: function ()
-		{
-			return this.rootElement;
-		},
-
-		/**
-		 * Устанавилвает связь с корневым элементом.
-		 * @param {FBEditor.editor.element.root.RootElement} root Корневой элемент.
-		 */
-		setRootElement: function (root)
-		{
-			var me = this;
-
-			me.rootElement = root;
-			root.setEditor(me);
+			return manager.getHistory();
 		}
 	}
 );

@@ -34,39 +34,35 @@ Ext.define(
 				me.oldValue = me.oldValue || data.oldValue;
 				me.offset = me.offset ? me.offset : offset;
 
-				if (data.saveRange)
+				nodes.node = data.saveRange ? data.saveRange.startNode : data.node;
+				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
+				data.node = nodes.node;
+
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
+
+				if (els.node.isEmpty())
 				{
-					nodes.node = data.saveRange.startNode;
-					els.node = nodes.node.getElement();
+					// заменяем пустой элемент на текстовый
+					els.text = factory.createElementText('');
+					nodes.text = els.text.getNode(nodes.node.viewportId);
 
-					manager = els.node.getManager();
-					manager.setSuspendEvent(true);
+					els.parent.replace(els.text, els.node);
+					nodes.parent.replaceChild(nodes.text, nodes.node);
 
-					data.node = nodes.node;
-
-					nodes.parent = nodes.node.parentNode;
-					els.parent = nodes.parent.getElement();
-
-					if (els.node.isEmpty())
-					{
-						// заменяем пустой элемент на текстовый
-						els.text = factory.createElementText('');
-						nodes.text = els.text.getNode(nodes.node.viewportId);
-
-						els.parent.replace(els.text, els.node);
-						nodes.parent.replaceChild(nodes.text, nodes.node);
-
-						data.node = nodes.text;
-					}
+					data.node = nodes.text;
 				}
 
 				node = data.node;
 				text = me.newValue;
 				viewportId = node.viewportId;
 
-				//console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
+				console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
 
-				//node.nodeValue = text;
 				el = node.getElement();
 
 				manager = el.getManager();
@@ -75,17 +71,6 @@ Ext.define(
 				el.setText(text);
 
 				el.sync(viewportId);
-
-				manager.setSuspendEvent(false);
-
-				// устанавливаем курсор
-				/*manager.setCursor(
-					{
-						startNode: node,
-						startOffset: me.offset,
-						focusElement: node.getElement()
-					}
-				);*/
 
 				res = true;
 			}

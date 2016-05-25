@@ -13,6 +13,14 @@ Ext.define(
 		cls: 'el-desc-root',
 
 		/**
+		 * Наобходимые аттрибуты для проверки по схеме.
+		 */
+		defaultAttributes: {
+			'xmlns:l': 'http://www.w3.org/1999/xlink',
+			'xmlns': 'http://www.fictionbook.org/FictionBook3/description'
+		},
+
+		/**
 		 * @property {Boolean} Является ли элементом описания книги.
 		 */
 		isDesc: true,
@@ -26,6 +34,14 @@ Ext.define(
 
 			// пустой ли элемент
 			xml = me.isEmpty() ? xml.replace('<br/>', '') : xml;
+
+			if (me.first().isEmpty())
+			{
+				// первым элементом не может быть br согласно схеме
+				xml = xml.replace(/<br\/>/, '<p>&#160;</p>');
+			}
+
+			console.log('xml', xml);
 
 			return xml;
 		},

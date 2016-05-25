@@ -31,6 +31,7 @@ Ext.define(
 			var me = this,
 				n = name,
 				opts = options,
+				schemaName = opts.schemaName.replace(/:/g, '.'),
 				nameEl,
 				el,
 				cls;
@@ -43,7 +44,7 @@ Ext.define(
 			{
 				n = n.replace(/-([a-z])/g, '$1');
 				n = Ext.String.capitalize(n);
-				nameEl = 'FBEditor.editor.schema' + opts.counter + '.' + n + 'Element';
+				nameEl = 'FBEditor.editor.schema.' + schemaName + '.' + n + 'Element';
 
 				if (!opts.extend)
 				{
@@ -51,11 +52,12 @@ Ext.define(
 				}
 				else
 				{
-					opts.extend = 'FBEditor.editor.schema' + opts.counter + '.body.' + opts.extend.substring(5);
+					opts.extend = 'FBEditor.editor.schema.' + schemaName + '.extend.' + opts.extend.substring(5);
 				}
 
 				//console.log(n);
 
+				// класс
 				cls = {
 					constructor: function ()
 					{
@@ -94,7 +96,7 @@ Ext.define(
 
 							    if (item.type && /:/.test(item.type))
 							    {
-								    typeCls = 'FBEditor.editor.schema' + opts.counter + '.body.' + item.type.substring(5);
+								    typeCls = 'FBEditor.editor.schema.' + schemaName + '.extend.' + item.type.substring(5);
 								    item.type = Ext.create(typeCls);
 								    //console.log(name, item);
 							    }
@@ -130,6 +132,7 @@ Ext.define(
 				deferredTypes = me._deferredTypes,
 				n = name,
 				opts = Ext.clone(options),
+				schemaName = opts.schemaName.replace(/:/g, '.'),
 				nameType;
 
 			if (Ext.isEmpty(n))
@@ -140,12 +143,12 @@ Ext.define(
 			try
 			{
 				n = n.replace(/-([a-z])/g, '$1');
-				nameType = 'FBEditor.editor.schema' + opts.counter + '.body.' + n;
-				//console.log(n);
+				nameType = 'FBEditor.editor.schema.' + schemaName + '.extend.' + n;
+				//console.log('def', nameType);
 
 				if (opts.extend)
 				{
-					opts.extend = 'FBEditor.editor.schema' + opts.counter + '.body.' + opts.extend.substring(5);
+					opts.extend = 'FBEditor.editor.schema.' + schemaName + '.extend.' + opts.extend.substring(5);
 
 					if (!Ext.Array.contains(definedTypes, opts.extend))
 					{

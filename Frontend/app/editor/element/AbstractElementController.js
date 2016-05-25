@@ -488,22 +488,22 @@ Ext.define(
 				previousSibling = node.previousSibling;
 				parentEl = relNode.getElement();
 
-				//console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
+				console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
 
 				if (nextSibling)
 				{
 					nextSiblingEl = nextSibling.getElement();
-					//console.log('insert, nextSibling', nextSibling);
+					console.log('insert, nextSibling', nextSibling);
 					parentEl.insertBefore(newEl, nextSiblingEl);
 				}
 				else if (previousSibling)
 				{
 					parentEl.add(newEl);
-					//console.log('add, previousSibling', previousSibling);
+					console.log('add, previousSibling', previousSibling);
 				}
 				else
 				{
-					//console.log('add');
+					console.log('add', newEl);
 					parentEl.add(newEl);
 				}
 

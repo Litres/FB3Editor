@@ -5,10 +5,8 @@
  */
 
 Ext.define(
-	'FBEditor.xsd.Body',
+	'FBEditor.xsd.Fb3body',
 	{
-		singleton: true,
-
 		/**
 		 * Вовзращает xsd.
 		 * @return {String} Строка xsd.

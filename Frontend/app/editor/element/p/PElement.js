@@ -23,25 +23,6 @@ Ext.define(
 
 		isP: true,
 
-		setAttributesHtml: function (element)
-		{
-			var me = this,
-				first,
-				el;
-
-			el = me.callParent(arguments);
-
-			first = me.first();
-
-			if (first && first.isImg)
-			{
-				// не должно быть отступа
-				me.cls += ' el-p-no-indent';
-			}
-
-			return el;
-		},
-
 		getXml: function ()
 		{
 			var me = this,

@@ -8,17 +8,11 @@ Ext.define(
 	'FBEditor.editor.schema.Schema',
 	{
 		requires: [
-			'FBEditor.xsd.Body',
+			'FBEditor.xsd.Fb3body',
+			'FBEditor.xsd.desc.History',
 			'FBEditor.xsl.SchemaBody',
 		    'FBEditor.editor.schema.Factory'
 		],
-
-		statics: {
-			/**
-			 * @property {Number} Счетчик созданных схем.
-			 */
-			counter: 0
-		},
 
 		/**
 		 * @private
@@ -52,9 +46,13 @@ Ext.define(
 		 */
 		//xsd: {},
 
-		constructor: function ()
+		/**
+		 * @param {String} schemaName Название схемы.
+		 */
+		constructor: function (schemaName)
 		{
 			var me = this,
+				schName = schemaName,
 				xsl,
 				xsd,
 				xsdJson,
@@ -65,20 +63,20 @@ Ext.define(
 			// сокращенная форма метода создания элемента схемы
 			cse = function (name, options)
 			{
-				options.counter = me.self.counter;
+				options.schemaName = schName;
 				return FBEditor.editor.schema.Factory.createElement(name, options);
 			};
 
 			// сокращенная форма метода для определения типа схемы
 			dse = function (name, options)
 			{
-				options.counter = me.self.counter;
+				options.schemaName = schName;
 				return FBEditor.editor.schema.Factory.defineType(name, options);
 			};
 
 			try
 			{
-				me._xsd = FBEditor.xsd.Body.getXsd();
+				me._xsd = me.createXsd(schName);
 				xsd = me._xsd.replace(/<schema.*?>/, "<schema>");
 				xsl = FBEditor.xsl.SchemaBody.getXsl();
 				xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
@@ -87,10 +85,7 @@ Ext.define(
 				// преобразование строки в объект
 				eval(xsdJson);
 				me.elements = elements;
-				Ext.log({msg: 'Элементы схемы:', level: 'info', dump: elements});
-
-				// увеличиваем счетчик созданных схем
-				me.self.counter++;
+				Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: elements});
 			}
 			catch (e)
 			{
@@ -98,7 +93,7 @@ Ext.define(
 				Ext.Msg.show(
 					{
 						title: 'Ошибка',
-						message: 'Невозможно инициализировать схему тела книги',
+						message: 'Невозможно инициализировать схему ' + schName,
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.ERROR
 					}
@@ -136,6 +131,71 @@ Ext.define(
 		},
 
 		/**
+		 * @private
+		 * Создает и возвращает xml-схему в зависимости от переданного имени.
+		 * @param {String} name Имя схемы.
+		 * @return {String} Xml-схема.
+		 */
+		createXsd: function (name)
+		{
+			var n = name,
+				lastPart,
+				nameXsd,
+				xsd;
+
+			if (Ext.isEmpty(n))
+			{
+				throw Error('Невозможно создать схему. Передано пустое назавние схемы.');
+			}
+
+			// преобразуем имя в реальное
+
+			n = n.toLowerCase();
+			n = n.replace(/-([a-z])/g, '$1');
+
+			if (/:/.test(n))
+			{
+				// учитываем пространство имен
+
+				n = n.split(':');
+
+				// корректируем последнюю часть имени
+				lastPart = n.pop();
+				lastPart = Ext.String.capitalize(lastPart);
+				n.push(lastPart);
+
+				n = n.join('.');
+			}
+			else
+			{
+				// без пространства имен
+				n = Ext.String.capitalize(n);
+			}
+
+			nameXsd = 'FBEditor.xsd.' + n;
+
+			try
+			{
+				xsd = Ext.create(nameXsd);
+				xsd = xsd.getXsd();
+			}
+			catch (e)
+			{
+				xsd = '';
+				Ext.log(
+					{
+						level: 'error',
+						msg: 'Не найдена схема: ' + nameXsd,
+						dump: e
+					}
+				);
+			}
+
+			return xsd;
+		},
+
+		/**
+		 * @private
 		 * Получает результаты проверки от xmllint и вызывает колбэк.
 		 * @param response Результаты провекри по схеме.
 		 * @param {Boolean} response.res Прошла ли проверка.
@@ -484,255 +544,5 @@ Ext.define(
 			return res;
 		}
 
-		/**
-		 * Возвращает полноценную xsd схему для элемента c именем name, заключенного в корневой элемент fb3-body.
-		 * @param {Object} el Элемент схемы.
-		 * @return {String} Xsd схема в виде строки, пригодная для валидации.
-		 */
-		/*getSchema: function (el)
-		{
-			var me = this,
-				xsd;
-
-			xsd = '<?xml version="1.0" encoding="UTF-8"?>' +
-			      '<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink"' +
-			      ' targetNamespace="http://www.fictionbook.org/FictionBook3/body" elementFormDefault="qualified"' +
-			      ' attributeFormDefault="unqualified">' +
-			      '<element name="fb3-body"><complexType><sequence>' + me.getSchemaElement(el) +
-			      '</sequence></complexType></element>' +
-			      '</schema>';
-
-			return xsd;
-		},*/
-
-		/**
-		 * @private
-		 * Возвращает часть схемы xsd для элемента с именем name.
-		 * @param {Object} el Элемент схемы.
-		 * @return {String} Часть схемы элемента.
-		 */
-		/*getSchemaElement: function (el)
-		{
-			var me = this,
-				name,
-				complexType = '',
-				sequence = '',
-				mixed,
-				attributes,
-				xsd;
-
-			if (!el)
-			{
-				console.log('Нет схемы для элемента', name);
-				return '';
-			}
-
-			name = me.getName(el);
-
-			//console.log(name, me.xsd[name], me.xsd);
-
-			if (me.xsd[name] === null)
-			{
-				return '';
-			}
-
-			if (me.xsd[name])
-			{
-				// берем из кэша
-				return me.xsd[name];
-			}
-			else
-			{
-				me.xsd[name] = null;
-			}
-
-			if (el.sequence)
-			{
-				// получаем последовательность элемента
-				sequence = me.getSequence(el.sequence);
-			}
-
-			if (el.choice && (el.choice.elements || el.choice.sequence))
-			{
-				// получаем choice элемента
-				sequence += me.getChoice(el);
-			}
-
-			// получаем аттрибуты элемента
-			attributes = me.getAttributes(el);
-
-			// шаблон для element
-			xsd = '<element name="{%name%}">{%complexType%}</element>';
-
-			if (sequence || attributes)
-			{
-				// шаблон для complexType
-				complexType = '<complexType{%mixed%}>{%sequence%}{%attributes%}</complexType>';
-			}
-
-			mixed = el.attributes && el.attributes.mixed ? ' mixed="true"' : '';
-
-			// заменяем токены в шаблонах
-			complexType = complexType.replace('{%sequence%}', sequence);
-			complexType = complexType.replace('{%attributes%}', attributes);
-			complexType = complexType.replace('{%mixed%}', mixed);
-			xsd = xsd.replace('{%name%}', name);
-			xsd = xsd.replace('{%complexType%}', complexType);
-
-			// сохраняем
-			me.xsd[name] = xsd;
-
-			return xsd;
-		},*/
-
-		/**
-		 * @private
-		 * Возвращает последовательность элемента.
-		 * @param {Array} seq Последовательность элементов.
-		 * @return {String} Последовательность элемента в виде xml-строки.
-		 */
-		/*getSequence: function (seq)
-		{
-			var me = this,
-				sequence = '';
-
-			Ext.Array.each(
-				seq,
-				function (item)
-				{
-					var name = Ext.Object.getKeys(item.element)[0],
-						el = me.getElement(name);
-
-					if (item.element)
-					{
-						sequence += me.getSchemaElement(el);
-					}
-					else if (item.choice && item.choice.elements)
-					{
-						sequence += me.getChoice(item);
-					}
-				}
-			);
-
-			sequence = sequence ? '<sequence>' + sequence + '</sequence>' : '';
-
-			return sequence;
-		},*/
-
-		/**
-		 * @private
-		 * Возвращает choice элемента.
-		 * @param {Object} el Объект схемы элемента.
-		 * @return {String} Choice элемента в виде xml-строки.
-		 */
-		/*getChoice: function (el)
-		{
-			var me = this,
-				choice,
-				attributes = '',
-				content = '';
-
-			Ext.Array.each(
-				el.choice.elements,
-				function (item)
-				{
-					var name = Ext.Object.getKeys(item)[0];
-
-					//content += me.getSchemaElement(me.getElement(name));
-					content += '<element name="' + name + '"/>';
-				}
-			);
-
-			if (el.choice.sequence)
-			{
-				content += me.getSequence(el.choice.sequence);
-			}
-
-			Ext.Object.each(
-				el.choice.attributes,
-				function (name, val)
-				{
-					attributes += ' ' + name + '="' + val + '"';
-				}
-			);
-
-			choice = '<choice{%attributes%}>{%content%}</choice>';
-			choice = choice.replace('{%attributes%}', attributes);
-			choice = choice.replace('{%content%}', content);
-
-			return choice;
-		},*/
-
-		/**
-		 * @private
-		 * Возвращает аттрибуты элемента.
-		 * @param {Object} el Объект схемы элемента.
-		 * @return {String} Аттрибуты элемента в виде xml-строки.
-		 */
-		/*getAttributes: function (el)
-		{
-			var attributes = '';
-
-			Ext.Object.each(
-				el.attributes,
-				function (name, item)
-				{
-					var attribute = '',
-						simpleType;
-
-					if (Ext.isObject(item))
-					{
-						Ext.Object.each(
-							item,
-							function (key, val)
-							{
-								var restriction = '';
-
-								if (!Ext.isObject(val))
-								{
-									attribute += ' ' + key + '="' + val + '"';
-								}
-								else if (key === 'type')
-								{
-									// создаем simpleType для аттрибута
-
-									simpleType = '<simpleType><restriction base="{%base%}">' +
-									             '{%restriction%}</restriction></simpleType>';
-
-									if (val.pattern)
-									{
-										restriction = '<pattern value="' + val.pattern + '"/>';
-									}
-									else if (val.enumeration)
-									{
-										Ext.Array.each(
-											val.enumeration,
-											function (enumeration)
-											{
-												restriction += '<enumeration value="' + enumeration + '"/>';
-											}
-										);
-									}
-
-									simpleType = simpleType.replace('{%base%}', val.base);
-									simpleType = simpleType.replace('{%restriction%}', restriction);
-								}
-							}
-						);
-
-						if (simpleType)
-						{
-							attributes += '<attribute ' + attribute + '>' + simpleType + '</attribute>';
-						}
-						else
-						{
-							attributes += '<attribute ' + attribute + '/>';
-						}
-					}
-				}
-			);
-
-			return attributes;
-		}*/
 	}
 );

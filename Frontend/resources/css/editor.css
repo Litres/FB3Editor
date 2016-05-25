@@ -31,20 +31,6 @@
 .main-editor-viewport .el-p:focus {
 	outline: none;
 }
-.main-editor-viewport .el-p:after {
-	margin-left: 0.1em;
-	content: '¶';
-	color: #a51626;
-}
-.main-editor-viewport .el-p br {
-	content: '';
-}
-
-/*.main-editor-viewport .el-p-no-indent,
-.main-editor-viewport p .el-img
-{
-	text-indent: 0; некоторые параграфы не должны иметь отступа
-}*/
 
 .main-editor-viewport .el-div,
 .main-editor-viewport .el-title,
@@ -152,7 +138,6 @@
 	text-indent: 3em;
 	margin-bottom: 0;
 }
-
 
 .main-editor-viewport .el-em {
 	font-style: italic;
@@ -284,12 +269,21 @@
 	padding-left: 1.6em;
 }
 
+/* знак новой строки */
+.main-editor-viewport .el-p:after,
+.main-editor-viewport .el-li:after,
+.main-editor-viewport .el-subtitle:after {
+	margin-left: 0.1em;
+	content: '¶';
+	color: #a51626;
+}
+
 /*
 Редактор текста в описании
 */
 
 .form-desc-editor-body .editor-viewport {
-	margin: 5px;
+	margin: 5px
 	font-size: 13px;
 	line-height: 150%;
 	white-space: pre-wrap;
@@ -310,7 +304,4 @@
 .form-desc-editor-body .editor-viewport .el-p:after {
 	content: '¶';
 	color: #a51626;
-}
-.form-desc-editor-body .editor-viewport .el-p br {
-	content: '';
 }

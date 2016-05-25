@@ -10,6 +10,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.CreateContent',
 			'FBEditor.editor.Factory',
+			'FBEditor.editor.History',
 			'FBEditor.editor.schema.Schema',
 			'FBEditor.xsl.Editor'
 		],
@@ -17,12 +18,18 @@ Ext.define(
 		selectCls: 'mode-select',
 
 		/**
+		 * @private
+		 * @property {FBEditor.editor.History} История редактора.
+		 */
+		history: null,
+
+		/**
 		 * @property {FBEditor.editor.schema.Schema} Схема.
 		 */
 		schema: null,
 
 		/**
-		 * @property {FBEditor.editor.element.AbstractElement} Корневой элемент.
+		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент.
 		 */
 		content: null,
 
@@ -37,7 +44,7 @@ Ext.define(
 		range: null,
 
 		/**
-		 * @property {Boolean} Заморозить ли события вставки узлов.
+		 * @property {Boolean} Активна ли заморозка событий вставки узлов.
 		 */
 		suspendEvent: false,
 
@@ -80,22 +87,17 @@ Ext.define(
 		 */
 		constructor: function (editor)
 		{
-			var me = this;
+			var me = this,
+				rootElementName = editor.rootElementName;
 
 			// связь с редактором
 			me.editor = editor;
 
-			// создаем схему
-			me.createSchema();
-		},
+			// создаем историю
+			me.history = Ext.create('FBEditor.editor.History');
 
-		/**
-		 * @template
-		 * Создает схему.
-		 */
-		createSchema: function ()
-		{
-			this.schema = Ext.create('FBEditor.editor.schema.Schema');
+			// создаем схему
+			me.schema = Ext.create('FBEditor.editor.schema.Schema', rootElementName);
 		},
 
 		/**
@@ -213,17 +215,12 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает менеджер истории.
+		 * Возвращает историю.
 		 * @return {FBEditor.editor.History}
 		 */
 		getHistory: function ()
 		{
-			var me = this,
-				editor;
-
-			editor = me.getEditor();
-
-			return editor.getHistory();
+			return this.history;
 		},
 
 		/**

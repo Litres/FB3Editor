@@ -80,24 +80,7 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает xml.
-		 * @return {String} Xml.
-		 */
-		getXml: function ()
-		{
-			var me = this,
-				editor = me.getEditor(),
-				root,
-				xml;
-
-			root = editor.getRootElement();
-			xml = root.getXml();
-
-			return xml;
-		},
-
-		/**
-		 * Возвращает корневой узел контента.
+		 * Возвращает контент редактора.
 		 * @return {Node}
 		 */
 		getContent: function ()
