@@ -9,17 +9,22 @@ Ext.define(
 	{
 		extend: 'Ext.Panel',
 		requires: [
+			'FBEditor.view.form.desc.editor.EditorController',
 			'FBEditor.view.form.desc.editor.body.Body',
 			'FBEditor.view.form.desc.editor.toolbar.Toolbar'
 		],
 
 		xtype: 'form-desc-editor',
+		controller: 'form.desc.editor',
 		cls: 'form-desc-editor',
 
 		layout: 'fit',
 		bodyStyle: {
-			background: 'none',
-			padding: '5px'
+			background: 'none'
+		},
+
+		listeners: {
+			loadData: 'onLoadData'
 		},
 
 		/**
@@ -57,11 +62,6 @@ Ext.define(
 			data[me.name] = me.getValue();
 
 			return data;
-		},
-
-		setValue: function (val)
-		{
-			console.log('set', val);
 		},
 
 		/**

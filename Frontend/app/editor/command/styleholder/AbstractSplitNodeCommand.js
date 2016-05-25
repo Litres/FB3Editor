@@ -22,16 +22,16 @@ Ext.define(
 				pos = {},
 				sel = window.getSelection(),
 				range,
-				manager = FBEditor.editor.Manager,
-				factory = FBEditor.editor.Factory;
+				factory = FBEditor.editor.Factory,
+				manager;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
@@ -59,6 +59,9 @@ Ext.define(
 				nodes.p = nodes.node.parentNode;
 				els.p = nodes.p.getElement();
 
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
 				if (els.node.isEmpty() && nodes.node.firstChild || els.node.isP)
 				{
 					// пустой элемент
@@ -83,8 +86,10 @@ Ext.define(
 				nodes.nextP = nodes.p.nextSibling;
 
 				// новый элемент
+
 				els.newP = factory.createElement(me.elementName);
 				nodes.newP = els.newP.getNode(data.viewportId);
+
 				if (nodes.nextP)
 				{
 					els.nextP = nodes.nextP.getElement();
@@ -97,7 +102,6 @@ Ext.define(
 					nodes.parentP.appendChild(nodes.newP);
 				}
 
-				//console.log(nodes);
 				if (!els.p.isEmpty() && data.range.start.getElement().isText)
 				{
 					pos.isEnd = data.range.end.nodeValue && data.range.offset.end === data.range.end.nodeValue.length ?
@@ -157,8 +161,6 @@ Ext.define(
 
 					nodes.next = nodes.start;
 
-					//console.log('nodes', nodes, els); return false;
-
 					// переносим все элементы из старого в новый
 					while (nodes.next)
 					{
@@ -168,6 +170,7 @@ Ext.define(
 						nodes.newP.appendChild(nodes.next);
 						nodes.next = nodes.buf;
 					}
+
 
 					if (els.p.isEmpty())
 					{
@@ -191,11 +194,7 @@ Ext.define(
 					nodes.newP.appendChild(nodes.empty);
 				}
 
-				//console.log('nodes, els', nodes, els);
-
 				els.parentP.sync(data.viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				nodes.cursor = manager.getDeepFirst(nodes.newP);
@@ -219,6 +218,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -230,12 +230,10 @@ Ext.define(
 				els = {},
 				nodes = {},
 				range,
-				manager = FBEditor.editor.Manager;
+				manager;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				// исходные данные
 				nodes = data.nodes;
 				range = data.range;
@@ -249,8 +247,11 @@ Ext.define(
 				els.prev = nodes.prev ? nodes.prev.getElement() : null;
 				els.start = nodes.start ? nodes.start.getElement() : null;
 
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
 				// курсор
-				nodes.cursor = range.start;// nodes.node;
+				nodes.cursor = range.start;
 
 				if (els.p.isEmpty() && els.newP.isEmpty())
 				{
@@ -286,7 +287,6 @@ Ext.define(
 					{
 						// объединяем узлы
 						manager.joinNode(nodes.start);
-						//range.start = node.prev;
 						els.parentP.removeEmptyText();
 					}
 				}
@@ -296,8 +296,6 @@ Ext.define(
 				nodes.parentP.removeChild(nodes.newP);
 
 				els.parentP.sync(data.viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -317,6 +315,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

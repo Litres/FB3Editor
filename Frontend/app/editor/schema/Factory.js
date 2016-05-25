@@ -43,16 +43,19 @@ Ext.define(
 			{
 				n = n.replace(/-([a-z])/g, '$1');
 				n = Ext.String.capitalize(n);
-				nameEl = 'FBEditor.editor.schema.' + n + 'Element';
+				nameEl = 'FBEditor.editor.schema' + opts.counter + '.' + n + 'Element';
+
 				if (!opts.extend)
 				{
 					delete opts.extend;
 				}
 				else
 				{
-					opts.extend = 'FBEditor.editor.schema.body.' + opts.extend.substring(5);
+					opts.extend = 'FBEditor.editor.schema' + opts.counter + '.body.' + opts.extend.substring(5);
 				}
+
 				//console.log(n);
+
 				cls = {
 					constructor: function ()
 					{
@@ -60,24 +63,29 @@ Ext.define(
 							cls = me.superclass;
 
 						me.sequence = me.sequence || [];
+
 						while (cls)
 						{
 							if (cls.sequence)
 							{
 								me.sequence = Ext.Array.merge(cls.sequence, me.sequence);
 							}
+
 							if (cls.choice)
 							{
 								me.choice = me.choice || {};
 								me.choice = Ext.applyIf(me.choice, cls.choice);
 							}
+
 							if (cls.attributes)
 							{
 								me.attributes = me.attributes || {};
 								me.attributes = Ext.applyIf(me.attributes, cls.attributes);
 							}
+
 							cls = cls.superclass;
 						}
+
 						Ext.Object.each(
 							me.attributes,
 						    function (name, item)
@@ -86,7 +94,7 @@ Ext.define(
 
 							    if (item.type && /:/.test(item.type))
 							    {
-								    typeCls = 'FBEditor.editor.schema.body.' + item.type.substring(5);
+								    typeCls = 'FBEditor.editor.schema' + opts.counter + '.body.' + item.type.substring(5);
 								    item.type = Ext.create(typeCls);
 								    //console.log(name, item);
 							    }
@@ -94,6 +102,7 @@ Ext.define(
 						);
 					}
 				};
+
 				cls = Ext.apply(opts, cls);
 
 				// определяем и создаем класс элемента
@@ -127,14 +136,17 @@ Ext.define(
 			{
 				throw Error('Невозможно определить тип схемы текста. Передано пустое назавние типа.');
 			}
+
 			try
 			{
 				n = n.replace(/-([a-z])/g, '$1');
-				nameType = 'FBEditor.editor.schema.body.' + n;
+				nameType = 'FBEditor.editor.schema' + opts.counter + '.body.' + n;
 				//console.log(n);
+
 				if (opts.extend)
 				{
-					opts.extend = 'FBEditor.editor.schema.body.' + opts.extend.substring(5);
+					opts.extend = 'FBEditor.editor.schema' + opts.counter + '.body.' + opts.extend.substring(5);
+
 					if (!Ext.Array.contains(definedTypes, opts.extend))
 					{
 						//console.log(opts.extend);

@@ -14,13 +14,7 @@ Ext.define(
 			var me = this,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
-				root = manager.getContent(),
-				res,
-				sch,
-				name,
-				range,
-				nameElements;
+				range;
 
 			// получаем узел из выделения
 			sel = sel || window.getSelection();
@@ -39,24 +33,7 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 			}
 
-			// получаем дочерние имена элементов для проверки по схеме
-			if (opts && opts.body)
-			{
-				nameElements = manager.getNamesElements(root);
-				name = root.getName();
-			}
-			else
-			{
-				nameElements = me.getNameElementsVerify(nodes);
-				name = els.parent.getName();
-			}
-
-			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			//console.log('name, nameElements', name, nameElements);
-			res = sch.verify(name, nameElements) ? nodes.node : false;
-
-			return res;
+			return nodes.node;
 		}
 	}
 );

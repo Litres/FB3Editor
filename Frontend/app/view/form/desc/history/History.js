@@ -13,7 +13,7 @@ Ext.define(
 		id: 'form-desc-history',
 		xtype: 'form-desc-history',
 
-		rootElementName: 'desc/history',
+		rootElementName: 'desc:history',
 
 		name: 'history'
 	}

@@ -28,38 +28,15 @@ Ext.define(
 		createRoot: function ()
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
 				editor = me.getEditor(),
-				root,
-				rootNode;
+				manager;
 
 			// надо ли создавать корневой элемент, так как при разделении окна содержимое копируется из оригинала
 			if (me.createRootElement)
 			{
-				// инициализируем корневой узел
+				me.callParent(arguments);
 
-				root = manager.createRootElement();
-
-				editor.setRootElement(root);
-
-				rootNode = root.getNode(me.id);
-				me.loadData(rootNode);
-
-				// создаем элементы корневого узла по умолчанию
-				root.createScaffold();
-
-				manager.suspendEvent = true;
-
-				// добавляем узлы в корневой
-				Ext.Array.each(
-					root.children,
-					function (item)
-					{
-						rootNode.appendChild(item.getNode(me.id));
-					}
-				);
-
-				manager.suspendEvent = false;
+				manager = editor.getManager();
 
 				// обновляем дерево навигации по тексту
 				manager.updateTree();

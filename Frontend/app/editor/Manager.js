@@ -1,5 +1,5 @@
 /**
- * Менеджер редактора тела книги.
+ * Менеджер редактора.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,31 +7,32 @@
 Ext.define(
 	'FBEditor.editor.Manager',
 	{
-		singleton: 'true',
 		requires: [
+			'FBEditor.editor.CreateContent',
+			'FBEditor.editor.Factory',
 			'FBEditor.editor.schema.Schema',
-			'FBEditor.editor.Factory'
+			'FBEditor.xsl.Editor'
 		],
 
 		selectCls: 'mode-select',
 
 		/**
-		 * @property {FBEditor.editor.schema.Schema} Правила проверки элементов.
+		 * @property {FBEditor.editor.schema.Schema} Схема.
 		 */
 		schema: null,
 
 		/**
-		 * @property {FBEditor.editor.element.AbstractElement} Корневой элемент тела книги.
+		 * @property {FBEditor.editor.element.AbstractElement} Корневой элемент.
 		 */
 		content: null,
 
 		/**
-		 * @property {Selection} Текущее выделение в теле книги.
+		 * @property {Selection} Текущее выделение.
 		 */
 		selection: null,
 
 		/**
-		 * @property {Object} Данные текущего выделения в теле книги.
+		 * @property {Object} Данные текущего выделения.
 		 */
 		range: null,
 
@@ -75,13 +76,113 @@ Ext.define(
 		cashSyncBtn: null,
 
 		/**
-		 * Инициализирует менеджер.
+		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
 		 */
-		init: function ()
+		constructor: function (editor)
 		{
 			var me = this;
 
-			me.schema = Ext.create('FBEditor.editor.schema.Schema');
+			// связь с редактором
+			me.editor = editor;
+
+			// создаем схему
+			me.createSchema();
+		},
+
+		/**
+		 * @template
+		 * Создает схему.
+		 */
+		createSchema: function ()
+		{
+			this.schema = Ext.create('FBEditor.editor.schema.Schema');
+		},
+
+		/**
+		 * Создает контент из тела загруженной книги.
+		 * @param {String} srcXml Исходный xml тела книги.
+		 */
+		createContent: function (srcXml)
+		{
+			var me = this,
+				xml = srcXml,
+				transContent,
+				content,
+				editor,
+				creator,
+				xsl;
+
+			me.resetFocus();
+
+			// экранируем слэш
+			xml = xml.replace(/\\/g, "\\\\");
+
+			// экранируем одинарную кавычку
+			xml = xml.replace(/'/g, "\\'");
+
+			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
+			xsl = FBEditor.xsl.Editor.getXsl();
+			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
+
+			// нормализуем строку
+			transContent = transContent.replace(/\n+|\t+/g, ' ');
+			transContent = transContent.replace(/\), ?]/g, ')]');
+
+			// заменяем все br на пустые параграфы
+			transContent = transContent.replace(/<br\/>/gi, '<p><br/></p>');
+
+			// преобразовываем строку в элемент
+			creator = Ext.create('FBEditor.editor.CreateContent', transContent);
+			content = creator.getContent();
+
+			editor = me.getEditor();
+
+			// устанавливаем связь корневого элемента с редактором
+			content.setEditor(editor);
+
+			// сбрасываем историю редактора текста
+			me.getHistory().clear();
+
+			me.content = content;
+
+			// загружаем контент в редактор
+			editor.fireEvent('loadData', content);
+		},
+
+		/**
+		 * Создает корневой элемент.
+		 * @param {String} name Имя корневого элемента.
+		 * @return {FBEditor.editor.element.AbstractElement} Корневой элемент.
+		 */
+		createRootElement: function (name)
+		{
+			var me = this,
+				factory = me.getFactory(),
+				root;
+
+			root = factory.createElement(name);
+			root.createScaffold();
+			me.content = root;
+
+			return root;
+		},
+
+		/**
+		 * Устанавливает заморозку событий при вставке узлов.
+		 * @param {Boolean} suspend true - ставит заморозку, false - убирает заморозку.
+		 */
+		setSuspendEvent: function (suspend)
+		{
+			this.suspendEvent = suspend;
+		},
+
+		/**
+		 * Активна ли заморозка событий для вставки узлов.
+		 * @return {Boolean}
+		 */
+		isSuspendEvent: function ()
+		{
+			return this.suspendEvent;
 		},
 
 		/**
@@ -103,70 +204,12 @@ Ext.define(
 		},
 
 		/**
-		 * Создает контент из тела загруженной книги.
-		 * @param {String} content Исходный xml тела книги.
-		 */
-		createContent: function (content)
-		{
-			var me = this,
-				editor,
-				creator,
-				xsl;
-
-			// экранируем слэш
-			content = content.replace(/\\/g, "\\\\");
-
-			// экранируем одинарную кавычку
-			content = content.replace(/'/g, "\\'");
-
-			//console.log('content', content);
-
-			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
-			xsl = FBEditor.xsl.Editor.getXsl();
-			content = FBEditor.util.xml.Jsxml.trans(content, xsl);
-
-			//console.log(content);
-
-			content = content.replace(/\n+|\t+/g, ' ');
-			content = content.replace(/\), ?]/g, ')]');
-
-			// заменяем все br на пустые параграфы
-			content = content.replace(/<br\/>/gi, '<p><br/></p>');
-
-			//console.log(content);
-
-			// преобразовываем строку в элемент
-			creator = Ext.create('FBEditor.editor.CreateContent', content);
-			me.content = creator.getContent();
-
-			editor = me.getEditor();
-
-			// устанавливаем связь корневого элемента с редактором
-			me.content.setEditor(editor);
-
-			// сбрасываем историю редактора текста
-			me.getHistory().clear();
-
-			// загружаем контент в редактор
-			editor.fireEvent('loadData');
-
-			// обновляем дерево навигации по тексту
-			me.updateTree();
-		},
-
-		/**
 		 * Возвращает редактор текста.
 		 * @return {FBEditor.editor.view.Editor}
 		 */
 		getEditor: function ()
 		{
-			var me = this,
-				editor;
-
-			editor = me.editor || Ext.getCmp('main-editor');
-			me.editor = editor;
-
-			return editor;
+			return this.editor;
 		},
 
 		/**
@@ -216,22 +259,6 @@ Ext.define(
 			console.log(xml);
 
 			return xml;
-		},
-
-		/**
-		 * Создает корневой элемент.
-		 * @return {FBEditor.editor.element.AbstractElement} Корневой элемент.
-		 */
-		createRootElement: function ()
-		{
-			var me = this,
-				factory = me.getFactory(),
-				root;
-
-			root = factory.createElement('fb3-body');
-			me.content = root;
-
-			return root;
 		},
 
 		/**
@@ -474,30 +501,6 @@ Ext.define(
 		getSchema: function ()
 		{
 			return this.schema;
-		},
-
-		/**
-		 * Обновляет дерево навигации по тексту.
-		 */
-		updateTree: function ()
-		{
-			var me = this,
-				bridge = FBEditor.getBridgeNavigation();
-
-			if (bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation'))
-			{
-				bridge.Ext.getCmp('panel-body-navigation').loadData(me.content);
-			}
-			else
-			{
-				Ext.defer(
-					function ()
-					{
-						me.updateTree();
-					},
-				    200
-				);
-			}
 		},
 
 		/**

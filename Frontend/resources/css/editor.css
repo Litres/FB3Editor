@@ -22,14 +22,22 @@
 }
 
 /* абзац */
-.main-editor-viewport p {
+.main-editor-viewport .el-p {
 	margin-top: 0;
 	margin-bottom: 0.2em;
 	text-align: justify;
 	border: none;
 }
-.main-editor-viewport p:focus {
+.main-editor-viewport .el-p:focus {
 	outline: none;
+}
+.main-editor-viewport .el-p:after {
+	margin-left: 0.1em;
+	content: '¶';
+	color: #a51626;
+}
+.main-editor-viewport .el-p br {
+	content: '';
 }
 
 /*.main-editor-viewport .el-p-no-indent,
@@ -271,7 +279,38 @@
 	padding: 0 1.2em 0 0;
 }
 
-/*элементы следующие за маркером */
+/* элементы следующие за маркером */
 .main-editor-viewport .el-marker ~ * {
 	padding-left: 1.6em;
+}
+
+/*
+Редактор текста в описании
+*/
+
+.form-desc-editor-body .editor-viewport {
+	margin: 5px;
+	font-size: 13px;
+	line-height: 150%;
+	white-space: pre-wrap;
+}
+
+.form-desc-editor-body .editor-viewport main {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+
+.form-desc-editor-body .editor-viewport .el-p {
+	margin: 0.2em 0;
+}
+.form-desc-editor-body .editor-viewport .el-p:after {
+	content: '¶';
+	color: #a51626;
+}
+.form-desc-editor-body .editor-viewport .el-p br {
+	content: '';
 }

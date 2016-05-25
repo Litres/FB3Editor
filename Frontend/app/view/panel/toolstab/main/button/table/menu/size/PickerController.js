@@ -30,7 +30,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			// создаем таблицу
 			manager.createElement('table', {size: size});

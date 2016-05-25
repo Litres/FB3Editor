@@ -14,6 +14,8 @@ Ext.define(
 			var me = this,
 				btn = me.data.btn,
 				desc = me.data.desc,
+				bodyEditor,
+				bodyManager,
 				cover,
 				descValues,
 				descXml,
@@ -29,12 +31,19 @@ Ext.define(
 				{
 					throw Error('Загрузите обложку для книги');
 				}
+
 				if (!desc.isValid())
 				{
 					throw Error('Некорректно заполнено описание книги');
 				}
+
 				descValues = desc.getValues();
 				descXml = FBEditor.desc.Manager.getXml(descValues);
+
+				// редактор тела книги
+				bodyEditor = Ext.getCmp('main-editor');
+				bodyManager = bodyEditor.getManager();
+
 				fb3data = {
 					thumb: cover,
 					meta: FBEditor.desc.Manager.getMetaXml(descValues),
@@ -43,13 +52,14 @@ Ext.define(
 							desc: descXml,
 							bodies: [
 								{
-									content: FBEditor.editor.Manager.getXml(),
+									content: bodyManager.getXml(),
 									images: FBEditor.resource.Manager.getResources()
 								}
 							]
 						}
 					]
 				};
+
 				result = FBEditor.file.Manager.saveFB3(
 					fb3data,
 				    function ()

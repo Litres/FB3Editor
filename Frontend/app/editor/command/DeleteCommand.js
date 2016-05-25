@@ -16,19 +16,22 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
+
+				els.node = data.el;
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				range = data.range || manager.getRange();
 				data.viewportId = range.start.viewportId;
 
 				console.log('del el', data, range);
 
-				els.node = data.el;
 				nodes.node = els.node.nodes[data.viewportId];
 				els.parent = els.node.parent;
 				nodes.parent = els.parent.nodes[data.viewportId];
@@ -68,7 +71,7 @@ Ext.define(
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				//console.log('del', nodes);
 
@@ -96,6 +99,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -106,15 +110,16 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				els = data.els;
+
+				manager = els.parent.getManager();
+				manager.setSuspendEvent(true);
 
 				nodes.node = els.node.nodes[data.viewportId];
 				nodes.parent = els.parent.nodes[data.viewportId];
@@ -144,7 +149,7 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -162,6 +167,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

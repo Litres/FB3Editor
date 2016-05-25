@@ -18,11 +18,11 @@ Ext.define(
 				data = me.getData(),
 				res = false,
 				sel = window.getSelection(),
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
 				offset = sel.getRangeAt(0).startOffset,
 				nodes = {},
 				els = {},
+				manager,
 				node,
 				text,
 				viewportId,
@@ -34,12 +34,13 @@ Ext.define(
 				me.oldValue = me.oldValue || data.oldValue;
 				me.offset = me.offset ? me.offset : offset;
 
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					nodes.node = data.saveRange.startNode;
 					els.node = nodes.node.getElement();
+
+					manager = els.node.getManager();
+					manager.setSuspendEvent(true);
 
 					data.node = nodes.node;
 
@@ -67,11 +68,15 @@ Ext.define(
 
 				//node.nodeValue = text;
 				el = node.getElement();
+
+				manager = el.getManager();
+				manager.setSuspendEvent(true);
+
 				el.setText(text);
 
 				el.sync(viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				/*manager.setCursor(
@@ -90,6 +95,7 @@ Ext.define(
 				me.getHistory(el).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -98,9 +104,9 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				manager = FBEditor.editor.Manager,
 				nodes = {},
 				els = {},
+				manager,
 				node,
 				text,
 				viewportId,
@@ -112,10 +118,12 @@ Ext.define(
 				text = me.oldValue;
 				viewportId = node.viewportId;
 
-				manager.suspendEvent = true;
+				el = node.getElement();
+
+				manager = el.getManager();
+				manager.setSuspendEvent(true);
 
 				node.nodeValue = text;
-				el = node.getElement();
 				el.setText(text);
 
 				nodes.parent = node.parentNode;
@@ -143,7 +151,7 @@ Ext.define(
 					el.sync(viewportId);
 				}
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -160,6 +168,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

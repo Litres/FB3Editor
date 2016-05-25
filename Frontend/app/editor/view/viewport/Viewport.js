@@ -20,14 +20,10 @@ Ext.define(
 
 		afterRender: function ()
 		{
-			var me = this,
-				editor = me.getEditor();
+			var me = this;
 
 			me.callParent(me);
 			me.createRoot();
-
-			// устанавливаем связь корневого элемента с редактором
-			editor.getRootElement().setEditor(editor);
 		},
 
 		/**
@@ -36,60 +32,50 @@ Ext.define(
 		createRoot: function ()
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory(),
 				editor = me.getEditor(),
-				rootElementName,
+				manager,
 				root,
 				rootNode;
 
-			rootElementName = editor.rootElementName;
-			root = factory.createElement(rootElementName);
+			manager = editor.getManager();
+			root = manager.getContent();
 
-			editor.setRootElement(root);
+			if (!root)
+			{
+				// создаем корневой элемент
+				editor.createRootElement();
+			}
 
-			rootNode = root.getNode(me.id);
+			// получаем узел корневого элемента
+			rootNode = manager.getNode(me.id);
+
+			// загружаем узел в окно
 			me.loadData(rootNode);
-
-			// создаем элементы корневого узла по умолчанию
-			root.createScaffold();
-
-			manager.suspendEvent = true;
-
-			// добавляем узлы в корневой
-			Ext.Array.each(
-				root.children,
-				function (item)
-				{
-					rootNode.appendChild(item.getNode(me.id));
-				}
-			);
-
-			manager.suspendEvent = false;
 		},
 
 		/**
-		 * Загружает html-данные в окно редактора.
-		 * @param {HTMLElement} data Html-данные.
+		 * Загружает корневой узел в окно редактора.
+		 * @param {Node} node Узел корневого элемента.
 		 */
-		loadData: function (data)
+		loadData: function (node)
 		{
 			var me = this,
 				dom,
 				content;
 
+			// ссылка на контент в окне редактора
 			dom = me.getEl().dom;
 			content = me.getContent();
 
 			if (content)
 			{
 				// заменяем старое содержимое на новое
-				dom.replaceChild(data, content);
+				dom.replaceChild(node, content);
 			}
 			else
 			{
 				// вставляем новое содержимое
-				dom.appendChild(data);
+				dom.appendChild(node);
 			}
 		},
 

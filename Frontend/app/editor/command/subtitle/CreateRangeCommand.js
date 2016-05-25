@@ -18,14 +18,12 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
@@ -35,6 +33,9 @@ Ext.define(
 				els.node = nodes.node.getElement();
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				// переносим все элементы обратно в исходный контейнер
 				Ext.Array.each(
@@ -79,8 +80,6 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(viewportId);
 
-				manager.suspendEvent = false;
-
 				// устанавливаем выделение
 				if (!range.joinStartContainer)
 				{
@@ -113,6 +112,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -120,8 +120,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory(),
+				factory = FBEditor.editor.Factory,
 				saveP;
 
 			els.node = factory.createElement(me.elementName);

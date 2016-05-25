@@ -1,7 +1,7 @@
 /**
  * Вкладка Форматирование.
  *
- * Синхронизация кнопок вызывается из менеджера FBEditor.editor.Manager#syncButtons().
+ * Синхронизация кнопок вызывается из менеджера редактора FBEditor.view.panel.main.editor.Manager#syncButtons().
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -66,12 +66,7 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
-				sch = manager.getSchema(),
 				tbar;
-
-			// вызываем тестовую проверку по схеме для определения загрузки xmllint
-			sch.validXml({xml: 'test', callback: me.verifyResult, scope: me});
 
 			tbar = [
 				{
@@ -206,7 +201,10 @@ Ext.define(
 
 		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+				editor,
+				manager,
+				sch;
 
 			me.callParent(arguments);
 
@@ -244,6 +242,15 @@ Ext.define(
 				me.down('panel-toolstab-main-button-sup'),
 				me.down('panel-toolstab-main-button-code')
 			];
+
+			// редактор текста книги
+			editor = Ext.getCmp('main-editor');
+			manager = editor.getManager();
+
+			// вызываем тестовую проверку по схеме для определения загрузки xmllint
+			sch = manager.getSchema();
+			sch.validXml({xml: 'test', callback: me.verifyResult, scope: me});
+
 		},
 
 		/**

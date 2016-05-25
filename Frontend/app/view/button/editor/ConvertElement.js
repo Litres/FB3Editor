@@ -41,8 +41,7 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				bridge = FBEditor.getBridgeWindow(),
-				manager = bridge.FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				sch = manager.getSchema(),
 				viewportId,
 				range;

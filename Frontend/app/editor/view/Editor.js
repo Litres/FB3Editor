@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
+			'FBEditor.editor.History',
+			'FBEditor.editor.Manager',
 			'FBEditor.editor.view.EditorController',
 			'FBEditor.editor.view.viewport.Viewport'
 		],
@@ -31,25 +33,34 @@ Ext.define(
 		 * @private
 		 * @property {FBEditor.editor.view.viewport.Viewport} Контейнер редактора текста.
 		 */
-		viewport: null,
+		//viewport: null,
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.History} Менеджер истории редактора.
+		 * @property {FBEditor.editor.Manager} Менеджер редактора.
 		 */
-		history: null,
+		//manager: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.History} История редактора.
+		 */
+		//history: null,
 
 		/**
 		 * @private
 		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент редактора.
 		 */
-		rootElement: null,
+		//rootElement: null,
 
 		afterRender: function ()
 		{
 			var me = this;
 
-			// создаем менеджер истории
+			// создаем менеджер
+			me.createManager();
+
+			// создаем историю
 			me.history = Ext.create('FBEditor.editor.History');
 
 			// инициализируем вид редактора
@@ -59,11 +70,14 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает менеджер истории.
+		 * @template
+		 * Создает менеджер.
 		 */
-		getHistory: function ()
+		createManager: function ()
 		{
-			return this.history;
+			var me = this;
+
+			me.manager = me.manager || Ext.create('FBEditor.editor.Manager', me);
 		},
 
 		/**
@@ -79,6 +93,21 @@ Ext.define(
 					xtype: 'editor-viewport'
 				}
 			);
+		},
+
+		/**
+		 * Создает структуру корневого элемента.
+		 */
+		createRootElement: function ()
+		{
+			var me = this,
+				manager = me.getManager(),
+				root;
+
+			root = manager.createRootElement(me.rootElementName);
+
+			// устанавливаем связи с корневым элементом
+			me.setRootElement(root);
 		},
 
 		/**
@@ -119,6 +148,31 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает менеджер.
+		 * @return {FBEditor.editor.Manager}
+		 */
+		getManager: function ()
+		{
+			var me = this;
+
+			if (!me.manager)
+			{
+				me.createManager();
+			}
+
+			return me.manager;
+		},
+
+		/**
+		 * Возвращает историю.
+		 * @return {FBEditor.editor.History}
+		 */
+		getHistory: function ()
+		{
+			return this.history;
+		},
+
+		/**
 		 * Возвращает корневой элемент.
 		 * @return {FBEditor.editor.element.root.RootElement}
 		 */
@@ -133,7 +187,10 @@ Ext.define(
 		 */
 		setRootElement: function (root)
 		{
-			this.rootElement = root;
+			var me = this;
+
+			me.rootElement = root;
+			root.setEditor(me);
 		}
 	}
 );

@@ -19,8 +19,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory();
+				factory = FBEditor.editor.Factory;
 
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();

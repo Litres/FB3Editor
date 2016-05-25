@@ -38,7 +38,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			view.setActiveItem('main-editor');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-main');
@@ -52,7 +52,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			view.setActiveItem('form-desc');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
@@ -66,7 +66,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			view.setActiveItem('panel-resources');
 			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
@@ -80,7 +80,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			view.setActiveItem('panel-empty');
 			manager.disableButtons();

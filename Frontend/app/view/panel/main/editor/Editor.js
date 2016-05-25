@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.view.Editor',
 		requires: [
 			'FBEditor.view.panel.main.editor.EditorController',
+			'FBEditor.view.panel.main.editor.Manager',
 			'FBEditor.view.panel.main.editor.viewport.Viewport'
 		],
 
@@ -25,6 +26,8 @@ Ext.define(
 			unsplit: 'onUnsplit',
 			syncContent: 'onSyncContent'
 		},
+
+		rootElementName: 'fb3-body',
 
 		/**
 		 * @property {Object} Ссылки на активные окна редактирования.
@@ -55,9 +58,14 @@ Ext.define(
 		 */
 		panelContent: null,
 
-		/**
-		 * Инициализирует редактор.
-		 */
+		createManager: function ()
+		{
+			var me = this;
+
+			// создаем собственный менеджер для редактора тела книги
+			me.manager = me.manager || Ext.create('FBEditor.view.panel.main.editor.Manager', me);
+		},
+
 		initEditor: function ()
 		{
 			var me = this,
@@ -98,7 +106,7 @@ Ext.define(
 		removeSouthViewport: function ()
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
+				manager = me.getManager(),
 				south;
 
 			south = me.viewports.south;
@@ -122,6 +130,25 @@ Ext.define(
 			panel = me.panelContent || Ext.getCmp('panel-main-content');
 
 			return panel;
+		},
+
+		/**
+		 * Возвращает окна редактирования текста.
+		 * @return {FBEditor.view.panel.editor.viewport.Viewport[]} Окна редактирования текста.
+		 */
+		getViewports: function ()
+		{
+			var me = this,
+				viewports = [];
+
+			viewports.push(me.viewports.north);
+
+			if (me.viewports.south)
+			{
+				viewports.push(me.viewports.south);
+			}
+
+			return viewports;
 		}
 	}
 );

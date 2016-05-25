@@ -46,7 +46,7 @@ Ext.define(
 				name = me.getNameElement(),
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager = me.getElement().getManager(),
 				cmd,
 				range,
 				isEnd;
@@ -132,7 +132,7 @@ Ext.define(
 				name = me.getNameElement(),
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager = me.getElement().getManager(),
 				cmd,
 				range,
 				isStart;

@@ -58,7 +58,7 @@ Ext.define(
 		verifyElement: function (el, debug)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
+				manager = el.getManager(),
 				sch = manager.getSchema(),
 				scopeData,
 				xml;
@@ -90,8 +90,8 @@ Ext.define(
 		verifyResult: function (res, scopeData)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
 				el = scopeData.el,
+				manager,
 				xml;
 
 			if (!res)
@@ -105,6 +105,8 @@ Ext.define(
 
 				throw Error('Действие команды отменено для ' + el.getName());
 			}
+
+			manager = el.getManager();
 
 			// принудительно синхронизируем кнопки, игнорируя кэш
 			manager.syncButtons();

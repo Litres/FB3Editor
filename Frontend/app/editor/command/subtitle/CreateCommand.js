@@ -15,7 +15,8 @@ Ext.define(
 		{
 			var me = this,
 				sel = window.getSelection(),
-				data = me.getData();
+				data = me.getData(),
+				manager;
 
 			data.oldRange = sel.getRangeAt(0);
 			nodes.p = els.node.nodes[data.viewportId];
@@ -23,7 +24,9 @@ Ext.define(
 				startNode: nodes.p.firstChild,
 				startOffset: nodes.p.firstChild.length
 			};
-			FBEditor.editor.Manager.setCursor(data.saveRange);
+
+			manager = els.node.getManager();
+			manager.setCursor(data.saveRange);
 		}
 	}
 );

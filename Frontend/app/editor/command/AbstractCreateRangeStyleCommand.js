@@ -21,18 +21,18 @@ Ext.define(
 				offset = {},
 				reg = {},
 				pos = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				sel,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
@@ -48,6 +48,9 @@ Ext.define(
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
 				data.viewportId = nodes.common.viewportId;
+
+				manager = manager || els.common.getManager();
+				manager.setSuspendEvent(true);
 
 				offset = {
 					start: range.startOffset,
@@ -363,7 +366,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				els.focus = nodes.cursor.parentNode.getElement();
 
@@ -393,6 +396,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -403,21 +407,22 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
 
 				nodes.common = range.common;
 				els.common = nodes.common.getElement();
+
+				manager = els.common.getManager();
+				manager.setSuspendEvent(true);
 
 				console.log('undo create ' + me.elementName, data, nodes);
 
@@ -450,10 +455,12 @@ Ext.define(
 					}
 
 					// удаляем новые узлы
+
 					nodes.next = nodes.common.nextSibling;
 					els.next = nodes.next.getElement();
 					els.parent.remove(els.next);
 					nodes.parent.removeChild(nodes.next);
+
 					if (range.offset.end < range.oldValue.length)
 					{
 						nodes.next = nodes.common.nextSibling;
@@ -465,10 +472,12 @@ Ext.define(
 				else
 				{
 					// переносим элементы в первом параграфе
+
 					els.firstP = nodes.firstP.getElement();
 					nodes.parent = nodes.startContainer.parentNode;
 					els.parent = nodes.parent.getElement();
 					nodes.first = nodes.parent.firstChild;
+
 					while (nodes.first)
 					{
 						// выполняется до тех пор, пока не закончатся элементы
@@ -490,6 +499,7 @@ Ext.define(
 					}
 
 					els.lastP = nodes.lastP.getElement();
+
 					if (els.firstP.elementId !== els.lastP.elementId)
 					{
 						// начальные и конечные точки выделения находятся в разных параграфах
@@ -499,6 +509,7 @@ Ext.define(
 						nodes.parent = nodes.lastP.firstChild;
 						els.parent = nodes.parent.getElement();
 						nodes.first = nodes.parent.firstChild;
+
 						while (nodes.first)
 						{
 							// выполняется до тех пор, пока не закончатся элементы
@@ -559,7 +570,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				data.saveRange = {
 					startNode: range.start,
@@ -578,6 +589,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

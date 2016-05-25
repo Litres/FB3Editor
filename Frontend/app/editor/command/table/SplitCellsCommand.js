@@ -17,24 +17,23 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				viewportId = data.opts.viewportId;
 
 				els.td = data.opts.td;
 				els.table = els.td.getParentName('table');
 
+				manager = els.table.getManager();
+				manager.setSuspendEvent(true);
+
 				me.splitCell(els.td, viewportId);
 
 				// синхронизируем элемент
 				els.table.sync(viewportId);
-
-				manager.suspendEvent = false;
 
 				// курсор
 				nodes.cursor = els.td.nodes[viewportId];
@@ -56,6 +55,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -66,16 +66,17 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				viewportId = data.opts.viewportId;
 				nodes = data.nodes;
 				els = data.els;
+
+				manager = els.table.getManager();
+				manager.setSuspendEvent(true);
 
 				els.joinTd = me.joinCells(els.table, els.td._sizeSelection, viewportId);
 
@@ -87,8 +88,6 @@ Ext.define(
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
 
-				manager.suspendEvent = false;
-
 				res = true;
 			}
 			catch (e)
@@ -97,6 +96,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

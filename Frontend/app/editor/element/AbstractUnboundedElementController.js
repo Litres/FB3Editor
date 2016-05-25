@@ -62,7 +62,7 @@ Ext.define(
 		{
 			var me = this,
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				nameElements,
 				name;
 
@@ -74,6 +74,7 @@ Ext.define(
 			els.node = nodes.node.getElement();
 			els.parent = nodes.parent.getElement();
 
+			manager = els.parent.getManager();
 			nameElements = manager.getNamesElements(els.parent);
 			nameElements.splice(els.parent.getChildPosition(els.node) + 1, 0, name);
 

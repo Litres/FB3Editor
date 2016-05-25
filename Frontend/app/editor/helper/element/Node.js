@@ -31,7 +31,7 @@ Ext.define(
 				el = me.el,
 				node;
 
-			node = viewportId ? el.nodes[viewportId] : Ext.Object.getKeys(el.nodes)[0];
+			node = viewportId ? el.nodes[viewportId] : Ext.Object.getValues(el.nodes)[0];
 
 			return node;
 		}

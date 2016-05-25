@@ -14,8 +14,8 @@ Ext.define(
 			var me = this,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				name = me.getNameElement(),
+				manager,
 				res,
 				sch,
 				range,
@@ -29,6 +29,8 @@ Ext.define(
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
+
+			manager = els.node.getManager();
 
 			// ищем notes
 			while (!(els.parent.isNotes || els.parent.isRoot))
@@ -50,7 +52,9 @@ Ext.define(
 			els.first = nodes.first ? nodes.first.getElement() : null;
 
 			// получаем дочерние имена элементов для проверки по схеме
+
 			nameElements = manager.getNamesElements(els.parent);
+
 			if (!els.first.isTitle)
 			{
 				nameElements.unshift(name);

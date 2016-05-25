@@ -75,7 +75,7 @@ Ext.define(
 							text: me.translateText.create,
 							handler: function ()
 							{
-								var manager = FBEditor.editor.Manager,
+								var manager = FBEditor.getEditorManager(),
 									form,
 									values;
 

@@ -1,5 +1,5 @@
 /**
- * Контроллер панели свойств редактора текста.
+ * Контроллер панели свойств редактора текста книги.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -40,12 +40,12 @@ Ext.define(
 		onAfterRender: function ()
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow(),
+				manager = FBEditor.getEditorManager(),
 				focusEl,
 				data;
 
 			// если есть активный элемент в тексте, то показываем его данные
-			focusEl = bridge.FBEditor.editor.Manager.getFocusElement();
+			focusEl = manager.getFocusElement();
 
 			if (focusEl)
 			{

@@ -17,8 +17,8 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory(),
+				manager = FBEditor.getEditorManager(),
+				factory = FBEditor.editor.Factory,
 				name = btn.elementName,
 				nodes = {},
 				els = {},

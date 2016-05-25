@@ -17,13 +17,20 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range;
 
 			try
 			{
+				nodes.node = data.node;
+				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
 				range = data.range || manager.getRange();
+
 				data.range = {
 					common: range.common,
 					start: range.start,
@@ -32,10 +39,6 @@ Ext.define(
 					collapsed: range.collapsed,
 					offset: range.offset
 				};
-				manager.suspendEvent = true;
-				nodes.node = data.node;
-
-				//console.log('data', data);
 
 				if (!nodes.node.parentNode)
 				{
@@ -102,12 +105,8 @@ Ext.define(
 					}
 				);
 
-				//console.log('nodes', nodes);
-
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
@@ -123,6 +122,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -133,15 +133,17 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
+				viewportId = data.viewportId;
+
+				manager = data.saveRange.startNode.getElement().getManager();
+				manager.setSuspendEvent(true);
 
 				// удаляем все td
 				Ext.Array.each(
@@ -161,8 +163,6 @@ Ext.define(
 
 				els.parent.sync(viewportId);
 
-				manager.suspendEvent = false;
-
 				// устанавливаем курсор
 				data.saveRange = {
 					startNode: range.start,
@@ -179,6 +179,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -205,7 +206,9 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection(),
 				data = me.getData(),
-				manager = FBEditor.editor.Manager;
+				manager;
+
+			manager = els.p.getManager();
 
 			data.oldRange = sel.getRangeAt(0);
 			nodes.p = els.p.nodes[data.viewportId];

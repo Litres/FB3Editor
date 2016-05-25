@@ -18,14 +18,12 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.opts.range;
 
 				console.log('create img', data.opts);
@@ -35,6 +33,9 @@ Ext.define(
 
 				nodes.start = range.start;
 				els.start = nodes.start.getElement();
+
+				manager = els.start.getManager();
+				manager.setSuspendEvent(true);
 
 				// новый элемент изображения
 				els.node = factory.createElement(me.elementName, {src: data.opts.name});
@@ -97,12 +98,8 @@ Ext.define(
 					}
 				}
 
-				//console.log('nodes', nodes, els);
-
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -125,6 +122,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -135,13 +133,11 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.opts.range;
 
 				console.log('undo create img', data);
@@ -151,6 +147,9 @@ Ext.define(
 				nodes.start = range.start;
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				// удаляем изображение
 				els.parent.remove(els.node);
@@ -189,8 +188,6 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
-
 				// устанавливаем курсор
 				manager.setCursor(
 					{
@@ -207,6 +204,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

@@ -16,7 +16,7 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				sel,
 				range;
 
@@ -37,9 +37,11 @@ Ext.define(
 					}
 				};
 
-				manager.suspendEvent = true;
-
 				nodes.node = data.node || data.prevNode;
+				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				if (!nodes.node.parentNode)
 				{
@@ -63,7 +65,7 @@ Ext.define(
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
@@ -82,6 +84,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -92,18 +95,20 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
 				viewportId = nodes.node.viewportId;
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
@@ -112,8 +117,6 @@ Ext.define(
 				nodes.parent.removeChild(nodes.node);
 
 				els.parent.sync(viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -131,6 +134,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -153,7 +157,8 @@ Ext.define(
 		{
 			var me = this,
 				sel = window.getSelection(),
-				data = me.getData();
+				data = me.getData(),
+				manager;
 
 			data.oldRange = sel.getRangeAt(0);
 			nodes.p = els.p.nodes[data.viewportId];
@@ -161,7 +166,9 @@ Ext.define(
 				startNode: nodes.p.firstChild,
 				startOffset: nodes.p.firstChild.length
 			};
-			FBEditor.editor.Manager.setCursor(data.saveRange);
+
+			manager = els.p.getManager();
+			manager.setCursor(data.saveRange);
 		}
 	}
 );

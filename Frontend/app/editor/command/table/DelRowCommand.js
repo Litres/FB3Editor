@@ -16,12 +16,14 @@ Ext.define(
 				data = me.getData(),
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range,
 				res;
 
 			nodes.node = data.node;
 			els.node = nodes.node.getElement();
+
+			manager = els.node.getManager();
 
 			range = data.range || manager.getRange();
 			data.range = range;
@@ -52,6 +54,7 @@ Ext.define(
 
 			res = me.callParent(arguments);
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

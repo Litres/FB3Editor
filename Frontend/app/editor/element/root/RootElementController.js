@@ -20,7 +20,6 @@ Ext.define(
 		onTextModified: function (e)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
 				node = e.target,
 				text = node.nodeValue,
@@ -28,11 +27,14 @@ Ext.define(
 				nextSibling = node.nextSibling,
 				previousSibling = node.previousSibling,
 				parentNode = node.parentNode,
+				manager,
 				parentEl,
 				el,
 				cmd;
 
-			if (manager.suspendEvent)
+			manager = me.getElement().getManager();
+
+			if (manager.isSuspendEvent())
 			{
 				return;
 			}
@@ -50,8 +52,6 @@ Ext.define(
 
 				return;
 			}
-
-			el = node.getElement ? node.getElement() : null;
 
 			//console.log('DOMCharacterDataModified:', e, me);
 

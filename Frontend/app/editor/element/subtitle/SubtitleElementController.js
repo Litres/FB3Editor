@@ -61,7 +61,7 @@ Ext.define(
 		{
 			var me = this,
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager = me.getElement().getManager(),
 				nameElements,
 				name;
 

@@ -56,11 +56,15 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				managerDesc = FBEditor.desc.Manager,
-				managerEditor = FBEditor.editor.Manager,
-				root;
+				//managerDesc = FBEditor.desc.Manager,
+				editor;
 
-			/*if (!managerDesc.loadUrl)
+			//  создаем корневой элемент редактора текста книги
+			editor = Ext.getCmp('main-editor');
+			editor.createRootElement();
+
+			/*
+			if (!managerDesc.loadUrl)
 			{
 				// переключаем контекст на текст
 				Ext.defer(
@@ -76,11 +80,8 @@ Ext.define(
 				// инциализируем корневой элемент
 				root = managerEditor.createRootElement();
 				root.createScaffold();
-			}*/
-
-			// инциализируем корневой элемент
-			root = managerEditor.createRootElement();
-			root.createScaffold();
+			}
+			*/
 
 			me.callParent(arguments);
 		},

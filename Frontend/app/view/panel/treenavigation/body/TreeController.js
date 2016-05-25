@@ -21,15 +21,14 @@ Ext.define(
 		onItemDblClick: function (nodeView, record)
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow(),
 				data = record.getData(),
 				els = {},
 				nodes = {},
-				manager;
+				manager = FBEditor.getEditorManager(),
+				root,
+				rootNode;
 
 			me.callParent(arguments);
-
-			manager = bridge.FBEditor.editor.Manager;
 
 			// получаем элемент по его id
 			els.node = manager.getElementById(data.elementId);
@@ -37,7 +36,9 @@ Ext.define(
 			if (els.node)
 			{
 				// устанавливаем фокус на корневом узле главного окна
-				bridge.Ext.Object.getValues(manager.getContent().nodes)[0].focus();
+				root = manager.getContent();
+				rootNode = root.getNodeHelper().getNode();
+				rootNode.focus();
 
 				// узлы элемента
 				nodes.nodes = Ext.Object.getValues(els.node.nodes);

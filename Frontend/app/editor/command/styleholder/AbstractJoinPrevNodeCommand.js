@@ -20,13 +20,11 @@ Ext.define(
 				els = {},
 				nodes = {},
 				sel = window.getSelection(),
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				// получаем данные из выделения
 				range = sel.getRangeAt(0);
 
@@ -34,6 +32,9 @@ Ext.define(
 
 				nodes.p = range.commonAncestorContainer;
 				els.p = nodes.p.getElement();
+
+				manager = els.p.getManager();
+				manager.setSuspendEvent(true);
 
 				// ищем самый верхний контейнер
 				while (!els.p.hisName(me.elementName))
@@ -113,11 +114,7 @@ Ext.define(
 				els.parentP.remove(els.p);
 				nodes.parentP.removeChild(nodes.p);
 
-				//console.log('nodes, els', nodes, els);
-
 				els.parentP.sync(data.viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -141,6 +138,7 @@ Ext.define(
 				me.getHistory(els.parent).removePrev();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -151,13 +149,11 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
-				factory = FBEditor.editor.Factory;
+				factory = FBEditor.editor.Factory,
+				manager;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				// исходные данные
 				nodes = data.nodes;
 
@@ -165,6 +161,9 @@ Ext.define(
 
 				els.prevP = nodes.prevP.getElement();
 				els.parentP = nodes.parentP.getElement();
+
+				manager = els.parentP.getManager();
+				manager.setSuspendEvent(true);
 
 				// новый элемент
 				els.newP = factory.createElement(me.elementName);
@@ -228,8 +227,6 @@ Ext.define(
 
 				els.parentP.sync(data.viewportId);
 
-				manager.suspendEvent = false;
-
 				// устанавливаем курсор
 				nodes.cursor = manager.getDeepFirst(nodes.newP);
 				data.saveRange = {
@@ -247,6 +244,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

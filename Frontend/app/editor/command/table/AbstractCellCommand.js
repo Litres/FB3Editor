@@ -22,9 +22,11 @@ Ext.define(
 			var me = this,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				colSpan,
 				rowSpan;
+
+			manager = table.getManager();
 
 			// вычисляем количество объединямых ячеек по горизонтали и вертикали
 			colSpan = size.rb[0] - size.lt[0] + 1;
@@ -154,12 +156,12 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				manager = FBEditor.editor.Manager;
+				manager;
 
+			manager = nodes.cursor.getElement().getManager();
 			data.saveRange = {
 				startNode: manager.getDeepFirst(nodes.cursor)
 			};
-
 			manager.setCursor(data.saveRange);
 		}
 	}

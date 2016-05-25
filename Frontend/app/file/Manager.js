@@ -46,8 +46,9 @@ Ext.define(
 						load: function (data)
 						{
 							var resourceManager = FBEditor.resource.Manager,
-								editorManager = FBEditor.editor.Manager,
 								descManager = FBEditor.desc.Manager,
+								bodyEditor,
+								bodyManager,
 								structure,
 								thumb,
 								meta,
@@ -103,8 +104,10 @@ Ext.define(
 								resourceManager.load(images);
 								resourceManager.setCover(thumb.getFileName());
 
-								editorManager.resetFocus();
-								editorManager.createContent(contentBody);
+								// редактор тела книги
+								bodyEditor = Ext.getCmp('main-editor');
+								bodyManager = bodyEditor.getManager();
+								bodyManager.createContent(contentBody);
 							}
 							catch (e)
 							{

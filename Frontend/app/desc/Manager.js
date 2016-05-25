@@ -474,22 +474,29 @@ Ext.define(
 						editorNames,
 					    function (name)
 					    {
-						    var content,
-							    editor,
+						    var editor,
+							    manager,
 							    data,
 							    reg;
 
-						    // нормализуем значение
-						    reg = new RegExp('(<' + name + '>.*?</' + name + '>)');
+						    // проставляем пространство имен для создания нужного корневого элемента описания
+						    reg = new RegExp('<' + name + '>(.*?)</' + name + '>');
 						    data = xml.match(reg);
-						    data = data ? data[1] : '';
+						    data = data ? '<desc:' + name +
+						           ' xmlns:desc="http://www.fictionbook.org/FictionBook3/description">' + data[1] +
+						           '</desc:' + name + '>' : '';
 
-						    // получаем элемент контент из строки
-						    content = me.createContent(data);
+						    // полноценная xml-строка
+						    data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
 
-						    editor = Ext.getCmp('form-desc-' + name);
-						    console.log(name, content, data);
-						    //editor.fireEvent('loadData', content);
+						    // редактор текста
+						    editor = Ext.getCmp('form-desc-' + name).getBodyEditor();
+
+						    // менеджер редактора
+						    manager = editor.getManager();
+
+						    // создаем контент редактора из xml-строки
+						    manager.createContent(data);
 					    }
 					);
 
@@ -513,21 +520,6 @@ Ext.define(
 				},
 			    delay
 			);
-		},
-
-		/**
-		 * Создает и возвращает контент из описания загруженной книги.
-		 * @param {String} data Исходный xml элемента описания.
-		 * @return {FBEditor.editor.element.AbstractElement} Контент.
-		 */
-		createContent: function (data)
-		{
-			var me = this,
-				content,
-				creator,
-				xsl;
-
-			return content;
 		},
 
 		/**

@@ -11,21 +11,26 @@ Ext.define(
 		alias: 'controller.view.editor',
 
 		/**
-		 * Загружает данные в окно редактора.
+		 * Загружает корневой элемент в редактор.
+		 * @param {FBEditor.editor.element.root.RootElement} rootElement Корневой элемент.
 		 */
-		onLoadData: function ()
+		onLoadData: function (rootElement)
 		{
 			var me = this,
 				view = me.getView(),
-				viewport = me.getViewport(),
-				data;
+				viewport = view.getViewport(),
+				manager = view.getManager(),
+				node,
+				viewportId;
 
-			console.log('load', arguments);
+			// айди окна
+			viewportId = viewport.id;
 
-			// получаем html
-			//data = manager.getNode(item.id);
+			// создаем узел
+			node = manager.getNode(viewportId);
 
-			//viewport.loadData(data);
+			// загружаем узел в окно
+			viewport.loadData(node);
 		}
 	}
 );

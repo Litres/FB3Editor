@@ -41,7 +41,7 @@ Ext.define(
 		{
 			var els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				range,
 				res;
 

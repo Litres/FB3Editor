@@ -37,14 +37,17 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow(),
+				manager,
 				data;
 
-			data = bridge.FBEditor.editor.Manager.getContent();
+			manager = FBEditor.getEditorManager();
+			data = manager.getContent();
+
 			if (data)
 			{
 				me.loadData(data);
 			}
+
 			me.callParent(arguments);
 		},
 
@@ -114,8 +117,8 @@ Ext.define(
 		getTreeChildren: function (el, parentPath)
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow(),
-				val = null;
+				val = null,
+				manager = FBEditor.getEditorManager();
 
 
 			if (el.showedOnTree)
@@ -131,7 +134,7 @@ Ext.define(
 				val = {};
 				val.text = el.getNameTree();
 				val.elementId = el.elementId;
-				val.expanded = bridge.FBEditor.editor.Manager.stateExpandedNodesTree[el.elementId] ? true : false;
+				val.expanded = manager.stateExpandedNodesTree[el.elementId] ? true : false;
 				val.icon = ' ';
 				val.cls = 'treenavigation-children treenavigation-children-body';
 				val.cls += el.cls ? ' treenavigation-children-' + el.cls : '';
@@ -186,7 +189,7 @@ Ext.define(
 		saveStateNodes: function (data)
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow();
+				manager = FBEditor.getEditorManager();
 
 			data = data || me.store.getData().items[0].data.children;
 
@@ -197,12 +200,12 @@ Ext.define(
 					if (item.expanded)
 					{
 						// сохраняем id открытого узла
-						bridge.FBEditor.editor.Manager.stateExpandedNodesTree[item.elementId] = true;
+						manager.stateExpandedNodesTree[item.elementId] = true;
 					}
-					else if (bridge.FBEditor.editor.Manager.stateExpandedNodesTree[item.elementId])
+					else if (manager.stateExpandedNodesTree[item.elementId])
 					{
 						// удаляем id закрытого узла
-						delete bridge.FBEditor.editor.Manager.stateExpandedNodesTree[item.elementId];
+						delete manager.stateExpandedNodesTree[item.elementId];
 					}
 
 					if (item.children && item.children.length)

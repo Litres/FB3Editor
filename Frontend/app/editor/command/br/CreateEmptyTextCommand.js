@@ -17,13 +17,11 @@ Ext.define(
 				nodes = {},
 				els = {},
 				sel = window. getSelection(),
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = sel.getRangeAt(0);
 				data.viewportId = range.startContainer.viewportId;
 
@@ -34,15 +32,16 @@ Ext.define(
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
 				els.parent.removeAll();
 				nodes.parent.removeChild(nodes.parent.firstChild);
 
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
-
-				//console.log('nodes', nodes, els);
+				manager.setSuspendEvent(false);
 
 				data.els = els;
 
@@ -54,59 +53,14 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
 		unExecute: function ()
 		{
-			var me = this,
-				data = me.getData(),
-				nodes = {},
-				els = {},
-				res = false,
-				manager = FBEditor.editor.Manager,
-				range;
-
 			// не требуется
 			return false;
-
-			try
-			{
-				manager.suspendEvent = true;
-
-				els = data.els;
-
-				console.log('undo replace br to empty text', els, data);
-
-				nodes.node = els.node.nodes[data.viewportId];
-				nodes.parent = els.parent.nodes[data.viewportId];
-
-				console.log('nodes', nodes);
-
-				return false;
-
-				els.parent.add(els.node);
-				nodes.parent.appendChild(nodes.node);
-
-				els.parent.sync(data.viewportId);
-
-				manager.suspendEvent = false;
-
-				// устанавливаем курсор
-				data.saveRange = {
-					startNode: nodes.node
-				};
-				FBEditor.editor.Manager.setCursor(data.saveRange);
-
-				res = true;
-			}
-			catch (e)
-			{
-				Ext.log({level: 'warn', msg: e, dump: e});
-				me.getHistory(els.parent).remove();
-			}
-
-			return res;
 		}
 	}
 );

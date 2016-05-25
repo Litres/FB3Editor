@@ -18,7 +18,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				nodes = {},
 				els = {},
 				range;
@@ -58,7 +58,7 @@ Ext.define(
 				view = me.getView(),
 				cmdName = view.cmdName,
 				cmdOpts = view.cmdOpts,
-				manager = FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				node,
 				el,
 				history,

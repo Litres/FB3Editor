@@ -14,9 +14,9 @@ Ext.define(
 			var me = this,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				name = me.getNameElement(),
 				pos = 0,
+				manager,
 				res,
 				sch,
 				range,
@@ -30,6 +30,8 @@ Ext.define(
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
+
+			manager = els.node.getManager();
 
 			while (els.parent.isStyleHolder || els.parent.isStyleType)
 			{

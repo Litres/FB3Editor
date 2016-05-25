@@ -113,6 +113,7 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				manager,
 				range,
 				inner;
 
@@ -121,12 +122,13 @@ Ext.define(
 				// вложенная ли секция
 				inner = data.opts && data.opts.inner;
 
-				FBEditor.editor.Manager.suspendEvent = true;
-
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				if (inner)
 				{
@@ -152,7 +154,7 @@ Ext.define(
 						startOffset: range.offset.start,
 						focusElement: els.parent
 					};
-					FBEditor.editor.Manager.setCursor(data.saveRange);
+					manager.setCursor(data.saveRange);
 				}
 
 				// удаляем секцию
@@ -161,7 +163,7 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				FBEditor.editor.Manager.suspendEvent = false;
+				manager.suspendEvent = false;
 
 				res = true;
 			}
@@ -171,6 +173,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -180,7 +183,8 @@ Ext.define(
 				data = me.getData(),
 				range,
 				focusEl,
-				inner;
+				inner,
+				manager;
 
 			inner = data.opts && data.opts.inner;
 
@@ -204,7 +208,8 @@ Ext.define(
 				};
 			}
 
-			FBEditor.editor.Manager.setCursor(data.saveRange);
+			manager = data.saveRange.focusElement.getManager();
+			manager.setCursor(data.saveRange);
 		}
 	}
 );

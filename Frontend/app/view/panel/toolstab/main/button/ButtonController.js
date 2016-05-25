@@ -14,7 +14,7 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			manager.createElement(btn.elementName, btn.createOpts);
 		},
@@ -45,7 +45,7 @@ Ext.define(
 		verify: function (xml, debug)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				sch = manager.getSchema(),
 				scopeData = {};
 
@@ -62,7 +62,7 @@ Ext.define(
 		getContentXml: function ()
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager;
+				manager = FBEditor.getEditorManager();
 
 			return manager.getContent().getXml(true);
 		},

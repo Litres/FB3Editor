@@ -19,16 +19,16 @@ Ext.define(
 				offset = {},
 				pos = {},
 				sel = window.getSelection(),
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
@@ -49,6 +49,9 @@ Ext.define(
 
 				nodes.node = range.startContainer;
 				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				data.viewportId = nodes.node.viewportId;
 
@@ -264,7 +267,7 @@ Ext.define(
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				nodes.cursor = nodes.cursor || manager.getDeepLast(nodes.fragmentLast);
@@ -292,6 +295,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -302,18 +306,20 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
 
 				nodes.cursor = range.start;
+
+				manager = els.parent.getManager();
+				manager.setSuspendEvent(true);
 
 				console.log('undo paste', nodes, range, els);
 
@@ -397,7 +403,7 @@ Ext.define(
 					els.parent.sync(data.viewportId);
 				}
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(true);
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -414,6 +420,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

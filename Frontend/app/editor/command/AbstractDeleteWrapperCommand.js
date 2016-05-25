@@ -16,21 +16,23 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
-				range = data.range || manager.getRange();
+				//range = data.range || manager.getRange();
+				range = data.range;
 				data.viewportId = range.start.viewportId;
 
 				console.log('del wrapper ' + me.elementName, range);
 
 				nodes.node = range.common;
 				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				if (range.collapsed)
 				{
@@ -136,7 +138,7 @@ Ext.define(
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// курсор
 				manager.setCursor(
@@ -165,6 +167,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -175,17 +178,18 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				els = data.els;
 				nodes = data.nodes;
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				console.log('undo del wrapper ' + me.elementName, data, range);
 
@@ -269,7 +273,7 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -289,6 +293,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

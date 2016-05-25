@@ -15,8 +15,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory(),
+				factory = FBEditor.editor.Factory,
 				size;
 
 			size = data.opts.size;

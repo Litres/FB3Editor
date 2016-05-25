@@ -17,12 +17,13 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				win,
 				sel,
 				range;
 
 			sel = manager.getSelection();
+
 			if (sel)
 			{
 				win = btn.win || Ext.create('FBEditor.view.window.img.Create');
@@ -47,7 +48,7 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = FBEditor.editor.Manager,
+				manager = FBEditor.getEditorManager(),
 				el,
 				name,
 				disable;

@@ -65,6 +65,7 @@ Ext.define(
 		createElement: function (name, attributes, children)
 		{
 			var n = name,
+				lastPart,
 				nameEl,
 				el;
 
@@ -78,16 +79,22 @@ Ext.define(
 			n = n.toLowerCase();
 			n = n.replace(/-([a-z])/g, '$1');
 
-			if (/\//.test(n))
+			if (/:/.test(n))
 			{
-				// учитываем директории
-				n = n.split('/');
-				n[n.length - 1] = n[n.length - 1] + '.' + Ext.String.capitalize(n[n.length - 1]);
+				// учитываем пространство имен
+
+				n = n.split(':');
+
+				// корректируем последнюю часть имени
+				lastPart = n.pop();
+				lastPart = lastPart + '.' + Ext.String.capitalize(lastPart);
+				n.push(lastPart);
+
 				n = n.join('.');
 			}
 			else
 			{
-				// без директории
+				// без пространства имен
 				n = n +'.' + Ext.String.capitalize(n);
 			}
 

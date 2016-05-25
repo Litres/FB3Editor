@@ -17,7 +17,7 @@ Ext.define(
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
@@ -25,6 +25,8 @@ Ext.define(
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
@@ -43,6 +45,9 @@ Ext.define(
 
 				nodes.node = range.startContainer;
 				els.node = nodes.node.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				data.viewportId = nodes.node.viewportId;
 
@@ -163,11 +168,7 @@ Ext.define(
 
 				els.parentEmpty.removeEmptyText();
 
-				//console.log('nodes, els', nodes, els);
-
 				els.parentEmpty.sync(data.viewportId);
-
-				manager.suspendEvent = false;
 
 				manager.setCursor(
 					{
@@ -187,6 +188,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -197,23 +199,23 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				sel,
 				restoreRange;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				nodes = data.nodes;
 				els = data.els;
+
+				manager = els.parentEmpty.getManager();
+				manager.setSuspendEvent(true);
 
 				// восстанавливаем узел
 				nodes.empty = els.empty.getNode(data.viewportId);
 
 				console.log('undo del empty', nodes, els);
-				//return false;
 
 				if (nodes.newEmpty)
 				{
@@ -313,8 +315,6 @@ Ext.define(
 
 				els.parentEmpty.sync(data.viewportId);
 
-				manager.suspendEvent = false;
-
 				data.saveRange = {
 					startNode: nodes.cursor,
 					startOffset: data.isBackspace ? 1 : 0
@@ -329,6 +329,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

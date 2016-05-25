@@ -23,7 +23,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				offset = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				sel,
 				collapsed,
 				range,
@@ -32,11 +32,11 @@ Ext.define(
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
@@ -46,6 +46,9 @@ Ext.define(
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
+
+				manager = els.common.getManager();
+				manager.setSuspendEvent(true);
 
 				// ищем самый верхниий элемент, который может делиться на несколько
 				while (!els.common.splittable)
@@ -127,8 +130,6 @@ Ext.define(
 				// синхронизируем
 				els.common.sync(data.viewportId);
 
-				manager.suspendEvent = false;
-
 				// устанавливаем курсор
 				manager.setCursor(
 					{
@@ -150,6 +151,7 @@ Ext.define(
 				me.getHistory(els.common).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -160,14 +162,12 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
@@ -178,9 +178,14 @@ Ext.define(
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+
 				// переносим все элементы обратно в исходный контейнер
+
 				nodes.first = nodes.node.firstChild;
 				els.first = nodes.first.getElement();
+
 				while (els.first)
 				{
 					els.parent.insertBefore(els.first, els.node);
@@ -205,8 +210,6 @@ Ext.define(
 
 				// синхронизируем
 				els.parent.sync(viewportId);
-
-				manager.suspendEvent = false;
 
 				// устанавливаем выделение
 				if (!range.joinStartContainer)
@@ -240,6 +243,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -252,22 +256,20 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory();
+				factory = FBEditor.editor.Factory;
 
 			els.node = factory.createElement(me.elementName);
 			nodes.node = els.node.getNode(data.viewportId);
-
-			//console.log('nodes', nodes, range);
-			//return;
 
 			// вставляем новый элемент
 			els.common.insertBefore(els.node, els.startContainer);
 			nodes.common.insertBefore(nodes.node, nodes.startContainer);
 
 			// переносим элементы, которые находятся в текущем выделении в новый элемент
+
 			nodes.next = nodes.startContainer;
 			els.next = nodes.next.getElement();
+
 			while (els.next && els.next.elementId !== els.endContainer.elementId)
 			{
 				nodes.buf = nodes.next.nextSibling;
@@ -278,6 +280,7 @@ Ext.define(
 				nodes.next = nodes.buf;
 				els.next = nodes.next ? nodes.next.getElement() : null;
 			}
+
 			if (els.next && els.next.elementId === els.endContainer.elementId && !data.range.joinEndContainer)
 			{
 				els.node.add(els.next);

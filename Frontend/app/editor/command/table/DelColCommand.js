@@ -16,12 +16,14 @@ Ext.define(
 				data = me.getData(),
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range,
 				res;
 
 			nodes.node = data.node;
 			els.node = nodes.node.getElement();
+
+			manager = els.node.getManager();
 
 			range = data.range || manager.getRange();
 			data.range = range;
@@ -57,7 +59,7 @@ Ext.define(
 			{
 				try
 				{
-					manager.suspendEvent = true;
+					manager.setSuspendEvent(true);
 
 					data.viewportId = range.start.viewportId;
 					nodes.next = nodes.node.nextSibling;
@@ -89,8 +91,6 @@ Ext.define(
 					// синхронизируем элемент
 					els.table.sync(data.viewportId);
 
-					manager.suspendEvent = false;
-
 					// устанавливаем курсор
 					nodes.cursor = nodes.next;
 					nodes.cursor = nodes.cursor ? nodes.cursor : nodes.prev;
@@ -116,6 +116,7 @@ Ext.define(
 				}
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -126,7 +127,7 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			if (data.el)
@@ -138,10 +139,11 @@ Ext.define(
 			{
 				try
 				{
-					manager.suspendEvent = true;
-
 					range = data.range;
 					els = data.els;
+
+					manager = els.table.getManager();
+					manager.setSuspendEvent(true);
 
 					console.log('undo del col', nodes, els, range);
 
@@ -174,8 +176,6 @@ Ext.define(
 
 					els.table.sync(data.viewportId);
 
-					manager.suspendEvent = false;
-
 					// устанавливаем курсор
 					data.saveRange = {
 						startNode: range.start,
@@ -193,6 +193,7 @@ Ext.define(
 				}
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

@@ -23,17 +23,17 @@ Ext.define(
 				pos = {},
 				reg = {},
 				sel = window.getSelection(),
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
@@ -49,6 +49,9 @@ Ext.define(
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
+
+				manager = els.common.getManager();
+				manager.setSuspendEvent(true);
 
 				data.viewportId = nodes.common.viewportId;
 
@@ -195,7 +198,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -221,6 +224,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -231,16 +235,17 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
+
+				manager = els.parent.getManager();
+				manager.setSuspendEvent(true);
 
 				console.log('undo remove nodes ', data, nodes);
 
@@ -301,7 +306,7 @@ Ext.define(
 					startOffset: range.offset.start,
 					endOffset: range.offset.end
 				};
-				manager.setCursor(data.saveRange);
+				manager.setSuspendEvent(false);
 
 				data.nodes = nodes;
 
@@ -313,6 +318,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

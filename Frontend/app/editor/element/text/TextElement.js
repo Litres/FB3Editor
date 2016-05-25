@@ -78,9 +78,9 @@ Ext.define(
 		sync: function (viewportId)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager;
+				manager = me.getManager();
 
-			manager.suspendEvent = true;
+			manager.setSuspendEvent(true);
 
 			Ext.Object.each(
 				me.nodes,
@@ -93,7 +93,7 @@ Ext.define(
 				}
 			);
 
-			manager.suspendEvent = false;
+			manager.setSuspendEvent(false);
 		},
 
 		/**

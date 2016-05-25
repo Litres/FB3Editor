@@ -17,29 +17,28 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				viewportId,
 				size;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				viewportId = data.opts.viewportId;
-
-				// убираем выделение
-				manager.clearSelectNodes(viewportId);
 
 				size = data.opts.size;
 				nodes.table = data.opts.table;
 				els.table = nodes.table.getElement();
 
+				manager = els.table.getManager();
+				manager.setSuspendEvent(true);
+
+				// убираем выделение
+				manager.clearSelectNodes(viewportId);
+
 				els.joinTd = me.joinCells(els.table, size, viewportId);
 
 				// синхронизируем элемент
 				els.table.sync(viewportId);
-
-				manager.suspendEvent = false;
 
 				// курсор
 				nodes.cursor = els.joinTd.nodes[viewportId];
@@ -61,6 +60,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -71,21 +71,20 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				viewportId;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				viewportId = data.opts.viewportId;
 				els = data.els;
+
+				manager = els.table.getManager();
+				manager.setSuspendEvent(true);
 
 				me.splitCell(els.joinTd, viewportId);
 
 				els.table.sync(viewportId);
-
-				manager.suspendEvent = false;
 
 				// курсор
 				nodes.cursor = els.joinTd.nodes[viewportId];
@@ -101,6 +100,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

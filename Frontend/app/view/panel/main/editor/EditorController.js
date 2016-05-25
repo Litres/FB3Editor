@@ -10,19 +10,17 @@ Ext.define(
 		extend: 'FBEditor.editor.view.EditorController',
 		alias: 'controller.view.main.editor',
 
-		/**
-		 * Загружает данные тела книги в окна редактора.
-		 */
-		onLoadData: function ()
+		onLoadData: function (rootElement)
 		{
 			var me = this,
 				view = me.getView(),
-				viewports = me.getViewports(),
+				viewports = view.getViewports(),
 				content = view.getPanelContent(),
-				manager = FBEditor.editor.Manager,
+				manager = view.getManager(),
 				data,
 				north;
 
+			// основное окно
 			north = view.viewports.north;
 
 			Ext.Array.each(
@@ -74,8 +72,9 @@ Ext.define(
 		onSyncContent: function (viewport)
 		{
 			var me = this,
-				viewports = me.getViewports(),
-				manager = FBEditor.editor.Manager,
+				view = me.getView(),
+				viewports = view.getViewports(),
+				manager = view.getManager(),
 				data;
 
 			Ext.Array.each(
@@ -92,27 +91,6 @@ Ext.define(
 					}
 				}
 			);
-		},
-
-		/**
-		 * @private
-		 * Возвращает окна редактирования текста.
-		 * @return {FBEditor.view.panel.editor.viewport.Viewport[]} Окна редактирования текста.
-		 */
-		getViewports: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				viewports = [];
-
-			viewports.push(view.viewports.north);
-
-			if (view.viewports.south)
-			{
-				viewports.push(view.viewports.south);
-			}
-
-			return viewports;
 		}
 	}
 );

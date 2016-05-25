@@ -16,19 +16,22 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
-				sch = manager.getSchema(),
+				manager,
+				sch,
 				range;
 
 			try
 			{
-				manager.suspendEvent = true;
+
+				manager = data.el.getManager();
+				manager.setSuspendEvent(true);
+				sch = manager.getSchema();
 
 				range = data.range || manager.getRange();
 				data.viewportId = range.start.viewportId;
 
-				console.log('convert ' + data.el.getName() + ' to text ', data, range);
+				console.log('convert ' + data.el.getName() + ' to text ', data);
 
 				els.node = data.el;
 				nodes.node = els.node.nodes[data.viewportId];
@@ -104,7 +107,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				els.cursor = range.start.getElement();
@@ -124,6 +127,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -136,8 +140,9 @@ Ext.define(
 				res = false,
 				range;
 
+			//
 
-
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

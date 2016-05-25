@@ -550,7 +550,8 @@ Ext.define(
 			var me = this,
 				node = me.nodes[viewportId],
 				cls = me.cls,
-				selectCls = FBEditor.editor.Manager.selectCls,
+				manager = me.getManager(),
+				selectCls = manager.selectCls,
 				reg;
 
 			reg = new RegExp(selectCls);
@@ -655,10 +656,10 @@ Ext.define(
 		sync: function (viewportId)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
+				manager = me.getManager(),
 				newNode;
 
-			manager.suspendEvent = true;
+			manager.setSuspendEvent(true);
 
 			Ext.Object.each(
 				me.nodes,
@@ -667,16 +668,19 @@ Ext.define(
 				    if (id !== viewportId)
 				    {
 					    newNode = me.getNode(id);
-					    console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
+					    //console.log('newNode, oldNode', newNode, oldNode, oldNode.parentNode);
 					    oldNode.parentNode.replaceChild(newNode, oldNode);
 				    }
 			    }
 			);
 
-			manager.suspendEvent = false;
+			manager.setSuspendEvent(false);
 
-			// обновляем дерево навигации по тексту
-			manager.updateTree();
+			if (manager.isMainEditor)
+			{
+				// обновляем дерево навигации по тексту книги
+				manager.updateTree();
+			}
 		},
 
 		/**
@@ -763,7 +767,7 @@ Ext.define(
 		updateView: function ()
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
+				manager = me.getManager(),
 				viewportId,
 				oldNode,
 				newNode;
@@ -773,11 +777,11 @@ Ext.define(
 			// обновляем узлы элемента
 			viewportId = Ext.Object.getKeys(me.nodes)[0];
 			oldNode = me.nodes[viewportId];
-			manager.suspendEvent = true;
+			manager.setSuspendEvent(true);
 			newNode = me.getNode(viewportId);
 			oldNode.parentNode.replaceChild(newNode, oldNode);
 			me.sync(viewportId);
-			manager.suspendEvent = false;
+			manager.setSuspendEvent(false);
 		},
 
 		/**
@@ -952,16 +956,17 @@ Ext.define(
 		getEditor: function ()
 		{
 			var me = this,
-				root = me.getRoot(),
+				root,
 				editor;
 
-			editor = root.getEditor();
+			root = me.getRoot();
+			editor = root ? root.getEditor() : null;
 
 			return editor;
 		},
 
 		/**
-		 * Возвращает менеджер истории редактора текста.
+		 * Возвращает историю редактора текста.
 		 * @return {FBEditor.editor.History}
 		 */
 		getHistory: function ()
@@ -973,6 +978,22 @@ Ext.define(
 			history = editor.getHistory();
 
 			return history;
+		},
+
+		/**
+		 * Возвращает менеджер редактора текста.
+		 * @return {FBEditor.editor.Manager}
+		 */
+		getManager: function ()
+		{
+			var me = this,
+				editor,
+				manager;
+
+			editor = me.getEditor ? me.getEditor() : null;
+			manager = editor ? editor.getManager() : null;
+
+			return manager;
 		},
 
 		/**
@@ -1503,6 +1524,9 @@ Ext.define(
 			}
 		},
 
+		/**
+		 * Изменяет данные элемента перед копированием.
+		 */
 		beforeCopy: function ()
 		{
 			var me = this;
@@ -1516,6 +1540,9 @@ Ext.define(
 			);
 		},
 
+		/**
+		 * Изменяет данные элемента после копирования.
+		 */
 		afterCopy: function ()
 		{
 			var me = this;

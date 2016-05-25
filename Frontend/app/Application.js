@@ -34,6 +34,9 @@ FBEditor.getBridgeNavigation()
 {Function} Возвращает хранилище localStorage для приложения
 FBEditor.getLocalStorage()
 
+{Function} Возвращает менеджер редактора тела книги
+FBEditor.getEditorManager()
+
 */
 
 Ext.define(
@@ -44,9 +47,6 @@ Ext.define(
 		requires: [
 			'FBEditor.command.HistoryCommand',
 			'FBEditor.desc.Manager',
-			'FBEditor.editor.CreateContent',
-			'FBEditor.editor.History',
-			'FBEditor.editor.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
@@ -54,8 +54,7 @@ Ext.define(
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.util.Format',
 			'FBEditor.webworker.Manager',
-			'FBEditor.xsd.Desc',
-			'FBEditor.xsl.Editor'
+			'FBEditor.xsd.Desc'
 		],
 	    stores: [],
 		listen: {
@@ -118,6 +117,22 @@ Ext.define(
 				return Ext.util.LocalStorage.get('FBEditor') || new Ext.util.LocalStorage({id: 'FBEditor'});
 			};
 
+			/**
+			 * Возвращает менеджер редактора тела книги.
+			 * @return {FBEditor.view.panel.main.editor.Editor}
+			 */
+			FBEditor.getEditorManager = function ()
+			{
+				var bridge = FBEditor.getBridgeWindow(),
+					manager,
+					editor;
+
+				editor = bridge.Ext.getCmp('main-editor');
+				manager = editor.getManager();
+
+				return manager;
+			};
+
 			// закрытие/обновление окна
 			window.onbeforeunload = function ()
 			{
@@ -146,9 +161,6 @@ Ext.define(
 
 			// редактор описания
 			FBEditor.desc.Manager.init();
-
-			// редактор текста
-			FBEditor.editor.Manager.init();
 
 			// определяем доступность хаба
 			me.getAccessHub();

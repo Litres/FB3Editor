@@ -13,6 +13,13 @@ Ext.define(
 		    'FBEditor.editor.schema.Factory'
 		],
 
+		statics: {
+			/**
+			 * @property {Number} Счетчик созданных схем.
+			 */
+			counter: 0
+		},
+
 		/**
 		 * @private
 		 * @property {String} Схема текста.
@@ -58,12 +65,14 @@ Ext.define(
 			// сокращенная форма метода создания элемента схемы
 			cse = function (name, options)
 			{
+				options.counter = me.self.counter;
 				return FBEditor.editor.schema.Factory.createElement(name, options);
 			};
 
 			// сокращенная форма метода для определения типа схемы
 			dse = function (name, options)
 			{
+				options.counter = me.self.counter;
 				return FBEditor.editor.schema.Factory.defineType(name, options);
 			};
 
@@ -79,6 +88,9 @@ Ext.define(
 				eval(xsdJson);
 				me.elements = elements;
 				Ext.log({msg: 'Элементы схемы:', level: 'info', dump: elements});
+
+				// увеличиваем счетчик созданных схем
+				me.self.counter++;
 			}
 			catch (e)
 			{

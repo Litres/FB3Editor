@@ -39,12 +39,13 @@ Ext.define(
 		{
 			var me = this,
 				els = {},
+				manager = me.getElement().getManager(),
 				nameElements,
 				name;
 
 			name = me.getNameElement();
 			els.parent = nodes.parent.getElement();
-			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
+			nameElements = manager.getNamesElements(els.parent);
 			nameElements.push(name);
 
 			return nameElements;

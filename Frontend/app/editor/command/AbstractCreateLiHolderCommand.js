@@ -18,8 +18,8 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				isInner,
 				viewportId,
 				sel,
@@ -27,17 +27,21 @@ Ext.define(
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
+					els.node = data.saveRange.startNode.getElement();
+					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
 
 				// получаем данные из выделения
 				sel = data.sel || window.getSelection();
 				range = sel.getRangeAt(0);
+
+				els.node = data.node.getElement();
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				data.viewportId = data.node.viewportId;
 				viewportId = data.viewportId;
@@ -145,7 +149,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -170,6 +174,7 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		},
 
@@ -180,16 +185,14 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				range,
 				viewportId,
 				isInner;
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				nodes = data.saveNodes;
 				viewportId = nodes.node.viewportId;
@@ -199,6 +202,9 @@ Ext.define(
 
 				els.node = nodes.node.getElement();
 				els.parent = nodes.parent.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				// переносим элементы из списка обратно
 				nodes.pp = [];
@@ -237,7 +243,7 @@ Ext.define(
 				// синхронизируем
 				els.parent.sync(viewportId);
 
-				manager.suspendEvent = false;
+				manager.setSuspendEvent(false);
 
 				data.saveRange = {
 					startNode: range.start,
@@ -259,6 +265,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

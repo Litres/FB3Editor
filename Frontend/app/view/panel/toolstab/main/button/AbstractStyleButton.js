@@ -12,7 +12,7 @@ Ext.define(
 
 		isActiveSelection: function ()
 		{
-			var manager = FBEditor.editor.Manager,
+			var manager = FBEditor.getEditorManager(),
 				res,
 				range;
 

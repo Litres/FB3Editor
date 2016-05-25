@@ -140,10 +140,10 @@ Ext.define(
 		onSplitElement: function (node, isEmpty)
 		{
 			var me = this,
-				manager = FBEditor.editor.Manager,
-				factory = manager.getFactory(),
+				factory = FBEditor.editor.Factory,
 				els = {},
 				nodes = {},
+				manager,
 				name,
 				xml,
 				sch,
@@ -152,6 +152,8 @@ Ext.define(
 			isEmpty = isEmpty || false;
 			nodes.node = node;
 			els.node = nodes.node.getElement();
+
+			manager = els.node.getManager();
 
 			// разрешена ли разбивка элемента
 			if (els.node.splittable)
@@ -233,7 +235,7 @@ Ext.define(
 				if (root.isBody)
 				{
 					// ставим фокус для тела книги
-					manager = FBEditor.editor.Manager;
+					manager = el.getManager();
 					manager.setFocusElement(el);
 				}
 
@@ -419,17 +421,15 @@ Ext.define(
 				bridgeNav,
 				manager,
 				node,
-				el,
-				root;
+				el;
 
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
-			root = el.getRoot();
+			manager = el ? el.getManager() : null;
 
 			// для тела книги
-			if (root && root.isBody)
+			if (manager && manager.isMainEditor)
 			{
-				manager = FBEditor.editor.Manager;
 				bridgeNav = FBEditor.getBridgeNavigation();
 
 				// фокус на элементе
@@ -459,17 +459,19 @@ Ext.define(
 				relNode = e.relatedNode,
 				node = e.target,
 				viewportId = relNode.viewportId,
-				manager = FBEditor.editor.Manager,
 				factory = FBEditor.editor.Factory,
+				manager,
 				newEl,
 				nextSibling,
 				previousSibling,
 				parentEl,
 				nextSiblingEl;
 
+			manager = relNode.getElement ? relNode.getElement().getManager() : null;
+
 			// игнориуруется вставка корневого узла, так как он уже вставлен и
 			// игнорируется вставка при включенной заморозке
-			if (relNode.firstChild.nodeName !== 'MAIN' && !manager.suspendEvent)
+			if (relNode.firstChild.nodeName !== 'MAIN' && manager && !manager.isSuspendEvent())
 			{
 				if (node.nodeType === Node.TEXT_NODE)
 				{
@@ -505,8 +507,12 @@ Ext.define(
 					parentEl.add(newEl);
 				}
 
-				parentEl.sync(viewportId);
-				manager.setFocusElement(newEl);
+				if (manager.isMainEditor)
+				{
+					// для редактора текста книги
+					parentEl.sync(viewportId);
+					manager.setFocusElement(newEl);
+				}
 
 				e.stopPropagation();
 			}
@@ -522,18 +528,26 @@ Ext.define(
 				relNode = e.relatedNode,
 				target = e.target,
 				viewportId = relNode.viewportId,
+				manager,
 				parentEl,
 				el;
 
 			// игнориуруется удаление корневого узла, так как он всегда необходим
-			if (relNode.firstChild && relNode.firstChild.nodeName !== 'MAIN' && !FBEditor.editor.Manager.suspendEvent)
+			if (relNode.firstChild && relNode.firstChild.nodeName !== 'MAIN')
 			{
-				console.log('DOMNodeRemoved:', target, relNode.outerHTML);
 				parentEl = relNode.getElement();
 				el = target.getElement();
-				parentEl.remove(el);
-				parentEl.sync(viewportId);
-				e.stopPropagation();
+
+				manager = el.getManager();
+
+				if (!manager.isSuspendEvent())
+				{
+					console.log('DOMNodeRemoved:', target, relNode.outerHTML);
+
+					parentEl.remove(el);
+					parentEl.sync(viewportId);
+					e.stopPropagation();
+				}
 			}
 		},
 
@@ -565,12 +579,16 @@ Ext.define(
 		 */
 		onBeforeCopy: function (e)
 		{
-			//console.log('beforecopy', this.getElement());
-			//e.preventDefault();
+			var me = this,
+				el = me.getElement(),
+				root;
+
 			e.stopPropagation();
 
+			root = el.getRoot();
+
 			// изменяем данные элементов перед копированием
-			FBEditor.editor.Manager.getContent().beforeCopy();
+			root.beforeCopy();
 		},
 
 		/**
@@ -579,17 +597,21 @@ Ext.define(
 		 */
 		onCopy: function (e)
 		{
-			//console.log('copy', this.getElement());
-			//e.preventDefault();
+			var me = this,
+				el = me.getElement(),
+				root;
+
 			e.stopPropagation();
+
+			root = el.getRoot();
 
 			Ext.defer(
 				function ()
 				{
 					// изменяем данные элементов после копирования
-					FBEditor.editor.Manager.getContent().afterCopy();
+					root.afterCopy();
 				},
-				10
+				10 // задержка необходима для того, чтобы процесс начинался после копирования
 			);
 		},
 
@@ -643,7 +665,7 @@ Ext.define(
 			var me = this,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				res,
 				sch,
 				name,
@@ -667,6 +689,7 @@ Ext.define(
 			nameElements = me.getNameElementsVerify(nodes);
 
 			// проверяем элемент по схеме
+			manager = els.node.getManager();
 			sch = manager.getSchema();
 			name = els.parent.getName();
 			console.log('name, nameElements', name, nameElements);
@@ -685,6 +708,7 @@ Ext.define(
 		{
 			var me = this,
 				els = {},
+				manager,
 				nameElements,
 				name;
 
@@ -692,7 +716,8 @@ Ext.define(
 			nodes.node = nodes.parent.getElement().xmlTag === name ? nodes.parent : nodes.node;
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
-			nameElements = FBEditor.editor.Manager.getNamesElements(els.parent);
+			manager = els.parent.getManager();
+			nameElements = manager.getNamesElements(els.parent);
 			nameElements.unshift(name);
 
 			return nameElements;

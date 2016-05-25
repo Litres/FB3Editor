@@ -76,7 +76,7 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				manager = FBEditor.editor.Manager,
+				manager,
 				range;
 
 			try
@@ -88,12 +88,13 @@ Ext.define(
 					return me.callParent(arguments);
 				}
 
-				manager.suspendEvent = true;
-
 				nodes = data.nodes;
 				els.node = nodes.node.getElement();
 				els.parent = nodes.parent.getElement();
 				els.p = nodes.p.getElement();
+
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
 
 				// возвращаем параграф на старое место из элемента
 				if (nodes.next)
@@ -114,8 +115,6 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				manager.suspendEvent = false;
-
 				// устанавливаем курсор
 				nodes.cursor = manager.getDeepLast(nodes.p);
 				data.saveRange = {
@@ -134,6 +133,7 @@ Ext.define(
 				me.getHistory(els.parent).remove();
 			}
 
+			manager.setSuspendEvent(false);
 			return res;
 		}
 	}
