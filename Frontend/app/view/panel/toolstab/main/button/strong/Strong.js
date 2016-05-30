@@ -7,12 +7,8 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.strong.Strong',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractStyleButton',
-		id: 'panel-toolstab-main-button-strong',
-		xtype: 'panel-toolstab-main-button-strong',
-		//controller: 'panel.toolstab.main.button.strong',
-		html: '<i class="fa fa-bold"></i>',
-		tooltip: 'Полужирный (Ctrl+B)',
-		elementName: 'strong'
+		extend: 'FBEditor.editor.view.toolbar.button.strong.Strong',
+
+		xtype: 'panel-toolstab-main-button-strong'
 	}
 );

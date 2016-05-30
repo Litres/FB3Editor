@@ -283,7 +283,7 @@
 */
 
 .form-desc-editor-body .editor-viewport {
-	margin: 5px
+	margin: 5px;
 	font-size: 13px;
 	line-height: 150%;
 	white-space: pre-wrap;
@@ -300,6 +300,9 @@
 
 .form-desc-editor-body .editor-viewport .el-p {
 	margin: 0.2em 0;
+}
+.form-desc-editor-body .editor-viewport .el-p:focus {
+	outline: none;
 }
 .form-desc-editor-body .editor-viewport .el-p:after {
 	content: '¶';

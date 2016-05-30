@@ -33,12 +33,15 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.tr.Editor',
 			'FBEditor.view.panel.main.props.body.editor.ul.Editor'
 		],
-		controller: 'panel.props.body',
+
 		id: 'panel-props-body',
 		xtype: 'panel-props-body',
+		controller: 'panel.props.body',
+
 		layout: {
 			type: 'vbox'
 		},
+
 		listeners: {
 			beforeactivate: 'onBeforeActivate',
 			afterRender: 'onAfterRender',

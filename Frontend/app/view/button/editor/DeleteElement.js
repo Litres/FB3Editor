@@ -36,7 +36,6 @@ Ext.define(
 			{
 				history = el.getHistory();
 				history.add(cmd);
-				//bridge.FBEditor.editor.HistoryManager.add(cmd);
 			}
 		}
 	}

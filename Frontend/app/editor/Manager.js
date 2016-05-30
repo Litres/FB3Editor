@@ -317,14 +317,10 @@ Ext.define(
 			if (!el.isText && me.cashSyncBtn !== el.elementId || difCollapsed)
 			{
 				// синхронизируем кнопки элементов с текущим выделением
-				// защита от многокртаной синхронизации на одном и том же элементе
+				// защита от многократной синхронизации на одном и том же элементе
 				me.cashSyncBtn = el.elementId;
 				me.syncButtons();
 			}
-
-			// показываем информацию о выделенном элементе
-			data = el.getData();
-			bridgeProps.Ext.getCmp('panel-props-body').fireEvent('loadData', data);
 		},
 
 		/**
@@ -409,10 +405,12 @@ Ext.define(
 		 */
 		syncButtons: function ()
 		{
-			var me = this;
+			var me = this,
+				editor = me.getEditor(),
+				toolbar;
 
-			me.panelToolstab = me.panelToolstab || Ext.getCmp('panel-toolstab-main');
-			me.panelToolstab.fireEvent('syncButtons');
+			toolbar = editor.getToolbar();
+			toolbar.fireEvent('syncButtons');
 		},
 
 		/**
@@ -420,10 +418,12 @@ Ext.define(
 		 */
 		disableButtons: function ()
 		{
-			var me = this;
+			var me = this,
+				editor = me.getEditor(),
+				toolbar;
 
-			me.panelToolstab = me.panelToolstab || Ext.getCmp('panel-toolstab-main');
-			me.panelToolstab.fireEvent('disableButtons');
+			toolbar = editor.getToolbar();
+			toolbar.fireEvent('disableButtons');
 		},
 
 		/**
@@ -463,9 +463,12 @@ Ext.define(
 		deleteWrapper: function (name, opts)
 		{
 			var me = this,
+				options = opts,
 				cmd;
 
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.DeleteWrapperCommand', {opts: opts});
+			options = options || {};
+			options.manager = me;
+			cmd = Ext.create('FBEditor.editor.command.' + name + '.DeleteWrapperCommand', {opts: options});
 
 			if (cmd.execute())
 			{

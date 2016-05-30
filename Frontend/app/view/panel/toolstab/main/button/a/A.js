@@ -7,12 +7,8 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.a.A',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractStyleButton',
-		id: 'panel-toolstab-main-button-a',
-		xtype: 'panel-toolstab-main-button-a',
-		//controller: 'panel.toolstab.main.button.a',
-		html: '<i class="fa fa-link"></i>',
-		tooltip: 'Ссылка (Ctrl+L)',
-		elementName: 'a'
+		extend: 'FBEditor.editor.view.toolbar.button.a.A',
+
+		xtype: 'panel-toolstab-main-button-a'
 	}
 );

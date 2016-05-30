@@ -22,8 +22,8 @@ Ext.define(
 
 			try
 			{
-				//range = data.range || manager.getRange();
-				range = data.range;
+				manager = data.opts.manager;
+				range = data.range || manager.getRange();
 				data.viewportId = range.start.viewportId;
 
 				console.log('del wrapper ' + me.elementName, range);
@@ -31,7 +31,6 @@ Ext.define(
 				nodes.node = range.common;
 				els.node = nodes.node.getElement();
 
-				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				if (range.collapsed)

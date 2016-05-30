@@ -33,23 +33,23 @@ Ext.define(
 		 */
 		bodyEditor: null,
 
-		initComponent: function ()
+		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+				bodyEditor,
+				toolbar;
 
-			me.items = [
-				{
-					xtype: 'form-desc-editor-body',
-					rootElementName: me.rootElementName
-				}
-			];
+			// панель редактора
+			bodyEditor = Ext.widget('form-desc-editor-body', {rootElementName: me.rootElementName});
+			me.bodyEditor = bodyEditor;
+			me.add(bodyEditor);
 
-			me.dockedItems = [
-				{
-					xtype: 'form-desc-editor-toolbar',
-					dock: 'top'
-				}
-			];
+			// тулбар
+			toolbar = Ext.widget('form-desc-editor-toolbar', {dock: 'top'});
+			me.addDocked(toolbar);
+
+			// связываем тулбар с панелью редактора
+			bodyEditor.setToolbar(toolbar);
 
 			me.callParent(arguments);
 		},
@@ -86,13 +86,7 @@ Ext.define(
 		 */
 		getBodyEditor: function ()
 		{
-			var me = this,
-				bodyEditor;
-
-			bodyEditor = me.bodyEditor || me.down('form-desc-editor-body');
-			me.bodyEditor = bodyEditor;
-
-			return bodyEditor;
+			return this.bodyEditor;
 		}
 	}
 );

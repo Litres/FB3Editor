@@ -22,6 +22,7 @@ Ext.define(
 				reg = {},
 				pos = {},
 				factory = FBEditor.editor.Factory,
+				attributes,
 				manager,
 				sel,
 				range;
@@ -44,6 +45,9 @@ Ext.define(
 				{
 					throw Error('Отсутствует выделение');
 				}
+
+				// аттрибуты создаваемого элемента
+				attributes = data.opts && data.opts.attributes ? data.opts.attributes : [];
 
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
@@ -100,7 +104,7 @@ Ext.define(
 					}
 
 					// новый элемент c выделенной частью текста
-					els.node = factory.createElement(me.elementName);
+					els.node = factory.createElement(me.elementName, attributes);
 					els = Ext.apply(els, els.node.createScaffold());
 					els.t.setText(els.selValue);
 					nodes.node = els.node.getNode(data.viewportId);
@@ -265,7 +269,7 @@ Ext.define(
 					}
 
 					// новый элемент в первом параграфе
-					els.node = factory.createElement(me.elementName);
+					els.node = factory.createElement(me.elementName, attributes);
 					nodes.node = els.node.getNode(data.viewportId);
 					els.parentStart.insertBefore(els.node, els.startContainer);
 					nodes.parentStart.insertBefore(nodes.node, nodes.startContainer);
@@ -291,7 +295,7 @@ Ext.define(
 						nodes.prev = nodes.endContainer.previousSibling;
 
 						// новый элемент в последнем параграфе
-						els.node = factory.createElement(me.elementName);
+						els.node = factory.createElement(me.elementName, attributes);
 						nodes.node = els.node.getNode(data.viewportId);
 						nodes.first = nodes.parentEnd.firstChild;
 						els.first = nodes.first.getElement();
@@ -325,7 +329,7 @@ Ext.define(
 							elsP.p = nodesP.p.getElement();
 
 							// новый элемент в параграфе
-							elsP.node = factory.createElement(me.elementName);
+							elsP.node = factory.createElement(me.elementName, attributes);
 							nodesP.node = elsP.node.getNode(data.viewportId);
 							nodesP.first = nodesP.p.firstChild;
 							elsP.first = nodesP.first.getElement();

@@ -8,11 +8,11 @@
 Ext.define(
 	'FBEditor.view.panel.toolstab.main.button.AbstractToggleButton',
 	{
-		extend: 'FBEditor.view.panel.toolstab.main.button.AbstractButton',
+		extend: 'FBEditor.editor.view.toolbar.button.AbstractToggleButton',
 		requires: [
 			'FBEditor.view.panel.toolstab.main.button.ToggleButtonController'
 		],
-		controller: 'panel.toolstab.main.togglebutton',
-		enableToggle: true
+
+		controller: 'panel.toolstab.main.togglebutton'
 	}
 );

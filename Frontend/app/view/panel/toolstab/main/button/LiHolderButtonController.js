@@ -39,9 +39,11 @@ Ext.define(
 		 */
 		allowInnerList: function ()
 		{
-			var els = {},
+			var me = this,
+				view = me.getView(),
+				manager = view.getEditorManager(),
+				els = {},
 				nodes = {},
-				manager = FBEditor.getEditorManager(),
 				range,
 				res;
 

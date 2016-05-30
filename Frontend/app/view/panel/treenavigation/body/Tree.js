@@ -12,9 +12,11 @@ Ext.define(
 			'FBEditor.view.panel.treenavigation.body.TreeController',
 			'FBEditor.view.panel.treenavigation.body.TreeStore'
 		],
+
 		id: 'panel-body-navigation',
 		xtype: 'panel-body-navigation',
 		controller: 'panel.body.navigation',
+
 		stateId: 'panel-body-navigation',
 		stateful: true,
 		useArrows: true,

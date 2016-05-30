@@ -140,9 +140,8 @@ Ext.define(
 				res = false,
 				range;
 
-			//
+			console.log('Отмена превращения в текст нереализована');
 
-			manager.setSuspendEvent(false);
 			return res;
 		}
 	}

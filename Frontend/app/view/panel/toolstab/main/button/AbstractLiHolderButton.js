@@ -13,7 +13,7 @@ Ext.define(
 		isActiveSelection: function ()
 		{
 			var me = this,
-				manager = FBEditor.getEditorManager(),
+				manager = me.getEditorManager(),
 				nodes = {},
 				els = {},
 				name = me.elementName,

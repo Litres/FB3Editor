@@ -41,8 +41,6 @@ Ext.define(
 				xml = xml.replace(/<br\/>/, '<p>&#160;</p>');
 			}
 
-			console.log('xml', xml);
-
 			return xml;
 		},
 

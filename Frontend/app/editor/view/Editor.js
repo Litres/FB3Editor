@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.Manager',
 			'FBEditor.editor.view.EditorController',
+			'FBEditor.editor.view.toolbar.Toolbar',
 			'FBEditor.editor.view.viewport.Viewport'
 		],
 
@@ -32,13 +33,19 @@ Ext.define(
 		 * @private
 		 * @property {FBEditor.editor.view.viewport.Viewport} Контейнер редактора текста.
 		 */
-		//viewport: null,
+		viewport: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.toolbar.Toolbar} Панель кнопок форматирования редактора текста.
+		 */
+		toolbar: null,
 
 		/**
 		 * @private
 		 * @property {FBEditor.editor.Manager} Менеджер редактора.
 		 */
-		//manager: null,
+		manager: null,
 
 		afterRender: function ()
 		{
@@ -130,6 +137,28 @@ Ext.define(
 			me.viewport = viewport;
 
 			return viewport;
+		},
+
+		/**
+		 * Связывает редактор с тулбаром.
+		 * @param {FBEditor.editor.view.toolbar.Toolbar} toolbar Тулбар.
+		 */
+		setToolbar: function (toolbar)
+		{
+			var me = this,
+				tool = toolbar;
+
+			me.toolbar = tool;
+			tool.setEditor(me);
+		},
+
+		/**
+		 * Возвращает тулбар.
+		 * @return {FBEditor.editor.view.toolbar.Toolbar}
+		 */
+		getToolbar: function ()
+		{
+			return this.toolbar;
 		},
 
 		/**

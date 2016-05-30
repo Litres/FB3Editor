@@ -1,5 +1,5 @@
 /**
- * Панель кнопок для редактора.
+ * Панель кнопок форматирования для редактора.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,21 +7,8 @@
 Ext.define(
 	'FBEditor.view.form.desc.editor.toolbar.Toolbar',
 	{
-		extend: 'Ext.Toolbar',
+		extend: 'FBEditor.editor.view.toolbar.Toolbar',
 
-		xtype: 'form-desc-editor-toolbar',
-
-		initComponent: function ()
-		{
-			var me = this;
-
-			me.items = [
-				{
-					text: 'Test'
-				}
-			];
-
-			me.callParent(arguments);
-		}
+		xtype: 'form-desc-editor-toolbar'
 	}
 );

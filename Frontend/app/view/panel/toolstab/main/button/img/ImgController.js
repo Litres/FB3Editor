@@ -17,7 +17,7 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = FBEditor.getEditorManager(),
+				manager = btn.getEditorManager(),
 				win,
 				sel,
 				range;
@@ -48,7 +48,7 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = FBEditor.getEditorManager(),
+				manager = btn.getEditorManager(),
 				el,
 				name,
 				disable;

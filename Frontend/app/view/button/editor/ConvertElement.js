@@ -20,14 +20,17 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
 				data = {},
+				el = me.element,
+				history,
 				cmd;
 
-			data.el = me.element;
+			data.el = el;
 			cmd = bridge.Ext.create('FBEditor.editor.command.ConvertToTextCommand', data);
 
 			if (cmd.execute())
 			{
-				//
+				history = el.getHistory();
+				history.add(cmd);
 			}
 		},
 

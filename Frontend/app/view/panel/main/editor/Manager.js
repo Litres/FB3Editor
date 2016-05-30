@@ -9,11 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.Manager',
 
-		/**
-		 * @property {Boolean} Признак того, что менедежр принадлежит редактору текста книги.
-		 */
-		isMainEditor: true,
-
 		createContent: function ()
 		{
 			var me = this;
@@ -24,17 +19,35 @@ Ext.define(
 			me.updateTree();
 		},
 
+		setFocusElement: function (elOrNode, sel)
+		{
+			var me = this,
+				panel = me.getPanelProps(),
+				panelNav = me.getPanelNavigation(),
+				el;
+
+			me.callParent(arguments);
+
+			el = me.focusElement;
+
+			// обновляем информацию в панели свойств о выделенном элементе
+			panel.fireEvent('loadData', el.getData());
+
+			// разворачиваем узел элемента в дереве навигации по тексту
+			panelNav.expandElement(el);
+		},
+
 		/**
 		 * Обновляет дерево навигации по тексту.
 		 */
 		updateTree: function ()
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeNavigation();
+				panel = me.getPanelNavigation();
 
-			if (bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation'))
+			if (panel)
 			{
-				bridge.Ext.getCmp('panel-body-navigation').loadData(me.content);
+				panel.loadData(me.content);
 			}
 			else
 			{
@@ -46,6 +59,39 @@ Ext.define(
 					200
 				);
 			}
+		},
+
+		/**
+		 * @private
+		 * Возвращает панель свойств.
+		 * @return {FBEditor.view.panel.main.props.body.Body}
+		 */
+		getPanelProps: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeProps(),
+				panel;
+
+			panel = bridge.Ext.getCmp('panel-props-body');
+
+			return panel;
+		},
+
+		/**
+		 * @private
+		 * Возвращает дерево навигации.
+		 * @return {FBEditor.view.panel.treenavigation.body.Tree}
+		 */
+		getPanelNavigation: function ()
+		{
+			var me = this,
+				bridge = FBEditor.getBridgeNavigation(),
+				panel;
+
+			panel = bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation') ?
+			        bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation') : null;
+
+			return panel;
 		}
 	}
 );

@@ -418,7 +418,6 @@ Ext.define(
 		onMouseUp: function (e)
 		{
 			var me = this,
-				bridgeNav,
 				manager,
 				node,
 				el;
@@ -427,16 +426,10 @@ Ext.define(
 			el = node.getElement ? node.getElement() : null;
 			manager = el ? el.getManager() : null;
 
-			// для тела книги
-			if (manager && manager.isMainEditor)
+			if (manager)
 			{
-				bridgeNav = FBEditor.getBridgeNavigation();
-
-				// фокус на элементе
+				// фокус на элемент
 				manager.setFocusElement(el);
-
-				// разворачиваем узел элемента в дереве навигации по тексту
-				bridgeNav.Ext.getCmp('panel-body-navigation').expandElement(el);
 			}
 		},
 
@@ -488,31 +481,27 @@ Ext.define(
 				previousSibling = node.previousSibling;
 				parentEl = relNode.getElement();
 
-				console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
+				//console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
 
 				if (nextSibling)
 				{
 					nextSiblingEl = nextSibling.getElement();
-					console.log('insert, nextSibling', nextSibling);
+					console.log('new insert, nextSibling', nextSibling);
 					parentEl.insertBefore(newEl, nextSiblingEl);
 				}
 				else if (previousSibling)
 				{
 					parentEl.add(newEl);
-					console.log('add, previousSibling', previousSibling);
+					console.log('new add, previousSibling', previousSibling);
 				}
 				else
 				{
-					console.log('add', newEl);
+					console.log('new add', newEl);
 					parentEl.add(newEl);
 				}
 
-				if (manager.isMainEditor)
-				{
-					// для редактора текста книги
-					parentEl.sync(viewportId);
-					manager.setFocusElement(newEl);
-				}
+				parentEl.sync(viewportId);
+				manager.setFocusElement(newEl);
 
 				e.stopPropagation();
 			}

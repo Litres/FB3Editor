@@ -53,37 +53,39 @@ Ext.define(
 			contentEmpty: 'onContentEmpty'
 		},
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.editor.Editor} Редактор текста книги.
+		 */
+		mainEditor: null,
+
 		afterRender: function ()
 		{
 			var me = this,
-				//managerDesc = FBEditor.desc.Manager,
-				editor;
+				mainEditor;
+
+			// панель редактор текста
+			mainEditor = me.getMainEditor();
 
 			//  создаем корневой элемент редактора текста книги
-			editor = Ext.getCmp('main-editor');
-			editor.createRootElement();
-
-			/*
-			if (!managerDesc.loadUrl)
-			{
-				// переключаем контекст на текст
-				Ext.defer(
-					function ()
-					{
-						me.openBody();
-					},
-					500
-				);
-			}
-			else
-			{
-				// инциализируем корневой элемент
-				root = managerEditor.createRootElement();
-				root.createScaffold();
-			}
-			*/
+			mainEditor.createRootElement();
 
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает редактор текста книги.
+		 * @return {FBEditor.view.panel.main.editor.Editor}
+		 */
+		getMainEditor: function ()
+		{
+			var me = this,
+				mainEditor;
+
+			mainEditor = me.mainEditor || Ext.getCmp('main-editor');
+			me.mainEditor = mainEditor;
+
+			return mainEditor;
 		},
 
 		/**

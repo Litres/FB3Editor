@@ -675,12 +675,6 @@ Ext.define(
 			);
 
 			manager.setSuspendEvent(false);
-
-			if (manager.isMainEditor)
-			{
-				// обновляем дерево навигации по тексту книги
-				manager.updateTree();
-			}
 		},
 
 		/**
