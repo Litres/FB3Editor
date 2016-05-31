@@ -16,6 +16,7 @@ Ext.define(
 		controller: 'editor.toolbar.button',
 
 		disabled: true,
+		tooltipType: 'title',
 
 		listeners: {
 			click: 'onClick',

@@ -65,8 +65,6 @@ Ext.define(
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
 
-				manager.setSuspendEvent(false);
-
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
 

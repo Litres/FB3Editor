@@ -51,7 +51,7 @@ Ext.define(
 
 				data.viewportId = nodes.node.viewportId;
 
-				console.log('del empty', range);
+				console.log('del empty', els.node, range);
 
 				manager.suspendEvent = true;
 
@@ -82,11 +82,12 @@ Ext.define(
 					// ищем самый верхний пустой элемент
 					while (els.parentEmpty.isEmpty() && !els.parentEmpty.isStyleHolder)
 					{
-						//console.log('search', els.parentEmpty.xmlTag);
 						nodes.empty = nodes.parentEmpty;
 						els.empty = nodes.empty.getElement();
 						nodes.parentEmpty = nodes.parentEmpty.parentNode;
 						els.parentEmpty = nodes.parentEmpty.getElement();
+
+						//console.log('search', els.empty);
 					}
 
 					if (els.parentEmpty.isStyleHolder && els.parentEmpty.isEmpty())
@@ -103,17 +104,15 @@ Ext.define(
 				{
 					// удаляем пустой элемент
 
-					//console.log('remove', els.parentEmpty); //return false;
+					//console.log('remove', els); //return false;
 
 					nodes.next = nodes.empty.nextSibling;
 					nodes.prev = nodes.empty.previousSibling;
 					els.next = nodes.next ? nodes.next.getElement() : null;
 					els.prev = nodes.prev ? nodes.prev.getElement() : null;
 
-					els.parentEmpty.removeAll();
-					nodes.parentEmpty.removeChild(nodes.parentEmpty.firstChild);
-
-					//console.log('isEmpty', els.parentEmpty.isEmpty());
+					els.parentEmpty.remove(els.empty);
+					nodes.parentEmpty.removeChild(nodes.empty);
 
 					// курсор
 					nodes.cursor = nodes.next ? manager.getDeepFirst(nodes.next) : manager.getDeepLast(nodes.prev);

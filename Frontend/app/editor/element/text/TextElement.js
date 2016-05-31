@@ -43,8 +43,6 @@ Ext.define(
 
 			// преобразуем сущность &nbsp; в пробел
 			me.text = me.text.replace(/&nbsp;/g, " ");
-
-
 		},
 
 		getNode: function (viewportId)

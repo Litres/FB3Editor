@@ -65,9 +65,6 @@ Ext.define(
 
 				el = node.getElement();
 
-				manager = el.getManager();
-				manager.setSuspendEvent(true);
-
 				el.setText(text);
 
 				el.sync(viewportId);

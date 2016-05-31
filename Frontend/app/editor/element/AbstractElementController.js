@@ -466,6 +466,8 @@ Ext.define(
 			// игнорируется вставка при включенной заморозке
 			if (relNode.firstChild.nodeName !== 'MAIN' && manager && !manager.isSuspendEvent())
 			{
+				e.stopPropagation();
+
 				if (node.nodeType === Node.TEXT_NODE)
 				{
 					newEl = factory.createElementText(node.nodeValue);
@@ -496,14 +498,12 @@ Ext.define(
 				}
 				else
 				{
-					console.log('new add', newEl);
+					console.log('new add', parentEl, newEl.elementId, newEl);
 					parentEl.add(newEl);
 				}
 
 				parentEl.sync(viewportId);
 				manager.setFocusElement(newEl);
-
-				e.stopPropagation();
 			}
 		},
 
@@ -531,11 +531,12 @@ Ext.define(
 
 				if (!manager.isSuspendEvent())
 				{
+					e.stopPropagation();
+
 					console.log('DOMNodeRemoved:', target, relNode.outerHTML);
 
 					parentEl.remove(el);
 					parentEl.sync(viewportId);
-					e.stopPropagation();
 				}
 			}
 		},
@@ -737,7 +738,7 @@ Ext.define(
 		},
 
 		/**
-		 * @private
+		 * @protected
 		 * Возвращает менеджер истории.
 		 * @param {FBEditor.editor.element.AbstractElement} [element] Элемент.
 		 * @return {FBEditor.editor.History}

@@ -55,15 +55,6 @@ Ext.define(
 
 			//console.log('DOMCharacterDataModified:', e, me);
 
-			if (!nextSibling && !previousSibling)
-			{
-				el = factory.createElementText(text);
-				el.createNode(viewportId);
-				parentEl = parentNode.getElement();
-				parentEl.removeAll();
-				parentEl.add(el);
-			}
-
 			cmd = Ext.create('FBEditor.editor.command.TextModifiedCommand',
 				{node: node, newValue: e.newValue, oldValue: e.prevValue});
 

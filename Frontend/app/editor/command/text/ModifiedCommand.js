@@ -54,7 +54,7 @@ Ext.define(
 
 				data.viewportId = nodes.node.viewportId;
 
-				console.log('text', data.newValue, range);
+				console.log('edit text', data.newValue, els.node, range);
 
 				data.oldValue = els.node.getText();
 				els.node.setText(data.newValue);
