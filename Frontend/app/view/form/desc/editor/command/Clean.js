@@ -87,6 +87,31 @@ Ext.define(
 						nodes.next = nodes.p.nextSibling;
 						els.next = nodes.next ? nodes.next.getElement() : null;
 
+
+						if (els.next && /[.!?]+$/ig.test(els.text))
+						{
+							// переводим первый символ следующей строки в верхний регистр
+
+							// самый вложенный первый элемент следующей строки
+							nodes.deepFirst = manager.getDeepFirst(nodes.next);
+							els.deepFirst = nodes.deepFirst.getElement();
+							els.firstText = els.deepFirst.getText();
+
+							els.firstText = els.firstText.replace(
+								/^( )*([a-zа-я])(.+?)/ig,
+								function (str, space, first, other)
+								{
+									space = space ? ' ' : '';
+									str = space + Ext.String.capitalize(first) + other;
+
+									return str;
+								}
+							);
+
+							els.deepFirst.setText(els.firstText);
+							nodes.deepFirst.nodeValue = els.firstText;
+						}
+
 						// объединяем строку со следующей в случае:
 						// 1) строка заканчивается на тире
 						// 2) длина строки менее минимального лимита символов
@@ -117,11 +142,6 @@ Ext.define(
 								els.lastText = els.lastText + ' ';
 								els.deepLast.setText(els.lastText);
 								nodes.deepLast.nodeValue = els.lastText;
-							}
-							else
-							{
-								// переносим указатель на следующую строку
-								els.p = els.next;
 							}
 
 							// объединяем строки
