@@ -7,8 +7,13 @@
 Ext.define(
 	'FBEditor.view.form.desc.preamble.Preamble',
 	{
-		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
+		extend: 'FBEditor.view.form.desc.editor.Editor',
+
+		id: 'form-desc-preamble',
 		xtype: 'form-desc-preamble',
+
+		rootElementName: 'desc:preamble',
+
 		name: 'preamble'
 	}
 );

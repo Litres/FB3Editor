@@ -1,11 +1,11 @@
 /**
- * Схема XSD для элемента описания - history.
+ * Схема XSD для элемента описания - preamble.
  *
  * @author dew1983@mail.ru	<Suvorov Andrey M.>\
  */
 
 Ext.define(
-	'FBEditor.xsd.desc.History',
+	'FBEditor.xsd.desc.Preamble',
 	{
 		extend: 'FBEditor.xsd.desc.AbstractAnnotation',
 
@@ -18,7 +18,7 @@ Ext.define(
 			var me = this,
 				xsd;
 
-			xsd = me.callParent(['history']);
+			xsd = me.callParent(['preamble']);
 
 			return xsd;
 		}

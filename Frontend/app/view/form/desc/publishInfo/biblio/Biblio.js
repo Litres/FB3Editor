@@ -7,8 +7,11 @@
 Ext.define(
 	'FBEditor.view.form.desc.publishInfo.biblio.Biblio',
 	{
-		extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
-		xtype: 'form-desc-publishInfo-biblio',
-		height: 150
+		extend: 'FBEditor.view.form.desc.editor.Editor',
+
+		id: 'form-desc-biblio-description',
+		xtype: 'form-desc-biblio-description',
+
+		rootElementName: 'desc:biblio-description'
 	}
 );

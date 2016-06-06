@@ -70,8 +70,13 @@ Ext.define(
 									plugins: 'fieldCleaner'
 								},
 								{
-									xtype: 'form-desc-publishInfo-biblio',
-									name: prefixName + '-biblio-description',
+									xtype: 'desc-fieldcontainer',
+									items: [
+										{
+											xtype: 'form-desc-biblio-description',
+											name: prefixName + '-biblio-description'
+										}
+									],
 									fieldLabel: me.translateText.biblio,
 									cls: 'field-optional'
 								},
@@ -150,7 +155,7 @@ Ext.define(
 						_city: item.down('[name=' + prefixName + '-city]').getValue(),
 						_year: item.down('[name=' + prefixName + '-year]').getValue(),
 						_title: item.down('[name=' + prefixName + '-title]').getValue(),
-						'biblio-description': item.down('[name=' + prefixName + '-biblio-description]').normalizeValue()
+						'biblio-description': item.down('[name=' + prefixName + '-biblio-description]').getValue()
 					};
 					val = me.removeEmptyValues(val);
 

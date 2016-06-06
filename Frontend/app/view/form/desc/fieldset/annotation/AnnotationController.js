@@ -14,10 +14,11 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				htmleditor;
+				editor;
 
-			htmleditor = view.items.first();
-			if (htmleditor.getValue())
+			editor = view.items.first();
+
+			if (editor.getValue())
 			{
 				view.expand();
 			}

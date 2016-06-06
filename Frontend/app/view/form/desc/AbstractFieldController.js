@@ -42,7 +42,7 @@ Ext.define(
 						        {
 							        field.fireEvent('loadData', value);
 						        }
-						        else
+						        else if (field.setValue)
 						        {
 							        field.setValue(value);
 						        }

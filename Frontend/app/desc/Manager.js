@@ -18,7 +18,10 @@ Ext.define(
 		 * @property {String[]} Список имен полей редактора текста.
 		 */
 		editorNames: [
-			'history'
+			'annotation',
+			'biblio-description',
+			'history',
+			'preamble'
 		],
 
 		/**
@@ -465,9 +468,6 @@ Ext.define(
 					// указываем, что данные вводятся не пользователям, а во время загрузки
 					me.loadingProcess = true;
 
-					// отправляем данные в форму описания
-					form.fireEvent('loadDesc', desc);
-
 					// создаем контент в полях редактора текста
 					Ext.Array.each(
 						editorNames,
@@ -501,6 +501,9 @@ Ext.define(
 						    }
 					    }
 					);
+
+					// отправляем данные в форму описания
+					form.fireEvent('loadDesc', desc);
 
 					me.loadingProcess = false;
 

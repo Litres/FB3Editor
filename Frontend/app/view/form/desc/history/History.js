@@ -7,7 +7,6 @@
 Ext.define(
 	'FBEditor.view.form.desc.history.History',
 	{
-		//extend: 'FBEditor.view.form.desc.htmleditor.HtmlEditor',
 		extend: 'FBEditor.view.form.desc.editor.Editor',
 
 		id: 'form-desc-history',

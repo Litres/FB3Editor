@@ -26,8 +26,9 @@ Ext.define(
 			req = view.require;
 			autoExpand = view.autoExpand;
 
-			// первое поле блока всегда должно быть содержать свойство allowBlank
+			// первое поле блока всегда должно содержать свойство allowBlank
 			field = view.down('component[allowBlank/="true|false"]');
+
 			if (!req && autoExpand)
 			{
 				if (field && field.getValue())

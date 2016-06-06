@@ -9,7 +9,10 @@ Ext.define(
 	{
 		requires: [
 			'FBEditor.xsd.Fb3body',
+			'FBEditor.xsd.desc.Annotation',
+			'FBEditor.xsd.desc.Bibliodescription',
 			'FBEditor.xsd.desc.History',
+			'FBEditor.xsd.desc.Preamble',
 			'FBEditor.xsl.SchemaBody',
 		    'FBEditor.editor.schema.Factory'
 		],
