@@ -423,7 +423,11 @@ Ext.define(
 				toolbar;
 
 			toolbar = editor.getToolbar();
-			toolbar.fireEvent('disableButtons');
+
+			if (toolbar)
+			{
+				toolbar.fireEvent('disableButtons');
+			}
 		},
 
 		/**

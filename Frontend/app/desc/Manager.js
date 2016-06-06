@@ -435,7 +435,6 @@ Ext.define(
 				desc.annotation = annotation ? annotation[1] : '';
 				preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
 				desc.preamble = preamble ? preamble[1] : '';
-
 				//console.log('desc', desc);
 
 				// конвертируем данные для формы
@@ -484,19 +483,22 @@ Ext.define(
 						    data = xml.match(reg);
 						    data = data ? '<desc:' + name +
 						           ' xmlns:desc="http://www.fictionbook.org/FictionBook3/description">' + data[1] +
-						           '</desc:' + name + '>' : '';
+						           '</desc:' + name + '>' : null;
 
-						    // полноценная xml-строка
-						    data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
+						    if (data)
+						    {
+							    // полноценная xml-строка
+							    data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
 
-						    // редактор текста
-						    editor = Ext.getCmp('form-desc-' + name).getBodyEditor();
+							    // редактор текста
+							    editor = Ext.getCmp('form-desc-' + name).getBodyEditor();
 
-						    // менеджер редактора
-						    manager = editor.getManager();
+							    // менеджер редактора
+							    manager = editor.getManager();
 
-						    // создаем контент редактора из xml-строки
-						    manager.createContent(data);
+							    // создаем контент редактора из xml-строки
+							    manager.createContent(data);
+						    }
 					    }
 					);
 
