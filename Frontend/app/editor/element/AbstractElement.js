@@ -70,6 +70,7 @@ Ext.define(
 		customListeners: {
 			keydown: 'onKeyDown',
 			keyup: 'onKeyUp',
+			keypress: 'onKeyPress',
 			mouseup: 'onMouseUp',
 			mousedown: 'onMouseDown',
 			mousemove: 'onMouseMove',

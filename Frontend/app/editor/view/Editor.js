@@ -12,7 +12,8 @@ Ext.define(
 			'FBEditor.editor.Manager',
 			'FBEditor.editor.view.EditorController',
 			'FBEditor.editor.view.toolbar.Toolbar',
-			'FBEditor.editor.view.viewport.Viewport'
+			'FBEditor.editor.view.viewport.Viewport',
+			'FBEditor.editor.view.viewport.source.Source'
 		],
 
 		xtype: 'base-editor',
@@ -21,7 +22,9 @@ Ext.define(
 		layout: 'fit',
 
 		listeners: {
-			loadData: 'onLoadData'
+			loadData: 'onLoadData',
+			switchToSource: 'onSwitchToSource',
+			switchToText: 'onSwitchToText'
 		},
 
 		/**
@@ -34,6 +37,12 @@ Ext.define(
 		 * @property {FBEditor.editor.view.viewport.Viewport} Контейнер редактора текста.
 		 */
 		viewport: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.viewport.source.Source} Контейнер исходного xml.
+		 */
+		sourceViewport: null,
 
 		/**
 		 * @private
@@ -56,6 +65,9 @@ Ext.define(
 
 			// инициализируем вид редактора
 			me.initEditor();
+
+			// добавляем контейнер исходного xml
+			me.addSource();
 
 			me.callParent(me);
 		},
@@ -84,6 +96,25 @@ Ext.define(
 					xtype: 'editor-viewport'
 				}
 			);
+		},
+
+		/**
+		 * Добавляет контейнер исходного xml.
+		 */
+		addSource: function ()
+		{
+			var me = this,
+				source;
+
+			source = Ext.widget(
+				{
+					xtype: 'editor-viewport-source',
+					hidden: true
+				}
+			);
+
+			me.sourceViewport = source;
+			me.add(source);
 		},
 
 		/**
@@ -137,6 +168,15 @@ Ext.define(
 			me.viewport = viewport;
 
 			return viewport;
+		},
+
+		/**
+		 * Возвращает контейнер исходного xml.
+		 * @return {FBEditor.editor.view.viewport.source.Source} Контейнер исходного xml.
+		 */
+		getSourceViewport: function ()
+		{
+			return this.sourceViewport;
 		},
 
 		/**

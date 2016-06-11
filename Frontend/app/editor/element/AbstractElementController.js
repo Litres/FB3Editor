@@ -220,25 +220,18 @@ Ext.define(
 			var me = this,
 				node,
 				el,
-				root,
 				controller,
 				manager;
 
 			e.stopPropagation();
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
-			root = el ? el.getRoot() : null;
 			//console.log('keyup', e.target, node);
 
 			if (el)
 			{
-				if (root.isBody)
-				{
-					// ставим фокус для тела книги
-					manager = el.getManager();
-					manager.setFocusElement(el);
-				}
-
+				manager = el.getManager();
+				manager.setFocusElement(el);
 				controller = el && el.controller ? el.controller : me;
 
 				return controller.onKeyUpDefault(e);
@@ -248,6 +241,20 @@ Ext.define(
 		},
 
 		onKeyUpDefault: function (e)
+		{
+			//
+		},
+
+		/**
+		 * Нажатие символьной кнопки клавиатуры.
+		 * @param {Event} e Объект события.
+		 */
+		onKeyPress: function (e)
+		{
+			//
+		},
+
+		onKeyPressDefault: function (e)
 		{
 			//
 		},

@@ -145,6 +145,13 @@ Ext.define(
 			},
 			{
 				xtype: 'panel-toolstab-main-button-code'
+			},
+			{
+				xtype: 'tbspacer',
+				width: 20
+			},
+			{
+				xtype: 'editor-toggleButton'
 			}
 		],
 

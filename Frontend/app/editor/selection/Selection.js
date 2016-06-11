@@ -3,7 +3,6 @@
  *
  * Конкретная реализация данного класса используется в элементах.
  * Смотрите свойство selectionClass в элементе, который реализует собственное выделение.
- * Например FBEditor.editor.element.fb3body.Fb3bodyElement#selectionClass.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */

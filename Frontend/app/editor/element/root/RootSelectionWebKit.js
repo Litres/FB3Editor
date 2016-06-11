@@ -75,28 +75,7 @@ Ext.define(
 				els = {},
 				nodes = {};
 
-			// нажата ли левая кнопка мыши
-			if (e.which === 1)
-			{
-				// элемент под курсором
-				els.target = target.getElement ? target.getElement() : null;
-
-				if (els.target)
-				{
-					// возвращаем редактируемость всех абзацев,
-					// у которых она была убрана во время предыдущего выделения
-
-					nodes.pp = document.querySelectorAll('.el-p[contenteditable=false]');
-
-					Ext.Array.each(
-						nodes.pp,
-						function (p)
-						{
-							p.setAttribute('contenteditable', true);
-						}
-					);
-				}
-			}
+			me.removeAllEditable(e);
 		},
 
 		/**
@@ -134,6 +113,60 @@ Ext.define(
 		 */
 		endSelection: function (e)
 		{
+			var me = this,
+				target = e.target,
+				els = {},
+				nodes = {},
+				helper;
+
+			// элемент под курсором
+			els.target = target.getElement ? target.getElement() : null;
+
+			if (els.target)
+			{
+				els.root = els.target.getRoot();
+				helper = els.root.getNodeHelper();
+				nodes.root = helper.getNode(target.viewportId);
+
+				// устанавливаем фокус на корневой элемент, чтобы иметь возможность обрабатывать события клавиатуры
+				nodes.root.focus();
+			}
+		},
+
+		/**
+		 * @private
+		 * Возвращает редактируемость всех абзацев.
+		 * @param {Object} e Событие.
+		 */
+		removeAllEditable: function (e)
+		{
+			var me = this,
+				target = e.target,
+				els = {},
+				nodes = {};
+
+			// нажата ли левая кнопка мыши
+			if (e.which === 1)
+			{
+				// элемент под курсором
+				els.target = target.getElement ? target.getElement() : null;
+
+				if (els.target)
+				{
+					// возвращаем редактируемость всех абзацев,
+					// у которых она была убрана во время предыдущего выделения
+
+					nodes.pp = document.querySelectorAll('.el-p[contenteditable=false]');
+
+					Ext.Array.each(
+						nodes.pp,
+						function (p)
+						{
+							p.setAttribute('contenteditable', true);
+						}
+					);
+				}
+			}
 		},
 
 		/**
@@ -166,7 +199,7 @@ Ext.define(
 					node = els.endEl.nodes[viewportId];
 
 					// убираем редактируемость абзаца
-					node.setAttribute('contenteditable', Boolean(false));
+					node.setAttribute('contenteditable', false);
 				}
 			}
 		},

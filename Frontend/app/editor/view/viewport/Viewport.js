@@ -18,6 +18,12 @@ Ext.define(
 
 		layout: 'fit',
 
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.Editor} Редактор текста.
+		 */
+		editor: null,
+
 		afterRender: function ()
 		{
 			var me = this;
@@ -97,7 +103,8 @@ Ext.define(
 			var me = this,
 				editor;
 
-			editor = me.up('base-editor');
+			editor = me.editor || me.up('base-editor');
+			me.editor = editor;
 
 			return editor;
 		}

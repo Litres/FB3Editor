@@ -44,8 +44,11 @@ Ext.define(
 
 			if (Ext.isWebKit)
 			{
-				// fix скролл WebKit
+				// fix скролл WebKit, чтобы не тормозил на больших объёмах текста
 				el.style.opacity = 0.9;
+
+				// аттрибут необходим для возможности установить фокус на  корневой элемент при необходимости
+				el.setAttribute('tabindex', 0);
 			}
 			else
 			{

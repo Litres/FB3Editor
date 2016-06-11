@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.Toolbar',
 		requires: [
+			'FBEditor.editor.view.toggleButton.ToggleButton',
 			'FBEditor.editor.view.toolbar.ToolbarController',
 			'FBEditor.editor.view.toolbar.button.a.A',
 			'FBEditor.editor.view.toolbar.button.em.Em',
@@ -27,6 +28,13 @@ Ext.define(
 			},
 			{
 				xtype: 'editor-toolbar-button-a'
+			},
+			{
+				xtype: 'tbspacer',
+				width: 20
+			},
+			{
+				xtype: 'editor-toggleButton'
 			}
 		],
 
@@ -43,12 +51,18 @@ Ext.define(
 		 */
 		buttons: null,
 
-
 		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста.
 		 */
 		editor: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.toggleButton.ToggleButton} Кнопка переключения между редактором исходного
+		 * xml и редактором обычного текста.
+		 */
+		toggleButton: null,
 
 		afterRender: function ()
 		{
@@ -91,6 +105,21 @@ Ext.define(
 		getEditor: function ()
 		{
 			return this.editor;
+		},
+
+		/**
+		 * Возвращает кнопку переключения между редактором исходного xml и редактором обычного текста.
+		 * @return {FBEditor.editor.view.toggleButton.ToggleButton}
+		 */
+		getToggleButton: function ()
+		{
+			var me = this,
+				btn;
+
+			btn = me.toggleButton || me.down('editor-toggleButton');
+			me.toggleButton = btn;
+
+			return btn;
 		},
 
 		/**

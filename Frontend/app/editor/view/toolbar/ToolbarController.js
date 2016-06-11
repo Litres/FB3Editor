@@ -18,7 +18,8 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				buttons = view.getButtons();
+				buttons = view.getButtons(),
+				toggleBtn = view.getToggleButton();
 
 			if (buttons)
 			{
@@ -49,6 +50,8 @@ Ext.define(
 					}
 				);
 			}
+
+			toggleBtn.enable();
 		},
 
 		/**
@@ -58,7 +61,8 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				buttons = view.getButtons();
+				buttons = view.getButtons(),
+				toggleBtn = view.getToggleButton();
 
 			if (buttons)
 			{
@@ -86,6 +90,8 @@ Ext.define(
 					}
 				);
 			}
+
+			toggleBtn.disable();
 		}
 	}
 );

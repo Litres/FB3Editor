@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'editor-toolbar-button-em',
 
 		html: '<i class="fa fa-italic"></i>',
-		tooltip: 'Курсив (Ctrl+I)',
+		tooltip: 'Курсив',
 
 		elementName: 'em'
 	}

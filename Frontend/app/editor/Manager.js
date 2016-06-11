@@ -266,9 +266,7 @@ Ext.define(
 		setFocusElement: function (elOrNode, sel)
 		{
 			var me = this,
-				bridgeProps = FBEditor.getBridgeProps(),
 				el,
-				data,
 				range,
 				difCollapsed;
 
@@ -478,6 +476,23 @@ Ext.define(
 			{
 				me.getHistory().add(cmd);
 			}
+		},
+
+		/**
+		 * Устанавливает редактируемость корневого элемента.
+		 * @param {Boolean} editable Разрешить ле редактируемость.
+		 * @param {String} viewportId Айди окна.
+		 */
+		setRootContentEditable: function (editable, viewportId)
+		{
+			var me = this,
+				root = me.getContent(),
+				helper,
+				node;
+
+			helper = root.getNodeHelper();
+			node = helper.getNode(viewportId);
+			node.setAttribute('contenteditable', Boolean(editable));
 		},
 
 		/**

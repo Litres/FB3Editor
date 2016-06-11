@@ -16,7 +16,7 @@ Ext.define(
 		controller: 'editor.toolbar.button.a',
 
 		html: '<i class="fa fa-link"></i>',
-		tooltip: 'Ссылка (Ctrl+L)',
+		tooltip: 'Ссылка',
 
 		elementName: 'a',
 
