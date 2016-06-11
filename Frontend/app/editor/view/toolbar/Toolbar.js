@@ -123,6 +123,23 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает кнопку по ее имени.
+		 * @param {String} name Имя кнпоки.
+		 * @return {FBEditor.editor.view.toolbar.button.AbstractButton}
+		 */
+		getButton: function (name)
+		{
+			var me = this,
+				btn,
+				xtype;
+
+			xtype = 'editor-toolbar-button-' + name;
+			btn = me.down(xtype);
+
+			return btn;
+		},
+
+		/**
 		 * Возвращает список кнопок для синхронизации.
 		 * @return {Object[]}
 		 */

@@ -9,8 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.view.toolbar.button.strong.Strong',
 
-		xtype: 'panel-toolstab-main-button-strong',
-
-		tooltip: 'Полужирный (Ctrl+B)'
+		xtype: 'panel-toolstab-main-button-strong'
 	}
 );

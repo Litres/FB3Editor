@@ -9,8 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.view.toolbar.button.a.A',
 
-		xtype: 'panel-toolstab-main-button-a',
-
-		tooltip: 'Ссылка (Ctrl+L)'
+		xtype: 'panel-toolstab-main-button-a'
 	}
 );

@@ -8,10 +8,6 @@
 Ext.define(
 	'FBEditor.editor.element.AbstractElementController',
 	{
-		requires: [
-			'FBEditor.editor.KeyMap'
-		],
-
 		/**
 		 * @property {FBEditor.editor.element.AbstractElement} Элемент контроллера.
 		 */
@@ -278,7 +274,7 @@ Ext.define(
 			if (el)
 			{
 				controller = el && el.controller ? el.controller : me;
-				//console.log('keydown', e, controller);
+				console.log('keydown', e.keyCode, e);
 
 				switch (e.keyCode)
 				{
@@ -321,9 +317,21 @@ Ext.define(
 		onKeyDownDefault: function (e)
 		{
 			var me = this,
-				keymap = FBEditor.editor.KeyMap;
+				target = e.target,
+				manager,
+				keymap,
+				el;
 
-			keymap.key(e);
+			el = target.getElement ? target.getElement() : null;
+
+			if (el)
+			{
+				// проверяем сочитание нажатых клавиш
+
+				manager = el.getManager();
+				keymap = manager.getKeymap();
+				keymap.key(e);
+			}
 		},
 
 		/**

@@ -7,8 +7,6 @@
 Ext.define(
 	'FBEditor.editor.KeyMap',
 	{
-		singleton: true,
-
 		/**
 		 * @property {Array} Карта соответствия клавиш.
 		 */
@@ -140,6 +138,19 @@ Ext.define(
 		],
 
 		/**
+		 * @private
+		 * @property {FBEditor.editor.Manager} Менеджер редактора.
+		 */
+		manager: null,
+
+		constructor: function (manager)
+		{
+			var me = this;
+
+			this.manager = manager;
+		},
+
+		/**
 		 * Нажатие клавиши.
 		 * @param {Event} e Объект события.
 		 */
@@ -198,9 +209,18 @@ Ext.define(
 		 */
 		onBtn: function (args)
 		{
-			var btn = Ext.getCmp('panel-toolstab-main-button-' + args.name);
+			var me = this,
+				manager = me.manager,
+				name = args.name,
+				editor,
+				toolbar,
+				btn;
 
-			if (!btn.disabled)
+			editor = manager.getEditor();
+			toolbar = editor.getToolbar();
+			btn = toolbar.getButton(name);
+
+			if (btn && !btn.disabled)
 			{
 				if (btn.enableToggle)
 				{
