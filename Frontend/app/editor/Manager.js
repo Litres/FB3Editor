@@ -132,6 +132,9 @@ Ext.define(
 			// экранируем одинарную кавычку
 			xml = xml.replace(/'/g, "\\'");
 
+			// заменяем все br на пустые параграфы
+			xml = xml.replace(/<br(.*?)\/>/gi, '<p><br$1/></p>');
+
 			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
 			xsl = FBEditor.xsl.Editor.getXsl();
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
@@ -139,9 +142,6 @@ Ext.define(
 			// нормализуем строку
 			transContent = transContent.replace(/\n+|\t+/g, ' ');
 			transContent = transContent.replace(/\), ?]/g, ')]');
-
-			// заменяем все br на пустые параграфы
-			transContent = transContent.replace(/<br\/>/gi, '<p><br/></p>');
 
 			// преобразовываем строку в элемент
 			creator = Ext.create('FBEditor.editor.CreateContent', transContent);
@@ -364,18 +364,22 @@ Ext.define(
 		setCursor: function (data)
 		{
 			var me = this,
+				root = me.getContent(),
 				sel = window.getSelection(),
+				helper,
 				viewportId;
 
 			try
 			{
 				data.focusElement = data.focusElement || data.startNode.getElement();
 				data.startOffset = data.startOffset || 0;
-				data.startOffset = data.startOffset > data.startNode.length ? data.startNode.length : data.startOffset;
+				data.startOffset = data.startOffset > data.startNode.length ?
+				                   data.startNode.length : data.startOffset;
 
 				// устанавливаем фокус браузера в окно текста
 				viewportId = data.startNode.viewportId;
-				me.content.nodes[viewportId].focus();
+				helper = root.getNodeHelper();
+				helper.getNode(viewportId).focus();
 
 				// перематываем скролл
 				if (data.focusElement.nodes[viewportId].scrollIntoView)
@@ -385,6 +389,7 @@ Ext.define(
 				}
 
 				// выделение
+
 				if (data.startNode.getElement().isText)
 				{
 					sel.collapse(data.startNode, data.startOffset);
@@ -393,6 +398,7 @@ Ext.define(
 				{
 					sel.collapse(data.startNode, 0);
 				}
+
 				if (data.endNode)
 				{
 					data.endOffset = data.endOffset || 0;

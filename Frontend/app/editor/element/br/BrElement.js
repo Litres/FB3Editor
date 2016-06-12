@@ -12,7 +12,9 @@ Ext.define(
 			'FBEditor.editor.element.br.BrElementController',
 			'FBEditor.editor.command.br.CreateEmptyTextCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.br.BrElementController',
+
 		htmlTag: 'br',
 		xmlTag: 'br',
 		showedOnTree: false,

@@ -44,6 +44,22 @@ Ext.define(
 			{
 				this.controller.onKeyDownBackspace.apply(this.controller, arguments);
 			},
+			keyDownLeft: function ()
+			{
+				this.controller.onKeyDownLeft.apply(this.controller, arguments);
+			},
+			keyDownUp: function ()
+			{
+				this.controller.onKeyDownUp.apply(this.controller, arguments);
+			},
+			keyDownRight: function ()
+			{
+				this.controller.onKeyDownRight.apply(this.controller, arguments);
+			},
+			keyDownDown: function ()
+			{
+				this.controller.onKeyDownDown.apply(this.controller, arguments);
+			},
 			paste: function ()
 			{
 				this.controller.onPaste.apply(this.controller, arguments);
@@ -54,6 +70,11 @@ Ext.define(
 		 * @property {String} Класс контроллера элемента.
 		 */
 		controllerClass: 'FBEditor.editor.element.AbstractElementController',
+
+		/**
+		 * @property {String} Класс контроллера элемента при использовании WebKit.
+		 */
+		controllerClassWebkit: '',
 
 		/**
 		 * @property {String} Класс для обработки выделения.
@@ -335,6 +356,21 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает последний элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Первый элемент.
+		 */
+		last: function ()
+		{
+			var me = this,
+				children = me.children,
+				last;
+
+			last = children.length ? children[children.length - 1] : null;
+
+			return last;
+		},
+
+		/**
 		 * Возвращает предыдущий элемент.
 		 * @return {FBEditor.editor.element.AbstractElement} Предыдущий элемент.
 		 */
@@ -344,6 +380,11 @@ Ext.define(
 				parent = me.parent,
 				pos,
 				prev;
+
+			if (!parent)
+			{
+				return null;
+			}
 
 			pos = parent.getChildPosition(me);
 			prev = (pos - 1) >= 0 && parent.children[pos - 1] ? parent.children[pos - 1] : null;
@@ -361,6 +402,11 @@ Ext.define(
 				parent = me.parent,
 				pos,
 				next;
+
+			if (!parent)
+			{
+				return null;
+			}
 
 			pos = parent.getChildPosition(me);
 			next = parent.children[pos + 1] ? parent.children[pos + 1] : null;
@@ -469,7 +515,7 @@ Ext.define(
 			};
 
 			// обработка выделения
-			me.setSelection(node);
+			me.createSelection(node);
 
 			// инициализируем список узлов из разных окон
 			me.nodes = me.nodes || {};
@@ -1112,7 +1158,7 @@ Ext.define(
 		/**
 		 * Возвращает элемент родителя с именем name. Поиск происходит по всем родителям, вплоть до корня.
 		 * @param {String} name Имя родительского элемента.
-		 * @return {FBEditor.editor.element.AbstractElement|null}
+		 * @return {FBEditor.editor.element.AbstractElement}
 		 */
 		getParentName: function (name)
 		{
@@ -1130,6 +1176,57 @@ Ext.define(
 			}
 
 			return null;
+		},
+
+		/**
+		 * Возвращает родительский элемент типа абзаца.
+		 * @return {FBEditor.editor.element.AbstractStyleHolderElement}
+		 */
+		getStyleHolder: function ()
+		{
+			var me = this,
+				parent = me;
+
+			while (parent && !parent.isStyleHolder)
+			{
+				parent = parent.parent ? parent.parent : null;
+			}
+
+			return parent;
+		},
+
+		/**
+		 * Возвращает самый вложенный первый дочерний элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getDeepFirst: function ()
+		{
+			var me = this,
+				el = me;
+
+			while (el.first())
+			{
+				el = el.first();
+			}
+
+			return el;
+		},
+
+		/**
+		 * Возвращает самый вложенный последний дочерний элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getDeepLast: function ()
+		{
+			var me = this,
+				el = me;
+
+			while (el.last())
+			{
+				el = el.last();
+			}
+
+			return el;
 		},
 
 		/**
@@ -1294,7 +1391,7 @@ Ext.define(
 		 * Создает класс для обработки выделения элемента.
 		 * @param {Node} node Узел элемента.
 		 */
-		setSelection: function (node)
+		createSelection: function (node)
 		{
 			var me = this,
 				selectionClass = me.selectionClass;
@@ -1322,6 +1419,38 @@ Ext.define(
 
 		/**
 		 * @protected
+		 * Создает контроллер элемента.
+		 * @param {FBEditor.editor.element.AbstractElement} scope Элемент, к которому привязан контроллер.
+		 */
+		createController: function (scope)
+		{
+			var me = this,
+				controllerClass = me.controllerClass,
+				controllerClassWebkit = me.controllerClassWebkit;
+
+			if (controllerClass)
+			{
+				try
+				{
+					controllerClass = Ext.isWebKit && controllerClassWebkit ? controllerClassWebkit : controllerClass;
+					me.controller = Ext.create(controllerClass, scope || this);
+				}
+				catch (e)
+				{
+					me.controller = Ext.create(me.controllerClass, scope || this);
+
+					Ext.log(
+						{
+							msg: 'Необходимо создать класс ' + controllerClass,
+							level: 'error'
+						}
+					);
+				}
+			}
+		},
+
+		/**
+		 * @protected
 		 * Инициализирует CSS-класс элемента.
 		 */
 		initCls: function ()
@@ -1336,16 +1465,6 @@ Ext.define(
 			}
 
 			me.cls = cls;
-		},
-
-		/**
-		 * @protected
-		 * Создает контроллер элемента.
-		 * @param {FBEditor.editor.element.AbstractElement} scope Элемент, к которому привязан контроллер.
-		 */
-		createController: function (scope)
-		{
-			this.controller = Ext.create(this.controllerClass, scope || this);
 		},
 
 		/**

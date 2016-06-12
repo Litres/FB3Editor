@@ -274,7 +274,7 @@ Ext.define(
 			if (el)
 			{
 				controller = el && el.controller ? el.controller : me;
-				console.log('keydown', e.keyCode, e);
+				//console.log('keydown', e.keyCode, e);
 
 				switch (e.keyCode)
 				{
@@ -295,6 +295,18 @@ Ext.define(
 
 					case Ext.event.Event.BACKSPACE:
 						return controller.onKeyDownBackspace(e);
+
+					case Ext.event.Event.LEFT:
+						return controller.onKeyDownLeft(e);
+
+					case Ext.event.Event.UP:
+						return controller.onKeyDownUp(e);
+
+					case Ext.event.Event.RIGHT:
+						return controller.onKeyDownRight(e);
+
+					case Ext.event.Event.DOWN:
+						return controller.onKeyDownDown(e);
 
 					case Ext.event.Event.Z:
 						if (e.ctrlKey && e.shiftKey)
@@ -395,6 +407,26 @@ Ext.define(
 
 			e.preventDefault();
 			me.removeNodes();
+		},
+
+		onKeyDownLeft: function (e)
+		{
+			//
+		},
+
+		onKeyDownUp: function (e)
+		{
+			//
+		},
+
+		onKeyDownRight: function (e)
+		{
+			//
+		},
+
+		onKeyDownDown: function (e)
+		{
+			//
 		},
 
 		onKeyDownCtrlZ: function (e)

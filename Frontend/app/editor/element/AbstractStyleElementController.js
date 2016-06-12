@@ -45,6 +45,42 @@ Ext.define(
 			el.parent.fireEvent('keyDownBackspace', e);
 		},
 
+		onKeyDownLeft: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownLeft', e);
+		},
+
+		onKeyDownUp: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownUp', e);
+		},
+
+		onKeyDownRight: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownRight', e);
+		},
+
+		onKeyDownDown: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownDown', e);
+		},
+
 		onPaste: function (e)
 		{
 			var me = this,

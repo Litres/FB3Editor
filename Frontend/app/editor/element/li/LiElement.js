@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 		requires: [
 			'FBEditor.editor.element.li.LiElementController',
+			'FBEditor.editor.element.li.LiElementControllerWebKit',
 			'FBEditor.editor.command.li.SplitNodeCommand',
 			'FBEditor.editor.command.li.RemoveRangeNodesCommand',
 			'FBEditor.editor.command.li.JoinNextNodeCommand',
@@ -17,6 +18,8 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.li.LiElementController',
+		controllerClassWebkit: 'FBEditor.editor.element.li.LiElementControllerWebKit',
+
 		htmlTag: 'li',
 		xmlTag: 'li',
 		cls: 'el-li',

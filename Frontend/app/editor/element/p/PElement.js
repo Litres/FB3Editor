@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 		requires: [
 			'FBEditor.editor.element.p.PElementController',
+			'FBEditor.editor.element.p.PElementControllerWebKit',
 			'FBEditor.editor.command.p.SplitNodeCommand',
 			'FBEditor.editor.command.p.RemoveRangeNodesCommand',
 			'FBEditor.editor.command.p.JoinNextNodeCommand',
@@ -17,6 +18,8 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.p.PElementController',
+		controllerClassWebkit: 'FBEditor.editor.element.p.PElementControllerWebKit',
+
 		htmlTag: 'p',
 		xmlTag: 'p',
 		cls: 'el-p',

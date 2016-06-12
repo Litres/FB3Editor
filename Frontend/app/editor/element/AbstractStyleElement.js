@@ -12,7 +12,9 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.AbstractStyleElementController'
 		],
+
 		controllerClass: 'FBEditor.editor.element.AbstractStyleElementController',
+
 		showedOnTree: false,
 
 		/**
@@ -23,9 +25,10 @@ Ext.define(
 		createScaffold: function ()
 		{
 			var me = this,
-				els = {};
+				els = {},
+				factory = FBEditor.editor.Factory;
 
-			els.t = FBEditor.editor.Factory.createElementText('текст');
+			els.t = factory.createElementText('текст');
 			me.add(els.t);
 
 			return els;

@@ -20,16 +20,9 @@ Ext.define(
 		onTextModified: function (e)
 		{
 			var me = this,
-				factory = FBEditor.editor.Factory,
-				node = e.target,
-				text = node.nodeValue,
-				viewportId = node.viewportId,
-				nextSibling = node.nextSibling,
-				previousSibling = node.previousSibling,
-				parentNode = node.parentNode,
+				target = e.target,
+				parentNode,
 				manager,
-				parentEl,
-				el,
 				cmd;
 
 			manager = me.getElement().getManager();
@@ -39,12 +32,14 @@ Ext.define(
 				return;
 			}
 
+			parentNode = target.parentNode;
+
 			if (!parentNode.getElement)
 			{
 				Ext.defer(
 					function ()
 					{
-						this.onTextModified({target: node});
+						this.onTextModified({target: target});
 					},
 					1,
 					me
@@ -56,7 +51,7 @@ Ext.define(
 			//console.log('DOMCharacterDataModified:', e, me);
 
 			cmd = Ext.create('FBEditor.editor.command.TextModifiedCommand',
-				{node: node, newValue: e.newValue, oldValue: e.prevValue});
+				{node: target, newValue: e.newValue, oldValue: e.prevValue});
 
 			if (cmd.execute())
 			{
