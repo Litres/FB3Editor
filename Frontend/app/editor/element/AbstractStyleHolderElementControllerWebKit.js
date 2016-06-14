@@ -271,6 +271,7 @@ Ext.define(
 				range,
 				helper,
 				pos,
+				lastPos,
 				viewportId;
 
 			range = curData.range;
@@ -312,9 +313,15 @@ Ext.define(
 				}
 				else
 				{
-					// получаем координаты следующей строки
-					els.length = nodes.firstDeep.length ? nodes.firstDeep.length : 0;
-					pos = helper.getXY(viewportId, els.length);
+					// получаем координаты самого первого символа следующей строки
+					pos = helper.getXY(viewportId, 0);
+
+					els.lastDeep = els.next.getDeepLast();
+					helper = els.lastDeep.getNodeHelper();
+					nodes.lastDeep = helper.getNode(viewportId);
+
+					// получаем координаты самого последнего символа следующей строки
+					lastPos = helper.getXY(viewportId, 0);
 
 					//console.log(pos, nodes.firstDeep);
 
@@ -336,6 +343,8 @@ Ext.define(
 					nodes.elem = document.elementFromPoint(pos.curX, pos.y);
 					els.elem = nodes.elem && nodes.elem.getElement ? nodes.elem.getElement() : null;
 
+					//console.log('nodes.elem', nodes.elem);
+
 					while (!nodes.elem || !els.elem && !nodes.elem.getTextElement)
 					{
 						// прокручиваем скролл, чтобы следующий абзац попал в зону видимости
@@ -350,24 +359,29 @@ Ext.define(
 					{
 						els.offset = 0;
 					}
-					else if (pos.x > curData.pos.x)
-					{
-						while (!nodes.elem.getTextElement)
-						{
-							pos.curX += 5;
-							nodes.elem = document.elementFromPoint(pos.curX, pos.y);
-						}
-
-						// элемент
-						els.elem = nodes.elem.getTextElement();
-
-						// смещение
-						els.offset = Number(nodes.elem.getAttribute('data-offset'));
-					}
 					else
 					{
-						els.elem = els.firstDeep;
-						els.offset = els.firstDeep.text.length;
+						if (pos.x > curData.pos.x)
+						{
+							while (!nodes.elem.getTextElement)
+							{
+								// ищем позицию символа в следующей строке в правую сторону
+								pos.curX += 5;
+								nodes.elem = document.elementFromPoint(pos.curX, pos.y);
+							}
+						}
+						else if (lastPos.x < curData.pos.x)
+						{
+							while (!nodes.elem.getTextElement)
+							{
+								// ищем позицию символа в следующей строке в левую сторону
+								pos.curX -= 5;
+								nodes.elem = document.elementFromPoint(pos.curX, pos.y);
+							}
+						}
+
+						els.elem = nodes.elem.getTextElement();
+						els.offset = Number(nodes.elem.getAttribute('data-offset'));
 					}
 
 					// собираем разбитый следующий абзац обратно
