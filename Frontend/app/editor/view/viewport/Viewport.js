@@ -24,12 +24,28 @@ Ext.define(
 		 */
 		editor: null,
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.toolstab.tools.button.paragraph.Paragraph} Кнопка включения отображения
+		 * символа конца абзаца.
+		 */
+		paragraphBtn: null,
+
 		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+				btn;
 
 			me.callParent(me);
 			me.createRoot();
+
+			btn = me.getParagraphBtn();
+
+			if (btn.isPressed())
+			{
+				// добавляем класс для отображения символа конца абзаца
+				me.addCls(btn.modeCls);
+			}
 		},
 
 		/**
@@ -107,6 +123,21 @@ Ext.define(
 			me.editor = editor;
 
 			return editor;
+		},
+
+		/**
+		 * Возвращает кнопку включения отображения символа конца абзаца.
+		 * @return {FBEditor.view.panel.toolstab.tools.button.paragraph.Paragraph}
+		 */
+		getParagraphBtn: function ()
+		{
+			var me = this,
+				btn;
+
+			btn = me.paragraphBtn || Ext.getCmp('panel-toolstab-tools-button-paragraph');
+			me.paragraphBtn = btn;
+
+			return btn;
 		}
 	}
 );

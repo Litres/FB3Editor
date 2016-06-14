@@ -14,7 +14,7 @@ Ext.define(
 
 		xtype: 'main-editor-viewport',
 		controller: 'main.editor.viewport',
-		cls: 'main-editor-viewport',
+		cls: 'editor-viewport main-editor-viewport',
 
 		listeners: {
 			syncScroll: 'onSyncScroll'

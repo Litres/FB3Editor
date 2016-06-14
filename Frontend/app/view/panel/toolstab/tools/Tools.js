@@ -8,8 +8,13 @@ Ext.define(
 	'FBEditor.view.panel.toolstab.tools.Tools',
 	{
 		extend: 'Ext.panel.Panel',
+		requires: [
+			'FBEditor.view.panel.toolstab.tools.button.paragraph.Paragraph'
+		],
+
 		id:'panel-toolstab-tools',
 		xtype: 'panel-toolstab-tools',
+
 		title: 'Инструменты',
 
 		translateText: {
@@ -20,14 +25,20 @@ Ext.define(
 		{
 			var me = this;
 
-			me.items = [
+			me.tbar = [
 				{
 					xtype: 'component',
-					padding: 10,
 					style: {
 						color: 'gray'
 					},
 					html: me.translateText.version + FBEditor.version
+				},
+				{
+					xtype: 'tbspacer',
+					width: 20
+				},
+				{
+					xtype: 'panel-toolstab-tools-button-paragraph'
 				}
 			];
 

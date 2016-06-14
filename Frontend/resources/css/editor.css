@@ -270,9 +270,9 @@
 }
 
 /* знак новой строки */
-.main-editor-viewport .el-p:after,
-.main-editor-viewport .el-li:after,
-.main-editor-viewport .el-subtitle:after {
+.editor-viewport.mode-paragraph .el-p:after,
+.editor-viewport.mode-paragraph .el-li:after,
+.editor-viewport.mode-paragraph .el-subtitle:after {
 	margin-left: 0.1em;
 	content: '¶';
 	color: #a51626;
@@ -303,8 +303,4 @@
 }
 .form-desc-editor-body .editor-viewport .el-p:focus {
 	outline: none;
-}
-.form-desc-editor-body .editor-viewport .el-p:after {
-	content: '¶';
-	color: #a51626;
 }

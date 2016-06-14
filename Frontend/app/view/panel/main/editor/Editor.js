@@ -95,6 +95,7 @@ Ext.define(
 			south = Ext.widget(me.southViewportConfig);
 			me.viewports.south = south;
 			me.add(south);
+
 			north = me.viewports.north;
 			me.fireEvent('syncContent', north);
 			south.fireEvent('syncScroll', north);
