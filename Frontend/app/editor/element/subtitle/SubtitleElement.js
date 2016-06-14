@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 		requires: [
 			'FBEditor.editor.element.subtitle.SubtitleElementController',
+			'FBEditor.editor.element.subtitle.SubtitleElementControllerWebKit',
 			'FBEditor.editor.command.subtitle.CreateCommand',
 			'FBEditor.editor.command.subtitle.CreateRangeCommand',
 			'FBEditor.editor.command.subtitle.SplitNodeCommand',
@@ -19,6 +20,8 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.subtitle.SubtitleElementController',
+		controllerClassWebkit: 'FBEditor.editor.element.subtitle.SubtitleElementControllerWebKit',
+
 		htmlTag: 'subtitle',
 		xmlTag: 'subtitle',
 		cls: 'el-subtitle',
@@ -30,9 +33,10 @@ Ext.define(
 		createScaffold: function ()
 		{
 			var me = this,
-				els = {};
+				els = {},
+				factory = FBEditor.editor.Factory;
 
-			els.t = FBEditor.editor.Factory.createElementText('Подзаголовок');
+			els.t = factory.createElementText('Подзаголовок');
 			me.add(els.t);
 
 			return els;
@@ -46,7 +50,7 @@ Ext.define(
 			xml = me.callParent(arguments);
 
 			// заменяем все пустые элементы subtitle на br
-			xml = xml.replace(/<subtitle><br\/><\/subtitle>/gi, '<br/>');
+			xml = xml.replace(/<subtitle><br\/><\/subtitle>/gi, '<subtitle></subtitle>');
 
 			return xml;
 		}

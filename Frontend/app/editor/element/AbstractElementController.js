@@ -23,9 +23,42 @@ Ext.define(
 		 */
 		constructor: function (el)
 		{
-			var me = this;
+			var me = this,
+				listeners = {},
+				eventName,
+				f;
 
 			me.el = el;
+
+			// создаем для элемента обработчики событий, доступные в контроллере
+
+			for (f in me)
+			{
+				if (Ext.isFunction(me[f]) && /^on[A-Z]/.test(f))
+				{
+					eventName = f.replace(/^on/, '');
+					eventName = Ext.String.uncapitalize(eventName);
+
+					// создаем обработчик события для возможности вызова через fireEvent()
+					listeners[eventName] = function (func, scope)
+					{
+						var controller = scope,
+							funcName = func;
+
+						// используем замыкание для сохранения параметров обработчика
+						return function ()
+						{
+							//console.log(funcName, controller);
+							controller[funcName].apply(controller, arguments);
+						};
+					}(f, me);
+				}
+			}
+
+			el.listeners = listeners;
+
+			// обозреватель событий
+			el.mixins.observable.constructor.call(el, {});
 		},
 
 		/**
@@ -230,13 +263,33 @@ Ext.define(
 				manager.setFocusElement(el);
 				controller = el && el.controller ? el.controller : me;
 
-				return controller.onKeyUpDefault(e);
+				switch (e.keyCode)
+				{
+					case Ext.event.Event.UP:
+						return controller.onKeyUpUp(e);
+
+					case Ext.event.Event.DOWN:
+						return controller.onKeyUpDown(e);
+
+					default:
+						return controller.onKeyUpDefault(e);
+				}
 			}
 
 			return false;
 		},
 
 		onKeyUpDefault: function (e)
+		{
+			//
+		},
+
+		onKeyUpUp: function (e)
+		{
+			//
+		},
+
+		onKeyUpDown: function (e)
 		{
 			//
 		},
@@ -569,11 +622,10 @@ Ext.define(
 				el;
 
 			// игнориуруется удаление корневого узла, так как он всегда необходим
-			if (relNode.firstChild && relNode.firstChild.nodeName !== 'MAIN')
+			if (target.getElement && relNode.firstChild && relNode.firstChild.nodeName !== 'MAIN')
 			{
 				parentEl = relNode.getElement();
 				el = target.getElement();
-
 				manager = el.getManager();
 
 				if (!manager.isSuspendEvent())

@@ -132,8 +132,12 @@ Ext.define(
 			// экранируем одинарную кавычку
 			xml = xml.replace(/'/g, "\\'");
 
-			// заменяем все br на пустые параграфы
+			// заменяем все br на пустые абзацы
 			xml = xml.replace(/<br(.*?)\/>/gi, '<p><br$1/></p>');
+
+			// пустые элементы должны иметь элемент br для возможности установки курсора
+			xml = xml.replace(/<li><\/li>/gi, '<li><br/></li>');
+			xml = xml.replace(/<subtitle><\/subtitle>/gi, '<subtitle><br/></subtitle>');
 
 			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
 			xsl = FBEditor.xsl.Editor.getXsl();
@@ -421,6 +425,14 @@ Ext.define(
 		getFocusElement: function ()
 		{
 			return this.focusElement;
+		},
+
+		/**
+		 * Очищает куэш синхронизированной кнопки.
+		 */
+		clearCacheSyncButton: function ()
+		{
+			this.cashSyncBtn = null;
 		},
 
 		/**
@@ -1146,6 +1158,48 @@ Ext.define(
 			}
 
 			return node;
+		},
+
+		/**
+		 * Возвращает координаты текстового курсора относительно окна браузера.
+		 * @return {Object}
+		 * @return {Number} Object.x
+		 * @return {Number} Object.y
+		 */
+		getCursorPosition: function ()
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				nodes = {},
+				pos,
+				range,
+				helper,
+				viewportId;
+
+			range = sel.getRangeAt(0);
+			range = {
+				startOffset: range.startOffset,
+				startContainer: range.startContainer
+			};
+
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			viewportId = nodes.node.viewportId;
+			helper = els.node.getNodeHelper();
+
+			// получаем координаты символа , находящегося внутри элемента
+			pos = helper.getXY(viewportId, range.startOffset);
+
+			// поскольку получение координат приводит к сбросу текущей позиции курсора, необходимо восстановить
+			me.setCursor(
+				{
+					startNode: range.startContainer,
+					startOffset: range.startOffset
+				}
+			);
+
+			return pos;
 		},
 
 		/**

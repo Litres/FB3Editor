@@ -81,6 +81,24 @@ Ext.define(
 			el.parent.fireEvent('keyDownDown', e);
 		},
 
+		onKeyUpUp: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyUpUp', e);
+		},
+
+		onKeyUpDown: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyUpDown', e);
+		},
+
 		onPaste: function (e)
 		{
 			var me = this,

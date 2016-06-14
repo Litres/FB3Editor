@@ -19,53 +19,6 @@ Ext.define(
 			observable: 'Ext.util.Observable'
 		},
 
-		listeners: {
-			splitElement: function ()
-			{
-				this.controller.onSplitElement.apply(this.controller, arguments);
-			},
-			createElement: function ()
-			{
-				this.controller.onCreateElement.apply(this.controller, arguments);
-			},
-			insertElement: function ()
-			{
-				this.controller.onInsertElement.apply(this.controller, arguments);
-			},
-			keyDownEnter: function ()
-			{
-				this.controller.onKeyDownEnter.apply(this.controller, arguments);
-			},
-			keyDownDelete: function ()
-			{
-				this.controller.onKeyDownDelete.apply(this.controller, arguments);
-			},
-			keyDownBackspace: function ()
-			{
-				this.controller.onKeyDownBackspace.apply(this.controller, arguments);
-			},
-			keyDownLeft: function ()
-			{
-				this.controller.onKeyDownLeft.apply(this.controller, arguments);
-			},
-			keyDownUp: function ()
-			{
-				this.controller.onKeyDownUp.apply(this.controller, arguments);
-			},
-			keyDownRight: function ()
-			{
-				this.controller.onKeyDownRight.apply(this.controller, arguments);
-			},
-			keyDownDown: function ()
-			{
-				this.controller.onKeyDownDown.apply(this.controller, arguments);
-			},
-			paste: function ()
-			{
-				this.controller.onPaste.apply(this.controller, arguments);
-			}
-		},
-
 		/**
 		 * @property {String} Класс контроллера элемента.
 		 */
@@ -86,7 +39,7 @@ Ext.define(
 		selectionClass: '',
 
 		/**
-		 * @property {Object} Обработчики событий контроллера.
+		 * @property {Object} Нативные обработчики событий браузера.
 		 */
 		customListeners: {
 			keydown: 'onKeyDown',
@@ -216,7 +169,6 @@ Ext.define(
 
 			children = children || me.children;
 			me.elementId = Ext.id({prefix: me.prefixId});
-			me.mixins.observable.constructor.call(me, {});
 
 			Ext.Array.each(
 				children,
@@ -238,7 +190,7 @@ Ext.define(
 			me.attributes = Ext.clone(attributes) || me.attributes;
 			me.attributes = me.defaultAttributes ? Ext.applyIf(attributes, me.defaultAttributes) : me.attributes;
 
-			// создаем класс контроллера
+			// создаем контроллер
 			me.createController();
 		},
 
@@ -1421,23 +1373,25 @@ Ext.define(
 		 * @protected
 		 * Создает контроллер элемента.
 		 * @param {FBEditor.editor.element.AbstractElement} scope Элемент, к которому привязан контроллер.
+		 * @return {FBEditor.editor.element.AbstractElementController} Контроллер элемента.
 		 */
 		createController: function (scope)
 		{
 			var me = this,
 				controllerClass = me.controllerClass,
-				controllerClassWebkit = me.controllerClassWebkit;
+				controllerClassWebkit = me.controllerClassWebkit,
+				controller;
 
 			if (controllerClass)
 			{
 				try
 				{
 					controllerClass = Ext.isWebKit && controllerClassWebkit ? controllerClassWebkit : controllerClass;
-					me.controller = Ext.create(controllerClass, scope || this);
+					controller = Ext.create(controllerClass, scope || this);
 				}
 				catch (e)
 				{
-					me.controller = Ext.create(me.controllerClass, scope || this);
+					controller = Ext.create(me.controllerClass, scope || this);
 
 					Ext.log(
 						{
@@ -1447,6 +1401,10 @@ Ext.define(
 					);
 				}
 			}
+
+			me.controller = controller;
+
+			return controller;
 		},
 
 		/**

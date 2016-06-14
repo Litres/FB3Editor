@@ -25,8 +25,6 @@ Ext.define(
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение

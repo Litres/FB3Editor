@@ -33,8 +33,8 @@ Ext.define(
 
 			xml = me.callParent(arguments);
 
-			// заменяем все пустые параграфы на br
-			xml = xml.replace(/<p><br\/><\/p>/gi, '<br/>');
+			// заменяем все пустые абзацы на br
+			xml = xml.replace(/<p><br(.*?)\/><\/p>/gi, '<br$1/>');
 
 			return xml;
 		}
