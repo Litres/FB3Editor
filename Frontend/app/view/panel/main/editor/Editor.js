@@ -11,11 +11,12 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.EditorController',
 			'FBEditor.view.panel.main.editor.Manager',
+			'FBEditor.view.panel.main.editor.toolbar.Toolbar',
 			'FBEditor.view.panel.main.editor.viewport.Viewport'
 		],
 
-		xtype: 'main-editor',
 		id: 'main-editor',
+		xtype: 'main-editor',
 		controller: 'view.main.editor',
 
 		layout: 'border',
@@ -81,6 +82,11 @@ Ext.define(
 
 			me.viewports.north = north;
 			me.add(north);
+		},
+
+		createToolbar: function ()
+		{
+			return Ext.create('FBEditor.view.panel.main.editor.toolbar.Toolbar');
 		},
 
 		/**

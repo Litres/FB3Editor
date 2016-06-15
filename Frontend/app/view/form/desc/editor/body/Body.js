@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.form.desc.editor.body.Body',
 	{
 		extend: 'FBEditor.editor.view.Editor',
+		requires: [
+			'FBEditor.view.form.desc.editor.toolbar.Toolbar'
+		],
 
 		xtype: 'form-desc-editor-body',
 		cls: 'form-desc-editor-body',
@@ -17,6 +20,11 @@ Ext.define(
 			handles: 's',
 			minHeight: 100,
 			pinned: true
+		},
+
+		createToolbar: function ()
+		{
+			return Ext.create('FBEditor.view.form.desc.editor.toolbar.Toolbar');
 		}
 	}
 );

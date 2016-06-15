@@ -38,10 +38,19 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.getEditorManager();
+				panelToolstab = view.getPanelMainToolstab(),
+				toolstab = view.getToolstab(),
+				manager = FBEditor.getEditorManager(),
+				editor,
+				toolbar;
 
 			view.setActiveItem('main-editor');
-			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-main');
+			panelToolstab.setActiveItem('panel-toolstab-main');
+
+			// активируем тулбар тела книги
+			editor = manager.getEditor();
+			toolbar = editor.getToolbar();
+			toolstab.setActiveToolbar(toolbar);
 			manager.syncButtons();
 		},
 
@@ -52,11 +61,21 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.getEditorManager();
+				panelToolstab = view.getPanelMainToolstab(),
+				toolstab = view.getToolstab(),
+				manager,
+				editor,
+				toolbar;
 
 			view.setActiveItem('form-desc');
-			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
-			manager.disableButtons();
+			panelToolstab.setActiveItem('panel-toolstab-main');
+
+			// активируем тулбар аннотации
+			editor = Ext.getCmp('form-desc-annotation').getBodyEditor();
+			toolbar = editor.getToolbar();
+			toolstab.setActiveToolbar(toolbar);
+			manager = editor.getManager();
+			manager.syncButtons();
 		},
 
 		/**
@@ -66,10 +85,17 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				manager = FBEditor.getEditorManager();
+				toolstab = view.getToolstab(),
+				manager,
+				editor,
+				toolbar;
 
 			view.setActiveItem('panel-resources');
-			Ext.getCmp('panel-main-toolstab').setActiveItem('panel-toolstab-file');
+
+			// блокируем кнопки форматирования
+			toolbar = toolstab.getActiveToolbar();
+			editor = toolbar.getEditor();
+			manager = editor.getManager();
 			manager.disableButtons();
 		},
 
@@ -79,11 +105,9 @@ Ext.define(
 		onContentEmpty: function ()
 		{
 			var me = this,
-				view = me.getView(),
-				manager = FBEditor.getEditorManager();
+				view = me.getView();
 
 			view.setActiveItem('panel-empty');
-			manager.disableButtons();
 		}
     }
 );

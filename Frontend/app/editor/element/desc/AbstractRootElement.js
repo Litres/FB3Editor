@@ -9,6 +9,11 @@ Ext.define(
 	'FBEditor.editor.element.desc.AbstractRootElement',
 	{
 		extend: 'FBEditor.editor.element.root.RootElement',
+		requires: [
+			'FBEditor.editor.element.desc.AbstractRootElementController'
+		],
+
+		controllerClass: 'FBEditor.editor.element.desc.AbstractRootElementController',
 
 		cls: 'el-desc-root',
 

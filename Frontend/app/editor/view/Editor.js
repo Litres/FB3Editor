@@ -56,9 +56,16 @@ Ext.define(
 		 */
 		manager: null,
 
+		/**
+		 * @property {Boolean} Показывать ли тулбар по умолчанию.
+		 */
+		defaultShowToolbar: false,
+
 		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+				panelToolstab,
+				toolbar;
 
 			// создаем менеджер
 			me.createManager();
@@ -68,6 +75,19 @@ Ext.define(
 
 			// добавляем контейнер исходного xml
 			me.addSource();
+
+			// создаем тулбар
+			toolbar = me.createToolbar();
+			toolbar.setDefaultShow(me.defaultShowToolbar);
+
+			// связываем тулбар с панелью редактора
+			me.setToolbar(toolbar);
+
+			// вкладка форматирования
+			panelToolstab = Ext.getCmp('panel-toolstab-main');
+
+			// добавляем тулбар на вкладку
+			panelToolstab.addToolbar(toolbar);
 
 			me.callParent(me);
 		},
@@ -96,6 +116,16 @@ Ext.define(
 					xtype: 'editor-viewport'
 				}
 			);
+		},
+
+		/**
+		 * @template
+		 * Создает и возвращает тулбар.
+		 * @return {FBEditor.editor.view.toolbar.Toolbar}
+		 */
+		createToolbar: function ()
+		{
+			return Ext.create('FBEditor.editor.view.toolbar.Toolbar');
 		},
 
 		/**

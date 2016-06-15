@@ -13,7 +13,7 @@ Ext.define(
 		xtype: 'form-desc-annotation',
 
 		rootElementName: 'desc:annotation',
-
-		name: 'annotation'
+		name: 'annotation',
+		defaultShowToolbar: true
 	}
 );

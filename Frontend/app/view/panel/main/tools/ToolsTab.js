@@ -15,10 +15,13 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.view.View',
 			'FBEditor.view.panel.toolstab.tools.Tools'
 		],
+
 		id: 'panel-main-toolstab',
 		xtype: 'panel-main-toolstab',
 		controller: 'panel.main.toolstab',
-		activeTab: 'panel-toolstab-file',
+
+		activeTab: 'panel-toolstab-main',
+
 		items: [
 			{
 				xtype: 'panel-toolstab-file'

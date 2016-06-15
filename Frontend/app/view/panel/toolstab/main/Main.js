@@ -11,8 +11,7 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
-			'FBEditor.view.panel.toolstab.main.MainController',
-		    'FBEditor.view.panel.toolstab.main.toolbar.Toolbar'
+			'FBEditor.view.panel.toolstab.main.MainController'
 		],
 
 		id:'panel-toolstab-main',
@@ -23,9 +22,21 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.view.panel.main.editor.Editor} Редактор текста книги.
+		 * @property {Boolean} Загружен ли xmllint.
+		 */
+		accessXmllint: false,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.editor.Editor} Редактор тела книги.
 		 */
 		mainEditor: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.view.toolbar.Toolbar} Активный тулбар.
+		 */
+		activeToolbar: null,
 
 		translateText: {
 			loading: 'Загрузка xmllint ...'
@@ -54,27 +65,90 @@ Ext.define(
 		{
 			var me = this,
 				mainEditor,
-				toolbar,
 				manager,
 				sch;
 
-			me.callParent(arguments);
-
-			// редактор текста книги
+			// редактор тела книги
 			mainEditor = me.getMainEditor();
-
-			// тулбар
-			toolbar = Ext.widget('panel-toolstab-main-toolbar', {dock: 'top', hidden: true});
-			me.toolbar = toolbar;
-			me.addDocked(toolbar);
-
-			// связываем тулбар с панелью редактора
-			mainEditor.setToolbar(toolbar);
 
 			// вызываем тестовую проверку по схеме для определения загрузки xmllint
 			manager = mainEditor.getManager();
 			sch = manager.getSchema();
 			sch.validXml({xml: 'test', callback: me.verifyResult, scope: me});
+
+			me.callParent(arguments);
+		},
+
+		/**
+		 * Добавляет тулбар на вкладку.
+		 * @param {FBEditor.editor.view.toolbar.Toolbar} toolbar Тулбар редактора текста.
+		 */
+		addToolbar: function (toolbar)
+		{
+			var me = this;
+
+			me.addDocked(toolbar);
+
+			if (toolbar.isDefaultShow())
+			{
+				// показываем тулбар
+				me.setActiveToolbar(toolbar);
+			}
+		},
+
+		/**
+		 * Активен ли тулбар.
+		 * @param {FBEditor.editor.view.toolbar.Toolbar} toolbar Тулбар.
+		 * @return {Boolean}
+		 */
+		isActiveToolbar: function (toolbar)
+		{
+			var me = this,
+				activeToolbar = me.getActiveToolbar(),
+				active;
+
+			active = activeToolbar && activeToolbar.getId() === toolbar.getId();
+
+			return active;
+		},
+
+		/**
+		 * Активирует тулбар.
+		 * @param {FBEditor.editor.view.toolbar.Toolbar} toolbar Тулбар.
+		 */
+		setActiveToolbar: function (toolbar)
+		{
+			var me = this,
+				dockedItems = me.getDockedItems();
+
+			Ext.Array.each(
+				dockedItems,
+			    function (item)
+			    {
+				    var editor,
+					    manager;
+
+				    // деактивируем тулбар
+				    item.setVisible(false);
+
+				    // сбрасываем фокус
+				    editor = item.getEditor();
+				    manager = editor.getManager();
+				    manager.resetFocus();
+			    }
+			);
+
+			me.activeToolbar = toolbar;
+			toolbar.setVisible(me.accessXmllint);
+		},
+
+		/**
+		 * Возвращает активный тулбар.
+		 * @return {FBEditor.editor.view.toolbar.Toolbar}
+		 */
+		getActiveToolbar: function ()
+		{
+			return this.activeToolbar;
 		},
 
 		/**
@@ -100,13 +174,22 @@ Ext.define(
 		 */
 		verifyResult: function (res, data)
 		{
-			var me = this;
+			var me = this,
+				activeToolbar = me.getActiveToolbar();
 
 			if (data.loaded)
 			{
 				Ext.log({msg: 'xmllint загружен', level: 'info'});
 
-				me.getDockedItems()[0].setVisible(true);
+				// удаляем надпись о загрузке xmllint
+				me.remove(me.items.first());
+
+				me.accessXmllint = true;
+
+				if (activeToolbar)
+				{
+					me.setActiveToolbar(activeToolbar);
+				}
 			}
 		}
 	}

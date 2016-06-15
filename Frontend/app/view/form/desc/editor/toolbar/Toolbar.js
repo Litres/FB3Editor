@@ -22,16 +22,20 @@ Ext.define(
 			me.callParent(arguments);
 
 			// добавляем кнопку уборки
-			cleanBtn = [
-				{
-					xtype: 'tbspacer',
-					width: 20
-				},
-				{
-					xtype: 'form-desc-editor-toolbar-button-cleaner'
-				}
-			];
-			me.add(cleanBtn);
+
+			cleanBtn = Ext.widget('form-desc-editor-toolbar-button-cleaner');
+
+			me.add(
+				[
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					cleanBtn
+				]
+			);
+
+			me.buttons.push(cleanBtn);
 		}
 	}
 );

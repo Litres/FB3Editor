@@ -10,8 +10,7 @@ Ext.define(
 		extend: 'Ext.Panel',
 		requires: [
 			'FBEditor.view.form.desc.editor.EditorController',
-			'FBEditor.view.form.desc.editor.body.Body',
-			'FBEditor.view.form.desc.editor.toolbar.Toolbar'
+			'FBEditor.view.form.desc.editor.body.Body'
 		],
 
 		xtype: 'form-desc-editor',
@@ -28,6 +27,11 @@ Ext.define(
 		},
 
 		/**
+		 * @property {Boolean} Показывать ли тулбар по умолчанию.
+		 */
+		defaultShowToolbar: false,
+
+		/**
 		 * @private
 		 * @property {FBEditor.view.form.desc.editor.body.Body} Редактор текста.
 		 */
@@ -36,20 +40,18 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				bodyEditor,
-				toolbar;
+				bodyEditor;
 
 			// панель редактора
-			bodyEditor = Ext.widget('form-desc-editor-body', {rootElementName: me.rootElementName});
+			bodyEditor = Ext.widget(
+				'form-desc-editor-body',
+				{
+					rootElementName: me.rootElementName,
+					defaultShowToolbar: me.defaultShowToolbar
+				}
+			);
 			me.bodyEditor = bodyEditor;
 			me.add(bodyEditor);
-
-			// тулбар
-			toolbar = Ext.widget('form-desc-editor-toolbar', {dock: 'top'});
-			me.addDocked(toolbar);
-
-			// связываем тулбар с панелью редактора
-			bodyEditor.setToolbar(toolbar);
 
 			me.callParent(arguments);
 		},

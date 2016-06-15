@@ -9,34 +9,21 @@ Ext.define(
 	{
 		extend: 'Ext.Button',
 		requires: [
-			'FBEditor.view.form.desc.editor.command.Clean'
+			'FBEditor.view.form.desc.editor.command.Clean',
+			'FBEditor.view.form.desc.editor.toolbar.button.cleaner.CleanerController'
 		],
 
 		xtype: 'form-desc-editor-toolbar-button-cleaner',
+		controller: 'form.desc.editor.toolbar.button.cleaner',
 
 		html: '<i class="fa fa-paint-brush"></i>',
 		tooltip: 'Уборка',
 		tooltipType: 'title',
+		disabled: true,
 
-		handler: function ()
-		{
-			var me = this,
-				editor = me.getEditor(),
-				manager,
-				history,
-				cmd;
-
-			// выполняем команду уборки
-
-			manager = editor.getManager();
-			history = manager.getHistory();
-			cmd = Ext.create('FBEditor.view.form.desc.editor.command.Clean', {manager: manager});
-
-			if (cmd.execute())
-			{
-				//history.clear();
-				history.add(cmd);
-			}
+		listeners: {
+			sync: 'onSync',
+			click: 'onClick'
 		},
 
 		/**
@@ -48,7 +35,7 @@ Ext.define(
 			var me = this,
 				editor;
 
-			editor = me.editor || me.up('form-desc-editor').getBodyEditor();
+			editor = me.editor || me.up('form-desc-editor-toolbar').getEditor();
 			me.editor = editor;
 
 			return editor;

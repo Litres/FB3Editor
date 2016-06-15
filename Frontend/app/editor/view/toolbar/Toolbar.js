@@ -43,6 +43,13 @@ Ext.define(
 			disableButtons: 'onDisableButtons'
 		},
 
+		hidden: true,
+
+		/**
+		 * @property {Boolean} Показывать ли по умолчанию тулбар.
+		 */
+		defaultShow: false,
+
 		/**
 		 * @private
 		 * @property {FBEditor.editor.view.toolbar.button.AbstractButton[]} Кнопки элементов.
@@ -63,6 +70,12 @@ Ext.define(
 		 * xml и редактором обычного текста.
 		 */
 		toggleButton: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.toolstab.main.Main} Вкладка Форматирование.
+		 */
+		toolstab:  null,
 
 		afterRender: function ()
 		{
@@ -87,6 +100,35 @@ Ext.define(
 				me.down('editor-toolbar-button-em'),
 				me.down('editor-toolbar-button-strong')
 			];
+		},
+
+		/**
+		 * Активен ли тулбар.
+		 * @return {Boolean}
+		 */
+		isActive: function ()
+		{
+			var me = this,
+				toolstab = me.getToolstab(),
+				active;
+
+			active = toolstab.isActiveToolbar(me);
+
+			return active;
+		},
+
+		/**
+		 * Делает тулбар активным.
+		 */
+		setActive: function ()
+		{
+			var me = this,
+				toolstab = me.getToolstab(),
+				active;
+
+			active = toolstab.setActiveToolbar(me);
+
+			return active;
 		},
 
 		/**
@@ -146,6 +188,39 @@ Ext.define(
 		getButtons: function ()
 		{
 			return this.buttons;
+		},
+
+		/**
+		 * Устанавливает свойство для показа тулабара по умолчанию.
+		 * @param {Boolean} show Показывать ли по умолчанию тулбар.
+		 */
+		setDefaultShow: function (show)
+		{
+			this.defaultShow = show;
+		},
+
+		/**
+		 * Показывать ли по умолчанию тулбар.
+		 * @return {Boolean}
+		 */
+		isDefaultShow: function ()
+		{
+			return this.defaultShow;
+		},
+
+		/**
+		 * Возвращает вкладку Форматирование.
+		 * @return {FBEditor.view.panel.toolstab.main.Main}
+		 */
+		getToolstab: function ()
+		{
+			var me = this,
+				toolstab;
+
+			toolstab = me.toolstab || Ext.getCmp('panel-toolstab-main');
+			me.toolstab = toolstab;
+
+			return toolstab;
 		}
 	}
 );

@@ -59,6 +59,18 @@ Ext.define(
 		 */
 		mainEditor: null,
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.tools.ToolsTab} Вкладки панели инструментов.
+		 */
+		panelToolstab: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.toolstab.main.Main} Вкладка Форматирование.
+		 */
+		toolstab: null,
+
 		afterRender: function ()
 		{
 			var me = this,
@@ -86,6 +98,36 @@ Ext.define(
 			me.mainEditor = mainEditor;
 
 			return mainEditor;
+		},
+
+		/**
+		 * Возвращает панель вкладок.
+		 * @return {FBEditor.view.panel.main.tools.ToolsTab}
+		 */
+		getPanelMainToolstab: function ()
+		{
+			var me = this,
+				panelToolstab;
+
+			panelToolstab = me.panelToolstab || Ext.getCmp('panel-main-toolstab');
+			me.panelToolstab = panelToolstab;
+
+			return panelToolstab;
+		},
+
+		/**
+		 * Возвращает вкладку Форматирование.
+		 * @return {FBEditor.view.panel.toolstab.main.Main}
+		 */
+		getToolstab: function ()
+		{
+			var me = this,
+				toolstab;
+
+			toolstab = me.toolstab || Ext.getCmp('panel-toolstab-main');
+			me.toolstab = toolstab;
+
+			return toolstab;
 		},
 
 		/**
