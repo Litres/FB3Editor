@@ -22,19 +22,25 @@ Ext.define(
 		setFocusElement: function (elOrNode, sel)
 		{
 			var me = this,
-				panel = me.getPanelProps(),
 				panelNav = me.getPanelNavigation(),
 				el;
 
 			me.callParent(arguments);
 
-			el = me.focusElement;
-
-			// обновляем информацию в панели свойств о выделенном элементе
-			panel.fireEvent('loadData', el.getData());
+			el = me.getFocusElement();
 
 			// разворачиваем узел элемента в дереве навигации по тексту
 			panelNav.expandElement(el);
+		},
+
+		getPanelProps: function ()
+		{
+			var bridge = FBEditor.getBridgeProps(),
+				panel;
+
+			panel = bridge.Ext.getCmp('panel-props-body');
+
+			return panel;
 		},
 
 		/**
@@ -59,22 +65,6 @@ Ext.define(
 					200
 				);
 			}
-		},
-
-		/**
-		 * @private
-		 * Возвращает панель свойств.
-		 * @return {FBEditor.view.panel.main.props.body.Body}
-		 */
-		getPanelProps: function ()
-		{
-			var me = this,
-				bridge = FBEditor.getBridgeProps(),
-				panel;
-
-			panel = bridge.Ext.getCmp('panel-props-body');
-
-			return panel;
 		},
 
 		/**

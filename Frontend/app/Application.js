@@ -34,8 +34,11 @@ FBEditor.getBridgeNavigation()
 {Function} Возвращает хранилище localStorage для приложения
 FBEditor.getLocalStorage()
 
-{Function} Возвращает менеджер редактора тела книги
+{Function} Возвращает активный менеджер редактора текста
 FBEditor.getEditorManager()
+
+{Function} Устанавливает активный менеджер редактора текста
+FBEditor.setEditorManager(manager)
 
 */
 
@@ -118,19 +121,37 @@ Ext.define(
 			};
 
 			/**
-			 * Возвращает менеджер редактора тела книги.
-			 * @return {FBEditor.view.panel.main.editor.Editor}
+			 * Возвращает активный менеджер редактора текста.
+			 * @param {Boolean} [body] Вернуть ли менеджер редактора тела кнги.
+			 * @return {FBEditor.editor.view.Editor}
 			 */
-			FBEditor.getEditorManager = function ()
+			FBEditor.getEditorManager = function (body)
 			{
 				var bridge = FBEditor.getBridgeWindow(),
 					manager,
 					editor;
 
-				editor = bridge.Ext.getCmp('main-editor');
-				manager = editor.getManager();
+				manager = bridge.FBEditor.activeEditorManager;
+
+				if (!manager || body)
+				{
+					// по умолчанию считаем активным менеджер редактора тела книги
+					editor = bridge.Ext.getCmp('main-editor');
+					manager = editor.getManager();
+				}
 
 				return manager;
+			};
+
+			/**
+			 * Устанавливает активный менеджер редактора текста.
+			 * @param {FBEditor.editor.view.Editor} manager
+			 */
+			FBEditor.setEditorManager = function (manager)
+			{
+				var bridge = FBEditor.getBridgeWindow();
+
+				bridge.FBEditor.activeEditorManager = manager;
 			};
 
 			// закрытие/обновление окна
@@ -159,7 +180,7 @@ Ext.define(
 			// роуты
 			FBEditor.route.Manager.init();
 
-			// редактор описания
+			// менеджер редактора описания
 			FBEditor.desc.Manager.init();
 
 			// определяем доступность хаба
@@ -168,8 +189,6 @@ Ext.define(
 
 	    launch: function ()
 	    {
-		    var me = this;
-
 		    if (FBEditor.parentWindow)
 		    {
 			    // убираем отсоединенную панель из главного окна
@@ -203,7 +222,7 @@ Ext.define(
 						var cache = window.applicationCache;
 
 						cache.swapCache();
-						console.log('Swap Application Cache');
+						Ext.log('Swap Application Cache');
 					},
 					false
 				);

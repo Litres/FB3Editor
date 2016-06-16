@@ -6,14 +6,14 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
+	'FBEditor.view.panel.main.props.desc.editor.AbstractEditor',
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
-			'FBEditor.view.panel.main.props.body.editor.AbstractEditorController'
+			'FBEditor.view.panel.main.props.desc.editor.AbstractEditorController'
 		],
 
-		controller: 'panel.props.body.editor',
+		controller: 'panel.props.desc.editor',
 
 		listeners: {
 			change: 'onChange'
@@ -50,12 +50,6 @@ Ext.define(
 		 */
 		isLoad: false,
 
-		/**
-		 * @private
-		 * @property {FBEditor.view.panel.main.props.body.Body} Панель свойств.
-		 */
-		panelProps: null,
-
 		constructor: function (data)
 		{
 			var me = this;
@@ -81,39 +75,6 @@ Ext.define(
 			form.reset();
 			form.setValues(data);
 			me.isLoad = false;
-		},
-
-		/**
-		 * Показывает/скрывает кнопки конвертирования и удаления.
-		 * @param {Boolean} visible Показывать ли кнопки.
-		 */
-		setVisibleButtons: function (visible)
-		{
-			var me = this,
-				panelProps,
-				cnvBtn,
-				delBtn;
-
-			panelProps = me.getPanelProps();
-			cnvBtn = panelProps.getConvertBtn();
-			delBtn = panelProps.getDeleteBtn();
-			cnvBtn.setVisible(visible);
-			delBtn.setVisible(visible);
-		},
-
-		/**
-		 * Возвращает панель свойств редактора текста.
-		 * @return {FBEditor.view.panel.main.props.body.Body}
-		 */
-		getPanelProps: function ()
-		{
-			var me = this,
-				panelProps;
-
-			panelProps = me.panelProps || Ext.getCmp('panel-props-body');
-			me.panelProps = panelProps;
-
-			return panelProps
 		}
 	}
 );

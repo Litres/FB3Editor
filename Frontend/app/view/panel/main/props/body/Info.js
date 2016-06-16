@@ -8,8 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.main.props.body.Info',
 	{
 		extend: 'Ext.Component',
-		xtype: 'props-element-info',
+
 		id: 'props-element-info',
+		xtype: 'props-element-info',
 
 		initComponent: function ()
 		{

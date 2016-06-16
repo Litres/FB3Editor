@@ -53,6 +53,8 @@ Ext.define(
 
 			if (!range)
 			{
+				btn.disable();
+
 				return;
 			}
 

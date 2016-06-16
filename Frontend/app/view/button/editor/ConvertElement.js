@@ -11,8 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.ConvertToTextCommand'
 		],
+
 		id: 'button-editor-convert-element',
 		xtype: 'button-editor-convert-element',
+
 		text: 'Превратить в текст',
 
 		handler: function ()
@@ -41,13 +43,13 @@ Ext.define(
 		verify: function ()
 		{
 			var me = this,
-				res = false,
 				els = {},
 				nodes = {},
 				manager = FBEditor.getEditorManager(),
 				sch = manager.getSchema(),
 				viewportId,
-				range;
+				range,
+				res;
 
 			range = manager.getRange();
 
@@ -68,10 +70,9 @@ Ext.define(
 			els.namesElements = manager.getNamesElements(els.parent);
 			els.namesElements.splice(els.pos, 1, 'p');
 
-			if (sch.verify(els.nameEl, els.namesElements) || sch.verify(els.node.getName(), ['p']))
-			{
-				res = true;
-			}
+			res = sch.verify(els.nameEl, els.namesElements);
+
+			res = !res && !els.node.isEmpty() ? sch.verify(els.node.getName(), ['p']) : res;
 
 			return res;
 		}

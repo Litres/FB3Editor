@@ -63,7 +63,7 @@ Ext.define(
 		{
 			var me = this;
 
-			// создаем собственный менеджер для редактора тела книги
+			// менеджер для редактора тела книги
 			me.manager = me.manager || Ext.create('FBEditor.view.panel.main.editor.Manager', me);
 		},
 

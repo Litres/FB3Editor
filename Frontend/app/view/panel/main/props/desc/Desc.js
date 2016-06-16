@@ -10,23 +10,36 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.props.desc.DescController',
+			'FBEditor.view.panel.main.props.desc.editor.Container',
 			'FBEditor.view.panel.main.props.desc.search.arts.Arts',
 			'FBEditor.view.panel.main.props.desc.search.persons.Persons',
 			'FBEditor.view.button.desc.Load',
 			'FBEditor.view.button.desc.Save'
 		],
-		controller: 'panel.props.desc',
+
 		id: 'panel-props-desc',
 		xtype: 'panel-props-desc',
+		controller: 'panel.props.desc',
 
 		listeners: {
-			accessHub: 'onAccessHub'
+			accessHub: 'onAccessHub',
+			showContainer: 'onShowContainer'
 		},
 
 		translateText: {
 			loadUrl: 'ID произведения для загрузки описания',
 			saveUrl: 'URL для сохранения описания'
 		},
+
+		/**
+		 * @property {String[]} Список контейнеров, один из которых может быть показан на панели свойств, а остальные
+		 * из этого списка должны быть скрыты
+		 */
+		containerList: [
+			'panel-props-desc-editor-container',
+			'props-desc-search-arts',
+			'props-desc-search-persons'
+		],
 
 		initComponent: function ()
 		{
@@ -112,6 +125,9 @@ Ext.define(
 					xtype: 'button-desc-save',
 					disabled: saveUrl ? false : true
 				}*/
+				{
+					xtype: 'panel-props-desc-editor-container'
+				},
 				{
 					xtype: 'props-desc-search-arts'
 				},

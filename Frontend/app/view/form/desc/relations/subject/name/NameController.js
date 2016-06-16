@@ -50,11 +50,13 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				artsContainer;
+				resultContainer = view.getResultContainer(),
+				panelProps;
 
-			// очищаем контейнер с результатами поиска названий
-			artsContainer = view.getArtsContainer();
-			artsContainer.clean();
+			panelProps = resultContainer.getPanelProps();
+
+			// показываем результаты на панели свойств
+			panelProps.fireEvent('showContainer');
 		},
 
 		/**

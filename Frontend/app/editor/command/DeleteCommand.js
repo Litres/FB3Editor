@@ -16,6 +16,7 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
+				factory = FBEditor.editor.Factory,
 				manager,
 				range;
 
@@ -57,7 +58,7 @@ Ext.define(
 					if (els.parent.isRoot)
 					{
 						// в корневом элементе должна быть хотя бы одна секция
-						els.s = FBEditor.editor.Factory.createElement('section');
+						els.s = factory.createElement('section');
 						els.s.add(els.p);
 						els.newEl = els.s;
 					}
@@ -82,6 +83,7 @@ Ext.define(
 				data.saveRange = {
 					startNode: manager.getDeepFirst(nodes.cursor)
 				};
+
 				manager.setCursor(data.saveRange);
 
 				// сохраняем

@@ -20,16 +20,6 @@ Ext.define(
 		xtype: 'panel-main-content',
 		controller: 'panel.main.content',
 
-		panelName: 'content',
-		region: 'center',
-		collapsible: false,
-		layout: 'card',
-		minWidth: 610,
-		overflowX: true,
-		margin: '0 2px 0 2px',
-		bodyPadding: 0,
-		//activeItem: 'main-editor',
-
 		items: [
 			{
 				xtype: 'form-desc'
@@ -52,6 +42,16 @@ Ext.define(
 			contentResources: 'onContentResources',
 			contentEmpty: 'onContentEmpty'
 		},
+
+		panelName: 'content',
+		region: 'center',
+		collapsible: false,
+		layout: 'card',
+		minWidth: 610,
+		overflowX: true,
+		margin: '0 2px 0 2px',
+		bodyPadding: 0,
+		//activeItem: 'main-editor',
 
 		/**
 		 * @private

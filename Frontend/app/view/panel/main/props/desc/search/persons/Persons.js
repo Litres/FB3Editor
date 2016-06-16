@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.desc.search.persons.PersonsController',
 			'FBEditor.view.container.desc.search.persons.Persons'
 		],
+
 		controller: 'props.desc.search.persons',
 		xtype: 'props-desc-search-persons',
 		id: 'props-desc-search-persons',

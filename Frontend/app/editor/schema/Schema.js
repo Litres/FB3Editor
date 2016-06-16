@@ -88,7 +88,7 @@ Ext.define(
 				// преобразование строки в объект
 				eval(xsdJson);
 				me.elements = elements;
-				Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: elements});
+				//Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: elements});
 			}
 			catch (e)
 			{

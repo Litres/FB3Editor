@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'Ext.Panel',
 		requires: [
 			'FBEditor.view.form.desc.editor.EditorController',
+			'FBEditor.view.form.desc.editor.Manager',
 			'FBEditor.view.form.desc.editor.body.Body'
 		],
 

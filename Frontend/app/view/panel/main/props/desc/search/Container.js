@@ -14,6 +14,7 @@ Ext.define(
 		mixins: {
 			behavior: 'FBEditor.view.container.desc.search.OwnerContainerBehavior'
 		},
+
 		controller: 'props.desc.search.container',
 		xtype: 'props-desc-search-container',
 
@@ -149,6 +150,21 @@ Ext.define(
 
 			me.clean();
 			me.setStorageNames(null);
+		},
+
+		/**
+		 * Возвращает панель свойств редактора текста.
+		 * @return {FBEditor.view.panel.main.props.body.Body}
+		 */
+		getPanelProps: function ()
+		{
+			var me = this,
+				panelProps;
+
+			panelProps = me.panelProps || Ext.getCmp('panel-props-desc');
+			me.panelProps = panelProps;
+
+			return panelProps
 		},
 
 		clean: function ()

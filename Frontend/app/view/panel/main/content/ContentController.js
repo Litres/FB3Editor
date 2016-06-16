@@ -40,7 +40,7 @@ Ext.define(
 				view = me.getView(),
 				panelToolstab = view.getPanelMainToolstab(),
 				toolstab = view.getToolstab(),
-				manager = FBEditor.getEditorManager(),
+				manager = FBEditor.getEditorManager(true),
 				editor,
 				toolbar;
 

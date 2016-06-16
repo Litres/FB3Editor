@@ -12,6 +12,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.title.alt.Alt'
 		],
+
 		xtype: 'form-desc-title',
 		cls: 'form-desc-title',
 

@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.desc.search.arts.ArtsController',
 			'FBEditor.view.container.desc.search.arts.Arts'
 		],
+
 		controller: 'props.desc.search.arts',
 		xtype: 'props-desc-search-arts',
 		id: 'props-desc-search-arts',

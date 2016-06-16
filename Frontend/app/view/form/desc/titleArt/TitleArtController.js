@@ -36,10 +36,13 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				personsContainer;
+				resultContainer = view.getResultContainer(),
+				panelProps;
 
-			personsContainer = view.getPersonsContainer();
-			personsContainer.clean();
+			panelProps = resultContainer.getPanelProps();
+
+			// показываем результаты на панели свойств
+			panelProps.fireEvent('showContainer');
 		},
 
 		/**

@@ -22,6 +22,14 @@ Ext.define(
 			pinned: true
 		},
 
+		createManager: function ()
+		{
+			var me = this;
+
+			// менеджер редактора текста для описания книги
+			me.manager = me.manager || Ext.create('FBEditor.view.form.desc.editor.Manager', me);
+		},
+
 		createToolbar: function ()
 		{
 			return Ext.create('FBEditor.view.form.desc.editor.toolbar.Toolbar');

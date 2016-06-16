@@ -1,32 +1,22 @@
 /**
- * Контроллер панели свойств редактора текста книги.
+ * Контроллер контейнера формы свойств элемента.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.body.BodyController',
+	'FBEditor.view.panel.main.props.desc.editor.ContainerController',
 	{
 		extend: 'Ext.app.ViewController',
-		alias: 'controller.panel.props.body',
+		alias: 'controller.panel.props.desc.editor.container',
 
 		onBeforeActivate: function ()
 		{
 			var me = this,
 				view = me.getView(),
-				editor,
-				convertBtn,
-				deleteBtn;
+				editor;
 
-			// приводим панель редактирования к начальному состоянию
-
-			Ext.getCmp('props-element-info').update();
-
-			// кнопки
-			convertBtn = view.getConvertBtn();
-			deleteBtn = view.getDeleteBtn();
-			convertBtn.setVisible(false);
-			deleteBtn.setVisible(false);
+			// приводим панель редактирования свойств к начальному состоянию
 
 			editor = view.editor;
 
@@ -62,40 +52,23 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				propsInfo = view.getPropsInfo(),
-				convertBtn = view.getConvertBtn(),
-				deleteBtn = view.getDeleteBtn(),
-				editor = view.editor,
+				panelProps = view.getPanelProps(),
 				data,
 				name,
-				el;
+				editor;
+
+			if (!view.isVisible())
+			{
+				// показываем контейнер
+				panelProps.fireEvent('showContainer', view);
+			}
 
 			// данные элемента
 			data = elem.getData();
 
-			// ссылка на родительский элемент-контейнер, данные которого и будут отображены в панели
-			el = data.el;
-
 			if (data)
 			{
-				// обновляем инфу
-				propsInfo.update(data);
-
-				// кнопки
-				convertBtn.element = el;
-				deleteBtn.element = el;
-				convertBtn.setVisible(true);
-				deleteBtn.setVisible(true);
-
-				if (el.isRoot)
-				{
-					deleteBtn.setVisible(false);
-				}
-
-				if (el.isImg || el.isRoot || !convertBtn.verify())
-				{
-					convertBtn.setVisible(false);
-				}
+				editor = view.editor;
 
 				if (!editor || editor && editor.elementName !== data.elementName)
 				{
@@ -108,7 +81,7 @@ Ext.define(
 					try
 					{
 						// добавляем новую панель редактирования
-						name = 'FBEditor.view.panel.main.props.body.editor.' + data.elementName + '.Editor';
+						name = 'FBEditor.view.panel.main.props.desc.editor.' + data.elementName + '.Editor';
 						editor = Ext.create(name, {elementName: data.elementName});
 						view.add(editor);
 					}

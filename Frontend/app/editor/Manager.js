@@ -289,6 +289,7 @@ Ext.define(
 		setFocusElement: function (elOrNode, sel)
 		{
 			var me = this,
+				panelProps = me.getPanelProps(),
 				el,
 				range,
 				difCollapsed;
@@ -342,6 +343,24 @@ Ext.define(
 				me.cashSyncBtn = el.elementId;
 				me.syncButtons();
 			}
+
+			if (panelProps)
+			{
+				// сохраняем глобальную ссылку на активный менеджер
+				FBEditor.setEditorManager(me);
+
+				// обновляем информацию о выделенном элементе в панели свойств
+				panelProps.fireEvent('loadData', el);
+			}
+		},
+
+		/**
+		 * Возвращает панель свойств элемента для текущего контента.
+		 * @return {Ext.panel.Panel}
+		 */
+		getPanelProps: function ()
+		{
+			return null;
 		},
 
 		/**

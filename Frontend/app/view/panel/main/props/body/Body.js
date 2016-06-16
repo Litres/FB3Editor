@@ -53,6 +53,24 @@ Ext.define(
 		 */
 		editor: null,
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.props.body.Info} Компонент информации об элементе.
+		 */
+		propsInfo: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.button.editor.ConvertElement} Кнопка "конвертировать в текст".
+		 */
+		convertBtn: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.button.editor.DeleteElement} Кнопка "удалить элемент".
+		 */
+		deleteBtn: null,
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -88,12 +106,33 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает компонент информации об элементе.
+		 * @return {FBEditor.view.panel.main.props.body.Info}
+		 */
+		getPropsInfo: function ()
+		{
+			var me = this,
+				propsInfo;
+
+			propsInfo = me.propsInfo || me.down('props-element-info');
+			me.propsInfo = propsInfo;
+
+			return propsInfo;
+		},
+
+		/**
 		 * Возвращает кнопку "конвертировать в текст".
 		 * @return {FBEditor.view.button.editor.ConvertElement}
 		 */
 		getConvertBtn: function ()
 		{
-			return this.down('button-editor-convert-element');
+			var me = this,
+				convertBtn;
+
+			convertBtn = me.convertBtn || me.down('button-editor-convert-element');
+			me.convertBtn = convertBtn;
+
+			return convertBtn;
 		},
 
 		/**
@@ -102,7 +141,13 @@ Ext.define(
 		 */
 		getDeleteBtn: function ()
 		{
-			return this.down('button-editor-delete-element');
+			var me = this,
+				deleteBtn;
+
+			deleteBtn = me.deleteBtn || me.down('button-editor-delete-element');
+			me.deleteBtn = deleteBtn;
+
+			return deleteBtn;
 		}
 	}
 );
