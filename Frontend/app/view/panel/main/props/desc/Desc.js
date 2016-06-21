@@ -52,12 +52,13 @@ Ext.define(
 				loadUrl,
 				saveUrl;
 
-			hiddenLoadUrl = bridge.Ext.getCmp('main') && bridge.FBEditor.accessHub && manager.isLoadUrl() ? false : true;
-			loadUrl = params.art ? params.art : '';
+			/*hiddenLoadUrl = bridge.Ext.getCmp('main') && bridge.FBEditor.accessHub && manager.isLoadUrl() ? false
+			 : true;
+			loadUrl = params.art ? params.art : '';*/
 			//saveUrl = manager.saveUrl ? manager.saveUrl : '';
 
 			me.items = [
-				{
+				/*{
 					xtype: 'numberfield',
 					labelAlign: 'top',
 					name: 'desc-load-url',
@@ -90,7 +91,7 @@ Ext.define(
 					xtype: 'button-desc-load',
 					disabled: loadUrl ? false : true,
 					hidden: hiddenLoadUrl
-				},
+				},*/
 				/*,
 				{
 					xtype: 'textfield',

@@ -12,7 +12,7 @@ Ext.define(
 
 		onAccessHub: function ()
 		{
-			var me = this,
+			/*var me = this,
 				view = me.getView(),
 				bridge = FBEditor.getBridgeWindow(),
 				descManager = bridge.FBEditor.desc.Manager,
@@ -25,7 +25,7 @@ Ext.define(
 				cmpLoadUrl.setHidden(false);
 				btnLoadUrl = view.down('button-desc-load');
 				btnLoadUrl.setHidden(false);
-			}
+			}*/
 		},
 
 		/**
