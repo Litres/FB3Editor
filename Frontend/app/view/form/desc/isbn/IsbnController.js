@@ -13,8 +13,7 @@ Ext.define(
 		onLoadData:  function (data)
 		{
 			var me = this,
-				nextContainer = me.getView(),
-				plugin;
+				nextContainer = me.getView();
 
 			if (data)
 			{
@@ -23,13 +22,14 @@ Ext.define(
 					data,
 					function (index, obj)
 					{
-						plugin = nextContainer.getPlugin('fieldcontainerreplicator');
-						var field = nextContainer.down('textfield');
+						var plugin = nextContainer.getPlugin('fieldcontainerreplicator'),
+							field = nextContainer.down('textfield');
 
 						if (field)
 						{
 							field.setValue(obj);
 						}
+
 						if (data[parseInt(index) + 1])
 						{
 							plugin.addFields();

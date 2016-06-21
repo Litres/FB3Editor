@@ -71,9 +71,11 @@ Ext.define(
 				console.log('remove nodes ', data.range);
 
 				// первый элемент
+
 				nodes.first = range.startContainer;
 				els.first = nodes.first.getElement();
 				els.commonId = els.common.elementId;
+
 				while (els.first && els.first.parent.elementId !== els.commonId)
 				{
 					nodes.first = els.isRoot ? nodes.first.firstChild : nodes.first.parentNode;
@@ -81,8 +83,10 @@ Ext.define(
 				}
 
 				// последний элемент
+
 				nodes.last = range.endContainer;
 				els.last = nodes.last.getElement();
+
 				while (els.last && els.last.parent.elementId !== els.commonId)
 				{
 					nodes.last = els.isRoot ? nodes.last.lastChild : nodes.last.parentNode;
@@ -148,6 +152,7 @@ Ext.define(
 
 				nodes.next = nodes.start;
 				els.next = nodes.next.getElement();
+
 				while (els.next && els.next.elementId !== els.end.elementId)
 				{
 					els.removed.push(els.next);
@@ -159,6 +164,7 @@ Ext.define(
 					nodes.next = nodes.buf;
 					els.next = nodes.next ? nodes.next.getElement() : null;
 				}
+
 				nodes.nextCursor = nodes.next.nextSibling ? nodes.next.nextSibling : null;
 				els.removed.push(els.next);
 				nodes.removed.push(nodes.next);
@@ -176,7 +182,7 @@ Ext.define(
 					els.p = manager.createEmptyP();
 					els.newEl = els.p;
 
-					if (els.parent.isRoot)
+					if (els.parent.isRoot && !els.parent.isDesc)
 					{
 						// в корневом элементе должна быть хотя бы одна секция
 						els.s = factory.createElement('section');
@@ -225,6 +231,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 

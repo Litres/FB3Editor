@@ -22,6 +22,65 @@ Ext.define(
 		 */
 		cursorData: null,
 
+		onKeyDownCtrlA: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// выделяем весь текст
+
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
+			els.root = els.node.getRoot();
+
+			manager = els.root.getManager();
+			viewportId = nodes.node.viewportId;
+
+			// начальная точка выделения
+			els.deepFirst = els.root.getDeepFirst();
+			helper = els.deepFirst.getNodeHelper();
+			nodes.deepFirst = helper.getNode(viewportId);
+
+			// конечная точка выделения
+			els.deepLast = els.root.getDeepLast();
+			helper = els.deepLast.getNodeHelper();
+			nodes.deepLast = helper.getNode(viewportId);
+			els.endOffset = els.deepLast.isText ? els.deepLast.text.length : 0;
+
+			// начальный абзац
+			els.firstP = els.deepFirst.getStyleHolder();
+			helper = els.firstP.getNodeHelper();
+			nodes.firstP = helper.getNode(viewportId);
+			nodes.firstP.setAttribute('contenteditable', false);
+
+			// конечный абзац
+			els.lastP = els.deepLast.getStyleHolder();
+			helper = els.lastP.getNodeHelper();
+			nodes.lastP = helper.getNode(viewportId);
+			nodes.lastP.setAttribute('contenteditable', false);
+
+			//console.log(nodes, els);
+
+			manager.setCursor(
+				{
+					startNode: nodes.deepFirst,
+					startOffset: 0,
+					endNode: nodes.deepLast,
+					endOffset: els.endOffset
+				}
+			);
+
+			e.preventDefault();
+		},
+
 		onKeyDownLeft: function (e)
 		{
 			var me = this,

@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.desc.AbstractRootElement',
 
-		xmlTag: 'bibliodescription',
+		xmlTag: 'biblio-description',
 
 		cls: 'el-desc-bibliodescription'
 	}

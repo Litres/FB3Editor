@@ -373,6 +373,14 @@ Ext.define(
 
 						return false;
 
+					case Ext.event.Event.A:
+						if (e.ctrlKey)
+						{
+							return controller.onKeyDownCtrlA(e);
+						}
+
+						return false;
+
 					default:
 						return controller.onKeyDownDefault(e);
 				}
@@ -490,6 +498,11 @@ Ext.define(
 			me.getHistory().undo();
 
 			return false;
+		},
+
+		onKeyDownCtrlA: function (e)
+		{
+			//
 		},
 
 		onKeyDownCtrlShiftZ: function (e)

@@ -37,14 +37,14 @@ Ext.define(
 
 			xml = me.callParent(arguments);
 
-			// пустой ли элемент
-			xml = me.isEmpty() ? xml.replace('<br/>', '') : xml;
-
 			if (me.first().isEmpty())
 			{
 				// первым элементом не может быть br согласно схеме
 				xml = xml.replace(/<br\/>/, '<p>&#160;</p>');
 			}
+
+			// пустой ли элемент
+			//xml = me.isEmpty() ? xml.replace('<br/>', '') : xml;
 
 			return xml;
 		},

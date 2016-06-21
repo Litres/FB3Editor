@@ -12,6 +12,15 @@ Ext.define(
 
 		createFromRange: true,
 
+		onKeyDownCtrlA: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownCtrlA', e);
+		},
+
 		onKeyDownEnter: function (e)
 		{
 			var me = this,
