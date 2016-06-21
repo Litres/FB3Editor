@@ -28,19 +28,21 @@ Ext.define(
 		onChange: function (radio, newVal, oldVal)
 		{
 			var me = this,
+				sumPercents = 0,
 				listVal,
 				val,
 				percents,
-				percent,
-				sumPercents = 0;
-
-			//console.log('change', radio);
+				percent;
 
 			val = Ext.Object.getValues(newVal)[0];
+
+			//console.log('change', val, Ext.Object.getValues(oldVal)[0], radio);
+
 			if (val === 'other-list')
 			{
 				listVal = radio.up('form-desc-relations-subject-link').
 					down('form-desc-relations-subject-link-list').getValue();
+
 				if (!listVal)
 				{
 					// если селект пустой, то возвращаем предыдущее значение радиобатанов

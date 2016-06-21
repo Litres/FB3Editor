@@ -11,8 +11,18 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.LinkStore'
 		],
+
 		xtype: 'form-desc-relations-subject-link-list',
+
 		name: 'relations-subject-link-list',
+
+		listeners: {
+			change: function ()
+			{
+				this.ownerCt.fireEvent('changeList');
+			}
+		},
+
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
@@ -23,13 +33,6 @@ Ext.define(
 		},
 
 		keyEnterAsTab: true,
-
-		listeners: {
-			change: function ()
-			{
-				this.ownerCt.fireEvent('changeList');
-			}
-		},
 
 		initComponent: function ()
 		{

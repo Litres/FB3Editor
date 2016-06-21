@@ -12,22 +12,26 @@ Ext.define(
 
 		onResetFields: function ()
 		{
-			var me = this;
+			var me = this,
+				view = me.getView(),
+				radio = FBEditor.view.form.desc.relations.subject.radio.Radio;
 
-			FBEditor.view.form.desc.relations.subject.radio.Radio.numberGroup = 1;
+			//console.log('reset', radio.numberGroup, view);
+
 			me.callParent(arguments);
 		},
 
 		/**
-		 * Отмечает радиобаттон списка при его изменении.
+		 * Отмечает радиобатон списка при его изменении.
 		 */
 		onChangeList: function ()
 		{
 			var me= this,
 				view = me.getView(),
-				radio;
+				radio = view.getRadio();
 
-			radio = view.down('relations-subject-link-radio').child('[reference=linkRadioOther]');
+			radio = radio.child('[reference=linkRadioOther]');
+			//console.log('change list', radio);
 			radio.setValue(true);
 		}
 	}

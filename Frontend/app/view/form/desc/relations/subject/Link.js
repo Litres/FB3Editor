@@ -13,17 +13,30 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.subject.radio.Radio',
 			'FBEditor.view.form.desc.relations.subject.LinkList'
 		],
+
 		xtype: 'form-desc-relations-subject-link',
 		controller: 'form.desc.relations.subject.link',
-		layout: 'hbox',
 		cls: 'form-desc-relations-subject-link',
-		//viewModel: true,
-		//referenceHolder: true,
+
 		listeners: {
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
 			changeList: 'onChangeList'
 		},
+
+		layout: 'hbox',
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.radio.Radio} Группа радиобатонов.
+		 */
+		radio: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.LinkList} Список типов.
+		 */
+		list: null,
 
 		translateText: {
 			label: 'Тип связи'
@@ -50,12 +63,51 @@ Ext.define(
 		getValue: function ()
 		{
 			var me = this,
+				radio = me.getRadio(),
+				checked,
+				list,
 				data;
 
-			data = me.down('relations-subject-link-radio').getChecked()[0].getGroupValue();
-			data = data === 'other-list' ? me.down('form-desc-relations-subject-link-list').getValue() : data;
+			checked = radio.getChecked();
+
+			//console.log('radio', radio, checked);
+
+			data = checked[0] ? checked[0].getGroupValue() : null;
+
+			list = me.down('form-desc-relations-subject-link-list');
+			data = data === 'other-list' ? list.getValue() : data;
 
 			return data;
+		},
+
+		/**
+		 * Возвращает список типов.
+		 * @return {FBEditor.view.form.desc.relations.subject.LinkList}
+		 */
+		getList: function ()
+		{
+			var me = this,
+				list;
+
+			list = me.list || me.down('form-desc-relations-subject-link-list');
+			me.list = list;
+
+			return list;
+		},
+
+		/**
+		 * Возвращает группу радиобатонов.
+		 * @return {FBEditor.view.form.desc.relations.subject.radio.Radio}
+		 */
+		getRadio: function ()
+		{
+			var me = this,
+				radio;
+
+			radio = me.radio || me.down('relations-subject-link-radio');
+			me.radio = radio;
+
+			return radio;
 		}
 	}
 );

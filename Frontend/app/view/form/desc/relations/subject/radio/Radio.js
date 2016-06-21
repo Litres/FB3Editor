@@ -11,14 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.radio.RadioController'
 		],
+
 		xtype: 'relations-subject-link-radio',
 		controller: 'form.desc.relations.subject.link.radio',
-		allowBlank: false,
-
-		defaults:
-		{
-			keyEnterAsTab: true
-		},
 
 		listeners: {
 			change: 'onChange',
@@ -33,6 +28,13 @@ Ext.define(
 			numberGroup: 0
 		},
 
+		allowBlank: false,
+
+		defaults:
+		{
+			keyEnterAsTab: true
+		},
+
 		translateText: {
 			author: 'Автор',
 			publisher: 'Издатель',
@@ -45,6 +47,9 @@ Ext.define(
 				numberGroup = me.self.numberGroup;
 
 			me.name = 'relations-subject-link-radio-' + numberGroup;
+
+			//console.log('init', me.name);
+
 			me.items = [
 				{
 					name: 'rel-subject-link-' + numberGroup,
@@ -71,8 +76,10 @@ Ext.define(
 					reference: 'linkRadioOther'
 				}
 			];
+
 			numberGroup++;
 			me.self.numberGroup = numberGroup;
+
 			me.callParent(arguments);
 		}
 	}

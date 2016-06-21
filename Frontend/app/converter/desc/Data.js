@@ -95,7 +95,9 @@ Ext.define(
 		convertRelations: function (data)
 		{
 			var me = this,
-				d = data;
+				d = data,
+				radio = FBEditor.view.form.desc.relations.subject.radio.Radio,
+				number = radio.numberGroup - 1;
 
 			if (d['fb3-relations'])
 			{
@@ -113,8 +115,8 @@ Ext.define(
 					function (index, item)
 					{
 						// конвертируем данные для типа связи
-						item['relations-subject-link-radio-' + index] = {};
-						item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] =
+						item['relations-subject-link-radio-' + number] = {};
+						item['relations-subject-link-radio-' + number]['rel-subject-link-' + number] =
 							item['relations-subject-link'];
 
 						if (item['relations-subject-link'] !== 'author' &&
@@ -122,9 +124,12 @@ Ext.define(
 						    item['relations-subject-link'] !== 'publisher')
 						{
 							item['relations-subject-link-list'] = item['relations-subject-link'];
-							item['relations-subject-link-radio-' + index]['rel-subject-link-' + index] = 'other-list';
+							item['relations-subject-link-radio-' + number]['rel-subject-link-' + number] = 'other-list';
 						}
+
 						delete item['relations-subject-link'];
+
+						number++;
 					}
 				);
 				delete d['fb3-relations'];
