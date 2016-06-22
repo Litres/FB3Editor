@@ -18,6 +18,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.blockquote.Editor',
 			'FBEditor.view.panel.main.props.body.editor.div.Editor',
 			'FBEditor.view.panel.main.props.body.editor.epigraph.Editor',
+			'FBEditor.view.panel.main.props.body.editor.fb3body.Editor',
 			'FBEditor.view.panel.main.props.body.editor.img.Editor',
 			'FBEditor.view.panel.main.props.body.editor.note.Editor',
 			'FBEditor.view.panel.main.props.body.editor.notebody.Editor',

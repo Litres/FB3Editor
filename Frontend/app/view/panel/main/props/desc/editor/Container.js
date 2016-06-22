@@ -11,7 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.props.desc.editor.ContainerController',
 			'FBEditor.view.panel.main.props.desc.editor.a.Editor',
-			'FBEditor.view.panel.main.props.desc.editor.annotation.Editor'
+			'FBEditor.view.panel.main.props.desc.editor.annotation.Editor',
+			'FBEditor.view.panel.main.props.desc.editor.bibliodescription.Editor',
+			'FBEditor.view.panel.main.props.desc.editor.history.Editor',
+			'FBEditor.view.panel.main.props.desc.editor.preamble.Editor'
 		],
 
 		id: 'panel-props-desc-editor-container',
