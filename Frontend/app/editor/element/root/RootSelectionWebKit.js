@@ -9,6 +9,18 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.selection.Selection',
 
+		/**
+		 * @private
+		 * @property {FBEditor.editor.element.AbstractElement} Абзац, на который заходит мышь.
+		 */
+		pOver: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.element.AbstractElement} Абзац, с которого сходит мышь.
+		 */
+		pOut: null,
+
 		constructor: function (node)
 		{
 			var me = this;
@@ -70,31 +82,146 @@ Ext.define(
 		 */
 		startSelection: function (e)
 		{
-			var me = this;
+			var me = this,
+				target = e.target,
+				els = {},
+				nodes = {},
+				manager,
+				range,
+				viewportId,
+				helper;
 
-			me.removeAllEditable(e);
+			// элемент под курсором
+			els.target = target.getElement ? target.getElement() : null;
+
+			manager = els.target ? els.target.getManager() : null;
+			viewportId = target.viewportId;
+
+			if (!e.shiftKey)
+			{
+				// восстанавливаем редактируемость всех абзацев
+				me.enableAllEditable(e);
+			}
+			else
+			{
+				range = manager ? manager.getRange() : null;
+
+				if (range && range.collapsed)
+				{
+					// убираем редактируемость начального абзаца
+
+					els.start = range.start.getElement();
+					els.p = me.getParentStyleHolder(els.start);
+					helper = els.p.getNodeHelper();
+					nodes.p = helper.getNode(viewportId);
+					nodes.p.setAttribute('contenteditable', false);
+				}
+			}
+
+			if (e.which === 3)
+			{
+				// запрещаем выделение для правой кнопки мыши
+				e.preventDefault();
+			}
 		},
 
 		/**
-		 * Снимаем редактируемость с абзаца.
+		 * Снимает редактируемость с абзаца.
 		 * @param {Object} e
 		 */
 		outSelection: function (e)
 		{
-			var me = this;
+			var me = this,
+				target = e.target,
+				relatedTarget = e.relatedTarget,
+				els = {},
+				nodes = {},
+				manager,
+				range,
+				viewportId,
+				helper;
 
-			me.removeEditable(e);
+			// элемент, на который перешел курсор мыши
+			els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
+
+			// абзац этого элемента
+			els.p = els.relatedTarget ? me.getParentStyleHolder(els.relatedTarget) : null;
+
+			manager = els.p ? els.p.getManager() : null;
+			range = manager ? manager.getRange() : null;
+			els.start = range && range.start.getElement ? range.start.getElement() : null;
+
+			if (els.p)
+			{
+				els.startP = me.getParentStyleHolder(els.start);
+
+				if (!els.startP ||
+				    els.startP.elementId !== els.p.elementId &&
+				    (!me.pOut || me.pOut.elementId !== els.p.elementId))
+				{
+					//console.log(els.p, me.pOut, els.startP);
+					me.pOut = els.p;
+
+					viewportId = relatedTarget.viewportId;
+
+					// узел абзаца
+					helper = els.p.getNodeHelper();
+					nodes.p = helper.getNode(viewportId);
+
+					// убираем редактируемость абзаца
+					nodes.p.setAttribute('contenteditable', false);
+				}
+			}
 		},
 
 		/**
-		 * Снимаем редактируемость с абзаца.
+		 * Снимает редактируемость с абзаца.
 		 * @param {Object} e
 		 */
 		overSelection: function (e)
 		{
-			var me = this;
+			var me = this,
+				relatedTarget = e.relatedTarget,
+				els = {},
+				nodes = {},
+				manager,
+				range,
+				viewportId,
+				helper;
 
-			me.removeEditable(e);
+			if (e.which === 1 && e.buttons === 1)
+			{
+				// элемент, с которого перешел курсор мыши
+				els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
+
+				// абзац этого элемента
+				els.p = els.relatedTarget ? me.getParentStyleHolder(els.relatedTarget) : null;
+
+				manager = els.p ? els.p.getManager() : null;
+				range = manager ? manager.getRange() : null;
+				els.start = range && range.start.getElement ? range.start.getElement() : null;
+
+				if (els.p)
+				{
+					els.startP = me.getParentStyleHolder(els.start);
+
+					if (!els.startP ||
+					    !me.pOver ||
+					    me.pOver && me.pOver.elementId !== els.p.elementId)
+					{
+						me.pOver = els.p;
+
+						viewportId = relatedTarget.viewportId;
+
+						// узел абзаца
+						helper = els.p.getNodeHelper();
+						nodes.p = helper.getNode(viewportId);
+
+						// убираем редактируемость абзаца
+						nodes.p.setAttribute('contenteditable', false);
+					}
+				}
+			}
 		},
 
 		/**
@@ -102,6 +229,7 @@ Ext.define(
 		 */
 		moveSelection: function (e)
 		{
+			//
 		},
 
 		/**
@@ -128,6 +256,9 @@ Ext.define(
 				// устанавливаем фокус на корневой элемент, чтобы иметь возможность обрабатывать события клавиатуры
 				nodes.root.focus();
 			}
+
+			me.pOver = null;
+			me.pOut = null;
 		},
 
 		/**
@@ -135,7 +266,7 @@ Ext.define(
 		 * Возвращает редактируемость всех абзацев.
 		 * @param {Object} e Событие.
 		 */
-		removeAllEditable: function (e)
+		enableAllEditable: function (e)
 		{
 			var me = this,
 				target = e.target,
@@ -162,41 +293,6 @@ Ext.define(
 							p.setAttribute('contenteditable', true);
 						}
 					);
-				}
-			}
-		},
-
-		/**
-		 * @private
-		 * Убирает редактируемость абзаца.
-		 * @param {Object} e Событие.
-		 */
-		removeEditable: function (e)
-		{
-			var me = this,
-				relatedTarget = e.relatedTarget,
-				els = {},
-				viewportId,
-				node;
-
-			// нажата ли левая кнопка мыши
-			if (e.which === 1 && e.buttons === 1)
-			{
-				// элемент, на который перешел курсор мыши
-				els.relatedTarget = relatedTarget.getElement ? relatedTarget.getElement() : null;
-
-				// абзац этого элемента
-				els.endEl = els.relatedTarget ? me.getParentStyleHolder(els.relatedTarget) : null;
-
-				if (els.endEl)
-				{
-					viewportId = relatedTarget.viewportId;
-
-					// узел абзаца
-					node = els.endEl.nodes[viewportId];
-
-					// убираем редактируемость абзаца
-					node.setAttribute('contenteditable', false);
 				}
 			}
 		},

@@ -13,10 +13,15 @@ Ext.define(
 			'FBEditor.editor.command.a.CreateRangeCommand',
 			'FBEditor.editor.command.a.DeleteWrapperCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.a.AElementController',
+
 		htmlTag: 'a',
 		xmlTag: 'a',
+		cls: 'el-a',
+
 		showedOnTree: false,
+
 		defaultAttributes: {
 			href: 'undefined'
 		},

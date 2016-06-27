@@ -438,6 +438,26 @@ Ext.define(
 		},
 
 		/**
+		 * Восстанавливает позицию курсора, если есть такая возможность.
+		 */
+		restoreCursor: function ()
+		{
+			var me = this,
+				range = me.getRange();
+
+			if (range && range.collapsed)
+			{
+				console.log('range', range);
+				me.setCursor(
+					{
+						startNode: range.start,
+						startOffset: range.offset.start
+					}
+				);
+			}
+		},
+
+		/**
 		 * Возвращает текущий выделенный элемент в редакторе.
 		 * @return {FBEditor.editor.element.AbstractElement}
 		 */

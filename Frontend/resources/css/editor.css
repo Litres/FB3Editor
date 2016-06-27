@@ -2,6 +2,10 @@
 Ситли для редактора текста.
 */
 
+.editor-viewport .el-a {
+	cursor: text;
+}
+
 .main-editor-viewport {
 	font-family: 'Arial Unicode MS';
 	font-size: 150%;
