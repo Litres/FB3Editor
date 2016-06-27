@@ -8,6 +8,14 @@
 	margin: 1px 0 0 0;
 }*/
 
+/* делаем элементы формы невыделяемыми */
+.form-desc {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 .form-desc .x-field {
 	margin: 0 0 15px 0;
 }

@@ -70,10 +70,7 @@ Ext.define(
 		 */
 		startSelection: function (e)
 		{
-			var me = this,
-				target = e.target,
-				els = {},
-				nodes = {};
+			var me = this;
 
 			me.removeAllEditable(e);
 		},

@@ -296,6 +296,10 @@
 	padding: 0;
 	margin: 0;
 	border: none;
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
 }
 
 .form-desc-editor-body .editor-viewport .el-p {
