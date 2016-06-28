@@ -111,7 +111,7 @@ Ext.define(
 					// убираем редактируемость начального абзаца
 
 					els.start = range.start.getElement();
-					els.p = me.getParentStyleHolder(els.start);
+					els.p = els.start.getStyleHolder();
 					helper = els.p.getNodeHelper();
 					nodes.p = helper.getNode(viewportId);
 					nodes.p.setAttribute('contenteditable', false);
@@ -145,7 +145,7 @@ Ext.define(
 			els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
 
 			// абзац этого элемента
-			els.p = els.relatedTarget ? me.getParentStyleHolder(els.relatedTarget) : null;
+			els.p = els.relatedTarget ? els.relatedTarget.getStyleHolder() : null;
 
 			manager = els.p ? els.p.getManager() : null;
 			range = manager ? manager.getRange() : null;
@@ -153,7 +153,7 @@ Ext.define(
 
 			if (els.p)
 			{
-				els.startP = me.getParentStyleHolder(els.start);
+				els.startP = els.start ? els.start.getStyleHolder() : null;
 
 				if (!els.startP ||
 				    els.startP.elementId !== els.p.elementId &&
@@ -195,7 +195,7 @@ Ext.define(
 				els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
 
 				// абзац этого элемента
-				els.p = els.relatedTarget ? me.getParentStyleHolder(els.relatedTarget) : null;
+				els.p = els.relatedTarget ? els.relatedTarget.getStyleHolder() : null;
 
 				manager = els.p ? els.p.getManager() : null;
 				range = manager ? manager.getRange() : null;
@@ -203,7 +203,7 @@ Ext.define(
 
 				if (els.p)
 				{
-					els.startP = me.getParentStyleHolder(els.start);
+					els.startP = els.start ? els.start.getStyleHolder() : null;
 
 					if (!els.startP ||
 					    !me.pOver ||
@@ -295,22 +295,6 @@ Ext.define(
 					);
 				}
 			}
-		},
-
-		/**
-		 * @private
-		 * Возвращает родительский абзац для элемента.
-		 * @param {FBEditor.editor.element.AbstractElement} el Элемент под курсором.
-		 * @return {FBEditor.editor.element.AbstractStyleHolderElement}
-		 */
-		getParentStyleHolder: function (el)
-		{
-			while (el && !el.isStyleHolder)
-			{
-				el = el.parent;
-			}
-
-			return el;
 		}
 	}
 );

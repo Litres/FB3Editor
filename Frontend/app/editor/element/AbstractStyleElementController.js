@@ -21,6 +21,42 @@ Ext.define(
 			el.parent.fireEvent('keyDownCtrlA', e);
 		},
 
+		onKeyDownShiftCtrlHome: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownShiftCtrlHome', e);
+		},
+
+		onKeyDownShiftCtrlEnd: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownShiftCtrlEnd', e);
+		},
+
+		onKeyDownCtrlHome: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownCtrlHome', e);
+		},
+
+		onKeyDownCtrlEnd: function (e)
+		{
+			var me = this,
+				el = me.getElement();
+
+			// передаем событие родительскому элементу
+			el.parent.fireEvent('keyDownCtrlEnd', e);
+		},
+
 		onKeyDownEnter: function (e)
 		{
 			var me = this,

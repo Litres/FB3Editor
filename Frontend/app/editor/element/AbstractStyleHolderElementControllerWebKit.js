@@ -81,6 +81,222 @@ Ext.define(
 			e.preventDefault();
 		},
 
+		onKeyDownShiftCtrlHome: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// выделяем текст от текущей позиции до начала документа
+
+			range = sel.getRangeAt(0);
+
+			if (!range.collapsed)
+			{
+				return false;
+			}
+
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			els.root = els.node.getRoot();
+			els.p = els.node.getStyleHolder();
+
+			manager = els.root.getManager();
+			viewportId = nodes.node.viewportId;
+
+			// начальная точка выделения
+			els.deepFirst = els.root.getDeepFirst();
+			helper = els.deepFirst.getNodeHelper();
+			nodes.deepFirst = helper.getNode(viewportId);
+			els.firstP = els.deepFirst.getStyleHolder();
+
+			if (els.p.elementId !== els.firstP.elementId)
+			{
+				// снимаем редактируемость с текущего и первого абзаца
+
+				helper = els.p.getNodeHelper();
+				nodes.p = helper.getNode(viewportId);
+				nodes.p.setAttribute('contenteditable', false);
+
+				helper = els.firstP.getNodeHelper();
+				nodes.firstP = helper.getNode(viewportId);
+				nodes.firstP.setAttribute('contenteditable', false);
+
+				// выделяем текст
+				manager.setCursor(
+					{
+						startNode: nodes.deepFirst,
+						startOffset: 0,
+						endNode: nodes.node,
+						endOffset: range.endOffset
+					}
+				);
+
+				// прокручиваем скролл в начало документа
+				helper = els.root.getNodeHelper();
+				nodes.root = helper.getNode(viewportId);
+				nodes.root.scrollTop = 0;
+
+				e.preventDefault();
+			}
+		},
+
+		onKeyDownShiftCtrlEnd: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// выделяем текст от текущей позиции до конца документа
+
+			range = sel.getRangeAt(0);
+
+			if (!range.collapsed)
+			{
+				return false;
+			}
+
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			els.root = els.node.getRoot();
+			els.p = els.node.getStyleHolder();
+
+			manager = els.root.getManager();
+			viewportId = nodes.node.viewportId;
+
+			// конечная точка выделения
+			els.deepLast = els.root.getDeepLast();
+			helper = els.deepLast.getNodeHelper();
+			nodes.deepLast = helper.getNode(viewportId);
+			els.endOffset = els.deepLast.isText ? els.deepLast.text.length : 0;
+			els.lastP = els.deepLast.getStyleHolder();
+
+			if (els.p.elementId !== els.lastP.elementId)
+			{
+				// снимаем редактируемость с текущего и последнего абзаца
+
+				helper = els.p.getNodeHelper();
+				nodes.p = helper.getNode(viewportId);
+				nodes.p.setAttribute('contenteditable', false);
+
+				helper = els.lastP.getNodeHelper();
+				nodes.lastP = helper.getNode(viewportId);
+				nodes.lastP.setAttribute('contenteditable', false);
+
+				// выделяем текст
+				manager.setCursor(
+					{
+						startNode: nodes.node,
+						startOffset: range.startOffset,
+						endNode: nodes.deepLast,
+						endOffset: els.endOffset
+					}
+				);
+
+				// прокручиваем скролл в конец документа
+				helper = els.root.getNodeHelper();
+				nodes.root = helper.getNode(viewportId);
+				nodes.root.scrollTop = nodes.root.scrollHeight;
+
+				e.preventDefault();
+			}
+		},
+
+		onKeyDownCtrlHome: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// ставим курсор в начало документа
+
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
+			els.root = els.node.getRoot();
+
+			manager = els.root.getManager();
+			viewportId = nodes.node.viewportId;
+
+			// начальная точка выделения
+			els.deepFirst = els.root.getDeepFirst();
+			helper = els.deepFirst.getNodeHelper();
+			nodes.deepFirst = helper.getNode(viewportId);
+
+			manager.setCursor(
+				{
+					startNode: nodes.deepFirst,
+					startOffset: 0
+				}
+			);
+
+			// прокручиваем скролл в начало документа
+			helper = els.root.getNodeHelper();
+			nodes.root = helper.getNode(viewportId);
+			nodes.root.scrollTop = 0;
+
+			e.preventDefault();
+		},
+
+		onKeyDownCtrlEnd: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// ставим курсор в начало документа
+
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
+			els.root = els.node.getRoot();
+
+			manager = els.root.getManager();
+			viewportId = nodes.node.viewportId;
+
+			// конечная точка выделения
+			els.deepLast = els.root.getDeepLast();
+			helper = els.deepLast.getNodeHelper();
+			nodes.deepLast = helper.getNode(viewportId);
+			els.endOffset = els.deepLast.isText ? els.deepLast.text.length : 0;
+
+			manager.setCursor(
+				{
+					startNode: nodes.deepLast,
+					startOffset: els.endOffset
+				}
+			);
+
+			// прокручиваем скролл в конец документа
+			helper = els.root.getNodeHelper();
+			nodes.root = helper.getNode(viewportId);
+			nodes.root.scrollTop = nodes.root.scrollHeight;
+
+			e.preventDefault();
+		},
+
 		onKeyDownLeft: function (e)
 		{
 			var me = this,

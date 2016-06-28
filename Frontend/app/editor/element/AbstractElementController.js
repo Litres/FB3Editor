@@ -381,6 +381,30 @@ Ext.define(
 
 						return false;
 
+					case Ext.event.Event.HOME:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyDownShiftCtrlHome(e);
+						}
+						else if (e.ctrlKey)
+						{
+							return controller.onKeyDownCtrlHome(e);
+						}
+
+						return false;
+
+					case Ext.event.Event.END:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyDownShiftCtrlEnd(e);
+						}
+						else if (e.ctrlKey)
+						{
+							return controller.onKeyDownCtrlEnd(e);
+						}
+
+						return false;
+
 					default:
 						return controller.onKeyDownDefault(e);
 				}
@@ -501,6 +525,26 @@ Ext.define(
 		},
 
 		onKeyDownCtrlA: function (e)
+		{
+			//
+		},
+
+		onKeyDownShiftCtrlHome: function (e)
+		{
+			//
+		},
+
+		onKeyDownShiftCtrlEnd: function (e)
+		{
+			//
+		},
+
+		onKeyDownCtrlHome: function (e)
+		{
+			//
+		},
+
+		onKeyDownCtrlEnd: function (e)
 		{
 			//
 		},
