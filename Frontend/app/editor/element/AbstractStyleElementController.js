@@ -57,17 +57,6 @@ Ext.define(
 			el.parent.fireEvent('keyDownCtrlEnd', e);
 		},
 
-		onKeyDownEnter: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			e.preventDefault();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownEnter', e);
-		},
-
 		onKeyDownDelete: function (e)
 		{
 			var me = this,

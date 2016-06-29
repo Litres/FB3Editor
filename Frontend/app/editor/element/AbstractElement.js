@@ -195,6 +195,21 @@ Ext.define(
 		},
 
 		/**
+		 * Эквивалентны ли элементы.
+		 * @param {FBEditor.editor.element.AbstractElement} el Сравниваемый элемент.
+		 * @return {Boolean}
+		 */
+		equal: function (el)
+		{
+			var me = this,
+				equal;
+
+			equal = el.elementId === me.elementId;
+
+			return equal;
+		},
+
+		/**
 		 * Добавляет новый дочерний элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
 		 */
@@ -1206,8 +1221,9 @@ Ext.define(
 
 		/**
 		 * Удаляет все пустые текстовые узлы в элементе.
+		 * @param {Boolean} [removeEmptyStyleHolder] Удалять ли абзацы без дочерних элементов.
 		 */
-		removeEmptyText: function ()
+		removeEmptyText: function (removeEmptyStyleHolder)
 		{
 			var me = this,
 				children = me.children,
@@ -1217,7 +1233,9 @@ Ext.define(
 			while (pos < children.length)
 			{
 				child = children[pos];
-				if (child.isText && child.isEmpty())
+
+				if (child.isText && child.isEmpty() ||
+				    removeEmptyStyleHolder && child.isStyleHolder && !child.children.length)
 				{
 					//console.log('remove view', child);
 					me.remove(child);
@@ -1225,7 +1243,7 @@ Ext.define(
 				}
 				else
 				{
-					child.removeEmptyText();
+					child.removeEmptyText(removeEmptyStyleHolder);
 					pos++;
 				}
 			}

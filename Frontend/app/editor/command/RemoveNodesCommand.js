@@ -313,7 +313,6 @@ Ext.define(
 					startOffset: range.offset.start,
 					endOffset: range.offset.end
 				};
-				manager.setSuspendEvent(false);
 
 				data.nodes = nodes;
 
@@ -326,6 +325,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}

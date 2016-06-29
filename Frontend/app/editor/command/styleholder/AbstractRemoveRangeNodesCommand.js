@@ -344,8 +344,6 @@ Ext.define(
 
 			try
 			{
-				manager.suspendEvent = true;
-
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
@@ -493,11 +491,13 @@ Ext.define(
 					{
 						manager.joinNode(nodes.nextCursor);
 					}
+
 					if (nodes.prevCursor)
 					{
 						manager.joinNode(nodes.removed[0]);
 					}
-					els.parent.removeEmptyText();
+
+					els.parent.removeEmptyText(true);
 				}
 
 				els.parent.sync(data.viewportId);
@@ -522,6 +522,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}

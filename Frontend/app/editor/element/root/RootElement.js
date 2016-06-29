@@ -13,11 +13,13 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
 			'FBEditor.editor.element.root.RootElementController',
+			'FBEditor.editor.element.root.RootElementControllerWebkit',
 			'FBEditor.editor.element.root.RootSelection',
 			'FBEditor.editor.element.root.RootSelectionWebKit'
 		],
 
 		controllerClass: 'FBEditor.editor.element.root.RootElementController',
+		controllerClassWebkit: 'FBEditor.editor.element.root.RootElementControllerWebkit',
 		selectionClass: 'FBEditor.editor.element.root.RootSelection',
 
 		xmlTag: 'root',

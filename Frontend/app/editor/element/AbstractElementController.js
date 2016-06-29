@@ -473,9 +473,18 @@ Ext.define(
 
 		onKeyDownEnter: function (e)
 		{
-			e.preventDefault();
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
 
-			return false;
+			range = sel.getRangeAt(0);
+
+			els.node = range.startContainer.getElement();
+			els.p = els.node.getStyleHolder();
+
+			// передаем событие абзацу
+			els.p.fireEvent('keyDownEnter', e);
 		},
 
 		onKeyDownDelete: function (e)
@@ -496,22 +505,54 @@ Ext.define(
 
 		onKeyDownLeft: function (e)
 		{
-			//
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.startContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			els.p.fireEvent('keyDownLeft', e);
 		},
 
 		onKeyDownUp: function (e)
 		{
-			//
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.startContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			els.p.fireEvent('keyDownUp', e);
 		},
 
 		onKeyDownRight: function (e)
 		{
-			//
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.endContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			els.p.fireEvent('keyDownRight', e);
 		},
 
 		onKeyDownDown: function (e)
 		{
-			//
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.endContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			els.p.fireEvent('keyDownDown', e);
 		},
 
 		onKeyDownCtrlZ: function (e)

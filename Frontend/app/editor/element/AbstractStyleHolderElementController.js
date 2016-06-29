@@ -15,6 +15,7 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection(),
 				name = me.getNameElement(),
+				isSame,
 				cmd,
 				range;
 
@@ -22,21 +23,25 @@ Ext.define(
 
 			range = sel.getRangeAt(0);
 
+			// в одном ли абзаце выделение
+			isSame = me.sameStyleHolder();
+
 			if (!range.collapsed)
 			{
 				// удаляем выделенную часть текста
 				me.removeRangeNodes();
 			}
 
-			// разбиваем элемент на два в позиции курсора
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.SplitNodeCommand');
-			if (cmd.execute())
+			if (isSame)
 			{
-				me.getHistory().add(cmd);
+				// разбиваем элемент на два в позиции курсора
+				cmd = Ext.create('FBEditor.editor.command.' + name + '.SplitNodeCommand');
+
+				if (cmd.execute())
+				{
+					me.getHistory().add(cmd);
+				}
 			}
-
-			return false;
-
 		},
 
 		onKeyDownDelete: function (e)
@@ -296,6 +301,31 @@ Ext.define(
 			{
 				me.getHistory().add(cmd);
 			}
+		},
+
+		/**
+		 * @private
+		 * Определяет, находится ли выделение в одном абзаце.
+		 * @return {Boolean}
+		 */
+		sameStyleHolder: function ()
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				isSame,
+				range;
+
+			range = sel.getRangeAt(0);
+
+			els.start = range.startContainer.getElement();
+			els.end = range.endContainer.getElement();
+			els.startP = els.start.getStyleHolder();
+			els.endP = els.end.getStyleHolder();
+
+			isSame = els.startP.equal(els.endP);
+
+			return isSame;
 		},
 
 		/**

@@ -73,7 +73,7 @@ Ext.define(
 
 			if (els.target.isRoot)
 			{
-				// ставим курсор в конец строки самого последнего абзаца
+				// при клике по пустому корневому элементу ставим курсор в конец строки самого последнего абзаца
 
 				manager = els.target.getManager();
 				viewportId = nodes.target.viewportId;

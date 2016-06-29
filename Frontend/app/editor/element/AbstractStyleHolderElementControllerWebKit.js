@@ -303,17 +303,35 @@ Ext.define(
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
+				manager,
 				helper,
 				range,
 				viewportId,
 				isStart;
 
 			range = sel.getRangeAt(0);
-
 			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
-
 			viewportId = nodes.node.viewportId;
+			manager = els.node.getManager();
+
+			me.enableAllEditable();
+
+			if (!range.collapsed)
+			{
+				// оставляем курсор в начальной точке
+
+				manager.setCursor(
+					{
+						startNode: nodes.node,
+						startOffset: range.startOffset
+					}
+				);
+
+				e.preventDefault();
+
+				return;
+			}
 
 			// абзац
 			els.p = els.node.isStyleHolder ? els.node : els.node.getStyleHolder();
@@ -344,18 +362,35 @@ Ext.define(
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
+				manager,
 				helper,
 				range,
 				viewportId,
 				isEnd;
 
 			range = sel.getRangeAt(0);
-
 			nodes.node = range.endContainer;
 			els.node = nodes.node.getElement();
-
 			viewportId = nodes.node.viewportId;
+			manager = els.node.getManager();
 
+			me.enableAllEditable();
+
+			if (!range.collapsed)
+			{
+				// оставляем курсор в конечной точке
+
+				manager.setCursor(
+					{
+						startNode: nodes.node,
+						startOffset: range.endOffset
+					}
+				);
+
+				e.preventDefault();
+
+				return;
+			}
 			// абзац
 			els.p = els.node.isStyleHolder ? els.node : els.node.getStyleHolder();
 			helper = els.p.getNodeHelper();
@@ -390,6 +425,21 @@ Ext.define(
 				curPos;
 
 			range = sel.getRangeAt(0);
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			manager = els.node.getManager();
+
+			me.enableAllEditable();
+
+			if (!range.collapsed)
+			{
+				manager.setCursor(
+					{
+						startNode: nodes.node,
+						startOffset: range.startOffset
+					}
+				);
+			}
 
 			// сохраняем данные курсора
 			me.cursorData = {
@@ -399,11 +449,7 @@ Ext.define(
 				}
 			};
 
-			nodes.node = range.endContainer;
-			els.node = nodes.node.getElement();
-
 			// получаем координаты курсора
-			manager = els.node.getManager();
 			curPos = manager.getCursorPosition();
 
 			// сохраняем координаты курсора
@@ -464,20 +510,31 @@ Ext.define(
 				curPos;
 
 			range = sel.getRangeAt(0);
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
+			manager = els.node.getManager();
+
+			me.enableAllEditable();
+
+			if (!range.collapsed)
+			{
+				manager.setCursor(
+					{
+						startNode: nodes.node,
+						startOffset: range.endOffset
+					}
+				);
+			}
 
 			// сохраняем данные курсора
 			me.cursorData = {
 				range: {
-					startOffset: range.startOffset,
-					startContainer: range.startContainer
+					startOffset: range.endOffset,
+					startContainer: range.endContainer
 				}
 			};
 
-			nodes.node = range.endContainer;
-			els.node = nodes.node.getElement();
-
 			// получаем координаты курсора
-			manager = els.node.getManager();
 			curPos = manager.getCursorPosition();
 
 			// сохраняем координаты курсора
@@ -941,6 +998,26 @@ Ext.define(
 			}
 
 			return els.next;
+		},
+
+		/**
+		 * @private
+		 * Возвращает редактируемость всех абзацев.
+		 */
+		enableAllEditable: function ()
+		{
+			var me = this,
+				nodes = {};
+
+			nodes.pp = document.querySelectorAll('.el-p[contenteditable=false]');
+
+			Ext.Array.each(
+				nodes.pp,
+				function (p)
+				{
+					p.setAttribute('contenteditable', true);
+				}
+			);
 		}
 	}
 );
