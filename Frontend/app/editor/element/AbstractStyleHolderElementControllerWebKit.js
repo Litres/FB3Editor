@@ -297,6 +297,247 @@ Ext.define(
 			e.preventDefault();
 		},
 
+		onKeyDownShiftLeft: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				cursor,
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// увеличиваем выделение на один символ в левую сторону
+
+			range = sel.getRangeAt(0);
+			nodes.node = range.startContainer;
+			viewportId = nodes.node.viewportId;
+			els.node = nodes.node.getElement();
+			els.p = els.node.getStyleHolder();
+			helper = els.p.getNodeHelper();
+			nodes.p = helper.getNode(viewportId);
+			manager = els.node.getManager();
+
+			cursor = {
+				startNode: range.startContainer,
+				startOffset: range.startOffset,
+				endNode: range.endContainer,
+				endOffset: range.endOffset
+			};
+
+			if (range.collapsed)
+			{
+				// выделение регулируется по левой стороне
+				manager.selectionToLeft = true;
+
+				nodes.p.setAttribute('contenteditable', false);
+			}
+
+			if (manager.selectionToLeft)
+			{
+				// регулируем выделение по левой стороне
+
+				if (cursor.startOffset === 0)
+				{
+					// перемещаем начальную точку выделения к предпоследнему символу предыдущего текстового узла
+
+					els.text = null;
+					els.prev = me.getPrevElement(els.node);
+
+					while (!els.text && els.prev)
+					{
+						els.text = els.prev.getDeepLast();
+						els.prev = me.getPrevElement(els.text);
+						els.text = els.text.isText ? els.text : null;
+					}
+
+					if (els.text)
+					{
+						helper = els.text.getNodeHelper();
+						nodes.text = helper.getNode(viewportId);
+
+						cursor.startNode = nodes.text;
+						cursor.startOffset = els.text.getText().length - 1;
+
+						els.prevP = els.text.getStyleHolder();
+
+						if (!els.p.equal(els.prevP))
+						{
+							helper = els.prevP.getNodeHelper();
+							nodes.prevP = helper.getNode(viewportId);
+							nodes.prevP.setAttribute('contenteditable', false);
+						}
+					}
+				}
+				else
+				{
+					cursor.startOffset--;
+				}
+			}
+			else
+			{
+				// регулируем выделение по правой стороне
+
+				if (cursor.endOffset === 0)
+				{
+					// перемещаем конечную точку выделения к предпоследнему символу предыдущего текстового узла
+
+					els.text = null;
+					els.node = cursor.endNode.getElement();
+					els.prev = me.getPrevElement(els.node);
+
+					while (!els.text && els.prev)
+					{
+						els.text = els.prev.getDeepLast();
+						els.prev = me.getPrevElement(els.text);
+						els.text = els.text.isText ? els.text : null;
+					}
+
+					if (els.text)
+					{
+						helper = els.text.getNodeHelper();
+						nodes.text = helper.getNode(viewportId);
+
+						cursor.endNode = nodes.text;
+						cursor.endOffset = els.text.getText().length - 1;
+					}
+				}
+				else
+				{
+					cursor.endOffset--;
+				}
+			}
+
+			manager.setCursor(cursor);
+			e.preventDefault();
+		},
+
+		onKeyDownShiftRight: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				cursor,
+				manager,
+				helper,
+				range,
+				viewportId;
+
+			// увеличиваем выделение на один символ в правую сторону
+
+			range = sel.getRangeAt(0);
+			nodes.node = range.endContainer;
+			viewportId = nodes.node.viewportId;
+			els.node = nodes.node.getElement();
+			els.p = els.node.getStyleHolder();
+			helper = els.p.getNodeHelper();
+			nodes.p = helper.getNode(viewportId);
+			manager = els.node.getManager();
+
+			if (range.collapsed)
+			{
+				// выделение регулируется по правой стороне
+				manager.selectionToLeft = false;
+
+				nodes.p.setAttribute('contenteditable', false);
+			}
+
+			cursor = {
+				startNode: range.startContainer,
+				startOffset: range.startOffset,
+				endNode: range.endContainer,
+				endOffset: range.endOffset
+			};
+
+			if (range.collapsed)
+			{
+				manager.selectionToLeft = false;
+				nodes.p.setAttribute('contenteditable', false);
+			}
+
+			if (!manager.selectionToLeft)
+			{
+				// регулируем выделение по правой стороне
+
+				if (cursor.endOffset === els.node.getText().length)
+				{
+					// перемещаем конечную точку выделения ко второму символу следующего текстового узла
+
+					els.text = null;
+					els.next = me.getNextElement(els.node);
+
+					while (!els.text && els.next)
+					{
+						els.text = els.next.getDeepLast();
+						els.next = me.getNextElement(els.text);
+						els.text = els.text.isText ? els.text : null;
+					}
+
+					if (els.text)
+					{
+						helper = els.text.getNodeHelper();
+						nodes.text = helper.getNode(viewportId);
+
+						cursor.endNode = nodes.text;
+						cursor.endOffset = 1;
+
+						els.nextP = els.text.getStyleHolder();
+
+						if (!els.p.equal(els.nextP))
+						{
+							helper = els.nextP.getNodeHelper();
+							nodes.nextP = helper.getNode(viewportId);
+							nodes.nextP.setAttribute('contenteditable', false);
+						}
+					}
+				}
+				else
+				{
+					cursor.endOffset++;
+				}
+			}
+			else
+			{
+				// регулируем выделение по левой стороне
+
+				els.node = cursor.startNode.getElement();
+
+				if (cursor.startOffset === els.node.getText().length)
+				{
+					// перемещаем начальную точку выделения ко второму символу следующего текстового узла
+
+					els.text = null;
+					els.next = me.getNextElement(els.node);
+
+					while (!els.text && els.next)
+					{
+						els.text = els.next.getDeepLast();
+						els.next = me.getNextElement(els.text);
+						els.text = els.text.isText ? els.text : null;
+					}
+
+					if (els.text)
+					{
+						helper = els.text.getNodeHelper();
+						nodes.text = helper.getNode(viewportId);
+
+						cursor.startNode = nodes.text;
+						cursor.startOffset = 1;
+					}
+				}
+				else
+				{
+					cursor.startOffset++;
+				}
+			}
+
+			manager.setCursor(cursor);
+			e.preventDefault();
+		},
+
 		onKeyDownLeft: function (e)
 		{
 			var me = this,
@@ -315,7 +556,10 @@ Ext.define(
 			viewportId = nodes.node.viewportId;
 			manager = els.node.getManager();
 
-			me.enableAllEditable();
+			if (!e.shiftKey)
+			{
+				me.enableAllEditable();
+			}
 
 			if (!range.collapsed)
 			{
@@ -334,7 +578,7 @@ Ext.define(
 			}
 
 			// абзац
-			els.p = els.node.isStyleHolder ? els.node : els.node.getStyleHolder();
+			els.p = els.node.getStyleHolder();
 			helper = els.p.getNodeHelper();
 			nodes.p = helper.getNode(viewportId);
 

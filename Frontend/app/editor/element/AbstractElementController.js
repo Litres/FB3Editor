@@ -350,12 +350,30 @@ Ext.define(
 						return controller.onKeyDownBackspace(e);
 
 					case Ext.event.Event.LEFT:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyDownShiftCtrlLeft(e);
+						}
+						else if (e.shiftKey)
+						{
+							return controller.onKeyDownShiftLeft(e);
+						}
+
 						return controller.onKeyDownLeft(e);
 
 					case Ext.event.Event.UP:
 						return controller.onKeyDownUp(e);
 
 					case Ext.event.Event.RIGHT:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyDownShiftCtrlRight(e);
+						}
+						else if (e.shiftKey)
+						{
+							return controller.onKeyDownShiftRight(e);
+						}
+
 						return controller.onKeyDownRight(e);
 
 					case Ext.event.Event.DOWN:
@@ -553,6 +571,42 @@ Ext.define(
 			els.node = range.endContainer.getElement();
 			els.p = els.node.getStyleHolder();
 			els.p.fireEvent('keyDownDown', e);
+		},
+
+		onKeyDownShiftCtrlLeft: function (e)
+		{
+			//
+		},
+
+		onKeyDownShiftCtrlRight: function (e)
+		{
+			//
+		},
+
+		onKeyDownShiftLeft: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.startContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			els.p.fireEvent('keyDownShiftLeft', e);
+		},
+
+		onKeyDownShiftRight: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.endContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			els.p.fireEvent('keyDownShiftRight', e);
 		},
 
 		onKeyDownCtrlZ: function (e)
