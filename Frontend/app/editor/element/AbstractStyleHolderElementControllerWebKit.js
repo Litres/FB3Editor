@@ -92,16 +92,11 @@ Ext.define(
 				range,
 				viewportId;
 
-			// выделяем текст от текущей позиции до начала документа
+			// выделяем текст от конечной точки выделения до начала документа
 
 			range = sel.getRangeAt(0);
 
-			if (!range.collapsed)
-			{
-				return false;
-			}
-
-			nodes.node = range.startContainer;
+			nodes.node = range.endContainer;
 			els.node = nodes.node.getElement();
 			els.root = els.node.getRoot();
 			els.p = els.node.getStyleHolder();
@@ -157,22 +152,17 @@ Ext.define(
 				range,
 				viewportId;
 
-			// выделяем текст от текущей позиции до конца документа
+			// выделяем текст от начальной точки выделения до конца документа
+
+			e.preventDefault();
 
 			range = sel.getRangeAt(0);
-
-			if (!range.collapsed)
-			{
-				return false;
-			}
-
 			nodes.node = range.startContainer;
+			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
 			els.root = els.node.getRoot();
 			els.p = els.node.getStyleHolder();
-
 			manager = els.root.getManager();
-			viewportId = nodes.node.viewportId;
 
 			// конечная точка выделения
 			els.deepLast = els.root.getDeepLast();
@@ -202,14 +192,12 @@ Ext.define(
 						endOffset: els.endOffset
 					}
 				);
-
-				// прокручиваем скролл в конец документа
-				helper = els.root.getNodeHelper();
-				nodes.root = helper.getNode(viewportId);
-				nodes.root.scrollTop = nodes.root.scrollHeight;
-
-				e.preventDefault();
 			}
+
+			// прокручиваем скролл в конец документа
+			helper = els.root.getNodeHelper();
+			nodes.root = helper.getNode(viewportId);
+			nodes.root.scrollTop = nodes.root.scrollHeight;
 		},
 
 		onKeyDownCtrlHome: function (e)

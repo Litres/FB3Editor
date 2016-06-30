@@ -12,51 +12,6 @@ Ext.define(
 
 		createFromRange: true,
 
-		onKeyDownCtrlA: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownCtrlA', e);
-		},
-
-		onKeyDownShiftCtrlHome: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownShiftCtrlHome', e);
-		},
-
-		onKeyDownShiftCtrlEnd: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownShiftCtrlEnd', e);
-		},
-
-		onKeyDownCtrlHome: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownCtrlHome', e);
-		},
-
-		onKeyDownCtrlEnd: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownCtrlEnd', e);
-		},
-
 		onKeyDownDelete: function (e)
 		{
 			var me = this,
@@ -77,60 +32,6 @@ Ext.define(
 
 			// передаем событие родительскому элементу
 			el.parent.fireEvent('keyDownBackspace', e);
-		},
-
-		onKeyDownLeft: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownLeft', e);
-		},
-
-		onKeyDownUp: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownUp', e);
-		},
-
-		onKeyDownRight: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownRight', e);
-		},
-
-		onKeyDownDown: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyDownDown', e);
-		},
-
-		onKeyUpUp: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyUpUp', e);
-		},
-
-		onKeyUpDown: function (e)
-		{
-			var me = this,
-				el = me.getElement();
-
-			// передаем событие родительскому элементу
-			el.parent.fireEvent('keyUpDown', e);
 		},
 
 		onPaste: function (e)
