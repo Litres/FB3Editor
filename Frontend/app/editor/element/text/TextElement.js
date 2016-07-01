@@ -26,6 +26,12 @@ Ext.define(
 		isText: true,
 
 		/**
+		 * @private
+		 * @property {Object[]} Координаты каждого символа относительно окна браузера.
+		 */
+		mapCoords: null,
+
+		/**
 		 * @param {String} text Текст.
 		 */
 		constructor: function (text)
@@ -100,7 +106,10 @@ Ext.define(
 		 */
 		setText: function (text)
 		{
-			this.text = text;
+			var me = this;
+			
+			me.text = text;
+			me.clearMapCoords();
 		},
 
 		getText: function ()
@@ -127,6 +136,32 @@ Ext.define(
 		isEmpty: function ()
 		{
 			return this.text ? false : true;
+		},
+
+		/**
+		 * Устанавливает новую карту координат символов.
+		 * @param map {Object[]} Координаты каждого символа относительно окна браузера.
+		 */
+		setMapCoords: function (map)
+		{
+			this.mapCoords = map;
+		},
+
+		/**
+		 * Возвращает карту координат символов.
+		 * @return {Object[]}
+		 */
+		getMapCoords: function ()
+		{
+			return this.mapCoords;
+		},
+
+		/**
+		 * Сбрасывает карту координат символов.
+		 */
+		clearMapCoords: function ()
+		{
+			this.mapCoords = null;
 		}
 	}
 );

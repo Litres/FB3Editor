@@ -54,7 +54,8 @@ Ext.define(
 			drop: 'onDrop',
 			paste: 'onPaste',
 			beforecopy: 'onBeforeCopy',
-			copy: 'onCopy'
+			copy: 'onCopy',
+			scroll: 'onScroll'
 		},
 
 		/**
@@ -1247,6 +1248,21 @@ Ext.define(
 					pos++;
 				}
 			}
+		},
+
+		/**
+		 * Сбрасывает карту координат символов.
+		 */
+		clearMapCoords: function ()
+		{
+			var me = this;
+			
+			me.each(
+				function (child)
+				{
+					child.clearMapCoords();
+				}
+			);
 		},
 
 		/**

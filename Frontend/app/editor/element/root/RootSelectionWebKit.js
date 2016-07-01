@@ -132,14 +132,17 @@ Ext.define(
 		outSelection: function (e)
 		{
 			var me = this,
-				target = e.target,
 				relatedTarget = e.relatedTarget,
 				els = {},
 				nodes = {},
-				manager,
+				sel = window.getSelection(),
 				range,
+				manager,
+				oldRange,
 				viewportId,
 				helper;
+
+			range = sel.rangeCount ? sel.getRangeAt(0) : null;
 
 			// элемент, на который перешел курсор мыши
 			els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
@@ -148,20 +151,23 @@ Ext.define(
 			els.p = els.relatedTarget ? els.relatedTarget.getStyleHolder() : null;
 
 			manager = els.p ? els.p.getManager() : null;
-			range = manager ? manager.getRange() : null;
-			els.start = range && range.start.getElement ? range.start.getElement() : null;
+			oldRange = manager ? manager.getRange() : null;
+			els.start = oldRange && oldRange.start.getElement ? oldRange.start.getElement() : null;
 
-			if (els.p)
+			els.root = els.p ? els.p.getRoot() : null;
+			els.rangeRoot = range && range.startContainer.getElement ?
+			                range.startContainer.getElement().getRoot() : null;
+
+			// выделение должно происходить в одном и том же корневом элементе
+			if (!els.rangeRoot && els.root || els.root && els.rangeRoot.equal(els.root))
 			{
 				els.startP = els.start ? els.start.getStyleHolder() : null;
 
 				if (!els.startP ||
-				    els.startP.elementId !== els.p.elementId &&
-				    (!me.pOut || me.pOut.elementId !== els.p.elementId))
+				    els.startP && !els.startP.equal(els.p) &&
+				    (!me.pOut || !me.pOut.equal(els.p)))
 				{
-					//console.log(els.p, me.pOut, els.startP);
 					me.pOut = els.p;
-
 					viewportId = relatedTarget.viewportId;
 
 					// узел абзаца
@@ -184,13 +190,17 @@ Ext.define(
 				relatedTarget = e.relatedTarget,
 				els = {},
 				nodes = {},
+				sel = window.getSelection(),
 				manager,
 				range,
+				oldRange,
 				viewportId,
 				helper;
 
 			if (e.which === 1 && e.buttons === 1)
 			{
+				range = sel.rangeCount ? sel.getRangeAt(0) : null;
+
 				// элемент, с которого перешел курсор мыши
 				els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
 
@@ -198,19 +208,21 @@ Ext.define(
 				els.p = els.relatedTarget ? els.relatedTarget.getStyleHolder() : null;
 
 				manager = els.p ? els.p.getManager() : null;
-				range = manager ? manager.getRange() : null;
-				els.start = range && range.start.getElement ? range.start.getElement() : null;
+				oldRange = manager ? manager.getRange() : null;
+				els.start = oldRange && oldRange.start.getElement ? oldRange.start.getElement() : null;
 
-				if (els.p)
+				els.root = els.p ? els.p.getRoot() : null;
+				els.rangeRoot = range ? range.startContainer.getElement().getRoot() : null;
+
+				if (els.root && els.rangeRoot.equal(els.root))
 				{
 					els.startP = els.start ? els.start.getStyleHolder() : null;
 
 					if (!els.startP ||
 					    !me.pOver ||
-					    me.pOver && me.pOver.elementId !== els.p.elementId)
+					    me.pOver && !me.pOver.equal(els.p))
 					{
 						me.pOver = els.p;
-
 						viewportId = relatedTarget.viewportId;
 
 						// узел абзаца

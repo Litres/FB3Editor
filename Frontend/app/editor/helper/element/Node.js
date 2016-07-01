@@ -38,7 +38,7 @@ Ext.define(
 
 		/**
 		 * Возвращает координаты симовла с заданным смещением курсора в тексте.
-		 * Координаты относительно окна браузера.
+		 * Координаты отсчитываются относительно окна браузера.
 		 * @param {String} viewportId Айди окна.
 		 * @param {Number} o Смещение курсора в тексте.
 		 * @return {Object}
@@ -52,8 +52,8 @@ Ext.define(
 				el = me.el,
 				node = me.getNode(viewportId),
 				manager = el.getManager(),
-				els = {},
 				nodes = {},
+				map,
 				rect,
 				pos;
 
@@ -61,70 +61,82 @@ Ext.define(
 
 			if (el.isText)
 			{
-				// разбиваем текстовый узел на отдельные символы обернутые в span
+				map = el.getMapCoords();
+				offset = offset > el.getText().length ? el.getText().length : offset;
 
-				offset = offset > el.text.length ? el.text.length : offset;
+				//console.log('map', offset, el, map);
 
-				// временный фрагмент
-				nodes.fragment = document.createDocumentFragment();
-
-				nodes.wrap = document.createElement('span');
-
-				for (var i = 0; i < el.text.length; i++)
+				if (!map)
 				{
-					nodes.span = document.createElement('span');
-					nodes.t = document.createTextNode(el.text[i]);
-					nodes.span.appendChild(nodes.t);
+					// разбиваем текстовый узел на отдельные символы обернутые в span
 
-					if (i === offset)
+					nodes.chars = [];
+
+					// временный фрагмент
+					nodes.fragment = document.createDocumentFragment();
+
+					nodes.wrap = document.createElement('span');
+
+					for (var i = 0; i < el.text.length; i++)
 					{
-						// символ с искомым смещением
-						nodes.cur = nodes.span;
+						nodes.span = document.createElement('span');
+						nodes.t = document.createTextNode(el.text[i]);
+						nodes.span.appendChild(nodes.t);
+						nodes.wrap.appendChild(nodes.span);
+
+						// добавляем символ в список
+						nodes.chars.push(nodes.span);
 					}
 
-					nodes.wrap.appendChild(nodes.span);
-				}
+					nodes.fragment.appendChild(nodes.wrap);
 
-				nodes.fragment.appendChild(nodes.wrap);
+					manager.setSuspendEvent(true);
 
-				manager.setSuspendEvent(true);
+					// вставляем фрагмент в текущее окно редактора
 
-				// вставляем фрагмент в текущее окно редактора
+					nodes.parent = node.parentNode;
+					nodes.parent.insertBefore(nodes.fragment, node);
+					node.nodeValue = '';
 
-				nodes.parent = node.parentNode;
+					// инициализируем карту смещений символов для текстового узла
+					map = [];
 
-				nodes.parent.insertBefore(nodes.fragment, node);
-				node.nodeValue = '';
+					for (i = 0; i < el.text.length; i++)
+					{
+						nodes.cur = nodes.chars[i];
+						rect = nodes.cur.getBoundingClientRect();
+						pos = {
+							x: rect.left,
+							y: rect.top
+						};
 
-				if (offset === el.text.length)
-				{
-					// смещение в конце текстового узла
+						// сохраняем позицию символа в карте смещений
+						map.push(pos);
 
+						// новая карта координат символов
+						el.setMapCoords(map);
+					}
+
+					// смещение последнего символа
 					nodes.cur = nodes.wrap.lastChild;
 					rect = nodes.cur.getBoundingClientRect();
 					pos = {
 						x: rect.right,
 						y: rect.top
 					};
+					map.push(pos);
 
+					// удаляем фрагмент
+					nodes.parent.removeChild(nodes.wrap);
+
+					// восстанавливаем текстовый узел
+					node.nodeValue = el.text;
+
+					manager.setSuspendEvent(false);
 				}
-				else
-				{
-					rect = nodes.cur.getBoundingClientRect();
-					pos = {
-						x: rect.left,
-						y: rect.top
-					};
-				}
 
-				// удаляем фрагмент
-				nodes.parent.removeChild(nodes.wrap);
-
-				// восстанавливаем текстовый узел
-				node.nodeValue = el.text;
-
-				manager.setSuspendEvent(false);
-
+				// координаты символа
+				pos = map[offset];
 			}
 			else
 			{

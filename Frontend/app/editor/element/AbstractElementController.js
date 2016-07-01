@@ -286,15 +286,7 @@ Ext.define(
 
 		onKeyUpUp: function (e)
 		{
-			var me = this,
-				sel = window.getSelection(),
-				els = {},
-				range;
-
-			range = sel.getRangeAt(0);
-			els.node = range.startContainer.getElement();
-			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyUpUp', e);
+			//
 		},
 
 		onKeyUpDown: function (e)
@@ -907,6 +899,11 @@ Ext.define(
 				},
 				10 // задержка необходима для того, чтобы процесс начинался после копирования
 			);
+		},
+
+		onScroll: function (e)
+		{
+			//
 		},
 
 		/**

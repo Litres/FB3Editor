@@ -66,6 +66,12 @@ Ext.define(
 		emptyElement: 'br',
 
 		/**
+		 * @property {Boolean} true - Регулировать ли выделение по левой стороне, false - по правой, null -
+		 * неопределено.
+		 */
+		selectionToLeft: null,
+
+		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста.
 		 */
@@ -1200,7 +1206,7 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает координаты текстового курсора относительно окна браузера.
+		 * Возвращает координаты символа, на котором установлен текстовый курсор, относительно окна браузера.
 		 * @return {Object}
 		 * @return {Number} Object.x
 		 * @return {Number} Object.y
@@ -1225,12 +1231,12 @@ Ext.define(
 			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
 			viewportId = nodes.node.viewportId;
-			helper = els.node.getNodeHelper();
 
-			// получаем координаты символа , находящегося внутри элемента
+			// получаем координаты символа, находящегося внутри элемента
+			helper = els.node.getNodeHelper();
 			pos = helper.getXY(viewportId, range.startOffset);
 
-			// поскольку получение координат приводит к сбросу текущей позиции курсора, необходимо восстановить
+			// поскольку получение координат приводит к сбросу текущей позиции курсора, необходимо восстановить её
 			me.setCursor(
 				{
 					startNode: range.startContainer,

@@ -7,6 +7,6 @@
 Ext.define(
 	'FBEditor.editor.element.root.RootElementControllerWebkit',
 	{
-		extend: 'FBEditor.editor.element.AbstractElementController'
+		extend: 'FBEditor.editor.element.root.RootElementController'
 	}
 );

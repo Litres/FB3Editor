@@ -17,11 +17,6 @@ Ext.define(
 		 */
 		scrollTopBy: 20,
 
-		/**
-		 * @property {Object} Хранит данные текстового курсора.
-		 */
-		cursorData: null,
-
 		onKeyDownCtrlA: function (e)
 		{
 			var me = this,
@@ -652,14 +647,24 @@ Ext.define(
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
+				curData = {},
 				manager,
+				helper,
 				range,
-				curPos;
+				viewportId;
 
 			range = sel.getRangeAt(0);
 			nodes.node = range.startContainer;
+			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
+			els.p = els.node.getStyleHolder();
 			manager = els.node.getManager();
+
+			if (manager.isSuspendEvent())
+			{
+				e.preventDefault();
+				return;
+			}
 
 			me.enableAllEditable();
 
@@ -673,61 +678,28 @@ Ext.define(
 				);
 			}
 
-			// сохраняем данные курсора
-			me.cursorData = {
-				range: {
-					startOffset: range.startOffset,
-					startContainer: range.startContainer
-				}
-			};
-
-			// получаем координаты курсора
-			curPos = manager.getCursorPosition();
-
-			// сохраняем координаты курсора
-			me.cursorData.pos = curPos;
-		},
-
-		onKeyUpUp: function (e)
-		{
-			var me = this,
-				sel = window.getSelection(),
-				nodes = {},
-				els = {},
-				curData = me.cursorData,
-				isFirstRow = false,
-				curPos,
-				manager,
-				range;
-
-			range = sel.getRangeAt(0);
-			range = {
+			// сохраняем данные курсора перед получением координат, так как они сбросятся
+			curData.range = {
 				startOffset: range.startOffset,
 				startContainer: range.startContainer
 			};
 
-			nodes.node = range.startContainer;
-			els.node = nodes.node.getElement();
-
-			els.saveNode = curData.range.startContainer.getElement();
-
 			// получаем координаты курсора
-			manager = els.node.getManager();
-			curPos = manager.getCursorPosition();
+			curData.pos = manager.getCursorPosition();
 
-			if (els.node.isEmpty() ||
-			    range.startOffset === 0 && curPos.x !== curData.pos.x ||
-			    range.startOffset === 0 && curData.range.startOffset === 0 &&
-			    els.node.elementId === els.saveNode.elementId)
-			{
-				// находится ли курсор в первой строке
-				isFirstRow = true;
-			}
+			// получаем координаты первого символа текущего абзаца
+			els.first = els.p.getDeepFirst();
+			helper = els.first.getNodeHelper();
+			curData.pos.first = helper.getXY(viewportId, 0);
 
-			if (isFirstRow)
+			//console.log(curData.pos);
+
+			if (els.node.isEmpty() || curData.pos.y === curData.pos.first.y)
 			{
+				e.preventDefault();
+
 				// перемещаем курсор на одну строку вверх
-				me.cursorToUp();
+				me.cursorToUp(curData);
 			}
 		},
 
@@ -737,14 +709,24 @@ Ext.define(
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
+				curData = {},
 				manager,
+				helper,
 				range,
-				curPos;
+				viewportId;
 
 			range = sel.getRangeAt(0);
 			nodes.node = range.endContainer;
+			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
+			els.p = els.node.getStyleHolder();
 			manager = els.node.getManager();
+
+			if (manager.isSuspendEvent())
+			{
+				e.preventDefault();
+				return;
+			}
 
 			me.enableAllEditable();
 
@@ -758,24 +740,35 @@ Ext.define(
 				);
 			}
 
-			// сохраняем данные курсора
-			me.cursorData = {
-				range: {
-					startOffset: range.endOffset,
-					startContainer: range.endContainer
-				}
+			// сохраняем данные курсора перед получением координат, так как они сбросятся
+			curData.range = {
+				startOffset: range.startOffset,
+				startContainer: range.startContainer
 			};
 
 			// получаем координаты курсора
-			curPos = manager.getCursorPosition();
+			curData.pos = manager.getCursorPosition();
 
-			// сохраняем координаты курсора
-			me.cursorData.pos = curPos;
+			// получаем координаты последнего символа текущего абзаца
+			els.last = els.p.getDeepLast();
+			helper = els.last.getNodeHelper();
+			els.length = els.node.isText ? els.node.getText().length : 0;
+			curData.pos.last = helper.getXY(viewportId, els.length);
+
+			//console.log(curData.pos);
+
+			if (els.node.isEmpty() || curData.pos.y === curData.pos.last.y)
+			{
+				e.preventDefault();
+
+				// перемещаем курсор на одну строку вниз
+				me.cursorToDown(curData);
+			}
 		},
 
 		onKeyUpDown: function (e)
 		{
-			var me = this,
+			/*var me = this,
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
@@ -816,21 +809,20 @@ Ext.define(
 			{
 				// перемещаем курсор на одну строку вниз
 				me.cursorToDown();
-			}
+			}*/
 		},
 
 		/**
 		 * @private
 		 * Перемещает курсор на одну строку вниз.
-		 * @param {Object} e
-		 * @param {Object} n
+		 * @param {Object} data Данные курсора.
 		 */
-		cursorToDown: function (e, n)
+		cursorToDown: function (data)
 		{
 			var me = this,
 				nodes = {},
 				els = {},
-				curData = me.cursorData,
+				curData = data,
 				manager,
 				range,
 				helper,
@@ -841,12 +833,11 @@ Ext.define(
 			range = curData.range;
 			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
-
 			viewportId = nodes.node.viewportId;
 			manager = els.node.getManager();
 
 			// абзац
-			els.p = els.node.isStyleHolder ? els.node : els.node.getStyleHolder();
+			els.p = els.node.getStyleHolder();
 			helper = els.p.getNodeHelper();
 			nodes.p = helper.getNode(viewportId);
 
@@ -882,10 +873,10 @@ Ext.define(
 
 					els.lastDeep = els.next.getDeepLast();
 					helper = els.lastDeep.getNodeHelper();
-					nodes.lastDeep = helper.getNode(viewportId);
+					els.lastLength = els.lastDeep.isText ? els.lastDeep.getText().length : 0;
 
 					// получаем координаты самого последнего символа следующей строки
-					lastPos = helper.getXY(viewportId, 0);
+					lastPos = helper.getXY(viewportId, els.lastLength);
 
 					//console.log(pos, nodes.firstDeep);
 
@@ -911,12 +902,20 @@ Ext.define(
 
 					while (!nodes.elem || !els.elem && !nodes.elem.getTextElement)
 					{
+						// сбрасываем карту координат символов, так как посл епрокрутки она не актуальна
+						els.p.parent.clearMapCoords();
+
 						// прокручиваем скролл, чтобы следующий абзац попал в зону видимости
 						nodes.root.scrollTop += me.scrollTopBy;
 						pos.y -= me.scrollTopBy;
 
 						nodes.elem = document.elementFromPoint(pos.curX, pos.y);
 						els.elem = nodes.elem && nodes.elem.getElement ? nodes.elem.getElement() : null;
+
+						if (pos.y < -100)
+						{
+							throw Error('Ошибка зацикливания. Не удается прокрутить окно вниз.');
+						}
 					}
 
 					if (els.elem && els.elem.isImg)
@@ -974,15 +973,14 @@ Ext.define(
 		/**
 		 * @private
 		 * Перемещает курсор на одну строку вверх.
-		 * @param {Object} e
-		 * @param {Object} n
+		 * @param {Object} data Данные курсора.
 		 */
-		cursorToUp: function (e, n)
+		cursorToUp: function (data)
 		{
 			var me = this,
 				nodes = {},
 				els = {},
-				curData = me.cursorData,
+				curData = data,
 				manager,
 				range,
 				helper,
@@ -992,7 +990,6 @@ Ext.define(
 			range = curData.range;
 			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
-
 			viewportId = nodes.node.viewportId;
 			manager = els.node.getManager();
 
@@ -1029,10 +1026,10 @@ Ext.define(
 				else
 				{
 					// получаем координаты предыдущей строки
-					els.length = nodes.lastDeep.length ? nodes.lastDeep.length : 0;
+					els.length = els.lastDeep.isText ? els.lastDeep.getText().length : 0;
 					pos = helper.getXY(viewportId, els.length);
 
-					//console.log(pos, nodes.lastDeep);
+					//console.log(pos, els.length, els.lastDeep);
 
 					els.root = manager.getContent();
 					helper = els.root.getNodeHelper();
@@ -1052,12 +1049,20 @@ Ext.define(
 
 					while (!nodes.elem || !els.elem && !nodes.elem.getTextElement)
 					{
+						// сбрасываем карту координат символов, так как посл епрокрутки она не актуальна
+						els.p.parent.clearMapCoords();
+
 						// прокручиваем скролл, чтобы предыдущий абзац попал в зону видимости
 						nodes.root.scrollTop -= me.scrollTopBy;
 						pos.y += me.scrollTopBy;
 
 						nodes.elem = document.elementFromPoint(pos.curX, pos.y);
 						els.elem = nodes.elem && nodes.elem.getElement ? nodes.elem.getElement() : null;
+
+						if (pos.y > 10000)
+						{
+							throw Error('Ошибка зацикливания. Не удается прокрутить окно вверх.');
+						}
 					}
 
 					if (els.elem && els.elem.isImg)
