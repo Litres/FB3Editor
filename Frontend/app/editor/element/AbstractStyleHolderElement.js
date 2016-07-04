@@ -10,6 +10,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 
+		cls: 'el-styleholder',
+
 		isStyleHolder: true,
 		isStyleType: true,
 		showedOnTree: false,

@@ -106,7 +106,7 @@ Ext.define(
 						nodes.cur = nodes.chars[i];
 						rect = nodes.cur.getBoundingClientRect();
 						pos = {
-							x: rect.left,
+							x: rect.left + Math.round((rect.right - rect.left) / 2),
 							y: rect.top
 						};
 
@@ -197,6 +197,17 @@ Ext.define(
 					nodes.span.appendChild(nodes.t);
 					nodes.wrap.appendChild(nodes.span);
 				}
+
+				// добавляем пустой замыкающий элемент в конец
+				nodes.span = document.createElement('span');
+				nodes.span.setAttribute('data-offset', i);
+				nodes.span.getTextElement = function ()
+				{
+					return el;
+				};
+				nodes.t = document.createTextNode(' ');
+				nodes.span.appendChild(nodes.t);
+				nodes.wrap.appendChild(nodes.span);
 
 				nodes.fragment.appendChild(nodes.wrap);
 

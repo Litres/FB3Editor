@@ -24,7 +24,7 @@ Ext.define(
 
 		htmlTag: 'subtitle',
 		xmlTag: 'subtitle',
-		cls: 'el-subtitle',
+		cls: 'el-subtitle el-styleholder',
 
 		isSubtitle: true,
 

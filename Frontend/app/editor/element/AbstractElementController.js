@@ -291,15 +291,7 @@ Ext.define(
 
 		onKeyUpDown: function (e)
 		{
-			var me = this,
-				sel = window.getSelection(),
-				els = {},
-				range;
-
-			range = sel.getRangeAt(0);
-			els.node = range.endContainer.getElement();
-			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyUpDown', e);
+			//
 		},
 
 		/**
@@ -370,6 +362,15 @@ Ext.define(
 						return controller.onKeyDownLeft(e);
 
 					case Ext.event.Event.UP:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyDownShiftCtrlUp(e);
+						}
+						else if (e.shiftKey)
+						{
+							return controller.onKeyDownShiftUp(e);
+						}
+
 						return controller.onKeyDownUp(e);
 
 					case Ext.event.Event.RIGHT:
@@ -385,6 +386,15 @@ Ext.define(
 						return controller.onKeyDownRight(e);
 
 					case Ext.event.Event.DOWN:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyDownShiftCtrlDown(e);
+						}
+						else if (e.shiftKey)
+						{
+							return controller.onKeyDownShiftDown(e);
+						}
+
 						return controller.onKeyDownDown(e);
 
 					case Ext.event.Event.Z:
@@ -507,7 +517,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownEnter', e);
+			if (els.p){els.p.fireEvent('keyDownEnter', e);}
 		},
 
 		onKeyDownDelete: function (e)
@@ -536,7 +546,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownLeft', e);
+			if (els.p){els.p.fireEvent('keyDownLeft', e);}
 		},
 
 		onKeyDownUp: function (e)
@@ -549,7 +559,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownUp', e);
+			if (els.p){els.p.fireEvent('keyDownUp', e);}
 		},
 
 		onKeyDownRight: function (e)
@@ -562,7 +572,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.endContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownRight', e);
+			if (els.p){els.p.fireEvent('keyDownRight', e);}
 		},
 
 		onKeyDownDown: function (e)
@@ -575,7 +585,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.endContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownDown', e);
+			if (els.p){els.p.fireEvent('keyDownDown', e);}
 		},
 
 		onKeyDownShiftCtrlLeft: function (e)
@@ -584,6 +594,16 @@ Ext.define(
 		},
 
 		onKeyDownShiftCtrlRight: function (e)
+		{
+			//
+		},
+
+		onKeyDownShiftCtrlUp: function (e)
+		{
+			//
+		},
+
+		onKeyDownShiftCtrlDown: function (e)
 		{
 			//
 		},
@@ -598,7 +618,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownShiftLeft', e);
+			if (els.p){els.p.fireEvent('keyDownShiftLeft', e);}
 		},
 
 		onKeyDownShiftRight: function (e)
@@ -611,7 +631,33 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.endContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownShiftRight', e);
+			if (els.p){els.p.fireEvent('keyDownShiftRight', e);}
+		},
+
+		onKeyDownShiftUp: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.startContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			if (els.p){els.p.fireEvent('keyDownShiftUp', e);}
+		},
+
+		onKeyDownShiftDown: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.endContainer.getElement();
+			els.p = els.node.getStyleHolder();
+			if (els.p){els.p.fireEvent('keyDownShiftDown', e);}
 		},
 
 		onKeyDownCtrlA: function (e)
@@ -624,7 +670,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownCtrlA', e);
+			if (els.p){els.p.fireEvent('keyDownCtrlA', e);}
 		},
 
 		onKeyDownShiftCtrlHome: function (e)
@@ -637,7 +683,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownShiftCtrlHome', e);
+			if (els.p){els.p.fireEvent('keyDownShiftCtrlHome', e);}
 		},
 
 		onKeyDownShiftCtrlEnd: function (e)
@@ -650,7 +696,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.endContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownShiftCtrlEnd', e);
+			if (els.p){els.p.fireEvent('keyDownShiftCtrlEnd', e);}
 		},
 
 		onKeyDownCtrlHome: function (e)
@@ -663,7 +709,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownCtrlHome', e);
+			if (els.p){els.p.fireEvent('keyDownCtrlHome', e);}
 		},
 
 		onKeyDownCtrlEnd: function (e)
@@ -676,7 +722,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			els.p.fireEvent('keyDownCtrlEnd', e);
+			if (els.p){els.p.fireEvent('keyDownCtrlEnd', e);}
 		},
 
 		onKeyDownCtrlZ: function (e)

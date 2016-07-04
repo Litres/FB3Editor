@@ -22,7 +22,7 @@ Ext.define(
 
 		htmlTag: 'p',
 		xmlTag: 'p',
-		cls: 'el-p',
+		cls: 'el-p el-styleholder',
 
 		isP: true,
 

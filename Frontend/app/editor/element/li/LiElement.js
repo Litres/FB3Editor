@@ -22,7 +22,7 @@ Ext.define(
 
 		htmlTag: 'li',
 		xmlTag: 'li',
-		cls: 'el-li',
+		cls: 'el-li el-styleholder',
 
 		isLi: true,
 

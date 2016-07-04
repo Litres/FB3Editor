@@ -72,6 +72,12 @@ Ext.define(
 		selectionToLeft: null,
 
 		/**
+		 * @property {Boolean} true - Регулировать ли выделение по верхней стороне, false - по нижней, null -
+		 * неопределено.
+		 */
+		selectionToUp: null,
+
+		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста.
 		 */
@@ -370,7 +376,7 @@ Ext.define(
 		},
 
 		/**
-		 * Сбрасывает фокус.
+		 * Сбрасывает данные фокуса.
 		 */
 		resetFocus: function ()
 		{
@@ -379,6 +385,8 @@ Ext.define(
 			me.focusElement = null;
 			me.range = null;
 			me.selection = null;
+			me.selectionToLeft = null;
+			me.selectionToUp = null;
 		},
 
 		/**
@@ -453,11 +461,31 @@ Ext.define(
 
 			if (range && range.collapsed)
 			{
-				console.log('range', range);
 				me.setCursor(
 					{
 						startNode: range.start,
 						startOffset: range.offset.start
+					}
+				);
+			}
+		},
+
+		/**
+		 * Восстанавливает выделение, если есть такая возможность.
+		 */
+		restoreSelection: function ()
+		{
+			var me = this,
+				range = me.getRange();
+
+			if (range)
+			{
+				me.setCursor(
+					{
+						startNode: range.start,
+						startOffset: range.offset.start,
+						endNode: range.end,
+						endOffset: range.offset.end
 					}
 				);
 			}
@@ -1207,42 +1235,58 @@ Ext.define(
 
 		/**
 		 * Возвращает координаты символа, на котором установлен текстовый курсор, относительно окна браузера.
+		 * @param {Boolean} [end] Искать ли позицию курсора для конечной точки выделения, иначе - для начальной.
 		 * @return {Object}
 		 * @return {Number} Object.x
 		 * @return {Number} Object.y
 		 */
-		getCursorPosition: function ()
+		getCursorPosition: function (end)
 		{
 			var me = this,
 				sel = window.getSelection(),
 				els = {},
 				nodes = {},
+				cursor,
 				pos,
 				range,
+				saveCursor,
 				helper,
 				viewportId;
 
 			range = sel.getRangeAt(0);
-			range = {
+			saveCursor = {
+				startNode: range.startContainer,
 				startOffset: range.startOffset,
-				startContainer: range.startContainer
+				endNode: range.endContainer,
+				endOffset: range.endOffset
 			};
 
-			nodes.node = range.startContainer;
+			// запомниаем поизицию курсора относительно, которой ищутся координаты
+			if (!end)
+			{
+				cursor = {
+					node: range.startContainer,
+					offset: range.startOffset
+				};
+			}
+			else
+			{
+				cursor = {
+					node: range.endContainer,
+					offset: range.endOffset
+				};
+			}
+
+			nodes.node = cursor.node;
 			els.node = nodes.node.getElement();
 			viewportId = nodes.node.viewportId;
 
 			// получаем координаты символа, находящегося внутри элемента
 			helper = els.node.getNodeHelper();
-			pos = helper.getXY(viewportId, range.startOffset);
+			pos = helper.getXY(viewportId, cursor.offset);
 
 			// поскольку получение координат приводит к сбросу текущей позиции курсора, необходимо восстановить её
-			me.setCursor(
-				{
-					startNode: range.startContainer,
-					startOffset: range.startOffset
-				}
-			);
+			me.setCursor(saveCursor);
 
 			return pos;
 		},

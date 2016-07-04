@@ -101,6 +101,8 @@ Ext.define(
 			{
 				// восстанавливаем редактируемость всех абзацев
 				me.enableAllEditable(e);
+				manager.selectionToLeft = null;
+				manager.selectionToUp = null;
 			}
 			else
 			{
@@ -212,7 +214,8 @@ Ext.define(
 				els.start = oldRange && oldRange.start.getElement ? oldRange.start.getElement() : null;
 
 				els.root = els.p ? els.p.getRoot() : null;
-				els.rangeRoot = range ? range.startContainer.getElement().getRoot() : null;
+				els.rangeRoot = range && range.startContainer.getElement ?
+				                range.startContainer.getElement().getRoot() : null;
 
 				if (els.root && els.rangeRoot.equal(els.root))
 				{
@@ -296,7 +299,7 @@ Ext.define(
 					// возвращаем редактируемость всех абзацев,
 					// у которых она была убрана во время предыдущего выделения
 
-					nodes.pp = document.querySelectorAll('.el-p[contenteditable=false]');
+					nodes.pp = document.querySelectorAll('.el-styleholder[contenteditable=false]');
 
 					Ext.Array.each(
 						nodes.pp,
