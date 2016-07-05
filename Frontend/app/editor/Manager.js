@@ -1254,6 +1254,7 @@ Ext.define(
 				viewportId;
 
 			range = sel.getRangeAt(0);
+			viewportId = range.startContainer.viewportId;
 			saveCursor = {
 				startNode: range.startContainer,
 				startOffset: range.startOffset,
@@ -1271,15 +1272,25 @@ Ext.define(
 			}
 			else
 			{
+				nodes.cursor = range.endContainer;
+				els.cursor = nodes.cursor.getElement();
+
+				if (!els.cursor.isText)
+				{
+					// корректируем конечную точку выделения
+					els.cursor = els.cursor.getDeepFirst();
+					helper = els.cursor.getNodeHelper();
+					nodes.cursor = helper.getNode(viewportId);
+				}
+
 				cursor = {
-					node: range.endContainer,
+					node: nodes.cursor,
 					offset: range.endOffset
 				};
 			}
 
 			nodes.node = cursor.node;
 			els.node = nodes.node.getElement();
-			viewportId = nodes.node.viewportId;
 
 			// получаем координаты символа, находящегося внутри элемента
 			helper = els.node.getNodeHelper();

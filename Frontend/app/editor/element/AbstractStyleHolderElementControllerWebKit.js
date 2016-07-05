@@ -296,10 +296,13 @@ Ext.define(
 
 			range = sel.getRangeAt(0);
 			nodes.node = range.startContainer;
-			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
 			els.p = els.node.getStyleHolder();
+			nodes.end = range.endContainer;
+			els.end = nodes.end.getElement();
+			els.endP = els.end.getStyleHolder();
 			helper = els.p.getNodeHelper();
+			viewportId = nodes.node.viewportId;
 			nodes.p = helper.getNode(viewportId);
 			manager = els.node.getManager();
 
@@ -357,6 +360,13 @@ Ext.define(
 				else
 				{
 					cursor.startOffset--;
+
+					if (els.p.equal(els.endP))
+					{
+						// если выделение находится в одном и том же абзаце,
+						// то восстанавливаем редактируемость всех абзацев
+						me.enableAllEditable();
+					}
 				}
 			}
 			else
@@ -390,6 +400,7 @@ Ext.define(
 				else
 				{
 					cursor.endOffset--;
+
 				}
 
 				els.start = cursor.startNode.getElement();
@@ -422,10 +433,13 @@ Ext.define(
 
 			range = sel.getRangeAt(0);
 			nodes.node = range.endContainer;
-			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
 			els.p = els.node.getStyleHolder();
+			nodes.end = range.endContainer;
+			els.end = nodes.end.getElement();
+			els.endP = els.end.getStyleHolder();
 			helper = els.p.getNodeHelper();
+			viewportId = nodes.node.viewportId;
 			nodes.p = helper.getNode(viewportId);
 			manager = els.node.getManager();
 
@@ -658,12 +672,9 @@ Ext.define(
 			
 			range = sel.getRangeAt(0);
 			nodes.start = range.startContainer;
+			viewportId = nodes.start.viewportId;
 			els.start = nodes.start.getElement();
 			els.startP = els.start.getStyleHolder();
-			nodes.end = range.endContainer;
-			els.end = nodes.end.getElement();
-			els.endP = els.end.getStyleHolder();
-			viewportId = nodes.start.viewportId;
 			manager = els.start.getManager();
 
 			if (manager.isSuspendEvent())
@@ -672,10 +683,14 @@ Ext.define(
 				return;
 			}
 
+			nodes.end = range.endContainer;
+			els.end = nodes.end.getElement();
+			els.endP = els.end.getStyleHolder();
+
 			// сохраняем данные курсора перед получением координат, так как они сбросятся
 			curData.range = {
-				startOffset: range.startOffset,
 				startContainer: range.startContainer,
+				startOffset: range.startOffset,
 				endContainer: range.endContainer,
 				endOffset: range.endOffset
 			};
@@ -705,7 +720,7 @@ Ext.define(
 
 			//console.log(manager.selectionToUp);
 
-			els.node = !manager.selectionToUp ? els.endP : els.startP;
+			els.node = manager.selectionToUp ? els.startP : els.endP;
 			curData.pos = manager.selectionToUp ? curData.start : curData.end;
 			needToDown = curData.pos.y === curData.last.y;
 

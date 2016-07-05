@@ -145,6 +145,8 @@ Ext.define(
 				helper;
 
 			range = sel.rangeCount ? sel.getRangeAt(0) : null;
+			nodes.common = range ? range.commonAncestorContainer : null;
+			els.common = nodes.common && nodes.common.getElement ? nodes.common.getElement() : null;
 
 			// элемент, на который перешел курсор мыши
 			els.relatedTarget = relatedTarget && relatedTarget.getElement ? relatedTarget.getElement() : null;
@@ -161,7 +163,7 @@ Ext.define(
 			                range.startContainer.getElement().getRoot() : null;
 
 			// выделение должно происходить в одном и том же корневом элементе
-			if (!els.rangeRoot && els.root || els.root && els.rangeRoot.equal(els.root))
+			if (!els.rangeRoot && els.root && els.common || els.root && els.rangeRoot && els.rangeRoot.equal(els.root))
 			{
 				els.startP = els.start ? els.start.getStyleHolder() : null;
 

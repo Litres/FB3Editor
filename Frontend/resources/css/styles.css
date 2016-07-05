@@ -2,6 +2,14 @@
 Общие стили приложения.
 */
 
+/* делаем элементы невыделяемыми */
+body {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 .x-boundlist {
 	z-index: 9999999999;
 }

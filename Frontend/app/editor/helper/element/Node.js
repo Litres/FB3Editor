@@ -107,7 +107,9 @@ Ext.define(
 						rect = nodes.cur.getBoundingClientRect();
 						pos = {
 							x: rect.left + Math.round((rect.right - rect.left) / 2),
-							y: rect.top
+							y: rect.top,
+							w: rect.right - rect.left,
+							h: rect.bottom - rect.top
 						};
 
 						// сохраняем позицию символа в карте смещений
@@ -122,7 +124,9 @@ Ext.define(
 					rect = nodes.cur.getBoundingClientRect();
 					pos = {
 						x: rect.right,
-						y: rect.top
+						y: rect.top,
+						w: rect.right - rect.left,
+						h: rect.bottom - rect.top
 					};
 					map.push(pos);
 
@@ -144,7 +148,9 @@ Ext.define(
 				       node.firstChild.getBoundingClientRect() : node.getBoundingClientRect();
 				pos = {
 					x: rect.left,
-					y: rect.top
+					y: rect.top,
+					w: rect.right - rect.left,
+					h: rect.bottom - rect.top
 				}
 			}
 

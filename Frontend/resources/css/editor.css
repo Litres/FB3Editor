@@ -2,6 +2,14 @@
 Ситли для редактора текста.
 */
 
+/* разрешаем выделение в окнах редактора */
+.editor-viewport {
+	-webkit-user-select: auto;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
+}
+
 .editor-viewport .el-a {
 	cursor: text;
 }
