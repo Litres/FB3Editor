@@ -1720,26 +1720,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает редактируемость всех абзацев.
-		 */
-		enableAllEditable: function ()
-		{
-			var me = this,
-				nodes = {};
-
-			nodes.pp = document.querySelectorAll('.el-styleholder[contenteditable=false]');
-
-			Ext.Array.each(
-				nodes.pp,
-				function (p)
-				{
-					p.setAttribute('contenteditable', true);
-				}
-			);
-		},
-
-		/**
-		 * @private
 		 * Убирает редактируемость абзаца.
 		 * @param {Node} node Дочерний узел абзаца.
 		 */

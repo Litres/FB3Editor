@@ -31,6 +31,7 @@ Ext.define(
 		 */
 		isRoot: true,
 
+
 		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста, которому принадлежит элемент.
@@ -44,13 +45,13 @@ Ext.define(
 
 			el = me.callParent(arguments);
 
+			// аттрибут необходим для возможности установить фокус на  корневой элемент при необходимости
+			el.setAttribute('tabindex', 1);
+
 			if (Ext.isWebKit)
 			{
 				// fix скролл WebKit, чтобы не тормозил на больших объёмах текста
 				el.style.opacity = 0.9;
-
-				// аттрибут необходим для возможности установить фокус на  корневой элемент при необходимости
-				el.setAttribute('tabindex', 0);
 			}
 			else
 			{

@@ -92,6 +92,44 @@ Ext.define(
 
 				e.preventDefault();
 			}
+		},
+
+		onFocus: function (e)
+		{
+			var me = this,
+				els = {},
+				nodes = {},
+				relatedTarget = e.relatedTarget,
+				manager,
+				helper,
+				viewportId;
+
+			els.root = me.getElement();
+			manager = els.root.getManager();
+
+			if (relatedTarget &&
+			    (!relatedTarget.getElement || !relatedTarget.getElement().getRoot().equal(els.root)))
+			{
+				// ставим курсор в начало документа если фокус пришел с другого компонента
+
+				me.enableAllEditable();
+
+				els.deepFirst = els.root.getDeepFirst();
+				helper = els.deepFirst.getNodeHelper();
+				viewportId = e.target.viewportId;
+				nodes.deepFirst = helper.getNode(viewportId);
+
+				manager.setCursor(
+					{
+						startNode: nodes.deepFirst
+					}
+				);
+
+				// прокручиваем скролл в начало документа
+				helper = els.root.getNodeHelper();
+				nodes.root = helper.getNode(viewportId);
+				nodes.root.scrollTop = 0;
+			}
 		}
 	}
 );
