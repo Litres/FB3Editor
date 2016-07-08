@@ -546,7 +546,11 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			if (els.p && !me.getElement().equal(els.p)){els.p.fireEvent('keyDownLeft', e);}
+			
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownLeft', e);
+			}
 		},
 
 		onKeyDownUp: function (e)
@@ -590,12 +594,36 @@ Ext.define(
 
 		onKeyDownShiftCtrlLeft: function (e)
 		{
-			//
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.endContainer.getElement();
+			els.p = els.node.getStyleHolder();
+
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownShiftCtrlLeft', e);
+			}
 		},
 
 		onKeyDownShiftCtrlRight: function (e)
 		{
-			//
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				range;
+
+			range = sel.getRangeAt(0);
+			els.node = range.endContainer.getElement();
+			els.p = els.node.getStyleHolder();
+
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownShiftCtrlRight', e);
+			}
 		},
 
 		onKeyDownShiftCtrlUp: function (e)
@@ -618,7 +646,11 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			if (els.p && !me.getElement().equal(els.p)){els.p.fireEvent('keyDownShiftLeft', e);}
+			
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownShiftLeft', e);
+			}
 		},
 
 		onKeyDownShiftRight: function (e)
@@ -631,7 +663,11 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.endContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			if (els.p && !me.getElement().equal(els.p)){els.p.fireEvent('keyDownShiftRight', e);}
+			
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownShiftRight', e);
+			}
 		},
 
 		onKeyDownShiftUp: function (e)
@@ -644,7 +680,11 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			if (els.p && !me.getElement().equal(els.p)){els.p.fireEvent('keyDownShiftUp', e);}
+			
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownShiftUp', e);
+			}
 		},
 
 		onKeyDownShiftDown: function (e)

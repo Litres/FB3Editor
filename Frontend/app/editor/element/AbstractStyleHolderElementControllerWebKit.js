@@ -280,6 +280,184 @@ Ext.define(
 			e.preventDefault();
 		},
 
+		onKeyDownShiftCtrlLeft: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId,
+				isStart,
+				needToStart;
+
+			range = sel.getRangeAt(0);
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			viewportId = nodes.node.viewportId;
+			manager = els.node.getManager();
+
+			// находится ли начальная точка выделения в начале абзаца
+			isStart = me.isStart();
+
+			els.p = els.node.getStyleHolder();
+			els.deepFirst = els.p.getDeepFirst();
+			els.prev = me.getPrevElement(els.p);
+			els.deepLast = els.prev ? els.prev.getDeepLast() : null;
+
+			if (isStart && els.deepLast)
+			{
+				// делаем текущий и предыдущий абзацы нередактируемыми для возможности выделения
+
+				helper = els.deepLast.getNodeHelper();
+				nodes.deepLast = helper.getNode(viewportId);
+
+				me.disableEditable(nodes.deepLast);
+				me.disableEditable(nodes.node);
+
+				if (range.collapsed)
+				{
+					// переносим начальную точку выделения в конец предыдущего абзаца
+
+					els.lastLength = els.deepLast.isText ? els.deepLast.getText().length : 0;
+
+					manager.setCursor(
+						{
+							startNode: nodes.deepLast,
+							startOffset: els.lastLength,
+							endNode: range.endContainer,
+							endOffset: range.endOffset
+						}
+					);
+				}
+			}
+			else
+			{
+				// проверяем нужно ли корректировать выделение, перенося конечную точку в начало абзаца
+
+				needToStart = false;
+				els.nodePrev = me.getPrevElement(els.node);
+
+				if (els.deepFirst.equal(els.node))
+				{
+					els.firstText = els.node.getText().substr(0, range.startOffset);
+					needToStart = !/ /.test(els.firstText) && /^[^\wа-яА-Я]+/i.test(els.firstText)
+				}
+				else if (els.nodePrev)
+				{
+					els.nodePrevFirst = els.nodePrev.getDeepLast();
+					needToStart = els.nodePrevFirst.equal(els.deepFirst) && /^[^\wа-яА-Я]+/i.test(els.nodePrev.getText());
+				}
+
+				//console.log(needToStart, els.firstText);
+
+				if (needToStart)
+				{
+					helper = els.deepFirst.getNodeHelper();
+					nodes.deepFirst = helper.getNode(viewportId);
+
+					manager.setCursor(
+						{
+							startNode: range.endContainer,
+							startOffset: range.endOffset,
+							endNode: nodes.deepFirst,
+							endOffset: 0
+						}
+					);
+				}
+			}
+		},
+
+		onKeyDownShiftCtrlRight: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				manager,
+				helper,
+				range,
+				viewportId,
+				isEnd,
+				needToEnd;
+
+			range = sel.getRangeAt(0);
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
+			viewportId = nodes.node.viewportId;
+			manager = els.node.getManager();
+
+			els.p = els.node.getStyleHolder();
+			els.deepLast = els.p.getDeepLast();
+			els.next = me.getNextElement(els.p);
+			els.deepFirst = els.next ? els.next.getDeepFirst() : null;
+
+			// находится ли конечная точка выделения в конце абзаца
+			isEnd = me.isEnd();
+
+			if (isEnd && els.deepFirst)
+			{
+				helper = els.deepFirst.getNodeHelper();
+				nodes.deepFirst = helper.getNode(viewportId);
+
+				// делаем текущий и следующий абзацы нередактируемыми для возможности выделения
+				me.disableEditable(nodes.deepFirst);
+				me.disableEditable(nodes.node);
+
+				if (range.collapsed)
+				{
+					// переносим конечную точку выделения в начало следующего абзаца
+					manager.setCursor(
+						{
+							startNode: range.startContainer,
+							startOffset: range.startOffset,
+							endNode: nodes.deepFirst,
+							endOffset: 0
+						}
+					);
+				}
+			}
+			else
+			{
+				// проверяем нужно ли корректировать выделение, перенося конечную точку в конец абзаца
+
+				needToEnd = false;
+				els.nodeNext = me.getNextElement(els.node);
+
+				if (els.deepLast.equal(els.node))
+				{
+					els.lastText = els.node.getText().substr(range.endOffset);
+					els.lastText = els.lastText.replace(/^ /, '');
+					needToEnd = !/ /.test(els.lastText) && /[^\wа-яА-Я]+$/i.test(els.lastText)
+				}
+				else if (els.nodeNext)
+				{
+					els.nodeNextLast = els.nodeNext.getDeepLast();
+					needToEnd = els.nodeNextLast.equal(els.deepLast) && /[^\wа-яА-Я]+$/i.test(els.nodeNext.getText());
+				}
+
+				//console.log(needToEnd, els.lastText, els);
+
+				if (needToEnd)
+				{
+					helper = els.deepLast.getNodeHelper();
+					nodes.deepLast = helper.getNode(viewportId);
+					els.lastLength = els.deepLast.getText().length;
+
+					manager.setCursor(
+						{
+							startNode: range.startContainer,
+							startOffset: range.startOffset,
+							endNode: nodes.deepLast,
+							endOffset: els.lastLength
+						}
+					);
+				}
+			}
+		},
+
 		onKeyDownShiftLeft: function (e)
 		{
 			var me = this,
@@ -769,15 +947,12 @@ Ext.define(
 				nodes = {},
 				els = {},
 				manager,
-				helper,
 				range,
-				viewportId,
 				isStart;
 
 			range = sel.getRangeAt(0);
 			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
-			viewportId = nodes.node.viewportId;
 			manager = els.node.getManager();
 
 			me.enableAllEditable();
@@ -800,26 +975,13 @@ Ext.define(
 				return;
 			}
 
-			// абзац
-			els.p = els.node.getStyleHolder();
-			helper = els.p.getNodeHelper();
-			nodes.p = helper.getNode(viewportId);
-
-			// самый первый вложенный элемент абзаца
-			els.deepFirst = els.p.getDeepFirst();
-			helper = els.deepFirst.getNodeHelper();
-			nodes.deepFirst = helper.getNode(viewportId);
-
 			// находится ли курсор в начале абзаца
-			isStart = els.node.isEmpty() ||
-			          els.node.isImg && !els.node.prev() ||
-			          els.node.isStyleHolder && els.node.children.length === 1 && els.node.first().isImg ||
-			          range.startOffset === 0 && els.deepFirst.elementId === els.node.elementId;
+			isStart = me.isStart();
 
 			if (isStart)
 			{
 				// перемещаем курсор в конец предыдущего абзаца
-				me.cursorToLeft(e, els, nodes);
+				me.cursorToLeft(e);
 			}
 		},
 
@@ -830,15 +992,12 @@ Ext.define(
 				nodes = {},
 				els = {},
 				manager,
-				helper,
 				range,
-				viewportId,
 				isEnd;
 
 			range = sel.getRangeAt(0);
 			nodes.node = range.endContainer;
 			els.node = nodes.node.getElement();
-			viewportId = nodes.node.viewportId;
 			manager = els.node.getManager();
 
 			me.enableAllEditable();
@@ -860,26 +1019,14 @@ Ext.define(
 
 				return;
 			}
-			// абзац
-			els.p = els.node.isStyleHolder ? els.node : els.node.getStyleHolder();
-			helper = els.p.getNodeHelper();
-			nodes.p = helper.getNode(viewportId);
-
-			// самый последний вложенный элемент абзаца
-			els.deepLast = els.p.getDeepLast();
-			helper = els.deepLast.getNodeHelper();
-			nodes.deepLast = helper.getNode(viewportId);
 
 			// находится ли курсор в конце абзаца
-			isEnd = els.node.isEmpty() ||
-			        els.node.isImg && !els.node.next() ||
-			        els.node.isStyleHolder && els.node.children.length === 1 && els.node.first().isImg ||
-			        range.endOffset === nodes.node.length && els.deepLast.elementId === els.node.elementId;
+			isEnd = me.isEnd();
 
 			if (isEnd)
 			{
 				// перемещаем курсор в начало следующего абзаца
-				me.cursorToRight(e, els, nodes);
+				me.cursorToRight(e);
 			}
 		},
 
@@ -1014,6 +1161,72 @@ Ext.define(
 				// перемещаем курсор на одну строку вниз
 				me.cursorToDown(curData);
 			}
+		},
+
+		/**
+		 * @private
+		 * Определяет находится ли начальная точка выделения в начале абзаца.
+		 * @return {Boolean}
+		 */
+		isStart: function ()
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				range,
+				isStart;
+
+			range = sel.getRangeAt(0);
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+
+			// абзац
+			els.p = els.node.getStyleHolder();
+
+			// самый первый вложенный элемент абзаца
+			els.deepFirst = els.p.getDeepFirst();
+
+			// находится ли курсор в начале абзаца
+			isStart = els.node.isEmpty() ||
+			          els.node.isImg && !els.node.prev() ||
+			          els.node.isStyleHolder && els.node.children.length === 1 && els.node.first().isImg ||
+			          range.startOffset === 0 && els.deepFirst.elementId === els.node.elementId;
+
+			return isStart;
+		},
+
+		/**
+		 * @private
+		 * Определяет находится ли конечная точка выделения в конце абзаца.
+		 * @return {Boolean}
+		 */
+		isEnd: function ()
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				range,
+				isEnd;
+
+			range = sel.getRangeAt(0);
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
+
+			// абзац
+			els.p = els.node.getStyleHolder();
+
+			// самый последний вложенный элемент абзаца
+			els.deepLast = els.p.getDeepLast();
+
+			// находится ли курсор в конце абзаца
+			isEnd = els.node.isEmpty() ||
+			        els.node.isImg && !els.node.next() ||
+			        els.node.isStyleHolder && els.node.children.length === 1 && els.node.first().isImg ||
+			        range.endOffset === nodes.node.length && els.deepLast.elementId === els.node.elementId;
+
+			return isEnd;
 		},
 
 		/**
@@ -1257,21 +1470,27 @@ Ext.define(
 		/**
 		 * @private
 		 * Перемещает курсор в конец предыдущего абзаца.
-		 * @param {Object} evt
-		 * @param {Object} e
-		 * @param {Object} n
+		 * @param {Object} e Объект события.
 		 */
-		cursorToLeft: function (evt, e, n)
+		cursorToLeft: function (e)
 		{
 			var me = this,
-				nodes = n,
-				els = e,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
 				manager,
 				helper,
+				range,
 				viewportId;
 
-			manager = els.node.getManager();
+			range = sel.getRangeAt(0);
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
 			viewportId = nodes.node.viewportId;
+			manager = els.node.getManager();
+
+			// абзац
+			els.p = els.node.getStyleHolder();
 
 			// ищем предыдущий элемент
 			els.prev = me.getPrevElement(els.p);
@@ -1291,28 +1510,33 @@ Ext.define(
 					}
 				);
 
-				evt.preventDefault();
+				e.preventDefault();
 			}
 		},
 
 		/**
 		 * @private
 		 * Перемещает курсор в начало следующего абзаца.
-		 * @param {Object} evt
-		 * @param {Object} e
-		 * @param {Object} n
+		 * @param {Object} e Объект события.
 		 */
-		cursorToRight: function (evt, e, n)
+		cursorToRight: function (e)
 		{
 			var me = this,
-				nodes = n,
-				els = e,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
 				manager,
 				helper,
+				range,
 				viewportId;
 
-			manager = els.node.getManager();
+			range = sel.getRangeAt(0);
+			nodes.node = range.endContainer;
+			els.node = nodes.node.getElement();
 			viewportId = nodes.node.viewportId;
+			manager = els.node.getManager();
+
+			els.p = els.node.getStyleHolder();
 
 			// ищем следующий абзац
 			els.next = me.getNextElement(els.p);
@@ -1331,7 +1555,7 @@ Ext.define(
 					}
 				);
 
-				evt.preventDefault();
+				e.preventDefault();
 			}
 		},
 
@@ -1721,7 +1945,7 @@ Ext.define(
 		/**
 		 * @private
 		 * Убирает редактируемость абзаца.
-		 * @param {Node} node Дочерний узел абзаца.
+		 * @param {Node} node Дочерний узел абзаца или сам абзац.
 		 */
 		disableEditable: function (node)
 		{
