@@ -22,16 +22,17 @@ Ext.define(
 
 		items: [
 			{
+				xtype: 'panel-empty'
+			},
+			{
 				xtype: 'form-desc'
 			},
+			
 			{
 				xtype: 'panel-resources'
 			},
 			{
 				xtype: 'main-editor'
-			},
-			{
-				xtype: 'panel-empty'
 			}
 		],
 
@@ -42,7 +43,8 @@ Ext.define(
 			contentResources: 'onContentResources',
 			contentEmpty: 'onContentEmpty'
 		},
-
+		
+		activeItem: 'form-desc',
 		panelName: 'content',
 		region: 'center',
 		collapsible: false,
@@ -51,7 +53,6 @@ Ext.define(
 		overflowX: true,
 		margin: '0 2px 0 2px',
 		bodyPadding: 0,
-		//activeItem: 'main-editor',
 
 		/**
 		 * @private
@@ -74,13 +75,22 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				mainEditor;
+				mainEditor,
+				editorManager;
 
 			// панель редактор текста
 			mainEditor = me.getMainEditor();
 
 			//  создаем корневой элемент редактора текста книги
 			mainEditor.createRootElement();
+
+			editorManager = mainEditor.getManager();
+
+			if (editorManager.isLoadUrl())
+			{
+				// показываем редактор тела книги
+				me.setActiveItem('main-editor');
+			}
 
 			me.callParent(arguments);
 		},

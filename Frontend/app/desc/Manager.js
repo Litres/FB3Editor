@@ -89,18 +89,17 @@ Ext.define(
 
 			if (me.isLoadUrl())
 			{
-				me.loadFromUrl(me.loadUrl);
+				//me.loadFromUrl();
 			}
 		},
 
 		/**
 		 * Загружает описание из url.
 		 */
-		loadFromUrl: function (url)
+		loadFromUrl: function ()
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeProps(),
-				btn;
+				url = me.loadUrl;
 
 			// загружена ли пустая панель
 			if (!Ext.getCmp('panel-empty') || !Ext.getCmp('panel-empty').rendered)
@@ -108,24 +107,15 @@ Ext.define(
 				Ext.defer(
 					function ()
 					{
-						me.loadFromUrl(url);
+						me.loadFromUrl();
 					},
 					500
 				);
+				
+				return;
 			}
 
-			me.loadUrl = url;
 			Ext.log({level: 'info', msg: 'Загрузка описания из ' + url});
-
-			try
-			{
-				btn = bridge.Ext.getCmp('button-desc-load');
-				btn.disable();
-			}
-			catch (e)
-			{
-				// кнопка загрузки пока еще не рендерилась
-			}
 
 			Ext.Ajax.request(
 				{
@@ -134,12 +124,7 @@ Ext.define(
 					{
 						var xml,
 							msg;
-
-						if (btn)
-						{
-							btn.enable();
-						}
-
+						
 						try
 						{
 							if (response && response.responseText)
@@ -171,8 +156,6 @@ Ext.define(
 					{
 						var xml,
 							msg;
-
-						btn.enable();
 
 						try
 						{
@@ -414,9 +397,7 @@ Ext.define(
 				form = Ext.getCmp('form-desc'),
 				editorNames = me.getEditorNames(),
 				desc,
-				delay,
-				annotation,
-				preamble;
+				delay;
 
 			try
 			{
@@ -432,12 +413,7 @@ Ext.define(
 				me.fb3DescId = desc._id;
 				desc.xml = xml;
 
-				// преобразуем данные для полей на основе htmleditor
 				xml = xml.replace(/[\n\r\t]/g, '');
-				annotation = xml.match(/<annotation>(.*?)<\/annotation>/);
-				desc.annotation = annotation ? annotation[1] : '';
-				preamble = xml.match(/<preamble>(.*?)<\/preamble>/);
-				desc.preamble = preamble ? preamble[1] : '';
 				//console.log('desc', desc);
 
 				// конвертируем данные для формы

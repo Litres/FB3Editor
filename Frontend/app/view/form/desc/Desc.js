@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
+			'FBEditor.desc.Manager',
 			'FBEditor.ux.FieldCleaner',
 			'FBEditor.ux.FieldContainerReplicator',
 			'FBEditor.ux.SearchField',
@@ -40,15 +41,11 @@ Ext.define(
 			'FBEditor.view.form.desc.fieldset.Sequence',
 			'FBEditor.view.form.desc.fieldset.Title'
 		],
+
 		id: 'form-desc',
 		xtype: 'form-desc',
 		controller: 'form.desc',
-		autoScroll: true,
-		layout: {
-			type: 'anchor'
-		},
-		//minWidth: 730,
-		bodyPadding: 0,
+		
 		cls: 'form-desc',
 
 		listeners: {
@@ -59,6 +56,13 @@ Ext.define(
 			resize: 'onResize',
 			startScroll: 'onStartScroll'
 		},
+
+		autoScroll: true,
+		layout: {
+			type: 'anchor'
+		},
+		//minWidth: 730,
+		bodyPadding: 0,
 
 		/**
 		 * @private
@@ -92,7 +96,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				manager = FBEditor.desc.Manager;
 
 			// регистрируем управление скролом
 			Ext.create('FBEditor.scroll.Scroll', me);
@@ -136,12 +141,16 @@ Ext.define(
 				}
 			];
 
+			// инициализируем менеджер описания
+			manager.init();
+
 			me.callParent(arguments);
 		},
 
 		afterRender: function ()
 		{
 			var me = this,
+				manager = FBEditor.desc.Manager,
 				innerCt;
 
 			if (Ext.browser.is.WebKit)
@@ -149,6 +158,12 @@ Ext.define(
 				// иправляем баг с тормозным скролом
 				innerCt = me.body.down('.x-autocontainer-innerCt');
 				innerCt.setStyle('opacity', '0.99');
+			}
+
+			if (manager.isLoadUrl())
+			{
+				// загружаем описание из url
+				manager.loadFromUrl();
 			}
 
 			me.callParent(arguments);

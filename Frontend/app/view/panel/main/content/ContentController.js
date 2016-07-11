@@ -94,9 +94,14 @@ Ext.define(
 
 			// блокируем кнопки форматирования
 			toolbar = toolstab.getActiveToolbar();
-			editor = toolbar.getEditor();
-			manager = editor.getManager();
-			manager.disableButtons();
+
+			if (toolbar)
+			{
+				editor = toolbar.getEditor();
+				manager = editor.getManager();
+				manager.disableButtons();
+			}
+
 		},
 
 		/**

@@ -38,6 +38,12 @@ Ext.define(
 
 				manager = editor.getManager();
 
+				if (manager.isLoadUrl())
+				{
+					// загружаем описание с хаба
+					manager.loadFromUrl();
+				}
+
 				// обновляем дерево навигации по тексту
 				manager.updateTree();
 			}

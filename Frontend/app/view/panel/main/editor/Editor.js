@@ -81,7 +81,7 @@ Ext.define(
 			);
 
 			me.viewports.north = north;
-			me.add(north);
+			me.add(north)
 		},
 
 		createToolbar: function ()

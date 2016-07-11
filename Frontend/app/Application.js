@@ -49,7 +49,6 @@ Ext.define(
 	    name: 'FBEditor',
 		requires: [
 			'FBEditor.command.HistoryCommand',
-			'FBEditor.desc.Manager',
 			'FBEditor.file.Manager',
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
@@ -180,9 +179,6 @@ Ext.define(
 			// роуты
 			FBEditor.route.Manager.init();
 
-			// менеджер редактора описания
-			FBEditor.desc.Manager.init();
-
 			// определяем доступность хаба
 			me.getAccessHub();
 		},
@@ -193,10 +189,6 @@ Ext.define(
 		    {
 			    // убираем отсоединенную панель из главного окна
 			    FBEditor.parentWindow.Ext.getCmp('main').removeDetachedPanel(window);
-		    }
-		    else
-		    {
-			    FBEditor.desc.Manager.launch();
 		    }
 
 		    // удаляем информационную заставку
