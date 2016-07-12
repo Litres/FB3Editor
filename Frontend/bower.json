@@ -29,6 +29,7 @@
     "jsxml": "DrakeES/jsxml#~0.4.1",
     "x2js": "~1.1.7",
     "Blob.js": "eligrey/Blob.js",
-    "xmllint": "http://syssgx.github.com/xml.js/js/xmllint.js"
+    "xmllint": "http://syssgx.github.com/xml.js/js/xmllint.js",
+    "jsdiff": "^2.2.2"
   }
 }
