@@ -71,6 +71,7 @@ Ext.define(
 			{
 				result = false;
 			}
+			
 			fileReader.onload = opts.load ?
 			                    function ()
 			                    {

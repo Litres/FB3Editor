@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.view.EditorController',
 		alias: 'controller.view.main.editor',
 
-		onLoadData: function (rootElement)
+		onLoadData: function ()
 		{
 			var me = this,
 				view = me.getView(),

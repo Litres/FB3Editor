@@ -27,12 +27,21 @@ Ext.define(
 		 */
 		onAccessHub: function ()
 		{
-			var desc = Ext.getCmp('form-desc');
+			var cmpArr = [
+					Ext.getCmp('form-desc'),
+					Ext.getCmp('panel-toolstab-file-button-savebody')
+				];
 
-			if (desc)
-			{
-				desc.fireEvent('accessHub');
-			}
+			Ext.Array.each(
+				cmpArr,
+				function (cmp)
+				{
+					if (cmp)
+					{
+						cmp.fireEvent('accessHub');
+					}
+				}
+			);
 		},
 
 		/**

@@ -11,7 +11,8 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.toolstab.file.button.open.Open',
 			'FBEditor.view.panel.toolstab.file.button.saveas.SaveAs',
-			'FBEditor.view.panel.toolstab.file.button.savedesc.SaveDesc'
+			'FBEditor.view.panel.toolstab.file.button.savedesc.SaveDesc',
+			'FBEditor.view.panel.toolstab.file.button.savebody.SaveBody'
 		],
 		id:'panel-toolstab-file',
 		xtype: 'panel-toolstab-file',
@@ -30,6 +31,9 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-file-button-savedesc'
+				},
+				{
+					xtype: 'panel-toolstab-file-button-savebody'
 				}
 			];
 			me.callParent(arguments);

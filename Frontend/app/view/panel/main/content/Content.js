@@ -27,7 +27,6 @@ Ext.define(
 			{
 				xtype: 'form-desc'
 			},
-			
 			{
 				xtype: 'panel-resources'
 			},
@@ -86,13 +85,13 @@ Ext.define(
 
 			editorManager = mainEditor.getManager();
 
+			me.callParent(arguments);
+
 			if (editorManager.isLoadUrl())
 			{
 				// показываем редактор тела книги
 				me.fireEvent('contentBody');
 			}
-
-			me.callParent(arguments);
 		},
 
 		/**

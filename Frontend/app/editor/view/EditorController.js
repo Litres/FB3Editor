@@ -12,9 +12,8 @@ Ext.define(
 
 		/**
 		 * Загружает корневой элемент в редактор.
-		 * @param {FBEditor.editor.element.root.RootElement} rootElement Корневой элемент.
 		 */
-		onLoadData: function (rootElement)
+		onLoadData: function ()
 		{
 			var me = this,
 				view = me.getView(),

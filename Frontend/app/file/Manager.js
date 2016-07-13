@@ -47,6 +47,7 @@ Ext.define(
 						{
 							var resourceManager = FBEditor.resource.Manager,
 								descManager = FBEditor.desc.Manager,
+								content = Ext.getCmp('panel-main-content'),
 								bodyEditor,
 								bodyManager,
 								structure,
@@ -62,8 +63,6 @@ Ext.define(
 
 							try
 							{
-								// переключаем контекст на текст
-								Ext.getCmp('panel-main-content').openBody();
 								Ext.getCmp('panel-treenavigation').fireEvent('clearSelection');
 
 								me.fb3file = Ext.create('FBEditor.FB3.File', {file: file.file, content: data});
@@ -87,6 +86,9 @@ Ext.define(
 								//console.log('images', images);
 								//console.log('contentBody', contentBody);
 
+								// показываем редактор описания на тот случай, если он еще не был зарендерин
+								content.fireEvent('contentDesc');
+
 								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
 								Ext.suspendLayouts();
 
@@ -104,9 +106,11 @@ Ext.define(
 								resourceManager.load(images);
 								resourceManager.setCover(thumb.getFileName());
 
+								// переключаем контекст на редатор тела книги
+								content.openBody();
+
 								// редактор тела книги
-								bodyEditor = Ext.getCmp('main-editor');
-								bodyManager = bodyEditor.getManager();
+								bodyManager = FBEditor.getEditorManager();
 								bodyManager.createContent(contentBody);
 							}
 							catch (e)

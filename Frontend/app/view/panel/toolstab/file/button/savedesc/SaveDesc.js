@@ -11,9 +11,11 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.toolstab.file.button.savedesc.SaveDescController'
 		],
+		
 		id:'panel-toolstab-file-button-savedesc',
 		xtype: 'panel-toolstab-file-button-savedesc',
 		controller: 'panel.toolstab.file.button.savedesc',
+		
 		text: 'Сохранить описание',
 		hidden: true,
 

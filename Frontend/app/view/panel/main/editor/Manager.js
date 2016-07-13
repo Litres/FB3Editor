@@ -165,72 +165,57 @@ Ext.define(
 			Ext.Ajax.request(
 				{
 					url: url,
+					scope: me,
 					success: function(response)
 					{
-						var xml,
-							msg;
-
-						try
-						{
-							if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
-							{
-								xml = response.responseText;
-								me.loadDataToEditor(xml);
-							}
-							else
-							{
-								throw Error();
-							}
-						}
-						catch (e)
-						{
-							msg = ' (' + e + ')';
-							Ext.log({level: 'error', msg: 'Ошибка загрузки тела книги',
-								        dump: {response: response, error: e}});
-							Ext.Msg.show(
-								{
-									title: 'Ошибка',
-									message: 'Невозможно загрузить тело книги по адресу ' + url + msg,
-									buttons: Ext.MessageBox.OK,
-									icon: Ext.MessageBox.ERROR
-								}
-							);
-						}
+						this.responseLoad(response);
 					},
 					failure: function (response)
 					{
-						var xml,
-							msg;
-
-						try
-						{
-							if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
-							{
-								xml = response.responseText;
-								me.loadDataToEditor(xml);
-							}
-							else
-							{
-								throw Error();
-							}
-						}
-						catch (e)
-						{
-							msg = ' (' + e + ')';
-							Ext.log({level: 'error', msg: 'Ошибка загрузки тела книги',
-								        dump: {response: response, error: e}});
-							Ext.Msg.show(
-								{
-									title: 'Ошибка',
-									message: 'Невозможно загрузить тело книги по адресу ' + url + msg,
-									buttons: Ext.MessageBox.OK,
-									icon: Ext.MessageBox.ERROR
-								}
-							);
-						}
+						this.responseLoad(response);
 					}
 				}
 			);
+		},
+
+		/**
+		 * @private
+		 * Обработчик ответа на запрос загрузки тела книги с хаба.
+		 * @param {Object} response Ответ запроса.
+		 */
+		responseLoad: function (response)
+		{
+			var me = this,
+				url = me.loadUrl,
+				xml,
+				msg;
+
+			try
+			{
+				if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+				{
+					xml = response.responseText;
+					me.loadDataToEditor(xml);
+				}
+				else
+				{
+					throw Error();
+				}
+			}
+			catch (e)
+			{
+				msg = ' (' + e + ')';
+				Ext.log({level: 'error', msg: 'Ошибка загрузки тела книги',
+					        dump: {response: response, error: e}});
+				Ext.Msg.show(
+					{
+						title: 'Ошибка',
+						message: 'Невозможно загрузить тело книги по адресу ' + url + msg,
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					}
+				);
+			}
 		},
 
 		/**

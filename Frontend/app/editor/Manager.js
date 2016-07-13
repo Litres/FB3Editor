@@ -172,9 +172,9 @@ Ext.define(
 			me.getHistory().clear();
 
 			me.content = content;
-
+			
 			// загружаем контент в редактор
-			editor.fireEvent('loadData', content);
+			editor.fireEvent('loadData');
 		},
 
 		/**
