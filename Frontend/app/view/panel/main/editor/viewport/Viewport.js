@@ -40,7 +40,7 @@ Ext.define(
 
 				if (manager.isLoadUrl())
 				{
-					// загружаем описание с хаба
+					// загружаем тело с хаба
 					manager.loadFromUrl();
 				}
 

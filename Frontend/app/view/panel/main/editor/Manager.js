@@ -12,7 +12,7 @@ Ext.define(
 		/**
 		 * @property {String} Адрес загрузки/сохранения тела.
 		 */
-		url: 'https://hub.litres.ru/pages/update_hub_on_fb3_body/',
+		url: 'https://hub.litres.ru/pages/get_fb3_body/',
 
 		/**
 		 * @property {String} Адрес загрузки тела.

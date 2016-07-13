@@ -89,7 +89,7 @@ Ext.define(
 			if (editorManager.isLoadUrl())
 			{
 				// показываем редактор тела книги
-				me.setActiveItem('main-editor');
+				me.fireEvent('contentBody');
 			}
 
 			me.callParent(arguments);
