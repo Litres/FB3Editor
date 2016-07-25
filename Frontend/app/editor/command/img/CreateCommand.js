@@ -34,6 +34,9 @@ Ext.define(
 				nodes.start = range.start;
 				els.start = nodes.start.getElement();
 
+				nodes.parent = !els.start.isStyleHolder ? nodes.start.parentNode : nodes.start;
+				els.parent = nodes.parent.getElement();
+
 				manager = els.start.getManager();
 				manager.setSuspendEvent(true);
 
@@ -41,13 +44,12 @@ Ext.define(
 				els.node = factory.createElement(me.elementName, {src: data.opts.name});
 				nodes.node = els.node.getNode(data.viewportId);
 
-				// вставляем изображение внутри текста
-
-				nodes.parent = nodes.start.parentNode;
-				els.parent = nodes.parent.getElement();
+				console.log(els.parent.isEmpty(), els, nodes);
 
 				if (!els.parent.isEmpty())
 				{
+					// вставляем изображение внутри текста
+
 					nodes.next = nodes.start.nextSibling;
 					els.next = nodes.next ? nodes.next.getElement() : null;
 
@@ -61,7 +63,10 @@ Ext.define(
 				}
 				else
 				{
-					// удаляем пустой
+					// удаляем пустой элемент
+					
+					nodes.start = els.start.isStyleHolder ? nodes.start.firstChild : nodes.start;
+					els.start = nodes.start.getElement();
 					els.parent.remove(els.start);
 					nodes.parent.removeChild(nodes.start);
 
