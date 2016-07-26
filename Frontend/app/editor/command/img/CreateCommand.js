@@ -44,8 +44,6 @@ Ext.define(
 				els.node = factory.createElement(me.elementName, {src: data.opts.name});
 				nodes.node = els.node.getNode(data.viewportId);
 
-				console.log(els.parent.isEmpty(), els, nodes);
-
 				if (!els.parent.isEmpty())
 				{
 					// вставляем изображение внутри текста

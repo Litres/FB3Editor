@@ -49,18 +49,26 @@ Ext.define(
 
 				if (!nodes.first)
 				{
-					// если в родительском элементе не осталось потомков, то вставляем в него пустой параграф
+					// если в родительском элементе не осталось потомков, то вставляем в него пустой элемент
 
-					// пустой параграф
-					els.p = manager.createEmptyP();
-					els.newEl = els.p;
-
-					if (els.parent.isRoot)
+					if (els.parent.isStyleHolder)
 					{
-						// в корневом элементе должна быть хотя бы одна секция
-						els.s = factory.createElement('section');
-						els.s.add(els.p);
-						els.newEl = els.s;
+						els.empty = manager.createEmptyElement();
+						els.newEl = els.empty;
+					}
+					else
+					{
+						// пустой параграф
+						els.p = manager.createEmptyP();
+						els.newEl = els.p;
+
+						if (els.parent.isRoot)
+						{
+							// в корневом элементе должна быть хотя бы одна секция
+							els.s = factory.createElement('section');
+							els.s.add(els.p);
+							els.newEl = els.s;
+						}
 					}
 
 					nodes.newEl = els.newEl.getNode(data.viewportId);
