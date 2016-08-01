@@ -232,7 +232,7 @@ Ext.define(
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
-			resource = manager.getResourceByFileId(attributes.src);
+			resource = manager.getResourceByFileId(attributes.src) || manager.getResourceByName(attributes.src);
 
 			if (resource)
 			{

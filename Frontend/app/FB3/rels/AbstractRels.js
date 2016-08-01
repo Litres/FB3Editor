@@ -75,12 +75,15 @@ Ext.define(
 		constructor: function (structure, fileName, parentRelsDir)
 		{
 			var me = this,
-				fb3file = structure.getFb3file();
+				fb3file;
 
+			fb3file = structure.getFb3file();
+			
 			if (!fb3file.getFiles(fileName))
 			{
 				me.create(structure, fileName);
 			}
+			
 			me.structure = structure;
 			me.fileName = fileName;
 			me.parentRelsDir = parentRelsDir ? parentRelsDir : null;
@@ -346,7 +349,7 @@ Ext.define(
 
 			type = /\.svg$/.test(me.fileName) ? 'image/svg+xml' : type;
 			type = /\.png$/.test(me.fileName) ? 'image/png' : type;
-			type = /\.jpg$/.test(me.fileName) ? 'image/jpeg' : type;
+			type = /\.(jpg|jpeg)$/.test(me.fileName) ? 'image/jpeg' : type;
 			type = /\.gif$/.test(me.fileName) ? 'image/gif' : type;
 
 			return type;

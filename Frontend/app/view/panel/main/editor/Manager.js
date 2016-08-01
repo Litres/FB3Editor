@@ -34,6 +34,12 @@ Ext.define(
 		 */
 		fb3BodyId: '',
 
+		/**
+		 * @private
+		 * @property {Number} Айди произведения на хабе.
+		 */
+		art: null,
+
 		constructor: function ()
 		{
 			var me = this,
@@ -48,6 +54,7 @@ Ext.define(
 
 			if (params.body_art)
 			{
+				me.art = params.body_art;
 				me.loadUrl = me.url + '?art=' + params.body_art;
 			}
 			else if (params.body)
@@ -187,6 +194,8 @@ Ext.define(
 		{
 			var me = this,
 				url = me.loadUrl,
+				resourceManager = FBEditor.resource.Manager,
+				promise,
 				xml,
 				msg;
 
@@ -194,8 +203,22 @@ Ext.define(
 			{
 				if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 				{
-					xml = response.responseText;
-					me.loadDataToEditor(xml);
+					promise = new Promise(
+						function (resolve, reject)
+						{
+							// загружаем данные ресурсов
+							resourceManager.loadFromUrl(me.art, resolve);
+						}
+					);
+
+					promise.then(
+						function ()
+						{
+							// загружаем текст в редактор
+							xml = response.responseText;
+							me.loadDataToEditor(xml);
+						}
+					);
 				}
 				else
 				{

@@ -30,13 +30,16 @@ Ext.define(
 					// получаем html тела книги
 					data = manager.getNode(item.id);
 
-					// загружаем в окно
-					item.loadData(data);
-
-					if (item.id !== north.id && content.isActiveItem('main-editor'))
+					if (item.rendered)
 					{
-						// синхронизируем скролл между окнами
-						item.fireEvent('syncScroll', north);
+						// загружаем в окно
+						item.loadData(data);
+
+						if (item.id !== north.id && content.isActiveItem('main-editor'))
+						{
+							// синхронизируем скролл между окнами
+							item.fireEvent('syncScroll', north);
+						}
 					}
 				}
 			);

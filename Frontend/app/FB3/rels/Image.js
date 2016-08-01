@@ -9,6 +9,10 @@ Ext.define(
 	{
 		extend: 'FBEditor.FB3.rels.AbstractRels',
 
+		mixins: {
+			resData: 'FBEditor.resource.data.ZipData'
+		},
+
 		/**
 		 * @property {Boolean} Обложка ли.
 		 */
@@ -18,6 +22,13 @@ Ext.define(
 		 * @property {String} Айди изображения в архиве.
 		 */
 		id: null,
+		
+		getData: function ()
+		{
+			var me = this;
+			
+			return me.mixins.resData.getData.call(me);
+		},
 
 		getRels: function ()
 		{
