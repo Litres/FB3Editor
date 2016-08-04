@@ -39,86 +39,193 @@ Ext.define(
 			me.hidden = FBEditor.desc.Manager.loadingProcess ? false : me.hidden;
 
 			me.items = [
+				
+				/* есть данные */
 				{
-					xtype: 'desc-fieldcontainer',
-					layout: 'hbox',
-					cls: 'block-container', // необходим для выделения блока полей
+					itemId: 'view',
+					xtype: 'desc-fieldsetinner',
+					title: '',
+					labelWidth: 160,
+					hidden: true,
+					layout: 'container',
 					items: [
 						{
 							xtype: 'desc-fieldcontainer',
-							flex: 1,
-							layout: 'anchor',
-							defaults: {
-								anchor: '100%',
-								labelWidth: 160,
-								labelAlign: 'right',
-								xtype: 'textfield',
-								keyEnterAsTab: true
-							},
+							layout: 'hbox',
+							cls: 'block-container', // необходим для выделения блока полей
 							items: [
 								{
-									xtype: 'form-desc-field-link-uuid',
-									fieldLabel: me.translateText.id,
-									name: 'relations-subject-id'
+									xtype: 'desc-fieldcontainer',
+									flex: 1,
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%',
+										labelWidth: 160,
+										labelAlign: 'right',
+										xtype: 'textfield',
+										keyEnterAsTab: true
+									},
+									items: [
+										{
+											xtype: 'form-desc-field-link-uuid',
+											fieldLabel: me.translateText.id,
+											name: 'relations-subject-id-view'
+										},
+										{
+											xtype: 'form-desc-relations-subject-name-main',
+											fieldLabel: me.translateText.lastName,
+											name: 'relations-subject-last-name-view'
+										},
+										{
+											xtype: 'form-desc-relations-subject-name',
+											fieldLabel: me.translateText.firstName,
+											name: 'relations-subject-first-name-view',
+											cls: 'field-optional'
+										},
+										{
+											xtype: 'form-desc-relations-subject-name',
+											fieldLabel: me.translateText.middleName,
+											name: 'relations-subject-middle-name-view',
+											cls: 'field-optional'
+										},
+										{
+											xtype: 'numberfield',
+											fieldLabel: me.translateText.percent,
+											name: 'relations-subject-percent-view',
+											hideTrigger: true,
+											minValue: 0,
+											maxValue: 100,
+											autoStripChars: true,
+											cls: 'field-optional'
+										}
+									]
 								},
 								{
-									xtype: 'form-desc-relations-subject-name-main',
-									fieldLabel: me.translateText.lastName,
-									name: 'relations-subject-last-name'
+									xtype: 'fieldcontainer',
+									width: 10
 								},
 								{
-									xtype: 'form-desc-relations-subject-name',
-									fieldLabel: me.translateText.firstName,
-									name: 'relations-subject-first-name',
-									cls: 'field-optional'
-								},
-								{
-									xtype: 'form-desc-relations-subject-name',
-									fieldLabel: me.translateText.middleName,
-									name: 'relations-subject-middle-name',
-									cls: 'field-optional'
-								},
-								{
-									xtype: 'numberfield',
-									fieldLabel: me.translateText.percent,
-									name: 'relations-subject-percent',
-									hideTrigger: true,
-									minValue: 0,
-									maxValue: 100,
-									autoStripChars: true,
-									cls: 'field-optional'
+									xtype: 'desc-fieldcontainer',
+									flex: 1,
+									layout: 'hbox',
+									items: [
+										{
+											xtype: 'form-desc-relations-subject-title',
+											name: 'relations-subject-title-view',
+											translateText: {
+												main: me.translateText.titleMain,
+												alt: me.translateText.titleAlt
+											}
+										}
+									]
 								}
+								
 							]
 						},
-						{
-							xtype: 'fieldcontainer',
-							width: 10
-						},
-						{
-							xtype: 'desc-fieldcontainer',
-							flex: 1,
-							layout: 'anchor',
-							items: [
-								{
-									xtype: 'form-desc-relations-subject-title',
-									name: 'relations-subject-title',
-									translateText: {
-										main: me.translateText.titleMain,
-										alt: me.translateText.titleAlt
-									}
-								}
-							]
-						}
+						//{
+						//	xtype: 'form-desc-relations-subject-link',
+						//	labelWidth: 160,
+						//	labelAlign: 'right'
+						//}
 					]
 				},
+				
+				
+				
+				/* пустая форма */
 				{
-					xtype: 'form-desc-relations-subject-link',
-					labelWidth: 160,
-					labelAlign: 'right'
+					itemId: 'edit',
+					xtype: 'desc-fieldcontainer',
+					hidden: false,
+					layout: 'container',
+					items: [
+						{
+							xtype: 'desc-fieldcontainer',
+							hidden: false,
+							layout: 'hbox',
+							cls: 'block-container', // необходим для выделения блока полей
+							items: [
+								{
+									xtype: 'desc-fieldcontainer',
+									flex: 1,
+									layout: 'anchor',
+									defaults: {
+										anchor: '100%',
+										labelWidth: 160,
+										labelAlign: 'right',
+										xtype: 'textfield',
+										keyEnterAsTab: true
+									},
+									items: [
+										{
+											xtype: 'form-desc-field-link-uuid',
+											fieldLabel: me.translateText.id,
+											name: 'relations-subject-id'
+										},
+										{
+											xtype: 'form-desc-relations-subject-name-main',
+											fieldLabel: me.translateText.lastName,
+											name: 'relations-subject-last-name'
+										},
+										{
+											xtype: 'form-desc-relations-subject-name',
+											fieldLabel: me.translateText.firstName,
+											name: 'relations-subject-first-name',
+											cls: 'field-optional'
+										},
+										{
+											xtype: 'form-desc-relations-subject-name',
+											fieldLabel: me.translateText.middleName,
+											name: 'relations-subject-middle-name',
+											cls: 'field-optional'
+										},
+										{
+											xtype: 'numberfield',
+											fieldLabel: me.translateText.percent,
+											name: 'relations-subject-percent',
+											hideTrigger: true,
+											minValue: 0,
+											maxValue: 100,
+											autoStripChars: true,
+											cls: 'field-optional'
+										}
+									]
+								},
+								{
+									xtype: 'fieldcontainer',
+									width: 10
+								},
+								{
+									xtype: 'desc-fieldcontainer',
+									flex: 1,
+									layout: 'anchor',
+									items: [
+										{
+											xtype: 'form-desc-relations-subject-title',
+											name: 'relations-subject-title',
+											translateText: {
+												main: me.translateText.titleMain,
+												alt: me.translateText.titleAlt
+											}
+										}
+									]
+								}
+							]
+						},
+						{
+							xtype: 'form-desc-relations-subject-link',
+							labelWidth: 160,
+							labelAlign: 'right'
+						}
+					]
 				}
+				
+				
+				
 			];
 
 			me.callParent(arguments);
+			
 		}
 	}
 );
