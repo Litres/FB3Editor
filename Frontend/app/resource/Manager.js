@@ -60,6 +60,12 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {String} Адрес загрузки/сохранения обложки.
+		 */
+		urlCover: 'https://hub.litres.ru/pages/get_fb3_cover_image/',
+
+		/**
+		 * @private
 		 * @property {Number} Айди произведения на хабе.
 		 */
 		art: null,
@@ -82,11 +88,21 @@ Ext.define(
 		selectFn: null,
 
 		/**
-		 * Загружает список ресурсов из url.
-		 * @param {Number} art Айди произведения на хабе.
-		 * @param {Function} resolve Функция успеха.
+		 * @private
+		 * @property {Number} Счетчик запросов загрузки ресурсов с хаба.
 		 */
-		loadFromUrl: function (art, resolve)
+		requestResourcesCount: 0,
+
+		/**
+		 * @private
+		 * @property {Array} Список загруженных ресурсов с хаба.
+		 */
+		resourcesLoaded: [],
+
+		/**
+		 * Загружает список ресурсов из url.
+		 */
+		loadFromUrl: function (art)
 		{
 			var me = this,
 				url;
@@ -104,11 +120,11 @@ Ext.define(
 					scope: me,
 					success: function(response)
 					{
-						this.responseLoad(response, resolve);
+						this.responseLoad(response);
 					},
 					failure: function (response)
 					{
-						this.responseLoad(response, resolve);
+						this.responseLoad(response);
 					}
 				}
 			);
@@ -116,16 +132,18 @@ Ext.define(
 
 		/**
 		 * Загружает данные ресурсов из архива в редактор.
-		 * @param {FBEditor.FB3.rels.Image[]} images Изображения, полученные из архива открытой книги.
+		 * @param {FBEditor.resource.data.AbstractData[]} resources Изображения, полученные из архива открытой книги
+		 * или с хаба.
 		 */
-		load: function (images)
+		load: function (resources)
 		{
 			var me = this,
-				data = [];
+				data = [],
+				cover;
 
-			//console.log('images', images);
+			//console.log('resources', resources);
 			Ext.each(
-				images,
+				resources,
 				function (item)
 				{
 					var res,
@@ -134,6 +152,12 @@ Ext.define(
 					resData = item.getData();
 					res = Ext.create('FBEditor.resource.Resource', resData);
 					data.push(res);
+
+					if (res.isCover)
+					{
+						// обложка
+						cover = res;
+					}
 				}
 			);
 
@@ -143,6 +167,12 @@ Ext.define(
 			me.updateNavigation();
 			me.generateFolders();
 			me.setActiveFolder('');
+
+			if (cover)
+			{
+				// устанавливаем обложку
+				me.setCover(cover.name);
+			}
 		},
 
 		/**
@@ -951,9 +981,8 @@ Ext.define(
 		 * @private
 		 * Обработчик ответа на запрос загрузки списка ресурсов с хаба.
 		 * @param {Object} response Ответ запроса.
-		 * @param {Function} resolve
 		 */
-		responseLoad: function (response, resolve)
+		responseLoad: function (response)
 		{
 			var me = this,
 				url = me.loadUrl,
@@ -965,7 +994,7 @@ Ext.define(
 				if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 				{
 					xml = response.responseText;
-					me.loadDataResources(xml, resolve);
+					me.loadDataResources(xml);
 				}
 				else
 				{
@@ -989,15 +1018,14 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Загружает данные ресурсов.
 		 * @param {String} xml Данные ресурсов из загруженного списка rels.
 		 */
-		loadDataResources: function (xml, resolve)
+		loadDataResources: function (xml)
 		{
 			var me = this,
 				xml2Json = FBEditor.util.xml.Json,
-				images = [],
-				requestCount = 0,
 				json,
 				data;
 
@@ -1005,19 +1033,23 @@ Ext.define(
 			json = xml2Json.xmlToJson(xml);
 			data = json.Relationships.Relationship;
 
+			// добавляем данные обложки
+			data.push(
+				{
+					url: me.urlCover + '?art=' + me.art,
+					isCover: true
+				}
+			);
+
 			Ext.Array.each(
 				data,
 			    function (item)
 			    {
-				    var url,
-					    id,
-					    name;
-
-				    id = item._Id;
-				    name = item._Target;
+				    var url;
 
 				    // формируем url для загрузки ресурса
-				    url = me.urlRes + '?art=' + me.art + '&image=' + id;
+				    url = item.url ? item.url : me.urlRes + '?art=' + me.art + '&image=' + item._Id;
+				    item.url = url;
 
 				    // загружаем ресурс по url
 				    Ext.Ajax.request(
@@ -1027,57 +1059,71 @@ Ext.define(
 						    binary: true,
 						    success: function(response)
 						    {
-							    var resource = {},
-								    img;
-
-							    // увеличиваем счетчик выполненных запросов
-							    requestCount++;
-
-							    // формируем данные файла для ресурса
-							    resource.content = response.responseBytes;
-							    resource.fileName = name;
-							    resource.fileId = id;
-							    
-							    img = Ext.create('FBEditor.resource.data.UrlData', resource);
-							    images.push(img);
-
-							    if (requestCount === data.length)
-							    {
-								    // загружаем данные в редактор после последнего выполненого запроса
-								    me.load(images);
-								    resolve();
-							    }
+							    me.responseLoadResource(response, data.length, item);
 						    },
 						    failure: function (response)
 						    {
-							    var msg;
-
-							    // увеличиваем счетчик выполненных запросов
-							    requestCount++;
-
-							    msg = ' ' + response.status + ' (' + response.statusText + ')';
-							    Ext.log({level: 'error', msg: 'Ошибка загрузки ресурса',
-								            dump: {response: response, error: e}});
-							    Ext.Msg.show(
-								    {
-									    title: 'Ошибка',
-									    message: 'Невозможно загрузить ресурс по адресу ' + url + msg,
-									    buttons: Ext.MessageBox.OK,
-									    icon: Ext.MessageBox.ERROR
-								    }
-							    );
-
-							    if (requestCount === data.length)
-							    {
-								    // загружаем данные в редактор после последнего выполненого запроса
-								    me.load(images);
-								    resolve();
-							    }
+							    me.responseLoadResource(response, data.length, item);
 						    }
 					    }
 				    );
 			    }
 			);
+		},
+
+		/**
+		 * @private
+		 * Обработчик ответа на запрос загрузки ресурса с хаба.
+		 * @param {Object} response Ответ запроса.
+		 * @param {Number} dataLength Количество запросов.
+		 * @param {Object} item Исходные данные ресурса.
+		 */
+		responseLoadResource: function (response, dataLength, item)
+		{
+			var me = this,
+				resource = {},
+				statusOk = 200,
+				res,
+				msg;
+
+			// увеличиваем счетчик выполненных запросов
+			me.requestResourcesCount++;
+
+			try {
+				if (response && response.responseBytes && response.status === statusOk)
+				{
+					// формируем данные файла для ресурса
+					resource.content = response.responseBytes;
+					resource.fileName = item.isCover ? 'img/thumb.jpeg' : item._Target;
+					resource.fileId = item._Id;
+					resource.isCover = item.isCover;
+
+					res = Ext.create('FBEditor.resource.data.UrlData', resource);
+
+					// стек уже загруженных ресурсов
+					me.resourcesLoaded.push(res);
+				}
+				else
+				{
+					throw Error(item.url);
+				}
+			}
+			catch (e)
+			{
+				msg = ' ' + response.status + ' (' + response.statusText + ')';
+				Ext.log({level: 'error', msg: 'Ошибка загрузки ресурса ' + item.url + msg,
+					        dump: {response: response, error: e}});
+			}
+
+			if (me.requestResourcesCount === dataLength)
+			{
+				// загружаем данные в редактор после последнего выполненого запроса
+				me.load(me.resourcesLoaded);
+
+				// обнуляем вспомогательные данные
+				me.resourcesLoaded = [];
+				me.requestResourcesCount = 0;
+			}
 		}
 	}
 );

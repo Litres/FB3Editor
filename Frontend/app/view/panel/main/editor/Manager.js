@@ -40,37 +40,6 @@ Ext.define(
 		 */
 		art: null,
 
-		constructor: function ()
-		{
-			var me = this,
-				routeManager = FBEditor.route.Manager,
-				params;
-
-			me.callParent(arguments);
-
-			// инициализиурем адрес загрузки тела книги с хаба, если требуется
-
-			params = routeManager.getParams();
-
-			if (params.body_art)
-			{
-				me.art = params.body_art;
-				me.loadUrl = me.url + '?art=' + params.body_art;
-			}
-			else if (params.body)
-			{
-				// запоминаем url загрузки описания
-				me.loadUrl = params.body;
-			}
-			else if (params.body === null)
-			{
-				// признак первоначальной загрузки редактора тела книги
-				me.loadUrl = 'undefined';
-			}
-
-			me.saveUrl = me.url;
-		},
-
 		createContent: function ()
 		{
 			var me = this;
@@ -151,7 +120,9 @@ Ext.define(
 		loadFromUrl: function ()
 		{
 			var me = this,
-				url = me.loadUrl;
+				descManager = FBEditor.desc.Manager,
+				art,
+				url;
 
 			// загружена ли пустая панель
 			if (!Ext.getCmp('panel-empty') || !Ext.getCmp('panel-empty').rendered)
@@ -166,6 +137,11 @@ Ext.define(
 				
 				return;
 			}
+
+			art = descManager.getArtId();
+			me.loadUrl = me.url + '?art=' + art;
+			url = me.loadUrl;
+			me.saveUrl = me.url;
 
 			Ext.log({level: 'info', msg: 'Загрузка тела из ' + url});
 
@@ -194,8 +170,6 @@ Ext.define(
 		{
 			var me = this,
 				url = me.loadUrl,
-				resourceManager = FBEditor.resource.Manager,
-				promise,
 				xml,
 				msg;
 
@@ -203,22 +177,9 @@ Ext.define(
 			{
 				if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 				{
-					promise = new Promise(
-						function (resolve, reject)
-						{
-							// загружаем данные ресурсов
-							resourceManager.loadFromUrl(me.art, resolve);
-						}
-					);
-
-					promise.then(
-						function ()
-						{
-							// загружаем текст в редактор
-							xml = response.responseText;
-							me.loadDataToEditor(xml);
-						}
-					);
+					// загружаем текст в редактор
+					xml = response.responseText;
+					me.loadDataToEditor(xml);
 				}
 				else
 				{

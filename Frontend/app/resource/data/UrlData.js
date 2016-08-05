@@ -32,6 +32,7 @@ Ext.define(
 				fileName = me.fileData.fileName,
 				fileId = me.fileData.fileId,
 				content = me.fileData.content,
+				isCover = me.fileData.isCover,
 				fileType,
 				baseName,
 				name,
@@ -53,7 +54,8 @@ Ext.define(
 				baseName: baseName,
 				rootName: me.rootPath + '/' + name,
 				sizeBytes: blob.size,
-				type: fileType
+				type: fileType,
+				isCover: isCover
 			};
 
 			return data;

@@ -79,12 +79,21 @@ Ext.define(
 		 */
 		openContent: function ()
 		{
-			var cmd;
+			var editorManager = FBEditor.getEditorManager(true),
+				descManager = FBEditor.desc.Manager,
+				cmd;
 
 			cmd = Ext.create('FBEditor.command.OpenBody');
+
 			if (cmd.execute())
 			{
 				FBEditor.HistoryCommand.add(cmd);
+				
+				if (descManager.isLoadUrl() && !editorManager.isLoadUrl())
+				{
+					// если тело еще не было загружено по url, то загружаем
+					editorManager.loadFromUrl();
+				}
 			}
 		}
 	}

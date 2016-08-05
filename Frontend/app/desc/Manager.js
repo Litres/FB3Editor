@@ -54,6 +54,12 @@ Ext.define(
 		 */
 		cleanResultContainer: {},
 
+		/**
+		 * @private
+		 * @property {Number} Айди произведения на хабе.
+		 */
+		art: null,
+
 		init: function ()
 		{
 			var me = this,
@@ -64,6 +70,7 @@ Ext.define(
 
 			if (params.art)
 			{
+				me.art = params.art;
 				me.loadUrl = me.url + '?art=' + params.art;
 			}
 			else if (params.desc)
@@ -234,6 +241,15 @@ Ext.define(
 					);
 				}
 			}
+		},
+
+		/**
+		 * Возвращает айди произведения, загружаемого с хаба.
+		 * @return {String}
+		 */
+		getArtId: function ()
+		{
+			return this.art;
 		},
 
 		/**
@@ -619,6 +635,7 @@ Ext.define(
 		{
 			var me = this,
 				url = me.loadUrl,
+				resourceManager = FBEditor.resource.Manager,
 				xml,
 				msg;
 
@@ -626,8 +643,12 @@ Ext.define(
 			{
 				if (response && response.responseText)
 				{
+					// загружаем описание в редактор
 					xml = response.responseText;
 					me.loadDataToForm(xml);
+
+					// загружаем данные ресурсов
+					resourceManager.loadFromUrl(me.getArtId());
 				}
 				else
 				{
