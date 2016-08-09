@@ -23,7 +23,7 @@ Ext.define(
 					fieldLabel: 'ID',
 					anchor: '100%',
 					allowBlank: false
-				},
+				}/*,
 				{
 					xtype: 'checkbox',
 					name: 'article',
@@ -31,7 +31,7 @@ Ext.define(
 					labelWidth: 50,
 					fieldLabel: me.translateText.article,
 					inputValue: 'true'
-				}
+				}*/
 			];
 
 			me.callParent(arguments);
