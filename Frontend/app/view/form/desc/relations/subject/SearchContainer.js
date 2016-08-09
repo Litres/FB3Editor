@@ -11,10 +11,13 @@ Ext.define(
 		requires: [
 			'FBEditor.store.desc.relations.Subject',
 			'FBEditor.view.form.desc.relations.subject.CustomButton',
+			'FBEditor.view.form.desc.relations.subject.SearchContainerController',
 			'FBEditor.view.form.desc.relations.subject.search.name.Name'
 		],
+		
 		xtype: 'form-desc-relations-subject-container-search',
-
+		controller: 'form.desc.relations.subject.container.search',
+		
 		defaults: {
 			width: 465,
 			labelWidth: 160,
@@ -36,7 +39,6 @@ Ext.define(
 			var me = this;
 
 			me.hidden = !FBEditor.accessHub;
-			me.hidden = FBEditor.desc.Manager.loadingProcess ? true : me.hidden;
 
 			me.items = [
 				{

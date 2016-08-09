@@ -9,13 +9,15 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.relations.subject.title.Title',
+			'FBEditor.view.form.desc.relations.subject.custom.editor.EditorController',
 			'FBEditor.view.form.desc.relations.subject.name.Name',
 			'FBEditor.view.form.desc.relations.subject.name.main.Main',
+			'FBEditor.view.form.desc.relations.subject.title.Title',
 			'FBEditor.view.form.desc.relations.subject.Link'
 		],
 
 		xtype: 'form-desc-relations-subject-custom-editor',
+		controller: 'form.desc.relations.subject.custom.editor',
 
 		/**
 		 * @private
@@ -38,11 +40,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				descManager = FBEditor.desc.Manager;
-
-			me.hidden = FBEditor.accessHub;
-			me.hidden = descManager.loadingProcess ? false : me.hidden;
+			var me = this;
 
 			me.items = [
 				{
@@ -123,6 +121,13 @@ Ext.define(
 					labelAlign: 'right'
 				}
 			];
+
+			me.callParent(arguments);
+		},
+
+		afterRender: function ()
+		{
+			var me = this;
 
 			me.callParent(arguments);
 		},

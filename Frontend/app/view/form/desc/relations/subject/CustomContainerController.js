@@ -7,9 +7,17 @@
 Ext.define(
 	'FBEditor.view.form.desc.relations.subject.CustomContainerController',
 	{
-		extend: 'Ext.app.ViewController',
+		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 
 		alias: 'controller.form.desc.relations.subject.container.custom',
+
+		onAccessHub: function ()
+		{
+			var me = this,
+				view = me.getView();
+
+			view.setHidden(true);
+		},
 
 		/**
 		 * Показывает или скрывает текущий контейнер и редактируемые поля.

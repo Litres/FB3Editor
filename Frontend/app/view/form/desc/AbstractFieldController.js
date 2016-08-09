@@ -25,6 +25,7 @@ Ext.define(
 			//console.log('>>>>>>', view.name, view.id, view, data);
 			plugin = me.getPluginContainerReplicator(view);
 			nextContainer = plugin.getCmp();
+
 			Ext.Object.each(
 				data,
 			    function (index, obj)
@@ -62,25 +63,23 @@ Ext.define(
 		},
 
 		/**
-		 * Активирует поисковый контейнер.
+		 * Передает событие дочерним компонентам.
 		 */
 		onAccessHub: function ()
 		{
 			var me = this,
 				view = me.getView(),
-				btn,
-				nextContainer,
-				plugin;
+				items = view.items;
 
-			btn = view.down('[cls=form-desc-customBtn]');
-			plugin = me.getPluginContainerReplicator(view);
-			nextContainer = plugin.getCmp();
+			//console.log('>', view);
 
-			if (!nextContainer.getValues() && btn)
-			{
-				// переключаем ручной ввод на блок поиска, если в нем нет данных
-				btn.switchContainers(true);
-			}
+			items.each(
+				function (item)
+				{
+					//console.log('----', item);
+					item.fireEvent('accessHub');
+				}
+			);
 		},
 
 		/**
