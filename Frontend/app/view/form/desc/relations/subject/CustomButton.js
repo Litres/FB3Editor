@@ -26,7 +26,8 @@ Ext.define(
 		{
 			var me = this,
 				manager = FBEditor.desc.Manager,
-				searchContainer = me.searchContainer;
+				searchContainer = me.searchContainer,
+				customContainer = me.customContainer;
 
 			// получаем новый id
 			manager.getNewId(
@@ -40,6 +41,12 @@ Ext.define(
 
 			// устанавливаем ФИО из поскового поля в поля ручного вввода
 			me.setNamesFromSearchField();
+
+			// скрываем сводку
+			customContainer.fireEvent('showViewer', false);
+
+			// показываем поля
+			customContainer.fireEvent('showEditor', true);
 
 			me.switchContainers();
 
@@ -60,7 +67,8 @@ Ext.define(
 
 			hidden = customToSearch ? true : false;
 
-			custom.setHidden(hidden);
+			custom.fireEvent('showCustom', !hidden);
+
 			search.setHidden(!hidden);
 		},
 

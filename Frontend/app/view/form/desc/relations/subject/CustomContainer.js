@@ -9,223 +9,100 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.relations.subject.title.Title',
-			'FBEditor.view.form.desc.relations.subject.name.Name',
-			'FBEditor.view.form.desc.relations.subject.name.main.Main',
-			'FBEditor.view.form.desc.relations.subject.Link'
+			'FBEditor.view.form.desc.relations.subject.CustomContainerController',
+			'FBEditor.view.form.desc.relations.subject.custom.editor.Editor',
+			'FBEditor.view.form.desc.relations.subject.custom.viewer.Viewer'
 		],
+
 		xtype: 'form-desc-relations-subject-container-custom',
+		controller: 'form.desc.relations.subject.container.custom',
+
+		listeners: {
+			showCustom: 'onShowCustom',
+			showEditor: 'onShowEditor',
+			showViewer: 'onShowViewer',
+			stateSwitcher: 'onStateSwitcher'
+		},
+
 		layout: 'anchor',
 		flex: 1,
 
-		translateText: {
-			id: 'ID',
-			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
-			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
-			firstName: 'Имя',
-			middleName: 'Отчество (второе имя)',
-			lastName: 'Фамилия',
-			titleMain: 'Стандартное написание',
-			titleAlt: 'Альтернативное написание',
-			percent: 'Процент владения',
-			pageEditor: 'Страница редактирования'
-		},
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.custom.viewer.Viewer} Контейнер отображающий краткую
+		 * сводку данных.
+		 */
+		_customViewer: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.custom.editor.Editor} Контейнер содержащий
+		 * компоненты ручного ввода.
+		 */
+		_customEditor: null,
 
 		initComponent: function ()
 		{
 			var me = this;
 
-			me.hidden = FBEditor.accessHub;
-			me.hidden = FBEditor.desc.Manager.loadingProcess ? false : me.hidden;
-
 			me.items = [
-				
-				/* есть данные */
 				{
-					itemId: 'view',
-					xtype: 'desc-fieldsetinner',
-					title: '',
-					labelWidth: 160,
-					hidden: true,
-					layout: 'container',
-					items: [
-						{
-							xtype: 'desc-fieldcontainer',
-							layout: 'hbox',
-							cls: 'block-container', // необходим для выделения блока полей
-							items: [
-								{
-									xtype: 'desc-fieldcontainer',
-									flex: 1,
-									layout: 'anchor',
-									defaults: {
-										anchor: '100%',
-										labelWidth: 160,
-										labelAlign: 'right',
-										xtype: 'textfield',
-										keyEnterAsTab: true
-									},
-									items: [
-										{
-											xtype: 'form-desc-field-link-uuid',
-											fieldLabel: me.translateText.id,
-											name: 'relations-subject-id-view'
-										},
-										{
-											xtype: 'form-desc-relations-subject-name-main',
-											fieldLabel: me.translateText.lastName,
-											name: 'relations-subject-last-name-view'
-										},
-										{
-											xtype: 'form-desc-relations-subject-name',
-											fieldLabel: me.translateText.firstName,
-											name: 'relations-subject-first-name-view',
-											cls: 'field-optional'
-										},
-										{
-											xtype: 'form-desc-relations-subject-name',
-											fieldLabel: me.translateText.middleName,
-											name: 'relations-subject-middle-name-view',
-											cls: 'field-optional'
-										},
-										{
-											xtype: 'numberfield',
-											fieldLabel: me.translateText.percent,
-											name: 'relations-subject-percent-view',
-											hideTrigger: true,
-											minValue: 0,
-											maxValue: 100,
-											autoStripChars: true,
-											cls: 'field-optional'
-										}
-									]
-								},
-								{
-									xtype: 'fieldcontainer',
-									width: 10
-								},
-								{
-									xtype: 'desc-fieldcontainer',
-									flex: 1,
-									layout: 'hbox',
-									items: [
-										{
-											xtype: 'form-desc-relations-subject-title',
-											name: 'relations-subject-title-view',
-											translateText: {
-												main: me.translateText.titleMain,
-												alt: me.translateText.titleAlt
-											}
-										}
-									]
-								}
-								
-							]
-						},
-						//{
-						//	xtype: 'form-desc-relations-subject-link',
-						//	labelWidth: 160,
-						//	labelAlign: 'right'
-						//}
-					]
+					xtype: 'form-desc-relations-subject-custom-viewer'
 				},
-				
-				
-				
-				/* пустая форма */
 				{
-					itemId: 'edit',
-					xtype: 'desc-fieldcontainer',
-					hidden: false,
-					layout: 'container',
-					items: [
-						{
-							xtype: 'desc-fieldcontainer',
-							hidden: false,
-							layout: 'hbox',
-							cls: 'block-container', // необходим для выделения блока полей
-							items: [
-								{
-									xtype: 'desc-fieldcontainer',
-									flex: 1,
-									layout: 'anchor',
-									defaults: {
-										anchor: '100%',
-										labelWidth: 160,
-										labelAlign: 'right',
-										xtype: 'textfield',
-										keyEnterAsTab: true
-									},
-									items: [
-										{
-											xtype: 'form-desc-field-link-uuid',
-											fieldLabel: me.translateText.id,
-											name: 'relations-subject-id'
-										},
-										{
-											xtype: 'form-desc-relations-subject-name-main',
-											fieldLabel: me.translateText.lastName,
-											name: 'relations-subject-last-name'
-										},
-										{
-											xtype: 'form-desc-relations-subject-name',
-											fieldLabel: me.translateText.firstName,
-											name: 'relations-subject-first-name',
-											cls: 'field-optional'
-										},
-										{
-											xtype: 'form-desc-relations-subject-name',
-											fieldLabel: me.translateText.middleName,
-											name: 'relations-subject-middle-name',
-											cls: 'field-optional'
-										},
-										{
-											xtype: 'numberfield',
-											fieldLabel: me.translateText.percent,
-											name: 'relations-subject-percent',
-											hideTrigger: true,
-											minValue: 0,
-											maxValue: 100,
-											autoStripChars: true,
-											cls: 'field-optional'
-										}
-									]
-								},
-								{
-									xtype: 'fieldcontainer',
-									width: 10
-								},
-								{
-									xtype: 'desc-fieldcontainer',
-									flex: 1,
-									layout: 'anchor',
-									items: [
-										{
-											xtype: 'form-desc-relations-subject-title',
-											name: 'relations-subject-title',
-											translateText: {
-												main: me.translateText.titleMain,
-												alt: me.translateText.titleAlt
-											}
-										}
-									]
-								}
-							]
-						},
-						{
-							xtype: 'form-desc-relations-subject-link',
-							labelWidth: 160,
-							labelAlign: 'right'
-						}
-					]
+					xtype: 'form-desc-relations-subject-custom-editor'
 				}
-				
-				
-				
 			];
 
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает контейнер отображающий краткую сводку данных.
+		 * @return {FBEditor.view.form.desc.relations.subject.custom.viewer.Viewer}
+		 */
+		getCustomViewer: function ()
+		{
+			var me = this,
+				container = me._customViewer;
+
+			container = container || me.down('form-desc-relations-subject-custom-viewer');
+			me._customViewer = container;
+
+			return container;
+		},
+
+		/**
+		 * Возвращает контйенер содержащий компоненты ручного ввода.
+		 * @return {FBEditor.view.form.desc.relations.subject.custom.editor.Editor}
+		 */
+		getCustomEditor: function ()
+		{
+			var me = this,
+				container = me._customEditor;
+
+			container = container || me.down('form-desc-relations-subject-custom-editor');
+			me._customEditor = container;
+
+			return container;
+		},
+
+		/**
+		 * Возвращает состояние переключателя.
+		 * @return {Boolean} Показать ли редактируемые поля.
+		 */
+		getStateSwitcher: function ()
+		{
+			var me = this,
+				viewer,
+				switcher,
+				state;
 			
+			viewer = me.getCustomViewer();
+			switcher = viewer.getSwitcher();
+			state = switcher.getStateCmp();
+			
+			return state;
 		}
 	}
 );

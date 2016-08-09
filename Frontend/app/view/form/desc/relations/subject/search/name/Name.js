@@ -10,7 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.searchField.SearchField',
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.search.name.NameController',
-		    'FBEditor.view.form.desc.relations.subject.search.name.window.Window'
+			'FBEditor.view.form.desc.relations.subject.search.name.window.Window'
 		],
 		controller: 'form.desc.relations.subject.search.name',
 		xtype: 'form-desc-relations-subject-searchName',
@@ -26,7 +26,7 @@ Ext.define(
 					alignTarget: me.getId()
 				}
 			);
-			
+
 			return win;
 		},
 
@@ -116,6 +116,7 @@ Ext.define(
 		{
 			var me = this,
 				descManager = FBEditor.desc.Manager,
+				customContainer,
 				btn,
 				d,
 				container;
@@ -123,18 +124,13 @@ Ext.define(
 			container = me.up('[name=plugin-fieldcontainerreplicator]');
 			d = {
 				'relations-subject-id': data.uuid,
-				'relations-subject-id-view': data.uuid,
 				'relations-subject-last-name': data['last_name'] ? data['last_name'] : '',
-				'relations-subject-last-name-view': data['last_name'] ? data['last_name'] : '',
 				'relations-subject-first-name': data['first_name'] ? data['first_name'] : '',
-				'relations-subject-first-name-view': data['first_name'] ? data['first_name'] : '',
 				'relations-subject-middle-name': data['middle_name'] ? data['middle_name'] : '',
-				'relations-subject-middle-name-view': data['middle_name'] ? data['middle_name'] : '',
-				'relations-subject-title-main': data['title'] ? data['title'] : '',
-				'relations-subject-title-view-main': data['title'] ? data['title'] : ''
+				'relations-subject-title-main': data['title'] ? data['title'] : ''
 			};
-			
-			// заполняем фому ручного ввода
+
+			// заполняем форму ручного ввода
 			descManager.loadingProcess = true;
 			container.updateData(d);
 			descManager.loadingProcess = false;
@@ -142,14 +138,19 @@ Ext.define(
 			// убираем редактируемость полей
 			container.fireEvent('editable', false);
 
-			// скрываем поля поиска и показываем данные
+			// кнопка создания вручную
 			btn = me.up('desc-fieldcontainer').down('form-desc-relations-subject-customBtn');
+
+			customContainer = btn.customContainer;
+
+			// показываем сводку
+			customContainer.fireEvent('showViewer', true);
+
+			// скрываем поля
+			customContainer.fireEvent('showEditor', false);
+
+			// скрываем поля поиска и показываем данные
 			btn.switchContainers();
-			
-			// открываем форму для просмотра данных
-			me.updateForm(container);
-			
-			me.up('form-desc-relations-subject-container-custom');
 		},
 
 		getFirstSearch: function ()
@@ -172,66 +173,6 @@ Ext.define(
 			searchField = next.down('form-desc-relations-subject-searchName');
 
 			return searchField;
-		},
-		updateForm: function(container)
-		{
-			var me = this;
-			var comp = container.down('form-desc-relations-subject-container-custom'),
-				compView = comp.getComponent('view').show();
-			compView.show();
-			comp.getComponent('edit').hide();
-			
-			var titleValue = container.down('form-desc-relations-subject-link').getValue();
-			
-			var translateText = {
-				author: 'Автор',
-				publisher: 'Издатель',
-				translator: 'Переводчик',
-				editor: 'Редактор',
-				illustrator: 'Иллюстратор',
-				compiler: 'Составитель',
-				'maker-up': 'Верстальщик',
-				adapter: 'Адаптация',
-				dialogue: 'Диалоги',
-				conceptor: 'Концепция',
-				reviewer: 'Отзыв',
-				introduction: 'Предисловие',
-				afterword: 'Послесловие',
-				accompanying: 'Аккомпаниаторы',
-				quotations: 'Цитаты',
-				annotator: 'Аннотация',
-				associated: 'Связывается с',
-				copyright_holder: 'Владелец прав',
-				commentator: 'Комментатор',
-				consultant: 'Консультант',
-				corrector: 'Корректор',
-				scientific_advisor: 'Научный советник',
-				dubious_author: 'Сомнительный автор',
-				designer: 'Дизайнер',
-				recipient_of_letters: 'Получатель писем',
-				sponsor: 'Спонсор',
-				photographer: 'Фотограф',
-				narrator: 'Чтец',
-				rendering: 'Пересказ',
-				performer: 'Исполнитель',
-				maker: 'Производитель',
-				actor: 'Актер',
-				director: 'Режиссер',
-				producer: 'Продюсер',
-				composer: 'Композитор',
-				sound_engineer: 'Звукорежиссер',
-				screenwriter: 'Сценарист',
-				other: 'Прочее',
-				undef: 'Не определено'
-			}
-			
-			compView.setTitle(translateText[titleValue] +': ' + container.down('[name=relations-subject-title-view-main]').getValue());
-			
-			// меняем размер кнопок
-			container.getEl().select('.plugin-fieldcontainerreplicator-big-btn .x-btn').applyStyles('width:auto;height:auto;')
-			container.getEl().select('.plugin-fieldcontainerreplicator-big-btn').removeCls('plugin-fieldcontainerreplicator-big-btn');
-			
-
 		}
 	}
 );
