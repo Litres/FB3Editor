@@ -16,35 +16,54 @@ Ext.define(
 				result = false,
 				manager = FBEditor.desc.Manager,
 				form = Ext.getCmp('form-desc'),
-				url;
+				btn,
+				promise;
 
-			url = manager.saveUrl;
-
-			try
+			if (!form.isValid())
 			{
-				if (url)
-				{
-					if (!form.isValid())
+				Ext.log(
 					{
-						throw Error('Некорректно заполнено описание книги');
+						level: 'error',
+						msg: 'Некорректно заполнено описание книги'
 					}
+				);
 
-					manager.saveToUrl(url);
-					result = true;
-				}
-			}
-			catch (e)
-			{
-				Ext.log({level: 'error', msg: 'Ошибка сохранения описания книги', dump: e});
 				Ext.Msg.show(
 					{
 						title: 'Ошибка',
-						message: e,
+						message: 'Некорректно заполнено описание книги',
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.ERROR
 					}
 				);
+
+				return false;
 			}
+
+			// кнопка сохранения
+			btn = data.btn;
+			btn.disable();
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					// сохраняем описание на хабе
+					manager.saveToUrl(resolve, reject);
+				}
+			);
+
+			promise.then(
+				function ()
+				{
+					btn.enable();
+				},
+				function ()
+				{
+					btn.enable();
+				}
+			);
+
+			result = true;
 
 			return result;
 		},

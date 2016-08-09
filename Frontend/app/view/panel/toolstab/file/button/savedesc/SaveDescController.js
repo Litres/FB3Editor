@@ -8,10 +8,11 @@ Ext.define(
 	'FBEditor.view.panel.toolstab.file.button.savedesc.SaveDescController',
 	{
 		extend: 'Ext.app.ViewController',
-		alias: 'controller.panel.toolstab.file.button.savedesc',
 		requires: [
 			'FBEditor.command.SaveDesc'
 		],
+
+		alias: 'controller.panel.toolstab.file.button.savedesc',
 
 		/**
 		 * Сохраняет описание на URL.
@@ -24,7 +25,9 @@ Ext.define(
 				data = {},
 				bridge = FBEditor.getBridgeWindow();
 
+			data.btn = btn;
 			cmd = bridge.Ext.create('FBEditor.command.SaveDesc', data);
+
 			if (cmd.execute())
 			{
 				bridge.FBEditor.HistoryCommand.add(cmd);
