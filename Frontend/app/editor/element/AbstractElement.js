@@ -1052,14 +1052,14 @@ Ext.define(
 		getNameTree: function ()
 		{
 			var me = this,
-				name;
-
-			name = '&lt;' + me.xmlTag + '&gt;';
+				name = '';
 
 			if (me.children.length && me.children[0].xmlTag === 'title')
 			{
-				name += ' ' + me.children[0].getText();
+				name += me.children[0].getText() + ' ';
 			}
+
+			name += '&lt;' + me.xmlTag + '&gt;';
 
 			return name;
 		},
