@@ -7,28 +7,12 @@
 Ext.define(
 	'FBEditor.desc.Loader',
 	{
+		extend : 'FBEditor.loader.Loader',
+		
 		/**
 		 * @property {String} Адрес загрузки/сохранения описания.
 		 */
 		url: 'https://hub.litres.ru/pages/get_fb3_meta/',
-		
-		/**
-		 * @private
-		 * @property {String} Адрес загрузки описания.
-		 */
-		loadUrl: null,
-
-		/**
-		 * @private
-		 * @property {String} Адрес сохранения описания.
-		 */
-		saveUrl: null,
-
-		/**
-		 * @private
-		 * @property {Number} Айди произведения на хабе.
-		 */
-		art: null,
 
 		/**
 		 * Инициализирует адреса загрузки и сохранения.
@@ -45,137 +29,123 @@ Ext.define(
 			{
 				me.setArt(params.art);
 			}
-
-			me.saveUrl = me.url;
 		},
 
 		/**
 		 * Загружает описание.
+		 * @param {Number} [art] Айди произведениея на хабе.
 		 */
-		load: function (resolve, reject)
+		load: function (art)
 		{
 			var me = this,
-				url = me.loadUrl;
+				url,
+				promise;
+
+			if (art)
+			{
+				// устанавливаем айди произведения
+				me.setArt(art);
+			}
+
+			url = me.getLoadUrl();
 			
 			Ext.log(
 				{
-					level: 'info', 
+					level: 'info',
 					msg: 'Загрузка описания из ' + url
 				}
 			);
-
-			// формируем запос
-			Ext.Ajax.request(
+			
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					url: url,
-					scope: this,
-					success: function(response)
-					{
-						var xml;
-						
-						if (response && response.responseText)
+					// формируем запос
+					Ext.Ajax.request(
 						{
-							xml = response.responseText;
-							resolve(xml);
+							url: url,
+							scope: this,
+							success: function(response)
+							{
+								var xml;
+
+								if (response && response.responseText)
+								{
+									xml = response.responseText;
+									resolve(xml);
+								}
+								else
+								{
+									reject(response);
+								}
+							},
+							failure: function (response)
+							{
+								reject(response);
+							}
 						}
-						else
-						{
-							reject(response);
-						}
-					},
-					failure: function (response)
-					{
-						reject(response);
-					}
+					);
 				}
 			);
+
+			return promise;
 		},
 
 		/**
 		 * Сохраняет описание на хабе.
 		 * @param {String} xml Описание.
 		 */
-		save: function (xml, resolve, reject)
+		save: function (xml)
 		{
 			var me = this,
-				url = me.saveUrl,
-				art = me.getArt();
-			
+				url = me.url,
+				art = me.getArt(),
+				promise;
+
 			Ext.log(
 				{
-					level: 'info', 
+					level: 'info',
 					msg: 'Сохранение описания в ' + url
 				}
 			);
-
-			// отправляем запрос
-			Ext.Ajax.request(
+			
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					url: url,
-					disableCaching: true,
-					params: {
-						action: 'update_hub_on_fb3_meta',
-						fb3_meta: xml,
-						art: art
-					},
-					success: function (response)
-					{
-						var xmlResponse;
-
-						if (response.responseXML)
+					// отправляем запрос
+					Ext.Ajax.request(
 						{
-							xmlResponse = response.responseText;
+							url: url,
+							disableCaching: true,
+							params: {
+								action: 'update_hub_on_fb3_meta',
+								fb3_meta: xml,
+								art: art
+							},
+							success: function (response)
+							{
+								var xmlResponse;
 
-							resolve(xmlResponse);
+								if (response.responseXML)
+								{
+									xmlResponse = response.responseText;
+
+									resolve(xmlResponse);
+								}
+								else
+								{
+									reject(response);
+								}
+							},
+							failure: function (response)
+							{
+								reject(response);
+							}
 						}
-						else
-						{
-							reject(response);
-						}
-					},
-					failure: function (response)
-					{
-						reject(response);
-					}
+					);
 				}
 			);
-		},
-
-		/**
-		 * Определяет загружается (загружено) ли описание с хаба.
-		 * @return {Boolean}
-		 */
-		isLoad: function ()
-		{
-			var me = this,
-				url = me.loadUrl,
-				res;
-
-			res = url && url !== 'undefined' ? true : false;
-
-			return res;
-
-		},
-
-		/**
-		 * Возвращает айди произведения, загружаемого с хаба.
-		 * @return {Number}
-		 */
-		getArt: function ()
-		{
-			return this.art;
-		},
-
-		/**
-		 * Устанавливает айди произведения.
-		 * @param {Number} art
-		 */
-		setArt: function (art)
-		{
-			var me = this;
-
-			me.art = art;
-			me.loadUrl = me.url + '?art=' + art;
+			
+			return promise;
 		}
 	}
 );

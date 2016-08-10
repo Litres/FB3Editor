@@ -75,8 +75,7 @@ Ext.define(
 		{
 			var me = this,
 				loader = me.loader,
-				emptyPanel = Ext.getCmp('panel-empty'),
-				promise;
+				emptyPanel = Ext.getCmp('panel-empty');
 
 			// ожидаем пока не будет отрисована пустая панель
 			if (!emptyPanel || !emptyPanel.rendered)
@@ -91,22 +90,8 @@ Ext.define(
 				
 				return;
 			}
-
-			promise = new Promise(
-				function (resolve, reject)
-				{
-					if (art)
-					{
-						// устанавливаем айди произведения в заргузчике
-						loader.setArt(art);
-					}
-					
-					// загружаем описание
-					loader.load(resolve, reject);
-				}
-			);
 			
-			promise.then(
+			loader.load(art).then(
 				function (xml)
 				{
 					var resourceManager = FBEditor.resource.Manager;
@@ -115,7 +100,7 @@ Ext.define(
 					me.loadDataToForm(xml);
 
 					// загружаем ресурсы
-					//resourceManager.loadFromUrl(me.getArtId());
+					resourceManager.loadFromUrl(me.getArtId());
 				},
 				function (response)
 				{
@@ -160,21 +145,12 @@ Ext.define(
 		{
 			var me = this,
 				loader = me.loader,
-				xml,
-				promise;
+				xml;
 
 			// получаем xml
 			xml = me.getXml();
 
-			promise = new Promise(
-				function (resolve, reject)
-				{
-					// сохраняем xml
-					loader.save(xml, resolve, reject);
-				}
-			);
-
-			promise.then(
+			loader.save(xml).then(
 				function (xml)
 				{
 					Ext.log(
