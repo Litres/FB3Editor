@@ -12,6 +12,7 @@ Ext.define(
 		alias: 'controller.form.desc.abstractField',
 
 		/**
+		 * @event loadInnerData
 		 * Загружает данные в поля.
 		 * @param {Object} data Данные, полученные из книги.
 		 */
@@ -30,6 +31,9 @@ Ext.define(
 				data,
 			    function (index, obj)
 			    {
+				    // передаем внутренние данные контейнера
+				    nextContainer.fireEvent('loadInnerData', obj);
+
 				    Ext.Object.each(
 					    obj,
 				        function (name, value)
@@ -63,6 +67,7 @@ Ext.define(
 		},
 
 		/**
+		 * @event accessHub
 		 * Передает событие дочерним компонентам.
 		 */
 		onAccessHub: function ()

@@ -9,14 +9,12 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.relations.subject.SearchContainer',
-			'FBEditor.view.form.desc.relations.subject.CustomContainer'
+			'FBEditor.view.form.desc.relations.subject.item.SubjectItem'
 		],
+
 		id: 'form-desc-relations-subject',
 		xtype: 'form-desc-relations-subject',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
-
-		prefixName: 'relations-subject',
 
 		translateText: {
 			error: 'Необходимо заполнить хотя бы одну персону'
@@ -28,53 +26,10 @@ Ext.define(
 
 			me.items=  [
 				{
-					xtype: 'desc-fieldcontainer',
-					cls: 'desc-fieldcontainer',
-					layout: 'hbox',
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: 'subject',
-						btnPos: 'end',
-						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
-						btnStyle: {
-							margin: '0 0 0 5px',
-							width: '40px',
-							height: '65px'
-						},
-						alwaysInsertFirst: true
-					},
-					listeners: {
-						resetContainer: function ()
-						{
-							var btn;
-
-							btn = this.down('form-desc-relations-subject-customBtn');
-
-							if (btn)
-							{
-								// скрываем поля поиска, показываем поля данных
-								btn.switchContainers();
-							}
-						}
-					},
-					items: [
-						{
-							xtype: 'desc-fieldcontainer',
-							layout: 'anchor',
-							flex: 1,
-							items: [
-								{
-									xtype: 'form-desc-relations-subject-container-custom',
-									prefixName: me.prefixName
-								},
-								{
-									xtype: 'form-desc-relations-subject-container-search'
-								}
-							]
-						}
-					]
+					xtype: 'form-desc-relations-subject-item'
 				}
 			];
+
 			me.callParent(arguments);
 		},
 

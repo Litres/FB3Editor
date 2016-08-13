@@ -49,6 +49,12 @@ Ext.define(
 		loader: null,
 
 		/**
+		 * @private
+		 * @property {Boolean} Загружены ли данные в форму.
+		 */
+		_loadedData: false,
+
+		/**
 		 * Инициализирует менеджер.
 		 */
 		init: function ()
@@ -136,6 +142,24 @@ Ext.define(
 				loader = me.loader;
 
 			return loader.isLoad();
+		},
+
+		/**
+		 * Определяет произошла ли заргузка данных.
+		 * @return {Boolean} true - загрзука произошла.
+		 */
+		isLoadedData: function ()
+		{
+			return this._loadedData;
+		},
+
+		/**
+		 * Устанавливает произошла ли заргузка.
+		 * @param {Boolean} loaded
+		 */
+		setLoadedData: function (loaded)
+		{
+			this._loadedData = loaded;
 		},
 
 		/**

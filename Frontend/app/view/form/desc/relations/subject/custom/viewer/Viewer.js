@@ -28,6 +28,8 @@ Ext.define(
 		{
 			var me = this;
 
+			me.hidden = true;
+
 			me.items = [
 				{
 					xtype: 'form-desc-relations-subject-custom-viewer-switcher'
@@ -48,8 +50,11 @@ Ext.define(
 			var me = this,
 				descManager = FBEditor.desc.Manager;
 
-			// показываем или скрываем поля редактирования
-			me.setVisible(descManager.loadingProcess);
+			if (descManager.isLoadedData())
+			{
+				// если данные загружены, то показываем краткую сводку
+				me.setVisible(true);
+			}
 
 			me.callParent(arguments);
 		},

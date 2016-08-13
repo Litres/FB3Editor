@@ -142,7 +142,12 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				form = view.getForm();
+				form = view.getForm(),
+				descManager = FBEditor.desc.Manager;
+
+
+			// устанавливаем флаг загрузки данных в форму
+			descManager.setLoadedData(true);
 
 			view.fireEvent('reset');
 			form.setValues(data);

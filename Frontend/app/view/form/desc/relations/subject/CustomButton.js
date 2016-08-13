@@ -56,7 +56,7 @@ Ext.define(
 
 		/**
 		 * Переключает контейнер с поиска на данные или обратно.
-		 * @param {Boolean} customToSearch Переключить ли контейнер на поиск.
+		 * @param {Boolean} [customToSearch] Переключить ли контейнер на поиск.
 		 */
 		switchContainers: function (customToSearch)
 		{

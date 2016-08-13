@@ -14,9 +14,14 @@ Ext.define(
 		onAccessHub: function ()
 		{
 			var me = this,
-				view = me.getView();
-
-			view.setVisible(true);
+				view = me.getView(),
+				descManager = FBEditor.desc.Manager;
+			
+			if (!descManager.isLoadedData())
+			{
+				// если данные не загружены, то показываем поле поиска
+				view.setVisible(true);
+			}
 		}
 	}
 );
