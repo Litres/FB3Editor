@@ -12,8 +12,15 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.subject.search.name.NameController',
 			'FBEditor.view.form.desc.relations.subject.search.name.window.Window'
 		],
-		controller: 'form.desc.relations.subject.search.name',
+
 		xtype: 'form-desc-relations-subject-searchName',
+		controller: 'form.desc.relations.subject.search.name',
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.item.SubjectItem} Родительский контейнер каждой персоны.
+		 */
+		_subjectItem: null,
 
 		createWindow: function ()
 		{
@@ -151,6 +158,21 @@ Ext.define(
 
 			// скрываем поля поиска и показываем данные
 			btn.switchContainers();
+		},
+
+		/**
+		 * Возвращает родительский контейнер каждой персоны.
+		 * @return {FBEditor.view.form.desc.relations.subject.item.SubjectItem}
+		 */
+		getSubjectItem: function ()
+		{
+			var me = this,
+				subjectItem = me._subjectItem;
+
+			subjectItem = subjectItem || me.up('form-desc-relations-subject-item');
+			me._subjectItem = subjectItem;
+
+			return subjectItem;
 		},
 
 		getFirstSearch: function ()

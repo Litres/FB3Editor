@@ -20,6 +20,12 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.item.SubjectItem} Родительский контейнер каждой персоны.
+		 */
+		_subjectItem: null,
+
+		/**
+		 * @private
 		 * @property {FBEditor.view.form.desc.relations.subject.custom.viewer.switcher.Switcher} Переключатель.
 		 */
 		_switcher: null,
@@ -57,6 +63,21 @@ Ext.define(
 			}
 
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает родительский контейнер каждой персоны.
+		 * @return {FBEditor.view.form.desc.relations.subject.item.SubjectItem}
+		 */
+		getSubjectItem: function ()
+		{
+			var me = this,
+				subjectItem = me._subjectItem;
+
+			subjectItem = subjectItem || me.up('form-desc-relations-subject-item');
+			me._subjectItem = subjectItem;
+
+			return subjectItem;
 		},
 
 		/**

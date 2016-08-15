@@ -32,6 +32,16 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {Object} Размеры для кнопок.
+		 * @property {String} Object.bigWidth Ширина для больших кнопок (используется по умолчанию, если передано).
+		 * @property {String} Object.bigHeight Высота для больших кнопок (используется по умолчанию, если передано).
+		 * @property {String} Object.smallWidth Ширина для маленьких кнопок.
+		 * @property {String} Object.smallHeight Высота для маленьких кнопок.
+		 */
+		btnSize: {},
+
+		/**
+		 * @private
 		 * @property {Object} Класс для группы кнопок.
 		 */
 		btnCls: '',
@@ -112,6 +122,7 @@ Ext.define(
 			me.btnAddCfg = config.btnAddCfg ? Ext.apply(me.btnAddCfg, config.btnAddCfg) : me.btnAddCfg;
 			me.btnRemoveCfg = config.btnRemoveCfg ? Ext.apply(me.btnRemoveCfg, config.btnRemoveCfg) : me.btnRemoveCfg;
 			me.btnStyle = config.btnStyle ? Ext.apply(me.btnStyle, config.btnStyle) : me.btnStyle;
+			me.btnSize = config.btnSize ? Ext.apply(me.btnSize, config.btnSize) : me.btnSize;
 			me.putStyle = config.putStyle ? Ext.apply(me.putStyle, config.putStyle) : me.putStyle;
 			me.enableBtnPut = config.enableBtnPut || me.enableBtnPut;
 			me.btnPutCfg = config.btnPutCfg ? Ext.apply(me.btnPutCfg, config.btnPutCfg) : me.btnPutCfg;
@@ -190,69 +201,36 @@ Ext.define(
 		},
 
 		/**
-		 * @private
-		 * Возвращает контейнер с кнопками.
-		 * @return {Ext.form.FieldContainer}
+		 * Изменяет размер кнопок.
+		 * @param {Boolean} isBig Большие ли кнопки.
 		 */
-		getButtons: function ()
+		setSizeButtons: function (isBig)
 		{
 			var me = this,
-				btnStyle = me.btnStyle,
-				btnAddCfg = me.btnAddCfg,
-				btnRemoveCfg = me.btnRemoveCfg,
-				enableBtnPut = me.enableBtnPut,
-				btnPutCfg = me.btnPutCfg,
-				btnCls = me.btnCls,
-				buttons,
-				items = [];
+				btnSize = me.btnSize,
+				btnWidth,
+				btnHeigth,
+				buttons;
 
-			btnPutCfg = Ext.apply(
-				btnPutCfg,
-				{
-					handler: me.putFields,
-					scope: me,
-					name: 'fieldcontainerreplicator-btn-put-' + me.groupName
-				}
-			);
-			btnAddCfg = Ext.apply(
-				btnAddCfg,
-				{
-					handler: me.addFields,
-					scope: me,
-					name: 'fieldcontainerreplicator-btn-add-' + me.groupName
-				}
-			);
-			btnRemoveCfg = Ext.apply(
-				btnRemoveCfg,
-				{
-					handler: me.removeFields,
-					scope: me,
-					name: 'fieldcontainerreplicator-btn-remove-' + me.groupName
-				}
-			);
-			items.push(btnRemoveCfg);
-			items.push(btnAddCfg);
-			if (enableBtnPut)
-			{
-				items.push(btnPutCfg);
-			}
 			buttons = [
-				{
-					xtype: 'fieldcontainer',
-					cls: 'plugin-fieldcontainerreplicator ' + btnCls,
-					hideLabel: true,
-					flex: 0,
-					height: '100%',
-					defaults: {
-						xtype: 'button',
-						tabIndex: -1,
-						style: btnStyle
-					},
-					items: items
-				}
+				me.getBtnAdd(),
+			    me.getBtnRemove(),
+			    me.getBtnPut()
 			];
 
-			return buttons;
+			Ext.Array.each(
+				buttons,
+			    function (btn)
+			    {
+				    // если существует конфиг с размерами кнопок, то изменяем размер
+				    if (btn && btnSize && btnSize.bigWidth)
+				    {
+					    btnWidth = isBig ? btnSize.bigWidth : btnSize.smallWidth;
+					    btnHeigth = isBig ? btnSize.bigHeight : btnSize.smallHeight;
+					    btn.setSize(btnWidth, btnHeigth);
+				    }
+			    }
+			);
 		},
 
 		/**
@@ -376,6 +354,97 @@ Ext.define(
 				// если контейнер не является дочерним, то проверяем не является ли он последним
 				me.checkLastInGroup(ownerCt, replicatorId);
 			}
+		},
+
+		/**
+		 * @private
+		 * @event afterRenderPlugin
+		 * Возвращает контейнер с кнопками.
+		 * @return {Ext.form.FieldContainer}
+		 */
+		getButtons: function ()
+		{
+			var me = this,
+				btnStyle = me.btnStyle,
+				btnAddCfg = me.btnAddCfg,
+				btnRemoveCfg = me.btnRemoveCfg,
+				enableBtnPut = me.enableBtnPut,
+				btnPutCfg = me.btnPutCfg,
+				btnCls = me.btnCls,
+				btnSize = me.btnSize,
+				buttons,
+				items = [];
+
+			btnPutCfg = Ext.apply(
+				btnPutCfg,
+				{
+					handler: me.putFields,
+					scope: me,
+					name: 'fieldcontainerreplicator-btn-put-' + me.groupName
+				}
+			);
+			btnAddCfg = Ext.apply(
+				btnAddCfg,
+				{
+					handler: me.addFields,
+					scope: me,
+					name: 'fieldcontainerreplicator-btn-add-' + me.groupName
+				}
+			);
+			btnRemoveCfg = Ext.apply(
+				btnRemoveCfg,
+				{
+					handler: me.removeFields,
+					scope: me,
+					name: 'fieldcontainerreplicator-btn-remove-' + me.groupName
+				}
+			);
+
+			items.push(btnRemoveCfg);
+			items.push(btnAddCfg);
+
+			if (enableBtnPut)
+			{
+				items.push(btnPutCfg);
+			}
+
+			if (btnSize)
+			{
+				// устанавливаем размеры кнопок по умолчанию
+				Ext.Array.each(
+					items,
+				    function (btnCfg)
+				    {
+					    btnCfg.width = btnSize.bigWidth;
+					    btnCfg.height = btnSize.bigHeight;
+				    }
+				);
+			}
+
+			buttons = [
+				{
+					xtype: 'fieldcontainer',
+					cls: 'plugin-fieldcontainerreplicator ' + btnCls,
+					hideLabel: true,
+					flex: 0,
+					height: '100%',
+					listeners: {
+						afterrender: function ()
+						{
+							// уведомляем компонент о рендеринге плагина
+							me.getCmp().fireEvent('afterRenderPlugin');
+						}
+					},
+					defaults: {
+						xtype: 'button',
+						tabIndex: -1,
+						style: btnStyle
+					},
+					items: items
+				}
+			];
+
+			return buttons;
 		},
 
 		/**

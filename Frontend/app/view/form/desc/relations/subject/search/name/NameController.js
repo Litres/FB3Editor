@@ -15,6 +15,7 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				win = view.getWindow(),
+				subjectItem = view.getSubjectItem(),
 				plugin,
 				btnAdd,
 				searchField;
@@ -45,6 +46,9 @@ Ext.define(
 
 			// сохраняем выбранную запись
 			view.saveToStorage(data);
+
+			// уменьшаем размер кнопок
+			subjectItem.fireEvent('resizeButtons', false);
 		}
 	}
 );

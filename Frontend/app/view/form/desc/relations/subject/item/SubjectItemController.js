@@ -34,7 +34,39 @@ Ext.define(
 				customContainer.fireEvent('showEditor', false);
 
 				searchContainer.setVisible(false);
+
+				// меняем размер кнопок на меленький
+				me.onResizeButtons(false);
 			}
+		},
+
+		/**
+		 * Изменяет размеры кнопок плагина.
+		 * @param {Boolean} isBig Большие ли кнопки.
+		 */
+		onResizeButtons: function (isBig)
+		{
+			var me = this,
+				view = me.getView(),
+				plugin;
+
+			plugin = view.getPlugin('fieldcontainerreplicator');
+
+			// изменяем размер кнопок плагина
+			plugin.setSizeButtons(isBig);
+		},
+
+		/**
+		 * Вызывается после рендеринга контейнера плагина.
+		 */
+		onAfterRenderPlugin: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				customContainer = view.getCustomContainer(),
+				customViewer;
+			
+			
 		},
 
 		onResetContainer: function ()

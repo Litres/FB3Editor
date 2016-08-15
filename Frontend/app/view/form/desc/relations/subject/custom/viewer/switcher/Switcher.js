@@ -36,6 +36,12 @@ Ext.define(
 		 */
 		_container: null,
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.item.SubjectItem} Родительский контейнер каждой персоны.
+		 */
+		_subjectItem: null,
+
 		initComponent: function ()
 		{
 			var me = this;
@@ -91,6 +97,21 @@ Ext.define(
 			me._container = container;
 			
 			return container;
+		},
+
+		/**
+		 * Возвращает родительский контейнер каждой персоны.
+		 * @return {FBEditor.view.form.desc.relations.subject.item.SubjectItem}
+		 */
+		getSubjectItem: function ()
+		{
+			var me = this,
+				subjectItem = me._subjectItem;
+
+			subjectItem = subjectItem || me.up('form-desc-relations-subject-item');
+			me._subjectItem = subjectItem;
+
+			return subjectItem;
 		}
 	}
 );

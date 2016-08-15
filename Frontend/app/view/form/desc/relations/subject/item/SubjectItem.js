@@ -21,7 +21,9 @@ Ext.define(
 		
 		listeners: {
 			resetContainer: 'onResetContainer',
-			loadInnerData: 'onLoadInnerData'
+			loadInnerData: 'onLoadInnerData',
+			resizeButtons: 'onResizeButtons',
+			afterRenderPlugin: 'onAfterRenderPlugin'
 		},
 		
 		plugins: {
@@ -30,9 +32,13 @@ Ext.define(
 			btnPos: 'end',
 			btnCls: 'plugin-fieldcontainerreplicator-big-btn',
 			btnStyle: {
-				margin: '0 0 0 5px',
-				width: '40px',
-				height: '65px'
+				margin: '0 0 0 5px'
+			},
+			btnSize: {
+				bigWidth: 40,
+				bigHeight: 65,
+				smallWidth: 40,
+				smallHeight: 25
 			},
 			alwaysInsertFirst: true
 		},

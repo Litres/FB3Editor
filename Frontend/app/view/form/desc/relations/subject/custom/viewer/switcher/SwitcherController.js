@@ -12,6 +12,7 @@ Ext.define(
 		alias: 'controller.form.desc.relations.subject.custom.viewer.switcher',
 
 		/**
+		 * @event resizeButtons
 		 * @event showEditor
 		 */
 		onClick: function ()
@@ -19,12 +20,16 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				customContainer = view.getCustomContainer(),
+				subjectItem = view.getSubjectItem(),
 				stateCmp;
 
 			// переключаем состояние
 			view.toggle();
 
 			stateCmp = view.getStateCmp();
+
+			// изменяем размеры кнопок
+			subjectItem.fireEvent('resizeButtons', stateCmp);
 
 			// показываем или скрываем редактируемые поля
 			customContainer.fireEvent('showEditor', stateCmp);
