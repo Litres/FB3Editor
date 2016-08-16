@@ -163,7 +163,13 @@ Ext.define(
 			if (manager.isLoadUrl())
 			{
 				// загружаем описание из url
-				manager.loadFromUrl();
+				Ext.defer(
+					function ()
+					{
+						manager.loadFromUrl();
+					},
+				    100
+				);
 			}
 
 			me.callParent(arguments);

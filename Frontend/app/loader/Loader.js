@@ -64,7 +64,15 @@ Ext.define(
 		 */
 		getArt: function ()
 		{
-			return this.art;
+			var me = this,
+				routeManager = FBEditor.route.Manager,
+				art = me.art,
+				params;
+
+			params = routeManager.getParams();
+			art = art || params.art || params.body_art;
+
+			return art;
 		},
 
 		/**

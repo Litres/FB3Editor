@@ -243,3 +243,11 @@ body {
 .panel-main-props .x-panel-body-default {
 	background: #ecebec;
 }
+
+/* пуста панель с информационным сообщением */
+.panel-empty {
+	text-align: center;
+}
+.panel-empty .message {
+	font-size: 3em;
+}

@@ -27,13 +27,25 @@ Ext.define(
 				data = me.getData(),
 				bridgeWindow = me.getBridgeWindow(),
 				bridgeProps = FBEditor.getBridgeProps(),
+				editorManager = FBEditor.getEditorManager(true),
+				descManager = FBEditor.desc.Manager,
 				result = true,
 				content,
 				props;
 
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
 			me.activePanelContent = content.getLayout().getActiveItem();
-			content.fireEvent('contentBody');
+
+			if (descManager.isLoadUrl() && !editorManager.isLoadUrl())
+			{
+				// если тело еще не было загружено по url, то загружаем
+				editorManager.loadFromUrl();
+			}
+			else 
+			{
+				content.fireEvent('contentBody');
+			}
+			
 			props = bridgeProps.Ext && bridgeProps.Ext.getCmp ? bridgeProps.Ext.getCmp('panel-main-props-card') : null;
 
 			if (props)

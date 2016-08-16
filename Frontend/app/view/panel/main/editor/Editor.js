@@ -65,6 +65,7 @@ Ext.define(
 
 			// менеджер для редактора тела книги
 			me.manager = me.manager || Ext.create('FBEditor.view.panel.main.editor.Manager', me);
+			me.manager.init();
 		},
 
 		initEditor: function ()

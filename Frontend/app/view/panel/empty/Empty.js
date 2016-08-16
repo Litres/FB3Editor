@@ -10,26 +10,66 @@ Ext.define(
 	'FBEditor.view.panel.empty.Empty',
 	{
 		extend: 'Ext.panel.Panel',
+
 		id: 'panel-empty',
 		xtype: 'panel-empty',
-		//controller: 'panel.empty',
-		layout: 'fit',
+		cls: 'panel-empty',
+
+		layout: 'center',
+
+		/**
+		 * @private
+		 * @property {Ext.Component}
+		 */
+		_textPanel: null,
 
 		translateText: {
-			loading: 'Загрузка...'
+			defaultText: 'Загрузка...'
 		},
 
-		initComponent: function ()
+		afterRender: function ()
+		{
+			var me = this,
+				textPanel;
+
+			textPanel = Ext.widget(
+				{
+					xtype: 'component',
+					tpl: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><p class="message">{text}</p>'
+				}
+			);
+
+			me.add(textPanel);
+			me._textPanel = textPanel;
+
+			me.callParent(arguments);
+		},
+
+		afterHide: function ()
 		{
 			var me = this;
 
-			me.items = [
-				{
-					html: me.translateText.loading
-				}
-			];
+			// устанавливаем текст по умолчанию
+			me.setMessage();
 
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Устанавливает сообщение.
+		 * @param {String} [text] Текстовое сообщение.
+		 */
+		setMessage: function (text)
+		{
+			var me = this,
+				textPanel = me._textPanel,
+				defaultText = me.translateText.defaultText,
+				data;
+
+			data = {
+				text: text || defaultText
+			};
+			textPanel.update(data);
 		}
 	}
 );

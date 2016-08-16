@@ -90,7 +90,13 @@ Ext.define(
 			if (editorManager.isLoadUrl())
 			{
 				// показываем редактор тела книги
-				me.fireEvent('contentBody');
+				Ext.defer(
+					function ()
+					{
+						me.fireEvent('contentBody');
+					},
+				    100
+				);
 			}
 		},
 

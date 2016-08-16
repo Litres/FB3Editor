@@ -21,13 +21,15 @@ Ext.define(
 		{
 			var me = this,
 				routeManager = FBEditor.route.Manager,
-				params;
+				params,
+				art;
 
 			params = routeManager.getParams();
+			art = params.art;
 
-			if (params.art)
+			if (art)
 			{
-				me.setArt(params.art);
+				me.setArt(art);
 			}
 		},
 

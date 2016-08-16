@@ -80,24 +80,17 @@ Ext.define(
 		loadFromUrl: function (art)
 		{
 			var me = this,
-				loader = me.loader,
-				emptyPanel = Ext.getCmp('panel-empty');
+				loader = me.loader;
 
-			// ожидаем пока не будет отрисована пустая панель
-			if (!emptyPanel || !emptyPanel.rendered)
-			{
-				Ext.defer(
-					function ()
-					{
-						me.loadFromUrl();
-					},
-					500
-				);
-				
-				return;
-			}
-			
-			loader.load(art).then(
+			me.setLoading(art).then(
+				function (art)
+				{
+					// загружаем описание с хаба
+					art = art || me.getArtId();
+
+					return loader.load(art);
+				}
+			).then(
 				function (xml)
 				{
 					var resourceManager = FBEditor.resource.Manager;
@@ -105,8 +98,12 @@ Ext.define(
 					// загружаем данные в форму
 					me.loadDataToForm(xml);
 
-					// загружаем ресурсы
-					resourceManager.loadFromUrl(me.getArtId());
+					// загружены ли уже ресурсы
+					if (!resourceManager.isLoadUrl())
+					{
+						// загружаем ресурсы
+						resourceManager.loadFromUrl(me.getArtId());
+					}
 				},
 				function (response)
 				{
@@ -151,6 +148,49 @@ Ext.define(
 		isLoadedData: function ()
 		{
 			return this._loadedData;
+		},
+
+		/**
+		 * Устанавливает сообщение о загрузке.
+		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
+		 */
+		setLoading: function (art)
+		{
+			var me = this,
+				promise;
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					var emptyPanel = Ext.getCmp('panel-empty'),
+						contentPanel = Ext.getCmp('panel-main-content');
+
+					//console.log('emptyPanel', !emptyPanel || !emptyPanel.rendered);
+
+					// ожидаем пока не будет отрисована пустая панель
+					if (!emptyPanel || !emptyPanel.rendered)
+					{
+						Ext.defer(
+							function ()
+							{
+								resolve(me.setLoading(art));
+							},
+							500
+						);
+					}
+
+					// показываем пустую панель
+					contentPanel.fireEvent('contentEmpty');
+
+					// устанавливаем сообщение
+					emptyPanel.setMessage('Загрузка описания...');
+
+					resolve(art);
+				}
+			);
+
+			return promise;
 		},
 
 		/**
@@ -342,108 +382,67 @@ Ext.define(
 				desc,
 				delay;
 
-			try
-			{
-				if (content.isActiveItem('form-desc'))
+			desc = FBEditor.util.xml.Json.xmlToJson(xml);
+			desc = desc['fb3-description'];
+			me.fb3DescId = desc._id;
+			desc.xml = xml;
+
+			xml = xml.replace(/[\n\r\t]/g, '');
+			//console.log('desc', desc);
+
+			// конвертируем данные для формы
+			desc = converter.toForm(desc);
+			//console.log('desc convert', desc);
+
+			// указываем, что данные вводятся не пользователям, а во время загрузки
+			me.loadingProcess = true;
+
+			// создаем контент в полях редактора текста
+			Ext.Array.each(
+				editorNames,
+				function (name)
 				{
-					// переключаемся на пустую панель
-					me.needShowForm = true;
-					content.fireEvent('contentEmpty');
-				}
+					var editor,
+						manager,
+						data,
+						reg;
 
-				desc = FBEditor.util.xml.Json.xmlToJson(xml);
-				desc = desc['fb3-description'];
-				me.fb3DescId = desc._id;
-				desc.xml = xml;
+					// проставляем пространство имен для создания нужного корневого элемента описания
+					reg = new RegExp('<' + name + '>(.*?)</' + name + '>');
+					data = xml.match(reg);
+					data = data ? '<desc:' + name +
+					              ' xmlns:desc="http://www.fictionbook.org/FictionBook3/description">' + data[1] +
+					              '</desc:' + name + '>' : null;
 
-				xml = xml.replace(/[\n\r\t]/g, '');
-				//console.log('desc', desc);
-
-				// конвертируем данные для формы
-				desc = converter.toForm(desc);
-				//console.log('desc convert', desc);
-			}
-			catch (e)
-			{
-				if (me.needShowForm)
-				{
-					// переключаемся на текст для инициализации необходимых компонентов
-					content.fireEvent('contentBody');
-
-					// переключаемся на описание
-					me.needShowForm = false;
-					content.fireEvent('contentDesc');
-				}
-
-				throw e;
-			}
-
-			// задержка
-			delay = me.isLoadUrl() ? 100 : 0;
-
-			Ext.defer(
-				function ()
-				{
-					// указываем, что данные вводятся не пользователям, а во время загрузки
-					me.loadingProcess = true;
-
-					// создаем контент в полях редактора текста
-					Ext.Array.each(
-						editorNames,
-					    function (name)
-					    {
-						    var editor,
-							    manager,
-							    data,
-							    reg;
-
-						    // проставляем пространство имен для создания нужного корневого элемента описания
-						    reg = new RegExp('<' + name + '>(.*?)</' + name + '>');
-						    data = xml.match(reg);
-						    data = data ? '<desc:' + name +
-						           ' xmlns:desc="http://www.fictionbook.org/FictionBook3/description">' + data[1] +
-						           '</desc:' + name + '>' : null;
-
-						    if (data)
-						    {
-							    // полноценная xml-строка
-							    data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
-
-							    // редактор текста
-							    editor = Ext.getCmp('form-desc-' + name).getBodyEditor();
-
-							    // менеджер редактора
-							    manager = editor.getManager();
-
-							    // создаем контент редактора из xml-строки
-							    manager.createContent(data);
-						    }
-					    }
-					);
-
-					// отправляем данные в форму описания
-					form.fireEvent('loadDesc', desc);
-
-					me.loadingProcess = false;
-
-					if (FBEditor.accessHub)
+					if (data)
 					{
-						// если доступ к хабу есть, то показываем поля поиска
-						form.fireEvent('accessHub')
-					}
+						// полноценная xml-строка
+						data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
 
-					if (me.needShowForm)
-					{
-						// переключаемся на текст для инициализации необходимых компонентов
-						content.fireEvent('contentBody');
+						// редактор текста
+						editor = Ext.getCmp('form-desc-' + name).getBodyEditor();
 
-						// переключаемся на описание
-						me.needShowForm = false;
-						content.fireEvent('contentDesc');
+						// менеджер редактора
+						manager = editor.getManager();
+
+						// создаем контент редактора из xml-строки
+						manager.createContent(data);
 					}
-				},
-			    delay
+				}
 			);
+
+			// отправляем данные в форму описания
+			form.fireEvent('loadDesc', desc);
+
+			me.loadingProcess = false;
+
+			if (FBEditor.accessHub)
+			{
+				// если доступ к хабу есть, то показываем поля поиска
+				form.fireEvent('accessHub')
+			}
+			
+			content.fireEvent('contentDesc');
 		},
 
 		/**

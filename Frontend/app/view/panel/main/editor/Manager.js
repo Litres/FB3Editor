@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.main.editor.Manager',
 	{
 		extend: 'FBEditor.editor.Manager',
+		requires: [
+			'FBEditor.view.panel.main.editor.Loader'
+		],
 
 		/**
 		 * @property {String} Адрес загрузки/сохранения тела.
@@ -39,6 +42,18 @@ Ext.define(
 		 * @property {Number} Айди произведения на хабе.
 		 */
 		art: null,
+
+		/**
+		 * Инициализирует менеджер.
+		 */
+		init: function ()
+		{
+			var me = this,
+				loader = FBEditor.view.panel.main.editor.Loader;
+
+			// загрузчик
+			me.loader = loader.getLoader();
+		},
 
 		createContent: function ()
 		{
@@ -105,101 +120,121 @@ Ext.define(
 		isLoadUrl: function ()
 		{
 			var me = this,
-				url = me.loadUrl,
-				res;
+				loader = me.loader;
 
-			res = url && url !== 'undefined' ? true : false;
-
-			return res;
-
+			return loader.isLoad();
 		},
 
 		/**
 		 * Загружает тело из url.
+		 * @param {Number} [art] Айди произведениея на хабе.
 		 */
-		loadFromUrl: function ()
+		loadFromUrl: function (art)
 		{
 			var me = this,
-				descManager = FBEditor.desc.Manager,
-				art,
-				url;
+				loader = me.loader;
 
-			// загружена ли пустая панель
-			if (!Ext.getCmp('panel-empty') || !Ext.getCmp('panel-empty').rendered)
-			{
-				Ext.defer(
-					function ()
-					{
-						me.loadFromUrl();
-					},
-					500
-				);
-				
-				return;
-			}
-
-			art = descManager.getArtId();
-			me.loadUrl = me.url + '?art=' + art;
-			url = me.loadUrl;
-			me.saveUrl = me.url;
-
-			Ext.log({level: 'info', msg: 'Загрузка тела из ' + url});
-
-			Ext.Ajax.request(
+			me.setLoading(art).then(
+				function (art)
 				{
-					url: url,
-					scope: me,
-					success: function(response)
+					// загружаем тело с хаба
+
+					art = art || me.getArtId();
+
+					return loader.load(art);
+				}
+			).then(
+				function (xml)
+				{
+					var resourceManager = FBEditor.resource.Manager;
+
+					// загружены ли уже ресурсы
+					if (!resourceManager.isLoadUrl())
 					{
-						this.responseLoad(response);
-					},
-					failure: function (response)
-					{
-						this.responseLoad(response);
+						// загружаем ресурсы с хаба
+						resourceManager.loadFromUrl(me.getArtId());
 					}
+
+					// загружаем данные в редактор
+					me.loadDataToEditor(xml);
+				},
+				function (response)
+				{
+					// возникла ошибка
+
+					Ext.log(
+						{
+							level: 'error',
+							msg: 'Ошибка загрузки тела книги',
+							dump: response
+						}
+					);
+
+					Ext.Msg.show(
+						{
+							title: 'Ошибка',
+							message: 'Невозможно загрузить тело книги',
+							buttons: Ext.MessageBox.OK,
+							icon: Ext.MessageBox.ERROR
+						}
+					);
 				}
 			);
 		},
 
 		/**
-		 * @private
-		 * Обработчик ответа на запрос загрузки тела книги с хаба.
-		 * @param {Object} response Ответ запроса.
+		 * Устанавливает сообщение о загрузке.
+		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
 		 */
-		responseLoad: function (response)
+		setLoading: function (art)
 		{
 			var me = this,
-				url = me.loadUrl,
-				xml,
-				msg;
+				promise;
 
-			try
-			{
-				if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					// загружаем текст в редактор
-					xml = response.responseText;
-					me.loadDataToEditor(xml);
-				}
-				else
-				{
-					throw Error();
-				}
-			}
-			catch (e)
-			{
-				msg = ' (' + e + ')';
-				Ext.log({level: 'error', msg: 'Ошибка загрузки тела книги',
-					        dump: {response: response, error: e}});
-				Ext.Msg.show(
+					var emptyPanel = Ext.getCmp('panel-empty'),
+						contentPanel = Ext.getCmp('panel-main-content');
+
+					//console.log('emptyPanel', !emptyPanel || !emptyPanel.rendered);
+
+					// ожидаем пока не будет отрисована пустая панель
+					if (!emptyPanel || !emptyPanel.rendered)
 					{
-						title: 'Ошибка',
-						message: 'Невозможно загрузить тело книги по адресу ' + url + msg,
-						buttons: Ext.MessageBox.OK,
-						icon: Ext.MessageBox.ERROR
+						Ext.defer(
+							function ()
+							{
+								resolve(me.setLoading(art));
+							},
+							500
+						);
 					}
-				);
-			}
+
+					// показываем пустую панель
+					contentPanel.fireEvent('contentEmpty');
+
+					// устанавливаем сообщение
+					emptyPanel.setMessage('Загрузка текста...');
+
+					resolve(art);
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Возвращает айди произведения, загружаемого с хаба.
+		 * @return {String}
+		 */
+		getArtId: function ()
+		{
+			var me = this,
+				loader = me.loader;
+
+			return loader.getArt();
 		},
 
 		/**
@@ -210,60 +245,10 @@ Ext.define(
 		loadDataToEditor: function (xml)
 		{
 			var me = this,
-				editor = me.getEditor(),
-				content = Ext.getCmp('panel-main-content'),
-				delay;
+				content = Ext.getCmp('panel-main-content');
 
-			try
-			{
-				if (content.isActiveItem('main-editor'))
-				{
-					// переключаемся на пустую панель
-					me.needShowForm = true;
-					content.fireEvent('contentEmpty');
-				}
-			}
-			catch (e)
-			{
-				if (me.needShowForm)
-				{
-					// переключаемся на описание для инициализации необходимых компонентов
-					content.fireEvent('contentDesc');
-
-					// переключаемся на текст
-					me.needShowForm = false;
-					content.fireEvent('contentBody');
-				}
-
-				throw e;
-			}
-
-			// задержка
-			delay = me.isLoadUrl() ? 100 : 0;
-
-			Ext.defer(
-				function ()
-				{
-					// указываем, что данные вводятся не пользователям, а во время загрузки
-					me.loadingProcess = true;
-
-					// создаем контент из xml-строки
-					me.createContent(xml);
-
-					me.loadingProcess = false;
-
-					if (me.needShowForm)
-					{
-						// переключаемся на описание для инициализации необходимых компонентов
-						content.fireEvent('contentDesc');
-
-						// переключаемся на текст
-						me.needShowForm = false;
-						content.fireEvent('contentBody');
-					}
-				},
-				delay
-			);
+			me.createContent(xml);
+			content.fireEvent('contentBody');
 		},
 
 		/**

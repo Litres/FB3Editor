@@ -62,7 +62,7 @@ Ext.define(
 		 */
 		loader: null,
 
-		constructor: function ()
+		init: function ()
 		{
 			var me = this;
 
@@ -78,6 +78,8 @@ Ext.define(
 		{
 			var me = this,
 				loader = me.loader;
+
+			art = art || me.getArtId();
 
 			// загружаем список ресурсов
 			loader.load(art).then(
@@ -126,6 +128,18 @@ Ext.define(
 					me.load(loader.getLoadedDataResources());
 				}
 			);
+		},
+
+		/**
+		 * Загружаются ли ресурсы отдельно по url.
+		 * @return {Boolean}
+		 */
+		isLoadUrl: function ()
+		{
+			var me = this,
+				loader = me.loader;
+
+			return loader.isLoad();
 		},
 
 		/**

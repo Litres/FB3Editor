@@ -179,6 +179,9 @@ Ext.define(
 			// роуты
 			FBEditor.route.Manager.init();
 
+			// инициализируем менеджер ресурсов
+			FBEditor.resource.Manager.init();
+
 			// определяем доступность хаба
 			me.getAccessHub();
 		},
