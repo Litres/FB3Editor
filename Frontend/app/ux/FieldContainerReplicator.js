@@ -28,7 +28,7 @@ Ext.define(
 		 * @private
 		 * @property {Object} Стили для кнопок.
 		 */
-		btnStyle: {},
+		btnStyle: null,
 
 		/**
 		 * @private
@@ -38,7 +38,7 @@ Ext.define(
 		 * @property {String} Object.smallWidth Ширина для маленьких кнопок.
 		 * @property {String} Object.smallHeight Высота для маленьких кнопок.
 		 */
-		btnSize: {},
+		btnSize: null,
 
 		/**
 		 * @private
@@ -104,7 +104,7 @@ Ext.define(
 		constructor: function(config)
 		{
 			var me = this;
-
+			
 			me.btnAddCfg = {
 				html: '<i class="fa fa-plus" title="' + me.translateText.add + '"></i>',
 				cls: 'btn-plus'
