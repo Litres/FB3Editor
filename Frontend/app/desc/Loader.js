@@ -70,7 +70,7 @@ Ext.define(
 							{
 								var xml;
 
-								if (response && response.responseText)
+								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 								{
 									xml = response.responseText;
 									resolve(xml);

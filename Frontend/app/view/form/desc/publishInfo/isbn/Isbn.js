@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.publishInfo.isbn.Isbn',
 	{
 		extend: 'FBEditor.view.form.desc.isbn.Isbn',
+		
 		xtype: 'form-desc-publishInfo-isbn',
 
 		fieldConfig: {

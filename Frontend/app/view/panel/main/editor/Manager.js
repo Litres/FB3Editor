@@ -178,51 +178,11 @@ Ext.define(
 							icon: Ext.MessageBox.ERROR
 						}
 					);
+
+					// убираем информационное сообщение о загрузке
+					me.clearLoading();
 				}
 			);
-		},
-
-		/**
-		 * Устанавливает сообщение о загрузке.
-		 * @param {Number} [art] Айди произведениея на хабе.
-		 * @return {Promise}
-		 */
-		setLoading: function (art)
-		{
-			var me = this,
-				promise;
-
-			promise = new Promise(
-				function (resolve, reject)
-				{
-					var emptyPanel = Ext.getCmp('panel-empty'),
-						contentPanel = Ext.getCmp('panel-main-content');
-
-					//console.log('emptyPanel', !emptyPanel || !emptyPanel.rendered);
-
-					// ожидаем пока не будет отрисована пустая панель
-					if (!emptyPanel || !emptyPanel.rendered)
-					{
-						Ext.defer(
-							function ()
-							{
-								resolve(me.setLoading(art));
-							},
-							500
-						);
-					}
-
-					// показываем пустую панель
-					contentPanel.fireEvent('contentEmpty');
-
-					// устанавливаем сообщение
-					emptyPanel.setMessage('Загрузка текста...');
-
-					resolve(art);
-				}
-			);
-
-			return promise;
 		},
 
 		/**
@@ -266,6 +226,62 @@ Ext.define(
 			        bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation') : null;
 
 			return panel;
+		},
+
+		/**
+		 * @private
+		 * Устанавливает сообщение о загрузке.
+		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
+		 */
+		setLoading: function (art)
+		{
+			var me = this,
+				promise;
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					var emptyPanel = Ext.getCmp('panel-empty'),
+						contentPanel = Ext.getCmp('panel-main-content');
+
+					//console.log('emptyPanel', !emptyPanel || !emptyPanel.rendered);
+
+					// ожидаем пока не будет отрисована пустая панель
+					if (!emptyPanel || !emptyPanel.rendered)
+					{
+						Ext.defer(
+							function ()
+							{
+								resolve(me.setLoading(art));
+							},
+							500
+						);
+					}
+
+					// показываем пустую панель
+					contentPanel.fireEvent('contentEmpty');
+
+					// устанавливаем сообщение
+					emptyPanel.setMessage('Загрузка текста...');
+
+					resolve(art);
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * @private
+		 * Убирает информационное сообщение о загрузке.
+		 */
+		clearLoading: function ()
+		{
+			var contentPanel = Ext.getCmp('panel-main-content');
+
+			// показываем панель описания
+			contentPanel.fireEvent('contentBody');
 		}
 	}
 );

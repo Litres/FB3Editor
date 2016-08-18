@@ -11,9 +11,12 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.publishInfo.sequence.SequenceController'
 		],
+		
 		xtype: 'form-desc-publishInfo-sequence',
 		controller: 'form.desc.publishInfo.sequence',
+		
 		layout: 'hbox',
+		
 		defaults: {
 			anchor: '100%',
 			flex: 1,
