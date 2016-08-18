@@ -19,6 +19,7 @@ Ext.define(
 			accessHub: 'onAccessHub',
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
+			loadInnerData: 'onLoadInnerData',
 			editable: 'onEditable'
 		},
 

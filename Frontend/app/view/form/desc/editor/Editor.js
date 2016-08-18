@@ -38,6 +38,12 @@ Ext.define(
 		 */
 		bodyEditor: null,
 
+		/**
+		 * @private
+		 * @property {String} Название корневого элемента.
+		 */
+		rootElementName: '',
+
 		afterRender: function ()
 		{
 			var me = this,
@@ -90,6 +96,15 @@ Ext.define(
 		getBodyEditor: function ()
 		{
 			return this.bodyEditor;
+		},
+
+		/**
+		 * Возвращает название корневого элемента.
+		 * @return {String} 
+		 */
+		getRootElementName: function ()
+		{
+			return this.rootElementName;
 		}
 	}
 );

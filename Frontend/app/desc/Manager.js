@@ -18,8 +18,8 @@ Ext.define(
 		editorNames: [
 			'annotation',
 			'history',
-			'preamble',
-			'biblio-description'
+			'preamble'/*,
+			'biblio-description'*/
 		],
 
 		/**
@@ -270,17 +270,10 @@ Ext.define(
 
 					if (data)
 					{
-						// полноценная xml-строка
-						data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
+						// компонент редактора текста
+						editor = Ext.getCmp('form-desc-' + name);
 
-						// редактор текста
-						editor = Ext.getCmp('form-desc-' + name).getBodyEditor();
-
-						// менеджер редактора
-						manager = editor.getManager();
-
-						// создаем контент редактора из xml-строки
-						manager.createContent(data);
+						me.createContentEditor(editor, data);
 					}
 				}
 			);
@@ -292,11 +285,74 @@ Ext.define(
 
 			if (FBEditor.accessHub)
 			{
+				// TODO возможно устаревшее условие, так как событие теперь выбрасывается для всех компонентов формы
+				// автоматически после получения доступа к хабу
+				
 				// если доступ к хабу есть, то показываем поля поиска
-				form.fireEvent('accessHub')
+				form.fireEvent('accessHub');
 			}
 
 			content.fireEvent('contentDesc');
+		},
+
+		/**
+		 * Создает контент для редактора текста из xml.
+		 * @param {FBEditor.view.form.desc.editor.Editor} editor Компонент редактора текста.
+		 * @param {String} data Xml-строка.
+		 */
+		createContentEditor: function (editor, data)
+		{
+			var me = this,
+				promise;
+
+			// создает контент
+			function _createContent (editor, data)
+			{
+				var bodyEditor,
+					manager;
+
+				// полноценная xml-строка
+				data = '<?xml version="1.0" encoding="UTF-8"?>' + data;
+
+				// редактор текста
+				bodyEditor = editor.getBodyEditor();
+
+				// менеджер редактора
+				manager = bodyEditor.getManager();
+
+				// создаем контент редактора из xml-строки
+				manager.createContent(data);
+			}
+
+
+			if (editor.rendered)
+			{
+				_createContent(editor, data);
+			}
+			else
+			{
+				// данные можно добавить только в отрендеринный компонент
+				
+				promise = new Promise(
+					function (resolve, reject)
+					{
+						editor.on(
+							'afterrender',
+							function ()
+							{
+								resolve();
+							}
+						);
+					}
+				);
+
+				promise.then(
+					function ()
+					{
+						_createContent(editor, data);
+					}
+				);
+			}
 		},
 
 		/**
