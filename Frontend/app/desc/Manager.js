@@ -174,7 +174,12 @@ Ext.define(
 			// получаем xml
 			xml = me.getXml();
 
-			loader.save(xml).then(
+			me.setLoading('Сохранение описания...').then(
+				function ()
+				{
+					return loader.save(xml);
+				}
+			).then(
 				function (xml)
 				{
 					Ext.log(
@@ -186,6 +191,9 @@ Ext.define(
 
 					// загружаем полученный с хаба xml в форму
 					me.loadDataToForm(xml);
+
+					// убираем информационное сообщение
+					me.clearLoading();
 					
 					resolve();
 				},
@@ -216,6 +224,9 @@ Ext.define(
 							icon: Ext.MessageBox.ERROR
 						}
 					);
+
+					// убираем информационное сообщение
+					me.clearLoading();
 					
 					reject();
 				}
@@ -610,10 +621,10 @@ Ext.define(
 		/**
 		 * @private
 		 * Устанавливает сообщение о загрузке.
-		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @param {String} [msg] Сообщение.
 		 * @return {Promise}
 		 */
-		setLoading: function (art)
+		setLoading: function (msg)
 		{
 			var me = this,
 				promise;
@@ -632,7 +643,7 @@ Ext.define(
 						Ext.defer(
 							function ()
 							{
-								resolve(me.setLoading(art));
+								resolve(me.setLoading(msg));
 							},
 							500
 						);
@@ -641,10 +652,12 @@ Ext.define(
 					// показываем пустую панель
 					contentPanel.fireEvent('contentEmpty');
 
-					// устанавливаем сообщение
-					emptyPanel.setMessage('Загрузка описания...');
+					msg = msg || 'Загрузка описания...';
 
-					resolve(art);
+					// устанавливаем сообщение
+					emptyPanel.setMessage(msg);
+
+					resolve();
 				}
 			);
 
