@@ -18,8 +18,7 @@ Ext.define(
 		editorNames: [
 			'annotation',
 			'history',
-			'preamble'/*,
-			'biblio-description'*/
+			'preamble'
 		],
 
 		/**

@@ -9,12 +9,19 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.relations.subject.custom.viewer.ViewerController',
 			'FBEditor.view.form.desc.relations.subject.custom.viewer.link.Link',
 			'FBEditor.view.form.desc.relations.subject.custom.viewer.switcher.Switcher',
 			'FBEditor.view.form.desc.relations.subject.custom.viewer.title.Title'
 		],
 
 		xtype: 'form-desc-relations-subject-custom-viewer',
+		controller: 'form.desc.relations.subject.custom.viewer',
+		
+		listeners: {
+			setTitle: 'onSetTitle',
+			setLink: 'onSetLink'
+		},
 
 		layout: 'hbox',
 
@@ -29,6 +36,19 @@ Ext.define(
 		 * @property {FBEditor.view.form.desc.relations.subject.custom.viewer.switcher.Switcher} Переключатель.
 		 */
 		_switcher: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.custom.viewer.title.Title} Компонент стандартное
+		 * написание.
+		 */
+		_title: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.custom.viewer.link.Link} Компонент тип связи.
+		 */
+		_link: null,
 
 		initComponent: function ()
 		{
@@ -93,6 +113,36 @@ Ext.define(
 			me._switcher = switcher;
 
 			return switcher;
+		},
+
+		/**
+		 * Возвращает компонент стандартное написание.
+		 * @return {FBEditor.view.form.desc.relations.subject.custom.viewer.title.Title}
+		 */
+		getTitle: function ()
+		{
+			var me = this,
+				title = me._title;
+
+			title = title || me.down('form-desc-relations-subject-custom-viewer-title');
+			me._title = title;
+
+			return title;
+		},
+
+		/**
+		 * Возвращает компонент тип связи.
+		 * @return {FBEditor.view.form.desc.relations.subject.custom.viewer.link.Link}
+		 */
+		getLink: function ()
+		{
+			var me = this,
+				link = me._link;
+
+			link = link || me.down('form-desc-relations-subject-custom-viewer-link');
+			me._link = link;
+
+			return link;
 		}
 	}
 );

@@ -38,6 +38,12 @@ Ext.define(
 		 */
 		list: null,
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.relations.subject.CustomContainer} Родительский контейнер данных.
+		 */
+		_container: null,
+
 		translateText: {
 			label: 'Тип связи'
 		},
@@ -108,6 +114,21 @@ Ext.define(
 			me.radio = radio;
 
 			return radio;
+		},
+
+		/**
+		 * Возвращает родительский контейнер данных.
+		 * @return {FBEditor.view.form.desc.relations.subject.CustomContainer}
+		 */
+		getCustomContainer: function ()
+		{
+			var me = this,
+				container = me._container;
+
+			container = container || me.up('form-desc-relations-subject-container-custom');
+			me._container = container;
+
+			return container;
 		}
 	}
 );

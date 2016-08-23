@@ -28,11 +28,28 @@ Ext.define(
 		{
 			var me= this,
 				view = me.getView(),
-				radio = view.getRadio();
+				customContainer = view.getCustomContainer(),
+				radio = view.getRadio(),
+				list = view.getList(),
+				viewer,
+				listVal,
+				listData;
 
+			// отмечаем радиобатон
 			radio = radio.child('[reference=linkRadioOther]');
-			//console.log('change list', radio);
 			radio.setValue(true);
+
+			listVal = list.getValue();
+
+			if (listVal)
+			{
+				// получаем данные выбранной записи
+				listData = list.findRecordByValue(listVal).getData();
+
+				// устанавдиваем тип связи в краткой сводке
+				viewer = customContainer.getCustomViewer();
+				viewer.fireEvent('setLink', listData.name);
+			}
 		}
 	}
 );

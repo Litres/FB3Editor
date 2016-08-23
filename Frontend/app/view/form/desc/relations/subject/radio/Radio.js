@@ -19,6 +19,8 @@ Ext.define(
 			change: 'onChange',
 			loadData: 'onLoadData'
 		},
+		
+		_container: null,
 
 		statics:
 		{
@@ -81,6 +83,22 @@ Ext.define(
 			me.self.numberGroup = numberGroup;
 
 			me.callParent(arguments);
+		},
+		
+		/**
+		 * Возвращает родительский контейнер данных.
+		 * @return {FBEditor.view.form.desc.relations.subject.CustomContainer}
+		 */
+		getCustomContainer: function ()
+		{
+			var me = this,
+				container = me._container;
+
+			container = container || me.up('form-desc-relations-subject-container-custom');
+			me._container = container;
+
+			return container;
 		}
+		
 	}
 );

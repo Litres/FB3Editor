@@ -17,6 +17,7 @@ Ext.define(
 
 			//console.log('load', data);
 			view.setValue(data);
+			me.setLinkViewer(Ext.Object.getValues(data)[0]);
 		},
 
 		/**
@@ -32,11 +33,15 @@ Ext.define(
 				listVal,
 				val,
 				percents,
-				percent;
-
+				percent,
+				name;
+				
 			val = Ext.Object.getValues(newVal)[0];
+			
+			
+			
 
-			//console.log('change', val, Ext.Object.getValues(oldVal)[0], radio);
+			console.log(Ext.Object.getValues(oldVal)[0]);
 
 			if (val === 'other-list')
 			{
@@ -71,6 +76,21 @@ Ext.define(
 					percent.setValue(100);
 				}
 			}
+			
+			
+			me.setLinkViewer(val);
+		},
+		
+		setLinkViewer: function(newVal) {
+			var me = this,
+				view = me.getView(),
+				viewer,
+				customContainer = view.getCustomContainer(),
+			
+			viewer = customContainer.getCustomViewer();
+			
+			viewer.fireEvent('setLink', view.translateText[newVal]);
 		}
+		
 	}
 );

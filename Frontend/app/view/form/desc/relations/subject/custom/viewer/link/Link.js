@@ -11,11 +11,15 @@ Ext.define(
 
 		xtype: 'form-desc-relations-subject-custom-viewer-link',
 
+		translateText: {
+			defaultText: 'Автор'
+		},
+
 		initComponent: function ()
 		{
 			var me = this;
 
-			me.value = 'Тип связи';
+			me.value = me.translateText.defaultText;
 
 			me.callParent(arguments);
 		}
