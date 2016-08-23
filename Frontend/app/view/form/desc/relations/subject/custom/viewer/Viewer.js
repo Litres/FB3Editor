@@ -20,7 +20,11 @@ Ext.define(
 		
 		listeners: {
 			setTitle: 'onSetTitle',
-			setLink: 'onSetLink'
+			setLink: 'onSetLink',
+			click: {
+				element: 'el',
+				fn: 'onClick'
+			}
 		},
 
 		layout: 'hbox',
@@ -70,11 +74,17 @@ Ext.define(
 
 			me.callParent(arguments);
 		},
+		
+		style: {
+		  'cursor': 'pointer'
+		},
 
 		afterRender: function ()
 		{
 			var me = this,
 				descManager = FBEditor.desc.Manager;
+			
+			//me.setStyle('cursor','pointer');
 
 			if (descManager.isLoadedData())
 			{
@@ -143,6 +153,21 @@ Ext.define(
 			me._link = link;
 
 			return link;
+		},
+		
+		/**
+		 * Возвращает родительский контейнер данных.
+		 * @return {FBEditor.view.form.desc.relations.subject.CustomContainer}
+		 */
+		getCustomContainer: function ()
+		{
+			var me = this,
+				container = me._container;
+			
+			container = container || me.up('form-desc-relations-subject-container-custom');
+			me._container = container;
+			
+			return container;
 		}
 	}
 );

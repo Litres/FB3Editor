@@ -41,7 +41,7 @@ Ext.define(
 			
 			
 
-			console.log(Ext.Object.getValues(oldVal)[0]);
+			//console.log(Ext.Object.getValues(oldVal)[0]);
 
 			if (val === 'other-list')
 			{

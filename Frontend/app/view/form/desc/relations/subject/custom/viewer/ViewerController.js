@@ -35,6 +35,31 @@ Ext.define(
 				link = view.getLink();
 
 			link.setValue(val);
+		},
+		
+		/**
+		 * @event resizeButtons
+		 * @event showEditor
+		 */
+		onClick: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				customContainer = view.getCustomContainer(),
+				subjectItem = view.getSubjectItem(),
+				switcher = view.getSwitcher(),
+				stateCmp;
+
+			// переключаем состояние
+			switcher.toggle();
+
+			stateCmp = switcher.getStateCmp();
+
+			// изменяем размеры кнопок
+			subjectItem.fireEvent('resizeButtons', stateCmp);
+
+			// показываем или скрываем редактируемые поля
+			customContainer.fireEvent('showEditor', stateCmp);
 		}
 	}
 );

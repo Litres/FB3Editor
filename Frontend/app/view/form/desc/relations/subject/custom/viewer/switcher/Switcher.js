@@ -16,10 +16,7 @@ Ext.define(
 		controller: 'form.desc.relations.subject.custom.viewer.switcher',
 
 		listeners: {
-			click: {
-				element: 'el',
-				fn: 'onClick'
-			}
+			
 		},
 
 		margin: '5 10 0 10',
@@ -82,36 +79,6 @@ Ext.define(
 		setStateCmp: function (state)
 		{
 			this.stateCmp = state;
-		},
-
-		/**
-		 * Возвращает родительский контейнер данных.
-		 * @return {FBEditor.view.form.desc.relations.subject.CustomContainer}
-		 */
-		getCustomContainer: function ()
-		{
-			var me = this,
-				container = me._container;
-			
-			container = container || me.up('form-desc-relations-subject-container-custom');
-			me._container = container;
-			
-			return container;
-		},
-
-		/**
-		 * Возвращает родительский контейнер каждой персоны.
-		 * @return {FBEditor.view.form.desc.relations.subject.item.SubjectItem}
-		 */
-		getSubjectItem: function ()
-		{
-			var me = this,
-				subjectItem = me._subjectItem;
-
-			subjectItem = subjectItem || me.up('form-desc-relations-subject-item');
-			me._subjectItem = subjectItem;
-
-			return subjectItem;
 		}
 	}
 );
