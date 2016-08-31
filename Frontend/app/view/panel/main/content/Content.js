@@ -75,7 +75,8 @@ Ext.define(
 		{
 			var me = this,
 				mainEditor,
-				editorManager;
+				editorManager,
+				cmd;
 
 			// панель редактор текста
 			mainEditor = me.getMainEditor();
@@ -93,7 +94,9 @@ Ext.define(
 				Ext.defer(
 					function ()
 					{
-						me.fireEvent('contentBody');
+						//me.fireEvent('contentBody');
+						cmd = Ext.create('FBEditor.command.OpenBody');
+						cmd.execute();
 					},
 				    100
 				);
