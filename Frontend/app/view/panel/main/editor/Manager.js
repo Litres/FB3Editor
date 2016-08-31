@@ -90,6 +90,18 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает айди произведения, загружаемого с хаба.
+		 * @return {String}
+		 */
+		getArtId: function ()
+		{
+			var me = this,
+				loader = me.loader;
+
+			return loader.getArt();
+		},
+
+		/**
 		 * Обновляет дерево навигации по тексту.
 		 */
 		updateTree: function ()
@@ -186,24 +198,36 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает айди произведения, загружаемого с хаба.
-		 * @return {String}
-		 */
-		getArtId: function ()
-		{
-			var me = this,
-				loader = me.loader;
-
-			return loader.getArt();
-		},
-
-		/**
 		 * Обновляет изображения в тексте, связывая их с соответствующим ресурсом.
 		 * @param {FBEditor.resource.Resource} res Ресурс.
+		 * @param {FBEditor.editor.element.AbstractElement} [parent] Родительский элемент, по умолчанию - корневой.
 		 */
-		linkImagesToRes: function (res)
+		linkImagesToRes: function (res, parent)
 		{
-			//console.log(res);
+			var me = this;
+
+			parent = parent || me.getContent();
+
+			parent.each(
+				function (el)
+				{
+					var data = {};
+
+					if (el.isImg && res.fileId === el.attributes.src)
+					{
+						//console.log('img', res, el);
+						data.src = res.fileId;
+
+						// обновляем изображение
+						el.update(data);
+					}
+					else if (el.children.length)
+					{
+						// рекурсия для потомка
+						me.linkImagesToRes(res, el);
+					}
+				}
+			);
 		},
 
 		/**
