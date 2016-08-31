@@ -79,7 +79,7 @@ Ext.define(
 			FBEditor.versionParam = Ext.manifest.loader.cacheParam + '=' + FBEditor.version;
 
 			// родительское окно
-			FBEditor.parentWindow = window.opener;
+			FBEditor.parentWindow = window.opener && window.name ? window.opener : null;
 
 			// ссылки на дочернии окна
 			FBEditor.childWindow = {

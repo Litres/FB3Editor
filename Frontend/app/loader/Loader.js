@@ -26,6 +26,22 @@ Ext.define(
 		art: null,
 
 		/**
+		 * @private
+		 * @property {Object} Менеджер.
+		 */
+		manager: null,
+
+		/**
+		 * @param {Object} [manager] Менеджер.
+		 */
+		constructor: function (manager)
+		{
+			var me = this;
+			
+			me.manager = manager;
+		},
+
+		/**
 		 * Загружает с хаба.
 		 * @param {Number} [art] Айди произведениея на хабе.
 		 */

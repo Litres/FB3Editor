@@ -8,6 +8,11 @@ Ext.define(
 	'FBEditor.resource.Loader',
 	{
 		extend : 'FBEditor.loader.Loader',
+
+		/**
+		 * @property {Boolean} Загружать ли ресурсы одновременно или по очереди.
+		 */
+		async: true,
 		
 		/**
 		 * @property {String} Адрес загрузки/сохранения.
@@ -28,9 +33,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Array} Стек данных уже загруженных ресурсов.
+		 * @property {Number} Счетчик отправленных асинхронных запросов на хаб.
 		 */
-		loadedDataResources: [],
+		countRequest: 0,
 
 		/**
 		 * Загружает описание.
@@ -109,14 +114,23 @@ Ext.define(
 				}
 			);
 
-			// загружаем ресурсы по порядку, начиная с первого
-			promise = me.loadResource(data, 0);
+			if (me.async)
+			{
+				// загружаем ресурсы одновременно
+				promise = me.loadAsyncResources(data);
+			}
+			else
+			{
+				// загружаем ресурсы по порядку, начиная с первого
+				promise = me.loadResource(data, 0);
+			}
 
 			return promise;
 		},
 
 		/**
-		 * Загружает ресурс.
+		 * @private
+		 * Загружает ресурс последовательно.
 		 * @param {Array} data Список всех необходимых ресурсов.
 		 * @param {Number} index Порядковый номер загружаемого ресурса.
 		 */
@@ -142,9 +156,10 @@ Ext.define(
 							binary: true,
 							success: function(response)
 							{
-								var resource = {},
+								var me = this,
+									resource = {},
 									statusOk = 200,
-									res,
+									manager = me.manager,
 									msg;
 
 								//console.log(index, data.length, response);
@@ -157,10 +172,8 @@ Ext.define(
 									resource.fileId = item._Id;
 									resource.isCover = item.isCover;
 
-									res = Ext.create('FBEditor.resource.data.UrlData', resource);
-
-									// стек уже загруженных ресурсов
-									me.addLoadedDataResources(res);
+									// загружаем ресурс в редактор
+									manager.addLoadedResource(resource);
 								}
 								else
 								{
@@ -210,33 +223,107 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает стек загруженных данных ресурсов.
-		 * @return {Array}
-		 */
-		getLoadedDataResources: function ()
-		{
-			return this.loadedDataResources;
-		},
-
-		/**
 		 * @private
-		 * Обнуляет стек загруженных ресурсов.
+		 * Загружает все ресурсы одновременно.
+		 * @param {Array} data Список всех необходимых ресурсов.
 		 */
-		cleanLoadedDataResources: function ()
+		loadAsyncResources: function (data)
 		{
-			this.loadedDataResources = [];
-		},
+			var me = this,
+				url,
+				promise;
 
-		/**
-		 * @private
-		 * Добавляет данные ресурса в стек уже загруженных ресурсов.
-		 * @param resource
-		 */
-		addLoadedDataResources: function (resource)
-		{
-			var me = this;
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					me.countRequest = 0;
 
-			me.loadedDataResources.push(resource);
+					Ext.Array.each(
+						data,
+						function (item)
+						{
+							// формируем url для загрузки ресурса
+							url = item.url ? item.url : me.urlRes + '?art=' + me.art + '&image=' + item._Id;
+							item.url = url;
+
+							// формируем запрос
+							Ext.Ajax.request(
+								{
+									url: url,
+									scope: me,
+									binary: true,
+									success: function(response)
+									{
+										var me = this,
+											resource = {},
+											statusOk = 200,
+											manager = me.manager,
+											msg;
+
+										me.countRequest++;
+										//console.log(me.countRequest, response);
+
+										if (response && response.responseBytes && response.status === statusOk)
+										{
+											// формируем данные файла для ресурса
+											resource.content = response.responseBytes;
+											resource.fileName = item.isCover ? 'img/thumb.jpeg' : item._Target;
+											resource.fileId = item._Id;
+											resource.isCover = item.isCover;
+
+											// загружаем ресурс в редактор
+											manager.addLoadedResource(resource);
+										}
+										else
+										{
+											msg = ' ' + response.status + ' (' + response.statusText + ')';
+
+											Ext.log(
+												{
+													level: 'error',
+													msg: 'Ошибка загрузки ресурса ' + item.url + msg,
+													dump: response
+												}
+											);
+										}
+
+										if (me.countRequest === data.length)
+										{
+											// все запросы отработаны
+											resolve();
+										}
+									},
+									failure: function (response)
+									{
+										var me = this,
+											msg;
+
+										me.countRequest++;
+
+										msg = ' ' + response.status + ' (' + response.statusText + ')';
+
+										Ext.log(
+											{
+												level: 'error',
+												msg: 'Ошибка загрузки ресурса ' + item.url + msg,
+												dump: response
+											}
+										);
+
+										if (me.countRequest === data.length)
+										{
+											// все запросы отработаны
+											resolve();
+										}
+									}
+								}
+							);
+						}
+					);
+				}
+			);
+
+			return promise;
 		}
 	}
 );

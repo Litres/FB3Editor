@@ -67,7 +67,7 @@ Ext.define(
 			var me = this;
 
 			// создаем загрузчик
-			me.loader = Ext.create('FBEditor.resource.Loader');
+			me.loader = Ext.create('FBEditor.resource.Loader', me);
 		},
 
 		/**
@@ -123,9 +123,6 @@ Ext.define(
 							msg: 'Процесс загрузки ресурсов завершен'
 						}
 					);
-
-					// загружаем данные всех ресурсов в редактор
-					me.load(loader.getLoadedDataResources());
 				}
 			);
 		},
@@ -220,6 +217,39 @@ Ext.define(
 			me.data.push(res);
 			me.sortData();
 			me.updateNavigation();
+		},
+
+		/**
+		 * Добавляет в редактор ресурс загруженный с хаба.
+		 * @param {Object} data Данные ресурса.
+		 */
+		addLoadedResource: function (data)
+		{
+			var me = this,
+				editorManager = FBEditor.getEditorManager(),
+				urlData,
+				res,
+				resData;
+
+			// объект данных
+			urlData = Ext.create('FBEditor.resource.data.UrlData', data);
+
+			// данные
+			resData = urlData.getData();
+
+			// ресурс
+			res = Ext.create('FBEditor.resource.Resource', resData);
+			
+			me.data.push(res);
+			
+			// сортируем
+			me.sortData();
+			
+			// обновляем панель ресурсов
+			me.updateNavigation();
+
+			// связываем изображения в теле книги с загруженным ресурсом
+			editorManager.linkImagesToRes(res);
 		},
 
 		/**

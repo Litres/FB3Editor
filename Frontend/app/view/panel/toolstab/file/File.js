@@ -36,6 +36,7 @@ Ext.define(
 					xtype: 'panel-toolstab-file-button-savebody'
 				}
 			];
+			
 			me.callParent(arguments);
 		}
 	}

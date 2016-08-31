@@ -198,6 +198,15 @@ Ext.define(
 		},
 
 		/**
+		 * Обновляет изображения в тексте, связывая их с соответствующим ресурсом.
+		 * @param {FBEditor.resource.Resource} res Ресурс.
+		 */
+		linkImagesToRes: function (res)
+		{
+			//console.log(res);
+		},
+
+		/**
 		 * @private
 		 * Загружает данные в редактор тела.
 		 * @param {String} xml Данные тела в виде строки xml.
