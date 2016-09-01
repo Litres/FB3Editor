@@ -18,6 +18,11 @@ Ext.define(
 		 * @property {Number} Максимальное количество одновременных запросов к хабу.
 		 */
 		maxAsyncRequests: 20,
+
+		/**
+		 * @property {Number} Задержка между отправкой асинхронных запросов (в миллисекундах).
+		 */
+		delayAsyncRequest: 10,
 		
 		/**
 		 * @property {String} Адрес загрузки/сохранения.
@@ -53,6 +58,15 @@ Ext.define(
 		 * @property {Number} Хранит количество одновременно открытых текущих запросов.
 		 */
 		countAsyncRequest: 0,
+
+		/**
+		 * Одновременно ли отправляются запросы на хаб.
+		 * @return {Boolean}
+		 */
+		isAsync: function ()
+		{
+			return this.async;
+		},
 
 		/**
 		 * Загружает описание.
@@ -273,7 +287,9 @@ Ext.define(
 				countRequest = me.countRequest,
 				maxRequests = me.maxAsyncRequests,
 				countAsyncRequest = me.countAsyncRequest,
-				item,
+				wwManager = FBEditor.webworker.Manager,
+				master,
+				resData,
 				url;
 
 			if (me.countResponse === data.length)
@@ -292,9 +308,9 @@ Ext.define(
 			if (countAsyncRequest < maxRequests)
 			{
 				// данные текущего запрашиваемого ресурса
-				item = data[countRequest];
+				resData = data[countRequest];
 
-				//console.log('request', me.countRequest, item);
+				//console.log('request', me.countRequest, resData);
 
 				// увеличиваем счетчик общего количества отправленных запросов
 				me.countRequest++;
@@ -303,83 +319,68 @@ Ext.define(
 				me.countAsyncRequest++;
 
 				// формируем url для загрузки ресурса
-				url = item.url ? item.url : me.urlRes + '?art=' + me.art + '&image=' + item._Id;
-				item.url = url;
+				url = resData.url ? resData.url : me.urlRes + '?art=' + me.art + '&image=' + resData._Id;
+				resData.url = url;
+
+				// владелец потока
+				master = wwManager.factory('httpRequest');
 
 				// формируем запрос
-				Ext.Ajax.request(
+				master.post(
 					{
 						url: url,
-						scope: me,
-						binary: true,
-						success: function(response)
+						responseType: 'arraybuffer',
+						data: {
+							res: resData,
+							resources: data
+						}
+					},
+					function (response, responseData)
+					{
+						var me = this,
+							resource = {},
+							statusOk = 200,
+							manager = me.manager,
+							resData = responseData.data.res,
+							resourcesData = responseData.data.resources,
+							msg;
+
+						// увеличиваем счетчик количества полученных ответов
+						me.countResponse++;
+
+						//console.log(me.countResponse, responseData);
+
+						// уменьшаем счетчик одновременно исполняемых запросов
+						me.countAsyncRequest--;
+
+						if (response && responseData.status === statusOk)
 						{
-							var me = this,
-								resource = {},
-								statusOk = 200,
-								manager = me.manager,
-								msg;
+							// формируем данные файла для ресурса
+							resource.content = response;
+							resource.fileName = resData.isCover ? 'img/thumb.jpeg' : resData._Target;
+							resource.fileId = resData._Id;
+							resource.isCover = resData.isCover;
 
-							// увеличиваем счетчик общего количества полученных ответов
-							me.countResponse++;
-
-							//console.log(me.countResponse, item, response);
-
-							// уменьшаем счетчик одновременно исполняемых запросов
-							me.countAsyncRequest--;
-
-							if (response && response.responseBytes && response.status === statusOk)
-							{
-								// формируем данные файла для ресурса
-								resource.content = response.responseBytes;
-								resource.fileName = item.isCover ? 'img/thumb.jpeg' : item._Target;
-								resource.fileId = item._Id;
-								resource.isCover = item.isCover;
-
-								// загружаем ресурс в редактор
-								manager.addLoadedResource(resource);
-							}
-							else
-							{
-								msg = ' ' + response.status + ' (' + response.statusText + ')';
-
-								Ext.log(
-									{
-										level: 'error',
-										msg: 'Ошибка загрузки ресурса ' + item.url + msg,
-										dump: response
-									}
-								);
-							}
-
-							// следующий запрос
-							me.requestResource(data, resolve, reject);
-						},
-						failure: function (response)
+							// загружаем ресурс в редактор
+							manager.addLoadedResource(resource);
+						}
+						else
 						{
-							var me = this,
-								msg;
-
-							// увеличиваем счетчик общего количества полученных ответов
-							me.countResponse++;
-
-							// уменьшаем счетчик одновременно исполняемых запросов
-							me.countAsyncRequest--;
-
-							msg = ' ' + response.status + ' (' + response.statusText + ')';
+							msg = ' ' + responseData.status + ' (' + responseData.statusText + ')';
 
 							Ext.log(
 								{
 									level: 'error',
-									msg: 'Ошибка загрузки ресурса ' + item.url + msg,
-									dump: response
+									msg: 'Ошибка загрузки ресурса ' + resData.url + msg,
+									dump: responseData
 								}
 							);
-
-							// следующий запрос
-							me.requestResource(data, resolve, reject);
 						}
-					}
+
+						// следующий запрос
+						me.requestResource(resourcesData, resolve, reject);
+					},
+				    me
 				);
 
 				// следующий запрос
@@ -393,7 +394,7 @@ Ext.define(
 						// повтор запроса
 						me.requestResource(data, resolve, reject);
 					},
-				    2
+				    me.delayAsyncRequest
 				);
 			}
 		}

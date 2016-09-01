@@ -8,7 +8,7 @@ Ext.define(
 	'FBEditor.resource.Resource',
 	{
 		fileId: null, // айди ресурса в архиве
-		content: null, // содержимое файла ArrayBuffer
+		content: null, // содержимое в виде ArrayBuffer
 		url: '', // адрес в памяти браузера
 		name: '', // полное имя файла относительно корневой директории ресурсов в архиве
 		baseName: '', // базовое имя файла

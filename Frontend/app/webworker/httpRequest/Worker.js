@@ -107,13 +107,33 @@ function W ()
 
 			transport = me.getXmlHttp();
 			self._transport = transport;
+
 			transport.open(data.method, data.url, true);
+
+			// тип возвращаемых данных
+			transport.responseType = data.responseType || 'text';
+
+			// если двоичные данные
+			if (data.responseType === 'arraybuffer')
+			{
+				if (Uint8Array)
+				{
+					transport.responseType = 'arraybuffer';
+				}
+				else if (transport.overrideMimeType)
+				{
+					// для старых браузеров
+					transport.overrideMimeType('text\/plain; charset=x-user-defined');
+				}
+			}
 
 			transport.onreadystatechange = function ()
 			{
 				if (transport.readyState == 4)
 				{
 					data.response = transport.response;
+					data.status = transport.status;
+					data.statusText = transport.statusText;
 					me.post();
 				}
 			};

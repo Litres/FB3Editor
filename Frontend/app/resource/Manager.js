@@ -117,6 +117,12 @@ Ext.define(
 			).then(
 				function ()
 				{
+					if (loader.isAsync())
+					{
+						me.generateFolders();
+						me.setActiveFolder('');
+					}
+
 					Ext.log(
 						{
 							level: 'info',
@@ -237,6 +243,8 @@ Ext.define(
 			// данные
 			resData = urlData.getData();
 
+			//console.log('resData', resData);
+
 			// ресурс
 			res = Ext.create('FBEditor.resource.Resource', resData);
 			
@@ -248,8 +256,16 @@ Ext.define(
 			// обновляем панель ресурсов
 			me.updateNavigation();
 
-			// связываем изображения в теле книги с загруженным ресурсом
-			editorManager.linkImagesToRes(res);
+			if (res.isCover)
+			{
+				// устанавливаем обложку
+				me.setCover(res.name);
+			}
+			else
+			{
+				// связываем изображения в теле книги с загруженным ресурсом
+				editorManager.linkImagesToRes(res);
+			}
 		},
 
 		/**
