@@ -64,10 +64,17 @@ Ext.define(
 
 		init: function ()
 		{
-			var me = this;
+			var me = this,
+				routeManager = FBEditor.route.Manager,
+				params;
 
 			// создаем загрузчик
 			me.loader = Ext.create('FBEditor.resource.Loader', me);
+
+			params = routeManager.getParams();
+			
+			// использовать ли web workers для загрузки ресурсов
+			me.loader.useWebWorkers = params.useWebWorkers ? true : false;
 		},
 
 		/**

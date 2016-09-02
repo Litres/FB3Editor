@@ -89,6 +89,7 @@ function W ()
 			};
 
 			self.postMessage(res);
+			self.close();
 		},
 
 		/**
@@ -156,6 +157,8 @@ function W ()
 				me.data.state = transport.readyState;
 				transport.abort();
 			}
+			
+			self.close();
 		},
 
 		/**

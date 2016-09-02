@@ -20,10 +20,10 @@ Ext.define(
 		maxAsyncRequests: 20,
 
 		/**
-		 * @property {Number} Задержка между отправкой асинхронных запросов (в миллисекундах).
+		 * @property {Boolean} Использовать ли web workers для создания запросов.
 		 */
-		delayAsyncRequest: 10,
-		
+		useWebWorkers: false,
+
 		/**
 		 * @property {String} Адрес загрузки/сохранения.
 		 */
@@ -264,6 +264,8 @@ Ext.define(
 			var me = this,
 				promise;
 
+			me.masterWorkers = [];
+
 			// обнуляем счетчики
 			me.countResponse = 0;
 			me.countRequest = 0;
@@ -307,9 +309,6 @@ Ext.define(
 			// если количество одновременно исполняемых запросов не превышает максимума
 			if (countAsyncRequest < maxRequests)
 			{
-				// данные текущего запрашиваемого ресурса
-				resData = data[countRequest];
-
 				//console.log('request', me.countRequest, resData);
 
 				// увеличиваем счетчик общего количества отправленных запросов
@@ -318,85 +317,167 @@ Ext.define(
 				// увеличиваем счетчик одновременно исполняемых запросов
 				me.countAsyncRequest++;
 
+				// данные текущего запрашиваемого ресурса
+				resData = data[countRequest];
+
 				// формируем url для загрузки ресурса
 				url = resData.url ? resData.url : me.urlRes + '?art=' + me.art + '&image=' + resData._Id;
 				resData.url = url;
 
-				// владелец потока
-				master = wwManager.factory('httpRequest');
+				if (me.useWebWorkers)
+				{
+					// владелец потока
+					master = wwManager.factory('httpRequest');
 
-				// формируем запрос
-				master.post(
-					{
-						url: url,
-						responseType: 'arraybuffer',
-						data: {
-							res: resData,
-							resources: data
-						}
-					},
-					function (response, responseData)
-					{
-						var me = this,
-							resource = {},
-							statusOk = 200,
-							manager = me.manager,
-							resData = responseData.data.res,
-							resourcesData = responseData.data.resources,
-							msg;
+					// сохраняем ссылку на владельца
+					me.masterWorkers[countRequest] = master;
 
-						// увеличиваем счетчик количества полученных ответов
-						me.countResponse++;
-
-						//console.log(me.countResponse, responseData);
-
-						// уменьшаем счетчик одновременно исполняемых запросов
-						me.countAsyncRequest--;
-
-						if (response && responseData.status === statusOk)
+					// формируем запрос
+					master.post(
 						{
-							// формируем данные файла для ресурса
-							resource.content = response;
-							resource.fileName = resData.isCover ? 'img/thumb.jpeg' : resData._Target;
-							resource.fileId = resData._Id;
-							resource.isCover = resData.isCover;
-
-							// загружаем ресурс в редактор
-							manager.addLoadedResource(resource);
-						}
-						else
+							url: url,
+							responseType: 'arraybuffer',
+							data: {
+								res: resData,
+								resources: data,
+								indexRequest: countRequest
+							}
+						},
+						function (response, responseData)
 						{
-							msg = ' ' + responseData.status + ' (' + responseData.statusText + ')';
+							var me = this,
+								resource = {},
+								statusOk = 200,
+								manager = me.manager,
+								resData = responseData.data.res,
+								resourcesData = responseData.data.resources,
+								indexRequest = responseData.data.indexRequest,
+								msg;
 
-							Ext.log(
+							// увеличиваем счетчик количества полученных ответов
+							me.countResponse++;
+
+							//console.log(me.countResponse, responseData);
+
+							// уменьшаем счетчик одновременно исполняемых запросов
+							me.countAsyncRequest--;
+
+							if (response && responseData.status === statusOk)
+							{
+								// формируем данные файла для ресурса
+								resource.content = response;
+								resource.fileName = resData.isCover ? 'img/thumb.jpeg' : resData._Target;
+								resource.fileId = resData._Id;
+								resource.isCover = resData.isCover;
+
+								// загружаем ресурс в редактор
+								manager.addLoadedResource(resource);
+							}
+							else
+							{
+								msg = ' ' + responseData.status + ' (' + responseData.statusText + ')';
+
+								Ext.log(
+									{
+										level: 'error',
+										msg: 'Ошибка загрузки ресурса ' + resData.url + msg,
+										dump: responseData
+									}
+								);
+							}
+
+							// удаляем отработанный поток
+							me.masterWorkers[indexRequest].destroy();
+							delete me.masterWorkers[indexRequest];
+
+							// следующий запрос
+							me.requestResource(resourcesData, resolve, reject);
+						},
+						me
+					);
+				}
+				else
+				{
+					Ext.Ajax.request(
+						{
+							url: url,
+							scope: me,
+							binary: true,
+							success: function(response)
+							{
+								var me = this,
+									resource = {},
+									statusOk = 200,
+									manager = me.manager,
+									msg;
+
+								// увеличиваем счетчик общего количества полученных ответов
+								me.countResponse++;
+
+								//console.log(me.countResponse, resData, response);
+
+								// уменьшаем счетчик одновременно исполняемых запросов
+								me.countAsyncRequest--;
+
+								if (response && response.responseBytes && response.status === statusOk)
 								{
-									level: 'error',
-									msg: 'Ошибка загрузки ресурса ' + resData.url + msg,
-									dump: responseData
-								}
-							);
-						}
+									// формируем данные файла для ресурса
+									resource.content = response.responseBytes;
+									resource.fileName = resData.isCover ? 'img/thumb.jpeg' : resData._Target;
+									resource.fileId = resData._Id;
+									resource.isCover = resData.isCover;
 
-						// следующий запрос
-						me.requestResource(resourcesData, resolve, reject);
-					},
-				    me
-				);
+									// загружаем ресурс в редактор
+									manager.addLoadedResource(resource);
+								}
+								else
+								{
+									msg = ' ' + response.status + ' (' + response.statusText + ')';
+
+									Ext.log(
+										{
+											level: 'error',
+											msg: 'Ошибка загрузки ресурса ' + resData.url + msg,
+											dump: response
+										}
+									);
+								}
+
+								// следующий запрос
+								me.requestResource(data, resolve, reject);
+							},
+							failure: function (response)
+							{
+								var me = this,
+									msg;
+
+								// увеличиваем счетчик общего количества полученных ответов
+								me.countResponse++;
+
+								// уменьшаем счетчик одновременно исполняемых запросов
+								me.countAsyncRequest--;
+
+								msg = ' ' + response.status + ' (' + response.statusText + ')';
+
+								Ext.log(
+									{
+										level: 'error',
+										msg: 'Ошибка загрузки ресурса ' + resData.url + msg,
+										dump: response
+									}
+								);
+
+								// следующий запрос
+								me.requestResource(data, resolve, reject);
+							}
+						}
+					);
+				}
 
 				// следующий запрос
 				me.requestResource(data, resolve, reject);
 			}
-			else
-			{
-				Ext.defer(
-					function ()
-					{
-						// повтор запроса
-						me.requestResource(data, resolve, reject);
-					},
-				    me.delayAsyncRequest
-				);
-			}
+
 		}
 	}
 );

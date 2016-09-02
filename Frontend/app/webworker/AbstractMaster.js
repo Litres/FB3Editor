@@ -75,6 +75,17 @@ Ext.define(
 		},
 
 		/**
+		 * Удаляет поток.
+		 */
+		destroy: function ()
+		{
+			var me = this;
+
+			me.worker.terminate();
+			delete me.worker;
+		},
+
+		/**
 		 * @abstract
 		 * Получает сообщение от потока и вызывает колбэк.
 		 * @param res Объект ответа от потока.
