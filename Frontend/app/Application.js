@@ -322,6 +322,9 @@ Ext.define(
 							Ext.getCmp('main').fireEvent('accessHub');
 						}
 					}
+
+					master.destroy();
+					delete master;
 				}
 			);
 		}

@@ -213,9 +213,9 @@ Ext.define(
 				{
 					var data = {};
 
-					if (el.isImg && res.fileId === el.attributes.src)
+					// если изображение соответствует ожидаемому ресурсу
+					if (el.isImg && el.isLoadingRes(res.fileId))
 					{
-						//console.log('img', res, el);
 						data.src = res.fileId;
 
 						// обновляем изображение

@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.editor.element.img.ImgElementController',
 			'FBEditor.editor.command.img.CreateCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.img.ImgElementController',
 		htmlTag: 'img',
 		xmlTag: 'img',
@@ -29,6 +30,12 @@ Ext.define(
 
 		isImg: true,
 
+		/**
+		 * @private
+		 * @property {String} Айди связанного ресура, который необходимо связать с изображением после его загрузки.
+		 */
+		loadingResId: '',
+
 		isEmpty: function ()
 		{
 			return false;
@@ -43,6 +50,7 @@ Ext.define(
 			{
 				resource.removeElement(me);
 			}
+
 			me.callParent();
 		},
 
@@ -51,7 +59,12 @@ Ext.define(
 			var me = this,
 				node;
 
-			me.linkResource();
+			if (!me.linkResource())
+			{
+				// если нет ресурса, меняем состояние картинки
+				me.setStateLoading();
+			}
+
 			node = me.callParent(arguments);
 
 			return node;
@@ -131,6 +144,8 @@ Ext.define(
 				me.resource.removeElement(me);
 				me.resource = null;
 			}
+			
+			me.stateLoading = false;
 
 			// аттрибуты
 			me.attributes = Ext.clone(me.defaultAttributes);
@@ -221,8 +236,21 @@ Ext.define(
 		},
 
 		/**
+		 * Соответствует ли переданный айди ожидаемому ресурсу.
+		 * @param {String} resId Айди ресурса.
+		 * @return {Boolean}
+		 */
+		isLoadingRes: function (resId)
+		{
+			var me = this;
+
+			return me.loadingResId === resId;
+		},
+
+		/**
 		 * @private
 		 * Связывает изображение с ресурсом.
+		 * @return {FBEditor.resource.Resource} Ресурс.
 		 */
 		linkResource: function ()
 		{
@@ -240,6 +268,8 @@ Ext.define(
 				resource.addElement(me);
 				me.resource = resource;
 			}
+
+			return resource;
 		},
 
 		/**
@@ -263,6 +293,22 @@ Ext.define(
 			);
 
 			manager.setSuspendEvent(false);
+		},
+
+		/**
+		 * @private
+		 * Устанавливает элемент в режим ожидания загрузки ресурса.
+		 */
+		setStateLoading: function ()
+		{
+			var me = this;
+
+			// сохраняем айди ресурса
+			me.loadingResId = me.attributes.src;
+
+			// изображение крутилки
+			me.attributes.src = Ext.manifest.output ? Ext.manifest.output.base + '/' : '';
+			me.attributes.src += 'resources/images/loadmask/loading.gif';
 		}
 	}
 );
