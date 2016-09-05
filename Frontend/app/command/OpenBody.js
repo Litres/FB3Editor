@@ -28,7 +28,7 @@ Ext.define(
 				bridgeWindow = me.getBridgeWindow(),
 				bridgeProps = FBEditor.getBridgeProps(),
 				editorManager = FBEditor.getEditorManager(true),
-				descManager = FBEditor.desc.Manager,
+				descManager = bridgeWindow.FBEditor.desc.Manager,
 				result = true,
 				content,
 				props;

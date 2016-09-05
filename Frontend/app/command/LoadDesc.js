@@ -14,7 +14,8 @@ Ext.define(
 			var me = this,
 				data = me.data,
 				result = false,
-				manager = FBEditor.desc.Manager,
+				bridge = FBEditor.getBridgeWindow(),
+				manager = bridge.FBEditor.desc.Manager,
 				url;
 
 			url = manager.loadUrl;
