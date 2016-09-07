@@ -21,6 +21,7 @@ Ext.define(
 
 			//console.log('onItemClick', arguments);
 			me.clearSelection();
+
 			if (me.openContent)
 			{
 				if (!view.inWindow)
