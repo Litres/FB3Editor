@@ -59,9 +59,10 @@ Ext.define(
 			var me = this,
 				node;
 
-			if (!me.linkResource())
+			if (!me.linkResource() && !me.loadingResId)
 			{
-				// если нет ресурса, меняем состояние картинки
+				// если нет ресурса и изображение еще не в состоянии ожидания загрузки ресурса,
+				// меняем состояние на ожидание загрузки ресурса
 				me.setStateLoading();
 			}
 
@@ -138,6 +139,9 @@ Ext.define(
 		{
 			var me = this;
 
+			// сбрасываем состояние ожидания загрузки ресурса
+			me.loadingResId = null;
+
 			//  удаляем ссылку на старый ресурс
 			if (me.resource)
 			{
@@ -145,8 +149,6 @@ Ext.define(
 				me.resource = null;
 			}
 			
-			me.stateLoading = false;
-
 			// аттрибуты
 			me.attributes = Ext.clone(me.defaultAttributes);
 
@@ -213,7 +215,6 @@ Ext.define(
 			{
 				me.updateSrc(me.attributes.src);
 				//console.log('after copy img');
-
 			}
 		},
 
@@ -260,7 +261,7 @@ Ext.define(
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
-			resource = manager.getResourceByFileId(attributes.src) || manager.getResourceByName(attributes.src);
+			resource = manager.getResourceByFileId(attributes.src) || manager.getResourceByName(attributes.src) || me.resource;
 
 			if (resource)
 			{
