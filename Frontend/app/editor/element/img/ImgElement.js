@@ -308,8 +308,8 @@ Ext.define(
 			me.loadingResId = me.attributes.src;
 
 			// изображение крутилки
-			me.attributes.src = Ext.manifest.output ? Ext.manifest.output.base + '/' : '';
-			me.attributes.src += 'resources/images/loadmask/loading.gif';
+			me.attributes.src = Ext.manifest.resources ? Ext.manifest.resources.path : 'resources';
+			me.attributes.src += '/images/loadmask/loading.gif';
 		}
 	}
 );

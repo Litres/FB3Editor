@@ -121,7 +121,7 @@ Ext.define(
 				me.notFound();
 			}
 
-			me.doLayout();
+			me.updateLayout();
 		},
 
 		/**

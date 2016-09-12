@@ -111,7 +111,7 @@ Ext.define(
 			if (maskEl)
 			{
 				maskEl.setVisible(show);
-				me.doLayout();
+				me.updateLayout();
 			}
 		},
 
@@ -125,7 +125,7 @@ Ext.define(
 			Ext.suspendLayouts();
 			me.removeAll();
 			Ext.resumeLayouts();
-			me.doLayout();
+			me.updateLayout();
 		},
 
 		/**

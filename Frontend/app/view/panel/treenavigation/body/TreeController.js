@@ -123,10 +123,11 @@ Ext.define(
 		 */
 		isActiveBody: function ()
 		{
-			var mainContent,
+			var bridge = FBEditor.getBridgeWindow(),
+				mainContent,
 				res;
 
-			mainContent = Ext.getCmp('panel-main-content');
+			mainContent = bridge.Ext.getCmp('panel-main-content');
 			res = mainContent.isActiveItem('main-editor');
 
 			return res;

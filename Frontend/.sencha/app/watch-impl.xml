@@ -8,7 +8,9 @@
     </target>
 
     <target name="-watch-compiler">
-        <x-watch compilerRef="${compiler.ref.id}" targets="-watch-impl"/>
+        <x-watch compilerRef="${compiler.ref.id}"
+                 targets="-watch-impl"
+                 webServerRefId="app.web.server"/>
     </target>
 
     <target name="-watch-theme-package-css">
@@ -55,7 +57,7 @@
     </target>
 
     <target name="-before-watch"/>
-    <target name="-watch">
+    <target name="-watch" depends="-init-web-server">
         <x-ant-call target="${build.trigger.targets}"/>
         <x-ant-call target="web-start" unless="skip.web.start">
             <param name="enable.background.server" value="true"/>

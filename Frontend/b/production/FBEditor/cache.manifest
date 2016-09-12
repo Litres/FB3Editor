@@ -1,30 +1,30 @@
 CACHE MANIFEST
-# v 529
+# v 530
 
 CACHE:
 
 # not version resources
 
 app.json
-resources/FBEditor-all_01.css
-resources/FBEditor-all_02.css
+resources/FBEditor-all_1.css
+resources/FBEditor-all_2.css
 resources/images/favicon.ico
 app/webworker/xmllint/lib/index.js
 
 # version resources
 
-resources/css/loader.css?_v=529
-resources/css/font-awesome.css?_v=529
-resources/css/styles.css?_v=529
-resources/css/editor.css?_v=529
-resources/css/desc.css?_v=529
-resources/css/resources.css?_v=529
-resources/FBEditor-all.css?_v=529
-app.js?_v=529
-app/webworker/httpRequest/Worker.js?_v=529
-app/webworker/xmllint/Worker.js?_v=529
-bower_components/jsxml/jsxml.js?_v=529
-bower_components/jsxml/stand.js?_v=529
+resources/css/loader.css?_v=530
+resources/css/font-awesome.css?_v=530
+resources/css/styles.css?_v=530
+resources/css/editor.css?_v=530
+resources/css/desc.css?_v=530
+resources/css/resources.css?_v=530
+resources/FBEditor-all.css?_v=530
+app.js?_v=530
+app/webworker/httpRequest/Worker.js?_v=530
+app/webworker/xmllint/Worker.js?_v=530
+bower_components/jsxml/jsxml.js?_v=530
+bower_components/jsxml/stand.js?_v=530
 
 NETWORK:
 

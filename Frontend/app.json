@@ -1,5 +1,10 @@
 {
     /**
+     * The toolkit to use. Select either "classic" or "modern".
+     */
+    "toolkit": "classic",
+
+    /**
      * The application's namespace.
      */
     "name": "FBEditor",
@@ -28,7 +33,7 @@
      * The name of the theme for this application.
      */
     
-    "theme": "fb3-theme-green",//"ext-theme-crisp",
+    "theme": "fb3-theme",
     
     /**
      * The list of required packages (with optional versions; default is "latest").
@@ -235,7 +240,7 @@
      */
     "production": {
         "loader": {
-            "cache": "529",
+            "cache": "530",
             "cacheParam": "_v"
         }
     },
