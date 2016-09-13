@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.resource.Loader',
 	{
 		extend : 'FBEditor.loader.Loader',
+		requires: [
+			'FBEditor.webworker.loadResources.Master'
+		],
 
 		/**
 		 * @property {Boolean} Загружать ли ресурсы одновременно или по очереди.
@@ -17,12 +20,12 @@ Ext.define(
 		/**
 		 * @property {Number} Максимальное количество одновременных запросов к хабу.
 		 */
-		maxAsyncRequests: 20,
+		maxAsyncRequests: 4,
 
 		/**
 		 * @property {Boolean} Использовать ли web workers для создания запросов.
 		 */
-		useWebWorkers: false,
+		useWebWorkers: true,
 
 		/**
 		 * @property {String} Адрес загрузки/сохранения.
@@ -135,6 +138,8 @@ Ext.define(
 		loadResources: function (data)
 		{
 			var me = this,
+				wwManager = FBEditor.webworker.Manager,
+				master,
 				promise;
 
 			// добавляем данные обложки
@@ -145,6 +150,74 @@ Ext.define(
 				}
 			);
 
+			// владелец потока
+			master = wwManager.factory('loadResources');
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					// отправляем запрос
+					master.post(
+						{
+							callbackId: 'responseData',
+							resourcesData: data,
+							maxAsyncRequests: me.maxAsyncRequests,
+							urlRes: me.urlRes,
+							art: me.art
+						},
+						function (responseData)
+						{
+							var me = this,
+								resource = {},
+								statusOk = 200,
+								manager = me.manager,
+								resourcesData = responseData.resourcesData,
+								indexRequest = responseData.indexResource,
+								resData,
+								msg;
+
+							resData = resourcesData[indexRequest];
+
+							if (responseData.status === statusOk)
+							{
+								// формируем данные для ресурса
+								resource.content = responseData.response;
+								resource.fileName = resData.isCover ? 'img/thumb.jpeg' : resData._Target;
+								resource.fileId = resData._Id;
+								resource.isCover = resData.isCover;
+
+								// загружаем ресурс в редактор
+								manager.addLoadedResource(resource);
+							}
+							else
+							{
+								msg = ' ' + responseData.status + ' (' + responseData.statusText + ')';
+
+								Ext.log(
+									{
+										level: 'error',
+										msg: 'Ошибка загрузки ресурса ' + resData.url + msg,
+										dump: responseData
+									}
+								);
+							}
+
+							if (responseData.resolve)
+							{
+								// все ответы получены
+
+								master.destroy();
+								delete master;
+
+								resolve();
+							}
+						},
+						me
+					);
+				}
+			);
+
+			/*
 			if (me.async)
 			{
 				// загружаем ресурсы одновременно
@@ -155,6 +228,7 @@ Ext.define(
 				// загружаем ресурсы по порядку, начиная с первого
 				promise = me.loadResource(data, 0);
 			}
+			*/
 
 			return promise;
 		},
@@ -274,7 +348,6 @@ Ext.define(
 			promise = new Promise(
 				function (resolve, reject)
 				{
-
 					// запрос
 					me.requestResource(data, resolve, reject);
 				}

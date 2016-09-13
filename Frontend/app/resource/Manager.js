@@ -84,7 +84,8 @@ Ext.define(
 		loadFromUrl: function (art)
 		{
 			var me = this,
-				loader = me.loader;
+				loader = me.loader,
+				startTime = new Date().getTime();
 
 			art = art || me.getArtId();
 
@@ -133,7 +134,8 @@ Ext.define(
 					Ext.log(
 						{
 							level: 'info',
-							msg: 'Процесс загрузки ресурсов завершен'
+							msg: 'Процесс загрузки ресурсов завершен за ' +
+							     Number(new Date().getTime() - startTime) + ' мс'
 						}
 					);
 				}

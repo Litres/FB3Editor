@@ -145,6 +145,9 @@
             "path": "app/webworker/xmllint/Worker.js"
         },
         {
+            "path": "app/webworker/loadResources/Worker.js"
+        },
+        {
             "path": "bower_components/jsxml/stand.js",
             "remote": true
         },
@@ -240,7 +243,7 @@
      */
     "production": {
         "loader": {
-            "cache": "530",
+            "cache": "531",
             "cacheParam": "_v"
         }
     },

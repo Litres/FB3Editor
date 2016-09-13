@@ -123,7 +123,6 @@ Ext.define(
 					me.callback[name] = me.callback[name] || [];
 					me.callback[name].push({fn: callback, scope: scope});
 				}
-
 			}
 
 			worker.postMessage(data);
