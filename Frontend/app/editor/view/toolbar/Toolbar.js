@@ -175,6 +175,8 @@ Ext.define(
 				btn,
 				xtype;
 
+			//console.log(name);
+
 			xtype = 'editor-toolbar-button-' + name;
 			btn = me.down(xtype);
 

@@ -111,6 +111,15 @@ Ext.define(
 				}
 			},
 			{
+				key: 'FIVE',
+				alt: true,
+				shift: true,
+				fn: 'onBtn',
+				args: {
+					name: 'strikethrough'
+				}
+			},
+			{
 				key: 'U',
 				ctrl: true,
 				fn: 'onBtn',
@@ -119,7 +128,7 @@ Ext.define(
 				}
 			},
 			{
-				key: 'X',
+				keyCode: 188,
 				ctrl: true,
 				fn: 'onBtn',
 				args: {
@@ -127,9 +136,8 @@ Ext.define(
 				}
 			},
 			{
-				key: 'X',
+				keyCode: 190,
 				ctrl: true,
-				shift: true,
 				fn: 'onBtn',
 				args: {
 					name: 'sup'
@@ -165,7 +173,7 @@ Ext.define(
 				map,
 			    function (cfg)
 			    {
-				    if (Ext.event.Event[cfg.key] && e.keyCode === Ext.event.Event[cfg.key])
+				    if (e.keyCode === Ext.event.Event[cfg.key] || e.keyCode === cfg.keyCode)
 				    {
 					    me.executeFn(e, cfg);
 				    }
@@ -184,16 +192,17 @@ Ext.define(
 			var me = this,
 				args;
 
-			if (e.ctrlKey && cfg.ctrl && !e.shiftKey && !cfg.shift ||
-			    e.shiftKey && cfg.shift && !e.ctrlKey && !cfg.ctrl ||
-			    e.shiftKey && cfg.shift && e.ctrlKey && cfg.ctrl ||
-			    !e.ctrlKey && !cfg.ctrl && !e.shiftKey && !cfg.shift)
+			if (e.ctrlKey && cfg.ctrl && !e.shiftKey && !cfg.shift && !e.altKey && !cfg.alt ||
+			    e.shiftKey && cfg.shift && !e.ctrlKey && !cfg.ctrl && !e.altKey && !cfg.alt ||
+			    e.shiftKey && cfg.shift && e.ctrlKey && cfg.ctrl && !e.altKey && !cfg.alt ||
+			    e.shiftKey && cfg.shift && e.altKey && cfg.alt && !e.ctrlKey && !cfg.ctrl ||
+			    !e.ctrlKey && !cfg.ctrl && !e.shiftKey && !cfg.shift && !e.altKey && !cfg.alt)
 			{
-				e.preventDefault();
-
 				// выполяняем функцию
 				if (cfg.fn && me[cfg.fn])
 				{
+					e.preventDefault();
+
 					args = cfg.args || {};
 					args.e = e;
 					me[cfg.fn](args);
@@ -219,6 +228,8 @@ Ext.define(
 			editor = manager.getEditor();
 			toolbar = editor.getToolbar();
 			btn = toolbar.getButton(name);
+
+			//console.log(name, toolbar, btn);
 
 			if (btn && !btn.disabled)
 			{

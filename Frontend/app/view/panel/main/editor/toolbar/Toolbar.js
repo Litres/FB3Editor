@@ -192,6 +192,18 @@ Ext.define(
 				me.down('main-editor-button-sup'),
 				me.down('main-editor-button-code')
 			];
+		},
+
+		getButton: function (name)
+		{
+			var me = this,
+				btn,
+				xtype;
+
+			xtype = 'main-editor-button-' + name;
+			btn = me.down(xtype);
+
+			return btn;
 		}
 	}
 );
