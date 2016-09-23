@@ -35,6 +35,8 @@ Ext.define(
 				}
 			);
 
+			attr = attr.trim();
+
 			return attr;
 		},
 
