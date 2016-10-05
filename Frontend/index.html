@@ -7,6 +7,23 @@
 
     <title>Editor 3</title>
 
+    <!-- Костыль для десктопной версии firefox исправляет баг после отключения режима симуляции касаний -->
+    <script type="text/javascript">
+        var isFF = /firefox/i.test(window.navigator.userAgent),
+                isDesktop = false;
+
+        if (!/Android|iOS|WindowsPhone/i.test(window.navigator.platform) &&
+            /Windows|Linux|MacOS/i.test(window.navigator.platform))
+        {
+            isDesktop = true;
+        }
+
+        if (isFF && isDesktop)
+        {
+            delete window.ontouchend;
+        }
+    </script>
+
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" type="text/javascript" src="bootstrap.js"></script>
 

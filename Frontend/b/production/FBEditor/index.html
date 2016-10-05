@@ -7,6 +7,23 @@
 
     <title>Editor 3</title>
 
+    <!-- Костыль для десктопной версии firefox исправляет баг после отключения режима симуляции касаний -->
+    <script type="text/javascript">
+        var isFF = /firefox/i.test(window.navigator.userAgent),
+                isDesktop = false;
+
+        if (!/Android|iOS|WindowsPhone/i.test(window.navigator.platform) &&
+            /Windows|Linux|MacOS/i.test(window.navigator.platform))
+        {
+            isDesktop = true;
+        }
+
+        if (isFF && isDesktop)
+        {
+            delete window.ontouchend;
+        }
+    </script>
+
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" data-app="6e3e1044-2891-4be9-bcb9-7a96bdde2375" type="text/javascript">var Ext=Ext||{};Ext.manifest=Ext.manifest||"app.json";Ext=Ext||{};
 Ext.Boot=Ext.Boot||function(f){function l(b){if(b.$isRequest)return b;b=b.url?b:{url:b};var e=b.url,e=e.charAt?[e]:e,a=b.charset||d.config.charset;x(this,b);delete this.url;this.urls=e;this.charset=a}function r(b){if(b.$isEntry)return b;var e=b.charset||d.config.charset,a=Ext.manifest,a=a&&a.loader,k=void 0!==b.cache?b.cache:a&&a.cache,c;d.config.disableCaching&&(void 0===k&&(k=!d.config.disableCaching),!1===k?c=+new Date:!0!==k&&(c=k),c&&(a=a&&a.cacheParam||d.config.disableCachingParam,c=a+"\x3d"+
