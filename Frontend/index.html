@@ -13,7 +13,7 @@
                 isDesktop = false;
 
         if (!/Android|iOS|WindowsPhone/i.test(window.navigator.platform) &&
-            /Windows|Linux|MacOS/i.test(window.navigator.platform))
+            /Windows|Win32|Win64|Linux|MacOS/i.test(window.navigator.platform))
         {
             isDesktop = true;
         }
