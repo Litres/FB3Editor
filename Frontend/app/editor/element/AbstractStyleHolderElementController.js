@@ -292,15 +292,9 @@ Ext.define(
 		removeRangeNodes: function ()
 		{
 			var me = this,
-				name = me.getNameElement(),
-				cmd;
+				el = me.el;
 
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.RemoveRangeNodesCommand');
-
-			if (cmd.execute())
-			{
-				me.getHistory().add(cmd);
-			}
+			el.removeRangeNodes();
 		},
 
 		/**

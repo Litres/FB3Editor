@@ -36,27 +36,6 @@ Ext.define(
 		selectionClass: '',
 
 		/**
-		 * @property {Object} Нативные обработчики событий браузера.
-		 */
-		customListeners: {
-			keydown: 'onKeyDown',
-			keyup: 'onKeyUp',
-			keypress: 'onKeyPress',
-			mouseup: 'onMouseUp',
-			mousedown: 'onMouseDown',
-			mousemove: 'onMouseMove',
-			DOMNodeInserted: 'onNodeInserted',
-			DOMNodeRemoved: 'onNodeRemoved',
-			DOMCharacterDataModified: 'onTextModified',
-			drop: 'onDrop',
-			paste: 'onPaste',
-			beforecopy: 'onBeforeCopy',
-			copy: 'onCopy',
-			scroll: 'onScroll',
-			focus: 'onFocus'
-		},
-
-		/**
 		 * @property {Boolean} Разрешается ли разбивать элемент клавишами Ctrl/Shift+Enter.
 		 */
 		splittable: false,
@@ -526,6 +505,7 @@ Ext.define(
 
 			node = document.createElement(tag);
 			node.viewportId = viewportId;
+
 			me.setNode(node);
 
 			if (me.marker)
@@ -808,33 +788,12 @@ Ext.define(
 		},
 
 		/**
-		 * Устанавливает события узла элемента.
+		 * Устанавливает обработчики событий узла элемента.
 		 * @param {Node} element Узел элемента.
 		 * @return {Node} element Узел элемента.
 		 */
 		setEvents: function (element)
 		{
-			var me = this,
-				listeners = me.customListeners;
-
-			Ext.Object.each(
-				listeners,
-			    function (eventName, funcName)
-			    {
-				    if (me.controller[funcName])
-				    {
-					    element.addEventListener(
-						    eventName,
-						    function (e)
-						    {
-							    me.controller[funcName](e);
-						    },
-						    false
-					    );
-				    }
-			    }
-			);
-
 			return element;
 		},
 

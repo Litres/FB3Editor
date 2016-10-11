@@ -905,17 +905,6 @@ Ext.define(
 		},
 
 		/**
-		 * Вставка.
-		 * @param {Event} e Объект события.
-		 */
-		onPaste: function (e)
-		{
-			//console.log('paste:', this.getElement(), e.target, clipboard.getData('text'));
-			e.preventDefault();
-			e.stopPropagation();
-		},
-
-		/**
 		 * Перед копированием.
 		 * @param {Event} e Объект события.
 		 */
@@ -943,6 +932,7 @@ Ext.define(
 				el = me.getElement(),
 				root;
 
+			//console.log('copy', e);
 			e.stopPropagation();
 
 			root = el.getRoot();

@@ -130,6 +130,62 @@ Ext.define(
 				nodes.root = helper.getNode(viewportId);
 				nodes.root.scrollTop = 0;
 			}
+		},
+
+		/**
+		 * Вставка из буфера обмена.
+		 * @param {Object} e Событие.
+		 * @param {Node} e.clipboardData Объект буфера.
+		 */
+		onPaste: function (e)
+		{
+			var me = this,
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				htmlString,
+				parser = new DOMParser(),
+				html,
+				range,
+				cmd;
+
+			e.preventDefault();
+			e.stopPropagation();
+
+			range = sel.getRangeAt(0);
+
+			nodes.node = range.startContainer;
+			els.node = nodes.node.getElement();
+			els.p = els.node.getStyleHolder();
+
+			if (!range.collapsed)
+			{
+				// удаляем выделенную часть текста
+				els.p.removeRangeNodes();
+			}
+
+			htmlString = e.clipboardData.getData('text/html');
+
+			if (!htmlString)
+			{
+				// преобразуем обычный текст к html
+				htmlString = e.clipboardData.getData('text');
+				htmlString = me.convertTextToHtml(htmlString);
+			}
+			else
+			{
+				htmlString = htmlString.replace(/\n+|\t+/g, ' ');
+			}
+
+			//console.log('clipboard', htmlString);
+			html = parser.parseFromString(htmlString, 'text/html');
+			cmd = Ext.create('FBEditor.editor.command.PasteCommand', {html: html});
+
+			if (cmd.execute())
+			{
+				me.getHistory().add(cmd);
+			}
+
 		}
 	}
 );

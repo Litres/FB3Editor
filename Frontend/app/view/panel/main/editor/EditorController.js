@@ -27,11 +27,11 @@ Ext.define(
 				viewports,
 				function (item)
 				{
-					// получаем html тела книги
-					data = manager.getNode(item.id);
-
 					if (item.rendered)
 					{
+						// получаем html тела книги
+						data = manager.getNode(item.id);
+
 						// загружаем в окно
 						item.loadData(data);
 

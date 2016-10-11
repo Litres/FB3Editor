@@ -31,6 +31,27 @@ Ext.define(
 		 */
 		isRoot: true,
 
+		/**
+		 * @property {Object} Нативные обработчики событий браузера.
+		 */
+		customListeners: {
+			keydown: 'onKeyDown',
+			keyup: 'onKeyUp',
+			keypress: 'onKeyPress',
+			mouseup: 'onMouseUp',
+			mousedown: 'onMouseDown',
+			mousemove: 'onMouseMove',
+			DOMNodeInserted: 'onNodeInserted',
+			DOMNodeRemoved: 'onNodeRemoved',
+			DOMCharacterDataModified: 'onTextModified',
+			drop: 'onDrop',
+			paste: 'onPaste',
+			beforecopy: 'onBeforeCopy',
+			copy: 'onCopy',
+			scroll: 'onScroll',
+			focus: 'onFocus'
+		},
+
 
 		/**
 		 * @private
@@ -60,6 +81,35 @@ Ext.define(
 			}
 
 			return el;
+		},
+
+		setEvents: function (element)
+		{
+			var me = this,
+				listeners = me.customListeners;
+
+			if (me.isRoot)
+			{
+				Ext.Object.each(
+					listeners,
+					function (eventName, funcName)
+					{
+						if (me.controller[funcName])
+						{
+							element.addEventListener(
+								eventName,
+								function (e)
+								{
+									me.controller[funcName](e);
+								},
+								false
+							);
+						}
+					}
+				);
+			}
+
+			return element;
 		},
 
 		getEditor: function ()
