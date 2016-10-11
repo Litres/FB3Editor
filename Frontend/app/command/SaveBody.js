@@ -14,13 +14,20 @@ Ext.define(
 			var me = this,
 				data = me.data,
 				result = false,
-				url;
+				editorManager = data.editorManager,
+				diff = FBEditor.util.Diff.getInstance(),
+				content,
+				xml,
+				oldXml,
+				revision;
 
 			try
 			{
-				//
-				alert('В разработке');
-				console.log('save body');
+				revision = editorManager.getRevision();
+				oldXml = revision.getXml();
+				content = editorManager.getContent();
+				xml = content.getXml();
+				console.log('save body', diff.getDiff(oldXml, xml));
 			}
 			catch (e)
 			{

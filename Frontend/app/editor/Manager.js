@@ -12,9 +12,15 @@ Ext.define(
 			'FBEditor.editor.Factory',
 			'FBEditor.editor.History',
 			'FBEditor.editor.KeyMap',
+			'FBEditor.editor.Revision',
 			'FBEditor.editor.schema.Schema',
 			'FBEditor.xsl.Editor'
 		],
+
+		/**
+		 * @property {Boolean} Использовать ли ревизии.
+		 */
+		enableRevision: false,
 
 		selectCls: 'mode-select',
 
@@ -26,16 +32,24 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @property {FBEditor.editor.Revision} Ревизия xml.
+		 */
+		revision: null,
+
+		/**
+		 * @private
 		 * @property {FBEditor.editor.KeyMap} Привязка клавиатурных сочетаний.
 		 */
 		keymap: null,
 
 		/**
+		 * @private
 		 * @property {FBEditor.editor.schema.Schema} Схема.
 		 */
 		schema: null,
 
 		/**
+		 * @private
 		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент.
 		 */
 		content: null,
@@ -118,6 +132,12 @@ Ext.define(
 			// создаем сочетание клавиш
 			me.keymap = Ext.create('FBEditor.editor.KeyMap', me);
 
+			if (me.enableRevision)
+			{
+				// создаем ревизию
+				me.revision = Ext.create('FBEditor.editor.Revision', me);
+			}
+			
 			// создаем схему
 			me.schema = Ext.create('FBEditor.editor.schema.Schema', rootElementName);
 		},
@@ -134,7 +154,10 @@ Ext.define(
 				content,
 				editor,
 				creator,
-				xsl;
+				xsl,
+				startTime = new Date().getTime();
+
+			console.log('resetFocus', startTime);
 
 			me.resetFocus();
 
@@ -151,6 +174,8 @@ Ext.define(
 			xml = xml.replace(/<li><\/li>/gi, '<li><br/></li>');
 			xml = xml.replace(/<subtitle><\/subtitle>/gi, '<subtitle><br/></subtitle>');
 
+			console.log('before transContent', new Date().getTime() - startTime);
+
 			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
 			xsl = FBEditor.xsl.Editor.getXsl();
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
@@ -159,8 +184,13 @@ Ext.define(
 			transContent = transContent.replace(/\n+|\t+/g, ' ');
 			transContent = transContent.replace(/\), ?]/g, ')]');
 
+			console.log('after transContent', new Date().getTime() - startTime);
+
 			// преобразовываем строку в элемент
 			creator = Ext.create('FBEditor.editor.CreateContent', transContent);
+
+			console.log('afterCreateContent', new Date().getTime() - startTime);
+
 			content = creator.getContent();
 
 			editor = me.getEditor();
@@ -175,6 +205,8 @@ Ext.define(
 			
 			// загружаем контент в редактор
 			editor.fireEvent('loadData');
+
+			console.log('after fireEvent loadData', new Date().getTime() - startTime);
 		},
 
 		/**
@@ -247,6 +279,15 @@ Ext.define(
 		getHistory: function ()
 		{
 			return this.history;
+		},
+
+		/**
+		 * Возвращает ревизию.
+		 * @return {FBEditor.editor.Revision}
+		 */
+		getRevision: function ()
+		{
+			return this.revision;
 		},
 
 		/**

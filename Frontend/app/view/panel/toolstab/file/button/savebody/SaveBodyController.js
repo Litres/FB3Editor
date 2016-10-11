@@ -14,7 +14,7 @@ Ext.define(
 		],
 
 		/**
-		 * Сохраняет тело на URL.
+		 * Сохраняет тело на хабе.
 		 * @param {FBEditor.view.panel.toolstab.file.button.savebody.SaveBody} btn Кнопка.
 		 * @param {Object} evt Объект события.
 		 */
@@ -24,6 +24,7 @@ Ext.define(
 				data = {},
 				bridge = FBEditor.getBridgeWindow();
 
+			data.editorManager = FBEditor.getEditorManager();
 			cmd = bridge.Ext.create('FBEditor.command.SaveBody', data);
 			
 			if (cmd.execute())

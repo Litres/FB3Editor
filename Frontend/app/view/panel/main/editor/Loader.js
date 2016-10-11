@@ -91,11 +91,21 @@ Ext.define(
 							scope: this,
 							success: function(response)
 							{
-								var xml;
+								var xml,
+									xmlTest,
+									xml2,
+									startTime;
 
 								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 								{
 									xml = response.responseText;
+
+									xmlTest = xml + '<!-- rev 12345 -->';
+									startTime = new Date().getTime();
+									console.log('responseText', startTime);
+									xml2 = xmlTest.match(/rev (\d+) -->$/);
+									console.log('after match rev', new Date().getTime(), new Date().getTime() - startTime, xml2);
+
 									resolve(xml);
 								}
 								else

@@ -103,6 +103,7 @@ Ext.define(
 									images.push(thumb);
 								}
 
+								resourceManager.reset();
 								resourceManager.load(images);
 								resourceManager.setCover(thumb.getFileName());
 

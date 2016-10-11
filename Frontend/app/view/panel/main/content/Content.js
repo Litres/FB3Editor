@@ -173,9 +173,10 @@ Ext.define(
 		openBody: function ()
 		{
 			var me = this,
+				mainEditor = me.getMainEditor(),
 				nav;
 
-			if (!Ext.getCmp('main-editor') || !Ext.getCmp('main-editor').rendered)
+			if (!mainEditor || !mainEditor.rendered)
 			{
 				Ext.defer(
 					function ()

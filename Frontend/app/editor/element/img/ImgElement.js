@@ -77,7 +77,12 @@ Ext.define(
 				attributes = Ext.clone(me.attributes),
 				attr = '';
 
-			attributes.src = me.resource ? me.resource.name : 'undefined';
+			// ресурс
+			attributes.src = me.resource ? me.resource.fileId : 'undefined';
+			
+			// в случае загрузки ресурсов с хаба
+			attributes.src = me.loadingResId ? me.loadingResId : attributes.src;
+
 			Ext.Object.each(
 				attributes,
 				function (key, val)

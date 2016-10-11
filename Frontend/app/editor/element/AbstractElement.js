@@ -15,9 +15,6 @@ Ext.define(
 			'FBEditor.editor.element.AbstractSelection',
 			'FBEditor.editor.helper.element.Node'
 		],
-		mixins: {
-			observable: 'Ext.util.Observable'
-		},
 
 		/**
 		 * @property {String} Класс контроллера элемента.
@@ -174,9 +171,10 @@ Ext.define(
 
 			Ext.Array.each(
 				children,
-			    function (item, i)
+			    function (item)
 			    {
 				    item.parent = me;
+
 				    if (item.isMarker)
 				    {
 					    me.marker = item;
@@ -414,6 +412,21 @@ Ext.define(
 		clear: function ()
 		{
 			//
+		},
+
+		/**
+		 * Вызывает метод контроллера по имени события.
+		 * @param {String} name Имя события.
+		 * @param {Object} e Объект события.
+		 */
+		fireEvent: function (name, e)
+		{
+			var me = this,
+				controller = me.controller,
+				evtName;
+
+			evtName = 'on' + Ext.String.capitalize(name);
+			controller[evtName].apply(controller, [e]);
 		},
 
 		/**

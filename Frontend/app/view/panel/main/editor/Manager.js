@@ -12,6 +12,8 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.Loader'
 		],
 
+		enableRevision: true,
+
 		/**
 		 * @property {String} Адрес загрузки/сохранения тела.
 		 */
@@ -60,7 +62,7 @@ Ext.define(
 			var me = this;
 
 			me.callParent(arguments);
-
+			
 			// обновляем дерево навигации по тексту
 			me.updateTree();
 		},
@@ -158,7 +160,8 @@ Ext.define(
 			).then(
 				function (xml)
 				{
-					var resourceManager = FBEditor.resource.Manager;
+					var resourceManager = FBEditor.resource.Manager,
+						revision = me.getRevision();
 
 					// загружены ли уже ресурсы
 					if (!resourceManager.isLoadUrl())
@@ -169,6 +172,12 @@ Ext.define(
 
 					// загружаем данные в редактор
 					me.loadDataToEditor(xml);
+
+					if (me.enableRevision)
+					{
+						// сохраняем ревизию
+						revision.setRev();
+					}
 				},
 				function (response)
 				{
@@ -228,6 +237,19 @@ Ext.define(
 					}
 				}
 			);
+		},
+
+		/**
+		 * Сохраняет текущую версию xml тела.
+		 * @param {Number} [rev] Номер версии. Если не указан, то приравнивается к 1.
+		 */
+		saveCurrentlyXml: function (rev)
+		{
+			var me = this,
+				content = me.getContent();
+			
+			rev = rev || 1;
+			me.xmlRevisions[rev] = content.getXml();
 		},
 
 		/**
