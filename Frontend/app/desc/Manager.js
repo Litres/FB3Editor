@@ -61,7 +61,7 @@ Ext.define(
 			var me = this;
 
 			// создаем загрузчик
-			me.loader = Ext.create('FBEditor.desc.Loader');
+			me.loader = Ext.create('FBEditor.desc.Loader', me);
 		},
 
 		/**

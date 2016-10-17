@@ -181,8 +181,10 @@ Ext.define(
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
 
 			// нормализуем строку
+
 			transContent = transContent.replace(/\n+|\t+/g, ' ');
 			transContent = transContent.replace(/\), ?]/g, ')]');
+			transContent = transContent.replace(/, $/, '');
 
 			console.log('after transContent', new Date().getTime() - startTime);
 

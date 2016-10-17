@@ -52,12 +52,26 @@ Ext.define(
 			focus: 'onFocus'
 		},
 
-
 		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста, которому принадлежит элемент.
 		 */
 		//editor: null,
+
+		getXml: function (withoutText)
+		{
+			var me = this,
+				self = FBEditor.editor.element.AbstractElement,
+				nl,
+				xml;
+
+			self.countSpaces++;
+			nl = withoutText ? '' : '\n';
+			xml = nl + me.callParent(arguments);
+			self.countSpaces = 0;
+
+			return xml;
+		},
 
 		setAttributesHtml: function (element)
 		{

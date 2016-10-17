@@ -28,7 +28,7 @@ Ext.define(
 			me.callParent(arguments);
 
 			// генерируем новый uuid
-			me.attributes.id = Ext.data.identifier.Uuid.Global.generate();
+			me.attributes.id = me.attributes.id || Ext.data.identifier.Uuid.Global.generate();
 		},
 
 		createScaffold: function ()

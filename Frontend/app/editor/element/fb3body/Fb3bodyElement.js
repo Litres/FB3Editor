@@ -12,9 +12,9 @@ Ext.define(
 		xmlTag: 'fb3-body',
 
 		defaultAttributes: {
-			'xmlns:l': 'http://www.w3.org/1999/xlink',
 			'xmlns': 'http://www.fictionbook.org/FictionBook3/body',
-			'xmlns:fb3d': 'http://www.fictionbook.org/FictionBook3/description'
+			'xmlns:xlink': 'http://www.w3.org/1999/xlink'/*,
+			'xmlns:fb3d': 'http://www.fictionbook.org/FictionBook3/description'*/
 		},
 
 		cls: 'el-body',
@@ -26,12 +26,16 @@ Ext.define(
 
 		constructor: function ()
 		{
-			var me = this;
+			var me = this,
+				id;
 
 			me.callParent(arguments);
 
+			id = me.attributes.id;
+			delete me.attributes.id;
+
 			// генерируем новый uuid
-			me.attributes.id = Ext.data.identifier.Uuid.Global.generate();
+			me.attributes.id = id || Ext.data.identifier.Uuid.Global.generate();
 		},
 
 		createScaffold: function ()

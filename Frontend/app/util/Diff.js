@@ -44,12 +44,21 @@ Ext.define(
 			me.diff = JsDiff;
 		},
 
-		getDiff: function (oldXml, newXml)
+		/**
+		 * Возвращает дифф.
+		 * @param {String} fileName Имя файла.
+		 * @param {String} oldStr Старый контент.
+		 * @param {String} newStr Новый контент.
+		 * @param {Number} oldHeader Номер старой ревизии.
+		 * @param {Number} newHeader Номер новой ревизии.
+		 * @return {String}
+		 */
+		getDiff: function (fileName, oldStr, newStr, oldHeader, newHeader)
 		{
 			var me = this,
 				diff = me.diff;
 
-			return diff.diffChars(oldXml, newXml);
+			return diff.createPatch(fileName, oldStr, newStr, oldHeader, newHeader);
 		}
 	}
 );

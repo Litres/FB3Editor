@@ -13,6 +13,23 @@ Ext.define(
 		],
 
 		/**
+		 * @property {String} Адрес загрузки списка ресурсов.
+		 */
+		loadAction: 'https://hub.litres.ru/pages/get_fb3_body_rels/',
+		
+		/**
+		 * @private
+		 * @property {String} Адрес загрузки ресурса.
+		 */
+		urlRes: 'https://hub.litres.ru/pages/get_fb3_body_image/',
+
+		/**
+		 * @private
+		 * @property {String} Адрес загрузки обложки.
+		 */
+		urlCover: 'https://hub.litres.ru/pages/get_fb3_cover_image/',
+
+		/**
 		 * @property {Boolean} Загружать ли ресурсы одновременно или по очереди.
 		 */
 		async: true,
@@ -26,23 +43,6 @@ Ext.define(
 		 * @property {Boolean} Использовать ли web workers для создания запросов.
 		 */
 		useWebWorkers: true,
-
-		/**
-		 * @property {String} Адрес загрузки/сохранения.
-		 */
-		url: 'https://hub.litres.ru/pages/get_fb3_body_rels/',
-
-		/**
-		 * @private
-		 * @property {String} Адрес загрузки/сохранения ресурса.
-		 */
-		urlRes: 'https://hub.litres.ru/pages/get_fb3_body_image/',
-
-		/**
-		 * @private
-		 * @property {String} Адрес загрузки/сохранения обложки.
-		 */
-		urlCover: 'https://hub.litres.ru/pages/get_fb3_cover_image/',
 
 		/**
 		 * @private
@@ -142,6 +142,8 @@ Ext.define(
 				master,
 				promise;
 
+			data = data.length ? data : [];
+
 			// добавляем данные обложки
 			data.unshift(
 				{
@@ -216,19 +218,6 @@ Ext.define(
 					);
 				}
 			);
-
-			/*
-			if (me.async)
-			{
-				// загружаем ресурсы одновременно
-				promise = me.loadAsyncResources(data);
-			}
-			else
-			{
-				// загружаем ресурсы по порядку, начиная с первого
-				promise = me.loadResource(data, 0);
-			}
-			*/
 
 			return promise;
 		},

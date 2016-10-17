@@ -14,20 +14,12 @@ Ext.define(
 			var me = this,
 				data = me.data,
 				result = false,
-				editorManager = data.editorManager,
-				diff = FBEditor.util.Diff.getInstance(),
-				content,
-				xml,
-				oldXml,
-				revision;
+				editorManager = data.editorManager;
 
 			try
 			{
-				revision = editorManager.getRevision();
-				oldXml = revision.getXml();
-				content = editorManager.getContent();
-				xml = content.getXml();
-				console.log('save body', diff.getDiff(oldXml, xml));
+				// сохраняем тело книги на хабе
+				editorManager.saveToUrl();
 			}
 			catch (e)
 			{

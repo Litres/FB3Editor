@@ -19,6 +19,7 @@ Ext.define(
 				cover,
 				descValues,
 				descXml,
+				bodyXml,
 				fb3data,
 				result;
 
@@ -43,6 +44,7 @@ Ext.define(
 				// редактор тела книги
 				bodyEditor = Ext.getCmp('main-editor');
 				bodyManager = bodyEditor.getManager();
+				bodyXml = bodyManager.getXml();
 
 				fb3data = {
 					thumb: cover,
@@ -52,7 +54,7 @@ Ext.define(
 							desc: descXml,
 							bodies: [
 								{
-									content: bodyManager.getXml(),
+									content: bodyXml,
 									images: FBEditor.resource.Manager.getResources()
 								}
 							]

@@ -16,6 +16,13 @@ Ext.define(
 			'FBEditor.editor.helper.element.Node'
 		],
 
+		statics: {
+			/**
+			 * @property {Number} Количество оступов перед элементом в формируемом xml.
+			 */
+			countSpaces: 0
+		},
+
 		/**
 		 * @property {String} Класс контроллера элемента.
 		 */
@@ -592,21 +599,45 @@ Ext.define(
 			var me = this,
 				children = me.children,
 				tag = me.xmlTag,
+				self = FBEditor.editor.element.AbstractElement,
+				countSpaces = self.countSpaces,
+				nlBefore = '',
+				nlAfter = '',
+				spacesBefore = '',
+				spacesAfter = '',
 				xml,
 				attr;
 
+			if (!withoutText)
+			{
+				// формируем оступы
+				spacesBefore = countSpaces && (!me.isStyleType && !me.isImg || me.isStyleHolder) ?
+				               new Array(countSpaces).join('  ') : '';
+				spacesAfter = countSpaces && !me.isStyleType ?
+				              new Array(countSpaces).join('  ') : '';
+
+				// нужен ли символ новой строки в начале и конце строки
+				nlBefore = me.isStyleType ? '' : '\n';
+				nlAfter = me.isStyleType && !me.isStyleHolder || me.isImg ? '' : '\n';
+			}
+
+			// получаем аттрибуты
 			attr = me.getAttributesXml(withoutText);
-			xml = '<' + tag;
+
+			xml = spacesBefore + '<' + tag;
 			xml += attr ? ' ' + attr : '';
 
 			if (me.marker)
 			{
-				xml += '>' + me.marker.getXml(withoutText);
+				xml += '>\n' + spacesBefore + '  ' + me.marker.getXml(withoutText);
 			}
 
 			if (children && children.length)
 			{
-				xml += me.marker ? '' : '>';
+				self.countSpaces++;
+
+				xml += me.marker ? '' : '>' + nlBefore;
+
 				Ext.Array.each(
 					children,
 					function (item)
@@ -614,11 +645,14 @@ Ext.define(
 						xml += item.getXml(withoutText);
 					}
 				);
-				xml += '</' + tag + '>';
+
+				xml += spacesAfter + '</' + tag + '>' + nlAfter;
+
+				self.countSpaces--;
 			}
 			else
 			{
-				xml += me.marker ? '</' + tag + '>' : '/>';
+				xml += me.marker ? '\n' + spacesAfter + '</' + tag + '>\n' : '/>' + nlAfter;
 			}
 
 			return xml;
@@ -1298,7 +1332,7 @@ Ext.define(
 				}
 			);
 
-			return attr;
+			return attr.trim();
 		},
 
 		/**

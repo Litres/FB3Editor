@@ -46,15 +46,25 @@ Ext.define(
 		art: null,
 
 		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.editor.Loader} Загрузчик тела с хаба.
+		 */
+		loader: null,
+
+		translateText: {
+			loading: 'Загрузка текста...',
+			saving: 'Сохранение текста...'
+		},
+
+		/**
 		 * Инициализирует менеджер.
 		 */
 		init: function ()
 		{
-			var me = this,
-				loader = FBEditor.view.panel.main.editor.Loader;
+			var me = this;
 
 			// загрузчик
-			me.loader = loader.getLoader();
+			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
 		},
 
 		createContent: function ()
@@ -161,7 +171,12 @@ Ext.define(
 				function (xml)
 				{
 					var resourceManager = FBEditor.resource.Manager,
-						revision = me.getRevision();
+						revision = me.getRevision(),
+						rev;
+
+					//console.log(xml);
+					rev = xml.match(/rev (\d+) -->$/);
+					rev = rev[1];
 
 					// загружены ли уже ресурсы
 					if (!resourceManager.isLoadUrl())
@@ -176,7 +191,7 @@ Ext.define(
 					if (me.enableRevision)
 					{
 						// сохраняем ревизию
-						revision.setRev();
+						revision.setRev(rev, xml);
 					}
 				},
 				function (response)
@@ -195,6 +210,113 @@ Ext.define(
 						{
 							title: 'Ошибка',
 							message: 'Невозможно загрузить тело книги',
+							buttons: Ext.MessageBox.OK,
+							icon: Ext.MessageBox.ERROR
+						}
+					);
+
+					// убираем информационное сообщение о загрузке
+					me.clearLoading();
+				}
+			);
+		},
+
+		/**
+		 * Сохраняет тело на хабе.
+		 */
+		saveToUrl: function ()
+		{
+			var me = this,
+				loader = me.loader,
+				art = me.getArtId(),
+				revision = me.getRevision(),
+				rev = revision.getRev();
+
+			me.setLoading(art, me.translateText.saving).then(
+				function ()
+				{
+					// загружаем дифф с хаба
+					return loader.loadDiff(rev);
+				}
+			).then(
+				function (response)
+				{
+					var reponseDiff = response.diff,
+						responseRev = response.rev;
+
+					if (responseRev !== rev)
+					{
+						// применяем дифф к тексту
+						revision.applyDiff(reponseDiff);
+						
+						// устанавливаем ривизию
+						revision.setRev(responseRev);
+						rev = responseRev;
+					}
+
+					// сохраняем дифф
+					return loader.saveDiff(rev);
+				},
+				function (response)
+				{
+					// возникла ошибка
+
+					Ext.log(
+						{
+							level: 'error',
+							msg: 'Ошибка загрузки дифф тела книги',
+							dump: response
+						}
+					);
+
+					Ext.Msg.show(
+						{
+							title: 'Ошибка',
+							message: 'Невозможно загрузить дифф тела книги',
+							buttons: Ext.MessageBox.OK,
+							icon: Ext.MessageBox.ERROR
+						}
+					);
+
+					// убираем информационное сообщение о загрузке
+					me.clearLoading();
+				}
+			).then(
+				function (response)
+				{
+					var reponseDiff = response.diff,
+						responseRev = response.rev;
+
+					//console.log(response);
+
+					if (responseRev)
+					{
+						// применяем дифф к тексту
+						revision.applyDiff(reponseDiff);
+
+						// устанавливаем ривизию
+						revision.setRev(responseRev);
+					}
+
+					// убираем информационное сообщение о загрузке
+					me.clearLoading();
+				},
+				function (response)
+				{
+					// возникла ошибка
+
+					Ext.log(
+						{
+							level: 'error',
+							msg: 'Ошибка сохранения дифф тела книги',
+							dump: response
+						}
+					);
+
+					Ext.Msg.show(
+						{
+							title: 'Ошибка',
+							message: 'Невозможно сохранить дифф тела книги',
 							buttons: Ext.MessageBox.OK,
 							icon: Ext.MessageBox.ERROR
 						}
@@ -240,19 +362,6 @@ Ext.define(
 		},
 
 		/**
-		 * Сохраняет текущую версию xml тела.
-		 * @param {Number} [rev] Номер версии. Если не указан, то приравнивается к 1.
-		 */
-		saveCurrentlyXml: function (rev)
-		{
-			var me = this,
-				content = me.getContent();
-			
-			rev = rev || 1;
-			me.xmlRevisions[rev] = content.getXml();
-		},
-
-		/**
 		 * @private
 		 * Загружает данные в редактор тела.
 		 * @param {String} xml Данные тела в виде строки xml.
@@ -287,9 +396,10 @@ Ext.define(
 		 * @private
 		 * Устанавливает сообщение о загрузке.
 		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @param {String} [msg] Сообщение.
 		 * @return {Promise}
 		 */
-		setLoading: function (art)
+		setLoading: function (art, msg)
 		{
 			var me = this,
 				promise;
@@ -318,7 +428,8 @@ Ext.define(
 					contentPanel.fireEvent('contentEmpty');
 
 					// устанавливаем сообщение
-					emptyPanel.setMessage('Загрузка текста...');
+					msg = msg || me.translateText.loading;
+					emptyPanel.setMessage(msg);
 
 					resolve(art);
 				}

@@ -9,10 +9,7 @@ Ext.define(
 	{
 		extend : 'FBEditor.loader.Loader',
 		
-		/**
-		 * @property {String} Адрес загрузки/сохранения описания.
-		 */
-		url: 'https://hub.litres.ru/pages/get_fb3_meta/',
+		loadAction: 'https://hub.litres.ru/pages/get_fb3_meta/',
 
 		/**
 		 * Инициализирует адреса загрузки и сохранения.
@@ -23,7 +20,8 @@ Ext.define(
 				routeManager = FBEditor.route.Manager,
 				params,
 				art;
-
+			
+			me.callParent(arguments);
 			params = routeManager.getParams();
 			art = params.art;
 
@@ -99,7 +97,7 @@ Ext.define(
 		save: function (xml)
 		{
 			var me = this,
-				url = me.url,
+				url = me.getSaveUrl(),
 				art = me.getArt(),
 				promise;
 

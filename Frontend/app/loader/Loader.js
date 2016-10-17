@@ -9,9 +9,20 @@ Ext.define(
 	'FBEditor.loader.Loader',
 	{
 		/**
-		 * @property {String} Адрес загрузки/сохранения.
+		 * @property {String} Экшен загрузки.
 		 */
-		url: '',
+		loadAction: null,
+
+		/**
+		 * @property {String} Экшен сохранения.
+		 */
+		saveAction: null,
+
+		/**
+		 * @private
+		 * @property {String} Адрес сохранения.
+		 */
+		saveUrl: null,
 
 		/**
 		 * @private
@@ -38,6 +49,7 @@ Ext.define(
 		{
 			var me = this;
 			
+			me.saveAction = me.saveAction || me.loadAction;
 			me.manager = manager;
 		},
 
@@ -100,7 +112,8 @@ Ext.define(
 			var me = this;
 
 			me.art = art;
-			me.loadUrl = me.url + '?art=' + art;
+			me.loadUrl = me.loadAction + '?art=' + art;
+			me.saveUrl = me.saveAction + '?art=' + art;
 		},
 
 		/**
@@ -110,6 +123,15 @@ Ext.define(
 		getLoadUrl: function ()
 		{
 			return this.loadUrl;
+		},
+
+		/**
+		 * Возвращает url для сохранения.
+		 * @return {String}
+		 */
+		getSaveUrl: function ()
+		{
+			return this.saveUrl;
 		}
 	}
 );

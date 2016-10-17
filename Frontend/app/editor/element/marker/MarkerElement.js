@@ -61,6 +61,7 @@ Ext.define(
 			attr = me.getAttributesXml();
 			xml = '<' + tag;
 			xml += attr ? ' ' + attr : '';
+			
 			if (me.img)
 			{
 				xml += '>' + me.img.getXml() + '</' + tag + '>';

@@ -107,7 +107,7 @@ Ext.define(
 						json,
 						data;
 
-					// переводи xml в json
+					// переводим xml в json
 					json = xml2Json.xmlToJson(xml);
 					data = json.Relationships.Relationship;
 
@@ -144,7 +144,7 @@ Ext.define(
 					Ext.log(
 						{
 							level: 'info',
-							msg: 'Процесс загрузки ресурсов завершен за ' +
+							msg: 'Процесс загрузки завершен за ' +
 							     Number(new Date().getTime() - startTime) + ' мс'
 						}
 					);

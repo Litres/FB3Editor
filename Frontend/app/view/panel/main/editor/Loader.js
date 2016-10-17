@@ -9,33 +9,7 @@ Ext.define(
 	{
 		extend : 'FBEditor.loader.Loader',
 
-		/**
-		 * @property {String} Адрес загрузки/сохранения.
-		 */
-		url: 'https://hub.litres.ru/pages/get_fb3_body/',
-		
-		statics: {
-			/**
-			 * @private
-			 * @property {FBEditor.view.panel.main.editor.Loader} Загрузчик.
-			 */
-			loader: null,
-
-			/**
-			 * Создает и возвращает загрузчик.
-			 * @return {FBEditor.view.panel.main.editor.Loader}
-			 */
-			getLoader: function ()
-			{
-				var me = this,
-					loader = me.loader;
-
-				loader = loader || Ext.create('FBEditor.view.panel.main.editor.Loader');
-				me.loader = loader;
-
-				return loader;
-			}
-		},
+		loadAction: 'https://hub.litres.ru/pages/get_fb3_body/',
 
 		/**
 		 * Инициализирует адреса загрузки и сохранения.
@@ -47,6 +21,7 @@ Ext.define(
 				params,
 				art;
 
+			me.callParent(arguments);
 			params = routeManager.getParams();
 			art = params.body_art;
 
@@ -57,8 +32,24 @@ Ext.define(
 		},
 
 		/**
+		 * @param {String} [rev] Номер ревизии.
+		 * @return {String}
+		 */
+		getLoadUrl: function (rev)
+		{
+			var me = this,
+				url;
+
+			url = me.callParent(arguments);
+			url += rev ? '&rev=' + rev : '';
+
+			return url;
+		},
+
+		/**
 		 * Загружает тело.
 		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
 		 */
 		load: function (art)
 		{
@@ -84,29 +75,16 @@ Ext.define(
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// формируем запос
+					// формируем запрос
 					Ext.Ajax.request(
 						{
 							url: url,
 							scope: this,
 							success: function(response)
 							{
-								var xml,
-									xmlTest,
-									xml2,
-									startTime;
-
 								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 								{
-									xml = response.responseText;
-
-									xmlTest = xml + '<!-- rev 12345 -->';
-									startTime = new Date().getTime();
-									console.log('responseText', startTime);
-									xml2 = xmlTest.match(/rev (\d+) -->$/);
-									console.log('after match rev', new Date().getTime(), new Date().getTime() - startTime, xml2);
-
-									resolve(xml);
+									resolve(response.responseText);
 								}
 								else
 								{
@@ -126,11 +104,139 @@ Ext.define(
 		},
 
 		/**
-		 * Сохраняет тело на хабе.
+		 * Загружает дифф с хаба для текущей ревизии.
+		 * @param {Number} rev Номер текущей ревизии.
+		 * @return {Promise}
 		 */
-		save: function ()
+		loadDiff: function (rev)
 		{
-			//
+			var me = this,
+				url,
+				promise;
+
+			url = me.getLoadUrl(rev);
+
+			Ext.log(
+				{
+					level: 'info',
+					msg: 'Загрузка дифф тела книги из ' + url
+				}
+			);
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					// формируем запрос
+					Ext.Ajax.request(
+						{
+							url: url,
+							success: function(response)
+							{
+								var diff,
+									rev;
+
+								if (response && response.responseText)
+								{
+									diff = response.responseText;
+									rev = diff.match(/rev (\d+) -->$/);
+									rev = rev[1];
+									resolve({diff: diff, rev: rev});
+								}
+								else
+								{
+									reject(response);
+								}
+							},
+							failure: function (response)
+							{
+								reject(response);
+							}
+						}
+					);
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Сохраняет дифф на хабе для текущей ревизии.
+		 * @param {Number} rev Номер текущей ревизии.
+		 * @return {Promise}
+		 */
+		saveDiff: function (rev)
+		{
+			var me = this,
+				manager = me.manager,
+				art = me.getArt(),
+				revision,
+				url,
+				promise,
+				diff;
+
+			revision = manager.getRevision();
+
+			// получаем собственнный дифф
+			diff = revision.getDiff();
+
+			// получаем url для отправки дифф на хаб
+			url = me.getSaveUrl();
+
+			Ext.log(
+				{
+					level: 'info',
+					msg: 'Сохранение дифф тела книги на ' + url
+				}
+			);
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					// формируем запрос
+					Ext.Ajax.request(
+						{
+							url: url,
+							params: {
+								action: 'update_hub_on_fb3_body',
+								art: art,
+								rev: rev,
+								body_diff: diff
+							},
+							success: function(response)
+							{
+								var diff,
+									rev;
+
+								if (response && response.responseText)
+								{
+									diff = response.responseText;
+									rev = diff.match(/rev (\d+) -->$/);
+									
+									if (rev)
+									{
+										rev = rev[1];
+										resolve({diff: diff, rev: rev});
+									}
+									else 
+									{
+										reject(response);
+									}
+								}
+								else
+								{
+									reject(response);
+								}
+							},
+							failure: function (response)
+							{
+								reject(response);
+							}
+						}
+					);
+				}
+			);
+
+			return promise;
 		}
 	}
 );

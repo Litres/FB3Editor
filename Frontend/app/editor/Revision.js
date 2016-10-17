@@ -11,7 +11,7 @@ Ext.define(
 		 * @private
 		 * @property {Number} Номер ривизии.
 		 */
-		rev: 0,
+		rev: null,
 
 		/**
 		 * @private
@@ -21,15 +21,22 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.Manager} Менеджер редактора текста
+		 * @property {FBEditor.editor.Manager} Менеджер редактора текста.
 		 */
 		manager: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.util.Diff} Утилита для работы с диффами.
+		 */
+		diff: null,
 
 		constructor: function (manager)
 		{
 			var me = this;
 
 			me.manager = manager;
+			me.diff = FBEditor.util.Diff.getInstance();
 		},
 
 		/**
@@ -51,18 +58,62 @@ Ext.define(
 		},
 
 		/**
-		 * Сохраняет ревизию.
-		 * @param {Number} [rev] Номер ривизии. Если номер ревизии не был передан, то увеличится текущий номер на 1.
+		 * Возвращает дифф для текущей ревизии.
+		 * @return {String} Дифф.
 		 */
-		setRev: function (rev)
+		getDiff: function ()
+		{
+			var me = this,
+				diff = me.diff,
+				rev = me.getRev(),
+				manager = me.manager,
+				content = manager.getContent(),
+				diffString,
+				fileName, 
+				oldStr, 
+				newStr, 
+				oldHeader, 
+				newHeader;
+			
+			fileName = '/fb3/body.xml';
+			oldStr = me.getXml();
+			newStr = content.getXml();
+			newStr = /^<\?xml/.test(newStr) ? newStr : '<?xml version="1.0" encoding="UTF-8"?>' + newStr;
+			oldHeader = me.getRev();
+			newHeader = Number(oldHeader) + 1;
+
+			// получаем дифф
+			diffString = diff.getDiff(fileName, oldStr, newStr, oldHeader, newHeader);
+			diffString = diffString.replace(/-<!-- rev \d+ -->$/m, '');
+
+			//console.log(diffString);
+
+			return diffString;
+		},
+
+		/**
+		 * Сохраняет ревизию.
+		 * @param {Number} rev Номер ривизии.
+		 * @param {String} [xml] Строка xml.
+		 */
+		setRev: function (rev, xml)
 		{
 			var me = this,
 				manager = me.manager,
 				content;
 
 			content = manager.getContent();
-			me.xml = content.getXml();
-			me.rev = rev || ++me.rev;
+			me.xml = xml || '<?xml version="1.0" encoding="UTF-8"?>' + content.getXml();
+			me.rev = rev;
+		},
+
+		/**
+		 * Применяет дифф к тексту.
+		 * @param {String} diffString Дифф.
+		 */
+		applyDiff: function (diffString)
+		{
+			//console.log('Применяем дифф', diffString);
 		}
 	}
 );
