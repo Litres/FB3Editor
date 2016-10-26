@@ -50,6 +50,33 @@ Ext.define(
 			{
 				me.getHistory().add(cmd);
 			}
+		},
+
+		getFormatOptionsXml: function ()
+		{
+			var me = this,
+				existTextChild = false,
+				formatOptions;
+
+			formatOptions = me.callParent(arguments);
+
+			// определяем существование текстового потомка
+			Ext.Array.each(
+				me.children,
+				function (child)
+				{
+					if (child.isText)
+					{
+						existTextChild = true;
+						return true;
+					}
+				}
+			);
+
+			formatOptions.spacesAfter = formatOptions.spacesAfter && !existTextChild ? formatOptions.spacesAfter : '';
+			formatOptions.nlBefore = formatOptions.nlBefore && !existTextChild ? formatOptions.nlBefore : '';
+
+			return formatOptions;
 		}
 	}
 );

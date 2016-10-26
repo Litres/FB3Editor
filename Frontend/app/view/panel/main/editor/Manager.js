@@ -241,13 +241,13 @@ Ext.define(
 			).then(
 				function (response)
 				{
-					var reponseDiff = response.diff,
+					var responseDiff = response.diff,
 						responseRev = response.rev;
 
 					if (responseRev !== rev)
 					{
 						// применяем дифф к тексту
-						revision.applyDiff(reponseDiff);
+						revision.applyDiff(responseDiff);
 						
 						// устанавливаем ривизию
 						revision.setRev(responseRev);
@@ -284,17 +284,11 @@ Ext.define(
 			).then(
 				function (response)
 				{
-					var reponseDiff = response.diff,
-						responseRev = response.rev;
-
-					//console.log(response);
+					var responseRev = response.rev;
 
 					if (responseRev)
 					{
-						// применяем дифф к тексту
-						revision.applyDiff(reponseDiff);
-
-						// устанавливаем ривизию
+						// устанавливаем новую ривизию
 						revision.setRev(responseRev);
 					}
 

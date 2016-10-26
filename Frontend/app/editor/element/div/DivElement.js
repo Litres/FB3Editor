@@ -49,7 +49,7 @@ Ext.define(
 				}
 			);
 
-			return attr;
+			return attr.trim();
 		},
 
 		setStyleHtml: function ()

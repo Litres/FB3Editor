@@ -69,12 +69,12 @@ Ext.define(
 			text = withoutText ? '' : me.text;
 
 			// заменяем спецсимволы <, > на сущности
-			text = text.replace(/</g, '&#60;');
-			text = text.replace(/>/g, '&#62;');
+			text = text.replace(/</g, '&lt;');
+			text = text.replace(/>/g, '&gt;');
 
 			// преобразуем последовательность пробелов в цепочку из пробелов и сущности &nbsp;
-			text = text.replace(/[ ]{2}/g, '  &#160;');
-			text = text.replace(/^ | $/g, ' &#160;');
+			//text = text.replace(/[ ]{2}/g, '  &#160;');
+			//text = text.replace(/^ | $/g, ' &#160;');
 			
 			return text;
 		},

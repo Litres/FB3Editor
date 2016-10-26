@@ -31,7 +31,8 @@ Ext.define(
 				me.attributes,
 				function (key, val)
 				{
-					attr += (key === 'href' && !withoutText ? 'l:' : '') + key + '="' + val + '" ';
+					//attr += (key === 'href' && !withoutText ? 'l:' : '') + key + '="' + val + '" ';
+					attr += (key === 'role' && !withoutText ? 'xlink:' : '') + key + '="' + val + '" ';
 				}
 			);
 

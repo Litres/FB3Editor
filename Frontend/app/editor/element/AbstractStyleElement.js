@@ -32,6 +32,52 @@ Ext.define(
 			me.add(els.t);
 
 			return els;
+		},
+
+		getFormatOptionsXml: function ()
+		{
+			var me = this,
+				existTextSibling = false,
+				existTextChild = false,
+				formatOptions;
+
+			formatOptions = me.callParent(arguments);
+
+			// определяем существование текстового сиблинга
+			Ext.Array.each(
+				me.parent.children,
+				function (sibling)
+				{
+					if (sibling.isText)
+					{
+						existTextSibling = true;
+						return true;
+					}
+				}
+			);
+
+			// определяем существование текстового потомка
+			Ext.Array.each(
+				me.children,
+				function (child)
+				{
+					if (child.isText)
+					{
+						existTextChild = true;
+						return true;
+					}
+				}
+			);
+
+			formatOptions.spacesBefore = formatOptions.spacesBefore && !existTextSibling ?
+			                             formatOptions.spacesBefore : '';
+			formatOptions.spacesAfter = formatOptions.spacesAfter && !existTextChild ?
+			                            formatOptions.spacesAfter : '';
+
+			formatOptions.nlBefore = existTextChild ? '' : formatOptions.nlBefore;
+			formatOptions.nlAfter = existTextSibling ? '' : formatOptions.nlAfter;
+
+			return formatOptions;
 		}
 	}
 );

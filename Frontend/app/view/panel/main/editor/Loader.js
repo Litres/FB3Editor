@@ -179,6 +179,12 @@ Ext.define(
 			// получаем собственнный дифф
 			diff = revision.getDiff();
 
+			if (!diff)
+			{
+				// если нет изменений
+				return Promise.resolve(false);
+			}
+
 			// получаем url для отправки дифф на хаб
 			url = me.getSaveUrl();
 

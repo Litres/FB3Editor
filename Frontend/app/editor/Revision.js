@@ -65,7 +65,6 @@ Ext.define(
 		{
 			var me = this,
 				diff = me.diff,
-				rev = me.getRev(),
 				manager = me.manager,
 				content = manager.getContent(),
 				diffString,
@@ -73,18 +72,28 @@ Ext.define(
 				oldStr, 
 				newStr, 
 				oldHeader, 
-				newHeader;
+				newHeader,
+				timeStart = new Date().getTime();
 			
 			fileName = '/fb3/body.xml';
 			oldStr = me.getXml();
 			newStr = content.getXml();
-			newStr = /^<\?xml/.test(newStr) ? newStr : '<?xml version="1.0" encoding="UTF-8"?>' + newStr;
+			newStr = '<?xml version="1.0" encoding="UTF-8"?>' + newStr;
+
+			if (oldStr === newStr)
+			{
+				return false;
+			}
+			
 			oldHeader = me.getRev();
 			newHeader = Number(oldHeader) + 1;
 
+			console.log('getDiff before', new Date().getTime() - timeStart);
+
 			// получаем дифф
 			diffString = diff.getDiff(fileName, oldStr, newStr, oldHeader, newHeader);
-			diffString = diffString.replace(/-<!-- rev \d+ -->$/m, '');
+
+			console.log('getDiff', new Date().getTime() - timeStart);
 
 			//console.log(diffString);
 
@@ -103,6 +112,7 @@ Ext.define(
 				content;
 
 			content = manager.getContent();
+			xml = xml ? xml.replace(/<!-- rev \d+ -->$/m, '') : null;
 			me.xml = xml || '<?xml version="1.0" encoding="UTF-8"?>' + content.getXml();
 			me.rev = rev;
 		},
@@ -113,7 +123,7 @@ Ext.define(
 		 */
 		applyDiff: function (diffString)
 		{
-			//console.log('Применяем дифф', diffString);
+			console.log('Применяем дифф', diffString);
 		}
 	}
 );

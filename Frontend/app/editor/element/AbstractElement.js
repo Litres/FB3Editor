@@ -600,25 +600,22 @@ Ext.define(
 				children = me.children,
 				tag = me.xmlTag,
 				self = FBEditor.editor.element.AbstractElement,
-				countSpaces = self.countSpaces,
 				nlBefore = '',
 				nlAfter = '',
 				spacesBefore = '',
 				spacesAfter = '',
+				formatOptions = {},
 				xml,
 				attr;
 
 			if (!withoutText)
 			{
-				// формируем оступы
-				spacesBefore = countSpaces && (!me.isStyleType && !me.isImg || me.isStyleHolder) ?
-				               new Array(countSpaces).join('  ') : '';
-				spacesAfter = countSpaces && !me.isStyleType ?
-				              new Array(countSpaces).join('  ') : '';
-
-				// нужен ли символ новой строки в начале и конце строки
-				nlBefore = me.isStyleType ? '' : '\n';
-				nlAfter = me.isStyleType && !me.isStyleHolder || me.isImg ? '' : '\n';
+				// получаем опции для форматирования xml
+				formatOptions = me.getFormatOptionsXml();
+				spacesBefore = formatOptions.spacesBefore;
+				spacesAfter = formatOptions.spacesAfter;
+				nlBefore = formatOptions.nlBefore;
+				nlAfter = formatOptions.nlAfter;
 			}
 
 			// получаем аттрибуты
@@ -634,6 +631,7 @@ Ext.define(
 
 			if (children && children.length)
 			{
+				// счётчик количества пробелов перед тегом
 				self.countSpaces++;
 
 				xml += me.marker ? '' : '>' + nlBefore;
@@ -1311,6 +1309,32 @@ Ext.define(
 					node.style.display = me.styleDisplay;
 				}
 			);
+		},
+
+		/**
+		 * @protected
+		 * Возвращает опции для форматирования xml.
+		 * @return {Object}
+		 * @return {String} Object.spacesBefore Количество пробелов перед открывающимся тегом.
+		 * @return {String} Object.spacesAfter Количество пробелов перед закрывающимся тегом.
+		 * @return {String} Object.nlBefore Символ новой строки после открывающегося тега.
+		 * @return {String} Object.nlBefore Символ новой строки после закрывающегося тега.
+		 */
+		getFormatOptionsXml: function ()
+		{
+			var self = FBEditor.editor.element.AbstractElement,
+				countSpaces = self.countSpaces,
+				formatOptions = {};
+
+			// отступы
+			formatOptions.spacesBefore = countSpaces ? new Array(countSpaces).join('  ') : '';
+			formatOptions.spacesAfter = countSpaces ? new Array(countSpaces).join('  ') : '';
+
+			// символы новой строки
+			formatOptions.nlBefore = '\n';
+			formatOptions.nlAfter = '\n';
+
+			return formatOptions;
 		},
 
 		/**
