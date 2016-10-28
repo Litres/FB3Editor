@@ -59,6 +59,20 @@ Ext.define(
 				diff = me.diff;
 
 			return diff.createPatch(fileName, oldStr, newStr, oldHeader, newHeader);
+		},
+
+		/**
+		 * Применяет дифф к исходной строке.
+		 * @param {String} sourceString Исходная строка.
+		 * @param {String} diffString Дифф, который надо применить.
+		 * @return {String} Результат применения дифф к исходной строке.
+		 */
+		applyDiff: function (sourceString, diffString)
+		{
+			var me = this,
+				diff = me.diff;
+
+			return diff.applyPatch(sourceString, diffString);
 		}
 	}
 );

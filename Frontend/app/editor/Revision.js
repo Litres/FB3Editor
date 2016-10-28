@@ -88,13 +88,10 @@ Ext.define(
 			oldHeader = me.getRev();
 			newHeader = Number(oldHeader) + 1;
 
-			console.log('getDiff before', new Date().getTime() - timeStart);
-
 			// получаем дифф
 			diffString = diff.getDiff(fileName, oldStr, newStr, oldHeader, newHeader);
 
 			console.log('getDiff', new Date().getTime() - timeStart);
-
 			//console.log(diffString);
 
 			return diffString;
@@ -120,10 +117,32 @@ Ext.define(
 		/**
 		 * Применяет дифф к тексту.
 		 * @param {String} diffString Дифф.
+		 * @return {Boolean} Успешно ли применен дифф.
 		 */
 		applyDiff: function (diffString)
 		{
-			console.log('Применяем дифф', diffString);
+			var me = this,
+				diff = me.diff,
+				manager = me.manager,
+				content = me.xml,
+				newContent,
+				result = false,
+				timeStart = new Date().getTime();
+			
+			// применяем дифф
+			newContent = diff.applyDiff(content, diffString);
+
+			console.log('applyDiff', new Date().getTime() - timeStart, diffString);
+
+			if (newContent)
+			{
+				// создаем новый контент
+				manager.createContent(newContent);
+
+				result = true;
+			}
+
+			return result;
 		}
 	}
 );

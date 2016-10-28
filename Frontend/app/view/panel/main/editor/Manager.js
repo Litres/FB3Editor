@@ -247,11 +247,12 @@ Ext.define(
 					if (responseRev !== rev)
 					{
 						// применяем дифф к тексту
-						revision.applyDiff(responseDiff);
-						
-						// устанавливаем ривизию
-						revision.setRev(responseRev);
-						rev = responseRev;
+						if (revision.applyDiff(responseDiff))
+						{
+							// устанавливаем новую ревизию
+							revision.setRev(responseRev);
+							rev = responseRev;
+						}
 					}
 
 					// сохраняем дифф
@@ -288,7 +289,7 @@ Ext.define(
 
 					if (responseRev)
 					{
-						// устанавливаем новую ривизию
+						// устанавливаем новую ревизию
 						revision.setRev(responseRev);
 					}
 

@@ -143,7 +143,7 @@ Ext.define(
 		},
 
 		/**
-		 * Создает контент из тела загруженной книги.
+		 * Создает контент из xml.
 		 * @param {String} srcXml Исходный xml тела книги.
 		 */
 		createContent: function (srcXml)
@@ -156,8 +156,6 @@ Ext.define(
 				creator,
 				xsl,
 				startTime = new Date().getTime();
-
-			console.log('resetFocus', startTime);
 
 			me.resetFocus();
 
@@ -174,8 +172,6 @@ Ext.define(
 			xml = xml.replace(/<li><\/li>/gi, '<li><br/></li>');
 			xml = xml.replace(/<subtitle><\/subtitle>/gi, '<subtitle><br/></subtitle>');
 
-			console.log('before transContent', new Date().getTime() - startTime);
-
 			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
 			xsl = FBEditor.xsl.Editor.getXsl();
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
@@ -191,7 +187,7 @@ Ext.define(
 			// преобразовываем строку в элемент
 			creator = Ext.create('FBEditor.editor.CreateContent', transContent);
 
-			console.log('afterCreateContent', new Date().getTime() - startTime);
+			console.log('after CreateContent', new Date().getTime() - startTime);
 
 			content = creator.getContent();
 
