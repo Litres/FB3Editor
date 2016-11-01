@@ -58,7 +58,7 @@ Ext.define(
 		 */
 		//editor: null,
 
-		getXml: function (withoutText)
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				self = FBEditor.editor.element.AbstractElement,
@@ -66,7 +66,7 @@ Ext.define(
 				xml;
 
 			self.countSpaces++;
-			nl = withoutText ? '' : '\n';
+			nl = withoutFormat ? '' : '\n';
 			xml = nl + me.callParent(arguments);
 			self.countSpaces = 0;
 

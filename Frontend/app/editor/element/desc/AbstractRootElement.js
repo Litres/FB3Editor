@@ -23,7 +23,7 @@ Ext.define(
 		 * Наобходимые аттрибуты для проверки по схеме.
 		 */
 		defaultAttributes: {
-			'xmlns:l': 'http://www.w3.org/1999/xlink',
+			'xmlns:xlink': 'http://www.w3.org/1999/xlink',
 			'xmlns': 'http://www.fictionbook.org/FictionBook3/description'
 		},
 
@@ -32,21 +32,15 @@ Ext.define(
 		 */
 		isDesc: true,
 
-		getXml: function ()
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				xml;
 
 			xml = me.callParent(arguments);
 
-			if (me.first().isEmpty())
-			{
-				// первым элементом не может быть br согласно схеме
-				xml = xml.replace(/<br\/>/, '<p>&#160;</p>');
-			}
-
-			// пустой ли элемент
-			//xml = me.isEmpty() ? xml.replace('<br/>', '') : xml;
+			// корректируем аттрибут для передачи на хаб
+			xml = xml.replace(/xlink:href=/g, 'href=');
 
 			return xml;
 		},
@@ -58,8 +52,8 @@ Ext.define(
 				factory = FBEditor.editor.Factory;
 
 			els.p = factory.createElement('p');
-			els.br = factory.createElement('br');
-			els.p.add(els.br);
+			els.t = factory.createElementText(' ');
+			els.p.add(els.t);
 			me.add(els.p);
 
 			return els;

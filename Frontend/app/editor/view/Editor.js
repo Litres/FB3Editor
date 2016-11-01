@@ -176,14 +176,15 @@ Ext.define(
 			// корневой элемент
 			root = manager.getContent();
 
-			// получаем xml-строку
-			xml = root.getXml();
+			// получаем xml-строку без форматирования
+			xml = root.getXml(false, true);
 
 			// вырезаем корневой элемент, оставляя только его содержимое
 			xml = xml.replace(/^<.*?>(.*)<\/.*?>$/g, '$1');
 
 			// вырезаем пустую строку
-			xml = xml.replace(/<p>&#160;<\/p>/, '');
+			xml = xml.replace(/^<p>[&#160; ]?<\/p>$/, '');
+			xml = xml.replace(/^<p\/>$/, '');
 
 			return xml;
 		},

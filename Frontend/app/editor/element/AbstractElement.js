@@ -592,9 +592,10 @@ Ext.define(
 		/**
 		 * Возвращает элемент в виде строки xml.
 		 * @param {Boolean} [withoutText] Надо ли исключить текст из xml.
+		 * @param {Boolean} [withoutFormat] Надо ли исключить форматирование xml.
 		 * @return {String}
 		 */
-		getXml: function (withoutText)
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				children = me.children,
@@ -608,7 +609,7 @@ Ext.define(
 				xml,
 				attr;
 
-			if (!withoutText)
+			if (!withoutFormat)
 			{
 				// получаем опции для форматирования xml
 				formatOptions = me.getFormatOptionsXml();
@@ -626,7 +627,7 @@ Ext.define(
 
 			if (me.marker)
 			{
-				xml += '>\n' + spacesBefore + '  ' + me.marker.getXml(withoutText);
+				xml += '>\n' + spacesBefore + '  ' + me.marker.getXml(withoutText, withoutFormat);
 			}
 
 			if (children && children.length)
@@ -640,7 +641,7 @@ Ext.define(
 					children,
 					function (item)
 					{
-						xml += item.getXml(withoutText);
+						xml += item.getXml(withoutText, withoutFormat);
 					}
 				);
 

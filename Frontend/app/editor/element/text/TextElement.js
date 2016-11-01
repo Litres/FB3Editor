@@ -61,7 +61,7 @@ Ext.define(
 			return node;
 		},
 
-		getXml: function (withoutText)
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				text;
