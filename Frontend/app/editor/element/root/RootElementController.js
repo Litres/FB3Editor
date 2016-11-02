@@ -102,6 +102,7 @@ Ext.define(
 				relatedTarget = e.relatedTarget,
 				manager,
 				helper,
+				range,
 				viewportId;
 
 			els.root = me.getElement();
@@ -110,25 +111,36 @@ Ext.define(
 			if (relatedTarget &&
 			    (!relatedTarget.getElement || !relatedTarget.getElement().getRoot().equal(els.root)))
 			{
-				// ставим курсор в начало документа если фокус пришел с другого компонента
+				// если фокус пришел с другого компонента
 
 				me.enableAllEditable();
+				range = manager.getRange();
 
-				els.deepFirst = els.root.getDeepFirst();
-				helper = els.deepFirst.getNodeHelper();
-				viewportId = e.target.viewportId;
-				nodes.deepFirst = helper.getNode(viewportId);
+				if (range)
+				{
+					// восстанавливаем позицию курсора
+					manager.restoreCursor();
+				}
+				else
+				{
+					// ставим курсор в начало документа
 
-				manager.setCursor(
-					{
-						startNode: nodes.deepFirst
-					}
-				);
+					els.deepFirst = els.root.getDeepFirst();
+					helper = els.deepFirst.getNodeHelper();
+					viewportId = e.target.viewportId;
+					nodes.deepFirst = helper.getNode(viewportId);
 
-				// прокручиваем скролл в начало документа
-				helper = els.root.getNodeHelper();
-				nodes.root = helper.getNode(viewportId);
-				nodes.root.scrollTop = 0;
+					manager.setCursor(
+						{
+							startNode: nodes.deepFirst
+						}
+					);
+
+					// прокручиваем скролл в начало документа
+					helper = els.root.getNodeHelper();
+					nodes.root = helper.getNode(viewportId);
+					nodes.root.scrollTop = 0;
+				}
 			}
 		},
 

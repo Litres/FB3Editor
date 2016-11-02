@@ -264,7 +264,7 @@ Ext.define(
 			// элемент под курсором
 			els.target = target.getElement ? target.getElement() : null;
 
-			/*
+
 			if (els.target)
 			{
 				els.root = els.target.getRoot();
@@ -273,7 +273,7 @@ Ext.define(
 
 				// устанавливаем фокус на корневой элемент, чтобы иметь возможность обрабатывать события клавиатуры
 				nodes.root.focus();
-			}*/
+			}
 
 			me.pOver = null;
 			me.pOut = null;
