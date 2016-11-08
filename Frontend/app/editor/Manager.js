@@ -199,7 +199,7 @@ Ext.define(
 			// сбрасываем историю редактора текста
 			me.getHistory().clear();
 
-			//me.content = content;
+			me.content = content;
 
 			// загружаем контент в редактор
 			editor.fireEvent('loadData');
