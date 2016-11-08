@@ -10,6 +10,17 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 		alias: 'controller.form.desc.sequence',
 
+		onAccessHub: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				customContainer = view.getCustomContainer(),
+				searchContainer = view.getSearchContainer();
+
+			customContainer.setHidden(true);
+			searchContainer.setVisible(true);
+		},
+
 		/**
 		 * Делает актвиной кнопку вложения.
 		 * @param {FBEditor.view.form.desc.AbstractFieldContainer} container Контейнер серии, из которой

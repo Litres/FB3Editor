@@ -15,18 +15,22 @@ Ext.define(
 			'FBEditor.view.button.SaveResource',
 			'FBEditor.view.button.MoveResource'
 		],
+
 		id: 'panel-props-resources',
 		xtype: 'panel-props-resources',
 		controller: 'panel.props.resources',
-		defaults: {
-			hidden: true
-		},
+
 		listeners: {
 			loadData: 'onLoadData',
 			click: {
 				element: 'el',
 				fn: 'onClick'
 			}
+		},
+
+		defaults: {
+			hidden: true,
+			margin: '2 0'
 		},
 
 		initComponent: function ()
@@ -47,6 +51,7 @@ Ext.define(
 					xtype: 'button-move-resource'
 				}
 			];
+
 			me.callParent(arguments);
 		},
 

@@ -413,9 +413,19 @@ Ext.define(
 						},
 						success: function (response)
 						{
-							var json = JSON.parse(response.responseText),
+							var json,
 								newId = id[0],
 								root;
+
+							try
+							{
+								json = JSON.parse(response.responseText)
+							}
+							catch (e)
+							{
+								Ext.callback(fn, scope, [newId]);
+								return;
+							}
 
 							root = json[property] || [];
 							//console.log('success', root);

@@ -21,7 +21,7 @@ Ext.define(
 				name = view.getMain().getValue();
 
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
-			if (!loading)
+			if (!loading && FBEditor.accessHub)
 			{
 				me.abortSearch();
 				me.onCleanResultContainer();

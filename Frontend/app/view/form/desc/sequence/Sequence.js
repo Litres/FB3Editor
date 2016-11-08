@@ -16,19 +16,21 @@ Ext.define(
 			'FBEditor.view.form.desc.sequence.SearchContainer',
 			'FBEditor.view.form.desc.sequence.SequenceController'
 		],
+
 		id: 'form-desc-sequence',
 		xtype: 'form-desc-sequence',
 		controller: 'form.desc.sequence',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
-		layout: 'anchor',
+
 		listeners: {
-			accessHub: 'onAccessHub',
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
 			putData: 'onPutData',
 			putFields: 'onPutFields',
 			removeFields: 'onRemoveFields'
 		},
+
+		layout: 'anchor',
 
 		prefixName: 'sequence',
 
@@ -38,6 +40,18 @@ Ext.define(
 			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
 			number: 'Номер'
 		},
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.sequence.CustomContainer} Контейнер данных.
+		 */
+		_customContainer: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.sequence.SearchContainer} Контейнер поиска.
+		 */
+		_searchContainer: null,
 
 		initComponent: function ()
 		{
@@ -126,6 +140,36 @@ Ext.define(
 				}
 			];
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает контейнер данных.
+		 * @return {FBEditor.view.form.desc.sequence.CustomContainer}
+		 */
+		getCustomContainer: function ()
+		{
+			var me = this,
+				container = me._customContainer;
+
+			container = container || me.down('form-desc-sequence-container-custom');
+			me._customContainer = container;
+
+			return container;
+		},
+
+		/**
+		 * Возвращает контейнер поиска.
+		 * @return {FBEditor.view.form.desc.sequence.SearchContainer}
+		 */
+		getSearchContainer: function ()
+		{
+			var me = this,
+				container = me._searchContainer;
+
+			container = container || me.down('form-desc-sequence-container-search');
+			me._searchContainer = container;
+			
+			return container;
 		},
 
 		getValues: function (d)

@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.relations.subject.custom.editor.EditorController',
+			'FBEditor.view.form.desc.relations.subject.custom.editor.uuid.Uuid',
 			'FBEditor.view.form.desc.relations.subject.name.Name',
 			'FBEditor.view.form.desc.relations.subject.name.main.Main',
 			'FBEditor.view.form.desc.relations.subject.title.Title',
@@ -61,7 +62,7 @@ Ext.define(
 							},
 							items: [
 								{
-									xtype: 'form-desc-field-link-uuid',
+									xtype: 'form-desc-relations-subject-custom-editor-uuid',
 									fieldLabel: me.translateText.id,
 									name: 'relations-subject-id'
 								},

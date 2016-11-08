@@ -92,7 +92,9 @@ Ext.define(
 						'middle-name': item.down('[name=relations-subject-middle-name]').getValue(),
 						'last-name': item.down('[name=relations-subject-last-name]').getValue()
 					};
+
 					val = me.removeEmptyValues(val);
+
 					if (val && val._id)
 					{
 						values = values || [];
@@ -100,6 +102,7 @@ Ext.define(
 					}
 				}
 			);
+
 			data['fb3-relations'] = data['fb3-relations'] || {};
 			data['fb3-relations'].subject = values;
 

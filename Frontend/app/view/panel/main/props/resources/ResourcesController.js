@@ -98,6 +98,7 @@ Ext.define(
 					bridgeProps.Ext.getCmp('button-save-resource'),
 					bridgeProps.Ext.getCmp('button-move-resource')
 				];
+				
 				Ext.Array.each(
 					buttons,
 					function (item)

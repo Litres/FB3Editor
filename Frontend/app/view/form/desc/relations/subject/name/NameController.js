@@ -20,29 +20,33 @@ Ext.define(
 				title,
 				names;
 
-			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
+			// игнорируем при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading)
 			{
-				resultContainer = view.getResultContainer();
-
-				// старое связанное поле
-				refCmp = resultContainer.getReferenceCmp();
-
-				// сбрасываем поиск старого связанного поля
-				refCmp.fireEvent('abortSearch');
-				refCmp.fireEvent('cleanResultContainer');
-
-				// связываем текущее поле с контейнером результатов
-				resultContainer.setReferenceCmp(view);
-
 				// получаем данные из полей
 				title = view.getTitle();
 				title.autoValue();
 				title = view.getTitle();
-				names = title.getNames();
 
-				// ищем
-				me.searchName(names);
+				if (FBEditor.accessHub)
+				{
+					resultContainer = view.getResultContainer();
+
+					// старое связанное поле
+					refCmp = resultContainer.getReferenceCmp();
+
+					// сбрасываем поиск старого связанного поля
+					refCmp.fireEvent('abortSearch');
+					refCmp.fireEvent('cleanResultContainer');
+
+					// связываем текущее поле с контейнером результатов
+					resultContainer.setReferenceCmp(view);
+
+					names = title.getNames();
+
+					// ищем
+					me.searchName(names);
+				}
 			}
 		},
 
@@ -53,10 +57,12 @@ Ext.define(
 				resultContainer = view.getResultContainer(),
 				panelProps;
 
-			panelProps = resultContainer.getPanelProps();
-
-			// показываем результаты на панели свойств
-			panelProps.fireEvent('showContainer');
+			if (FBEditor.accessHub)
+			{
+				// показываем результаты на панели свойств
+				panelProps = resultContainer.getPanelProps();
+				panelProps.fireEvent('showContainer');
+			}
 		},
 
 		/**

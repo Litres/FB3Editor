@@ -182,12 +182,12 @@ Ext.define(
 			transContent = transContent.replace(/\), ?]/g, ')]');
 			transContent = transContent.replace(/, $/, '');
 
-			console.log('after transContent', new Date().getTime() - startTime);
+			//console.log('after transContent', new Date().getTime() - startTime);
 
 			// преобразовываем строку в элемент
 			creator = Ext.create('FBEditor.editor.CreateContent', transContent);
 
-			console.log('after CreateContent', new Date().getTime() - startTime);
+			//console.log('after CreateContent', new Date().getTime() - startTime);
 
 			content = creator.getContent();
 
@@ -199,12 +199,12 @@ Ext.define(
 			// сбрасываем историю редактора текста
 			me.getHistory().clear();
 
-			me.content = content;
+			//me.content = content;
 
 			// загружаем контент в редактор
 			editor.fireEvent('loadData');
 
-			console.log('after fireEvent loadData', new Date().getTime() - startTime);
+			//console.log('after fireEvent loadData', new Date().getTime() - startTime);
 		},
 
 		/**

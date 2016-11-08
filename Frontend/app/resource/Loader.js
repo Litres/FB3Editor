@@ -71,8 +71,67 @@ Ext.define(
 			return this.async;
 		},
 
+		save: function (resData)
+		{
+			var me = this,
+				art = me.getArt(),
+				url,
+				promise;
+
+			url = me.getSaveUrl();
+
+			Ext.log(
+				{
+					level: 'info',
+					msg: 'Сохранение ресурса на ' + url
+				}
+			);
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					// формируем запрос
+					Ext.Ajax.request(
+						{
+							url: url,
+							params: {
+								action: 'put_fb3_image',
+								art: art,
+								image: resData.name
+							},
+							binaryData: resData.content,
+							disableCaching: true,
+							scope: me,
+							success: function(response)
+							{
+								var xml;
+
+								console.log(3, response);
+
+								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+								{
+									xml = response.responseText;
+									resolve(xml);
+								}
+								else
+								{
+									reject(response);
+								}
+							},
+							failure: function (response)
+							{
+								reject(response);
+							}
+						}
+					);
+				}
+			);
+
+			return promise;
+		},
+
 		/**
-		 * Загружает описание.
+		 * Загружает список ресурсов.
 		 * @param {Number} [art] Айди произведениея на хабе.
 		 * @return {Promise}
 		 */
@@ -100,9 +159,11 @@ Ext.define(
 			promise = new Promise(
 				function (resolve, reject)
 				{
+					// формируем запрос
 					Ext.Ajax.request(
 						{
 							url: url,
+							disableCaching: true,
 							scope: me,
 							success: function(response)
 							{

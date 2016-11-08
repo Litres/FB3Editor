@@ -222,14 +222,15 @@ Ext.define(
 		{
 			var me = this,
 				file = data.file,
-				res,
 				resData;
 
+			// проверяем тип ресурса
 			if (!me.checkType(file.type))
 			{
 				throw Error('Недопустимый тип ресурса');
 			}
 
+			// создаём данные ресурса
 			resData = Ext.create('FBEditor.resource.data.FileData', data);
 			resData = resData.getData();
 
@@ -238,10 +239,76 @@ Ext.define(
 				throw Error('Ресурс с именем ' + resData.name + ' уже существует');
 			}
 
-			res = Ext.create('FBEditor.resource.Resource', resData);
-			me.data.push(res);
-			me.sortData();
-			me.updateNavigation();
+			if (FBEditor.accessHub)
+			{
+				// сохраняем ресурс на хабе
+				me.saveToUrl(resData).then(
+					function (response)
+					{
+						var res;
+						
+						console.log(1, response);
+
+						// создаём объект ресурса
+						res = Ext.create('FBEditor.resource.Resource', resData);
+						me.data.push(res);
+
+						// сортируем ресурсы
+						me.sortData();
+
+						// обновляем дерево навигации
+						me.updateNavigation();
+					}
+				);
+			}
+		},
+
+		/**
+		 * Сохраняет ресурс на хабе.
+		 * @param {FBEditor.resource.data.FileData} resData Данные ресурса.
+		 * @return {Promise}
+		 */
+		saveToUrl: function (resData)
+		{
+			var me = this,
+				loader = me.loader,
+				promise;
+			
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					loader.save(resData).then(
+						function (xml)
+						{
+							console.log(2, xml);
+							resolve();
+						},
+						function (response)
+						{
+							Ext.log(
+								{
+									level: 'error',
+									msg: 'Ошибка сохранения ресурса на хабе',
+									dump: response
+								}
+							);
+
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно сохранить ресурс на хабе',
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
+							
+							reject(response);
+						}
+					);
+				}
+			);
+			
+			return promise;
 		},
 
 		/**
@@ -397,7 +464,7 @@ Ext.define(
 		},
 
 		/**
-		 * Сохраняет ресурс.
+		 * Сохраняет ресурс локально.
 		 * @param {String} name Имя ресурса.
 		 * @return {Boolean} Успешность сохранения.
 		 */

@@ -23,7 +23,7 @@ Ext.define(
 					'<div><span>Тип:</span> {type}</div>',
 					'<tpl if="isFolder"><div><span>Ресурсов:</span> {total}</div>',
 					'<tpl else><div><span>Объём:</span> {size}</div></tpl>',
-					'<div><span>Изменён:</span> {date}</div>',
+					'<tpl if="date"><div><span>Изменён:</span> {date}</div></tpl>',
 					'<tpl if="totalElements"><div><span>Использован в тексте:</span> {totalElements}</div></tpl>',
 			    '</div>'
 			);

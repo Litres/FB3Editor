@@ -317,9 +317,11 @@ Ext.define(
 					if (response)
 					{
 						FBEditor.accessHub = response.substring(0, 1) === '{' ? true : false;
-						Ext.log({msg: 'Хаб доступен', level: 'info'});
+						
 						if (FBEditor.accessHub)
 						{
+							Ext.log({msg: 'Хаб доступен', level: 'info'});
+
 							// оповещаем все необходимые компоненты, что хаб доступен
 							Ext.getCmp('main').fireEvent('accessHub');
 						}

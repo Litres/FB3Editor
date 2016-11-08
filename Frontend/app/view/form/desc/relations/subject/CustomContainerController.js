@@ -20,7 +20,7 @@ Ext.define(
 			if (!descManager.isLoadedData())
 			{
 				// если данные не загружены, то скрываем контейнер данных
-				view.setVisible(false);
+				view.setHidden(true);
 			}
 		},
 

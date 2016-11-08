@@ -86,7 +86,7 @@ Ext.define(
 			
 			//me.setStyle('cursor','pointer');
 
-			if (descManager.isLoadedData())
+			if (descManager.isLoadedData() && !me.hidden)
 			{
 				// если данные загружены, то показываем краткую сводку
 				me.setVisible(true);

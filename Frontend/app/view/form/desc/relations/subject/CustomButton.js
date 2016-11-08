@@ -25,19 +25,8 @@ Ext.define(
 		handler: function ()
 		{
 			var me = this,
-				manager = FBEditor.desc.Manager,
 				searchContainer = me.searchContainer,
 				customContainer = me.customContainer;
-
-			// получаем новый id
-			manager.getNewId(
-				{
-					url: 'https://hub.litres.ru/pages/machax_persons/',
-					property: 'persons',
-					fn: me.setSubjectId,
-					scope: me
-				}
-			);
 
 			// устанавливаем ФИО из поскового поля в поля ручного вввода
 			me.setNamesFromSearchField();
@@ -70,22 +59,6 @@ Ext.define(
 			custom.fireEvent('showCustom', !hidden);
 
 			search.setHidden(!hidden);
-		},
-
-		/**
-		 * Устанавливает id в поле.
-		 * @param {String} id uuid.
-		 */
-		setSubjectId: function (id)
-		{
-			var me = this,
-				custom = me.customContainer;
-
-			// обновляем поле ссылки id
-			custom.updateData({'relations-subject-id': id});
-
-			// делаем ссылку неактивной
-			custom.down('[name=relations-subject-id]').disableLink();
 		},
 
 		/**
