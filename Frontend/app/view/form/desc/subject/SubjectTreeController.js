@@ -140,14 +140,22 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				subject = view.subjectField,
-				height;
+				subjectField,
+				byX,
+				byY,
+				labelWidth;
 
 			if (view.isVisible() && subject && view.rendered)
 			{
-				height = view.getHeight() + 2;
+				subjectField = view.getTextField();
+				labelWidth = 115; // ширина метки поля
+				byX = 0;
+				byY = -2;
 
-				// выравниваем окно сверху от поля
-				view.alignTo(subject, 'tl', [115, -height]);
+				//console.log('align', [byX, byY], subjectField.inputEl);
+
+				// выравниваем окно относительно поля
+				view.alignTo(subjectField.inputEl, 'bl-tl', [byX, byY]);
 			}
 		},
 
@@ -157,7 +165,7 @@ Ext.define(
 		onResize: function ()
 		{
 			var me = this,
-				view= me.getView();
+				view = me.getView();
 
 			// предотвращаем скрытие окна
 			view.isShow = false;

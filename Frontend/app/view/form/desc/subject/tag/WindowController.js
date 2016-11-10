@@ -41,12 +41,22 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				subject = view.subjectField;
+				subject = view.subjectField,
+				subjectField,
+				byX = 0,
+				byY = 0,
+				labelWidth;
 
 			if (view.isVisible() && subject && view.rendered)
 			{
+				subjectField = view.getTextField();
+
+				byX = 0;
+				byY = 1;
+				labelWidth = 115;
+
 				// выравниваем окно снизу от поля
-				view.alignTo(view.getTextField(), 'bl', [115, 0]);
+				view.alignTo(subjectField.inputEl, 'bl', [byX, byY]);
 			}
 		}
 	}

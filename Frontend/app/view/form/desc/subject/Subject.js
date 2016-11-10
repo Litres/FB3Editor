@@ -39,6 +39,12 @@ Ext.define(
 		},
 
 		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.subject.field.SubjectField} Текстовое поле жанра.
+		 */
+		_subjectField: null,
+
+		/**
 		 * @property {FBEditor.view.form.desc.subject.SubjectTree} Дерево жанров.
 		 */
 		subjectTree: null,
@@ -64,6 +70,21 @@ Ext.define(
 			];
 
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает текстовое поле жанра.
+		 * @return {FBEditor.view.form.desc.subject.field.SubjectField}
+		 */
+		getSubjectField: function ()
+		{
+			var me = this,
+				subjectField;
+
+			subjectField  = me._subjectField || me.down('form-desc-subject-field');
+			me._subjectField = subjectField;
+
+			return subjectField;
 		},
 
 		getSubjectTree: function ()

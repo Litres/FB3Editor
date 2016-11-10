@@ -29,6 +29,8 @@ Ext.define(
 		animate: false,
 		useArrows: true,
 		folderSort: true,
+		shadow: false,
+		focusOnToFront: false, // необходимо false, чтобы фокус не прыгал из поля в окно
 
 		displayField: '_title',
 
@@ -535,7 +537,8 @@ Ext.define(
 						// раскрываем только первые потомки корневого узла
 						me.getRootNode().expandChildren();
 					}
-					else{
+					else
+					{
 						// раскрываем все узлы
 						me.getRootNode().expand(true);
 					}
@@ -727,7 +730,7 @@ Ext.define(
 		 */
 		getTextField: function ()
 		{
-			return this.subjectField.down('form-desc-subject-field');
+			return this.subjectField.getSubjectField();
 		},
 
 		/**

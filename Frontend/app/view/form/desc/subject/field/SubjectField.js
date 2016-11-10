@@ -14,7 +14,7 @@ Ext.define(
 		xtype: 'form-desc-subject-field',
 		controller: 'form.desc.subject.field',
 		name: 'classification-subject',
-		selectOnFocus: true,
+		//selectOnFocus: true,
 		checkChangeBuffer: 200,
 
 		listeners: {
