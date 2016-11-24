@@ -47,8 +47,8 @@ Ext.define(
 						{
 							var resourceManager = FBEditor.resource.Manager,
 								descManager = FBEditor.desc.Manager,
+								routeManager = FBEditor.route.Manager,
 								content = Ext.getCmp('panel-main-content'),
-								bodyEditor,
 								bodyManager,
 								structure,
 								thumb,
@@ -86,6 +86,9 @@ Ext.define(
 								//console.log('images', images);
 								//console.log('contentBody', contentBody);
 
+								// удаляем параметры из хэша, которые предназначались для загрузки книги с хаба
+								routeManager.removeParams(['art', 'body_art']);
+
 								// показываем редактор описания на тот случай, если он еще не был зарендерин
 								content.fireEvent('contentDesc');
 
@@ -93,7 +96,7 @@ Ext.define(
 								Ext.suspendLayouts();
 
 								// загружаем описание в форму
-								descManager.loadUrl = null;
+								descManager.reset();
 								descManager.loadDataToForm(desc);
 
 								if (!resourceManager.checkThumbInResources(thumb))
@@ -103,15 +106,19 @@ Ext.define(
 									images.push(thumb);
 								}
 
+								// загружаем ресурсы
 								resourceManager.reset();
 								resourceManager.load(images);
 								resourceManager.setCover(thumb.getFileName());
 
+								// редактор тела книги
+								bodyManager = FBEditor.getEditorManager();
+								bodyManager.reset();
+
 								// переключаем контекст на редатор тела книги
 								content.openBody();
 
-								// редактор тела книги
-								bodyManager = FBEditor.getEditorManager();
+								// создаем контент тела книги
 								bodyManager.createContent(contentBody);
 							}
 							catch (e)
@@ -258,6 +265,7 @@ Ext.define(
 
 			blob = new Blob([data.content], {type: data.type});
 			fs = window.saveAs(blob, data.baseName);
+			
 			if (fn)
 			{
 				// данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются

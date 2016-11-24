@@ -55,6 +55,7 @@ function W ()
 		 * @param data Данные.
 		 * @param {String} [data.url] Адрес сервера.
 		 * @param {String} [data.method] Метод отправки данных (GET|POST).
+		 * @param {String} [data.sendData] Данные POST.
 		 * @param {Boolean} [data.abort] Прервать ли запрос.
 		 */
 		message: function (data)
@@ -105,6 +106,7 @@ function W ()
 			data.method = data.method || 'GET';
 			time = new Date().getTime();
 			data.url += /[?]/.test(data.url) ? '&_d=' + time : '?_d=' + time;
+			data.sendData = data.sendData || null;
 
 			transport = me.getXmlHttp();
 			self._transport = transport;
@@ -139,7 +141,7 @@ function W ()
 				}
 			};
 
-			transport.send();
+			transport.send(data.sendData);
 		},
 
 		/**

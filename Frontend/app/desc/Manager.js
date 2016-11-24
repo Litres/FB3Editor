@@ -73,6 +73,18 @@ Ext.define(
 		},
 
 		/**
+		 * Сбрасывает описание.
+		 */
+		reset: function ()
+		{
+			var me = this,
+				loader = me.loader;
+			
+			me._loadedData = false;
+			loader.reset();
+		},
+
+		/**
 		 * Загружает описание по url.
 		 * @param {Number} [art] Айди произведениея на хабе.
 		 */

@@ -15,35 +15,9 @@ Ext.define(
 		enableRevision: true,
 
 		/**
-		 * @property {String} Адрес загрузки/сохранения тела.
-		 */
-		url: 'https://hub.litres.ru/pages/get_fb3_body/',
-
-		/**
-		 * @property {String} Адрес загрузки тела.
-		 */
-		loadUrl: null,
-
-		/**
-		 * @property {String} Адрес сохранения тела.
-		 */
-		saveUrl: null,
-
-		/**
-		 * @property {Boolean} Идет ли в данный момент процесс загрузки данных в форму.
-		 */
-		loadingProcess: false,
-
-		/**
 		 * @property {String} Id корневого элемента fb3-body.
 		 */
 		fb3BodyId: '',
-
-		/**
-		 * @private
-		 * @property {Number} Айди произведения на хабе.
-		 */
-		art: null,
 
 		/**
 		 * @private
@@ -65,6 +39,16 @@ Ext.define(
 
 			// загрузчик
 			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
+		},
+
+		/**
+		 * Сбрасывает редактор тела книги.
+		 */
+		reset: function ()
+		{
+			var me = this;
+			
+			me.loader.reset();
 		},
 
 		createContent: function ()

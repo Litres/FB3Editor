@@ -40,6 +40,7 @@ Ext.define(
 			url = window.URL.createObjectURL(blob);
 
 			data = {
+				blob: blob,
 				content: content,
 				url: url,
 				name: name,

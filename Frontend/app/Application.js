@@ -53,6 +53,7 @@ Ext.define(
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
 			'FBEditor.scroll.Scroll',
+			'FBEditor.util.Ajax',
 			'FBEditor.util.Diff',
 			'FBEditor.util.Format',
 			'FBEditor.util.xml.Jsxml',
@@ -73,7 +74,7 @@ Ext.define(
 			var me = this;
 
 			// инициализируем applicationCache
-			me.initApplicationCache();
+			//me.initApplicationCache();
 
 			// версия
 			FBEditor.version = Ext.manifest.loader ? Ext.manifest.loader.cache : 'developer';
@@ -203,7 +204,7 @@ Ext.define(
 		/**
 		 * Инициализирует applicationCache.
 		 */
-		initApplicationCache: function ()
+		/*initApplicationCache: function ()
 		{
 			var cache;
 
@@ -227,7 +228,7 @@ Ext.define(
 				// попытка обновления кэша
 				//cache.update();
 			}
-		},
+		},*/
 
 		/**
 		 * Отслеживает обращение к несуществующим хэшам роута.

@@ -14,11 +14,21 @@ Ext.define(
 			var me = this,
 				bridge = FBEditor.getBridgeWindow(),
 				data = me.data,
+				resourceManager = bridge.FBEditor.resource.Manager,
+				resourceName = data.nameResource,
 				result = false;
 
 			try
 			{
-				result = bridge.FBEditor.resource.Manager.deleteResource(data.nameResource);
+				if (resourceManager.isLoadUrl())
+				{
+					resourceManager.deleteFromUrl(resourceName);
+					result = true;
+				}
+				else 
+				{
+					result = resourceManager.deleteResource(resourceName);
+				}
 			}
 			catch (e)
 			{

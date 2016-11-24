@@ -54,6 +54,51 @@ Ext.define(
 		getParams: function ()
 		{
 			return this.params;
+		},
+
+		/**
+		 * Устанавливает параметр.
+		 * @param {String} name Имя парамтера.
+		 * @param {*} val Значение.
+		 */
+		setParam: function (name, val)
+		{
+			var me = this;
+
+			me.param[name] = val;
+		},
+
+		/**
+		 * Удаляет параметры.
+		 * @param {Array|String} name Имя параметра или список из нескольких имён.
+		 */
+		removeParams: function (name)
+		{
+			var me = this,
+				hash,
+				names,
+				reg;
+
+			names = Ext.isArray(name) ? name : [name];
+
+			Ext.Array.each(
+				names,
+				function (item)
+				{
+					if (me.params[item] !== undefined)
+					{
+						// удаляем из хэша
+						hash = location.hash.substring(1);
+						reg = new RegExp(item + '=[^&]+', 'ig');
+						hash = hash.replace(reg, '');
+						hash = hash.replace('&&', '&');
+						hash = hash.replace(/^&|&$/ig, '');
+						location.hash = hash;
+
+						delete me.params[item];
+					}
+				}
+			);
 		}
 	}
 );

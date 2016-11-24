@@ -21,10 +21,11 @@ Ext.define(
 		editable: false,
 		value: "great",
 		listeners: {
-			select: function (combo, records)
+			select: function (combo, record)
 			{
-				var type = records[0].getData().type;
+				var type;
 
+				type = record.getData().type;
 				Ext.getCmp('view-resources').setTpl(type);
 			}
 		},

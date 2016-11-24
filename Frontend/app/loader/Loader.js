@@ -54,6 +54,18 @@ Ext.define(
 		},
 
 		/**
+		 * Сбрасывает загрузчик.
+		 */
+		reset: function ()
+		{
+			var me = this;
+			
+			me.art = null;
+			me.saveUrl = null;
+			me.loadUrl = null;
+		},
+
+		/**
 		 * Загружает с хаба.
 		 * @param {Number} [art] Айди произведениея на хабе.
 		 */
