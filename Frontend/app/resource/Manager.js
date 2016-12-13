@@ -253,6 +253,7 @@ Ext.define(
 
 			if (FBEditor.accessHub && loader.getArt())
 			{
+				console.log(resData);
 				// сохраняем ресурс на хабе
 				me.saveToUrl(resData).then(
 					function (xml)
@@ -434,7 +435,7 @@ Ext.define(
 						this
 					);
 
-					if (!contains && !item.isCover)
+					if (!contains && !item.isCover && !item.isFolder)
 					{
 						removedData.push(item);
 					}
@@ -1145,7 +1146,24 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
+				dataWithoutFolders = [],
 				folders = [];
+
+			//console.log(data);
+
+			// удаляем все директории перед созданием
+			Ext.each(
+				data,
+			    function (item)
+			    {
+				    if (!item.isFolder)
+				    {
+					    dataWithoutFolders.push(item);
+				    }
+			    }
+			);
+
+			data = dataWithoutFolders;
 
 			Ext.each(
 				data,
@@ -1177,6 +1195,7 @@ Ext.define(
 					        }
 					    );
 
+					    //console.log(nameFolder, isContains);
 					    if (!isContains)
 					    {
 						    // получаем дату последнего изменения папки
@@ -1188,7 +1207,7 @@ Ext.define(
 								    if (item.name.indexOf(nameFolder) === 0)
 								    {
 									    total++;
-									    if (item.modifiedDate.getTime() > modifiedDate.getTime())
+									    if (item.modifiedDate && item.modifiedDate.getTime() > modifiedDate.getTime())
 									    {
 										    modifiedDate = item.modifiedDate;
 									    }
@@ -1203,16 +1222,21 @@ Ext.define(
 							    modifiedDate: modifiedDate,
 							    total: total
 						    };
+
 						    res = Ext.create('FBEditor.resource.FolderResource', folderData);
 						    folders.push(res);
 					    }
 				    }
 			    }
 			);
+			
 			if (folders.length)
 			{
 				data = Ext.Array.merge(folders, data);
 			}
+
+			//console.log(data);
+			
 			me.data = data;
 		},
 

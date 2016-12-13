@@ -12,7 +12,7 @@ Ext.define(
 		/**
 		 * @property {String} Корневая директория ресурсов, полученных с хаба.
 		 */
-		rootPathUrl: 'img',
+		rootPathUrl: ['/fb3/img/', 'img'],
 
 		/**
 		 * @param {Object} fileData Данные файла.
@@ -33,6 +33,7 @@ Ext.define(
 				fileId = me.fileData.fileId,
 				content = me.fileData.content,
 				isCover = me.fileData.isCover,
+				rootPathUrl = me.rootPathUrl,
 				fileType,
 				baseName,
 				name,
@@ -40,7 +41,24 @@ Ext.define(
 				blob,
 				data;
 
-			name = fileName.substring(me.rootPathUrl.length + 1);
+			// вырезаем корневую диреткорию из имени файла
+			Ext.Array.each(
+				rootPathUrl,
+			    function (path)
+			    {
+				    var reg;
+
+				    reg = new RegExp('^' + path, 'i');
+
+				    if (reg.test(fileName))
+				    {
+					    name = fileName.replace(reg, '');
+					    return false;
+				    }
+				    //name = fileName.substring(path + 1);
+			    }
+			);
+
 			fileType = me.getMimeType(fileName);
 			blob = new Blob([content], {type: fileType});
 			url = window.URL.createObjectURL(blob);
