@@ -47,6 +47,7 @@ Ext.define(
 			}
 			else
 			{
+				//console.log(sel, opts);
 				// получаем узел из выделения и одновременно проверяем элемент по схеме
 				node = me.getNodeVerify(sel, opts);
 

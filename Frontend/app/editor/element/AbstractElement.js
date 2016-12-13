@@ -404,15 +404,17 @@ Ext.define(
 		 * Вызывает метод контроллера по имени события.
 		 * @param {String} name Имя события.
 		 * @param {Object} e Объект события.
+		 * @param {Object} opts Дополнительные опции.
 		 */
-		fireEvent: function (name, e)
+		fireEvent: function (name, e, opts)
 		{
 			var me = this,
 				controller = me.controller,
 				evtName;
 
 			evtName = 'on' + Ext.String.capitalize(name);
-			controller[evtName].apply(controller, [e]);
+			//console.log(name, arguments);
+			controller[evtName].apply(controller, [e, opts]);
 		},
 
 		/**

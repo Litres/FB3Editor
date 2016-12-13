@@ -12,8 +12,10 @@ Ext.define(
 			'FBEditor.view.image.editor.Picture',
 		    'FBEditor.view.button.editor.SelectImg'
 		],
+
 		xtype: 'window-img-create',
 		id: 'window-img-create',
+
 		title: 'Создание изображения',
 		width: 300,
 		height: 340,
@@ -75,21 +77,21 @@ Ext.define(
 							text: me.translateText.create,
 							handler: function ()
 							{
-								var manager = FBEditor.getEditorManager(),
-									form,
+								var me = this,
+									manager = FBEditor.getEditorManager(),
+									win = me.up('window-img-create'),
+									form = me.up('form'),
 									values;
 
 								// данные формы окна
-								form = me.down('form');
 								values = form.getValues();
-								values.range = me.selectionRange;
-								values.name = values.name === me.translateText.emptyImg ? '' : values.name;
-
-								// окно закрываем до выполнения команды, чтобы не потерять фокус в тексте
-								me.close();
+								values.range = win.selectionRange;
+								values.name = values.name === win.translateText.emptyImg ? '' : values.name;
 
 								// создаем изображение
 								manager.createElement('img', values);
+
+								win.close();
 							}
 						}
 					]

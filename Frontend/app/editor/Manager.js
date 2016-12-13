@@ -603,6 +603,7 @@ Ext.define(
 
 			sel = me.getSelection();
 			el = factory.createElement(name);
+			//console.log(name, opts);
 			el.fireEvent('createElement', sel, opts);
 		},
 

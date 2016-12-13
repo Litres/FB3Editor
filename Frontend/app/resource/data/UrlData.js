@@ -10,7 +10,7 @@ Ext.define(
 		extend : 'FBEditor.resource.data.AbstractData',
 
 		/**
-		 * @property {String} Корневая директория ресурсов, полученных с хаба.
+		 * @property {Array} Корневая директория ресурсов, полученных с хаба.
 		 */
 		rootPathUrl: ['/fb3/img/', 'img'],
 
