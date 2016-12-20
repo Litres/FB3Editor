@@ -12,7 +12,7 @@ Ext.define(
 		/**
 		 * @property {Array} Корневая директория ресурсов, полученных с хаба.
 		 */
-		rootPathUrl: ['/fb3/img/', 'img'],
+		rootPathUrl: ['/fb3/img/', 'img/'],
 
 		/**
 		 * @param {Object} fileData Данные файла.
@@ -34,9 +34,9 @@ Ext.define(
 				content = me.fileData.content,
 				isCover = me.fileData.isCover,
 				rootPathUrl = me.rootPathUrl,
+				name = fileName,
 				fileType,
 				baseName,
-				name,
 				url,
 				blob,
 				data;

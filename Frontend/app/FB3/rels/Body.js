@@ -71,6 +71,7 @@ Ext.define(
 			fb3file = structure.getFb3file();
 			zip = fb3file.zip;
 			zip.remove('fb3/img');
+
 			Ext.each(
 				data,
 			    function (item)
@@ -78,6 +79,7 @@ Ext.define(
 				    zip.file(item.rootName, item.content, {createFolders: true});
 			    }
 			);
+
 			rels.setContent(data);
 		}
 	}

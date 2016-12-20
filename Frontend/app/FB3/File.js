@@ -75,15 +75,18 @@ Ext.define(
 				books,
 				bodies;
 
+			//console.log('DATA', data);
 			structure.setThumb(data.thumb);
 			structure.setMeta(data.meta);
 			books = structure.getBooks();
+			
 			Ext.Object.each(
 				data.books,
 			    function (index, bookData)
 			    {
 				    structure.setDesc(books[index], bookData.desc);
 				    bodies = structure.getBodies(books[index]);
+				    
 				    Ext.each(
 					    bookData.bodies,
 					    function (bodyData, i)

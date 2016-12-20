@@ -107,21 +107,21 @@ Ext.define(
 		clearElements: function ()
 		{
 			var me = this,
-				el,
-				elements = me.elements;
+				elements = me.elements,
+				el;
 
 			while (elements.length)
 			{
 				el = elements[0];
+
 				if (el)
 				{
 					el.deleteLinkResource();
 				}
-				else
-				{
-					elements.splice(0, 1);
-				}
+
+				elements.splice(0, 1);
 			}
+
 			me.totalElements = 0;
 		},
 

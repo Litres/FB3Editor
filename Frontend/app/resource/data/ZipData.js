@@ -15,7 +15,8 @@ Ext.define(
 				name,
 				data;
 			
-			name = me.getFileName().substring(me.rootPath.length + 1);
+			name = me.getFileName().substring(me.rootPath.length);
+
 			data = {
 				fileId: me.getId(),
 				content: me.getArrayBuffer(),

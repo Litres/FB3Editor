@@ -11,7 +11,7 @@ Ext.define(
 		/**
 		 * @property {String} Корневая директория ресурсов в архиве.
 		 */
-		rootPath: 'fb3/img',
+		rootPath: '/fb3/img',
 
 		/**
 		 * @abstract

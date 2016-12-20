@@ -89,12 +89,14 @@ Ext.define(
 				function (item)
 				{
 					var rel = '<Relationship Id="{%s}" ' +
-					          'Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/{%s}"/>';
+					          'Type="http://www.fictionbook.org/FictionBook3/relationships/image"' +
+					          ' Target="/fb3/img/{%s}"/>';
 
-					rel = rel.replace(/{%s}/g, item.name);
+					rel = rel.replace(/{%s}/g, item.fileId);
 					xml += rel;
 				}
 			);
+			
 			xml += '</Relationships>';
 			me.setFileContent(xml);
 		}

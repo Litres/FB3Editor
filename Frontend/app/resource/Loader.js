@@ -34,6 +34,9 @@ Ext.define(
 		 */
 		maxAsyncRequests: 4,
 
+		/**
+		 * @param resData {Object} Данные ресурса.
+		 */
 		save: function (resData)
 		{
 			var me = this,
@@ -51,12 +54,15 @@ Ext.define(
 				}
 			);
 
+			//console.log(resData);
+
 			// данные для запроса
 			form = new FormData();
 			form.append('data', resData.blob);
 			form.append('action', 'put_fb3_image');
 			form.append('art', art);
 			form.append('image', resData.name);
+			form.append('target', resData.rootName);
 
 			promise = new Promise(
 				function (resolve, reject)

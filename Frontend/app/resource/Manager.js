@@ -381,12 +381,14 @@ Ext.define(
 				remoteData,
 				json;
 
+			//console.log(xml);
+
 			// переводим xml в json
 			json = xml2Json.xmlToJson(xml);
 			remoteData = json.Relationships.Relationship;
 
-			//console.log('remoteData', remoteData);
-			//console.log('data', data);
+			console.log('remoteData', remoteData);
+			console.log('data', data);
 
 			// получаем список добавленных ресурсов
 			Ext.Array.each(
@@ -399,7 +401,7 @@ Ext.define(
 					    data,
 					    function (item)
 					    {
-						    if (remoteItem._Id === item.fileId)
+						    if (remoteItem._Id === item.fileId && remoteItem._Target === item.rootName)
 						    {
 							    contains = true;
 							    return false;
@@ -426,7 +428,7 @@ Ext.define(
 						remoteData,
 						function (remoteItem)
 						{
-							if (remoteItem._Id === item.fileId)
+							if (remoteItem._Id === item.fileId && remoteItem._Target === item.rootName)
 							{
 								contains = true;
 								return false;
@@ -452,7 +454,7 @@ Ext.define(
 					function ()
 					{
 						me.generateFolders();
-						me.setActiveFolder('');
+						//me.setActiveFolder('');
 						me.sortData();
 						me.updateNavigation();
 

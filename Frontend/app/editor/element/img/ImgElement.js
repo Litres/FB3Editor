@@ -235,8 +235,8 @@ Ext.define(
 			{
 				resource.removeElement(me);
 			}
+			
 			me.resource = null;
-
 			me.attributes.src = src || 'undefined';
 			me.updateSrc(me.attributes.src);
 		},

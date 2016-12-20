@@ -239,6 +239,7 @@ Ext.define(
 				fb3file = Ext.create('FBEditor.FB3.File', data);
 				fb3file.createStructure();
 			}
+
 			me.fb3file = fb3file;
 			blob = fb3file.generateBlob();
 			fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3';
