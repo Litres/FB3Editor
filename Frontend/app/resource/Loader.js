@@ -35,7 +35,7 @@ Ext.define(
 		maxAsyncRequests: 4,
 
 		/**
-		 * @param resData {Object} Данные ресурса.
+		 * @param {FBEditor.resource.Resource} resData Данные ресурса.
 		 */
 		save: function (resData)
 		{
@@ -300,6 +300,92 @@ Ext.define(
 			);
 
 			return promise;
+		},
+
+		/**
+		 * Устанавливает ресурс на обложку.
+		 * @param {FBEditor.resource.Resource} [resData] Данные ресурса. Если данные не переданы, то обложка снимается.
+		 * @returns {Promise}
+		 */
+		setCover: function (resData)
+		{
+			var me = this,
+				params,
+				url,
+				promise;
+
+			params = {
+				action: 'put_fb3_cover'
+			};
+
+			console.log(resData);
+
+			if (resData)
+			{
+				params.body_image_id = resData.fileId;
+			}
+
+			url = me.getSaveUrl(params);
+
+			Ext.log(
+				{
+					level: 'info',
+					msg: 'Запрос на обложку ' + url
+				}
+			);
+
+			//console.log(resData);
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					// формируем запрос
+					Ext.Ajax.request(
+						{
+							url: url,
+							disableCaching: true,
+							scope: me,
+							success: function(response)
+							{
+								var xml;
+
+								resolve(response);
+
+								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+								{
+									xml = response.responseText;
+									resolve(xml);
+								}
+								else
+								{
+									reject(response);
+								}
+							},
+							failure: function (response)
+							{
+								reject(response);
+							}
+						}
+					);
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Сбрасывает обложку.
+		 */
+		resetCover: function ()
+		{
+			var me = this;
+
+			me.setCover().then(
+				function (res)
+				{
+
+				}
+			);
 		}
 	}
 );

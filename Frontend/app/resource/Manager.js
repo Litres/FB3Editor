@@ -253,7 +253,7 @@ Ext.define(
 
 			if (FBEditor.accessHub && loader.getArt())
 			{
-				console.log(resData);
+				//console.log(resData);
 				// сохраняем ресурс на хабе
 				me.saveToUrl(resData).then(
 					function (xml)
@@ -519,6 +519,7 @@ Ext.define(
 			{
 				// устанавливаем обложку
 				me.setCover(res.name);
+				me.data.pop();
 			}
 			else
 			{
@@ -839,33 +840,93 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				name,
-				cover = null;
+				loader = me.loader,
+				panel = Ext.getCmp('panel-cover'),
+				cover = null,
+				oldCover,
+				name;
 
 			if (!coverName)
 			{
 				return false;
 			}
 
+			// айди ресурса
 			name = coverName.indexOf(me.rootPath) === 0 ? coverName.substring(me.rootPath.length + 1) : coverName;
 
+			// перебираем все ресурсы
 			Ext.Array.each(
 				data,
 			    function (item)
 			    {
-				    item.isCover = false;
-
 				    if (item.name === name)
 				    {
+					    // новая обложка
 					    cover = item;
+				    }
+				    else if (item.isCover)
+				    {
+					    // старая обложка
+					    oldCover = item;
 				    }
 			    }
 			);
 
 			if (cover)
 			{
-				cover.isCover = true;
-				Ext.getCmp('panel-cover').fireEvent('load', cover);
+				if (!cover.isCover && FBEditor.accessHub && loader.getArt())
+				{
+					// устанавливаем обложку на хабе
+					loader.setCover(cover).then(
+						function (res)
+						{
+							console.log(res);
+
+							if (oldCover)
+							{
+								// снимаем с обложки
+								oldCover.isCover = false;
+							}
+
+							// ставим новую обложку
+							cover.isCover = true;
+							panel.fireEvent('load', cover);
+						},
+					    function (res)
+					    {
+						    var msg = ' ' + res.status + ' (' + res.statusText + ')';
+
+						    Ext.log(
+							    {
+								    level: 'error',
+								    msg: 'Ошибка установки обложки' + msg,
+								    dump: res
+							    }
+						    );
+
+						    Ext.Msg.show(
+							    {
+								    title: 'Ошибка',
+								    message: 'Невозможно установить обложку' + msg,
+								    buttons: Ext.MessageBox.OK,
+								    icon: Ext.MessageBox.ERROR
+							    }
+						    );
+					    }
+					);
+				}
+				else 
+				{
+					if (oldCover)
+					{
+						// снимаем с обложки
+						oldCover.isCover = false;
+					}
+
+					// ставим новую обложку
+					cover.isCover = true;
+					panel.fireEvent('load', cover);
+				}
 			}
 		},
 

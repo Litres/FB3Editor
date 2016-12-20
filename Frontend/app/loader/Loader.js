@@ -139,11 +139,26 @@ Ext.define(
 
 		/**
 		 * Возвращает url для сохранения.
+		 * @param {Object} [params] Дополнительные параметры в url.
 		 * @return {String}
 		 */
-		getSaveUrl: function ()
+		getSaveUrl: function (params)
 		{
-			return this.saveUrl;
+			var me = this,
+				url = me.saveUrl;
+
+			if (params)
+			{
+				Ext.Object.each(
+					params,
+				    function (name, val)
+				    {
+					    url += '&' + name + '=' + val;
+				    }
+				);
+			}
+
+			return url;
 		}
 	}
 );
