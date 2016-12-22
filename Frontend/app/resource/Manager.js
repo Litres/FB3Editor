@@ -701,6 +701,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
+				loader = me.loader,
 				newFolder = folder === '/' ? '' : folder,
 				resourceIndex,
 				resource,
@@ -734,8 +735,24 @@ Ext.define(
 				if (newName !== oldName)
 				{
 					result = true;
-					resource.rename(newName);
-					me.setActiveFolder(newFolder);
+					
+					if (FBEditor.accessHub && loader.getArt())
+					{
+						// перемещаем ресурс на хабе
+						loader.move(resource, newName).then(
+							function (xml)
+							{
+								// синхронизируем ресурсы с хабом
+								me.syncResources(xml);
+								me.setActiveFolder(newFolder);
+							}
+						);
+					}
+					else 
+					{
+						resource.rename(newName);
+						me.setActiveFolder(newFolder);
+					}
 				}
 			}
 

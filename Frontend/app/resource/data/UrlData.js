@@ -60,11 +60,12 @@ Ext.define(
 			);
 
 			fileType = me.getMimeType(fileName);
-			blob = new Blob([content], {type: fileType});
+			blob = me.getBlob(content, fileType);
 			url = window.URL.createObjectURL(blob);
 			baseName = me.getBaseFileName(fileName);
 
 			data = {
+				blob: blob,
 				content: content,
 				url: url,
 				fileId: fileId,

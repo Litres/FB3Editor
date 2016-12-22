@@ -9,6 +9,7 @@ Ext.define(
 	{
 		fileId: null, // айди ресурса в архиве
 		content: null, // содержимое в виде ArrayBuffer
+		blob: null, // содержимое в виде Blob
 		url: '', // адрес в памяти браузера
 		name: '', // полное имя файла относительно корневой директории ресурсов в архиве
 		baseName: '', // базовое имя файла
@@ -46,6 +47,7 @@ Ext.define(
 
 			me.fileId = data.fileId || data.name;
 			me.content = data.content;
+			me.blob = data.blob;
 			me.url = data.url;
 			me.name = data.name;
 			me.baseName = data.baseName;

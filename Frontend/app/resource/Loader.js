@@ -35,9 +35,10 @@ Ext.define(
 		maxAsyncRequests: 4,
 
 		/**
-		 * @param {FBEditor.resource.Resource} resData Данные ресурса.
+		 * @param {Object} resData Данные ресурса.
+		 * @param {String} [target] Новый путь хранения ресурса. Если передан, то ресурс перемещается.
 		 */
-		save: function (resData)
+		save: function (resData, target)
 		{
 			var me = this,
 				art = me.getArt(),
@@ -62,7 +63,7 @@ Ext.define(
 			form.append('action', 'put_fb3_image');
 			form.append('art', art);
 			form.append('image', resData.name);
-			form.append('target', resData.rootName);
+			form.append('target', target || resData.rootName);
 
 			promise = new Promise(
 				function (resolve, reject)
@@ -160,6 +161,30 @@ Ext.define(
 		},
 
 		/**
+		 * Перемещает ресурс.
+		 * @param {FBEditor.resource.Resource} resource Объект ресурса.
+		 * @param {String} newName Новый путь ресурса.
+		 * @return {Promise}
+		 */
+		move: function (resource, newName)
+		{
+			var me = this,
+				promise,
+				target;
+
+			target = newName;
+			promise = me.remove(resource.fileId).then(
+				function (xml)
+				{
+					resource.rename(newName);
+					return me.save(resource, target);
+				}
+			);
+
+			return promise;
+		},
+
+		/**
 		 * Загружает список ресурсов.
 		 * @param {Number} [art] Айди произведениея на хабе.
 		 * @return {Promise}
@@ -197,6 +222,8 @@ Ext.define(
 							success: function(response)
 							{
 								var xml;
+
+								//console.log(response);
 								
 								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
 								{
@@ -304,7 +331,7 @@ Ext.define(
 
 		/**
 		 * Устанавливает ресурс на обложку.
-		 * @param {FBEditor.resource.Resource} [resData] Данные ресурса. Если данные не переданы, то обложка снимается.
+		 * @param {Object} [resData] Данные ресурса. Если данные не переданы, то обложка снимается.
 		 * @returns {Promise}
 		 */
 		setCover: function (resData)

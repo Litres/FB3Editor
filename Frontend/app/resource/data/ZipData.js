@@ -12,21 +12,26 @@ Ext.define(
 		getData: function ()
 		{
 			var me = this,
+				fileType = me.getType(),
+				content = me.getArrayBuffer(),
+				blob,
 				name,
 				data;
 			
 			name = me.getFileName().substring(me.rootPath.length);
+			blob = me.getBlob(content, fileType);
 
 			data = {
+				blob: blob,
 				fileId: me.getId(),
-				content: me.getArrayBuffer(),
+				content: content,
 				url: me.getUrl(),
 				name: name,
 				baseName: me.getBaseFileName(),
 				rootName: me.getFileName(),
 				modifiedDate: me.getDate(),
 				sizeBytes: me.getSize(),
-				type: me.getType(),
+				type: fileType,
 				isCover: me.getIsCover()
 			};
 

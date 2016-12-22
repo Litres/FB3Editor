@@ -35,7 +35,7 @@ Ext.define(
 
 			activeFolder = manager.getActiveFolder();
 			name = activeFolder + (activeFolder ? '/' : '') + file.name;
-			blob = new Blob([content], {type: file.type});
+			blob = me.getBlob(content, file.type);
 			file.size = file.size || blob.size;
 			url = window.URL.createObjectURL(blob);
 

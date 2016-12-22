@@ -51,6 +51,21 @@ Ext.define(
 			name = fileName.replace(/.*\/(.*?\.\w+)$/, '$1');
 
 			return name;
+		},
+
+		/**
+		 * Возвращает ресурс в виде Blob.
+		 * @param {ArrayBuffer} content Содержимое файла.
+		 * @param {String} fileType Тип файла.
+		 * @return {Blob}
+		 */
+		getBlob: function (content, fileType)
+		{
+			var blob;
+
+			blob = new Blob([content], {type: fileType});
+			
+			return blob;
 		}
 	}
 );
