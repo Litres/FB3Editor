@@ -516,7 +516,7 @@ Ext.define(
 					removedData,
 				    function (item)
 				    {
-					    me.deleteResource(item.name, true);
+					    me.deleteResource(item.name);
 
 					    Ext.log(
 						    {
@@ -571,10 +571,9 @@ Ext.define(
 		/**
 		 * Удаляет ресурс или папку из редактора.
 		 * @param {String} name Имя файла.
-		 * @param {Boolean} [force] Принудительно ли удалять ресурс, без вопросов.
 		 * @return {Boolean} Успешно ли удален ресурс.
 		 */
-		deleteResource: function (name, force)
+		deleteResource: function (name)
 		{
 			var me = this,
 				data = me.data,
@@ -594,9 +593,10 @@ Ext.define(
 					resources = [];
 
 				data.splice(index, 1);
+
 				Ext.each(
 					data,
-					function (item, i)
+					function (item)
 					{
 						if (item.name.indexOf(name) !== 0)
 						{
@@ -604,6 +604,7 @@ Ext.define(
 						}
 					}
 				);
+
 				me.data = resources;
 				me.updateNavigation();
 			}
@@ -621,26 +622,8 @@ Ext.define(
 			{
 				if (me.containsCover(resource))
 				{
-					if (force)
-					{
-						Ext.getCmp('panel-cover').fireEvent('clear');
-						_deleteFolder(resourceIndex);
-					}
-					else
-					{
-						Ext.Msg.confirm(
-							'Удаление папки',
-							'Данная папка содержит обложку книги. Вы уверены, что хотите её удалить?',
-							function (btn)
-							{
-								if (btn === 'yes')
-								{
-									Ext.getCmp('panel-cover').fireEvent('clear');
-									_deleteFolder(resourceIndex);
-								}
-							}
-						);
-					}
+					Ext.getCmp('panel-cover').fireEvent('clear');
+					_deleteFolder(resourceIndex);
 				}
 				else
 				{
@@ -651,49 +634,13 @@ Ext.define(
 			{
 				if (resource.isCover)
 				{
-					if (force)
-					{
-						Ext.getCmp('panel-cover').fireEvent('clear');
-						_deleteResource(resourceIndex);
-					}
-					else
-					{
-						Ext.Msg.confirm(
-							'Удаление ресурса',
-							'Данный ресурс является обложкой книги. Вы уверены, что хотите его удалить?',
-							function (btn)
-							{
-								if (btn === 'yes')
-								{
-									Ext.getCmp('panel-cover').fireEvent('clear');
-									_deleteResource(resourceIndex);
-								}
-							}
-						);
-					}
+					Ext.getCmp('panel-cover').fireEvent('clear');
+					_deleteResource(resourceIndex);
 				}
 				else if (resource.elements.length)
 				{
-					if (force)
-					{
-						resource.clearElements();
-						_deleteResource(resourceIndex);
-					}
-					else
-					{
-						Ext.Msg.confirm(
-							'Удаление ресурса',
-							'Данный ресурс используется в теле книги. Вы уверены, что хотите его удалить?',
-							function (btn)
-							{
-								if (btn === 'yes')
-								{
-									resource.clearElements();
-									_deleteResource(resourceIndex);
-								}
-							}
-						);
-					}
+					resource.clearElements();
+					_deleteResource(resourceIndex);
 				}
 				else
 				{

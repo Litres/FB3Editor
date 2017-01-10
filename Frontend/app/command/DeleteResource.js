@@ -16,18 +16,73 @@ Ext.define(
 				data = me.data,
 				resourceManager = bridge.FBEditor.resource.Manager,
 				resourceName = data.nameResource,
+				resource,
 				result = false;
 
 			try
 			{
-				if (resourceManager.isLoadUrl())
+				resource = resourceManager.getResourceByName(resourceName);
+
+				if (!resource)
 				{
-					resourceManager.deleteFromUrl(resourceName);
-					result = true;
+					throw Error('Ресурс ' + resourceName + ' не найден');
 				}
-				else 
+
+				if (resource.isFolder)
 				{
-					result = resourceManager.deleteResource(resourceName);
+					if (resourceManager.containsCover(resource))
+					{
+						Ext.Msg.confirm(
+							'Удаление папки',
+							'Данная папка содержит обложку книги. Вы уверены, что хотите её удалить?',
+							function (btn)
+							{
+								if (btn === 'yes')
+								{
+									me.deleteResource(resourceName);
+								}
+							}
+						);
+					}
+					else
+					{
+						me.deleteResource(resourceName);
+					}
+				}
+				else
+				{
+					if (resource.isCover)
+					{
+						Ext.Msg.confirm(
+							'Удаление ресурса',
+							'Данный ресурс является обложкой книги. Вы уверены, что хотите его удалить?',
+							function (btn)
+							{
+								if (btn === 'yes')
+								{
+									me.deleteResource(resourceName);
+								}
+							}
+						);
+					}
+					else if (resource.elements.length)
+					{
+						Ext.Msg.confirm(
+							'Удаление ресурса',
+							'Данный ресурс используется в теле книги. Вы уверены, что хотите его удалить?',
+							function (btn)
+							{
+								if (btn === 'yes')
+								{
+									me.deleteResource(resourceName);
+								}
+							}
+						);
+					}
+					else
+					{
+						me.deleteResource(resourceName);
+					}
 				}
 			}
 			catch (e)
@@ -55,6 +110,30 @@ Ext.define(
 		unExecute: function ()
 		{
 			// восстанавливает удаленный ресурс
+		},
+
+		/**
+		 * Удаляет ресурс через менеджер ресурсов.
+		 * @param {String} resourceName Имя ресурса.
+		 * @return {Boolean} Успешно ли удален.
+		 */
+		deleteResource: function (resourceName)
+		{
+			var bridge = FBEditor.getBridgeWindow(),
+				resourceManager = bridge.FBEditor.resource.Manager,
+				result;
+			
+			if (resourceManager.isLoadUrl())
+			{
+				resourceManager.deleteFromUrl(resourceName);
+				result = true;
+			}
+			else
+			{
+				result = resourceManager.deleteResource(resourceName);
+			}
+			
+			return result;
 		}
 	}
 );
