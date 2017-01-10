@@ -107,14 +107,6 @@ Ext.define(
 
 					data = data.length ? data : [];
 
-					// добавляем данные обложки
-					data.unshift(
-						{
-							url: loader.urlCover + '?art=' + loader.getArt(),
-							isCover: true
-						}
-					);
-
 					return loader.loadResources(data);
 				},
 				function (response)
@@ -139,6 +131,44 @@ Ext.define(
 			).then(
 				function ()
 				{
+					// получаем данные обложки
+					return loader.getCover();
+				}
+			).then(
+				function (target)
+				{
+					if (!target)
+					{
+						Ext.log(
+							{
+								level: 'warn',
+								msg: 'Не удалось загрузить обложку'
+							}
+						);
+
+						Ext.Msg.show(
+							{
+								title: 'Предупреждение',
+								message: 'Не удалось загрузить обложку',
+								buttons: Ext.MessageBox.OK,
+								icon: Ext.MessageBox.WARNING
+							}
+						);
+					}
+					else 
+					{
+						Ext.log(
+							{
+								level: 'info',
+								msg: 'Обложка: ' + target
+							}
+						);
+
+						// устанавливаем обложку, игнорируя хаб
+						target = target.replace(/^\//, '');
+						me.setCover(target, true);
+					}
+					
 					// создаем папки
 					me.generateFolders();
 					
@@ -387,8 +417,13 @@ Ext.define(
 			json = xml2Json.xmlToJson(xml);
 			remoteData = json.Relationships.Relationship;
 
-			console.log('remoteData', remoteData);
-			console.log('data', data);
+			Ext.log(
+				{
+					level: 'info',
+					msg: 'Данные ресурсов',
+					dump: {'Ресурсы с хаба': remoteData, 'Текущие ресурсы': data}
+				}
+			);
 
 			// получаем список добавленных ресурсов
 			Ext.Array.each(
@@ -437,15 +472,20 @@ Ext.define(
 						this
 					);
 
-					if (!contains && !item.isCover && !item.isFolder)
+					if (!contains && !item.isFolder)
 					{
 						removedData.push(item);
 					}
 				}
 			);
 
-			console.log('addedData', addedData);
-			console.log('removedData', removedData);
+			Ext.log(
+				{
+					level: 'info',
+					msg: 'Затрагиваемые ресурсы',
+					dump: {'Добавить': addedData, 'Удалить': removedData}
+				}
+			);
 
 			if (addedData.length)
 			{
@@ -852,8 +892,10 @@ Ext.define(
 		/**
 		 * Устанавливает обложку.
 		 * @param {String} coverName Имя обложки.
+		 * @param {Boolean} [ignoreHub] Игнорировать ли установку обложки на хабе. Иногда это необходимо, так как на
+		 * хабе она может быть уже установлена и прилложение об этом знает.
 		 */
-		setCover: function (coverName)
+		setCover: function (coverName, ignoreHub)
 		{
 			var me = this,
 				data = me.data,
@@ -891,7 +933,7 @@ Ext.define(
 
 			if (cover)
 			{
-				if (!cover.isCover && FBEditor.accessHub && loader.getArt())
+				if (!cover.isCover && FBEditor.accessHub && loader.getArt() && !ignoreHub)
 				{
 					// устанавливаем обложку на хабе
 					loader.setCover(cover).then(
@@ -997,7 +1039,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				cover = null;
+				cover;
 
 			cover = Ext.Array.findBy(
 				data,

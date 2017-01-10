@@ -293,7 +293,6 @@ Ext.define(
 								resource.content = responseData.response;
 								resource.fileName = resData.isCover ? 'img/thumb.jpeg' : resData._Target;
 								resource.fileId = resData._Id;
-								resource.isCover = resData.isCover;
 
 								// загружаем ресурс в редактор
 								manager.addLoadedResource(resource);
@@ -327,6 +326,54 @@ Ext.define(
 			);
 
 			return promise;
+		},
+
+		/**
+		 * Получает target обложки.
+		 * @return {Promise}
+		 */
+		getCover: function ()
+		{
+			var me = this,
+				url,
+				promise;
+
+			url = me.urlCover + '?art=' + me.getArt();
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					Ext.Ajax.request(
+						{
+							url: url,
+							disableCaching: true,
+							scope: me,
+							success: function(response)
+							{
+								var target;
+
+								//console.log(response);
+
+								if (response && response.responseText && /^\/fb3/ig.test(response.responseText))
+								{
+									target = response.responseText;
+									resolve(target);
+								}
+								else
+								{
+									resolve(false);
+								}
+							},
+							failure: function (response)
+							{
+								resolve(false);
+							}
+						}
+					);
+				}
+			);
+
+			return promise
 		},
 
 		/**
