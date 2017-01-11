@@ -356,23 +356,60 @@ Ext.define(
 
 		/**
 		 * Удаляет ресурс на хабе.
-		 * @param {String} name Имя ресурса.
+		 * @param {String} name Имя ресурса. Если ресурс является папкой, то метод будет взываться рекурсивно до тех
+		 * пор пока не будут удалены все русурсы директории
 		 */
 		deleteFromUrl: function (name)
 		{
 			var me = this,
 				loader = me.loader,
+				folderData = [],
 				res,
 				id;
 
 			res = me.getResourceByName(name);
+
+			if (res && res.isFolder)
+			{
+				// получаем ресурсы папки
+				folderData = me.getFolderData(name);
+
+				Ext.log(
+					{
+						level: 'info',
+						msg: 'Удаляется папка ' + name,
+						dump: folderData
+					}
+				);
+
+				// берем последний ресурс из списка
+				res = folderData.length ? folderData.pop() : false;
+			}
+
+			if (!res)
+			{
+				console.log(name);
+				return;
+			}
+
 			id = res.fileId;
 
 			loader.remove(id).then(
 				function (xml)
 				{
-					// синхронизируем ресурсы с хабом
-					me.syncResources(xml);
+					if (folderData.length)
+					{
+						// удаляем ресурс
+						me.deleteResource(res.name);
+
+						// если в папке еще остались ресурсы, то продолжаем их удалять
+						me.deleteFromUrl(name);
+					}
+					else
+					{
+						// синхронизируем ресурсы с хабом
+						me.syncResources(xml);
+					}
 				},
 				function (response)
 				{
@@ -494,7 +531,6 @@ Ext.define(
 					function ()
 					{
 						me.generateFolders();
-						//me.setActiveFolder('');
 						me.sortData();
 						me.updateNavigation();
 
@@ -584,7 +620,6 @@ Ext.define(
 			function _deleteResource (index)
 			{
 				data.splice(index, 1);
-				me.updateNavigation();
 			}
 
 			function _deleteFolder (index)
@@ -606,7 +641,6 @@ Ext.define(
 				);
 
 				me.data = resources;
-				me.updateNavigation();
 			}
 
 			resourceIndex = me.getResourceIndexByName(name);
@@ -615,7 +649,8 @@ Ext.define(
 
 			if (!resource)
 			{
-				throw Error('Ресурс ' + name + ' не найден');
+				console.log('Ресурс ' + name + ' не найден');
+				return false;
 			}
 
 			if (resource.isFolder)
@@ -647,6 +682,10 @@ Ext.define(
 					_deleteResource(resourceIndex);
 				}
 			}
+
+			me.generateFolders();
+			me.sortData();
+			me.updateNavigation();
 
 			return result;
 		},
@@ -1180,6 +1219,32 @@ Ext.define(
 		},
 
 		/**
+		 * Содержит ли папка ресурс обложки.
+		 * @param {FBEditor.resource.FolderResource} folder Ресурс папки.
+		 * @return {Boolean} Содержится ли обложка.
+		 */
+		containsCover: function (folder)
+		{
+			var me = this,
+				data = me.data,
+				name = folder.name,
+				res;
+
+			res = Ext.Array.findBy(
+				data,
+				function (item)
+				{
+					if (item.name.indexOf(name) === 0 && item.isCover)
+					{
+						return true;
+					}
+				}
+			);
+
+			return res ? true : false;
+		},
+
+		/**
 		 * Проверяет находится ли обложка в директории с ресурсами.
 		 * @param {FBEditor.FB3.rels.Thumb} thumb Обложка.
 		 * @return {Boolean}
@@ -1218,7 +1283,7 @@ Ext.define(
 				dataWithoutFolders = [],
 				folders = [];
 
-			//console.log(data);
+			//console.log('generateFolders', data);
 
 			// удаляем все директории перед созданием
 			Ext.each(
@@ -1238,8 +1303,8 @@ Ext.define(
 				data,
 			    function (item, index)
 			    {
-				    var total = 0,
-					    isContains = false,
+				    var isContains = false,
+					    total,
 					    nameFolder,
 					    baseNameFolder,
 					    folderData,
@@ -1264,36 +1329,52 @@ Ext.define(
 					        }
 					    );
 
-					    //console.log(nameFolder, isContains);
+					    //console.log('nameFolder, isContains', nameFolder, isContains);
+
 					    if (!isContains)
 					    {
-						    // получаем дату последнего изменения папки
-						    modifiedDate = item.modifiedDate;
-						    Ext.each(
-							    data,
-							    function (item)
-							    {
-								    if (item.name.indexOf(nameFolder) === 0)
+						    // создаем папку с учетом вложенности папок
+
+						    do
+						    {
+							    // количество ресурсов в папке
+							    total = 0;
+
+							    // дата последнего изменения папки
+							    modifiedDate = item.modifiedDate;
+
+							    Ext.each(
+								    data,
+								    function (item)
 								    {
-									    total++;
-									    if (item.modifiedDate && item.modifiedDate.getTime() > modifiedDate.getTime())
+									    if (item.name.indexOf(nameFolder) === 0)
 									    {
-										    modifiedDate = item.modifiedDate;
+										    total++;
+
+										    if (item.modifiedDate && item.modifiedDate.getTime() > modifiedDate.getTime())
+										    {
+											    modifiedDate = item.modifiedDate;
+										    }
 									    }
 								    }
-							    }
-						    );
+							    );
 
-						    baseNameFolder = nameFolder.replace(/.*\/(.*?)$/, '$1');
-						    folderData = {
-							    name: nameFolder,
-							    baseName: baseNameFolder,
-							    modifiedDate: modifiedDate,
-							    total: total
-						    };
+							    baseNameFolder = nameFolder.replace(/.*\/(.*?)$/, '$1');
+							    folderData = {
+								    name: nameFolder,
+								    baseName: baseNameFolder,
+								    modifiedDate: modifiedDate,
+								    total: total
+							    };
 
-						    res = Ext.create('FBEditor.resource.FolderResource', folderData);
-						    folders.push(res);
+							    res = Ext.create('FBEditor.resource.FolderResource', folderData);
+							    folders.push(res);
+
+							    nameFolder = nameFolder.replace(/(.*)\/.*?$/, '$1');
+							    //console.log('nameFolder', nameFolder, baseNameFolder);
+						    }
+						    while (nameFolder !== baseNameFolder);
+
 					    }
 				    }
 			    }
@@ -1384,32 +1465,6 @@ Ext.define(
 			resourceIndex = res ? resourceIndex : null;
 
 			return resourceIndex;
-		},
-
-		/**
-		 * Содержит ли папка ресурс обложки.
-		 * @param {FBEditor.resource.FolderResource} folder Ресурс папки.
-		 * @return {Boolean} Содержится ли обложка.
-		 */
-		containsCover: function (folder)
-		{
-			var me = this,
-				data = me.data,
-				name = folder.name,
-				res;
-
-			res = Ext.Array.findBy(
-				data,
-			    function (item)
-			    {
-				    if (item.name.indexOf(name) === 0 && item.isCover)
-				    {
-					    return true;
-				    }
-			    }
-			);
-
-			return res ? true : false;
 		}
 	}
 );
