@@ -98,6 +98,7 @@ Ext.define(
 				    var val;
 
 				    val = Ext.clone(me.parseNameResource(item.name, {path: ''}));
+
 				    if (val)
 				    {
 					    if (treeData.length && val.children && val.children.length)
@@ -214,6 +215,8 @@ Ext.define(
 				{
 					var val;
 
+					//console.log('item, node', item, node);
+
 					if (item.text === node.text && item.children && node.children)
 					{
 						if (item.children.length === 0)
@@ -222,8 +225,11 @@ Ext.define(
 						}
 						else
 						{
-							val = me.groupTreeData(node.children[0], item.children);
+							//console.log('node', node);
+							// TODO: есть плавающая ошибка при вложенности ресурса в подпапки когда node = undefined
+							val = node.children[0] ? me.groupTreeData(node.children[0], item.children) : [];
 						}
+
 						treeData[i].children = val;
 						treeData[i].expandable = true;
 					}

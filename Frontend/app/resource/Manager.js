@@ -384,6 +384,16 @@ Ext.define(
 
 				// берем последний ресурс из списка
 				res = folderData.length ? folderData.pop() : false;
+
+				if (res && res.isFolder)
+				{
+					//console.log('res', res.name, me.getFolderData(res.name));
+
+					// удаляем ресурсы в подпапке
+					me.deleteFromUrl(res.name);
+
+					return;
+				}
 			}
 
 			if (!res)
@@ -1136,7 +1146,8 @@ Ext.define(
 				f = folder,
 				dataFolder = [];
 
-			//console.log('folder', folder);
+			//console.log('getFolderData', folder);
+
 			Ext.each(
 				data,
 			    function (item)
@@ -1149,7 +1160,9 @@ Ext.define(
 				    pos = name.indexOf(f);
 				    isContains = pos === 0 ? true : false;
 				    lastPart = isContains ? name.substring(f.length + 1) : null;
-				    //console.log(name, lastPart, pos);
+
+				    //console.log('name, lastPart, pos', name, lastPart, pos);
+
 				    if (isContains && lastPart && lastPart.indexOf('/') === -1 || !f && !lastPart)
 				    {
 					    dataFolder.push(item);
@@ -1158,6 +1171,7 @@ Ext.define(
 			);
 
 			//console.log(dataFolder);
+
 			return dataFolder;
 		},
 
