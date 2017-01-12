@@ -139,6 +139,7 @@ Ext.define(
 				{
 					if (!target)
 					{
+						/*
 						Ext.log(
 							{
 								level: 'warn',
@@ -154,6 +155,7 @@ Ext.define(
 								icon: Ext.MessageBox.WARNING
 							}
 						);
+						*/
 					}
 					else 
 					{
