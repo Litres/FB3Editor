@@ -1120,6 +1120,21 @@ Ext.define(
 					p.setAttribute('contenteditable', true);
 				}
 			);
+		},
+
+		/**
+		 * @protected
+		 * Преобразует простой текст в html строку.
+		 * @param {String} text Простой текст, который может содержать переносы.
+		 * @return {String} Строка html.
+		 */
+		convertTextToHtml: function (text)
+		{
+			var html;
+
+			html = text.replace(/^(.*?)$/gim, '<p>$1</p>');
+
+			return html;
 		}
 	}
 );

@@ -320,21 +320,6 @@ Ext.define(
 			isSame = els.startP.equal(els.endP);
 
 			return isSame;
-		},
-
-		/**
-		 * @private
-		 * Преобразует простой текст в html строку.
-		 * @param {String} text Простой текст, который может содержать переносы.
-		 * @return {String} Строка html.
-		 */
-		convertTextToHtml: function (text)
-		{
-			var html;
-
-			html = text.replace(/^(.*?)$/gim, '<p>$1</p>');
-
-			return html;
 		}
 	}
 );

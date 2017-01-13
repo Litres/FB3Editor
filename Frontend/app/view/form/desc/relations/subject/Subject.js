@@ -59,7 +59,7 @@ Ext.define(
 					}
 				}
 			);
-
+			
 			if (isValid && hiddenCount === items.length)
 			{
 				// если все поля скрыты
@@ -95,7 +95,7 @@ Ext.define(
 
 					val = me.removeEmptyValues(val);
 
-					if (val && val._id)
+					if (val && val['last-name'])
 					{
 						values = values || [];
 						values.push(val);

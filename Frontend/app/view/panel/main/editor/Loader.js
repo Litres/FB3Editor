@@ -135,7 +135,7 @@ Ext.define(
 								var diff,
 									rev;
 
-								if (response && response.responseText)
+								if (response && response.responseText && /^<\!--|Index/ig.test(response.responseText))
 								{
 									diff = response.responseText;
 									rev = diff.match(/rev (\d+) -->$/);

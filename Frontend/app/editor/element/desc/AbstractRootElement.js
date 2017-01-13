@@ -42,6 +42,9 @@ Ext.define(
 			// корректируем аттрибут для передачи на хаб
 			xml = xml.replace(/xlink:href=/g, 'href=');
 
+			// удаляем из p все br
+			xml = xml.replace(/<p>(.*?)<br(.*?)\/>(.*?)<\/p>/gi, '<p>$1$3</p>');
+
 			return xml;
 		},
 

@@ -156,6 +156,7 @@ Ext.define(
 				{
 					var resourceManager = FBEditor.resource.Manager,
 						revision = me.getRevision(),
+						btn,
 						rev;
 
 					//console.log(xml);
@@ -177,6 +178,10 @@ Ext.define(
 						// сохраняем ревизию
 						revision.setRev(rev, xml);
 					}
+
+					// активируем кнопку сохранения тела книги
+					btn = Ext.getCmp('panel-toolstab-file-button-savebody');
+					btn.setHidden(false);
 				},
 				function (response)
 				{

@@ -29,7 +29,10 @@ Ext.define(
 		editable: false,
 		forceSelection: true,
 		listConfig: {
-			maxHeight: 'auto'
+			scrollable: true,
+			style: {
+				maxHeight: 'auto'
+			}
 		},
 
 		keyEnterAsTab: true,
