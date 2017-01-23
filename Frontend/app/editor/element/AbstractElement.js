@@ -386,10 +386,24 @@ Ext.define(
 		/**
 		 * Перебирает всех потомков, передавая их в функцию.
 		 * @param {Function} fn Функция-итератор.
+		 * @param {Object} [scope] Область видимости.
 		 */
-		each: function (fn)
+		each: function (fn, scope)
 		{
-			Ext.Array.each(this.children, fn);
+			var me = this,
+				pos = 0,
+				child;
+
+			scope = scope || me;
+
+			while (pos < me.children.length)
+			{
+				child = me.children[pos];
+				pos++;
+				fn.apply(scope, [child]);
+			}
+
+			//Ext.Array.each(this.children, fn);
 		},
 
 		/**
@@ -413,13 +427,17 @@ Ext.define(
 				evtName;
 
 			evtName = 'on' + Ext.String.capitalize(name);
+
 			//console.log(name, arguments);
+
 			controller[evtName].apply(controller, [e, opts]);
 		},
 
 		/**
 		 * Клонирует элемент.
-		 * @param {Object} opts Опции клонирования..
+		 * @param {Object} opts Опции клонирования.
+		 * @param {Boolean} [opts.ignoredText] Пропускать ли клонирование текста.
+		 * @param {Boolean} [opts.ignoredDeep] Пропускать ли клонирование дочерних элементов.
 		 * @return {FBEditor.editor.element.AbstractElement} Клонированный элемент.
 		 */
 		clone: function (opts)
@@ -427,6 +445,7 @@ Ext.define(
 			var me = this,
 				children = me.children,
 				factory = FBEditor.editor.Factory,
+				attr,
 				newEl,
 				ignoredText,
 				ignoredDeep;
@@ -439,11 +458,16 @@ Ext.define(
 				return null;
 			}
 
+			// аттрибуты
+			attr = me.attributes;
+
+			// создаем новый элемент
 			newEl = me.isText ? factory.createElementText(me.text) :
-			        factory.createElement(me.getName());
+			        factory.createElement(me.getName(), attr);
 
 			if (!ignoredDeep)
 			{
+				// клонируем дочерние элементы
 				Ext.Array.each(
 					children,
 					function (el)
@@ -621,8 +645,15 @@ Ext.define(
 				nlAfter = formatOptions.nlAfter;
 			}
 
-			// получаем аттрибуты
-			attr = me.getAttributesXml(withoutText);
+			try
+			{
+				// получаем аттрибуты
+				attr = me.getAttributesXml(withoutText);
+			}
+			catch (e)
+			{
+				attr = '';
+			}
 
 			xml = spacesBefore + '<' + tag;
 			xml += attr ? ' ' + attr : '';
@@ -1329,13 +1360,23 @@ Ext.define(
 				countSpaces = self.countSpaces,
 				formatOptions = {};
 
-			// отступы
-			formatOptions.spacesBefore = countSpaces ? new Array(countSpaces).join('  ') : '';
-			formatOptions.spacesAfter = countSpaces ? new Array(countSpaces).join('  ') : '';
+			try
+			{
+				// отступы
+				formatOptions.spacesBefore = countSpaces ? new Array(countSpaces).join('  ') : '';
+				formatOptions.spacesAfter = countSpaces ? new Array(countSpaces).join('  ') : '';
+			}
+			catch (e)
+			{
+				formatOptions.spacesBefore = '';
+				formatOptions.spacesAfter = '';
+				self.countSpaces = 1;
+			}
 
 			// символы новой строки
 			formatOptions.nlBefore = '\n';
 			formatOptions.nlAfter = '\n';
+
 
 			return formatOptions;
 		},
@@ -1351,13 +1392,20 @@ Ext.define(
 			var me = this,
 				attr = '';
 
-			Ext.Object.each(
-				me.attributes,
-				function (key, val)
-				{
-					attr += key + '="' + val + '" ';
-				}
-			);
+			try
+			{
+				Ext.Object.each(
+					me.attributes,
+					function (key, val)
+					{
+						attr += key + '="' + val + '" ';
+					}
+				);
+			}
+			catch (e)
+			{
+				attr = '';
+			}
 
 			return attr.trim();
 		},

@@ -15,10 +15,13 @@ Ext.define(
 			'FBEditor.editor.command.pre.CreateRangeCommand',
 			'FBEditor.editor.command.pre.DeleteWrapperCommand'
 		],
+		
 		controllerClass: 'FBEditor.editor.element.pre.PreElementController',
+		
 		htmlTag: 'pre',
 		xmlTag: 'pre',
 		cls: 'el-pre',
+		
 		splittable: true,
 
 		isPre: true,

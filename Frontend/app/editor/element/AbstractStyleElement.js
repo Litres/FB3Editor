@@ -37,24 +37,29 @@ Ext.define(
 		getFormatOptionsXml: function ()
 		{
 			var me = this,
+				parent = me.parent,
 				existTextSibling = false,
 				existTextChild = false,
 				formatOptions;
 
 			formatOptions = me.callParent(arguments);
 
-			// определяем существование текстового сиблинга
-			Ext.Array.each(
-				me.parent.children,
-				function (sibling)
-				{
-					if (sibling.isText)
+			if (parent && parent.children)
+			{
+				// определяем существование текстового сиблинга
+				Ext.Array.each(
+					parent.children,
+					function (sibling)
 					{
-						existTextSibling = true;
-						return true;
+						if (sibling.isText)
+						{
+							existTextSibling = true;
+							return true;
+						}
 					}
-				}
-			);
+				);
+			}
+
 
 			// определяем существование текстового потомка
 			Ext.Array.each(

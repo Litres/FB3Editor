@@ -13,7 +13,9 @@ Ext.define(
 			'FBEditor.editor.command.code.CreateRangeCommand',
 			'FBEditor.editor.command.code.DeleteWrapperCommand'
 		],
+		
 		controllerClass: 'FBEditor.editor.element.code.CodeElementController',
+		
 		htmlTag: 'code',
 		xmlTag: 'code',
 		cls: 'el-code'

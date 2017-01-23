@@ -1,4 +1,5 @@
 /**
+ * Псевдокорневой элемент.
  * Временный элемент, использующийся при копировании из буфера обмена в текст книги.
  * Не используется в схеме книги!
  * Не путать с реальным элементом fb3-body!
@@ -9,6 +10,11 @@
 Ext.define(
 	'FBEditor.editor.element.body.BodyElement',
 	{
-		extend: 'FBEditor.editor.element.AbstractElement'
+		extend: 'FBEditor.editor.element.AbstractElement',
+
+		htmlTag: 'body',
+		xmlTag: 'body',
+		
+		isRoot: true
 	}
 );

@@ -105,6 +105,7 @@ function W ()
 		{
 			var me = this,
 				data = me.data,
+				reg,
 				valid,
 				module,
 				res;
@@ -118,7 +119,8 @@ function W ()
 			valid = validateXML(module);
 
 			// признак ошибки
-			res = !/^body.xml:1/i.test(valid);
+			reg = new RegExp('^(' + data.schemaFileName + '|' + data.xmlFileName + '):[0-9]+', 'i');
+			res = !reg.test(valid);
 
 			// сохраняем результат проверки
 			data.valid = valid;

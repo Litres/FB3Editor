@@ -155,7 +155,7 @@ Ext.define(
 		{
 			var me = this;
 
-			this.manager = manager;
+			me.manager = manager;
 		},
 
 		/**

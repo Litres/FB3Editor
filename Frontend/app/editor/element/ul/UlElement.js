@@ -13,7 +13,9 @@ Ext.define(
 			'FBEditor.editor.command.ul.DeleteWrapperCommand',
 			'FBEditor.editor.element.ul.UlElementController'
 		],
+		
 		controllerClass: 'FBEditor.editor.element.ul.UlElementController',
+		
 		htmlTag: 'ul',
 		xmlTag: 'ul',
 		cls: 'el-ul'

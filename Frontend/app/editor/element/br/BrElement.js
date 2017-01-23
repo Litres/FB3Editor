@@ -19,6 +19,7 @@ Ext.define(
 		xmlTag: 'br',
 		showedOnTree: false,
 
+		isBr: true,
 		isStyleType: true,
 
 		isEmpty: function ()

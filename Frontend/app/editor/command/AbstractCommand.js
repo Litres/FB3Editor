@@ -96,6 +96,8 @@ Ext.define(
 				manager,
 				xml;
 
+			//console.log('res', res, scopeData);
+
 			if (!res)
 			{
 				xml = el.getXml();

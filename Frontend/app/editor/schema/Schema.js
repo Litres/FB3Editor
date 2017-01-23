@@ -193,6 +193,8 @@ Ext.define(
 					}
 				);
 			}
+			
+			//console.log(name, xsd);
 
 			return xsd;
 		},
@@ -218,6 +220,7 @@ Ext.define(
 			if (callback)
 			{
 				callback.scopeData.loaded = data.loaded;
+				callback.scopeData.response = data;
 				callback.fn.call(callback.scope, data.res, callback.scopeData);
 			}
 		},

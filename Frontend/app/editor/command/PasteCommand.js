@@ -8,22 +8,59 @@ Ext.define(
 	'FBEditor.editor.command.PasteCommand',
 	{
 		extend: 'FBEditor.editor.command.AbstractCommand',
+		requires: [
+			'FBEditor.editor.pasteproxy.PasteProxy'
+		],
 
 		execute: function ()
 		{
 			var me = this,
 				data = me.getData(),
+				e = data.e,
 				res = false,
 				nodes = {},
 				els = {},
 				offset = {},
 				pos = {},
 				sel = window.getSelection(),
+				parser = new DOMParser(),
+				htmlString,
+				html,
 				manager,
-				range;
+				range,
+				proxy;
 
 			try
 			{
+				range = sel.getRangeAt(0);
+
+				nodes.node = range.startContainer;
+				els.node = nodes.node.getElement();
+				els.p = els.node.getStyleHolder();
+
+				if (!range.collapsed)
+				{
+					// удаляем выделенную часть текста
+					els.p.removeRangeNodes();
+				}
+
+				// получаем данные из буфера обмена
+				htmlString = e.clipboardData.getData('text/html');
+
+				if (!htmlString)
+				{
+					// преобразуем обычный текст к html
+					htmlString = e.clipboardData.getData('text');
+					htmlString = me.convertTextToHtml(htmlString);
+				}
+				else
+				{
+					htmlString = htmlString.replace(/\n+|\t+/g, ' ');
+				}
+
+				//console.log('clipboard', htmlString);
+				html = parser.parseFromString(htmlString, 'text/html');
+				
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
@@ -55,21 +92,32 @@ Ext.define(
 
 				data.viewportId = nodes.node.viewportId;
 
-				// корневой узел из буфера обмена
-				nodes.paste = data.html.querySelector('body');
+				// прокси данных из буфера
+				proxy = Ext.create('FBEditor.editor.pasteproxy.PasteProxy', {e: e, manager: manager});
+				
+				// получаем модель вставляемого фрагмента
+				els.fragment = proxy.getModel();
 
-				console.log('paste', nodes.paste, data);
+				els.fragP = els.fragment.first();
 
-				// создаем элемент из скопированного узла
-				els.paste = manager.createElementFromNode(nodes.paste);
+				if (els.fragP.isStyleHolder && els.fragment.children.length === 1)
+				{
+					// если вставляемая модель содержит только один абзац,
+					// то вставляем его содержимое в текущий абзац
 
-				// фрагмент для хранения вставляемых элементов
-				els.fragment = FBEditor.editor.Factory.createElement('div');
+					els.next = els.fragP.first();
 
-				// помещаем во фрагмент только стилевые элементы и их контейнеры
-				els.paste.getOnlyStylesChildren(els.fragment);
+					while (els.next)
+					{
+						els.temp = els.next.next();
+						els.fragment.add(els.next);
+						els.next = els.temp;
+					}
 
-				// TODO проверяем по схеме каждый элемент, и если он не проходит проверку, то преобразуем его в текст
+					els.fragment.remove(els.fragP);
+				}
+
+				//console.log(els.fragment.getXml());
 
 				// узел скопированного фрагмента
 				nodes.fragment = els.fragment.getNode(data.viewportId);
@@ -99,7 +147,10 @@ Ext.define(
 				{
 					// делим узел в позиции курсора
 
-					if (els.fragment.children[0].isStyleHolder)
+					els.fragF = els.fragment.first();
+
+					if (els.fragF.isStyleHolder ||
+					    !els.fragF.isStyleType && !els.fragF.isText)
 					{
 						// делим на уровне параграфов
 
@@ -164,7 +215,7 @@ Ext.define(
 					}
 					else
 					{
-						// делим элемента, если курсор не в конце и не в начале элемента
+						// делим элемент, если курсор не в конце и не в начале элемента
 
 						nodes.needJoin = true;
 						nodes.container = range.startContainer;
@@ -172,7 +223,6 @@ Ext.define(
 						els.common = nodes.common.getElement();
 						nodes.node = manager.splitNode(els, nodes, offset.start);
 						els.common.removeEmptyText();
-
 					}
 				}
 
@@ -262,7 +312,7 @@ Ext.define(
 					nodes.parent.removeChild(nodes.node);
 				}
 
-				//console.log('nodes, els', nodes, els);
+				console.log('nodes, els', nodes, els);
 
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
@@ -422,6 +472,21 @@ Ext.define(
 
 			manager.setSuspendEvent(false);
 			return res;
+		},
+
+		/**
+		 * @protected
+		 * Преобразует простой текст в html строку.
+		 * @param {String} text Простой текст, который может содержать переносы.
+		 * @return {String} Строка html.
+		 */
+		convertTextToHtml: function (text)
+		{
+			var html;
+
+			html = text.replace(/^(.*?)$/gim, '<p>$1</p>');
+
+			return html;
 		}
 	}
 );

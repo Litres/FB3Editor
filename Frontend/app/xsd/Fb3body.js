@@ -310,7 +310,7 @@ Ext.define(
 		<complexContent mixed="true">\
 			<extension base="fb3b:StyleInLinkType">\
 				<attribute name="href" type="IDREF" use="required"/>\
-				<attribute ref="role" use="optional"/>\
+				<attribute ref="fb3b:role" use="optional"/>\
 				<attribute name="autotext" type="boolean" use="optional"/>\
 			</extension>\
 		</complexContent>\
