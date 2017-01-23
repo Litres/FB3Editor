@@ -117,7 +117,7 @@ Ext.define(
 					els.fragment.remove(els.fragP);
 				}
 
-				//console.log(els.fragment.getXml());
+				//Ext.log({level: 'info', msg: 'Фрагмент', dump: els.fragment});
 
 				// узел скопированного фрагмента
 				nodes.fragment = els.fragment.getNode(data.viewportId);

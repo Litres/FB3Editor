@@ -104,7 +104,6 @@ Ext.define(
 			model = modelProxy.getModel();
 
 			console.log('--- [3] ВСТАВКА: ИТОГОВАЯ МОДЕЛЬ ---');
-			Ext.log({level: 'info', dump: model});
 			console.log(model.getXml());
 			console.log('--- КОНЕЦ ВСТАВКИ ---');
 

@@ -91,7 +91,9 @@ Ext.define(
 
 			if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim())
 			{
-				val = node.nodeValue;
+				// чистим текст
+				val = me.cleanText(node.nodeValue);
+
 				el = factory.createElementText(val);
 			}
 			else
@@ -151,6 +153,21 @@ Ext.define(
 			}
 
 			return el;
+		},
+
+		/**
+		 * @private
+		 * Возвращает отчищенный текст.
+		 * @param {String} text Текст.
+		 */
+		cleanText: function (text)
+		{
+			var me = this,
+				t = text;
+
+			t = t.replace(/[\n\t]+ /ig, ' ');
+
+			return t;
 		},
 
 		/**
