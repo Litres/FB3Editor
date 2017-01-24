@@ -33,6 +33,8 @@ Ext.define(
 				return FBEditor.editor.Factory.createElementText(text);
 			};
 
+			//console.log(content);
+
 			// преобразование строки в объект
 			eval('me.content = ' + content);
 		},

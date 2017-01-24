@@ -7,8 +7,12 @@
 Ext.define(
 	'FBEditor.editor.pasteproxy.DomProxy',
 	{
+		requires: [
+			'FBEditor.editor.pasteproxy.dom.SpanProxy'
+		],
+		
 		/**
-		 * @property {Object} Список альтернативных имен тегов html.
+		 * @property {Object} Список альтернативных тегов html.
 		 */
 		altNames: {
 			em: ['i', 'em'],
@@ -21,6 +25,12 @@ Ext.define(
 		 * @property {Node} DOM.
 		 */
 		dom: null,
+
+		/**
+		 * @private
+		 * @property {Object} CSS-классы из DOM.
+		 */
+		css: null,
 
 		/**
 		 * @private
@@ -52,10 +62,100 @@ Ext.define(
 				body,
 				el;
 
+			// создаем CSS-классы из стилей DOM
+			me.createCss();
+
+			// создаем элемент
 			body = dom.querySelector('body');
 			el = me.createElement(body);
 			
 			return el
+		},
+
+		/**
+		 * @private
+		 * Создает CSS-классы стилей из DOM.
+		 */
+		createCss: function ()
+		{
+			var me = this,
+				dom = me.dom,
+				styles;
+
+			styles = dom.querySelectorAll('style');
+
+			// парсим все классы
+			Ext.Array.each(
+				styles,
+				function (style)
+				{
+					me.parseStyle(style.innerHTML);
+				}
+			);
+		},
+
+		/**
+		 * @private
+		 * Парсит текстовые классы, превращая их в объекты.
+		 * @param {String} style Стили.
+		 */
+		parseStyle: function (style)
+		{
+			var me = this,
+				css = me.css || {},
+				nameCss,
+				valCss,
+				curCss,
+				reg,
+				res;
+
+			// удаляем комментарии
+			style = style.replace(/<!--|-->/g, '');
+			style = style.replace(/[\s]{0,}\/\*(.*?)\*\/[\s]{0,}/g, '');
+
+			// удаляем все переносы
+			style = style.replace(/[\n]+/g, '');
+
+			// выражение для получения всех классов
+			reg = /[\s\n]{0,}(.*?)[\s\n]{0,}\{[\s\n]{0,}(.*?)[\s\n]{0,}\}/gm;
+
+			while (res = reg.exec(style))
+			{
+				nameCss = res[1];
+				valCss = res[2];
+
+				// получаем массив свойств для класса
+				valCss = valCss.split(/[\s]{0,};[\s]{0,}/);
+
+				curCss = {};
+
+				Ext.Array.each(
+					valCss,
+				    function (item)
+				    {
+					    var prop,
+						    nameProp,
+						    valProp;
+
+					    if (item)
+					    {
+						    // сохраняем свойство и его значение
+						    prop = item.split(/[\s]{0,}:[\s]{0,}/);
+						    nameProp = prop[0];
+						    valProp = prop[1];
+						    curCss[nameProp] = valProp;
+					    }
+				    }
+				);
+
+				// добавляем класс
+				css[nameCss] = css[nameCss] || [];
+				css[nameCss].push(curCss);
+			}
+
+			Ext.log({level: 'info', msg: 'STYLES', dump: css});
+
+			me.css = css;
 		},
 
 		/**
@@ -92,12 +192,21 @@ Ext.define(
 			if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim())
 			{
 				// чистим текст
-				val = me.cleanText(node.nodeValue);
+				val = me.cleanText(node);
 
-				el = factory.createElementText(val);
+				if (val)
+				{
+					el = factory.createElementText(val);
+				}
 			}
 			else
 			{
+				if (name === 'span')
+				{
+					// пытаемся конвертировать span в другие элементы, учитывая его текущие CSS-стили
+					name = me.convertSpan(node);
+				}
+
 				// получаем универсальное имя элемента, которое используется в схеме
 				name = me.getNameElement(name);
 
@@ -156,16 +265,42 @@ Ext.define(
 		},
 
 		/**
-		 * @private
-		 * Возвращает отчищенный текст.
-		 * @param {String} text Текст.
+		 * Пытается преобразовать span в другой элемент, возвращая новое имя узла.
+		 * Преобразование основывается на текущих CSS-стилях span, полученных из DOM.
+		 * @param {Node} node Узел span.
+		 * @return {String|false} Имя нового элемента.
 		 */
-		cleanText: function (text)
+		convertSpan: function (node)
 		{
 			var me = this,
-				t = text;
+				spanProxy,
+				name;
 
-			t = t.replace(/[\n\t]+ /ig, ' ');
+			spanProxy = FBEditor.editor.pasteproxy.dom.SpanProxy.getImplementation({node: node, domProxy: me});
+			name = spanProxy.getNewName();
+
+			return name;
+		},
+
+		/**
+		 * @private
+		 * Возвращает отчищенный текст.
+		 * @param {Node} node Текстовый узел.
+		 */
+		cleanText: function (node)
+		{
+			var me = this,
+				t = node.nodeValue;
+
+			if (node.previousSibling &&
+			    node.nodeType === Node.COMMENT_NODE &&
+			    node.previousSibling.nodeValue === '<!--EndFragment-->')
+			{
+				// пропускаем текстовый узел после завершающего комментария (для ворда)
+				return false;
+			}
+
+			t = t.replace(/[\n\t\s]+ /ig, ' ');
 
 			return t;
 		},

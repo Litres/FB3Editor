@@ -86,7 +86,7 @@ Ext.define(
 				model;
 
 			console.log('--- [1] ВСТАВКА: ИСХОДНЫЙ HTML ---');
-			console.log(dom.body.outerHTML);
+			console.log(dom);
 
 			// создаем объект для работы с DOM
 			domProxy = Ext.create('FBEditor.editor.pasteproxy.DomProxy', {dom: dom, pasteProxy: me});
