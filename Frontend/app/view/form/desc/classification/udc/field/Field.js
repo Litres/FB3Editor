@@ -26,6 +26,7 @@ Ext.define(
 			style: 'display: none'
 		},
 
+		inputAttrTpl: "spellcheck=\"false\"",
 		flex: 1,
 		regex: /^[\d\. \-\*\(\):\[\]\+:=&quot;«»'/A-Яа-я]+$/,
 
