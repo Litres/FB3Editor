@@ -12,19 +12,23 @@ Ext.define(
 			'FBEditor.view.form.desc.bookClass.BookClassStore',
 			'FBEditor.view.form.desc.bookClass.BookClassController'
 		],
+
 		xtype: 'form-desc-bookClass',
 		controller: 'form.desc.bookClass',
+
+		listeners: {
+			change: 'onChange'
+		},
+
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
 		fieldLabel: 'Литературная форма',
 		editable: false,
 		listConfig: {
-			maxHeight: 'auto'
-		},
-
-		listeners: {
-			change: 'onChange'
+			styles: {
+				maxHeight: 'auto'
+			}
 		},
 
 		initComponent: function ()

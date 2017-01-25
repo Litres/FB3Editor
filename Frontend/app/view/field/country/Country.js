@@ -18,8 +18,11 @@ Ext.define(
 		displayField: 'name',
 		valueField: 'value',
 		editable: false,
+
 		listConfig: {
-			maxHeight: 'auto'
+			style: {
+				maxHeight: 'auto'
+			}
 		},
 
 		listeners: {

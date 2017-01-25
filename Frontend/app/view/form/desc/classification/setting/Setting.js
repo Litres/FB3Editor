@@ -8,7 +8,9 @@ Ext.define(
 	'FBEditor.view.form.desc.classification.setting.Setting',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
+		
 		xtype: 'form-desc-classification-setting',
+		
 		layout: 'hbox',
 
 		translateText: {

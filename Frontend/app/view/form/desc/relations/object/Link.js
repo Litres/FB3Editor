@@ -11,7 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.relations.object.LinkStore'
 		],
+		
 		xtype: 'form-desc-relations-object-link',
+		
 		queryMode: 'local',
 		displayField: 'name',
 		valueField: 'value',
@@ -20,7 +22,9 @@ Ext.define(
 		allowBlank: false,
 		editable: false,
 		listConfig: {
-			maxHeight: 'auto'
+			style: {
+				maxHeight: 'auto'
+			}
 		},
 
 		initComponent: function ()
