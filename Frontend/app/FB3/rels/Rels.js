@@ -19,9 +19,6 @@ Ext.define(
 
 		defaultContent: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
             '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
-            '<Relationship Id="rId0" ' +
-	                'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" ' +
-	                'Target="cover.jpg"/>' +
             '<Relationship Id="rId1" ' +
 	                'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" ' +
 	                'Target="meta/core.xml"/>' +
@@ -134,12 +131,12 @@ Ext.define(
 				thumb = me.thumb,
 				rels;
 
-			if (!thumb)
+			/*if (!thumb)
 			{
 				rels = me.getRels();
 				thumb = rels[FBEditor.FB3.rels.RelType.thumbnail];
 				thumb = Ext.create('FBEditor.FB3.rels.Thumb', me.getStructure(), thumb[me.prefix + 'Target']);
-			}
+			}*/
 
 			return thumb;
 		},

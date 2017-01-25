@@ -76,7 +76,11 @@ Ext.define(
 				bodies;
 
 			//console.log('DATA', data);
-			structure.setThumb(data.thumb);
+			if (data.thumb)
+			{
+				structure.setThumb(data.thumb);
+			}
+
 			structure.setMeta(data.meta);
 			books = structure.getBooks();
 			

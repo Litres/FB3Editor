@@ -28,15 +28,13 @@ Ext.define(
 
 			try
 			{
-				if (!(cover = FBEditor.resource.Manager.getCover()))
-				{
-					throw Error('Загрузите обложку для книги');
-				}
-
 				if (!desc.isValid())
 				{
 					throw Error('Некорректно заполнено описание книги');
 				}
+
+				// обложка
+				cover = FBEditor.resource.Manager.getCover();
 
 				descValues = desc.getValues();
 				descXml = FBEditor.desc.Manager.getXml(descValues);

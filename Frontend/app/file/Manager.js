@@ -99,7 +99,7 @@ Ext.define(
 								descManager.reset();
 								descManager.loadDataToForm(desc);
 
-								if (!resourceManager.checkThumbInResources(thumb))
+								if (thumb && !resourceManager.checkThumbInResources(thumb))
 								{
 									// если обложка находится не в директории ресурсов, то перемещаем ее туда
 									thumb.moveTo(resourceManager.getDefaultThumbPath());
@@ -109,7 +109,11 @@ Ext.define(
 								// загружаем ресурсы
 								resourceManager.reset();
 								resourceManager.load(images);
-								resourceManager.setCover(thumb.getFileName());
+
+								if (thumb)
+								{
+									resourceManager.setCover(thumb.getFileName());
+								}
 
 								// редактор тела книги
 								bodyManager = FBEditor.getEditorManager();
