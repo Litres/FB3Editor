@@ -821,6 +821,7 @@ Ext.define(
 			if (relNode.firstChild.nodeName !== 'MAIN' && manager && !manager.isSuspendEvent())
 			{
 				e.stopPropagation();
+				parentEl = relNode.getElement();
 
 				if (node.nodeType === Node.TEXT_NODE)
 				{
@@ -835,7 +836,6 @@ Ext.define(
 				newEl.setNode(node);
 				nextSibling = node.nextSibling;
 				previousSibling = node.previousSibling;
-				parentEl = relNode.getElement();
 
 				//console.log('new, parent', node, relNode.outerHTML, parentEl.children.length);
 
@@ -852,7 +852,14 @@ Ext.define(
 				}
 				else
 				{
-					console.log('new add', parentEl, newEl.elementId, newEl);
+					console.log('new add', node, parentEl, newEl);
+
+					if (parentEl.isEmpty())
+					{
+						// удаляем br
+						parentEl.removeAll();
+					}
+					
 					parentEl.add(newEl);
 				}
 

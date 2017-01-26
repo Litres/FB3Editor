@@ -45,6 +45,7 @@ Ext.define(
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
+				//console.log(els.node, els.parent.getXml());
 				if (els.node.isEmpty())
 				{
 					// заменяем пустой элемент на текстовый
@@ -62,6 +63,7 @@ Ext.define(
 				viewportId = node.viewportId;
 
 				console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
+				//console.log(els.parent.getXml());
 
 				el = node.getElement();
 

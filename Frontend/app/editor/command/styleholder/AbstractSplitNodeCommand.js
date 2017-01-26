@@ -59,8 +59,6 @@ Ext.define(
 				nodes.p = nodes.node.parentNode;
 				els.p = nodes.p.getElement();
 
-				console.log(els.p.getXml());
-
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
@@ -208,8 +206,6 @@ Ext.define(
 
 				// сохраняем ссылки
 				me.data.nodes = nodes;
-
-				console.log(els.parentP.getXml());
 
 				// проверяем по схем
 				me.verifyElement(els.parentP);
