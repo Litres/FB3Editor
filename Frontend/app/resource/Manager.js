@@ -105,7 +105,7 @@ Ext.define(
 					json = xml2Json.xmlToJson(xml);
 					data = json.Relationships.Relationship;
 
-					data = data.length ? data : [];
+					data = data && data.length ? data : [];
 
 					return loader.loadResources(data);
 				},

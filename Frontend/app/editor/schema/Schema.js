@@ -18,15 +18,15 @@ Ext.define(
 		],
 
 		/**
+		 * @property {Object} Элементы схемы в виде json.
+		 */
+		elements: null,
+
+		/**
 		 * @private
 		 * @property {String} Схема текста.
 		 */
 		_xsd: '',
-
-		/**
-		 * @property {Object} Элементы схемы в виде json.
-		 */
-		elements: null,
 
 		/**
 		 * @private
@@ -131,6 +131,84 @@ Ext.define(
 			me.callback.push({fn: opts.callback, scope: opts.scope, scopeData: opts.scopeData});
 
 			master.post(data, me.messageValid, me);
+		},
+
+		/**
+		 * Опрделяет является ли элемент потомком родителя.
+		 * @param {String} parent Имя родителя.
+		 * @param {String} child Имя потомка.
+		 * @return {Boolean}
+		 */
+		isChild: function (parent, child)
+		{
+			var me = this,
+				children = me.getChildrenForElement(parent),
+				isChild;
+
+			isChild = Ext.Array.contains(children, child);
+
+			return isChild;
+		},
+
+		/**
+		 * Возвращает список прямых дочерних элементов для элемента.
+		 * @param {String} name Имя элемента, для которого необходимо вернуть дочерние элементы.
+		 * @return {Array|false} Дочерние элементы.
+		 */
+		getChildrenForElement: function (name)
+		{
+			var me = this,
+				children = [],
+				el;
+
+			el = me.getElement(name);
+
+			// перебираем элементы выбора
+			if (el.choice.elements)
+			{
+				Ext.Array.each(
+					el.choice.elements,
+					function (item)
+					{
+						children.push(item.name);
+					}
+				);
+			}
+
+			if (el.sequence.length)
+			{
+				// перебираем элементы последовательности
+				Ext.Array.each(
+					el.sequence,
+					function (item)
+					{
+						var name;
+
+						if (item.element)
+						{
+							name = Ext.Object.getKeys(item.element)[0];
+							children.push(name);
+						}
+
+						if (item.choice)
+						{
+							// перебираем элементы выбора в элементе последовательности
+							Ext.Array.each(
+								item.choice.elements,
+								function (itemChoice)
+								{
+									var name;
+
+									name = Ext.Object.getKeys(itemChoice)[0];
+									children.push(name);
+								}
+							);
+						}
+					}
+				);
+			}
+
+			return children;
 		},
 
 		/**
@@ -245,6 +323,7 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Возвращает данные схемы для элемента.
 		 * @param {String} name Название элемента.
 		 * @return {Object} Данные схемы элемента.
@@ -260,6 +339,7 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Возвращает имя элемента схемы.
 		 * @param {Object} el Элемент схемы.
 		 * @return {String} Имя.

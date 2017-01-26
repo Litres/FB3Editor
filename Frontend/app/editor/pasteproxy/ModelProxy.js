@@ -47,6 +47,7 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Нормализует элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */
@@ -65,11 +66,14 @@ Ext.define(
 					// нормализуем элемент уровня абзаца
 					me.normalizeStyleHolder(child);
 
-					// нормализуем элемент уровня сттиля
+					// нормализуем элемент уровня стиля
 					me.normalizeStyle(child);
 
 					// нормализуем элемент уровня текста
 					me.normalizeText(child);
+
+					// нормализуем элемент списка
+					me.normalizeList(child);
 
 					// нормализуем дочерний элемент
 					me.normalizeElement(child);
@@ -78,16 +82,36 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Нормализует блочный элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */
 		normalizeBlock: function (el)
 		{
-			var me = this;
+			var me = this,
+				parent = el.parent,
+				normalize = false;
 
+			if (!el.isStyleType && !el.isText)
+			{
+				// элемент уровня блока
+
+				if (parent.isStyleType)
+				{
+					// если блок находится в стилевом элементе, то переносим всех потомков на уровень выше
+					me.upChildren(el);
+					normalize = true;
+				}
+			}
+
+			if (normalize)
+			{
+				me.normalizeElement(parent);
+			}
 		},
 
 		/**
+		 * @private
 		 * Нормализует элемент уровня абзаца.
 		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */
@@ -107,6 +131,12 @@ Ext.define(
 					parent.remove(el);
 					normalize = true;
 				}
+				else if (parent.isStyleType)
+				{
+					// если абзац находится в стилевом элементе, то переносим всех потомков на уровень выше
+					me.upChildren(el);
+					normalize = true;
+				}
 			}
 
 			if (normalize)
@@ -116,6 +146,7 @@ Ext.define(
 		},
 
 		/**
+		 * @private
 		 * Нормализует стилевой элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */
@@ -184,6 +215,71 @@ Ext.define(
 		},
 
 		/**
+		 * @private
+		 * Нормализует элемент списка ol/ul.
+		 * @param {FBEditor.editor.element.AbstractElement} el
+		 */
+		normalizeList: function (el)
+		{
+			var me = this,
+				parent = el.parent,
+				pasteProxy = me.pasteProxy,
+				manager = pasteProxy.manager,
+				factory = manager.getFactory(),
+				schema = manager.getSchema(),
+				els = {},
+				normalize = false,
+				isChild;
+
+			if (parent.isLiHolder)
+			{
+				// элемент списка
+				
+				// является ли элемент допустимым в списке
+				isChild = schema.isChild(parent.getName(), el.getName());
+
+				if (!isChild)
+				{
+					// создаем элемент li и переносим в него всех потомков из текущего элемента
+
+					els.li = factory.createElement('li');
+
+					while (el.first())
+					{
+						els.li.add(el.first());
+					}
+
+					parent.replace(els.li, el);
+					normalize = true;
+				}
+			}
+
+			if (normalize)
+			{
+				me.normalizeElement(parent);
+			}
+		},
+
+		/**
+		 * @private
+		 * Переносит всех потомков на уровень выше, а опустевший элемент удаляет.
+		 * @param {FBEditor.editor.element.AbstractElement} el
+		 */
+		upChildren: function (el)
+		{
+			var me = this,
+				parent = el.parent;
+
+			while (el.first())
+			{
+				parent.insertBefore(el.first(), el);
+			}
+
+			parent.remove(el);
+		},
+
+		/**
+		 * @private
 		 * Помещает элемент и все сиблинги в новый абзац.
 		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */

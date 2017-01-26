@@ -284,13 +284,13 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает отчищенный текст.
+		 * Возвращает очищенный текст.
 		 * @param {Node} node Текстовый узел.
 		 */
 		cleanText: function (node)
 		{
-			var me = this,
-				t = node.nodeValue;
+			var t = node.nodeValue,
+				reg = FBEditor.regexpUtf;
 
 			if (node.previousSibling &&
 			    node.nodeType === Node.COMMENT_NODE &&
@@ -300,7 +300,8 @@ Ext.define(
 				return false;
 			}
 
-			t = t.replace(/[\n\t\s]+ /ig, ' ');
+			t = t.replace(/[\n\t\s]+/ig, ' ');
+			t = t.replace(reg, '');
 
 			return t;
 		},
