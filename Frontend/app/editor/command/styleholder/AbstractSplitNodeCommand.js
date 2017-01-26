@@ -59,10 +59,12 @@ Ext.define(
 				nodes.p = nodes.node.parentNode;
 				els.p = nodes.p.getElement();
 
+				console.log(els.p.getXml());
+
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
-				if (els.node.isEmpty() && nodes.node.firstChild || els.node.isP)
+				if (els.node.isEmpty() && nodes.node.firstChild || els.node.isStyleHolder)
 				{
 					// пустой элемент
 					nodes.node = nodes.node.firstChild;
@@ -206,6 +208,8 @@ Ext.define(
 
 				// сохраняем ссылки
 				me.data.nodes = nodes;
+
+				console.log(els.parentP.getXml());
 
 				// проверяем по схем
 				me.verifyElement(els.parentP);

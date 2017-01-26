@@ -35,6 +35,7 @@ Ext.define(
 		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
+				reg,
 				xml;
 
 			xml = me.callParent(arguments);
@@ -44,6 +45,11 @@ Ext.define(
 
 			// удаляем из p все br
 			xml = xml.replace(/<p>(.*?)<br(.*?)\/>(.*?)<\/p>/gi, '<p>$1$3</p>');
+
+			// заменяем самый первый br на p, согласно схеме
+			reg = new RegExp("(<" + me.xmlTag + ".*?>[\n ]{0,})<br(.*?)\/>", "i");
+			xml = xml.replace(reg, '$1<p></p>');
+
 
 			return xml;
 		},
