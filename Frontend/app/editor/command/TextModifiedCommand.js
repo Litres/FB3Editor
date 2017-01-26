@@ -46,8 +46,11 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 
 				//console.log(els.node, els.parent.getXml());
-				if (els.node.isEmpty())
+
+				if (els.node.isEmpty() && !els.node.isText)
 				{
+					//console.log('empty');
+
 					// заменяем пустой элемент на текстовый
 					els.text = factory.createElementText('');
 					nodes.text = els.text.getNode(nodes.node.viewportId);
