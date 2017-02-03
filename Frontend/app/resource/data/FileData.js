@@ -10,6 +10,12 @@ Ext.define(
 		extend : 'FBEditor.resource.data.AbstractData',
 
 		/**
+		 * @private
+		 * @property {Object} Данные файла.
+		 */
+		fileData: null,
+
+		/**
 		 * @param {Object} fileData Данные файла.
 		 * @param {ArrayBuffer} fileData.content Бинарное содержимое файла.
 		 * @param {Object} fileData.file Данные.

@@ -140,6 +140,8 @@ Ext.define(
 									diff = response.responseText;
 									rev = diff.match(/rev (\d+) -->$/);
 									rev = rev[1];
+									diff = diff.replace(/<!-- rev \d+ -->$/m, '');
+
 									resolve({diff: diff, rev: rev});
 								}
 								else
@@ -178,6 +180,8 @@ Ext.define(
 
 			// получаем собственнный дифф
 			diff = revision.getDiff();
+
+			//console.log('diff', rev, revision, diff);
 
 			if (!diff)
 			{

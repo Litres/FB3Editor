@@ -339,6 +339,34 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает данные аттрибутов для элемента.
+		 * @param {String} name Имя элемента.
+		 * @return {Object} Аттрибуты.
+		 */
+		getAttributes: function (name)
+		{
+			var me = this,
+				el = me.getElement(name),
+				attrs = {};
+
+			if (el)
+			{
+				Ext.Object.each(
+					el.attributes,
+				    function (key, item)
+				    {
+					    if (item.name)
+					    {
+						    attrs[key] = item;
+					    }
+				    }
+				);
+			}
+
+			return attrs;
+		},
+
+		/**
 		 * @private
 		 * Возвращает имя элемента схемы.
 		 * @param {Object} el Элемент схемы.

@@ -329,6 +329,109 @@ Ext.define(
 		},
 
 		/**
+		 * Последовательно сохраняет ресурсы.
+		 * @param {FBEditor.resource.Resource[]} resources Ресурсы.
+		 * @return {Promise}
+		 */
+		saveResources: function (resources)
+		{
+			var me = this,
+				res,
+				promise;
+
+			res = resources.pop();
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					if (res)
+					{
+						me.save(res).then(
+							function (xml)
+							{
+								if (!resources.length)
+								{
+									resolve(xml);
+								}
+
+								// обновляем элементы
+								res.updateElements();
+
+								// продолжаем сохранять ресурсы
+								me.saveResources(resources).then(
+									function (xml)
+									{
+										resolve(xml);
+									},
+									function ()
+									{
+										reject();
+									}
+								);
+							},
+							function ()
+							{
+								reject();
+							}
+						);
+					}
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Последовательно удаляет ресурсы.
+		 * @param {FBEditor.resource.Resource[]} resources Ресурсы.
+		 * @return {Promise}
+		 */
+		removeResources: function (resources)
+		{
+			var me = this,
+				res,
+				promise;
+
+			res = resources.pop();
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					if (res)
+					{
+						me.remove(res.fileId).then(
+							function (xml)
+							{
+								if (!resources.length)
+								{
+									resolve(xml);
+								}
+
+								// продолжаем удалять ресурсы
+								me.removeResources(resources).then(
+									function (xml)
+									{
+										resolve(xml);
+									},
+									function ()
+									{
+										reject();
+									}
+								);
+							},
+							function ()
+							{
+								reject();
+							}
+						);
+					}
+				}
+			);
+
+			return promise;
+		},
+
+		/**
 		 * Получает target обложки.
 		 * @return {Promise}
 		 */

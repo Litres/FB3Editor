@@ -196,8 +196,6 @@ Ext.define(
 							{
 								styles = Ext.Object.merge(styles, Ext.clone(css[clsName][0]));
 							}
-
-							console.log(clsName, css[clsName], css);
 						}
 					}
 				);

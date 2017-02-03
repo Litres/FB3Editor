@@ -418,7 +418,7 @@ Ext.define(
 	</simpleType>\
 	<simpleType name="ScreenSizeType">\
 		<restriction base="normalizedString">\
-			<pattern value="\\d+(\\.\\d+)?(em|ex|%|mm)"/>\
+			<pattern value="\\\d+(\\.\\\d+)?(em|ex|%|mm)"/>\
 		</restriction>\
 	</simpleType>\
 	<attributeGroup name="SizingAttributes">\
@@ -444,7 +444,7 @@ Ext.define(
 	</attribute>\
 	<attribute name="href" type="anyURI"></attribute>\
 </schema>';
-
+			
 			return xsd;
 		}
 	}

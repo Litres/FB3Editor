@@ -187,6 +187,11 @@ Ext.define(
 			return name;
 		},
 
+		/**
+		 * @depricated
+		 * Устаревший метод
+		 * @param fragment
+		 */
 		getOnlyStylesChildren: function (fragment)
 		{
 			var me = this;
@@ -203,12 +208,12 @@ Ext.define(
 
 		beforeCopy: function ()
 		{
-			var me = this;
+			var me = this,
+				resource = me.resource;
 
-			if (me.resource)
+			if (resource)
 			{
-				me.updateSrc('#' + me.resource.name);
-				//console.log('before copy img', me.resource.name);
+				//me.updateSrc('#' + resource.fileId);
 			}
 		},
 
@@ -218,6 +223,7 @@ Ext.define(
 
 			if (me.resource)
 			{
+				// после копирования восстанавливаем изображение
 				me.updateSrc(me.attributes.src);
 				//console.log('after copy img');
 			}
@@ -266,7 +272,9 @@ Ext.define(
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
-			resource = manager.getResourceByFileId(attributes.src) || manager.getResourceByName(attributes.src) || me.resource;
+			resource = manager.getResourceByFileId(attributes.src) ||
+			           manager.getResourceByName(attributes.src) ||
+			           me.resource;
 
 			if (resource)
 			{

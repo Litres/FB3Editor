@@ -7,30 +7,13 @@
 Ext.define(
 	'FBEditor.view.image.editor.Picture',
 	{
-		extend: 'Ext.Img',
+		extend: 'FBEditor.view.image.Image',
 		xtype: 'image-editor-picture',
-
+		
 		style: {
 			maxWidth: '150px',
 			maxHeight: '200px'
 		},
-		src: 'undefined',
-
-		/**
-		 * @event changeSrc
-		 * Обновляет картинку.
-		 * @param {Object} data Данные изображения.
-		 */
-		updateView: function (data)
-		{
-			var me = this,
-				img = data;
-
-			if (img.url !== me.src)
-			{
-				me.setSrc(img.url);
-				me.fireEvent('changeSrc', me);
-			}
-		}
+		src: 'undefined'
 	}
 );

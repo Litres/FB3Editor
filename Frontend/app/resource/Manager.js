@@ -10,11 +10,15 @@ Ext.define(
 		singleton: true,
 		requires: [
 			'FBEditor.resource.ExplorerManager',
+			'FBEditor.resource.ExternalResource',
 			'FBEditor.resource.FolderResource',
 			'FBEditor.resource.Loader',
+			'FBEditor.resource.Paste',
 			'FBEditor.resource.Resource',
 			'FBEditor.resource.TreeManager',
+			'FBEditor.resource.data.ExternalData',
 			'FBEditor.resource.data.FileData',
+			'FBEditor.resource.data.PasteData',
 			'FBEditor.resource.data.UrlData'
 		],
 
@@ -62,12 +66,30 @@ Ext.define(
 		 */
 		loader: null,
 
+		/**
+		 * @private
+		 * @property {FBEditor.resource.Paste} Объект для управления ресурсами, вставляемыми из буфера.
+		 */
+		paste: null,
+
 		init: function ()
 		{
 			var me = this;
 
 			// создаем загрузчик
 			me.loader = Ext.create('FBEditor.resource.Loader', me);
+
+			// создаем объект для управления ресурсами, вставляемыми из буфера
+			me.paste = Ext.create('FBEditor.resource.Paste', me);
+		},
+
+		/**
+		 * Возвращает объект для управления ресурсами, вставляемыми из буфера.
+		 * @return {FBEditor.resource.Paste}
+		 */
+		getPaste: function ()
+		{
+			return this.paste;
 		},
 
 		/**
@@ -79,6 +101,7 @@ Ext.define(
 
 			me.data = [];
 			me.loader.reset();
+			me.paste.reset();
 		},
 
 		/**
@@ -207,47 +230,59 @@ Ext.define(
 		},
 
 		/**
-		 * Загружает данные ресурсов в редактор.
-		 * @param {FBEditor.resource.data.AbstractData[]} resources Данные ресурсов.
+		 * Загружает ресурсы в редактор.
+		 * @param {FBEditor.resource.data.AbstractData[]|FBEditor.resource.Resource[]} resources Данные ресурсов.
 		 */
 		load: function (resources)
 		{
 			var me = this,
-				data = me.data,
-				cover;
+				res,
+				resData,
+				promise;
 
-			//console.log('resources', resources);
-			Ext.each(
-				resources,
-				function (item)
+			resources = Ext.isArray(resources) ? resources : [resources];
+			resData = resources.pop();
+			res = resData.getData ? Ext.create('FBEditor.resource.Resource', resData.getData()) : resData;
+
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					var res,
-						resData;
+					res.load().then(
+						function ()
+						{
+							me.data.push(res);
 
-					resData = item.getData();
-					res = Ext.create('FBEditor.resource.Resource', resData);
-					data.push(res);
+							if (res.isCover)
+							{
+								// устанавливаем обложку
+								me.setCover(res.name);
+							}
 
-					if (res.isCover)
-					{
-						// обложка
-						cover = res;
-					}
+							// обновляем элементы
+							res.updateElements();
+
+							if (resources.length)
+							{
+								// продолжаем грузить ресурсы
+								me.load(resources);
+							}
+							else
+							{
+								// все ресурсы загружены
+
+								//console.log('data', me.data);
+								me.sortData();
+								me.updateNavigation();
+								me.generateFolders();
+								me.setActiveFolder('');
+								resolve();
+							}
+						}
+					);
 				}
 			);
 
-			//console.log('data', data);
-			me.data = data;
-			me.sortData();
-			me.updateNavigation();
-			me.generateFolders();
-			me.setActiveFolder('');
-
-			if (cover)
-			{
-				// устанавливаем обложку
-				me.setCover(cover.name);
-			}
+			return promise;
 		},
 
 		/**
@@ -255,7 +290,7 @@ Ext.define(
 		 * @param {Object} data Данные ресурса.
 		 * @param {ArrayBuffer} data.content Бинарное содержимое файла.
 		 * @param {Object} data.file Данные файла.
-		 * @param {String} data.file.name Имф файла.
+		 * @param {String} data.file.name Имя файла.
 		 * @param {String} data.file.type Тип файла.
 		 * @param {String} data.file.size Размер файла.
 		 * @param {String} data.file.lastModifiedDate Дата последнего изменения файла.
@@ -269,13 +304,13 @@ Ext.define(
 				res;
 
 			// проверяем тип ресурса
-			if (!me.checkType(file.type))
+			if (file && !me.checkType(file.type))
 			{
 				throw Error('Недопустимый тип ресурса');
 			}
 
 			// создаём данные ресурса
-			resData = Ext.create('FBEditor.resource.data.FileData', data);
+			resData = data.getData ? data : Ext.create('FBEditor.resource.data.FileData', data);
 			resData = resData.getData();
 
 			if (me.containsResource(resData.name))
@@ -311,7 +346,7 @@ Ext.define(
 
 		/**
 		 * Сохраняет ресурс на хабе.
-		 * @param {FBEditor.resource.data.FileData} resData Данные ресурса.
+		 * @param {Object} resData Данные ресурса.
 		 * @return {Promise}
 		 */
 		saveToUrl: function (resData)
@@ -400,7 +435,6 @@ Ext.define(
 
 			if (!res)
 			{
-				console.log(name);
 				return;
 			}
 
@@ -618,16 +652,16 @@ Ext.define(
 
 		/**
 		 * Удаляет ресурс или папку из редактора.
-		 * @param {String} name Имя файла.
+		 * @param {FBEditor.resource.Resource|String} resource Ресурс или его имя.
 		 * @return {Boolean} Успешно ли удален ресурс.
 		 */
-		deleteResource: function (name)
+		deleteResource: function (resource)
 		{
 			var me = this,
 				data = me.data,
-				resource,
-				resourceIndex,
-				result = true;
+				result = true,
+				name,
+				resourceIndex;
 
 			function _deleteResource (index)
 			{
@@ -655,12 +689,17 @@ Ext.define(
 				me.data = resources;
 			}
 
-			resourceIndex = me.getResourceIndexByName(name);
-			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
-			resource = resource && resource[0] ? resource[0] : null;
-
+			if (Ext.isString(resource))
+			{
+				// получаем ресурс по его имени
+				resourceIndex = me.getResourceIndexByName(resource);
+				resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
+				resource = resource && resource[0] ? resource[0] : null;
+			}
+			
 			if (!resource)
 			{
+				name = resource ? resource.name : resource;
 				console.log('Ресурс ' + name + ' не найден');
 				return false;
 			}
@@ -937,8 +976,6 @@ Ext.define(
 					loader.setCover(cover).then(
 						function (res)
 						{
-							console.log(res);
-
 							if (oldCover)
 							{
 								// снимаем с обложки

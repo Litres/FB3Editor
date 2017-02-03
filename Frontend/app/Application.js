@@ -56,6 +56,7 @@ Ext.define(
 			'FBEditor.util.Ajax',
 			'FBEditor.util.Diff',
 			'FBEditor.util.Format',
+			'FBEditor.util.Img',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.webworker.Manager',
 			'FBEditor.xsd.Desc'

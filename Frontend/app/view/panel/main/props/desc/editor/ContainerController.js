@@ -56,7 +56,7 @@ Ext.define(
 				data,
 				name,
 				editor;
-
+			
 			if (!view.isVisible())
 			{
 				// показываем контейнер

@@ -265,6 +265,25 @@ Ext.define(
 		},
 
 		/**
+		 * @private
+		 * Конвертирует изображение и возвращает новый элемент изображения.
+		 * @param {Object} attributes Аттрибуты.
+		 * @return {FBEditor.editor.element.img.ImgElement} Изображение.
+		 */
+		convertImg: function (attributes)
+		{
+			var me = this,
+				imgProxy,
+				el;
+
+			imgProxy = FBEditor.editor.pasteproxy.dom.ImgProxy.getImplementation({domProxy: me});
+			el = imgProxy.createImg(attributes);
+
+			return el;
+		},
+
+		/**
+		 * @private
 		 * Пытается преобразовать span в другой элемент, возвращая новое имя узла.
 		 * Преобразование основывается на текущих CSS-стилях span, полученных из DOM.
 		 * @param {Node} node Узел span.
@@ -293,8 +312,8 @@ Ext.define(
 				reg = FBEditor.regexpUtf;
 
 			if (node.previousSibling &&
-			    node.nodeType === Node.COMMENT_NODE &&
-			    node.previousSibling.nodeValue === '<!--EndFragment-->')
+			    node.previousSibling.nodeType === Node.COMMENT_NODE &&
+			    node.previousSibling.nodeValue === 'EndFragment')
 			{
 				// пропускаем текстовый узел после завершающего комментария (для ворда)
 				return false;

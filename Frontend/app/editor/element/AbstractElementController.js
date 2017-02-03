@@ -941,6 +941,7 @@ Ext.define(
 				root;
 
 			//console.log('copy', e);
+
 			e.stopPropagation();
 
 			root = el.getRoot();

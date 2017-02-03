@@ -128,18 +128,21 @@ Ext.define(
 				newContent,
 				result = false,
 				timeStart = new Date().getTime();
-			
-			// применяем дифф
-			newContent = diff.applyDiff(content, diffString);
 
-			console.log('applyDiff', new Date().getTime() - timeStart, diffString);
-
-			if (newContent)
+			if (diffString)
 			{
-				// создаем новый контент
-				manager.createContent(newContent);
+				// применяем дифф
+				newContent = diff.applyDiff(content, diffString);
 
-				result = true;
+				console.log('applyDiff', new Date().getTime() - timeStart, diffString);
+
+				if (newContent)
+				{
+					// создаем новый контент
+					manager.createContent(newContent);
+
+					result = true;
+				}
 			}
 
 			return result;

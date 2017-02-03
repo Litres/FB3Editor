@@ -1,5 +1,5 @@
 /**
- * .
+ * Прокси модели, получаемой из вставляемого фрагмента.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -7,6 +7,10 @@
 Ext.define(
 	'FBEditor.editor.pasteproxy.ModelProxy',
 	{
+		requires: [
+			'FBEditor.editor.pasteproxy.model.ImgProxy'
+		],
+
 		/**
 		 * @private
 		 * @property {FBEditor.editor.element.AbstractElement} Вставляемый элемент.
@@ -41,8 +45,9 @@ Ext.define(
 			var me = this,
 				el = me.el;
 
+			// нормализуем элементы
 			me.normalizeElement(el);
-
+			
 			return el;
 		},
 
@@ -75,6 +80,9 @@ Ext.define(
 					// нормализуем элемент списка
 					me.normalizeList(child);
 
+					// нормализуем элемент изображения
+					me.normalizeImg(child);
+
 					// нормализуем дочерний элемент
 					me.normalizeElement(child);
 				}
@@ -92,7 +100,7 @@ Ext.define(
 				parent = el.parent,
 				normalize = false;
 
-			if (!el.isStyleType && !el.isText)
+			if (!el.isStyleType && !el.isText && !el.isImg)
 			{
 				// элемент уровня блока
 
@@ -257,6 +265,23 @@ Ext.define(
 			if (normalize)
 			{
 				me.normalizeElement(parent);
+			}
+		},
+
+		/**
+		 * @private
+		 * Нормализует элемент изображения.
+		 * @param {FBEditor.editor.element.AbstractElement} el
+		 */
+		normalizeImg: function (el)
+		{
+			var me = this,
+				elProxy;
+
+			if (el.isImg)
+			{
+				elProxy = Ext.create('FBEditor.editor.pasteproxy.model.ImgProxy', {el: el, modelProxy: me});
+				elProxy.normalize();
 			}
 		},
 

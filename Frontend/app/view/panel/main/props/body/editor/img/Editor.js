@@ -9,14 +9,22 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 		requires: [
-			'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.SizeSelect'
+			'FBEditor.view.panel.main.props.body.editor.fields.sizeselect.SizeSelect',
+			'FBEditor.view.panel.main.props.body.editor.img.picture.Picture'
 		],
+		
 		xtype: 'panel-props-body-editor-img',
 
 		/**
 		 * @property {String} Префикс перед именами полей.
 		 */
 		prefixName: '',
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.props.body.editor.img.picture.Picture} Компонент изображения.
+		 */
+		picture: null,
 
 		translateText: {
 			emptyImg: 'Пустое изображение',
@@ -32,7 +40,7 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'image-editor-picture'
+					xtype: 'panel-props-body-editor-img-picture'
 				},
 				{
 					xtype: 'button-editor-select-img',
@@ -90,7 +98,8 @@ Ext.define(
 		{
 			var me = this,
 				prefix = me.prefixName,
-				prefixData = {};
+				prefixData = {},
+				picture;
 
 			me.isLoad = isLoad;
 			me.element = data.el ? data.el : me.element;
@@ -108,7 +117,11 @@ Ext.define(
 			);
 
 			me.getForm().setValues(prefixData);
-			me.down('image-editor-picture').updateView({url: data.url});
+
+			// обновляем изображение
+			picture = me.getPicture();
+			picture.updateView({url: data.url});
+
 			me.isLoad = false;
 		},
 
@@ -127,6 +140,20 @@ Ext.define(
 			me.updateData(emptyData);
 
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает компонент изображения.
+		 * @return {FBEditor.view.panel.main.props.body.editor.img.picture.Picture}
+		 */
+		getPicture: function ()
+		{
+			var me = this,
+				picture;
+
+			picture = me.picture || me.down('panel-props-body-editor-img-picture');
+
+			return picture;
 		}
 	}
 );

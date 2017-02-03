@@ -10,17 +10,25 @@ Ext.define(
 		extend: 'Ext.container.Container',
 		requires: [
 			'FBEditor.view.panel.cover.CoverController',
-			'FBEditor.view.button.SelectCover',
-			'FBEditor.view.image.Cover'
+			'FBEditor.view.panel.cover.picture.Picture',
+			'FBEditor.view.button.SelectCover'
 		],
+		
 		xtype: 'panel-cover',
 		id: 'panel-cover',
 		controller: 'panel.cover',
+		
 		margin: '0 0 0 40',
 		listeners: {
 			load: 'onLoad',
 			clear: 'onClear'
 		},
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.cover.picture.Picture} Изображение обложки.
+		 */
+		picture: null,
 
 		translateText: {
 			cover: 'Обложка'
@@ -49,10 +57,27 @@ Ext.define(
 					]
 				},
 				{
-					xtype: 'image-cover'
+					xtype: 'panel-cover-picture',
+					panelCover: me
 				}
 			];
+			
 			me.callParent(arguments);
+		},
+
+		/**
+		 * Возвращает изображение обложки.
+		 * @return {FBEditor.view.panel.cover.picture.Picture} Изображение обложки.
+		 */
+		getCoverPicture: function ()
+		{
+			var me = this,
+				picture;
+
+			picture = me.picture || me.down('panel-cover-picture');
+			me.picture = picture;
+
+			return picture;
 		}
 	}
 );

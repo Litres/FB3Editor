@@ -17,15 +17,12 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				e = data.e,
+				sel = window.getSelection(),
 				res = false,
 				nodes = {},
 				els = {},
 				offset = {},
 				pos = {},
-				sel = window.getSelection(),
-				parser = new DOMParser(),
-				htmlString,
-				html,
 				manager,
 				range,
 				proxy;
@@ -44,23 +41,6 @@ Ext.define(
 					els.p.removeRangeNodes();
 				}
 
-				// получаем данные из буфера обмена
-				htmlString = e.clipboardData.getData('text/html');
-
-				if (!htmlString)
-				{
-					// преобразуем обычный текст к html
-					htmlString = e.clipboardData.getData('text');
-					htmlString = me.convertTextToHtml(htmlString);
-				}
-				else
-				{
-					htmlString = htmlString.replace(/\n+|\t+/g, ' ');
-				}
-
-				//console.log('clipboard', htmlString);
-				html = parser.parseFromString(htmlString, 'text/html');
-				
 				if (data.saveRange)
 				{
 					// восстанваливаем выделение
@@ -93,14 +73,24 @@ Ext.define(
 				data.viewportId = nodes.node.viewportId;
 
 				// прокси данных из буфера
-				proxy = Ext.create('FBEditor.editor.pasteproxy.PasteProxy', {e: e, manager: manager});
-				
+				proxy = data.proxy || Ext.create('FBEditor.editor.pasteproxy.PasteProxy', {e: e, manager: manager});
+
 				// получаем модель вставляемого фрагмента
-				els.fragment = proxy.getModel();
+				els.fragment = data.proxy ? proxy.getCreateModel() : proxy.getModel();
+
+				//Ext.log({level: 'info', msg: 'Фрагмент', dump: els.fragment});
+
+				data.proxy = proxy;
 
 				els.fragP = els.fragment.first();
 
-				if (els.fragP.isStyleHolder && els.fragment.children.length === 1)
+				if (!els.fragP)
+				{
+					// пустая вставка
+					return true;
+				}
+
+				if (els.fragP.isStyleHolder && els.fragment.children.length === 1 )
 				{
 					// если вставляемая модель содержит только один абзац,
 					// то вставляем его содержимое в текущий абзац
@@ -117,8 +107,6 @@ Ext.define(
 					els.fragment.remove(els.fragP);
 				}
 
-				//Ext.log({level: 'info', msg: 'Фрагмент', dump: els.fragment});
-
 				// узел скопированного фрагмента
 				nodes.fragment = els.fragment.getNode(data.viewportId);
 
@@ -127,7 +115,7 @@ Ext.define(
 					// позиция курсора в пустом параграфе
 
 					nodes.needEmpty = true;
-					if (els.fragment.children[0].isStyleHolder)
+					if (els.fragment.children[0] && els.fragment.children[0].isStyleHolder)
 					{
 						// параграф
 						while (!els.node.isStyleHolder)
@@ -149,8 +137,9 @@ Ext.define(
 
 					els.fragF = els.fragment.first();
 
-					if (els.fragF.isStyleHolder ||
-					    !els.fragF.isStyleType && !els.fragF.isText)
+					if (!els.fragF.isImg &&
+					    (els.fragF.isStyleHolder ||
+					    !els.fragF.isStyleType && !els.fragF.isText))
 					{
 						// делим на уровне параграфов
 
@@ -254,7 +243,7 @@ Ext.define(
 				nodes.next = nodes.fragmentLast.nextSibling;
 				els.next = nodes.next ? nodes.next.getElement() : null;
 				if (els.prev && els.prev.isText && els.next && els.next.isText && els.fragmentFirst.isText &&
-				    els.fragmentFirst.elementId === els.fragmentLast.elementId)
+				    els.fragmentFirst.equal(els.fragmentLast))
 				{
 					// соединяем текстовый узел фрагмента с соседними текстовыми узлами
 
@@ -288,6 +277,7 @@ Ext.define(
 
 					nodes.cursor = nodes.fragmentLast.parentNode ? manager.getDeepLast(nodes.fragmentLast) : nodes.prev;
 				}
+
 				if (els.next && els.next.isText && els.fragmentLast.isText)
 				{
 					// соединяем последний узел фрагмента
@@ -357,6 +347,8 @@ Ext.define(
 				els = {},
 				res = false,
 				factory = FBEditor.editor.Factory,
+				paste = FBEditor.resource.Manager.getPaste(),
+				helper,
 				manager,
 				range;
 
@@ -370,8 +362,10 @@ Ext.define(
 
 				manager = els.parent.getManager();
 				manager.setSuspendEvent(true);
+				helper = els.fragmentFirst.getNodeHelper();
+				nodes.fragmentFirst = helper.getNode(data.viewportId);
 
-				console.log('undo paste', nodes, range, els);
+				console.log('undo paste', nodes, els, range);
 
 				if (nodes.needReplaceText)
 				{
@@ -423,7 +417,8 @@ Ext.define(
 
 					nodes.next = nodes.fragmentFirst;
 					els.next = nodes.next.getElement();
-					while (els.next && els.next.elementId !== els.fragmentLast.elementId)
+
+					while (els.next && !els.next.equal(els.fragmentLast))
 					{
 						nodes.buf = nodes.next.nextSibling;
 						els.parent.remove(els.next);
@@ -431,6 +426,7 @@ Ext.define(
 						nodes.next = nodes.buf;
 						els.next = nodes.next ? nodes.next.getElement() : null;
 					}
+
 					if (els.next)
 					{
 						els.parent.remove(els.next);
@@ -461,6 +457,9 @@ Ext.define(
 					startOffset: range.offset.start
 				};
 				manager.setCursor(data.saveRange);
+				
+				// удаляем вставленные ресурсы
+				paste.remove();
 
 				res = true;
 			}
@@ -472,21 +471,6 @@ Ext.define(
 
 			manager.setSuspendEvent(false);
 			return res;
-		},
-
-		/**
-		 * @protected
-		 * Преобразует простой текст в html строку.
-		 * @param {String} text Простой текст, который может содержать переносы.
-		 * @return {String} Строка html.
-		 */
-		convertTextToHtml: function (text)
-		{
-			var html;
-
-			html = text.replace(/^(.*?)$/gim, '<p>$1</p>');
-
-			return html;
 		}
 	}
 );

@@ -58,6 +58,21 @@ Ext.define(
 			me.cacheFileSize[size] = out;
 
 			return out;
+		},
+
+		/**
+		 * Возвращает расширение файла из его имени.
+		 * @param {String} name Имя.
+		 * @return {String} Расширение.
+		 */
+		getExtensionFile: function (name)
+		{
+			var me = this,
+				ext;
+
+			ext = name.replace(/.*?\.(\w+)$/, '$1');
+
+			return ext;
 		}
 	}
 );

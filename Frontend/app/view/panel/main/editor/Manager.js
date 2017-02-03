@@ -233,6 +233,8 @@ Ext.define(
 					var responseDiff = response.diff,
 						responseRev = response.rev;
 
+					console.log('response', rev, response);
+
 					if (responseRev !== rev)
 					{
 						// применяем дифф к тексту

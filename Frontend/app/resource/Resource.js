@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.resource.Resource',
 	{
-		fileId: null, // айди ресурса в архиве
+		fileId: null, // айди ресурса 
 		content: null, // содержимое в виде ArrayBuffer
 		blob: null, // содержимое в виде Blob
 		url: '', // адрес в памяти браузера
@@ -69,15 +69,43 @@ Ext.define(
 		},
 
 		/**
+		 * Загружает ресурс в память.
+		 * @return {Promise}
+		 */
+		load: function ()
+		{
+			return Promise.resolve(this);
+		},
+
+		/**
 		 * Добавляет элемент изображения тела книги в коллекцию, связывая с ресурсом.
 		 * @param {FBEditor.editor.element.ImgElement} el Элемент изображения, использующий ресурс.
 		 */
 		addElement: function (el)
 		{
-			var me = this;
+			var me = this,
+				exist = false;
 
-			me.elements.push(el);
-			me.totalElements = me.elements.length;
+			Ext.each(
+				me.elements,
+				function (item)
+				{
+					if (item.equal(el))
+					{
+						exist = true;
+						return false;
+					}
+				}
+			);
+
+			if (!exist)
+			{
+				//console.log('add', el);
+				
+				// если элемент еще не был связан, то добавляем связь
+				me.elements.push(el);
+				me.totalElements = me.elements.length;
+			}
 		},
 
 		/**
@@ -101,6 +129,41 @@ Ext.define(
 			);
 			me.totalElements = elements.length;
 			me.elements = elements;
+		},
+
+		/**
+		 * Обновляет связанные элементы.
+		 */
+		updateElements: function ()
+		{
+			var me = this,
+				elements = me.elements,
+				panelProps,
+				focusEl,
+				manager;
+
+			Ext.each(
+				elements,
+				function (el)
+				{
+					el.update({src: me.fileId});
+
+					manager = manager || el.getManager();
+					focusEl = manager.getFocusElement();
+
+					if (el.equal(focusEl))
+					{
+						// панель свойств
+						panelProps = manager.getPanelProps();
+
+						if (panelProps)
+						{
+							// обновляем информацию о выделенном элементе в панели свойств
+							panelProps.fireEvent('loadData', el);
+						}
+					}
+				}
+			);
 		},
 
 		/**
@@ -148,7 +211,7 @@ Ext.define(
 			var me = this,
 				size;
 
-			size = FBEditor.util.Format.fileSize(me.sizeBytes);
+			size = me.sizeBytes ? FBEditor.util.Format.fileSize(me.sizeBytes) : null;
 
 			return size;
 		},
@@ -162,14 +225,14 @@ Ext.define(
 			var me = this,
 				date;
 
-			date = Ext.Date.format(me.modifiedDate, me.formatDate);
+			date = me.modifiedDate ? Ext.Date.format(me.modifiedDate, me.formatDate) : null;
 
 			return date;
 		},
 
 		/**
 		 * Возвращает расширение файла.
-		 * @return {String} Имя файла.
+		 * @return {String} Расширение файла.
 		 */
 		getExtension: function ()
 		{
@@ -177,7 +240,7 @@ Ext.define(
 				fileName = me.baseName,
 				ext;
 
-			ext = fileName.replace(/.*?\.(\w+)$/, '$1');
+			ext = FBEditor.util.Format.getExtensionFile(fileName);
 
 			return ext;
 		}

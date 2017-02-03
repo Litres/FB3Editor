@@ -1008,7 +1008,7 @@ Ext.define(
 				editor;
 
 			root = me.getRoot();
-			editor = root ? root.getEditor() : null;
+			editor = root && root.getEditor ? root.getEditor() : null;
 
 			return editor;
 		},

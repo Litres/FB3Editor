@@ -55,7 +55,7 @@ Ext.define(
 
 		/**
 		 * Возвращает ресурс в виде Blob.
-		 * @param {ArrayBuffer} content Содержимое файла.
+		 * @param {ArrayBuffer|ArrayBuffer[]} content Содержимое файла.
 		 * @param {String} fileType Тип файла.
 		 * @return {Blob}
 		 */
@@ -63,7 +63,8 @@ Ext.define(
 		{
 			var blob;
 
-			blob = new Blob([content], {type: fileType});
+			content = Ext.isArray(content) ? content : [content];
+			blob = new Blob(content, {type: fileType});
 			
 			return blob;
 		}

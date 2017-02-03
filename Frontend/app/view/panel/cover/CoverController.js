@@ -11,29 +11,17 @@ Ext.define(
 		alias: 'controller.panel.cover',
 
 		/**
-		 * @property {FBEditor.view.image.Cover} Изображение обложки.
-		 */
-		cover: null,
-
-		/**
 		 * Устанавливает обложку.
 		 * @param {FBEditor.resource.Resource} cover Данные обложки.
 		 */
 		onLoad: function (cover)
 		{
 			var me = this,
-				img = me.getCover(),
-				view = me.getView();
+				view = me.getView(),
+				img = view.getCoverPicture();
 
 			// обновляем картинку
 			img.updateView(cover);
-			Ext.defer(
-				function ()
-				{
-					view.updateLayout();
-				},
-			    400
-			);
 		},
 
 		/**
@@ -42,22 +30,11 @@ Ext.define(
 		onClear: function ()
 		{
 			var me = this,
-				img = me.getCover();
+				view = me.getView(),
+				img = view.getCoverPicture();
 
 			// стираем адрес картинки
 			img.setSrc('');
-		},
-
-		/**
-		 * Возвращает изображение обложки.
-		 * @return {FBEditor.view.image.Cover} Изображение обложки.
-		 */
-		getCover: function ()
-		{
-			var me = this,
-				cover = me.cover || Ext.getCmp('image-cover');
-
-			return cover;
 		}
 	}
 );
