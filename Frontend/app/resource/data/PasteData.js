@@ -44,9 +44,8 @@ Ext.define(
 			}
 
 			type = blob.type;
-			ext = me.getExtension(type);
-			name = 'paste' + new Date().getTime() + '.' + ext;
-
+			ext = type ? '.' + me.getExtension(type) : '';
+			name = 'paste' + new Date().getTime() + ext;
 			url = window.URL.createObjectURL(blob);
 
 			resData = {

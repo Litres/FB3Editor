@@ -264,12 +264,11 @@ Ext.define(
 		 */
 		saveResource: function (resource, fn)
 		{
-			var data = resource,
-				blob,
+			var blob,
 				fs;
 
-			blob = new Blob([data.content], {type: data.type});
-			fs = window.saveAs(blob, data.baseName);
+			blob = resource.blob || new Blob([resource.content], {type: resource.type});
+			fs = window.saveAs(blob, resource.baseName);
 			
 			if (fn)
 			{

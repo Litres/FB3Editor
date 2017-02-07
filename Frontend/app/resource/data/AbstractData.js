@@ -29,14 +29,7 @@ Ext.define(
 		 */
 		getMimeType: function (fileName)
 		{
-			var type = '';
-
-			type = /\.svg$/.test(fileName) ? 'image/svg+xml' : type;
-			type = /\.png$/.test(fileName) ? 'image/png' : type;
-			type = /\.(jpg|jpeg)$/.test(fileName) ? 'image/jpeg' : type;
-			type = /\.gif$/.test(fileName) ? 'image/gif' : type;
-
-			return type;
+			return FBEditor.util.Format.getMimeType(fileName);
 		},
 
 		/**

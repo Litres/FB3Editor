@@ -146,7 +146,11 @@ Ext.define(
 				elements,
 				function (el)
 				{
-					el.update({src: me.fileId});
+					var data;
+
+					data = el.attributes;
+					data.src = me.fileId;
+					el.update(data);
 
 					manager = manager || el.getManager();
 					focusEl = manager.getFocusElement();

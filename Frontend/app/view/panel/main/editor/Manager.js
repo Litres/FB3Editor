@@ -233,7 +233,7 @@ Ext.define(
 					var responseDiff = response.diff,
 						responseRev = response.rev;
 
-					console.log('response', rev, response);
+					//console.log('response', rev, response);
 
 					if (responseRev !== rev)
 					{

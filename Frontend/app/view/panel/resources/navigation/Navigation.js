@@ -97,7 +97,7 @@ Ext.define(
 			    {
 				    var val;
 
-				    val = Ext.clone(me.parseNameResource(item.name, {path: ''}));
+				    val = Ext.clone(me.parseNameResource(item.name, {path: '', isFile: !item.isFolder}));
 
 				    if (val)
 				    {
@@ -131,8 +131,10 @@ Ext.define(
 		 * @private
 		 * Парсит имя файла ресурса и возвращает объект узла для дерева, который может содержать другие вложенные узлы,
 		 * соответствующие глубине вложенности файла, согласно его полного пути.
-		 * @param {String} name Директория узла.
-		 * @param {Object} parentNode Родительский узел дерева.
+		 * @param {String} name Имя узла.
+		 * @param {Object} parentNode Данные родительского узла дерева.
+		 * @param {String} parentNode.path Родительский путь.
+		 * @param {Boolean} [parentNode.isFile] Является ли узел файлом.
 		 * @return {Object} Дочерний узел дерева.
 		 */
 		parseNameResource: function (name, parentNode)
@@ -154,7 +156,7 @@ Ext.define(
 			node.text = partName;
 
 			// файл ли
-			isFile = isLast && fileName.indexOf('.') !== -1 ? true : false;
+			isFile = pn.isFile || (isLast && fileName.indexOf('.') !== -1 ? true : false);
 
 			if (!me.visibleFiles)
 			{
@@ -178,10 +180,6 @@ Ext.define(
 
 			// последняя директория в ветке дерева не должна иметь дпополнительную иконку для открывания
 			node.expandable = partName.indexOf('/') === -1 ? false : true;
-			/*if (node.text === 'dio')
-			{
-				console.log(node);
-			}*/
 
 			node.icon = ' ';
 			node.cls = 'treenavigation-children treenavigation-children-resource';

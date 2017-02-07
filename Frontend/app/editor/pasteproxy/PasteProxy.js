@@ -11,7 +11,8 @@ Ext.define(
 			'FBEditor.editor.pasteproxy.DomProxy',
 			'FBEditor.editor.pasteproxy.FileProxy',
 			'FBEditor.editor.pasteproxy.ModelProxy',
-		    'FBEditor.resource.data.PasteData'
+		    'FBEditor.resource.data.PasteData',
+		    'FBEditor.util.ClipboardData'
 		],
 
 		/**
@@ -39,6 +40,12 @@ Ext.define(
 		fileProxy: false,
 
 		/**
+		 * @private
+		 * @property {FBEditor.util.ClipboardData} Синглтон для работы с буфером.
+		 */
+		clipboardData: null,
+
+		/**
 		 * @param {Object} data
 		 * @param {Object} data.e Объект события вставки.
 		 * @param {Object} data.manager Менеджер редактора.
@@ -54,27 +61,8 @@ Ext.define(
 
 			me.manager = data.manager;
 
-			//console.log('items', items);
-			//console.log(evt.clipboardData.getData('text/rtf'));
-			/*Ext.each(
-				items,
-			    function (item)
-			    {
-				    console.log('item', item);
-
-				    if (item.kind === 'file')
-				    {
-					    console.log('file', item.getAsFile());
-				    }
-
-				    item.getAsString(
-					    function (data)
-					    {
-						    //console.log('string', data);
-					    }
-				    );
-			    }
-			);*/
+			// объект для работы с буфером
+			me.clipboardData = Ext.create('FBEditor.util.ClipboardData', evt);
 
 			if (items.length === 1 && items[0] && items[0].kind === 'file')
 			{
@@ -139,6 +127,39 @@ Ext.define(
 			resourcesPaste.save();
 
 			return model;
+		},
+
+		/**
+		 * Возвращает данные изобржаения, полученные из буфера RTF.
+		 * @param {String} src Путь изображения.
+		 * @return {Object} Данные изображения.
+		 */
+		getImageFromRtf: function (src)
+		{
+			var me = this,
+				cbData = me.clipboardData,
+				data = null,
+				images;
+
+			// получаем данные изображений из RTF
+			images = cbData.getImagesFromRtf();
+
+			if (images)
+			{
+				Ext.each(
+					images,
+					function (item)
+					{
+						if (item.src === src)
+						{
+							data = item;
+							return false;
+						}
+					}
+				);
+			}
+			
+			return data;
 		},
 
 		/**
