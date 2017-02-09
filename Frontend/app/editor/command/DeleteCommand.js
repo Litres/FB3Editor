@@ -102,7 +102,7 @@ Ext.define(
 				data.range = range;
 
 				// проверяем по схеме
-				me.verifyElement(els.node);
+				me.verifyElement(els.parent);
 
 				res = true;
 			}
@@ -148,8 +148,8 @@ Ext.define(
 
 					helper = els.newEl.getNodeHelper();
 					nodes.newEl = helper.getNode(data.viewportId);
-					els.parent.replace(els.node, els.newEl);
 					nodes.parent.replaceChild(nodes.node, nodes.newEl);
+					els.parent.replace(els.node, els.newEl);
 				}
 				else if (els.next)
 				{

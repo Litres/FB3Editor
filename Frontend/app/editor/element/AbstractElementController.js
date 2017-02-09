@@ -226,7 +226,7 @@ Ext.define(
 			if (el)
 			{
 				manager = el.getManager();
-				manager.setFocusElement(el);
+				manager.setFocusElement(node);
 				controller = el && el.controller ? el.controller : me;
 
 				switch (e.keyCode)
@@ -779,7 +779,7 @@ Ext.define(
 			if (manager)
 			{
 				// фокус на элемент
-				manager.setFocusElement(el);
+				manager.setFocusElement(node);
 			}
 		},
 
@@ -809,6 +809,7 @@ Ext.define(
 				viewportId = relNode.viewportId,
 				factory = FBEditor.editor.Factory,
 				manager,
+				helper,
 				newEl,
 				nextSibling,
 				previousSibling,
@@ -865,7 +866,9 @@ Ext.define(
 				}
 
 				parentEl.sync(viewportId);
-				manager.setFocusElement(newEl);
+
+				helper = newEl.getNodeHelper();
+				manager.setFocusElement(helper.getNode(viewportId));
 			}
 		},
 

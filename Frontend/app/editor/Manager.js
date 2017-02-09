@@ -334,10 +334,10 @@ Ext.define(
 
 		/**
 		 * Устанавливает текущий выделенный элемент в редакторе.
-		 * @param {FBEditor.editor.element.AbstractElement|Node} elOrNode Элемент или узел.
+		 * @param {Node} node Узел.
 		 * @param {Selection} [sel]
 		 */
-		setFocusElement: function (elOrNode, sel)
+		setFocusElement: function (node, sel)
 		{
 			var me = this,
 				panelProps = me.getPanelProps(),
@@ -345,63 +345,67 @@ Ext.define(
 				range,
 				difCollapsed;
 
-			el = elOrNode.getElement ? elOrNode.getElement() : elOrNode;
-			me.focusElement = el;
-			me.selection = sel || window.getSelection();
-			range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
+			el = node.getElement ? node.getElement() : null;
 
-			if (range)
+			if (el)
 			{
-				difCollapsed = me.range ? me.range.collapsed !== range.collapsed : true;
-				me.range = {
-					collapsed: range.collapsed,
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					},
-					toString: function ()
-					{
-						return range.toString();
-					}
-				};
-			}
-			else
-			{
-				difCollapsed = true;
-				me.range = {
-					collapsed: true,
-					common: elOrNode,
-					start: elOrNode,
-					end: elOrNode,
-					offset: {
-						start: 0,
-						end: 0
-					},
-					toString: function ()
-					{
-						return '';
-					}
-				};
-			}
+				me.focusElement = el;
+				me.selection = sel || window.getSelection();
+				range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
 
-			if (!el.isText && me.cashSyncBtn !== el.elementId || difCollapsed)
-			{
-				// синхронизируем кнопки элементов с текущим выделением
-				// защита от многократной синхронизации на одном и том же элементе
-				me.cashSyncBtn = el.elementId;
-				me.syncButtons();
-			}
+				if (range)
+				{
+					difCollapsed = me.range ? me.range.collapsed !== range.collapsed : true;
+					me.range = {
+						collapsed: range.collapsed,
+						common: range.commonAncestorContainer,
+						start: range.startContainer,
+						end: range.endContainer,
+						offset: {
+							start: range.startOffset,
+							end: range.endOffset
+						},
+						toString: function ()
+						{
+							return range.toString();
+						}
+					};
+				}
+				else
+				{
+					difCollapsed = true;
+					me.range = {
+						collapsed: true,
+						common: node,
+						start: node,
+						end: node,
+						offset: {
+							start: 0,
+							end: 0
+						},
+						toString: function ()
+						{
+							return '';
+						}
+					};
+				}
 
-			if (panelProps)
-			{
-				// сохраняем глобальную ссылку на активный менеджер
-				FBEditor.setEditorManager(me);
+				if (!el.isText && me.cashSyncBtn !== el.elementId || difCollapsed)
+				{
+					// синхронизируем кнопки элементов с текущим выделением
+					// защита от многократной синхронизации на одном и том же элементе
+					me.cashSyncBtn = el.elementId;
+					me.syncButtons();
+				}
 
-				// обновляем информацию о выделенном элементе в панели свойств
-				panelProps.fireEvent('loadData', el);
+				if (panelProps)
+				{
+					// сохраняем глобальную ссылку на активный менеджер
+					FBEditor.setEditorManager(me);
+
+					// обновляем информацию о выделенном элементе в панели свойств
+					panelProps.fireEvent('loadData', el);
+				}
 			}
 		},
 
@@ -482,7 +486,8 @@ Ext.define(
 				}
 
 				// сохраняем фокусный элемент
-				me.setFocusElement(data.focusElement, sel);
+				helper = data.focusElement.getNodeHelper();
+				me.setFocusElement(helper.getNode(viewportId), sel);
 			}
 			catch (e)
 			{
