@@ -93,19 +93,11 @@ Ext.define(
 					els.last = nodes.last ? nodes.last.getElement() : null;
 				}
 
-				// регулярные выражения для определения позиции выделения
-				reg.start = new RegExp('^' + Ext.String.escapeRegex(range.toString()));
-				reg.start2 = new RegExp('^' + Ext.String.escapeRegex(els.first.getText()));
-				reg.end = new RegExp(Ext.String.escapeRegex(range.toString()) + '$');
-				reg.end2 = new RegExp(Ext.String.escapeRegex(els.last.getText()) + '$');
-
-				// находится ли начальная точка выделения в начале первого элемента
-				pos.isStart = reg.start.test(els.first.getText()) || reg.start2.test(range.toString());
-
-				// находится ли конечная точка выделения в конце последнего элемента
-				pos.isEnd = reg.end.test(els.last.getText()) || reg.end2.test(range.toString());
-
+				// позиция выделения относительно затронутых элементов
+				pos.isStart = els.first.isStartRange(range);
+				pos.isEnd = els.last.isEndRange(range);
 				data.range.pos = pos;
+				
 				//console.log('pos', pos, range.toString());
 
 				if (!pos.isStart)

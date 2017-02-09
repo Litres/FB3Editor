@@ -1260,6 +1260,41 @@ Ext.define(
 		},
 
 		/**
+		 * Находится ли текущая начальная точка выделения в начале элемента.
+		 * @param {Range} range Выделение.
+		 * @return {Boolean}
+		 */
+		isStartRange: function (range)
+		{
+			var me = this,
+				text = me.getText(),
+				rangeStr = range.toString(),
+				isStart;
+
+			isStart = (rangeStr.indexOf(text) === 0) || (text.indexOf(rangeStr) === 0);
+
+			return isStart;
+		},
+
+		/**
+		 * Находится ли текущая конечная точка выделения в конце элемента.
+		 * @param {Range} range Выделение.
+		 * @return {Boolean}
+		 */
+		isEndRange: function (range)
+		{
+			var me = this,
+				text = me.getText(),
+				rangeStr = range.toString(),
+				isEnd;
+
+			isEnd = (rangeStr.lastIndexOf(text) === rangeStr.length - text.length) ||
+			        (text.lastIndexOf(rangeStr) === text.length - rangeStr.length);
+
+			return isEnd;
+		},
+
+		/**
 		 * Удаляет все пустые текстовые узлы в элементе.
 		 * @param {Boolean} [removeEmptyStyleHolder] Удалять ли абзацы без дочерних элементов.
 		 */

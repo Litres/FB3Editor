@@ -90,14 +90,11 @@ Ext.define(
 				}
 				pos.end = els.common.getChildPosition(els.end);
 
-				reg.start = new RegExp('^' + Ext.String.escapeRegex(range.toString()));
-				reg.start2 = new RegExp('^' + Ext.String.escapeRegex(els.start.getText()));
-				reg.end = new RegExp(Ext.String.escapeRegex(range.toString()) + '$');
-				reg.end2 = new RegExp(Ext.String.escapeRegex(els.end.getText()) + '$');
-
 				// позиция выделения относительно затронутых элементов
-				pos.isStart = reg.start.test(els.start.getText()) || reg.start2.test(range.toString());
-				pos.isEnd = reg.end.test(els.end.getText()) || reg.end2.test(range.toString());
+				pos.isStart = els.start.isStartRange(range);
+				pos.isEnd = els.end.isEndRange(range);
+				
+				//console.log('pos', pos);
 
 				// создаем временный элемент для проверки новой структуры
 				els.newEl = factory.createElement(name);
