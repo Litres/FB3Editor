@@ -265,7 +265,7 @@ Ext.define(
 			els.target = target.getElement ? target.getElement() : null;
 
 
-			if (els.target)
+			if (els.target && !els.target.isImg)
 			{
 				els.root = els.target.getRoot();
 				helper = els.root.getNodeHelper();

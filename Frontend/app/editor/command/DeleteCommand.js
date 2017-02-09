@@ -17,6 +17,7 @@ Ext.define(
 				nodes = {},
 				els = {},
 				factory = FBEditor.editor.Factory,
+				helper,
 				manager,
 				range;
 
@@ -33,9 +34,11 @@ Ext.define(
 
 				console.log('del el', data, range);
 
-				nodes.node = els.node.nodes[data.viewportId];
+				helper = els.node.getNodeHelper();
+				nodes.node = helper.getNode(data.viewportId);
 				els.parent = els.node.parent;
-				nodes.parent = els.parent.nodes[data.viewportId];
+				helper = els.parent.getNodeHelper();
+				nodes.parent = helper.getNode(data.viewportId);
 				nodes.next = nodes.node.nextSibling;
 				els.next = nodes.next ? nodes.next.getElement() : null;
 				nodes.prev = nodes.node.previousSibling;
@@ -120,6 +123,7 @@ Ext.define(
 				nodes = {},
 				els = {},
 				res = false,
+				helper,
 				manager,
 				range;
 
@@ -131,22 +135,28 @@ Ext.define(
 				manager = els.parent.getManager();
 				manager.setSuspendEvent(true);
 
-				nodes.node = els.node.nodes[data.viewportId];
-				nodes.parent = els.parent.nodes[data.viewportId];
+				helper = els.node.getNodeHelper();
+				nodes.node = helper.getNode(data.viewportId);
+				helper = els.parent.getNodeHelper();
+				nodes.parent = helper.getNode(data.viewportId);
 
 				console.log('undo del el', nodes, els, range);
 
 				if (els.newEl)
 				{
 					// заменяем новый элемент на старый
-					nodes.newEl = els.newEl.nodes[data.viewportId];
+
+					helper = els.newEl.getNodeHelper();
+					nodes.newEl = helper.getNode(data.viewportId);
 					els.parent.replace(els.node, els.newEl);
 					nodes.parent.replaceChild(nodes.node, nodes.newEl);
 				}
 				else if (els.next)
 				{
 					// вставляем старый перед предыдущим
-					nodes.next = els.next.nodes[data.viewportId];
+
+					helper = els.next.getNodeHelper();
+					nodes.next = helper.getNode(data.viewportId);
 					els.parent.insertBefore(els.node, els.next);
 					nodes.parent.insertBefore(nodes.node, nodes.next);
 				}
