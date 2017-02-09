@@ -72,13 +72,12 @@ Ext.define(
 
 				if (FBEditor.accessHub && loader.getArt())
 				{
+					resources = resources.reverse();
+
 					// сохраняем ресурсы на хабе
 					loader.saveResources(resources).then(
 						function (xml)
 						{
-							// синхронизируем ресурсы с хабом
-							manager.syncResources(xml);
-
 							me.afterSave();
 						}
 					);
@@ -115,9 +114,6 @@ Ext.define(
 					loader.removeResources(resources).then(
 						function (xml)
 						{
-							// синхронизируем ресурсы с хабом
-							manager.syncResources(xml);
-
 							me.afterRemove();
 						}
 					);

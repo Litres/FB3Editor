@@ -336,6 +336,7 @@ Ext.define(
 		saveResources: function (resources)
 		{
 			var me = this,
+				manager = me.manager,
 				res,
 				promise;
 
@@ -349,6 +350,9 @@ Ext.define(
 						me.save(res).then(
 							function (xml)
 							{
+								// синхронизируем ресурсы с хабом
+								manager.syncResources(xml);
+								
 								if (!resources.length)
 								{
 									resolve(xml);
@@ -389,6 +393,7 @@ Ext.define(
 		removeResources: function (resources)
 		{
 			var me = this,
+				manager = me.manager,
 				res,
 				promise;
 
@@ -402,6 +407,9 @@ Ext.define(
 						me.remove(res.fileId).then(
 							function (xml)
 							{
+								// синхронизируем ресурсы с хабом
+								manager.syncResources(xml);
+								
 								if (!resources.length)
 								{
 									resolve(xml);
