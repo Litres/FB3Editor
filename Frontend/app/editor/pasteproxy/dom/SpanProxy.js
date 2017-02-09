@@ -48,6 +48,10 @@ Ext.define(
 			'text-decoration': {
 				underline: 'underline',
 				'none underline': 'underline'
+			},
+			'letter-spacing': {
+				pattern: /\d+(\.\d+)?(\w{2})/,
+				el: 'spacing'
 			}
 		},
 
@@ -104,10 +108,22 @@ Ext.define(
 				mapStyleSpan,
 			    function (nameProp, prop)
 			    {
-				    if (clsStyles[nameProp] && prop[clsStyles[nameProp]])
+				    if (clsStyles[nameProp])
 				    {
-					    name = prop[clsStyles[nameProp]];
-					    return false;
+					    if (prop.pattern)
+					    {
+						    // проверяем по шаблону
+						    if (prop.pattern.test(clsStyles[nameProp]))
+						    {
+							    name = prop.el;
+							    return false;
+						    }
+					    }
+					    else if (prop[clsStyles[nameProp]])
+					    {
+						    name = prop[clsStyles[nameProp]];
+						    return false;
+					    }
 				    }
 			    }
 			);
