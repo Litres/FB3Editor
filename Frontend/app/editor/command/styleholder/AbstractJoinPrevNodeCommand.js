@@ -130,6 +130,9 @@ Ext.define(
 				// проверяем по схеме
 				me.verifyElement(els.parentP);
 
+				// скроллим окно вверх, если курсора не видно
+				manager.scrollViewUp();
+
 				res = true;
 			}
 			catch (e)
@@ -235,6 +238,9 @@ Ext.define(
 				manager.setCursor(data.saveRange);
 
 				data.nodes = nodes;
+
+				// скроллим окно вниз, если курсора не видно
+				manager.scrollViewDown();
 
 				res = true;
 			}

@@ -122,7 +122,7 @@ Ext.define(
 					                false : pos.needSplit;
 
 					data.range.pos = pos;
-					console.log('pos', pos, range.toString());
+					//console.log('pos', pos, range.toString());
 
 					if (pos.needSplit)
 					{
@@ -207,8 +207,11 @@ Ext.define(
 				// сохраняем ссылки
 				me.data.nodes = nodes;
 
-				// проверяем по схем
+				// проверяем по схеме
 				me.verifyElement(els.parentP);
+				
+				// скроллим окно вниз, если курсора не видно 
+				manager.scrollViewDown();
 
 				res = true;
 			}
@@ -306,6 +309,9 @@ Ext.define(
 				manager.setCursor(data.saveRange);
 
 				data.nodes = nodes;
+
+				// скроллим окно вверх, если курсора не видно 
+				manager.scrollViewUp();
 
 				res = true;
 			}

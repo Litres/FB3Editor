@@ -1482,6 +1482,54 @@ Ext.define(
 				// снимаем выделение браузера
 				window.getSelection().removeAllRanges();
 			}
+		},
+
+		/**
+		 * Прокручивает окно вниз на несколько строк, если курсора не видно.
+		 */
+		scrollViewDown: function ()
+		{
+			var me = this,
+				editor = me.getEditor(),
+				root = me.getContent(),
+				helper,
+				posCur,
+				posEditor,
+				heightEditor;
+
+			posCur = me.getCursorPosition(true);
+			posEditor = editor.getPosition();
+			heightEditor = editor.getHeight();
+
+			if (posCur.y + posCur.h > posEditor[1] + heightEditor)
+			{
+				// прокручиваем
+				helper = root.getNodeHelper();
+				helper.scrollBy(0, posCur.h * 3);
+			}
+		},
+
+		/**
+		 * Прокручивает окно вверх на несколько строк, если курсора не видно.
+		 */
+		scrollViewUp: function ()
+		{
+			var me = this,
+				editor = me.getEditor(),
+				root = me.getContent(),
+				helper,
+				posCur,
+				posEditor;
+
+			posCur = me.getCursorPosition();
+			posEditor = editor.getPosition();
+
+			if (posCur.y < posEditor[1])
+			{
+				// прокручиваем
+				helper = root.getNodeHelper();
+				helper.scrollBy(0, -posCur.h * 2);
+			}
 		}
 	}
 );

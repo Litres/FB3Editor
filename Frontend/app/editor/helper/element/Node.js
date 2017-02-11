@@ -29,8 +29,12 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el,
+				sel = window.getSelection(),
+				range,
 				node;
 
+			range = sel.rangeCount ? sel.getRangeAt(0) : null;
+			viewportId = viewportId || (range ? range.startContainer.viewportId : false);
 			node = viewportId ? el.nodes[viewportId] : Ext.Object.getValues(el.nodes)[0];
 
 			return node;
@@ -39,7 +43,7 @@ Ext.define(
 		/**
 		 * Возвращает координаты симовла с заданным смещением курсора в тексте.
 		 * Координаты отсчитываются относительно окна браузера.
-		 * @param {String} viewportId Айди окна.
+		 * @param {String} [viewportId] Айди окна.
 		 * @param {Number} o Смещение курсора в тексте.
 		 * @return {Object}
 		 * @return {Number} Object.x
@@ -232,7 +236,7 @@ Ext.define(
 
 		/**
 		 * Собирает разбитый элемент обратно.
-		 * @param {String} viewportId Айди окна.
+		 * @param {String} [viewportId] Айди окна.
 		 */
 		joinNode: function (viewportId)
 		{
@@ -267,6 +271,22 @@ Ext.define(
 
 				manager.setSuspendEvent(false);
 			}
+		},
+
+		/**
+		 * Прокручивает скролл элемента относительно текущей позиции.
+		 * @param {Number} x Прокрутка по оси X.
+		 * @param {Number} y Прокрутка по оси Y.
+		 * @param {String} [viewportId] Айди окна.
+		 */
+		scrollBy: function (x, y, viewportId)
+		{
+			var me = this,
+				node;
+
+			node = me.getNode(viewportId);
+			node.scrollLeft += x;
+			node.scrollTop += y;
 		}
 	}
 );
