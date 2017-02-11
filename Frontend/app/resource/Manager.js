@@ -404,7 +404,7 @@ Ext.define(
 				res,
 				id;
 
-			res = me.getResourceByName(name);
+			res = me.getResource(name);
 
 			if (res && res.isFolder)
 			{
@@ -692,11 +692,11 @@ Ext.define(
 			if (Ext.isString(resource))
 			{
 				// получаем ресурс по его имени
-				resourceIndex = me.getResourceIndexByName(resource);
+				resourceIndex = me.getResourceIndexByProp('name', resource);
 				resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 				resource = resource && resource[0] ? resource[0] : null;
 			}
-			
+
 			if (!resource)
 			{
 				name = resource ? resource.name : resource;
@@ -754,15 +754,15 @@ Ext.define(
 				resource,
 				result;
 
-			resourceIndex = me.getResourceIndexByName(name);
+			resourceIndex = me.getResourceIndexByProp('name', name);
 			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 			resource = resource && resource[0] ? resource[0] : null;
-			
+
 			if (!resource)
 			{
 				throw Error('Ресурс ' + name + ' не найден');
 			}
-			
+
 			result = FBEditor.file.Manager.saveResource(resource);
 
 			return result;
@@ -786,7 +786,7 @@ Ext.define(
 				newName,
 				result = false;
 
-			resourceIndex = me.getResourceIndexByName(name);
+			resourceIndex = me.getResourceIndexByProp('name', name);
 			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 			resource = resource && resource[0] ? resource[0] : null;
 
@@ -812,7 +812,7 @@ Ext.define(
 				if (newName !== oldName)
 				{
 					result = true;
-					
+
 					if (FBEditor.accessHub && loader.getArt())
 					{
 						// перемещаем ресурс на хабе
@@ -825,7 +825,7 @@ Ext.define(
 							}
 						);
 					}
-					else 
+					else
 					{
 						resource.rename(newName);
 						me.setActiveFolder(newFolder);
@@ -1009,7 +1009,7 @@ Ext.define(
 					    }
 					);
 				}
-				else 
+				else
 				{
 					if (oldCover)
 					{
@@ -1112,37 +1112,22 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает данные ресурса по его имени.
-		 * @param {String} name Имя ресурса.
+		 * Возвращает данные ресурса по его признаку.
+		 * @param {String} search Признак ресурса, по которому он ищется (путь, айди, имя).
 		 * @return {FBEditor.resource.Resource} Ресурс.
 		 */
-		getResourceByName: function (name)
+		getResource: function (search)
 		{
 			var me = this,
 				data = me.data,
-				resourceIndex,
-				resource;
+				resource,
+				resourceIndex;
 
-			resourceIndex = me.getResourceIndexByName(name);
-			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
-			resource = resource && resource[0] ? resource[0] : null;
+			// ищем индекс
+			resourceIndex = me.getResourceIndexByProp('url', search) ||
+			                me.getResourceIndexByProp('fileId', search) ||
+			                me.getResourceIndexByProp('name', search);
 
-			return resource;
-		},
-
-		/**
-		 * Возвращает данные ресурса по айди.
-		 * @param {String} id Айди ресурса.
-		 * @return {FBEditor.resource.Resource} Ресурс.
-		 */
-		getResourceByFileId: function (id)
-		{
-			var me = this,
-				data = me.data,
-				resourceIndex,
-				resource;
-
-			resourceIndex = me.getResourceIndexByFileId(id);
 			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 			resource = resource && resource[0] ? resource[0] : null;
 
@@ -1432,14 +1417,14 @@ Ext.define(
 				    }
 			    }
 			);
-			
+
 			if (folders.length)
 			{
 				data = Ext.Array.merge(folders, data);
 			}
 
 			//console.log(data);
-			
+
 			me.data = data;
 		},
 
@@ -1468,11 +1453,12 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает индекс ресурса из массива ресурсов.
-		 * @param {String} name Имя ресурса.
+		 * Возвращает индекс ресурса из массива ресурсов по одному из его свойств.
+		 * @param {String} name Имя свойства ресурса.
+		 * @param {String} val Значение свойства ресурса.
 		 * @return {Number|null} Индекс ресурса.
 		 */
-		getResourceIndexByName: function (name)
+		getResourceIndexByProp: function (name, val)
 		{
 			var me = this,
 				data = me.data,
@@ -1485,36 +1471,10 @@ Ext.define(
 				{
 					resourceIndex = index;
 
-					return item.name === name;
+					return item[name] ? item[name] === val : false;
 				}
 			);
-			resourceIndex = res ? resourceIndex : null;
 
-			return resourceIndex;
-		},
-
-		/**
-		 * @private
-		 * Возвращает индекс ресурса из массива ресурсов.
-		 * @param {String} id Айди ресурса.
-		 * @return {Number|null} Индекс ресурса.
-		 */
-		getResourceIndexByFileId: function (id)
-		{
-			var me = this,
-				data = me.data,
-				resourceIndex,
-				res;
-
-			res = Ext.Array.findBy(
-				data,
-				function (item, index)
-				{
-					resourceIndex = index;
-
-					return item.fileId === id;
-				}
-			);
 			resourceIndex = res ? resourceIndex : null;
 
 			return resourceIndex;

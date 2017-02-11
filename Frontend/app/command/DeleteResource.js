@@ -21,7 +21,7 @@ Ext.define(
 
 			try
 			{
-				resource = resourceManager.getResourceByName(resourceName);
+				resource = resourceManager.getResource(resourceName);
 
 				if (!resource)
 				{

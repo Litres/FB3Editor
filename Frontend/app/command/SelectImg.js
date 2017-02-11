@@ -25,7 +25,7 @@ Ext.define(
 					manager = FBEditor.resource.Manager;
 
 				win.close();
-				res = manager.getResourceByFileId(data.fileId);
+				res = manager.getResource(data.fileId);
 
 				// отправляем данные в необходимый компонент
 				scope.updateData({url: res.url, name: res.name});

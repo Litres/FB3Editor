@@ -10,7 +10,8 @@ Ext.define(
 	{
 		extend: 'Ext.form.Panel',
 		requires: [
-			'FBEditor.view.panel.main.props.body.editor.AbstractEditorController'
+			'FBEditor.view.panel.main.props.body.editor.AbstractEditorController',
+			'FBEditor.view.panel.main.props.body.editor.fields.id.Id'
 		],
 
 		controller: 'panel.props.body.editor',

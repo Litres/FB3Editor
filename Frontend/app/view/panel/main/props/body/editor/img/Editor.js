@@ -62,9 +62,8 @@ Ext.define(
 					submitValue: true
 				},
 				{
-					name: me.prefixName + 'id',
-					fieldLabel: 'ID',
-					anchor: '100%'
+					xtype: 'panel-props-body-editor-fields-id',
+					name: me.prefixName + 'id'
 				},
 				{
 					name: me.prefixName + 'alt',

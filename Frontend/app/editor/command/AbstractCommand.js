@@ -72,7 +72,7 @@ Ext.define(
 			// получаем xml без текстовых элементов
 			xml = manager.content.getXml(true);
 
-			//console.log(xml, sch._xsd);
+			//console.log(xml);
 
 			scopeData = {
 				el: el,

@@ -27,9 +27,7 @@ Ext.define(
 
 			me.items = [
 				{
-					name: 'id',
-					fieldLabel: 'ID',
-					anchor: '100%'
+					xtype: 'panel-props-body-editor-fields-id'
 				},
 				{
 					name: 'href',

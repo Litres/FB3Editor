@@ -79,7 +79,7 @@ Ext.define(
 
 			// ресурс
 			attributes.src = me.resource ? me.resource.fileId : 'undefined';
-			
+
 			// в случае загрузки ресурсов с хаба
 			attributes.src = me.loadingResId ? me.loadingResId : attributes.src;
 
@@ -87,7 +87,7 @@ Ext.define(
 				attributes,
 				function (key, val)
 				{
-					if (withoutText && key === 'alt' || key === 'tabindex')
+					if (withoutText && Ext.Array.contains(['alt'], key) || key === 'tabindex')
 					{
 						// пропускаем
 					}
@@ -124,9 +124,11 @@ Ext.define(
 				resData;
 
 			data = me.callParent(arguments);
+
 			resData = {
 				name: me.resource ? me.resource.name : null
 			};
+
 			Ext.Object.each(
 				me.attributes,
 				function (key, val)
@@ -147,13 +149,12 @@ Ext.define(
 			// сбрасываем состояние ожидания загрузки ресурса
 			me.loadingResId = null;
 
-			//  удаляем ссылку на старый ресурс
-			if (me.resource)
+			if (data.src !== me.attributes.src)
 			{
-				me.resource.removeElement(me);
-				me.resource = null;
+				//  удаляем ссылку на старый ресурс
+				me.deleteLinkResource();
 			}
-			
+
 			// аттрибуты
 			me.attributes = Ext.clone(me.defaultAttributes);
 
@@ -188,49 +189,8 @@ Ext.define(
 		},
 
 		/**
-		 * @depricated
-		 * Устаревший метод
-		 * @param fragment
-		 */
-		getOnlyStylesChildren: function (fragment)
-		{
-			var me = this;
-
-			// признак скопированного изображения
-			if (me.attributes.src.substring(0, 1) === '#')
-			{
-				// изменяем путь к изображению
-				me.attributes.src = me.attributes.src.substring(1);
-			}
-
-			fragment.add(me);
-		},
-
-		beforeCopy: function ()
-		{
-			var me = this,
-				resource = me.resource;
-
-			if (resource)
-			{
-				//me.updateSrc('#' + resource.fileId);
-			}
-		},
-
-		afterCopy: function ()
-		{
-			var me = this;
-
-			if (me.resource)
-			{
-				// после копирования восстанавливаем изображение
-				me.updateSrc(me.attributes.src);
-				//console.log('after copy img');
-			}
-		},
-
-		/**
 		 * Удаляет связь изображения с ресурсом.
+		 * @param {String} [src]
 		 */
 		deleteLinkResource: function (src)
 		{
@@ -259,6 +219,29 @@ Ext.define(
 			return me.loadingResId === resId;
 		},
 
+		beforeCopy: function ()
+		{
+			var me = this,
+				resource = me.resource;
+
+			if (resource)
+			{
+				//me.updateSrc('#' + resource.fileId);
+			}
+		},
+
+		afterCopy: function ()
+		{
+			var me = this;
+
+			if (me.resource)
+			{
+				// после копирования восстанавливаем изображение
+				me.updateSrc(me.attributes.src);
+				//console.log('after copy img');
+			}
+		},
+
 		/**
 		 * @private
 		 * Связывает изображение с ресурсом.
@@ -272,9 +255,8 @@ Ext.define(
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
-			resource = manager.getResourceByFileId(attributes.src) ||
-			           manager.getResourceByName(attributes.src) ||
-			           me.resource;
+			resource = me.resource ||
+			           manager.getResource(attributes.src);
 
 			if (resource)
 			{
