@@ -241,7 +241,6 @@ Ext.define(
 	<complexType name="TDType">\
 		<complexContent>\
 			<extension base="fb3b:PHolderType">\
-				<attribute name="style" type="string" use="optional"/>\
 				<attribute name="colspan" type="integer" use="optional"/>\
 				<attribute name="rowspan" type="integer" use="optional"/>\
 				<attribute name="align" type="fb3b:alignType" use="optional" default="left"/>\

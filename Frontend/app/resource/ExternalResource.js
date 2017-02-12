@@ -39,7 +39,7 @@ Ext.define(
 								{
 									// обновляем данные
 									me.updateBytes(response.responseBytes);
-									
+
 									resolve();
 								}
 								else

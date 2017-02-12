@@ -90,7 +90,7 @@ Ext.define(
 					return true;
 				}
 
-				if (els.fragP.isStyleHolder && els.fragment.children.length === 1 )
+				if (els.fragP.isStyleHolder && els.fragment.children.length === 1 && !els.node.isEmpty())
 				{
 					// если вставляемая модель содержит только один абзац,
 					// то вставляем его содержимое в текущий абзац
@@ -114,8 +114,10 @@ Ext.define(
 				{
 					// позиция курсора в пустом параграфе
 
+					els.fragP = els.fragment.first();
 					nodes.needEmpty = true;
-					if (els.fragment.children[0] && els.fragment.children[0].isStyleHolder)
+					
+					if (els.fragP && els.fragP.isBlock())
 					{
 						// параграф
 						while (!els.node.isStyleHolder)

@@ -48,6 +48,7 @@ Ext.define(
 			'FBEditor.editor.element.sup.SupElement',
 			'FBEditor.editor.element.table.TableElement',
 			'FBEditor.editor.element.td.TdElement',
+			'FBEditor.editor.element.th.ThElement',
 			'FBEditor.editor.element.title.TitleElement',
 			'FBEditor.editor.element.tr.TrElement',
 			'FBEditor.editor.element.ul.UlElement',

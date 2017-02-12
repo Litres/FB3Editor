@@ -7,30 +7,8 @@
 Ext.define(
 	'FBEditor.editor.pasteproxy.model.ImgProxy',
 	{
-		/**
-		 * @private
-		 * @property {FBEditor.editor.element.img.ImgElement} Вставляемое изображение.
-		 */
-		el: null,
+		extend: 'FBEditor.editor.pasteproxy.model.AbstractProxy',
 
-		/**
-		 * @private
-		 * @property {FBEditor.editor.pasteproxy.ModelProxy} Прокси модели.
-		 */
-		modelProxy: null,
-		
-		constructor: function (data)
-		{
-			var me = this;
-			
-			me.el = data.el;
-			me.modelProxy = data.modelProxy;
-		},
-
-		/**
-		 * Нормализует элемент изображения.
-		 * @return {Boolean} Произошли ли изменения модели.
-		 */
 		normalize: function ()
 		{
 			var me = this,
@@ -51,6 +29,7 @@ Ext.define(
 			}
 
 			el.normalized = true;
+
 
 			// нормализуем аттрибуты
 			me.normalizeAttributes();
@@ -90,11 +69,18 @@ Ext.define(
 
 			if (res)
 			{
+				console.log('add el', el);
 				// связываем ресурс с элементом изображения
 				res.addElement(el);
 
 				// добавляем ресурс в очередь вставщика для последующего его сохранения
 				paste.add(res);
+
+				if (!el.parent.isStyleType)
+				{
+					// помещаем изображение в абзац, если оно находится не в стилевом элементе или абзаце
+					me.moveElsToNewHolder(el);
+				}
 			}
 			else
 			{

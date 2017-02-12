@@ -30,12 +30,15 @@ Ext.define(
 			var me = this,
 				el = me.el,
 				sel = window.getSelection(),
-				range,
-				node;
+				node = null,
+				range;
 
-			range = sel.rangeCount ? sel.getRangeAt(0) : null;
-			viewportId = viewportId || (range ? range.startContainer.viewportId : false);
-			node = viewportId ? el.nodes[viewportId] : Ext.Object.getValues(el.nodes)[0];
+			if (el.nodes)
+			{
+				range = sel.rangeCount ? sel.getRangeAt(0) : null;
+				viewportId = viewportId || (range ? range.startContainer.viewportId : false);
+				node = viewportId && el.nodes[viewportId] ? el.nodes[viewportId] : Ext.Object.getValues(el.nodes)[0];
+			}
 
 			return node;
 		},

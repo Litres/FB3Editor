@@ -280,6 +280,7 @@ Ext.define(
 			if (el)
 			{
 				pos = me.getChildPosition(el);
+				
 				if (pos !== null)
 				{
 					if (!ignoredClear)
@@ -704,7 +705,7 @@ Ext.define(
 			node = Ext.Object.getValues(me.nodes)[0];
 
 			// текущий выделенный элемент
-			el = me.getBlock();
+			el = me.isImg ? me : me.getBlock();
 
 			data = {
 				el: el,
@@ -837,20 +838,24 @@ Ext.define(
 		{
 			var me = this,
 				manager = me.getManager(),
+				helper = me.getNodeHelper(),
 				viewportId,
 				oldNode,
 				newNode;
 
-			me.style = '';
+			if (me.nodes)
+			{
+				me.style = '';
 
-			// обновляем узлы элемента
-			viewportId = Ext.Object.getKeys(me.nodes)[0];
-			oldNode = me.nodes[viewportId];
-			manager.setSuspendEvent(true);
-			newNode = me.getNode(viewportId);
-			oldNode.parentNode.replaceChild(newNode, oldNode);
-			me.sync(viewportId);
-			manager.setSuspendEvent(false);
+				// обновляем узлы элемента
+				viewportId = Ext.Object.getKeys(me.nodes)[0];
+				oldNode = helper.getNode(viewportId);
+				manager.setSuspendEvent(true);
+				newNode = me.getNode(viewportId);
+				oldNode.parentNode.replaceChild(newNode, oldNode);
+				me.sync(viewportId);
+				manager.setSuspendEvent(false);
+			}
 		},
 
 		/**
@@ -897,7 +902,7 @@ Ext.define(
 		{
 			var el = this;
 
-			while (el.isStyleType || el.isText)
+			while (el.isStyleType || el.isText || el.isImg)
 			{
 				el = el.parent;
 			}
@@ -1035,11 +1040,17 @@ Ext.define(
 		getManager: function ()
 		{
 			var me = this,
-				editor,
-				manager;
+				manager = null,
+				helper,
+				editor;
 
-			editor = me.getEditor ? me.getEditor() : null;
-			manager = editor ? editor.getManager() : null;
+			helper = me.getNodeHelper();
+
+			if (helper.getNode())
+			{
+				editor = me.getEditor ? me.getEditor() : null;
+				manager = editor ? editor.getManager() : null;
+			}
 
 			return manager;
 		},
@@ -1237,6 +1248,20 @@ Ext.define(
 		},
 
 		/**
+		 * Является ли элемент блочным.
+		 * @returns {Boolean}
+		 */
+		isBlock: function ()
+		{
+			var me = this,
+				isBlock;
+			
+			isBlock = me.isStyleHolder || !me.isStyleType && !me.isCell && !me.isTr && !me.isText && !me.isImg;
+			
+			return isBlock;
+		},
+
+		/**
 		 * Пустой ли элемент.
 		 * @return {Boolean}
 		 */
@@ -1341,6 +1366,7 @@ Ext.define(
 
 		/**
 		 * Скрывает узел элемента.
+		 * TODO переместить реализацию в helper
 		 */
 		hide: function ()
 		{
@@ -1363,6 +1389,7 @@ Ext.define(
 
 		/**
 		 * Показывает узел элемента.
+		 * TODO переместить реализацию в helper
 		 */
 		show: function ()
 		{
@@ -1376,6 +1403,115 @@ Ext.define(
 				function (key, node)
 				{
 					node.style.display = me.styleDisplay;
+				}
+			);
+		},
+
+		/**
+		 * Преобразует элемент в текст.
+		 * @param {FBEditor.editor.element.AbstractElement} fragment Пустой элемент, в который будут помещаться
+		 * необходимые результирующие элементы.
+		 */
+		convertToText: function (fragment)
+		{
+			var me = this,
+				pos = 0,
+				child;
+
+			//console.log('* me', me.xmlTag, me.children);
+
+			while (pos < me.children.length)
+			{
+				child = me.children[pos];
+
+				if (!child.isStyleType && !child.isText)
+				{
+					//console.log('style child', pos, child ? child.xmlTag : '');
+
+					// конвертируем потомка
+					child.convertToText(fragment);
+				}
+
+				if (child && (child.isStyleType || child.isText))
+				{
+					//console.log('child', pos, child.xmlTag);
+					if (child.isStyleType)
+					{
+						// удаляем все неопределенные элементы
+						child.removeUndefinedElements();
+					}
+
+					if (child.children.length)
+					{
+						// добавляем в контейнер текстовый элемент
+						fragment.add(child);
+					}
+					else
+					{
+						pos++;
+					}
+				}
+				else
+				{
+					// позиция следующего потомка
+					pos++;
+				}
+			}
+		},
+
+		/**
+		 * Удаляет все неопределенные элементы.
+		 */
+		removeUndefinedElements: function ()
+		{
+			var me = this,
+				children = me.children,
+				pos = 0,
+				el;
+
+			while (me.children.length && pos < me.children.length)
+			{
+				el = children[pos];
+
+				if (el.isUndefined)
+				{
+					me.remove(el);
+				}
+				else
+				{
+					pos++;
+				}
+			}
+		},
+
+		/**
+		 * Изменяет данные элемента перед копированием.
+		 */
+		beforeCopy: function ()
+		{
+			var me = this;
+
+			Ext.Array.each(
+				me.children,
+				function (el)
+				{
+					el.beforeCopy();
+				}
+			);
+		},
+
+		/**
+		 * Изменяет данные элемента после копирования.
+		 */
+		afterCopy: function ()
+		{
+			var me = this;
+
+			Ext.Array.each(
+				me.children,
+				function (el)
+				{
+					el.afterCopy();
 				}
 			);
 		},
@@ -1628,155 +1764,6 @@ Ext.define(
 		removeMarker: function ()
 		{
 			this.marker = null;
-		},
-
-		/**
-		 * Возвращает модель элемента, в которую включены только стилевые элементы и текст.
-		 * @param {FBEditor.editor.element.AbstractElement} fragment Пустой элемент, в который будут помещаться
-		 * необходимые результирующие элементы.
-		 */
-		getOnlyStylesChildren: function (fragment)
-		{
-			var me = this,
-				pos = 0,
-				child;
-
-			//console.log('* me', me.xmlTag, me.children);
-
-			while (pos < me.children.length)
-			{
-				child = me.children[pos];
-
-				if (!child.isStyleType && !child.isText)
-				{
-					//console.log('style child', pos, child ? child.xmlTag : '');
-
-					// ищем стилевого потомка
-					child.getOnlyStylesChildren(fragment);
-				}
-
-				if (child && (child.isStyleType || child.isText))
-				{
-					//console.log('child', pos, child.xmlTag);
-
-					// добавляем в контейнер стилевой элемент
-					fragment.add(child);
-				}
-				else
-				{
-					// позиция следующего потомка
-					pos++;
-				}
-			}
-		},
-
-		/**
-		 * Преобразует элемент в текст.
-		 * @param {FBEditor.editor.element.AbstractElement} fragment Пустой элемент, в который будут помещаться
-		 * необходимые результирующие элементы.
-		 */
-		convertToText: function (fragment)
-		{
-			var me = this,
-				pos = 0,
-				child;
-
-			//console.log('* me', me.xmlTag, me.children);
-
-			while (pos < me.children.length)
-			{
-				child = me.children[pos];
-
-				if (!child.isStyleType && !child.isText)
-				{
-					//console.log('style child', pos, child ? child.xmlTag : '');
-
-					// конвертируем потомка
-					child.convertToText(fragment);
-				}
-
-				if (child && (child.isStyleType || child.isText))
-				{
-					//console.log('child', pos, child.xmlTag);
-					if (child.isStyleType)
-					{
-						// удаляем все неопределенные элементы
-						child.removeUndefinedElements();
-					}
-
-					if (child.children.length)
-					{
-						// добавляем в контейнер текстовый элемент
-						fragment.add(child);
-					}
-					else
-					{
-						pos++;
-					}
-				}
-				else
-				{
-					// позиция следующего потомка
-					pos++;
-				}
-			}
-		},
-
-		/**
-		 * Удаляет все неопределенные элементы.
-		 */
-		removeUndefinedElements: function ()
-		{
-			var me = this,
-				children = me.children,
-				pos = 0,
-				el;
-
-			while (me.children.length && pos < me.children.length)
-			{
-				el = children[pos];
-
-				if (el.isUndefined)
-				{
-					me.remove(el);
-				}
-				else
-				{
-					pos++;
-				}
-			}
-		},
-
-		/**
-		 * Изменяет данные элемента перед копированием.
-		 */
-		beforeCopy: function ()
-		{
-			var me = this;
-
-			Ext.Array.each(
-				me.children,
-			    function (el)
-			    {
-				    el.beforeCopy();
-			    }
-			);
-		},
-
-		/**
-		 * Изменяет данные элемента после копирования.
-		 */
-		afterCopy: function ()
-		{
-			var me = this;
-
-			Ext.Array.each(
-				me.children,
-				function (el)
-				{
-					el.afterCopy();
-				}
-			);
 		}
 	}
 );

@@ -30,6 +30,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.subscription.Editor',
 			'FBEditor.view.panel.main.props.body.editor.table.Editor',
 			'FBEditor.view.panel.main.props.body.editor.td.Editor',
+			'FBEditor.view.panel.main.props.body.editor.th.Editor',
 			'FBEditor.view.panel.main.props.body.editor.title.Editor',
 			'FBEditor.view.panel.main.props.body.editor.tr.Editor',
 			'FBEditor.view.panel.main.props.body.editor.ul.Editor'

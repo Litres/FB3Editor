@@ -217,20 +217,8 @@ Ext.define(
 				{
 					// создаем вложенный родительский элемент
 
-					// аттрибуты
-					Ext.Array.each(
-						node.attributes,
-						function (item)
-						{
-							// соответствует ли аттрибут схеме
-							if (Ext.isObject(elementSchema.attributes[item.name]) ||
-							    Ext.Array.contains(['href'], item.name) &&
-							    elementSchema.attributes['xlink:href'])
-							{
-								attributes[item.name] = item.value;
-							}
-						}
-					);
+					// получаем разрашенные аттрибуты
+					attributes = me.getAttributes(node, elementSchema);
 
 					// создаем элемент с аттрибутами
 					el = factory.createElement(name, attributes);
@@ -266,20 +254,40 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Конвертирует изображение и возвращает новый элемент изображения.
-		 * @param {Object} attributes Аттрибуты.
-		 * @return {FBEditor.editor.element.img.ImgElement} Изображение.
+		 * Возвращает разрешенные аттрибуты для узла.
+		 * @param {Node} node Узел.
+		 * @param {Object} elementSchema Данные из схемы для элемента.
+		 * @return {Object} Аттрибуты.
 		 */
-		convertImg: function (attributes)
+		getAttributes: function (node, elementSchema)
 		{
-			var me = this,
-				imgProxy,
-				el;
+			var attributes = {};
 
-			imgProxy = FBEditor.editor.pasteproxy.dom.ImgProxy.getImplementation({domProxy: me});
-			el = imgProxy.createImg(attributes);
+			Ext.Array.each(
+				node.attributes,
+				function (item)
+				{
+					var name = item.name,
+						val = item.value;
 
-			return el;
+					switch (name)
+					{
+						case 'xlink:href':
+							name = 'href';
+							break;
+						case 'id':
+							name = /^[_a-z0-9][0-9a-z._-]*$/i.test(val) ? name : null;
+					}
+
+					// соответствует ли аттрибут схеме
+					if (name && Ext.isObject(elementSchema.attributes[item.name]))
+					{
+						attributes[name] = val;
+					}
+				}
+			);
+
+			return attributes;
 		},
 
 		/**

@@ -12,31 +12,6 @@ Ext.define(
 
 		isLiHolder: true,
 
-		getOnlyStylesChildren: function (fragment)
-		{
-			var me = this;
-
-			// если в li содержится p, то переносим из p всех потомков в li
-			Ext.Array.each(
-				me.children,
-				function (li)
-				{
-					var p = li.children[0];
-
-					if (p.isP)
-					{
-						while (p.children.length)
-						{
-							li.add(p.children[0]);
-						}
-						li.remove(p);
-					}
-				}
-			);
-
-			fragment.add(me);
-		},
-
 		convertToText: function (fragment)
 		{
 			var me = this,

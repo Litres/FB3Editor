@@ -145,6 +145,8 @@ Ext.define(
 				children = me.getChildrenForElement(parent),
 				isChild;
 
+			//console.log(parent, children);
+
 			isChild = Ext.Array.contains(children, child);
 
 			return isChild;
@@ -163,49 +165,54 @@ Ext.define(
 
 			el = me.getElement(name);
 
-			// перебираем элементы выбора
-			if (el.choice.elements)
+			if (el)
 			{
-				Ext.Array.each(
-					el.choice.elements,
-					function (item)
-					{
-						children.push(item.name);
-					}
-				);
-			}
-
-			if (el.sequence.length)
-			{
-				// перебираем элементы последовательности
-				Ext.Array.each(
-					el.sequence,
-					function (item)
-					{
-						var name;
-
-						if (item.element)
+				// перебираем элементы выбора
+				if (el.choice && el.choice.elements)
+				{
+					Ext.Array.each(
+						el.choice.elements,
+						function (item)
 						{
-							name = Ext.Object.getKeys(item.element)[0];
+							var name = Ext.Object.getKeys(item)[0];
+
 							children.push(name);
 						}
+					);
+				}
 
-						if (item.choice)
+				if (el.sequence.length)
+				{
+					// перебираем элементы последовательности
+					Ext.Array.each(
+						el.sequence,
+						function (item)
 						{
-							// перебираем элементы выбора в элементе последовательности
-							Ext.Array.each(
-								item.choice.elements,
-								function (itemChoice)
-								{
-									var name;
+							var name;
 
-									name = Ext.Object.getKeys(itemChoice)[0];
-									children.push(name);
-								}
-							);
+							if (item.element)
+							{
+								name = Ext.Object.getKeys(item.element)[0];
+								children.push(name);
+							}
+
+							if (item.choice)
+							{
+								// перебираем элементы выбора в элементе последовательности
+								Ext.Array.each(
+									item.choice.elements,
+									function (itemChoice)
+									{
+										var name;
+
+										name = Ext.Object.getKeys(itemChoice)[0];
+										children.push(name);
+									}
+								);
+							}
 						}
-					}
-				);
+					);
+				}
 			}
 
 			return children;

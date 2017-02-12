@@ -148,22 +148,28 @@ Ext.define(
 				{
 					var data;
 
+					//console.log('el', el);
+
 					data = el.attributes;
 					data.src = me.fileId;
 					el.update(data);
 
 					manager = manager || el.getManager();
-					focusEl = manager.getFocusElement();
 
-					if (el.equal(focusEl))
+					if (manager)
 					{
-						// панель свойств
-						panelProps = manager.getPanelProps();
+						focusEl = manager.getFocusElement();
 
-						if (panelProps)
+						if (el.equal(focusEl))
 						{
-							// обновляем информацию о выделенном элементе в панели свойств
-							panelProps.fireEvent('loadData', el);
+							// панель свойств
+							panelProps = manager.getPanelProps();
+
+							if (panelProps)
+							{
+								// обновляем информацию о выделенном элементе в панели свойств
+								panelProps.fireEvent('loadData', el);
+							}
 						}
 					}
 				}

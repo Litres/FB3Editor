@@ -252,6 +252,8 @@ Ext.define(
 						{
 							me.data.push(res);
 
+							//console.log('res', res);
+
 							if (res.isCover)
 							{
 								// устанавливаем обложку
