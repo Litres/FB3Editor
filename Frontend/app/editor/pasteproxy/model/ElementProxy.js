@@ -21,10 +21,10 @@ Ext.define(
 			{
 				//console.log('ERR', parent.getName(), '>', el.getName());
 				// если не соответствует схеме, то переносим всех потомков на уровень выше
-				me.upChildren(el);
+				me.upChildren();
 				normalize = true;
 			}
-			else if (el.isEmpty() && !el.first() && !el.isBr)
+			else if (el.isEmpty() && !el.first())
 			{
 				// удаляем пустой элемент
 				parent.remove(el);

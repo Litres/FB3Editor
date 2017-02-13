@@ -13,30 +13,26 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el,
-				normalize = false;
+				normalize = true;
 
-			if (el.isEmpty())
-			{
-				// пустой элемент
-
-				if (!el.parent.isEmpty())
-				{
-					// если родительский элемент не пустой, то удаляем пустой элемент
-					el.parent.remove(el);
-					normalize = true;
-				}
-			}
-			else if (!el.parent.isStyleType)
+			if (!el.parent.isStyleType)
 			{
 				// помещаем все стилевые элементы в абзац, если они находятся не в стилевом элементе
 				me.moveElsToNewHolder(el);
-				normalize = true;
 			}
 			else if (el.next() && el.hisName(el.next().getName()))
 			{
 				// объединяем однотипные соседние элементы
 				me.joinNext();
-				normalize = true;
+			}
+			else if (el.hasParentName(el.getName()))
+			{
+				// избавляемся от вложенности однотипных элементов
+				me.upChildren();
+			}
+			else
+			{
+				normalize = false;
 			}
 
 			return normalize;

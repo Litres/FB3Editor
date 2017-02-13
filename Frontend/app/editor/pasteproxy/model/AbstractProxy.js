@@ -120,11 +120,11 @@ Ext.define(
 		/**
 		 * @protected
 		 * Переносит всех потомков на уровень выше, а опустевший элемент удаляет.
-		 * @param {FBEditor.editor.element.AbstractElement} el
 		 */
-		upChildren: function (el)
+		upChildren: function ()
 		{
 			var me = this,
+				el = me.el,
 				parent = el.parent;
 
 			while (el.first())
