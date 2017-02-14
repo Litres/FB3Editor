@@ -375,6 +375,8 @@ Ext.define(
 				// удаляет однотипные вложенные друг в друга стилевые элементы
 				me.removeEqualInner(els.parent);
 
+				//console.log('data.mapRemoveEqual', data.mapRemoveEqual);
+
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
@@ -437,6 +439,12 @@ Ext.define(
 				manager.setSuspendEvent(true);
 
 				console.log('undo create ' + me.elementName, data, nodes);
+
+				if (data.mapRemoveEqual)
+				{
+					// восстанавливаем удаленные вложенные элементы
+					me.unRemoveEqualInner();
+				}
 
 				if (data.mapJoinEqual)
 				{
@@ -621,13 +629,11 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				els = {},
 				nodes = {},
 				map,
-				helper,
-				viewportId;
-
-			viewportId = data.viewportId;
+				helper;
 
 			if (el.isStyleFormat && el.next() && el.getName() === el.next().getName())
 			{
@@ -786,7 +792,107 @@ Ext.define(
 		 */
 		removeEqualInner: function (el)
 		{
-			//
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId,
+				els = {},
+				nodes = {},
+				map,
+				helper;
+
+			if (el.isStyleFormat && el.hasParentName(el.getName()))
+			{
+				// удаляем вложенный элемент, перенося всех его потомков на его же уровень
+
+				// сохраняем ссылки для ctrl+z
+				map = {
+					el: el,
+					child: []
+				};
+
+				helper = el.getNodeHelper();
+				nodes.el = helper.getNode(viewportId);
+
+				helper = el.parent.getNodeHelper();
+				nodes.parent = helper.getNode(viewportId);
+
+				while (els.first = el.first())
+				{
+					helper = els.first.getNodeHelper();
+					nodes.first = helper.getNode(viewportId);
+
+					el.parent.insertBefore(els.first, el);
+					nodes.parent.insertBefore(nodes.first, nodes.el);
+
+					// для ctrl+z
+					map.child.push(els.first);
+				}
+
+				el.parent.remove(el);
+				nodes.parent.removeChild(nodes.el);
+
+				// для ctrl+z
+				data.mapRemoveEqual = data.mapRemoveEqual || [];
+				data.mapRemoveEqual.push(map);
+			}
+
+			// проверяем потомков
+			el.each(
+				function (child)
+				{
+					me.removeEqualInner(child);
+				}
+			);
+		},
+
+		/**
+		 * @private
+		 * Восттанваливает удаленные вложенные друг в друга однотипные стилевые элементы.
+		 */
+		unRemoveEqualInner: function ()
+		{
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId,
+				els = {},
+				nodes = {},
+				helper;
+
+			Ext.each(
+				data.mapRemoveEqual,
+			    function (map)
+			    {
+				    // восстанавливаем вложенный элемент
+
+				    els.el = map.el;
+				    helper = els.el.getNodeHelper();
+				    nodes.el = helper.getNode(viewportId);
+
+				    els.parent = els.el.parent;
+				    helper = els.parent.getNodeHelper();
+				    nodes.parent = helper.getNode(viewportId);
+
+				    els.first = map.child[0];
+				    helper = els.first.getNodeHelper();
+				    nodes.first = helper.getNode(viewportId);
+
+				    els.parent.insertBefore(els.el, els.first);
+				    nodes.parent.insertBefore(nodes.el, nodes.first);
+
+				    // перемещаем во вновь созданный вложенный элемент всех его потомков
+				    Ext.each(
+					    map.child,
+				        function (child)
+				        {
+					        helper = child.getNodeHelper();
+					        nodes.child = helper.getNode(viewportId);
+
+					        els.el.add(child);
+					        nodes.el.appendChild(nodes.child);
+				        }
+				    )
+			    }
+			)
 		}
 	}
 );
