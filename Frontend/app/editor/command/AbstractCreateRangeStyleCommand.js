@@ -1,5 +1,5 @@
 /**
- * Абстрактная команда для создания элементов форматирования из выделения.
+ * Абстрактная команда для создания элементов форматирования (стилевые элементы) из выделения.
  * Элементы форматирования могут быть созданы в элементах p, li, subtitle.
  *
  * @abstract
@@ -367,6 +367,14 @@ Ext.define(
 
 				//console.log('nodes, els', nodes, els, data.links);
 
+				// соединяет соседние однотипные стилевые элементы
+				me.joinEqualSibling(els.parent);
+
+				//console.log('data.mapJoinEqual', data.mapJoinEqual);
+
+				// удаляет однотипные вложенные друг в друга стилевые элементы
+				me.removeEqualInner(els.parent);
+
 				// синхронизируем
 				els.parent.sync(data.viewportId);
 
@@ -429,6 +437,12 @@ Ext.define(
 				manager.setSuspendEvent(true);
 
 				console.log('undo create ' + me.elementName, data, nodes);
+
+				if (data.mapJoinEqual)
+				{
+					// разъединяем соединенные однотипные соседние элементы
+					me.unJoinEqualSibling(nodes.parent.getElement());
+				}
 
 				if (els.common.elementId === range.start.getElement().elementId)
 				{
@@ -595,6 +609,184 @@ Ext.define(
 
 			manager.setSuspendEvent(false);
 			return res;
+		},
+
+		/**
+		 * @private
+		 * Соединяет соседние однотипные стилевые элементы.
+		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
+		 * начинается проверка.
+		 */
+		joinEqualSibling: function (el)
+		{
+			var me = this,
+				data = me.getData(),
+				els = {},
+				nodes = {},
+				map,
+				helper,
+				viewportId;
+
+			viewportId = data.viewportId;
+
+			if (el.isStyleFormat && el.next() && el.getName() === el.next().getName())
+			{
+				// соединяем соседние элементы
+
+				map = {
+					el: el,
+					next: el.next(),
+					child: []
+				};
+
+				helper = el.getNodeHelper();
+				nodes.el = helper.getNode(viewportId);
+
+				els.next = el.next();
+				helper = els.next.getNodeHelper();
+				nodes.next = helper.getNode(viewportId);
+
+				els.first = els.next.first();
+
+				while (els.first)
+				{
+					helper = els.first.getNodeHelper();
+					nodes.first = helper.getNode(viewportId);
+
+					map.child.push(els.first);
+
+					el.add(els.first);
+					nodes.el.appendChild(nodes.first);
+
+					els.first = els.next.first();
+				}
+
+				helper = el.parent.getNodeHelper();
+				nodes.parent = helper.getNode(viewportId);
+
+				el.parent.remove(els.next);
+				nodes.parent.removeChild(nodes.next);
+
+				// сохраняем ссылки для ctrl+z
+				data.mapJoinEqual = data.mapJoinEqual || {};
+				data.mapJoinEqual[el.elementId] = data.mapJoinEqual[el.elementId] || [];
+				data.mapJoinEqual[el.elementId].push(map);
+
+				// проверяем еще раз
+				me.joinEqualSibling(el);
+			}
+
+			// проверяем потомков
+			el.each(
+				function (child)
+				{
+					me.joinEqualSibling(child);
+				}
+			);
+		},
+
+		/**
+		 * @private
+		 * Разъединяет соединенные соседние однотипные стилевые элементы.
+		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
+		 * начинается проверка.
+		 */
+		unJoinEqualSibling: function (el)
+		{
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId,
+				els = {},
+				nodes = {},
+				map,
+				helper;
+
+			if (el.isStyleFormat && data.mapJoinEqual[el.elementId])
+			{
+				// разъединяем соединенные соседние элементы
+
+				// получаем сохраненные данные
+				map = data.mapJoinEqual[el.elementId][data.mapJoinEqual[el.elementId].length - 1];
+
+				//console.log('el', map.el, map.next, map.child);
+
+				// элемент, который должен быть следующим
+				els.old = map.next;
+				helper = els.old.getNodeHelper();
+				nodes.old = helper.getNode(viewportId);
+
+				helper = el.getNodeHelper();
+				nodes.el = helper.getNode(viewportId);
+
+				helper = el.parent.getNodeHelper();
+				nodes.parent = helper.getNode(viewportId);
+
+				if (!nodes.old.parentNode)
+				{
+					// создаем следующий элемент
+					//console.log('create next', nodes.old);
+
+					if (els.next = el.next())
+					{
+						helper = els.next.getNodeHelper();
+						nodes.next = helper.getNode(viewportId);
+
+						el.parent.insertBefore(els.old, els.next);
+						nodes.parent.insertBefore(nodes.old, nodes.next);
+					}
+					else
+					{
+						el.parent.add(els.old);
+						nodes.parent.appendChild(nodes.old);
+					}
+				}
+
+				// переносим потомка во вновь созданный следующий элемент
+
+				els.child = map.child.shift();
+
+				//console.log('child', els.child);
+
+				helper = els.child.getNodeHelper();
+				nodes.child = helper.getNode(viewportId);
+
+				els.old.add(els.child);
+				nodes.old.appendChild(nodes.child);
+
+				if (!map.child.length)
+				{
+					// подчищаем данные, как только все потомки перенесены
+					data.mapJoinEqual[el.elementId].pop();
+				}
+
+				if (!data.mapJoinEqual[el.elementId].length)
+				{
+					// подчищаем данные
+					delete data.mapJoinEqual[el.elementId];
+				}
+
+				// проверяем еще раз
+				me.unJoinEqualSibling(el);
+			}
+
+			// проверяем потомков
+			el.each(
+				function (child)
+				{
+					me.unJoinEqualSibling(child);
+				}
+			);
+		},
+
+		/**
+		 * @private
+		 * Удаляет вложенные друг в друга однотипные стилевые элементы.
+		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
+		 * начинается проверка.
+		 */
+		removeEqualInner: function (el)
+		{
+			//
 		}
 	}
 );

@@ -18,7 +18,17 @@ Ext.define(
 		showedOnTree: false,
 
 		/**
+		 * @property {Boolean} Элемент ли форматирования.
+		 * Это элементы, которые содержатся в абзаце и форматируют текст. 
+		 * Строго наследуют от базового класса FBEditor.editor.element.AbstractStyleElement.
+		 * @example 
+		 * strong, em, spacing... 
+		 */
+		isStyleFormat: true,
+
+		/**
 		 * @property {Boolean} Стилевой ли элемент.
+		 * Это элементы форматирования, которые могут находиться в абзаце, включая сам абзац и перенос строки br.
 		 */
 		isStyleType: true,
 
