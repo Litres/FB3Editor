@@ -198,10 +198,13 @@ Ext.define(
 		/**
 		 * Добавляет новый дочерний элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
 		 */
-		add: function (el)
+		add: function (el, viewportId)
 		{
-			var me = this;
+			var me = this,
+				nodes = {},
+				helper;
 
 			if (el.parent)
 			{
@@ -219,23 +222,55 @@ Ext.define(
 			{
 				me.children.push(el);
 			}
+			
+			if (viewportId)
+			{
+				// добавляем узел
+				
+				helper = me.getNodeHelper();
+				nodes.node = helper.getNode(viewportId);
+				
+				helper = el.getNodeHelper();
+				nodes.child = helper.getNode(viewportId);
+				
+				nodes.node.appendChild(nodes.child);
+			}
 		},
 
 		/**
 		 * Вставляет новый дочерний элемент перед другим дочерним элементом.
 		 * @param {FBEditor.editor.element.AbstractElement} el Вставляемый элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} nextEl Элемент, перед которым происходит вставка.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
 		 */
-		insertBefore: function (el, nextEl)
+		insertBefore: function (el, nextEl, viewportId)
 		{
 			var me = this,
 				children = me.children,
-				pos = me.getChildPosition(nextEl);
+				pos = me.getChildPosition(nextEl),
+				nodes = {},
+				helper;
 
 			if (el.parent)
 			{
 				// удаляем ссылку на вставляемый элемент из старого родителя
-				el.parent.remove(el);
+				el.parent.remove(el, viewportId);
+
+				if (viewportId)
+				{
+					// вставляем узел
+
+					helper = me.getNodeHelper();
+					nodes.node = helper.getNode(viewportId);
+
+					helper = el.getNodeHelper();
+					nodes.child = helper.getNode(viewportId);
+
+					helper = nextEl.getNodeHelper();
+					nodes.next = helper.getNode(viewportId);
+
+					nodes.node.insertBefore(nodes.child, nodes.next);
+				}
 			}
 
 			el.parent = me;
@@ -269,11 +304,14 @@ Ext.define(
 		/**
 		 * Удаляет дочерний элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
 		 */
-		remove: function (el)
+		remove: function (el, viewportId)
 		{
 			var me = this,
 				children = me.children,
+				nodes = {},
+				helper,
 				pos,
 				ignoredClear;
 
@@ -287,9 +325,22 @@ Ext.define(
 					{
 						el.clear();
 					}
-					//el.removeAll();
+
 					children.splice(pos, 1);
 					me.children = children;
+
+					if (viewportId)
+					{
+						// удаляем узел
+
+						helper = me.getNodeHelper();
+						nodes.node = helper.getNode(viewportId);
+
+						helper = el.getNodeHelper();
+						nodes.child = helper.getNode(viewportId);
+
+						nodes.node.removeChild(nodes.child);
+					}
 				}
 			}
 		},

@@ -699,9 +699,7 @@ Ext.define(
 				data = me.getData(),
 				viewportId = data.viewportId,
 				els = {},
-				nodes = {},
-				map,
-				helper;
+				map;
 
 			if (el.isStyleFormat && el.next() && el.getName() === el.next().getName())
 			{
@@ -713,33 +711,17 @@ Ext.define(
 					child: []
 				};
 
-				helper = el.getNodeHelper();
-				nodes.el = helper.getNode(viewportId);
-
 				els.next = el.next();
-				helper = els.next.getNodeHelper();
-				nodes.next = helper.getNode(viewportId);
-
 				els.first = els.next.first();
 
 				while (els.first)
 				{
-					helper = els.first.getNodeHelper();
-					nodes.first = helper.getNode(viewportId);
-
 					map.child.push(els.first);
-
-					el.add(els.first);
-					nodes.el.appendChild(nodes.first);
-
+					el.add(els.first, viewportId);
 					els.first = els.next.first();
 				}
 
-				helper = el.parent.getNodeHelper();
-				nodes.parent = helper.getNode(viewportId);
-
-				el.parent.remove(els.next);
-				nodes.parent.removeChild(nodes.next);
+				el.parent.remove(els.next, viewportId);
 
 				// сохраняем ссылки для ctrl+z
 				mapJoinEqual = mapJoinEqual || {};
@@ -785,50 +767,28 @@ Ext.define(
 				// получаем сохраненные данные
 				map = mapData[el.elementId][mapData[el.elementId].length - 1];
 
-				//console.log('el', map.el, map.next, map.child);
-
 				// элемент, который должен быть следующим
 				els.old = map.next;
 				helper = els.old.getNodeHelper();
 				nodes.old = helper.getNode(viewportId);
 
-				helper = el.getNodeHelper();
-				nodes.el = helper.getNode(viewportId);
-
-				helper = el.parent.getNodeHelper();
-				nodes.parent = helper.getNode(viewportId);
-
 				if (!nodes.old.parentNode)
 				{
 					// создаем следующий элемент
-					//console.log('create next', nodes.old);
 
 					if (els.next = el.next())
 					{
-						helper = els.next.getNodeHelper();
-						nodes.next = helper.getNode(viewportId);
-
-						el.parent.insertBefore(els.old, els.next);
-						nodes.parent.insertBefore(nodes.old, nodes.next);
+						el.parent.insertBefore(els.old, els.next, viewportId);
 					}
 					else
 					{
-						el.parent.add(els.old);
-						nodes.parent.appendChild(nodes.old);
+						el.parent.add(els.old, viewportId);
 					}
 				}
 
 				// переносим потомка во вновь созданный следующий элемент
-
 				els.child = map.child.shift();
-
-				//console.log('child', els.child);
-
-				helper = els.child.getNodeHelper();
-				nodes.child = helper.getNode(viewportId);
-
-				els.old.add(els.child);
-				nodes.old.appendChild(nodes.child);
+				els.old.add(els.child, viewportId);
 
 				if (!map.child.length)
 				{
@@ -869,9 +829,7 @@ Ext.define(
 				data = me.getData(),
 				viewportId = data.viewportId,
 				els = {},
-				nodes = {},
-				map,
-				helper;
+				map;
 
 			if (el.isStyleFormat && el.hasParentName(el.getName()))
 			{
@@ -883,26 +841,15 @@ Ext.define(
 					child: []
 				};
 
-				helper = el.getNodeHelper();
-				nodes.el = helper.getNode(viewportId);
-
-				helper = el.parent.getNodeHelper();
-				nodes.parent = helper.getNode(viewportId);
-
 				while (els.first = el.first())
 				{
-					helper = els.first.getNodeHelper();
-					nodes.first = helper.getNode(viewportId);
-
-					el.parent.insertBefore(els.first, el);
-					nodes.parent.insertBefore(nodes.first, nodes.el);
+					el.parent.insertBefore(els.first, el, viewportId);
 
 					// для ctrl+z
 					map.child.push(els.first);
 				}
 
-				el.parent.remove(el);
-				nodes.parent.removeChild(nodes.el);
+				el.parent.remove(el, viewportId);
 
 				// для ctrl+z
 				mapRemoveEqual = mapRemoveEqual || [];
@@ -930,9 +877,7 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				viewportId = data.viewportId,
-				els = {},
-				nodes = {},
-				helper;
+				els = {};
 
 			Ext.each(
 				mapData,
@@ -941,30 +886,16 @@ Ext.define(
 				    // восстанавливаем вложенный элемент
 
 				    els.el = map.el;
-				    helper = els.el.getNodeHelper();
-				    nodes.el = helper.getNode(viewportId);
-
 				    els.parent = els.el.parent;
-				    helper = els.parent.getNodeHelper();
-				    nodes.parent = helper.getNode(viewportId);
-
 				    els.first = map.child[0];
-				    helper = els.first.getNodeHelper();
-				    nodes.first = helper.getNode(viewportId);
-
-				    els.parent.insertBefore(els.el, els.first);
-				    nodes.parent.insertBefore(nodes.el, nodes.first);
+				    els.parent.insertBefore(els.el, els.first, viewportId);
 
 				    // перемещаем во вновь созданный вложенный элемент всех его потомков
 				    Ext.each(
 					    map.child,
 				        function (child)
 				        {
-					        helper = child.getNodeHelper();
-					        nodes.child = helper.getNode(viewportId);
-
-					        els.el.add(child);
-					        nodes.el.appendChild(nodes.child);
+					        els.el.add(child, viewportId);
 				        }
 				    )
 			    }
