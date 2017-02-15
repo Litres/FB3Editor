@@ -367,15 +367,8 @@ Ext.define(
 
 				//console.log('nodes, els', nodes, els, data.links);
 
-				// соединяет соседние однотипные стилевые элементы
-				me.joinEqualSibling(els.parent);
-
-				//console.log('data.mapJoinEqual', data.mapJoinEqual);
-
-				// удаляет однотипные вложенные друг в друга стилевые элементы
-				me.removeEqualInner(els.parent);
-
-				//console.log('data.mapRemoveEqual', data.mapRemoveEqual);
+				// оптимизируем пересекающиеся однотипные элементы
+				me.optimizeEqualIntersectEls(els.parent);
 
 				// синхронизируем
 				els.parent.sync(data.viewportId);
@@ -440,16 +433,10 @@ Ext.define(
 
 				console.log('undo create ' + me.elementName, data, nodes);
 
-				if (data.mapRemoveEqual)
+				if (data.optimizeQueue)
 				{
-					// восстанавливаем удаленные вложенные элементы
-					me.unRemoveEqualInner();
-				}
-
-				if (data.mapJoinEqual)
-				{
-					// разъединяем соединенные однотипные соседние элементы
-					me.unJoinEqualSibling(nodes.parent.getElement());
+					// восстанавливаем оптимизированные элементы
+					me.unOptimizeEqualIntersectEls(nodes.parent.getElement());
 				}
 
 				if (els.common.elementId === range.start.getElement().elementId)
@@ -621,11 +608,92 @@ Ext.define(
 
 		/**
 		 * @private
+		 * Опитмизирует однотипные пересекающиеся элементы.
+		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
+		 * начинается оптимизация.
+		 */
+		optimizeEqualIntersectEls: function (el)
+		{
+			var me = this,
+				data = me.getData(),
+				continueOptimize = true,
+				queue = [],
+				map;
+
+			while (continueOptimize)
+			{
+				continueOptimize = false;
+
+				// соединяет соседние однотипные стилевые элементы
+				if (map = me.joinEqualSibling(el))
+				{
+					queue.push(
+						{
+							type: 'join',
+							map: map
+						}
+					);
+				}
+
+				// удаляет однотипные вложенные друг в друга стилевые элементы
+				if (map = me.removeEqualInner(el))
+				{
+					queue.push(
+						{
+							type: 'remove',
+							map: map
+						}
+					);
+
+					continueOptimize = true;
+				}
+			}
+
+			data.optimizeQueue = queue.length ? queue : null;
+		},
+
+		/**
+		 * @private
+		 * Восстанавливает исходное состояние оптимизированных пересекавшихся элементов.
+		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
+		 * начинается восстановление.
+		 */
+		unOptimizeEqualIntersectEls: function (el)
+		{
+			var me = this,
+				data = me.getData(),
+				queue = data.optimizeQueue.reverse();
+
+			//console.log('queue', queue);
+
+			Ext.each(
+				queue,
+			    function (item)
+			    {
+				    switch (item.type)
+				    {
+					    case 'remove':
+						    me.unRemoveEqualInner(item.map);
+						    break;
+					    case 'join':
+						    me.unJoinEqualSibling(item.map, el);
+						    break;
+				    }
+			    }
+			);
+
+			delete data.optimizeQueue;
+		},
+
+		/**
+		 * @private
 		 * Соединяет соседние однотипные стилевые элементы.
 		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
 		 * начинается проверка.
+		 * @param {Object} mapJoinEqual Сохраненные ссылки на оптимизированные элементы (для ctrl+z).
+		 * @return {Object} Сохраненные ссылки на оптимизированные элементы (для ctrl+z).
 		 */
-		joinEqualSibling: function (el)
+		joinEqualSibling: function (el, mapJoinEqual)
 		{
 			var me = this,
 				data = me.getData(),
@@ -674,21 +742,23 @@ Ext.define(
 				nodes.parent.removeChild(nodes.next);
 
 				// сохраняем ссылки для ctrl+z
-				data.mapJoinEqual = data.mapJoinEqual || {};
-				data.mapJoinEqual[el.elementId] = data.mapJoinEqual[el.elementId] || [];
-				data.mapJoinEqual[el.elementId].push(map);
+				mapJoinEqual = mapJoinEqual || {};
+				mapJoinEqual[el.elementId] = mapJoinEqual[el.elementId] || [];
+				mapJoinEqual[el.elementId].push(map);
 
 				// проверяем еще раз
-				me.joinEqualSibling(el);
+				mapJoinEqual = me.joinEqualSibling(el, mapJoinEqual);
 			}
 
 			// проверяем потомков
 			el.each(
 				function (child)
 				{
-					me.joinEqualSibling(child);
+					mapJoinEqual = me.joinEqualSibling(child, mapJoinEqual);
 				}
 			);
+
+			return mapJoinEqual;
 		},
 
 		/**
@@ -696,8 +766,9 @@ Ext.define(
 		 * Разъединяет соединенные соседние однотипные стилевые элементы.
 		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
 		 * начинается проверка.
+		 * @param {Object} mapData Данные для восстановления.
 		 */
-		unJoinEqualSibling: function (el)
+		unJoinEqualSibling: function (mapData, el)
 		{
 			var me = this,
 				data = me.getData(),
@@ -707,12 +778,12 @@ Ext.define(
 				map,
 				helper;
 
-			if (el.isStyleFormat && data.mapJoinEqual[el.elementId])
+			if (el.isStyleFormat && mapData[el.elementId])
 			{
 				// разъединяем соединенные соседние элементы
 
 				// получаем сохраненные данные
-				map = data.mapJoinEqual[el.elementId][data.mapJoinEqual[el.elementId].length - 1];
+				map = mapData[el.elementId][mapData[el.elementId].length - 1];
 
 				//console.log('el', map.el, map.next, map.child);
 
@@ -762,24 +833,24 @@ Ext.define(
 				if (!map.child.length)
 				{
 					// подчищаем данные, как только все потомки перенесены
-					data.mapJoinEqual[el.elementId].pop();
+					mapData[el.elementId].pop();
 				}
 
-				if (!data.mapJoinEqual[el.elementId].length)
+				if (!mapData[el.elementId].length)
 				{
 					// подчищаем данные
-					delete data.mapJoinEqual[el.elementId];
+					delete mapData[el.elementId];
 				}
 
 				// проверяем еще раз
-				me.unJoinEqualSibling(el);
+				me.unJoinEqualSibling(mapData, el);
 			}
 
 			// проверяем потомков
 			el.each(
 				function (child)
 				{
-					me.unJoinEqualSibling(child);
+					me.unJoinEqualSibling(mapData, child);
 				}
 			);
 		},
@@ -789,8 +860,10 @@ Ext.define(
 		 * Удаляет вложенные друг в друга однотипные стилевые элементы.
 		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
 		 * начинается проверка.
+		 * @param {Object} mapRemoveEqual Сохраненные ссылки на оптимизированные элементы (для ctrl+z).
+		 * @return {Object} Сохраненные ссылки на оптимизированные элементы (для ctrl+z).
 		 */
-		removeEqualInner: function (el)
+		removeEqualInner: function (el, mapRemoveEqual)
 		{
 			var me = this,
 				data = me.getData(),
@@ -832,24 +905,27 @@ Ext.define(
 				nodes.parent.removeChild(nodes.el);
 
 				// для ctrl+z
-				data.mapRemoveEqual = data.mapRemoveEqual || [];
-				data.mapRemoveEqual.push(map);
+				mapRemoveEqual = mapRemoveEqual || [];
+				mapRemoveEqual.push(map);
 			}
 
 			// проверяем потомков
 			el.each(
 				function (child)
 				{
-					me.removeEqualInner(child);
+					mapRemoveEqual = me.removeEqualInner(child, mapRemoveEqual);
 				}
 			);
+
+			return mapRemoveEqual;
 		},
 
 		/**
 		 * @private
 		 * Восттанваливает удаленные вложенные друг в друга однотипные стилевые элементы.
+		 * @param {Array} mapData Данные для восстановления.
 		 */
-		unRemoveEqualInner: function ()
+		unRemoveEqualInner: function (mapData)
 		{
 			var me = this,
 				data = me.getData(),
@@ -859,7 +935,7 @@ Ext.define(
 				helper;
 
 			Ext.each(
-				data.mapRemoveEqual,
+				mapData,
 			    function (map)
 			    {
 				    // восстанавливаем вложенный элемент
