@@ -15,13 +15,14 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
 				offset = {},
-				reg = {},
 				pos = {},
-				factory = FBEditor.editor.Factory,
+				helper,
+				viewportId,
 				attributes,
 				manager,
 				sel,
@@ -29,6 +30,8 @@ Ext.define(
 
 			try
 			{
+				console.log('create ' + me.elementName, data);
+
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
@@ -52,6 +55,7 @@ Ext.define(
 				nodes.common = range.commonAncestorContainer;
 				els.common = nodes.common.getElement();
 				data.viewportId = nodes.common.viewportId;
+				viewportId = data.viewportId;
 
 				manager = manager || els.common.getManager();
 				manager.setSuspendEvent(true);
@@ -76,49 +80,42 @@ Ext.define(
 				{
 					// выделен только текстовый узел
 
-					data.range.oldValue = nodes.common.nodeValue;
-
-					nodes.parent = nodes.common.parentNode;
-					els.parent = nodes.parent.getElement();
-
+					data.range.oldValue = els.common.getText();
+					els.parent = els.common.parent;
+					helper = els.parent.getNodeHelper();
+					nodes.parent = helper.getNode();
 					data.links.parent = nodes.parent;
-
-					nodes.next = nodes.common.nextSibling;
+					els.next = els.common.next();
 
 					// получаем части текста
-					els.startValue = nodes.common.nodeValue.substring(0, offset.start);
-					els.selValue = nodes.common.nodeValue.substring(offset.start, offset.end);
-					els.endValue = nodes.common.nodeValue.substring(offset.end);
+					els.startValue = els.common.getText(0, offset.start);
+					els.selValue = els.common.getText(offset.start, offset.end);
+					els.endValue = els.common.getText(offset.end);
 
 					if (els.startValue)
 					{
 						// меняем текст исходного элемента
-						els.common.setText(els.startValue);
-						nodes.common.nodeValue = els.startValue;
+						els.common.setText(els.startValue, viewportId);
 					}
 					else
 					{
 						// удаляем пустой элемент
-						els.parent.remove(els.common);
-						nodes.parent.removeChild(nodes.common);
+						els.parent.remove(els.common, viewportId);
 					}
 
 					// новый элемент c выделенной частью текста
 					els.node = factory.createElement(me.elementName, attributes);
 					els = Ext.apply(els, els.node.createScaffold());
 					els.t.setText(els.selValue);
-					nodes.node = els.node.getNode(data.viewportId);
+					nodes.node = els.node.getNode(viewportId);
 
-					if (nodes.next)
+					if (els.next)
 					{
-						els.next = nodes.next.getElement();
-						els.parent.insertBefore(els.node, els.next);
-						nodes.parent.insertBefore(nodes.node, nodes.next);
+						els.parent.insertBefore(els.node, els.next, viewportId);
 					}
 					else
 					{
-						els.parent.add(els.node);
-						nodes.parent.appendChild(nodes.node);
+						els.parent.add(els.node, viewportId);
 					}
 
 					data.links.newNode = nodes.node;
@@ -130,18 +127,15 @@ Ext.define(
 					if (els.endValue)
 					{
 						els.node = factory.createElementText(els.endValue);
-						nodes.node = els.node.getNode(data.viewportId);
+						nodes.node = els.node.getNode(viewportId);
 
-						if (nodes.next)
+						if (els.next)
 						{
-							els.next = nodes.next.getElement();
-							els.parent.insertBefore(els.node, els.next);
-							nodes.parent.insertBefore(nodes.node, nodes.next);
+							els.parent.insertBefore(els.node, els.next, viewportId);
 						}
 						else
 						{
-							els.parent.add(els.node);
-							nodes.parent.appendChild(nodes.node);
+							els.parent.add(els.node, viewportId);
 						}
 					}
 				}
@@ -153,56 +147,42 @@ Ext.define(
 					nodes.pp = [];
 
 					// первый параграф
-					nodes.firstP = range.startContainer;
-					els.firstP = nodes.firstP.getElement();
-					els.isRoot = els.firstP.isRoot;
-					while (els.firstP && !els.firstP.isStyleHolder)
-					{
-						nodes.firstP = els.isRoot ? nodes.firstP.firstChild : nodes.firstP.parentNode;
-						els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
-					}
+					els.firstP = range.startContainer.getElement();
+					els.firstP = els.firstP.getStyleHolder();
+					helper = els.firstP.getNodeHelper();
+					nodes.firstP = helper.getNode(viewportId);
 
 					// последний параграф
-					nodes.lastP = range.endContainer;
-					els.lastP = nodes.lastP.getElement();
-					while (els.lastP && !els.lastP.isStyleHolder)
-					{
-						nodes.lastP = els.isRoot ? nodes.lastP.lastChild : nodes.lastP.parentNode;
-						els.lastP = nodes.lastP ? nodes.lastP.getElement() : null;
-					}
+					els.lastP = range.endContainer.getElement().getStyleHolder();
+					helper = els.lastP.getNodeHelper();
+					nodes.lastP = helper.getNode(viewportId);
 
 					// находим список параграфов между первым и последним
-					if (els.firstP.elementId !== els.lastP.elementId)
+					if (!els.firstP.equal(els.lastP))
 					{
-						nodes.ppStop = false;
 						nodes.cur = nodes.firstP;
+						
 						while (!nodes.cur.nextSibling)
 						{
 							nodes.cur = nodes.cur.parentNode;
 						}
+						
 						nodes.pp = manager.getNodesPP(nodes.cur.nextSibling, nodes, els);
 					}
 
-					// регулярные выражения для определения позиции выделения
-					reg.start = new RegExp('^' + Ext.String.escapeRegex(range.toString()));
-					reg.start2 = new RegExp('^' + Ext.String.escapeRegex(els.firstP.getText()));
-					reg.end = new RegExp(Ext.String.escapeRegex(range.toString()) + '$');
-					reg.end2 = new RegExp(Ext.String.escapeRegex(els.lastP.getText()) + '$');
-
-					// находится ли начальная точка выделения в начале первого параграфа
-					pos.isStart = reg.start.test(els.firstP.getText()) || reg.start2.test(range.toString());
-
-					// находится ли конечная точка выделения в конце последнего параграфа
-					pos.isEnd = reg.end.test(els.lastP.getText()) || reg.end2.test(range.toString());
-
+					// определяем находятся ли граничные точки выделения в начале и конце абзаца
+					pos.isStart = els.firstP.isStartRange(range);
+					pos.isEnd = els.lastP.isEndRange(range);
 					data.range.pos = pos;
+					
 					//console.log('pos', pos, range.toString());
 
 					if (pos.isStart)
 					{
 						// начальная точка выделения находится в начале параграфа, разделение узла не требуется
-						nodes.startContainer = nodes.firstP.firstChild;
-						els.startContainer = nodes.startContainer.getElement();
+						els.startContainer = els.firstP.first();
+						helper = els.startContainer.getNodeHelper();
+						nodes.startContainer = helper.getNode(viewportId);
 					}
 					else
 					{
@@ -218,7 +198,7 @@ Ext.define(
 					nodes.parentStart = nodes.startContainer.parentNode;
 					els.parentStart = nodes.parentStart.getElement();
 
-					nodes.endContainer = els.isRoot ? nodes.lastP.lastChild : range.endContainer;
+					nodes.endContainer = range.endContainer;
 					els.endContainer = nodes.endContainer.getElement();
 					nodes.parentEnd = nodes.endContainer.parentNode;
 					els.parentEnd = nodes.parentEnd.getElement();
@@ -247,8 +227,8 @@ Ext.define(
 						nodes.endContainer = manager.splitNode(els, nodes, offset.end);
 						els.common.removeEmptyText();
 					}
-					els.endContainer = nodes.endContainer.getElement();
 
+					els.endContainer = nodes.endContainer.getElement();
 
 					nodes.parentEnd = nodes.endContainer.parentNode;
 					els.parentEnd = nodes.parentEnd.getElement();
@@ -262,35 +242,32 @@ Ext.define(
 						nodes.endContainer = nodes.endContainer.nextSibling ?
 						                     nodes.endContainer.nextSibling : nodes.endContainer.previousSibling;
 
-						nodes.parentEnd.removeChild(nodes.bufRemove);
-						els.parentEnd.remove(nodes.bufRemove.getElement());
+						els.parentEnd.remove(nodes.bufRemove.getElement(), viewportId);
 
 						els.endContainer = nodes.endContainer.getElement();
 					}
 
 					// новый элемент в первом параграфе
 					els.node = factory.createElement(me.elementName, attributes);
-					nodes.node = els.node.getNode(data.viewportId);
+					nodes.node = els.node.getNode(viewportId);
 					els.parentStart.insertBefore(els.node, els.startContainer);
 					nodes.parentStart.insertBefore(nodes.node, nodes.startContainer);
 
 					// заполняем новый элемент в первом параграфе
-					nodes.next = nodes.node.nextSibling;
-					els.next = nodes.next ? nodes.next.getElement() : null;
-					while (els.next && (els.next.elementId !== els.endContainer.elementId || pos.isEnd))
+
+					els.next = els.node.next();
+
+					while (els.next && (!els.next.equal(els.endContainer) || pos.isEnd))
 					{
 						// выполняется до тех пор, пока не закончится параграф или не встретится конечный элемент
-						els.node.add(els.next);
-						nodes.node.appendChild(nodes.next);
-						els.parentStart.remove(els.next);
-						nodes.next = nodes.node.nextSibling;
-						els.next = nodes.next ? nodes.next.getElement() : null;
+						els.node.add(els.next, viewportId);
+						els.next = els.node.next();
 					}
 
 					//console.log('nodes', nodes); return false;
 
 					// начальные и конечные точки выделения находятся в разных параграфах
-					if (els.parentStart.elementId !== els.parentEnd.elementId)
+					if (!els.parentStart.equal(els.parentEnd))
 					{
 						nodes.prev = nodes.endContainer.previousSibling;
 
@@ -303,16 +280,14 @@ Ext.define(
 						nodes.parentEnd.insertBefore(nodes.node, nodes.first);
 
 						// заполняем новый элемент в последнем параграфе
-						nodes.next = nodes.node.nextSibling;
-						els.next = nodes.next ? nodes.next.getElement() : null;
-						while (els.next && (els.next.elementId !== els.endContainer.elementId || pos.isEnd))
+
+						els.next = els.node.next();
+
+						while (els.next && (!els.next.equal(els.endContainer) || pos.isEnd))
 						{
 							// выполняется до тех пор, пока не закончится параграф или не встретится конечный элемент
-							els.node.add(els.next);
-							nodes.node.appendChild(nodes.next);
-							els.parentEnd.remove(els.next);
-							nodes.next = nodes.node.nextSibling;
-							els.next = nodes.next ? nodes.next.getElement() : null;
+							els.node.add(els.next, viewportId);
+							els.next = els.node.next();
 						}
 					}
 
@@ -330,23 +305,16 @@ Ext.define(
 
 							// новый элемент в параграфе
 							elsP.node = factory.createElement(me.elementName, attributes);
-							nodesP.node = elsP.node.getNode(data.viewportId);
+							nodesP.node = elsP.node.getNode(viewportId);
 							nodesP.first = nodesP.p.firstChild;
 							elsP.first = nodesP.first.getElement();
 							elsP.p.insertBefore(elsP.node, elsP.first);
 							nodesP.p.insertBefore(nodesP.node, nodesP.first);
 
 							// заполняем новый элемент
-							nodesP.next = nodesP.node.nextSibling;
-							while (nodesP.next)
+							while (elsP.next = elsP.node.next())
 							{
-								// выполняется до тех пор, пока не закончится параграф
-
-								elsP.next = nodesP.next.getElement();
-								elsP.node.add(elsP.next);
-								nodesP.node.appendChild(nodesP.next);
-								elsP.p.remove(elsP.next);
-								nodesP.next = nodesP.node.nextSibling;
+								elsP.node.add(elsP.next, viewportId);
 							}
 						}
 					);
@@ -371,7 +339,7 @@ Ext.define(
 				me.optimizeEqualIntersectEls(els.parent);
 
 				// синхронизируем
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				manager.setSuspendEvent(false);
 
@@ -449,8 +417,7 @@ Ext.define(
 					if (nodes.common.parentNode)
 					{
 						// меняем текст исходного элемента
-						els.common.setText(range.oldValue);
-						nodes.common.nodeValue = range.oldValue;
+						els.common.setText(range.oldValue, viewportId);
 					}
 					else
 					{

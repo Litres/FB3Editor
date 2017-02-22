@@ -103,18 +103,49 @@ Ext.define(
 		/**
 		 * Устанавливает текст элемента.
 		 * @param {String} text Текст.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
 		 */
-		setText: function (text)
+		setText: function (text, viewportId)
 		{
-			var me = this;
+			var me = this,
+				helper,
+				node;
 			
 			me.text = text;
+			
+			if (viewportId)
+			{
+				helper = me.getNodeHelper();
+				node = helper.getNode(viewportId);
+				node.nodeValue = text;
+			}
+			
 			me.clearMapCoords();
 		},
 
-		getText: function ()
+		/**
+		 * Возвращает текстовое содержимое элемента.
+		 * @param {String} [start] Начальная позиция в тексте. Если не передано, то считается от начала текста.
+		 * @param {String} [end] Конечная позиция в тексте. Если не передано, то считается до конца текста.
+		 * @return {String} Текст.
+		 */
+		getText: function (start, end)
 		{
-			return this.text;
+			var me = this,
+				text;
+
+			text = me.text;
+			
+			if (start !== undefined || end !== undefined)
+			{
+				start = start !== undefined ? start : 0;
+				end = end !== undefined ? end : text.length;
+				start = (start < 0 || start > text.length) ? 0 : start;
+				end = (end < 0 || end > text.length) ? text.length : end;
+				text = text.substring(start, end);
+			}
+			
+			return text;
 		},
 
 		/**

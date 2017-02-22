@@ -124,15 +124,9 @@ Ext.define(
 		upChildren: function ()
 		{
 			var me = this,
-				el = me.el,
-				parent = el.parent;
+				el = me.el;
 
-			while (el.first())
-			{
-				parent.insertBefore(el.first(), el);
-			}
-
-			parent.remove(el);
+			el.upChildren();
 		},
 
 		/**

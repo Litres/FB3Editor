@@ -16,7 +16,11 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
+				pos = {},
+				offset = {},
 				factory = FBEditor.editor.Factory,
+				helper,
+				viewportId,
 				manager,
 				range;
 
@@ -25,11 +29,14 @@ Ext.define(
 				manager = data.opts.manager;
 				range = data.range || manager.getRange();
 				data.viewportId = range.start.viewportId;
+				viewportId = data.viewportId;
 
 				console.log('del wrapper ' + me.elementName, range);
 
 				nodes.node = range.common;
 				els.node = nodes.node.getElement();
+				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.parent.getElement();
 
 				manager.setSuspendEvent(true);
 
@@ -129,10 +136,196 @@ Ext.define(
 				}
 				else
 				{
-					throw Error('Выделение в разработке!');
+					// снимаем форматирование в выделенном фрагменте
+
+					offset = range.offset;
+					data.range = range;
+					data.links = {};
+					els.wrappers = [];
+
+					data.range.oldValue = els.node.getText();
+					els.parent = els.node.parent;
+					helper = els.parent.getNodeHelper();
+					nodes.parent = helper.getNode();
+					data.links.parent = nodes.parent;
+					els.next = els.parent.next();
+
+					// получаем части текста
+					els.startValue = els.node.getText(0, offset.start);
+					els.selValue = els.node.getText(offset.start, offset.end);
+					els.endValue = els.node.getText(offset.end);
+
+					if (els.node.isText && els.selValue === els.node.getText())
+					{
+						// выделен полностью текстовый узел
+						els.wrap = els.node.getParentName(me.elementName);
+						els.wrappers.push(els.wrap);
+					}
+					else
+					{
+						// получаем все параграфы p (или li/subtitle), которые затрагивает текущее выделение
+
+						// параграфы между первым и последним
+						nodes.pp = [];
+
+						// первый параграф
+						els.firstP = range.start.getElement();
+						els.firstP = els.firstP.getStyleHolder();
+						helper = els.firstP.getNodeHelper();
+						nodes.firstP = helper.getNode(viewportId);
+
+						// последний параграф
+						els.lastP = range.end.getElement().getStyleHolder();
+						helper = els.lastP.getNodeHelper();
+						nodes.lastP = helper.getNode(viewportId);
+
+						// находим список параграфов между первым и последним
+						if (!els.firstP.equal(els.lastP))
+						{
+							nodes.cur = nodes.firstP;
+
+							while (!nodes.cur.nextSibling)
+							{
+								nodes.cur = nodes.cur.parentNode;
+							}
+
+							nodes.pp = manager.getNodesPP(nodes.cur.nextSibling, nodes, els);
+
+							// ищем обертки в абзацах
+							Ext.each(
+								nodes.pp,
+								function (item)
+								{
+									var p;
+
+									p = item.getElement();
+									els.wrappersPP = Ext.Array.push(els.wrappers, p.getChildrenByName(me.elementName, true));
+								}
+							);
+						}
+
+						// определяем находятся ли граничные точки выделения в начале и конце абзаца
+						pos.isStart = els.firstP.isStartRange(range);
+						pos.isEnd = els.lastP.isEndRange(range);
+						data.range.pos = pos;
+
+						console.log('pos', pos, nodes);
+
+						if (pos.isStart)
+						{
+							// начальная точка выделения находится в начале параграфа, разделение узла не требуется
+							els.startContainer = els.firstP.first();
+							helper = els.startContainer.getNodeHelper();
+							nodes.startContainer = helper.getNode(viewportId);
+						}
+						else
+						{
+							// разбиваем первый узел на два в точке начального выделения
+							nodes.common = nodes.firstP;
+							els.common = els.firstP;
+							nodes.container = range.start;
+							nodes.startContainer = manager.splitNode(els, nodes, offset.start);
+							els.startContainer = nodes.startContainer.getElement();
+							els.common.removeEmptyText();
+						}
+
+						nodes.parentStart = nodes.startContainer.parentNode;
+						els.parentStart = nodes.parentStart.getElement();
+
+						if (els.node.isText)
+						{
+							// восстанавливаем корректную ссылку на конечную точку выделения
+							range.end = nodes.startContainer.firstChild;
+							offset.end = offset.end - offset.start;
+							range.offset.end = offset.end;
+						}
+
+						nodes.endContainer = range.end;
+						els.endContainer = nodes.endContainer.getElement();
+						nodes.parentEnd = nodes.endContainer.parentNode;
+						els.parentEnd = nodes.parentEnd.getElement();
+
+						if (pos.isEnd)
+						{
+							// конечная точка выделения находится в конце параграфа, разделение узла не требуется
+							nodes.endContainer = nodes.lastP.lastChild;
+						}
+						else if (els.endContainer.isText && els.parentEnd.equal(els.lastP) &&
+						         data.range.offset.end === els.endContainer.text.length)
+						{
+							// конечная точка выделения находится в конце текстового узла,
+							// который является прямым потомком параграфа
+
+							// указатель на элемент в конечной точке выделения
+							nodes.endContainer = nodes.endContainer.nextSibling ?
+							                     nodes.endContainer.nextSibling : nodes.endContainer;
+						}
+						else
+						{
+							// разбиваем последний узел на два в точке конечного выделения
+							nodes.common = nodes.lastP;
+							els.common = els.lastP;
+							nodes.container = nodes.endContainer;
+							nodes.endContainer = manager.splitNode(els, nodes, offset.end);
+							els.common.removeEmptyText();
+						}
+
+						els.endContainer = nodes.endContainer.getElement();
+
+						nodes.parentEnd = nodes.endContainer.parentNode;
+						els.parentEnd = nodes.parentEnd.getElement();
+
+						if (!nodes.endContainer.firstChild && !els.endContainer.isText)
+						{
+							// если точка конечного выделения ссылается на пустой элемент
+							// перемещаем ее на следующий или предыдущий элемент, а пустой элемент удаляем
+
+							nodes.bufRemove = nodes.endContainer;
+							nodes.endContainer = nodes.endContainer.nextSibling ?
+							                     nodes.endContainer.nextSibling : nodes.endContainer.previousSibling;
+
+							els.parentEnd.remove(nodes.bufRemove.getElement(), viewportId);
+
+							els.endContainer = nodes.endContainer.getElement();
+						}
+
+						// ищем обертки в первом абзаце
+						els.next = els.startContainer;
+
+						while (els.next && !els.next.equal(els.endContainer))
+						{
+							els.wrappers = Ext.Array.push(els.wrappers, els.next.getChildrenByName(me.elementName, true));
+							els.next = els.next.next();
+						}
+
+						// добавляем обертки из абзацев между первым и последним
+						els.wrappers = els.wrappersPP ? Ext.Array.push(els.wrappers, els.wrappersPP) : els.wrappers;
+
+						if (!els.firstP.equal(els.lastP) || pos.isEnd)
+						{
+							// ищем обертки в последнем абзаце
+
+							els.next = pos.isEnd ? els.endContainer : els.lastP.first();
+
+							while (els.next && (!els.next.equal(els.endContainer) || pos.isEnd))
+							{
+								els.wrappers = Ext.Array.push(els.wrappers, els.next.getChildrenByName(me.elementName, true));
+								els.next = els.next.next();
+							}
+						}
+					}
+
+					// удаляем обертки
+					Ext.each(
+						els.wrappers,
+						function (el)
+						{
+							el.upChildren(viewportId);
+						}
+					);
 				}
 
-				//console.log('nodes', nodes);
+				//console.log('els', els);
 
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);

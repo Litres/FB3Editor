@@ -346,6 +346,23 @@ Ext.define(
 		},
 
 		/**
+		 * Переносит всех потомков на уровень выше, а опустевший элемент удаляет.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
+		 */
+		upChildren: function (viewportId)
+		{
+			var me = this,
+				parent = me.parent;
+
+			while (me.first())
+			{
+				parent.insertBefore(me.first(), me, viewportId);
+			}
+
+			parent.remove(me, viewportId);
+		},
+
+		/**
 		 * Возвращает первый элемент.
 		 * @return {FBEditor.editor.element.AbstractElement} Первый элемент.
 		 */
@@ -1136,11 +1153,12 @@ Ext.define(
 		getText: function ()
 		{
 			var me = this,
+				helper = me.getNodeHelper(),
 				node,
 				text;
 
-			node = Ext.Object.getValues(me.nodes)[0];
-			text = node ? node.textContent || node.innerText : '';
+			node = helper.getNode();
+			text = node ? (node.textContent || node.innerText) : '';
 
 			return text || '';
 		},
@@ -1296,6 +1314,44 @@ Ext.define(
 			}
 
 			return el;
+		},
+
+		/**
+		 * Возвращает список дочерних элементов, которые имеют определенные имена.
+		 * @param {String} name Имя искомых элементов.
+		 * @param {Boolean} [deep=false] Искать ли во вложенных элементах.
+		 * @return {Array} Список найденных элементов.
+		 */
+		getChildrenByName: function (name, deep)
+		{
+			var me = this,
+				arr = [];
+
+			if (me.hisName(name))
+			{
+				arr = Ext.Array.push(arr, me);
+			}
+
+			me.each(
+				function (child)
+				{
+					var childArr;
+					
+					if (child.hisName(name))
+					{
+						arr = Ext.Array.push(arr, child);
+					}
+
+					childArr = child.getChildrenByName(name, deep);
+
+					if (childArr.length)
+					{
+						arr = Ext.Array.push(arr, childArr);
+					}
+				}
+			);
+
+			return arr;
 		},
 
 		/**
