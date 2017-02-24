@@ -446,6 +446,7 @@ Ext.define(
 			var me = this,
 				root = me.getContent(),
 				sel = window.getSelection(),
+				range,
 				helper,
 				viewportId;
 
@@ -484,6 +485,18 @@ Ext.define(
 					data.endOffset = data.endOffset || 0;
 					sel.extend(data.endNode, data.endOffset);
 				}
+				
+				// сохраняем выделение
+				range = sel.getRangeAt(0);
+				me.range = {
+					common: range.commonAncestorContainer,
+					start: range.startContainer,
+					end: range.endContainer,
+					offset: {
+						start: range.startOffset,
+						end: range.endOffset
+					}
+				};
 
 				// сохраняем фокусный элемент
 				helper = data.focusElement.getNodeHelper();

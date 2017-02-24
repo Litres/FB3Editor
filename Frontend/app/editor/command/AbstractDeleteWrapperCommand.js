@@ -209,7 +209,7 @@ Ext.define(
 						pos.isEnd = els.lastP.isEndRange(range);
 						data.range.pos = pos;
 
-						console.log('pos', pos, nodes);
+						//console.log('pos', pos, nodes);
 
 						if (pos.isStart)
 						{
@@ -320,6 +320,26 @@ Ext.define(
 						els.wrappers,
 						function (el)
 						{
+							var children = [];
+
+							el.each(
+								function (child)
+								{
+									children.push(child);
+								}
+							);
+
+							data.wrappers = data.wrappers || [];
+
+							// сохраняем ссылки на дочерние элементы обертки
+							data.wrappers.push(
+								{
+									el: el,
+									children: children
+								}
+							);
+
+							// перемещаем все дочерние элементы на уровень обертки
 							el.upChildren(viewportId);
 						}
 					);
@@ -367,6 +387,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				nodes = {},
 				els = {},
 				res = false,
@@ -394,8 +415,7 @@ Ext.define(
 
 					// восстанавливаем обёртку
 					nodes.node = els.node.getNode(data.viewportId);
-					els.parent.insertBefore(els.node, els.first);
-					nodes.parent.insertBefore(nodes.node, nodes.first);
+					els.parent.insertBefore(els.node, els.first, viewportId);
 
 					// перемещаем всех потомков обратно в обёртку
 
@@ -404,8 +424,7 @@ Ext.define(
 					while (els.next.elementId !== els.last.elementId)
 					{
 						nodes.buf = nodes.next.nextSibling;
-						els.node.add(els.next);
-						nodes.node.appendChild(nodes.next);
+						els.node.add(els.next, viewportId);
 
 						if (els.node.isLiHolder)
 						{
@@ -414,29 +433,30 @@ Ext.define(
 							els.li = factory.createElement('li');
 							nodes.li = els.li.getNode(data.viewportId);
 
-							els.node.insertBefore(els.li, els.next);
-							nodes.node.insertBefore(nodes.li, nodes.next);
+							els.node.insertBefore(els.li, els.next, viewportId);
+							//nodes.node.insertBefore(nodes.li, nodes.next);
 
 							nodes.firstP = nodes.next.firstChild;
 							els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
+
 							while (els.firstP)
 							{
-								els.li.add(els.firstP);
-								nodes.li.appendChild(nodes.firstP);
+								els.li.add(els.firstP, viewportId);
+								//nodes.li.appendChild(nodes.firstP);
 								nodes.firstP = nodes.next.firstChild;
 								els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
 							}
 
-							els.node.remove(els.next);
-							nodes.node.removeChild(nodes.next);
+							els.node.remove(els.next, viewportId);
+							//nodes.node.removeChild(nodes.next);
 						}
 
 						nodes.next = nodes.buf;
 						els.next = nodes.next ? nodes.next.getElement() : null;
 					}
 
-					els.node.add(els.last);
-					nodes.node.appendChild(nodes.last);
+					els.node.add(els.last, viewportId);
+					//nodes.node.appendChild(nodes.last);
 
 					if (els.node.isLiHolder)
 					{
@@ -445,25 +465,53 @@ Ext.define(
 						els.li = factory.createElement('li');
 						nodes.li = els.li.getNode(data.viewportId);
 
-						els.node.insertBefore(els.li, els.last);
-						nodes.node.insertBefore(nodes.li, nodes.last);
+						els.node.insertBefore(els.li, els.last, viewportId);
+						//nodes.node.insertBefore(nodes.li, nodes.last);
 
 						nodes.firstP = nodes.last.firstChild;
 						els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
+
 						while (els.firstP)
 						{
-							els.li.add(els.firstP);
-							nodes.li.appendChild(nodes.firstP);
+							els.li.add(els.firstP, viewportId);
+							//nodes.li.appendChild(nodes.firstP);
 							nodes.firstP = nodes.last.firstChild;
 							els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
 						}
 
-						els.node.remove(els.last);
-						nodes.node.removeChild(nodes.last);
+						els.node.remove(els.last, viewportId);
+						//nodes.node.removeChild(nodes.last);
 					}
 				}
+				else if (data.wrappers)
+				{
+					// восстанавливаем обертки
+					Ext.each(
+						data.wrappers,
+						function (item)
+						{
+							var el = item.el,
+								first,
+								parent;
 
-				els.parent.sync(data.viewportId);
+							first = item.children[0];
+							parent = first.parent;
+							parent.insertBefore(el, first, viewportId);
+
+							Ext.each(
+								item.children,
+							    function (child)
+							    {
+								    el.add(child, viewportId);
+							    }
+							);
+						}
+					);
+
+					delete data.wrappers;
+				}
+
+				els.parent.sync(viewportId);
 
 				manager.setSuspendEvent(false);
 
@@ -476,6 +524,9 @@ Ext.define(
 					focusElement: range.common.getElement()
 				};
 				manager.setCursor(data.saveRange);
+
+				// сохраняем выделение
+				data.range = manager.getRange();
 
 				res = true;
 			}
