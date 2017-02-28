@@ -33,15 +33,11 @@ Ext.define(
 				me.newValue = me.newValue || data.newValue;
 				me.oldValue = me.oldValue || data.oldValue;
 				me.offset = me.offset ? me.offset : offset;
-
 				nodes.node = data.saveRange ? data.saveRange.startNode : data.node;
 				els.node = nodes.node.getElement();
-
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
-
 				data.node = nodes.node;
-
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
@@ -49,8 +45,6 @@ Ext.define(
 
 				if (els.node.isEmpty() && !els.node.isText)
 				{
-					//console.log('empty');
-
 					// заменяем пустой элемент на текстовый
 					els.text = factory.createElementText('');
 					nodes.text = els.text.getNode(nodes.node.viewportId);
@@ -69,10 +63,17 @@ Ext.define(
 				//console.log(els.parent.getXml());
 
 				el = node.getElement();
-
-				el.setText(text);
+				el.setText(text, viewportId);
 
 				el.sync(viewportId);
+
+				// устанавливаем курсор
+				manager.setCursor(
+					{
+						startNode: node,
+						startOffset: me.offset
+					}
+				);
 
 				res = true;
 			}
@@ -83,6 +84,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -104,33 +106,25 @@ Ext.define(
 				node = data.node;
 				text = me.oldValue;
 				viewportId = node.viewportId;
-
 				el = node.getElement();
-
 				manager = el.getManager();
 				manager.setSuspendEvent(true);
-
 				node.nodeValue = text;
 				el.setText(text);
-
 				nodes.parent = node.parentNode;
 				els.parent = nodes.parent.getElement();
-
 				nodes.cursor = node;
 
-				//console.log('undo exec text', node, el);
+				console.log('undo exec text', me.offset, node, el);
 
 				if (!text && els.parent.isStyleHolder)
 				{
 					// вставляем пустой элемент
+
 					els.empty = manager.createEmptyElement();
 					nodes.empty = els.empty.getNode(viewportId);
-
-					els.parent.replace(els.empty, el);
-					nodes.parent.replaceChild(nodes.empty, node);
-
+					els.parent.replace(els.empty, el, viewportId);
 					nodes.cursor = nodes.empty;
-
 					els.parent.sync(viewportId);
 				}
 				else
@@ -138,12 +132,10 @@ Ext.define(
 					el.sync(viewportId);
 				}
 
-				manager.setSuspendEvent(false);
-
 				// устанавливаем курсор
 				data.saveRange = {
 					startNode: nodes.cursor,
-					startOffset: me.offset
+					startOffset: me.offset - 1
 				};
 				manager.setCursor(data.saveRange);
 
@@ -156,6 +148,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}

@@ -282,12 +282,15 @@ Ext.define(
 		 * Заменяет дочерний элемент на новый.
 		 * @param {FBEditor.editor.element.AbstractElement} el Новый элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} replacementEl Заменяемый элемент.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
 		 */
-		replace: function (el, replacementEl)
+		replace: function (el, replacementEl, viewportId)
 		{
 			var me = this,
 				children = me.children,
-				pos = me.getChildPosition(replacementEl);
+				pos = me.getChildPosition(replacementEl),
+				nodes = {},
+				helper;
 
 			if (el.parent)
 			{
@@ -299,6 +302,22 @@ Ext.define(
 			me.remove(replacementEl);
 			children.splice(pos, 1, el);
 			me.children = children;
+
+			if (viewportId)
+			{
+				// заменяем узел
+
+				helper = me.getNodeHelper();
+				nodes.node = helper.getNode(viewportId);
+
+				helper = el.getNodeHelper();
+				nodes.newChild = helper.getNode(viewportId);
+
+				helper = replacementEl.getNodeHelper();
+				nodes.oldChild = helper.getNode(viewportId);
+
+				nodes.node.replaceChild(nodes.newChild, nodes.oldChild);
+			}
 		},
 
 		/**
