@@ -1042,7 +1042,7 @@ Ext.define(
 			manager = els.node.getManager();
 			sch = manager.getSchema();
 			name = els.parent.getName();
-			console.log('name, nameElements', name, nameElements);
+			//console.log('name, nameElements', name, nameElements);
 			res = sch.verify(name, nameElements) ? nodes.node : false;
 
 			return res;

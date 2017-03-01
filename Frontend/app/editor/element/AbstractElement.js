@@ -1177,7 +1177,8 @@ Ext.define(
 				text;
 
 			node = helper.getNode();
-			text = node ? (node.textContent || node.innerText) : '';
+			text = node ? (node.innerText || node.textContent) : '';
+			text = text.replace(/\n+/g, ' ');
 
 			return text || '';
 		},

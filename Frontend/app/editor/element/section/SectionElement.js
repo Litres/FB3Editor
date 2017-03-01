@@ -13,6 +13,7 @@ Ext.define(
 			'FBEditor.editor.command.section.SplitCommand',
 			'FBEditor.editor.element.section.SectionElementController'
 		],
+		
 		controllerClass: 'FBEditor.editor.element.section.SectionElementController',
 		htmlTag: 'section',
 		xmlTag: 'section',

@@ -17,7 +17,6 @@ Ext.define(
 				nodes = {},
 				els = {},
 				name = me.elementName,
-				viewportId,
 				range,
 				nameElements,
 				sch,
@@ -30,20 +29,17 @@ Ext.define(
 				return false;
 			}
 
-			// первый параграф
+			// первый абзац
 			nodes.first = range.start;
-			viewportId = nodes.first.viewportId;
 			els.first = nodes.first.getElement ? nodes.first.getElement() : null;
-			els.first = els.first ? els.first.getParentName('p') : null;
+			els.first = els.first.getStyleHolder();
 
 			if (!els.first)
 			{
 				return false;
 			}
 
-			nodes.first = els.first.nodes[viewportId];
-			nodes.parent = nodes.first.parentNode;
-			els.parent = nodes.parent.getElement();
+			els.parent = els.first.parent;
 			els.pos = els.parent.getChildPosition(els.first);
 
 			// получаем дочерние имена элементов для проверки по схеме
