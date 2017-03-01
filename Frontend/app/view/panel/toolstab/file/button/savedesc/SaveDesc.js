@@ -16,12 +16,23 @@ Ext.define(
 		xtype: 'panel-toolstab-file-button-savedesc',
 		controller: 'panel.toolstab.file.button.savedesc',
 		
-		text: 'Сохранить описание',
-		hidden: true,
+		text: 'Сохранить описание (хаб)',
+		disabled: true,
 
 		listeners: {
 			click: 'onClick',
 			accessHub: 'onAccessHub'
+		},
+
+		/**
+		 * Активирует или деактивирует кнопку.
+		 * @param {Boolean} active Активировать ли.
+		 */
+		setActive: function (active)
+		{
+			var me = this;
+
+			me.setDisabled(!active);
 		}
 	}
 );

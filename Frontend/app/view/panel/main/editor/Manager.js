@@ -181,7 +181,7 @@ Ext.define(
 
 					// активируем кнопку сохранения тела книги
 					btn = Ext.getCmp('panel-toolstab-file-button-savebody');
-					btn.setHidden(false);
+					btn.setActive(true);
 				},
 				function (response)
 				{

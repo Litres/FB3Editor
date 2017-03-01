@@ -16,12 +16,23 @@ Ext.define(
 		xtype: 'panel-toolstab-file-button-savebody',
 		controller: 'panel.toolstab.file.button.savebody',
 
-		text: 'Сохранить тело',
-		hidden: true,
+		text: 'Сохранить тело (хаб)',
+		disabled: true,
 
 		listeners: {
 			click: 'onClick',
 			accessHub: 'onAccessHub'
+		},
+
+		/**
+		 * Активирует или деактивирует кнопку.
+		 * @param {Boolean} active Активировать ли.
+		 */
+		setActive: function (active)
+		{
+			var me = this;
+
+			me.setDisabled(!active);
 		}
 	}
 );

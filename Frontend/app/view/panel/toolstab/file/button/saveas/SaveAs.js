@@ -11,12 +11,15 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.toolstab.file.button.saveas.SaveAsController'
 		],
+
 		id:'panel-toolstab-file-button-saveas',
 		xtype: 'panel-toolstab-file-button-saveas',
 		controller: 'panel.toolstab.file.button.saveas',
-		text: 'Сохранить книгу',
+		
 		listeners: {
 			click: 'onClick'
-		}
+		},
+
+		text: 'Сохранить книгу (локально)'
 	}
 );

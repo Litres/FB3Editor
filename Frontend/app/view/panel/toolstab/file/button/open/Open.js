@@ -11,14 +11,17 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.toolstab.file.button.open.OpenController'
 		],
+		
 		id: 'panel-toolstab-file-button-open',
 		xtype: 'panel-toolstab-file-button-open',
 		controller: 'panel.toolstab.file.button.open',
-		text: 'Открыть книгу',
+		
 		listeners: {
 			change: 'onChange'
 		},
 
-		accept: '' //'application/zip'
+		accept: '', //'application/zip'
+		
+		text: 'Открыть книгу (локально)'
 	}
 );

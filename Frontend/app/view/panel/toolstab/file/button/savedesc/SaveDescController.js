@@ -42,7 +42,7 @@ Ext.define(
 
 			if (descManager.isLoadUrl())
 			{
-				view.setHidden(false);
+				view.setActive(true);
 			}
 		}
 	}
