@@ -17,6 +17,7 @@ Ext.define(
 				sel = window.getSelection(),
 				nodes = {},
 				els = {},
+				viewportId,
 				manager,
 				offset,
 				range;
@@ -48,19 +49,16 @@ Ext.define(
 
 				nodes.node = range.startContainer;
 				els.node = nodes.node.getElement();
-
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
-				data.viewportId = nodes.node.viewportId;
+				viewportId = data.viewportId = nodes.node.viewportId;
 
 				console.log('edit text', data.newValue, els.node, range);
 
 				data.oldValue = els.node.getText();
-				els.node.setText(data.newValue);
-				nodes.node.nodeValue = data.newValue;
-
-				els.node.sync(data.viewportId);
+				els.node.setText(data.newValue, viewportId);
+				els.node.sync(viewportId);
 
 				manager.setCursor(
 					{
@@ -81,6 +79,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -91,6 +90,7 @@ Ext.define(
 				res = false,
 				nodes = {},
 				els = {},
+				viewportId = data.viewportId,
 				manager,
 				sel,
 				range,
@@ -120,15 +120,12 @@ Ext.define(
 
 				els.node = nodes.node.getElement();
 
-				manager = els.node.getManager();
-				manager.setSuspendEvent(true);
-
 				console.log('undo text', nodes, data);
 
-				els.node.setText(data.oldValue);
-				nodes.node.nodeValue = data.oldValue;
-
-				els.node.sync(data.viewportId);
+				manager = els.node.getManager();
+				manager.setSuspendEvent(true);
+				els.node.setText(data.oldValue, viewportId);
+				els.node.sync(viewportId);
 
 				// курсор
 				nodes.startCursor = data.isBackspace ? range.offset.start + 1 : range.offset.start;
@@ -148,6 +145,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}

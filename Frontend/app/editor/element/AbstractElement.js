@@ -946,6 +946,21 @@ Ext.define(
 		},
 
 		/**
+		 * Обновляет отображение непечатаемых символов.
+		 */
+		updateUnprintedSymbols: function ()
+		{
+			var me = this;
+			
+			me.each(
+				function (child)
+				{
+					child.updateUnprintedSymbols();
+				}
+			);
+		},
+
+		/**
 		 * Устанавливает обработчики событий узла элемента.
 		 * @param {Node} element Узел элемента.
 		 * @return {Node} element Узел элемента.
@@ -1127,17 +1142,12 @@ Ext.define(
 		getManager: function ()
 		{
 			var me = this,
-				manager = null,
+				manager,
 				helper,
 				editor;
 
-			helper = me.getNodeHelper();
-
-			if (helper.getNode())
-			{
-				editor = me.getEditor ? me.getEditor() : null;
-				manager = editor ? editor.getManager() : null;
-			}
+			editor = me.getEditor ? me.getEditor() : null;
+			manager = editor ? editor.getManager() : null;
 
 			return manager;
 		},
@@ -1172,15 +1182,18 @@ Ext.define(
 		getText: function ()
 		{
 			var me = this,
-				helper = me.getNodeHelper(),
-				node,
-				text;
+				text = '';
 
-			node = helper.getNode();
-			text = node ? (node.innerText || node.textContent) : '';
-			text = text.replace(/\n+/g, ' ');
+			me.each(
+				function (child)
+				{
+					text += child.getText();
+				}
+			);
 
-			return text || '';
+			text += text && me.isStyleHolder ? ' ' : '';
+
+			return text;
 		},
 
 		/**
@@ -1221,6 +1234,7 @@ Ext.define(
 				    }
 			    }
 			);
+
 			me.nodes = {};
 		},
 

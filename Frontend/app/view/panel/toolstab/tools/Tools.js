@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
-			'FBEditor.view.panel.toolstab.tools.button.paragraph.Paragraph'
+			'FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols'
 		],
 
 		id:'panel-toolstab-tools',
@@ -38,7 +38,7 @@ Ext.define(
 					width: 20
 				},
 				{
-					xtype: 'panel-toolstab-tools-button-paragraph'
+					xtype: 'panel-toolstab-tools-button-unprintsymbols'
 				}
 			];
 

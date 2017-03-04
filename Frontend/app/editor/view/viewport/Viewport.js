@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'editor-viewport',
 		controller: 'editor.viewport',
 		cls: 'editor-viewport',
-
+		
 		layout: 'fit',
 
 		/**
@@ -26,10 +26,16 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.view.panel.toolstab.tools.button.paragraph.Paragraph} Кнопка включения отображения
-		 * символа конца абзаца.
+		 * @property {FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols} Кнопка отображения
+		 * непечатаемых символов.
 		 */
-		paragraphBtn: null,
+		unprintSymbolsBtn: null,
+
+		/**
+		 * @private
+		 * @property {String} CSS-Класс для отображения непечатаемых символов.
+		 */
+		modeCls: 'mode-unprintsymbols',
 
 		afterRender: function ()
 		{
@@ -38,13 +44,12 @@ Ext.define(
 
 			me.callParent(me);
 			me.createRoot();
-
-			btn = me.getParagraphBtn();
+			btn = me.getUnprintedSymbolsBtn();
 
 			if (btn.isPressed())
 			{
-				// добавляем класс для отображения символа конца абзаца
-				me.addCls(btn.modeCls);
+				// отображаем непечатаемые символы, если включен режим их отображения
+				me.showUnprintedSymbols(true);
 			}
 		},
 
@@ -126,18 +131,48 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает кнопку включения отображения символа конца абзаца.
-		 * @return {FBEditor.view.panel.toolstab.tools.button.paragraph.Paragraph}
+		 * Возвращает кнопку отображения непечатаемых символов.
+		 * @return {FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols}
 		 */
-		getParagraphBtn: function ()
+		getUnprintedSymbolsBtn: function ()
 		{
 			var me = this,
 				btn;
 
-			btn = me.paragraphBtn || Ext.getCmp('panel-toolstab-tools-button-paragraph');
-			me.paragraphBtn = btn;
+			btn = me.unprintSymbolsBtn || Ext.getCmp('panel-toolstab-tools-button-unprintsymbols');
+			me.unprintSymbolsBtn = btn;
 
 			return btn;
+		},
+
+		/**
+		 * Отображает или скрывает непечатаемые символы.
+		 * @param {Boolean} show Показать ли непечатаемые символы.
+		 */
+		showUnprintedSymbols: function (show)
+		{
+			var me = this,
+				modeCls = me.modeCls,
+				el = me.getEl(),
+				editor = me.getEditor(),
+				manager = editor.getManager();
+
+			if (el)
+			{
+				// меняем режим отображения непечатаемых символов
+				manager.setUnprintedSymbols(show);
+
+				if (show)
+				{
+					// добавляем класс для отображения непечатаемых символов
+					el.addCls(modeCls);
+				}
+				else
+				{
+					// удаляем класс
+					el.removeCls(modeCls);
+				}
+			}
 		}
 	}
 );

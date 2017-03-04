@@ -79,6 +79,7 @@ Ext.define(
 			var me = this;
 
 			me.callParent(arguments);
+			
 			node.getElement = function ()
 			{
 				// ссылается на элемент, который содержит маркер

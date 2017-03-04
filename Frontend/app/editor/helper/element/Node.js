@@ -165,6 +165,27 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает текст в узлах отображения текстового элемента.
+		 * @param {string} text Текст.
+		 */
+		setNodeValue: function (text)
+		{
+			var me = this,
+				el = me.el;
+
+			if (el.isText)
+			{
+				Ext.Object.each(
+					el.nodes,
+					function (viewportId, node)
+					{
+						node.nodeValue = text;
+					}
+				);
+			}
+		},
+
+		/**
 		 * Разбивает все текстовые элементы узла на отдельные узлы-символы.
 		 * @param {String} viewportId Айди окна.
 		 */

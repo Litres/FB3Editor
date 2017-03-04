@@ -18,6 +18,7 @@
 	font-size: 150%;
 	line-height: 150%;
 	white-space: pre-wrap;
+	word-break: break-all;
 	background-color: #fff;
 }
 
@@ -34,6 +35,7 @@
 
 /* абзац */
 .main-editor-viewport .el-p {
+	position: relative;
 	margin-top: 0;
 	margin-bottom: 0.2em;
 	text-align: justify;
@@ -55,6 +57,7 @@
 .main-editor-viewport .el-stanza,
 .main-editor-viewport .el-notes,
 .main-editor-viewport .el-notebody {
+	position: relative;
 	display: block;
 	padding: 0 0 0 0.2em;
 	margin: 0.5em 0 0.5em 0;
@@ -129,6 +132,7 @@
 }
 
 .main-editor-viewport .el-subtitle {
+	position: relative;
 	display: block;
 	margin: 0.5em 0;
 	text-align: center;
@@ -268,6 +272,9 @@
 .main-editor-viewport .el-ul .el-ol {
 	padding-left: 1.2em;
 }
+.main-editor-viewport .el-li {
+	position: relative;
+}
 
 /* маркер */
 .main-editor-viewport .el-marker {
@@ -282,13 +289,21 @@
 	text-indent: 0;
 }
 
-/* знак новой строки */
-.editor-viewport.mode-paragraph .el-p:after,
-.editor-viewport.mode-paragraph .el-li:after,
-.editor-viewport.mode-paragraph .el-subtitle:after {
-	margin-left: 0.1em;
+/* непечатаемый символ новой строки */
+.editor-viewport.mode-unprintsymbols .el-p::after,
+.editor-viewport.mode-unprintsymbols .el-li::after,
+.editor-viewport.mode-unprintsymbols .el-subtitle::after {
+	position: absolute;
+	bottom: 0;
+	margin-left: -1.4em; /* компенсирует text-indent */
+	width: 0;
 	content: '¶';
 	color: #a51626;
+}
+.editor-viewport.mode-unprintsymbols .el-title .el-p::after,
+.editor-viewport.mode-unprintsymbols .el-li::after,
+.editor-viewport.mode-unprintsymbols .el-subtitle::after {
+	margin-left: 0.1em;
 }
 
 /*
@@ -316,8 +331,13 @@
 }
 
 .form-desc-editor-body .editor-viewport .el-p {
+	position: relative;
 	margin: 0.2em 0;
 }
 .form-desc-editor-body .editor-viewport .el-p:focus {
 	outline: none;
+}
+
+.form-desc-editor-body .editor-viewport.mode-unprintsymbols .el-p::after {
+	margin-left: 0.1em;
 }

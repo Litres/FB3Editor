@@ -116,6 +116,12 @@ Ext.define(
 		cashSyncBtn: null,
 
 		/**
+		 * @private
+		 * @property {Boolean} Отображаются ли непечатаемые символы в настоящий момент.
+		 */
+		unprintedSymbols: false,
+
+		/**
 		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
 		 */
 		constructor: function (editor)
@@ -174,6 +180,7 @@ Ext.define(
 
 			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
 			xsl = FBEditor.xsl.Editor.getXsl();
+			//console.log(xsl);
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
 
 			// нормализуем строку
@@ -182,6 +189,7 @@ Ext.define(
 			transContent = transContent.replace(/\), ?]/g, ')]');
 			transContent = transContent.replace(/, $/, '');
 
+			//console.log(transContent);
 			//console.log('after transContent', new Date().getTime() - startTime);
 
 			// преобразовываем строку в элемент
@@ -241,6 +249,15 @@ Ext.define(
 		isSuspendEvent: function ()
 		{
 			return this.suspendEvent;
+		},
+
+		/**
+		 * Активен ли режим отображения непечатаемых символов.
+		 * @return {Boolean}
+		 */
+		isUnprintedSymbols: function ()
+		{
+			return this.unprintedSymbols;
 		},
 
 		/**
@@ -324,10 +341,10 @@ Ext.define(
 				content = me.content,
 				xml;
 
-			console.log('content', content);
+			//console.log('content', content);
 			xml = content.getXml();
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
-			console.log(xml);
+			//console.log(xml);
 
 			return xml;
 		},
@@ -406,6 +423,26 @@ Ext.define(
 					// обновляем информацию о выделенном элементе в панели свойств
 					panelProps.fireEvent('loadData', el);
 				}
+			}
+		},
+
+		/**
+		 * Устанавливает режим отображения непечатаемых символов.
+		 * @param {Boolean} show Отображать ли.
+		 */
+		setUnprintedSymbols: function (show)
+		{
+			var me = this,
+				content = me.getContent();
+			
+			if (me.unprintedSymbols !== show)
+			{
+				me.unprintedSymbols = show;
+				
+				// обновляем непечатаемые символы в отображении
+				me.setSuspendEvent(true);
+				content.updateUnprintedSymbols();
+				me.setSuspendEvent(false);
 			}
 		},
 

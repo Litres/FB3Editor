@@ -32,6 +32,20 @@ Ext.define(
 		mapCoords: null,
 
 		/**
+		 * @private
+		 * @property {String} Непечатаемый символ, который отображается вместо пробела в режиме отображения
+		 * непечатаемых символов.
+		 */
+		unprintedSymbolSpace: '\u00b7',
+
+		/**
+		 * @private
+		 * @property {String} Непечатаемый символ, который отображается вместо неразрывного пробела в режиме отображения
+		 * непечатаемых символов.
+		 */
+		unprintedSymbolNbsp: '\u2022',
+
+		/**
 		 * @param {String} text Текст.
 		 */
 		constructor: function (text)
@@ -110,14 +124,15 @@ Ext.define(
 			var me = this,
 				helper,
 				node;
-			
-			me.text = text;
+
+			// заменяем непечатаемые символы
+			me.text = me.convertUnprintedSymbols(text);
 			
 			if (viewportId)
 			{
 				helper = me.getNodeHelper();
 				node = helper.getNode(viewportId);
-				node.nodeValue = text;
+				node.nodeValue = me.convertSpaces(text);
 			}
 			
 			me.clearMapCoords();
@@ -155,9 +170,11 @@ Ext.define(
 		createNode: function (viewportId)
 		{
 			var me = this,
+				text,
 				node;
 
-			node = document.createTextNode(me.text);
+			text = me.convertSpaces(me.text);
+			node = document.createTextNode(text);
 			node.viewportId = viewportId;
 			me.setNode(node);
 
@@ -193,6 +210,60 @@ Ext.define(
 		clearMapCoords: function ()
 		{
 			this.mapCoords = null;
+		},
+
+		updateUnprintedSymbols: function ()
+		{
+			var me = this,
+				text,
+				helper;
+			
+			text = me.convertSpaces(me.text);
+
+			// обновляем отображение элемента
+			helper = me.getNodeHelper();
+			helper.setNodeValue(text);
+		},
+
+		/**
+		 * @private
+		 * Заменяет все пробелы на непечатаемые символы при активном режиме отображения непечатаемых символов.
+		 * @param {String} text Исходный текст.
+		 * @return {String} Преобразованный текст.
+		 */
+		convertSpaces: function (text)
+		{
+			var me = this,
+				newText = text,
+				manager = me.getManager();
+
+			if (manager && manager.isUnprintedSymbols())
+			{
+				newText = newText.replace(/ /g, me.unprintedSymbolSpace);
+				newText = newText.replace(/\u00a0/g, me.unprintedSymbolNbsp); // &nbsp;
+			}
+
+			return newText;
+		},
+
+		/**
+		 * @private
+		 * Заменяет все непечатаемые символы на пробелы.
+		 * @param {String} text Исходный текст.
+		 * @return {String} Преобразованный текст.
+		 */
+		convertUnprintedSymbols: function (text)
+		{
+			var me = this,
+				newText = text,
+				reg;
+
+			reg = new RegExp(me.unprintedSymbolSpace, 'g');
+			newText = newText.replace(reg, ' ');
+			reg = new RegExp(me.unprintedSymbolNbsp, 'g');
+			newText = newText.replace(reg, '\u00a0'); // &nbsp;
+
+			return newText;
 		}
 	}
 );
