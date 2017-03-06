@@ -1019,7 +1019,8 @@ Ext.define(
 		{
 			var me = this,
 				nodes = {},
-				els = {};
+				els = {},
+				viewportId = node.viewportId;
 
 			nodes.node = node;
 			els.node = node.getElement();
@@ -1029,9 +1030,9 @@ Ext.define(
 			if (els.node.isText && els.prev.isText)
 			{
 				// соединяем текстовые узлы
-				els.text = els.prev.text + els.node.text;
-				els.prev.setText(els.text);
-				nodes.prev.nodeValue = els.text;
+				els.text = els.prev.getText() + els.node.getText();
+				els.prev.setText(els.text, viewportId);
+				//nodes.prev.nodeValue = els.text;
 			}
 			else
 			{
@@ -1043,13 +1044,16 @@ Ext.define(
 				els.prevLast = els.prev;
 				nodes.last = nodes.prevLast.lastChild;
 				els.last = nodes.last ? nodes.last.getElement() : null;
+
 				//console.log('join nodes, els', nodes, els);
+
 				while (els.first && els.last)
 				{
 					nodes.firstChild = nodes.first.firstChild;
 					nodes.next = nodes.first;
 					//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first,
 					// nodes.first.childNodes.length, nodes.last, nodes.prevLast);
+
 					if (els.last.isText && !els.first.isText)
 					{
 						// перенос узлов без возможности объединения текста
@@ -1075,12 +1079,14 @@ Ext.define(
 							//console.log('(2) nodes.next, nodes.last', nodes.next, nodes.last);
 							nodes.buf = nodes.next.nextSibling;
 							els.next = nodes.next.getElement();
+
 							if (els.last && els.last.isText && els.next.isText)
 							{
 								// объединяем текстовые узлы
-								els.nodeValue = nodes.last.nodeValue + nodes.next.nodeValue;
-								nodes.last.nodeValue = els.nodeValue;
-								els.last.setText(els.nodeValue);
+								//els.nodeValue = nodes.last.nodeValue + nodes.next.nodeValue;
+								//nodes.last.nodeValue = els.nodeValue;
+								els.nodeValue = els.last.getText() + els.next.getText();
+								els.last.setText(els.nodeValue, viewportId);
 							}
 							else
 							{

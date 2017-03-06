@@ -141,7 +141,7 @@ Ext.define(
 					nodes.parent.removeChild(nodes.wrap);
 
 					// восстанавливаем текстовый узел
-					node.nodeValue = el.text;
+					node.nodeValue = el.convertSpaces(el.text);
 
 					manager.setSuspendEvent(false);
 				}
@@ -291,7 +291,7 @@ Ext.define(
 				nodes.parent.removeChild(nodes.wrap);
 
 				// восстанавливаем текст
-				node.nodeValue = el.text;
+				node.nodeValue = el.convertSpaces(el.getText());
 
 				manager.setSuspendEvent(false);
 			}

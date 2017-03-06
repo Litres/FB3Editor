@@ -20,6 +20,8 @@ Ext.define(
 				els = {},
 				nodes = {},
 				sel = window.getSelection(),
+				viewportId,
+				helper,
 				manager,
 				range;
 
@@ -28,26 +30,16 @@ Ext.define(
 				// получаем данные из выделения
 				range = sel.getRangeAt(0);
 
-				data.viewportId = range.commonAncestorContainer.viewportId;
-
+				viewportId = data.viewportId = range.commonAncestorContainer.viewportId;
 				nodes.p = range.commonAncestorContainer;
 				els.p = nodes.p.getElement();
-
 				manager = els.p.getManager();
 				manager.setSuspendEvent(true);
 
 				// ищем самый верхний контейнер
-				while (!els.p.hisName(me.elementName))
-				{
-					nodes.p = nodes.p.parentNode;
-					els.p = nodes.p.getElement();
-				}
-
-				nodes.parentP = nodes.p.parentNode;
-				els.parentP = nodes.parentP.getElement();
-
-				nodes.prevP = nodes.p.previousSibling;
-				els.prevP = nodes.prevP ? nodes.prevP.getElement() : null;
+				els.p = els.p.hisName(me.elementName) ? els.p : els.p.getParentName(me.elementName);
+				els.parentP = els.p.parent;
+				els.prevP = els.p.prev();
 
 				if (!els.prevP || !els.prevP.hisName(me.elementName))
 				{
@@ -57,42 +49,33 @@ Ext.define(
 
 				console.log('join prev ' + me.elementName, range);
 
-				nodes.lastPrev = nodes.prevP.lastChild;
-				els.lastPrev = nodes.lastPrev.getElement();
-
-				nodes.firstP = nodes.p.firstChild;
-				els.firstP = nodes.firstP.getElement();
+				els.lastPrev = els.prevP.last();
+				els.firstP = els.p.first();
 
 				// курсор
-				nodes.cursor = manager.getDeepLast(nodes.lastPrev);
+				els.cursor = els.lastPrev.getDeepLast();
 				nodes.startCursor = els.lastPrev.getText() ? els.lastPrev.getText().length : 0;
 
+				// пустой ли элемент
 				data.curEmpty = els.p.isEmpty();
 
-				if (!els.p.isEmpty())
+				if (!data.curEmpty)
 				{
 					if (els.prevP.isEmpty())
 					{
 						// предыдущий пустой
-
-						els.prevP.remove(els.lastPrev);
-						nodes.prevP.removeChild(nodes.lastPrev);
-
+						els.prevP.remove(els.lastPrev, viewportId);
 						nodes.prevEmpty = true;
 					}
 
 					// переносим все элементы из текущего в предыдущий
-					nodes.first = nodes.firstP;
-					while (nodes.first)
+					while (els.first = els.p.first())
 					{
-						els.first = nodes.first.getElement();
-						els.prevP.add(els.first);
-						nodes.prevP.appendChild(nodes.first);
-						nodes.first = nodes.p.firstChild;
+						els.prevP.add(els.first, viewportId);
 					}
 
 					// курсор
-					nodes.cursor = manager.getDeepFirst(nodes.firstP);
+					els.cursor = els.firstP.getDeepFirst();
 					nodes.startCursor = 0;
 
 					if (els.lastPrev && els.firstP && els.lastPrev.isText && els.firstP.isText)
@@ -100,23 +83,26 @@ Ext.define(
 						// соединяем текстовые узлы
 
 						// сохраняем позицию разделения
-						nodes.offset = els.lastPrev.text.length;
+						nodes.offset = els.lastPrev.getText().length;
 
 						// курсор
-						nodes.cursor = nodes.lastPrev;
+						els.cursor = els.lastPrev;
 						nodes.startCursor = nodes.offset;
 
+						helper = els.firstP.getNodeHelper();
+						nodes.firstP = helper.getNode(viewportId);
 						manager.joinNode(nodes.firstP);
 					}
 				}
 
 				// удаляем текущий
-				els.parentP.remove(els.p);
-				nodes.parentP.removeChild(nodes.p);
+				els.parentP.remove(els.p, viewportId);
 
-				els.parentP.sync(data.viewportId);
+				els.parentP.sync(viewportId);
 
 				// устанавливаем курсор
+				helper = els.cursor.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,
@@ -126,6 +112,7 @@ Ext.define(
 
 				// сохраняем ссылки
 				data.nodes = nodes;
+				data.els = els;
 
 				// проверяем по схеме
 				me.verifyElement(els.parentP);
@@ -138,10 +125,11 @@ Ext.define(
 			catch (e)
 			{
 				Ext.log({level: 'warn', msg: e, dump: e});
-				me.getHistory(els.parent).removePrev();
+				me.getHistory(els.parentP).removePrev();
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -153,47 +141,41 @@ Ext.define(
 				els = {},
 				nodes = {},
 				factory = FBEditor.editor.Factory,
+				viewportId = data.viewportId,
+				helper,
 				manager;
 
 			try
 			{
 				// исходные данные
 				nodes = data.nodes;
+				els = data.els;
 
 				console.log('undo join prev ' + me.elementName, nodes, data);
-
-				els.prevP = nodes.prevP.getElement();
-				els.parentP = nodes.parentP.getElement();
 
 				manager = els.parentP.getManager();
 				manager.setSuspendEvent(true);
 
 				// новый элемент
 				els.newP = factory.createElement(me.elementName);
-				nodes.newP = els.newP.getNode(data.viewportId);
+				nodes.newP = els.newP.getNode(viewportId);
 
 				// вставляем
-				nodes.nextP = nodes.prevP.nextSibling;
-				els.nextP = nodes.nextP ? nodes.nextP.getElement() : null;
-				if (els.nextP)
+				if (els.nextP = els.prevP.next())
 				{
-					els.parentP.insertBefore(els.newP, els.nextP);
-					nodes.parentP.insertBefore(nodes.newP, nodes.nextP);
+					els.parentP.insertBefore(els.newP, els.nextP, viewportId);
 				}
 				else
 				{
-					els.parentP.add(els.newP);
-					nodes.parentP.appendChild(nodes.newP);
+					els.parentP.add(els.newP, viewportId);
 				}
 
 				if (data.curEmpty)
 				{
 					// создаем пустой элемент
 					els.empty = manager.createEmptyElement();
-					nodes.empty = els.empty.getNode(data.viewportId);
-
-					els.newP.add(els.empty);
-					nodes.newP.appendChild(nodes.empty);
+					nodes.empty = els.empty.getNode(viewportId);
+					els.newP.add(els.empty, viewportId);
 				}
 				else
 				{
@@ -203,41 +185,43 @@ Ext.define(
 						els.common = els.prevP;
 						nodes.container = nodes.cursor;
 						nodes.firstP = manager.splitNode(els, nodes, nodes.offset);
+						els.firstP = nodes.firstP.getElement();
 					}
 
 					// переносим элементы в новый
-					nodes.next = nodes.firstP;
-					while (nodes.next)
+
+					els.next = els.firstP;
+
+					while (els.next)
 					{
-						nodes.buf = nodes.next.nextSibling;
-						els.next = nodes.next.getElement();
-						els.newP.add(els.next);
-						nodes.newP.appendChild(nodes.next);
-						nodes.next = nodes.buf;
+						els.buf = els.next.next();
+						els.newP.add(els.next, viewportId);
+						els.next = els.buf;
 					}
 
 					if (els.prevP.isEmpty())
 					{
 						// создаем пустой элемент
 						els.empty = manager.createEmptyElement();
-						nodes.empty = els.empty.getNode(data.viewportId);
-
-						els.prevP.add(els.empty);
-						nodes.prevP.appendChild(nodes.empty);
+						nodes.empty = els.empty.getNode(viewportId);
+						els.prevP.add(els.empty, viewportId);
 					}
 
 				}
 
-				els.parentP.sync(data.viewportId);
+				els.parentP.sync(viewportId);
 
 				// устанавливаем курсор
-				nodes.cursor = manager.getDeepFirst(nodes.newP);
+				els.cursor = els.newP.getDeepFirst();
+				helper = els.cursor.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 				data.saveRange = {
 					startNode: nodes.cursor
 				};
 				manager.setCursor(data.saveRange);
 
 				data.nodes = nodes;
+				data.els = els;
 
 				// скроллим окно вниз, если курсора не видно
 				manager.scrollViewDown();
@@ -247,10 +231,11 @@ Ext.define(
 			catch (e)
 			{
 				Ext.log({level: 'warn', msg: e, dump: e});
-				me.getHistory(els.parent).remove();
+				me.getHistory(els.parentP).remove();
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}
