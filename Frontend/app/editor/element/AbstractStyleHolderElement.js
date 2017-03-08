@@ -24,7 +24,7 @@ Ext.define(
 			el = me.callParent(arguments);
 
 			// аттрибут необходим для возможности установить фокус на  корневой элемент при необходимости
-			el.setAttribute('tabindex', -1);
+			//el.setAttribute('tabindex', -1);
 
 			if (Ext.isWebKit)
 			{
