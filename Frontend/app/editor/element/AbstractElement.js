@@ -1177,9 +1177,10 @@ Ext.define(
 
 		/**
 		 * Возвращает текстовое содержимое элемента.
+		 * @param {Boolean} [separatedHolder] Разделять ли текстовое содержимое абзацев пробелами.
 		 * @return {String} Текст.
 		 */
-		getText: function ()
+		getText: function (separatedHolder)
 		{
 			var me = this,
 				text = '';
@@ -1187,11 +1188,11 @@ Ext.define(
 			me.each(
 				function (child)
 				{
-					text += child.getText();
+					text += child.isText ? child.getText() : child.getText(separatedHolder);
 				}
 			);
 
-			text += text && me.isStyleHolder ? ' ' : '';
+			text += separatedHolder && text && me.isStyleHolder ? ' ' : '';
 
 			return text;
 		},
@@ -1203,11 +1204,12 @@ Ext.define(
 		getNameTree: function ()
 		{
 			var me = this,
+				first = me.first(),
 				name = '';
 
-			if (me.children.length && me.children[0].xmlTag === 'title')
+			if (first && first.hisName('title'))
 			{
-				name += me.children[0].getText() + ' ';
+				name += first.getText(true);
 			}
 
 			name += '&lt;' + me.xmlTag + '&gt;';
