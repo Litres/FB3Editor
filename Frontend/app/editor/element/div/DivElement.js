@@ -65,7 +65,6 @@ Ext.define(
 			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
 			style += attributes['float'] ? 'float: ' + attributes['float'] + '; ' : '';
 			style += attributes.align ? 'text-align: ' + attributes.align + '; ' : '';
-			style += attributes.border ? 'border: 1px solid black; ' : '';
 			me.style = style;
 
 			return style;

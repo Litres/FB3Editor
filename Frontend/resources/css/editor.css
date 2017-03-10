@@ -72,6 +72,7 @@
 
 /* секция */
 .main-editor-viewport .el-section {
+	text-align: center;
 	border-color: #009600;
 }
 .main-editor-viewport .el-section > * {
@@ -83,11 +84,19 @@
 
 /* блок */
 .main-editor-viewport .el-div {
+	display: inline-block;
 	padding: 1em;
 }
+.main-editor-viewport .el-div[border] {
+	border: 1px solid black;
+	margin: 1em;
+	padding: 0.5ex 0;
+}
 .main-editor-viewport .el-div .el-p {
-	padding: 0 1em;
 	text-indent: 0;
+}
+.main-editor-viewport .el-div[border] .el-p {
+	padding: 0 0.5ex;
 }
 
 .main-editor-viewport .el-div-align-center p {
