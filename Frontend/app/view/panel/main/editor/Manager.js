@@ -373,7 +373,7 @@ Ext.define(
 				panel;
 
 			panel = bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation') ?
-			        bridge.Ext && bridge.Ext.getCmp && bridge.Ext.getCmp('panel-body-navigation') : null;
+			        bridge.Ext.getCmp('panel-body-navigation') : null;
 
 			return panel;
 		},

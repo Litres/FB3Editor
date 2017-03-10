@@ -15,6 +15,12 @@ Ext.define(
 		htmlTag: 'body',
 		xmlTag: 'body',
 		
-		isRoot: true
+		isRoot: true,
+
+		getEditor: function ()
+		{
+			// не должно быть редактора у псевдоэлемента
+			return false;
+		}
 	}
 );

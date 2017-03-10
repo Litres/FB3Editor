@@ -32,7 +32,8 @@ Ext.define(
 		{
 			var me = this,
 				prefix = me.prefixName,
-				prefixData = {};
+				prefixData = {},
+				picture;
 
 			data.src = data.src ? data.src : data.name;
 			data.url = data.url ? data.url : data.src;
@@ -48,7 +49,11 @@ Ext.define(
 			);
 
 			me.getForm().setValues(prefixData);
-			me.down('image-editor-picture').updateView({url: data.url});
+
+			if (picture = me.down('image-editor-picture'))
+			{
+				picture.updateView({url: data.url});
+			}
 		}
 	}
 );

@@ -83,7 +83,11 @@
 
 /* блок */
 .main-editor-viewport .el-div {
-	padding: 0 1.2em;
+	padding: 1em;
+}
+.main-editor-viewport .el-div .el-p {
+	padding: 0 1em;
+	text-indent: 0;
 }
 
 .main-editor-viewport .el-div-align-center p {
