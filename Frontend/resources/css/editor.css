@@ -92,6 +92,10 @@
 	margin: 1em;
 	padding: 0.5ex 0;
 }
+.main-editor-viewport .el-div[float] {
+	margin: 0.5ex;
+	z-index: 1;
+}
 .main-editor-viewport .el-div .el-p {
 	text-indent: 0;
 }

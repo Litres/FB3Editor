@@ -56,15 +56,26 @@ Ext.define(
 		{
 			var me = this,
 				attributes = me.attributes,
+				widthFloatDefault = '11em',
+				width,
 				style;
 
 			style = me.callParent();
 			style += style ? ' ' : '';
-			style += attributes.width ? 'width: ' + attributes['width'] + '; ' : '';
 			style += attributes['min-width'] ? 'min-width: ' + attributes['min-width'] + '; ' : '';
 			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
+
+			// обтекание
 			style += attributes['float'] ? 'float: ' + attributes['float'] + '; ' : '';
+
+			// выравнивание внутри блока
 			style += attributes.align ? 'text-align: ' + attributes.align + '; ' : '';
+
+			// ширина
+			width = attributes.width ? attributes['width'] : false;
+			width = attributes['float'] && !width ? widthFloatDefault : width;
+			style += width ? 'width: ' + width + '; ' : '';
+
 			me.style = style;
 
 			return style;
