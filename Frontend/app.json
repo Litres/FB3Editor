@@ -211,6 +211,12 @@
         },
         {
             "path": "resources/css/resources.css"
+        },
+        {
+            "path": "resources/css/media/medium/editor.css"
+        },
+        {
+            "path": "resources/css/media/small/editor.css"
         }
     ],
 
@@ -243,7 +249,7 @@
      */
     "production": {
         "loader": {
-            "cache": "616",
+            "cache": "617",
             "cacheParam": "_v"
         }
     },

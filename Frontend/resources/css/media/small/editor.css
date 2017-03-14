@@ -1,0 +1,25 @@
+@media (max-width: 375px)
+{
+	.main-editor-viewport {
+		font-size: 220%;
+		line-height: 130%;
+	}
+
+	/* абзац */
+	.main-editor-viewport .el-p {
+		text-indent: 0.3em;
+	}
+
+	/* дочерние элементы секции */
+	.main-editor-viewport .el-section > * {
+		padding: 0 0.2em;
+	}
+
+	/* блок */
+	.main-editor-viewport .el-div {
+		padding: 1em 0.2em;
+	}
+	.main-editor-viewport .el-div[border] {
+		margin: 0;
+	}
+}

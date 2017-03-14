@@ -1,0 +1,22 @@
+@media (min-width: 376px) and (max-width: 1024px)
+{
+	.main-editor-viewport {
+		font-size: 260%;
+		line-height: 130%;
+	}
+
+	/* абзац */
+	.main-editor-viewport .el-p {
+		text-indent: 1.2em;
+	}
+
+	/* дочерние элементы секции */
+	.main-editor-viewport .el-section > * {
+		padding: 0 0.2em;
+	}
+
+	/* блок */
+	.main-editor-viewport .el-div {
+		padding: 1em;
+	}
+}

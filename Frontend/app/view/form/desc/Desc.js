@@ -57,11 +57,12 @@ Ext.define(
 			startScroll: 'onStartScroll'
 		},
 
-		autoScroll: true,
 		layout: {
 			type: 'anchor'
 		},
-		//minWidth: 730,
+
+		autoScroll: true,
+		minWidth: 730,
 		bodyPadding: 0,
 
 		/**

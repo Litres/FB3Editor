@@ -75,6 +75,8 @@
 	text-align: center;
 	border-color: #009600;
 }
+
+/* дочерние элементы секции */
 .main-editor-viewport .el-section > * {
 	padding: 0 1.2em;
 }
