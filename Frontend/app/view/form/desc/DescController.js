@@ -95,9 +95,13 @@ Ext.define(
 					Ext.getCmp('form-desc-sequence'),
 					Ext.getCmp('form-desc-relations-subject'),
 					Ext.getCmp('form-desc-relations-object'),
-					Ext.getCmp('panel-toolstab-file-button-savedesc'),
-					bridgeProps.Ext.getCmp('panel-props-desc')
+					Ext.getCmp('panel-toolstab-file-button-savedesc')
 				];
+
+			if (bridgeProps && bridgeProps.Ext.getCmp)
+			{
+				cmpArr.push(bridgeProps.Ext.getCmp('panel-props-desc'));
+			}
 
 			Ext.Array.each(
 				cmpArr,

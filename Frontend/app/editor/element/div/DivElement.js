@@ -56,7 +56,7 @@ Ext.define(
 		{
 			var me = this,
 				attributes = me.attributes,
-				widthFloatDefault = '11em',
+				//widthFloatDefault = '10em',
 				width,
 				style;
 
@@ -73,7 +73,7 @@ Ext.define(
 
 			// ширина
 			width = attributes.width ? attributes['width'] : false;
-			width = attributes['float'] && !width ? widthFloatDefault : width;
+			//width = attributes['float'] && !width ? widthFloatDefault : width;
 			style += width ? 'width: ' + width + '; ' : '';
 
 			me.style = style;

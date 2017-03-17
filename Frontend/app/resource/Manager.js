@@ -1308,8 +1308,22 @@ Ext.define(
 				bridgeNavigation = FBEditor.getBridgeNavigation(),
 				resources;
 
-			resources = me.getData();
-			bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(resources);
+			if (bridgeNavigation.Ext.getCmp && bridgeNavigation.Ext.getCmp('panel-resources-navigation'))
+			{
+				resources = me.getData();
+				bridgeNavigation.Ext.getCmp('panel-resources-navigation').loadData(resources);
+			}
+			else
+			{
+				Ext.defer(
+					function ()
+					{
+						this.updateNavigation();
+					},
+				    100,
+				    me
+				);
+			}
 		},
 
 		/**

@@ -22,4 +22,7 @@
 	.main-editor-viewport .el-div[border] {
 		margin: 0;
 	}
+	.main-editor-viewport .el-div[float] {
+		float: none;
+	}
 }
