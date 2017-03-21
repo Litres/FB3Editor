@@ -25,6 +25,7 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.pre.Pre',
 			'FBEditor.view.panel.main.editor.button.section.Section',
 			'FBEditor.view.panel.main.editor.button.spacing.Spacing',
+			'FBEditor.view.panel.main.editor.button.span.Span',
 			'FBEditor.view.panel.main.editor.button.strikethrough.Strikethrough',
 			'FBEditor.view.panel.main.editor.button.strong.Strong',
 			'FBEditor.view.panel.main.editor.button.sub.Sub',
@@ -147,6 +148,9 @@ Ext.define(
 				xtype: 'main-editor-button-code'
 			},
 			{
+				xtype: 'main-editor-button-span'
+			},
+			{
 				xtype: 'tbspacer',
 				width: 20
 			},
@@ -190,7 +194,8 @@ Ext.define(
 				me.down('main-editor-button-spacing'),
 				me.down('main-editor-button-sub'),
 				me.down('main-editor-button-sup'),
-				me.down('main-editor-button-code')
+				me.down('main-editor-button-code'),
+				me.down('main-editor-button-span')
 			];
 		},
 

@@ -192,6 +192,10 @@
 	text-decoration: underline;
 }
 
+.main-editor-viewport .el-span {
+	background-color: #fffa7e;
+}
+
 .main-editor-viewport .el-epigraph {
 	font-size: 80%;
 	border-color: black;
