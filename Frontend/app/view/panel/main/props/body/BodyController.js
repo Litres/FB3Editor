@@ -14,13 +14,16 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				propsInfo = view.getPropsInfo(),
+				propsPath = view.getPropsPath(),
 				editor,
 				convertBtn,
 				deleteBtn;
 
 			// приводим панель редактирования к начальному состоянию
 
-			Ext.getCmp('props-element-info').update();
+			propsInfo.update();
+			propsPath.resetData();
 
 			// кнопки
 			convertBtn = view.getConvertBtn();
@@ -63,6 +66,7 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				propsInfo = view.getPropsInfo(),
+				propsPath = view.getPropsPath(),
 				convertBtn = view.getConvertBtn(),
 				deleteBtn = view.getDeleteBtn(),
 				editor = view.editor,
@@ -80,6 +84,9 @@ Ext.define(
 			{
 				// обновляем инфу
 				propsInfo.update(data);
+
+				// устанавливаем путь
+				propsPath.updateData(el);
 
 				// кнопки
 				convertBtn.element = el;
@@ -109,6 +116,7 @@ Ext.define(
 					{
 						// добавляем новую панель редактирования
 						name = data.elementName.replace(/-/, '');
+						name = name.toLowerCase();
 						name = 'FBEditor.view.panel.main.props.body.editor.' + name + '.Editor';
 						editor = Ext.create(name, {elementName: data.elementName});
 						view.add(editor);

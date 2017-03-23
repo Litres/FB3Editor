@@ -202,23 +202,31 @@ body {
 	border: none;
 }
 
+/* инфа на панели свойств элемента */
 .element-info {
 	position: relative;
 	padding: 5px;
 }
-
 .element-info div {
 	position: relative;
 	margin: 0 0 5px 0;
 }
-
 .element-info div span {
 	color: #666;
 }
-
 .element-info-name {
 	font-weight: bold;
 	color: #c26874;
+}
+.panel-props-body-path {
+	margin: 0 0 5px 0;
+}
+.panel-props-body-path-el {
+	color: #2e9577;
+	cursor: pointer;
+}
+.panel-props-body-path-el:hover {
+	text-decoration: underline;
 }
 
 /* ячейка пикера создания элемента таблицы */

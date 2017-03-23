@@ -66,7 +66,7 @@ Ext.define(
 			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
 
 			// обтекание
-			style += attributes['float'] ? 'float: ' + attributes['float'] + '; ' : '';
+			style += attributes.float ? 'float: ' + attributes.float + '; ' : '';
 
 			// выравнивание внутри блока
 			style += attributes.align ? 'text-align: ' + attributes.align + '; ' : '';

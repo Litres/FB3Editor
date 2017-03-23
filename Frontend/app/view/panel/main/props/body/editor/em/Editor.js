@@ -1,11 +1,11 @@
 /**
- * Панель редактирования элемента ul.
+ * Панель редактирования элемента em.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.props.body.editor.ul.Editor',
+	'FBEditor.view.panel.main.props.body.editor.em.Editor',
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 

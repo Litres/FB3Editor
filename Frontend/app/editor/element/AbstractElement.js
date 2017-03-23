@@ -785,22 +785,23 @@ Ext.define(
 		getData: function ()
 		{
 			var me = this,
+				helper = me.getNodeHelper(),
 				node,
 				data,
 				el;
 
-			node = Ext.Object.getValues(me.nodes)[0];
+			node = helper.getNode();
 
 			// текущий выделенный элемент
-			el = me.isImg ? me : me.getBlock();
+			//el = me.isImg ? me : me.getBlock();
+			el = me.isText || me.isBr ? me.parent : me;
 
 			data = {
 				el: el,
-				elementName: el.xmlTag,
-
-				// путь html от курсора
-				htmlPath: me.getHtmlPath(node)
+				elementName: el.getName().toUpperCase(),
+				htmlPath: me.getHtmlPath(node) // путь html от курсора
 			};
+			
 			Ext.Object.each(
 				el.attributes,
 				function (key, val)
@@ -1028,7 +1029,9 @@ Ext.define(
 			parentNode = node && node.parentNode ? node.parentNode : null;
 			name = node && node.nodeType !== Node.TEXT_NODE ? node.nodeName : '';
 			newPath = name + (path ? ' > ' + path : '');
+			
 			//console.log(node, name, parentNode.parentNode, path, newPath);
+			
 			if (name !== 'MAIN' && parentNode)
 			{
 				newPath = me.getHtmlPath(parentNode, newPath);
