@@ -34,7 +34,7 @@ Ext.define(
 			xml = me.callParent(arguments);
 
 			// удаляем все одиночные br
-			xml = xml.replace(/<li><br\/><\/li>/gi, '<li><\/li>');
+			xml = xml.replace(/<li(.*?)>\n\s+<br(.*?)\/>\n\s+<\/li>/gi, '<li><\/li>');
 
 			return xml;
 		}
