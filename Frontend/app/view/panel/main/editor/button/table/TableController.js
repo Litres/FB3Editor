@@ -18,14 +18,17 @@ Ext.define(
 		verifyResult: function (enable, scopeData)
 		{
 			var me = this,
-				btn = me.getView(),
-				manager = btn.getEditorManager(),
+				view = me.getView(),
+				manager = view.getEditorManager(),
+				menu = view.getMenu(),
+				insertTableItem = view.getInsertTable(),
 				nodes = {},
 				els = {},
-				range,
-				insertTableItem;
+				range;
 
 			range = manager.getRange();
+
+			//console.log(enable, range);
 
 			if (!range)
 			{
@@ -34,10 +37,8 @@ Ext.define(
 
 			me.callParent(arguments);
 
-			insertTableItem = btn.down('main-editor-button-table-menu-insertTable');
-
 			// синхронизируем пункты меню
-			btn.menu.fireEvent('sync');
+			menu.fireEvent('sync');
 
 			if (!enable)
 			{
@@ -54,7 +55,7 @@ Ext.define(
 				{
 
 					// если курсор в таблице, активируем кнопку принудительно
-					btn.enable();
+					view.enable();
 
 					insertTableItem.disable();
 				}

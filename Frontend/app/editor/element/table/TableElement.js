@@ -16,6 +16,7 @@ Ext.define(
 
 		controllerClass: 'FBEditor.editor.element.table.TableElementController',
 		//selectionClass: 'FBEditor.editor.element.table.TableSelection',
+		
 		htmlTag: 'table',
 		xmlTag: 'table',
 		cls: 'el-table',

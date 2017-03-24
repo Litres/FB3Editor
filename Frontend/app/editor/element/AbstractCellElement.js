@@ -48,7 +48,7 @@ Ext.define(
 			xml = me.callParent(arguments);
 
 			// заменяем первый br на пустой параграф согласно схеме
-			reg = new RegExp('<' + name + '( .*?)?><br\/?>', 'gi');
+			reg = new RegExp('<' + name + '(.*?)>\\n\\s+<br(.*?)\/>', 'gi');
 			xml = xml.replace(reg, '<' + name + '$1><p></p>');
 
 			return xml;

@@ -20,7 +20,6 @@ Ext.define(
 				factory = FBEditor.editor.Factory,
 				nodes = {},
 				els = {},
-				reg = {},
 				pos = {},
 				name = btn.elementName,
 				xml,
@@ -181,8 +180,12 @@ Ext.define(
 				// удаляем временный элемент
 				els.parent.children.splice(pos, 1);
 
+				/*if (name === 'table')
+				{
+					console.log('xml', xml);
+				}*/
+
 				// проверяем по схеме
-				//console.log('xml', xml);
 				me.verify(xml);
 			}
 

@@ -64,9 +64,14 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = btn.getEditorManager();
+				manager = btn.getEditorManager(),
+				content,
+				xml;
 
-			return manager.getContent().getXml(true);
+			content = manager.getContent();
+			xml = content.getXml(true);
+
+			return xml;
 		},
 
 		/**
