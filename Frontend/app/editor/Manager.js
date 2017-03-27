@@ -858,7 +858,7 @@ Ext.define(
 			els.parentContainer = nodes.parentContainer.getElement();
 			els.container = nodes.container.getElement();
 
-			if (els.parentContainer.elementId === els.common.elementId && els.container.isText)
+			if (els.parentContainer.equal(els.common) && els.container.isText)
 			{
 				// простая разбивка текстового узла на два
 				nodes.next = nodes.container.nextSibling;
@@ -895,7 +895,7 @@ Ext.define(
 			}
 			else
 			{
-				while (els.parentContainer.elementId !== els.common.elementId)
+				while (!els.parentContainer.equal(els.common))
 				{
 					nodes.next = nodes.parentContainer.nextSibling;
 					nodes.parent = nodes.parentContainer.parentNode;
@@ -926,7 +926,7 @@ Ext.define(
 							els.container.setText(els.startTextValue);
 						}
 
-						if (els.endTextValue.trim())
+						if (els.endTextValue/*els.endTextValue.trim()*/)
 						{
 							// добавляем текст
 							els.t = factory.createElementText(els.endTextValue);
