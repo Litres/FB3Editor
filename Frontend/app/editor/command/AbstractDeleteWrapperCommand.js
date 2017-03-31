@@ -138,7 +138,7 @@ Ext.define(
 				{
 					// снимаем форматирование в выделенном фрагменте
 
-					offset = range.offset;
+					offset = Ext.clone(range.offset);
 					data.range = range;
 					data.links = {};
 					els.wrappers = [];
@@ -155,7 +155,7 @@ Ext.define(
 					els.selValue = els.node.getText(offset.start, offset.end);
 					els.endValue = els.node.getText(offset.end);
 
-					if (els.node.isText && els.selValue === els.node.getText())
+					if (els.node.isText && els.selValue === els.node.getText() && !els.node.prev() && !els.node.next())
 					{
 						// выделен полностью текстовый узел
 						els.wrap = els.node.getParentName(me.elementName);
@@ -227,6 +227,11 @@ Ext.define(
 							nodes.startContainer = manager.splitNode(els, nodes, offset.start);
 							els.startContainer = nodes.startContainer.getElement();
 							els.common.removeEmptyText();
+
+							// для курсора необходимо скорректировать начальную точку выделения после разбивки узла
+							helper = els.startContainer.getDeepFirst().getNodeHelper();
+							range.start = helper.getNode(viewportId);
+							range.offset.start = 0;
 						}
 
 						nodes.parentStart = nodes.startContainer.parentNode;
@@ -236,8 +241,7 @@ Ext.define(
 						{
 							// восстанавливаем корректную ссылку на конечную точку выделения
 							range.end = nodes.startContainer.firstChild;
-							offset.end = offset.end - offset.start;
-							range.offset.end = offset.end;
+							range.offset.end = offset.end = offset.end - offset.start;
 						}
 
 						nodes.endContainer = range.end;
@@ -505,6 +509,8 @@ Ext.define(
 								    el.add(child, viewportId);
 							    }
 							);
+
+							me.optimizeEqualIntersectEls(parent);
 						}
 					);
 
