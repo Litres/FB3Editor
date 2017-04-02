@@ -254,28 +254,28 @@ Ext.define(
 			if (el.parent)
 			{
 				// удаляем ссылку на вставляемый элемент из старого родителя
-				el.parent.remove(el, viewportId);
-
-				if (viewportId)
-				{
-					// вставляем узел
-
-					helper = me.getNodeHelper();
-					nodes.node = helper.getNode(viewportId);
-
-					helper = el.getNodeHelper();
-					nodes.child = helper.getNode(viewportId);
-
-					helper = nextEl.getNodeHelper();
-					nodes.next = helper.getNode(viewportId);
-
-					nodes.node.insertBefore(nodes.child, nodes.next);
-				}
+				el.parent.remove(el);
 			}
 
 			el.parent = me;
 			children.splice(pos, 0, el);
 			me.children = children;
+
+			if (viewportId)
+			{
+				// вставляем узел
+
+				helper = me.getNodeHelper();
+				nodes.node = helper.getNode(viewportId);
+
+				helper = el.getNodeHelper();
+				nodes.child = helper.getNode(viewportId);
+
+				helper = nextEl.getNodeHelper();
+				nodes.next = helper.getNode(viewportId);
+
+				nodes.node.insertBefore(nodes.child, nodes.next);
+			}
 		},
 
 		/**
@@ -1428,6 +1428,34 @@ Ext.define(
 			{
 				return false;
 			}
+		},
+
+		/**
+		 * Является ли элемент первым в родителе.
+		 * @return {Boolean}
+		 */
+		isFirst: function ()
+		{
+			var me = this,
+				isFirst;
+
+			isFirst = me.equal(me.parent.first());
+
+			return isFirst;
+		},
+
+		/**
+		 * Является ли элемент последним в родителе.
+		 * @return {Boolean}
+		 */
+		isLast: function ()
+		{
+			var me = this,
+				isLast;
+			
+			isLast = me.equal(me.parent.last());
+			
+			return isLast;
 		},
 
 		/**

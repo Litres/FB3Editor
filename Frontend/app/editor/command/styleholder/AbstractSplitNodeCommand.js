@@ -16,13 +16,13 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				sel = window.getSelection(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
 				pos = {},
-				sel = window.getSelection(),
 				range,
-				factory = FBEditor.editor.Factory,
 				manager;
 
 			try

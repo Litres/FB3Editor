@@ -9,12 +9,13 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 		requires: [
-			'FBEditor.editor.element.li.LiElementController',
-			'FBEditor.editor.element.li.LiElementControllerWebKit',
+			'FBEditor.editor.command.li.CreateEmptyPCommand',
+			'FBEditor.editor.command.li.JoinNextNodeCommand',
+			'FBEditor.editor.command.li.JoinPrevNodeCommand',
 			'FBEditor.editor.command.li.SplitNodeCommand',
 			'FBEditor.editor.command.li.RemoveRangeNodesCommand',
-			'FBEditor.editor.command.li.JoinNextNodeCommand',
-			'FBEditor.editor.command.li.JoinPrevNodeCommand'
+			'FBEditor.editor.element.li.LiElementController',
+			'FBEditor.editor.element.li.LiElementControllerWebKit'
 		],
 
 		controllerClass: 'FBEditor.editor.element.li.LiElementController',
@@ -37,6 +38,22 @@ Ext.define(
 			xml = xml.replace(/<li(.*?)>\n\s+<br(.*?)\/>\n\s+<\/li>/gi, '<li><\/li>');
 
 			return xml;
+		},
+
+		/**
+		 * Проверяет, является ли элемент пустым и последним в списке.
+		 * @return {Boolean}
+		 */
+		isEmptyLast: function ()
+		{
+			var me = this,
+				isLast,
+				isEmpty;
+			
+			isEmpty = me.isEmpty();
+			isLast = me.isLast();
+			
+			return isLast && isEmpty;
 		}
 	}
 );
