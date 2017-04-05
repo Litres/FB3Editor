@@ -27,9 +27,7 @@ Ext.define(
 				range;
 
 			range = manager.getRange();
-
-			//console.log(enable, range);
-
+			
 			if (!range)
 			{
 				return;

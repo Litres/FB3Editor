@@ -19,6 +19,7 @@ Ext.define(
 
 		html: '<i class="fa fa-table fa-lg"></i>',
 		tooltip: 'Таблица',
+		
 		elementName: 'table',
 
 		/**

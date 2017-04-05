@@ -117,6 +117,8 @@ function W ()
 			};
 
 			valid = validateXML(module);
+			//valid = '';
+			//res = true;
 
 			// признак ошибки
 			reg = new RegExp('^(' + data.schemaFileName + '|' + data.xmlFileName + '):[0-9]+', 'i');

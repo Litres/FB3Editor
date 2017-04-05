@@ -5,10 +5,10 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.editor.button.table.menu.item.splitCells.ItemController',
+	'FBEditor.view.panel.main.editor.button.table.menu.item.joinCells.ItemController',
 	{
 		extend: 'FBEditor.view.panel.main.editor.button.table.menu.item.AbstractItemController',
-		alias: 'controller.main.editor.button.table.menu.item.splitCells',
+		alias: 'controller.main.editor.button.table.menu.item.joinCells',
 
 		onSync: function ()
 		{
@@ -17,11 +17,14 @@ Ext.define(
 				manager = FBEditor.getEditorManager(),
 				nodes = {},
 				els = {},
+				viewportId,
+				selection,
+				size,
 				range;
 
 			range = manager.getRange();
 
-			if (!range || !range.collapsed)
+			if (!range || range.collapsed)
 			{
 				view.disable();
 				return false;
@@ -35,21 +38,30 @@ Ext.define(
 				return false;
 			}
 
+			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
-			els.td = els.node.isTable ? els.node : els.node.getParentName('td');
+			els.table = els.node.isTable ? els.node : els.node.getParentName('table');
 
-			if (!els.td || !els.td.getLinks())
+			if (els.table)
 			{
+				selection = els.table.getSelection(viewportId);
+				size = selection.getSize();
+			}
+
+			if (!size)
+			{
+				// выеделение неактивно
 				view.disable();
 				return false;
 			}
 
 			view.enable();
 
-			// ссылка на ячейку для передачи в команду разъединения ячейки
+			// ссылка на таблицу для передачи в команду объединения ячеек
 			view.cmdOpts = {
-				td: els.td,
-				viewportId: nodes.node.viewportId
+				table: els.table,
+				viewportId: viewportId,
+				size: size
 			};
 
 			return true;

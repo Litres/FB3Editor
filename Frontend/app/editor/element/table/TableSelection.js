@@ -7,7 +7,7 @@
 Ext.define(
 	'FBEditor.editor.element.table.TableSelection',
 	{
-		extend: 'FBEditor.editor.element.AbstractSelection',
+		extend: 'FBEditor.editor.selection.Selection',
 
 		/**
 		 * @private
@@ -17,6 +17,67 @@ Ext.define(
 		 */
 		size: null,
 
+		constructor: function (node)
+		{
+			var me = this;
+
+			// регистрируем событие нажатия кнопки мыши
+			node.addEventListener(
+				'mousedown',
+				function (e)
+				{
+					// инициализиурет выделение
+					me.startSelection.apply(me, [e]);
+				}
+			);
+
+			// регистрируем событие перемещения курсора мыши
+			node.addEventListener(
+				'mousemove',
+				function (e)
+				{
+					me.moveSelection.apply(me, [e]);
+				}
+			);
+
+			me.callParent(arguments);
+		},
+
+		startSelection: function (e)
+		{
+			var me = this,
+				node = me.node,
+				helper,
+				el;
+
+			me.size = null;
+			el = node.getElement();
+			helper = el.getNodeHelper();
+			
+			// убираем выделение
+			helper.clearSelectNodes();
+		},
+
+		moveSelection: function (e)
+		{
+			var me = this;
+
+			me.execute();
+		},
+
+		/**
+		 * Возвращает размерность веделения.
+		 * @return {Object}
+		 */
+		getSize: function ()
+		{
+			return this.size;
+		},
+
+		/**
+		 * @private
+		 * Выделяет ячейки таблицы.
+		 */
 		execute: function ()
 		{
 			var me = this,
@@ -41,7 +102,6 @@ Ext.define(
 
 					if (size && !me.sizeEquals(size, me.size))
 					{
-						//sel.removeAllRanges();
 						me.size = size;
 						els.table = els.common.isTable ? els.common : els.common.parent;
 
@@ -55,19 +115,20 @@ Ext.define(
 								tr.each(
 									function (td, index)
 									{
-										var col = index;
+										var col = index,
+											helper = td.getNodeHelper();
 
 										// проверяем входит ли ячейка в диапазон выделения
 										if (row >= size.lt[1] && row <= size.rb[1] &&
 										    col >= size.lt[0] && col <= size.rb[0])
 										{
 											// выделяем
-											td.selectNode(true, viewportId);
+											helper.selectNode(true, viewportId);
 										}
 										else
 										{
 											// убираем выделение
-											td.selectNode(false, viewportId);
+											helper.selectNode(false, viewportId);
 										}
 									}
 								);
@@ -76,22 +137,6 @@ Ext.define(
 					}
 				}
 			}
-		},
-
-		isActive: function ()
-		{
-			var me = this;
-
-			return me.size ? true : false;
-		},
-
-		/**
-		 * Возвращает размерность веделения.
-		 * @return {Object }
-		 */
-		getSize: function ()
-		{
-			return this.size;
 		},
 
 		/**

@@ -13,7 +13,7 @@ Ext.define(
 		/**
 		 * @property {Node} Узел элемента, к которому привязано выделение.
 		 */
-		node: null,
+		//node: null,
 
 		constructor: function (node)
 		{

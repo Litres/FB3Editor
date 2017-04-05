@@ -9,6 +9,13 @@ Ext.define(
 	{
 		/**
 		 * @private
+		 * CSS-класс для собственного выделения элемента.
+		 * @property {String}
+		 */
+		selectCls: 'mode-select',
+
+		/**
+		 * @private
 		 * @property {FBEditor.editor.element.AbstractElement} Элемент.
 		 */
 		el: null,
@@ -29,14 +36,11 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el,
-				sel = window.getSelection(),
-				node = null,
-				range;
+				node = null;
 
 			if (el.nodes)
 			{
-				range = sel.rangeCount ? sel.getRangeAt(0) : null;
-				viewportId = viewportId || (range ? range.startContainer.viewportId : false);
+				viewportId = viewportId || me.getViewportId();
 				node = viewportId && el.nodes[viewportId] ? el.nodes[viewportId] : Ext.Object.getValues(el.nodes)[0];
 			}
 
@@ -311,6 +315,92 @@ Ext.define(
 			node = me.getNode(viewportId);
 			node.scrollLeft += x;
 			node.scrollTop += y;
+		},
+
+		/**
+		 * Устанавливает или сбрасывает выделение элемента.
+		 * @param {Boolean} selected Установить ли выделение.
+		 * @param {String} viewportId Id окна.
+		 */
+		selectNode: function (selected, viewportId)
+		{
+			var me = this,
+				el = me.el,
+				cls = el.cls,
+				selectCls = me.selectCls,
+				node,
+				reg;
+
+			node = me.getNode(viewportId);
+
+			if (node)
+			{
+				reg = new RegExp(selectCls);
+
+				if (!reg.test(cls) && selected)
+				{
+					// выделяем узел
+					cls = cls + ' ' + selectCls;
+					node.setAttribute('class', cls);
+				}
+
+				if (reg.test(cls) && !selected)
+				{
+					// убираем выделение
+					cls = cls.replace(' ' + selectCls, '');
+					node.setAttribute('class', cls);
+				}
+
+				el.cls = cls;
+			}
+		},
+
+		/**
+		 * Убирает собственное выделение с отображения элемента.
+		 */
+		clearSelectNodes: function ()
+		{
+			var me = this,
+				el = me.el;
+
+			Ext.Object.each(
+				el.nodes,
+				function (viewportId, node)
+				{
+					var  selectNodes;
+
+					selectNodes = node.querySelectorAll('.' + me.selectCls);
+
+					Ext.Array.each(
+						selectNodes,
+						function (selectNode)
+						{
+							var el = selectNode.getElement(),
+								helper;
+
+							helper = el.getNodeHelper();
+							helper.selectNode(false, viewportId);
+						}
+					);
+				}
+			);
+		},
+
+		/**
+		 * @private
+		 * Возвращает айди окна из выделения.
+		 * @return {String} Айди окна.
+		 */
+		getViewportId: function ()
+		{
+			var sel = window.getSelection(),
+				viewportId,
+				range;
+
+			range = sel.rangeCount ? sel.getRangeAt(0) : null;
+			viewportId = range ? range.startContainer.viewportId : false;
+
+			return viewportId;
 		}
 	}
 );

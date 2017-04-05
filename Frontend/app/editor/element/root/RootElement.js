@@ -21,6 +21,7 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.root.RootElementController',
 		controllerClassWebkit: 'FBEditor.editor.element.root.RootElementControllerWebkit',
 		selectionClass: 'FBEditor.editor.element.root.RootSelection',
+		selectionClassWebKit: 'FBEditor.editor.element.root.RootSelectionWebKit',
 
 		xmlTag: 'root',
 		htmlTag: 'main',

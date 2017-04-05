@@ -23,6 +23,8 @@ Ext.define(
 			sync: 'onSync'
 		},
 
+		elementName: null,
+
 		/**
 		 * @property {Object} Опции, которые передаются в команду создания элемента.
 		 */

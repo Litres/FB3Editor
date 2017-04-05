@@ -12,7 +12,6 @@ Ext.define(
 			'FBEditor.editor.command.PasteCommand',
 			'FBEditor.editor.command.RemoveNodesCommand',
 			'FBEditor.editor.element.AbstractElementController',
-			'FBEditor.editor.element.AbstractSelection',
 			'FBEditor.editor.helper.element.Node'
 		],
 
@@ -41,6 +40,12 @@ Ext.define(
 		 * Смотрите пример реализации FBEditor.editor.element.table.TableSelection
 		 */
 		selectionClass: '',
+
+		/**
+		 * @property {String} Класс для обработки выделения в браузере WebKit.
+		 * Если не указан, то по умолчанию используется #selectionClass.
+		 */
+		selectionClassWebKit: '',
 
 		/**
 		 * @property {Boolean} Разрешается ли разбивать элемент клавишами Ctrl/Shift+Enter.
@@ -126,12 +131,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.selection.Selection} Выделение элемента.
-		 */
-		//selection: null,
-
-		/**
-		 * @private
 		 * @property {FBEditor.editor.helper.element.Node} Хэлпер для работы с отображением элемента.
 		 */
 		//nodeHelper: null,
@@ -142,6 +141,12 @@ Ext.define(
 		 * Ключ каждого свойства представляет id окна, а значение - узел html.
 		 */
 		//nodes: {},
+
+		/**
+		 * @private
+		 * @property {Object} Выделения FBEditor.editor.selection.Selection, привязанные к свои окнам.
+		 */
+		//selection: {},
 
 		/**
 		 * @param {Object} attributes Атрибуты элемента.
@@ -488,7 +493,7 @@ Ext.define(
 			{
 				child = me.children[pos];
 				pos++;
-				fn.apply(scope, [child]);
+				fn.apply(scope, [child, pos - 1]);
 			}
 
 			//Ext.Array.each(this.children, fn);
@@ -668,39 +673,6 @@ Ext.define(
 					}
 				);
 			}
-		},
-
-		/**
-		 * Устанавливает или сбрасывает выделение узла в окне.
-		 * @param {Boolean} selected Установить ли выделение.
-		 * @param {String} viewportId Id окна.
-		 */
-		selectNode: function (selected, viewportId)
-		{
-			var me = this,
-				node = me.nodes[viewportId],
-				cls = me.cls,
-				manager = me.getManager(),
-				selectCls = manager.selectCls,
-				reg;
-
-			reg = new RegExp(selectCls);
-
-			if (!reg.test(cls) && selected)
-			{
-				// выделяем узел
-				cls = cls + ' ' + selectCls;
-				node.setAttribute('class', cls);
-			}
-
-			if (reg.test(cls) && !selected)
-			{
-				// убираем выделение
-				cls = cls.replace(' ' + selectCls, '');
-				node.setAttribute('class', cls);
-			}
-
-			me.cls = cls;
 		},
 
 		/**
@@ -1099,12 +1071,13 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает объект выделения.
-		 * @return {FBEditor.editor.element.AbstractSelection}
+		 * Возвращает выделение.
+		 * @param {String} viewportId Айди окна.
+		 * @return {FBEditor.editor.selection.Selection}
 		 */
-		getSelection: function ()
+		getSelection: function (viewportId)
 		{
-			return this.selection;
+			return this.selection[viewportId];
 		},
 
 		/**
@@ -1807,18 +1780,20 @@ Ext.define(
 		createSelection: function (node)
 		{
 			var me = this,
-				selectionClass = me.selectionClass;
+				selectionClass = me.selectionClass,
+				selectionClassWebKit = me.selectionClassWebKit,
+				selection;
 
-			if (selectionClass)
+			if (selectionClass || selectionClassWebKit)
 			{
 				try
 				{
-					selectionClass = Ext.isWebKit ? selectionClass + 'WebKit' : selectionClass;
-					me.selection = Ext.create(selectionClass, node);
+					selectionClass = Ext.isWebKit && selectionClassWebKit ? selectionClassWebKit : selectionClass;
+					selection = Ext.create(selectionClass, node);
 				}
 				catch (e)
 				{
-					me.selection = Ext.create(me.selectionClass, node);
+					selection = Ext.create(me.selectionClass, node);
 
 					Ext.log(
 						{
@@ -1827,6 +1802,10 @@ Ext.define(
 						}
 					);
 				}
+				
+				// выделение привязывается к узлу отображения
+				me.selection = me.selection || {};
+				me.selection[node.viewportId] = selection;
 			}
 		},
 

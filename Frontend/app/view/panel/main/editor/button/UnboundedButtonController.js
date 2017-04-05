@@ -120,6 +120,8 @@ Ext.define(
 				// получаем xml
 				xml = me.getContentXml();
 
+				//console.log(name, xml);
+
 				// возвращаем все выделенные элементы обратно
 				for (i = 0; i < pos.count; i++)
 				{

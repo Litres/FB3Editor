@@ -17,6 +17,7 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				helper,
 				manager,
 				viewportId,
 				size;
@@ -24,16 +25,18 @@ Ext.define(
 			try
 			{
 				viewportId = data.opts.viewportId;
-
 				size = data.opts.size;
-				nodes.table = data.opts.table;
-				els.table = nodes.table.getElement();
+				els.table = data.opts.table;
+				helper = els.table.getNodeHelper();
+				nodes.table = helper.getNode(viewportId);
+				
+				console.log('join cells', data);
 
 				manager = els.table.getManager();
 				manager.setSuspendEvent(true);
 
 				// убираем выделение
-				manager.clearSelectNodes(viewportId);
+				helper.clearSelectNodes();
 
 				els.joinTd = me.joinCells(els.table, size, viewportId);
 
@@ -41,7 +44,8 @@ Ext.define(
 				els.table.sync(viewportId);
 
 				// курсор
-				nodes.cursor = els.joinTd.nodes[viewportId];
+				helper = els.joinTd.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
@@ -78,6 +82,8 @@ Ext.define(
 			{
 				viewportId = data.opts.viewportId;
 				els = data.els;
+
+				console.log('undo join cells', data);
 
 				manager = els.table.getManager();
 				manager.setSuspendEvent(true);
