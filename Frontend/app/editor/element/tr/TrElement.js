@@ -35,6 +35,22 @@ Ext.define(
 			me.add(els.td);
 
 			return els;
+		},
+
+		/**
+		 * Возвращает позицию строки в таблице.
+		 * Позиция строки отсчитывается от 0.
+		 * @return {Number}
+		 */
+		getPosition: function ()
+		{
+			var me = this,
+				parent = me.parent,
+				posRow;
+
+			posRow = parent.getChildPosition(me);
+
+			return posRow;
 		}
 	}
 );

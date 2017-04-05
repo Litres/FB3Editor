@@ -83,9 +83,13 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection(),
 				range = sel.getRangeAt(0),
+				node = me.node,
+				viewportId = node.viewportId,
 				els = {},
-				viewportId,
 				size;
+
+			// определяем размерность выделения - позицию левой верхней и правой нижней ячеек
+			size = me.getSizeFromRange();
 
 			if (range && !range.collapsed)
 			{
@@ -94,12 +98,6 @@ Ext.define(
 				if (els.common.isTable || els.common.isTr)
 				{
 					// создаем выделение необходимых ячеек таблицы
-
-					viewportId = range.startContainer.viewportId;
-
-					// определяем размерность выделения - позицию левой верхней и правой нижней ячеек
-					size = me.getSizeFromRange(range);
-
 					if (size && !me.sizeEquals(size, me.size))
 					{
 						me.size = size;
@@ -142,27 +140,69 @@ Ext.define(
 		/**
 		 * @private
 		 * Возвращает размерность выделения.
-		 * @param range {Range} Объект выделения.
 		 * @return {Object}
 		 */
-		getSizeFromRange: function (range)
+		getSizeFromRange: function ()
 		{
 			var me = this,
+				sel = window.getSelection(),
 				els = {},
+				range,
 				size;
 
-			els.start = range.startContainer.getElement();
-			els.end = range.endContainer.getElement();
+			range = sel.getRangeAt(0);
 
-			// начальная и конечная ячейки выделения
-			els.startTd = els.start.getParentName('td');
-			els.endTd = els.end.getParentName('td');
+			if (range && !range.collapsed)
+			{
+				els.common = range.commonAncestorContainer.getElement();
 
-			// получаем позиции ячеек
-			size = {
-				lt: els.startTd.getPosition(),
-				rb: els.endTd.getPosition()
-			};
+				if (els.common.isTable || els.common.isTr)
+				{
+					if (Ext.browser.is.Firefox)
+					{
+						// для Firefox выделение в таблице работает на уровне строк tr, если выделяется несколько ячеек
+
+						range = {
+							startTr: sel.getRangeAt(0),
+							endTr: sel.getRangeAt(sel.rangeCount - 1)
+						};
+
+						// первая строка в выделении
+						els.startTr = range.startTr.startContainer.getElement();
+
+						// последняя строка
+						els.endTr = range.endTr.startContainer.getElement();
+
+						size = {
+							lt: [
+								range.startTr.startOffset,
+								els.startTr.getPosition()
+							],
+							rb: [
+								range.endTr.startOffset,
+								els.endTr.getPosition()
+							]
+						};
+					}
+					else
+					{
+						// для остальных бразуеров выделение работает нормально - на уровне самого вложенного элемента в ячейке
+
+						els.start = range.startContainer.getElement();
+						els.end = range.endContainer.getElement();
+
+						// начальная и конечная ячейки выделения
+						els.startTd = els.start.getParentName('td');
+						els.endTd = els.end.getParentName('td');
+
+						// получаем позиции ячеек
+						size = {
+							lt: els.startTd.getPosition(),
+							rb: els.endTd.getPosition()
+						};
+					}
+				}
+			}
 
 			return size;
 		},

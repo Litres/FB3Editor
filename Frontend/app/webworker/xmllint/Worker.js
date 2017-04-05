@@ -116,9 +116,10 @@ function W ()
 				arguments: ["--noout", "--schema", data.schemaFileName, data.xmlFileName]
 			};
 
+			valid = '';
+			res = true;
+
 			valid = validateXML(module);
-			//valid = '';
-			//res = true;
 
 			// признак ошибки
 			reg = new RegExp('^(' + data.schemaFileName + '|' + data.xmlFileName + '):[0-9]+', 'i');
