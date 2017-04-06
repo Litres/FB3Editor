@@ -814,7 +814,8 @@ Ext.define(
 				nextSibling,
 				previousSibling,
 				parentEl,
-				nextSiblingEl;
+				nextSiblingEl,
+				previousSiblingEl;
 
 			manager = relNode.getElement ? relNode.getElement().getManager() : null;
 
@@ -844,13 +845,30 @@ Ext.define(
 				if (nextSibling)
 				{
 					nextSiblingEl = nextSibling.getElement();
-					console.log('new insert, nextSibling', nextSibling);
+
+					console.log('new insert, nextSibling', nextSibling, nextSiblingEl);
+
+					if (nextSiblingEl.isBr)
+					{
+						// удаляем br
+						parentEl.remove(nextSiblingEl);
+					}
+
 					parentEl.insertBefore(newEl, nextSiblingEl);
 				}
 				else if (previousSibling)
 				{
-					parentEl.add(newEl);
 					console.log('new add, previousSibling', previousSibling);
+
+					previousSiblingEl = previousSibling.getElement();
+
+					if (previousSiblingEl.isBr)
+					{
+						// удаляем br
+						parentEl.remove(previousSiblingEl);
+					}
+
+					parentEl.add(newEl);
 				}
 				else
 				{
@@ -866,7 +884,6 @@ Ext.define(
 				}
 
 				parentEl.sync(viewportId);
-
 				helper = newEl.getNodeHelper();
 				manager.setFocusElement(helper.getNode(viewportId));
 			}

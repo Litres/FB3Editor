@@ -67,34 +67,37 @@ Ext.define(
 								// скрываем ячейку
 								td.hide();
 
-								// переносим содержимое скрытой ячейки в объединенную
-
 								// ссылки на переносимые элементы
 								links = {
 									ownerTd: td,
 									children: []
 								};
 
-								nodes.first = nodeTd.firstChild;
-								els.first = nodes.first ? nodes.first.getElement() : null;
-
-								while (els.first)
+								if (!td.isEmpty())
 								{
-									// сохраняем ссылку
-									links.children.push(els.first);
+									// переносим содержимое скрытой ячейки в объединенную
 
-									els.joinTd.add(els.first);
-									nodes.joinTd.appendChild(nodes.first);
 									nodes.first = nodeTd.firstChild;
 									els.first = nodes.first ? nodes.first.getElement() : null;
+
+									while (els.first)
+									{
+										// сохраняем ссылку
+										links.children.push(els.first);
+
+										els.joinTd.add(els.first);
+										nodes.joinTd.appendChild(nodes.first);
+										nodes.first = nodeTd.firstChild;
+										els.first = nodes.first ? nodes.first.getElement() : null;
+									}
+
+									// добавляем пустой параграф в скрытую ячейку для согласования со схемой
+									els.emptyP = manager.createEmptyP();
+									td.add(els.emptyP);
 								}
 
 								// сохраняем ссылки
 								els.joinTd.addLinks(links);
-
-								// добавляем пустой параграф в скрытую ячейку для согласования со схемой
-								els.emptyP = manager.createEmptyP();
-								td.add(els.emptyP);
 							}
 						}
 					);
