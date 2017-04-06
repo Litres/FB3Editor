@@ -495,7 +495,7 @@ Ext.define(
 				// устанавливаем фокус браузера в окно текста
 				viewportId = data.startNode.viewportId;
 				helper = root.getNodeHelper();
-				helper.getNode(viewportId).focus();
+				//helper.getNode(viewportId).focus();
 
 				// перематываем скролл
 				if (data.focusElement.nodes[viewportId].scrollIntoView)
@@ -609,6 +609,7 @@ Ext.define(
 				editor = me.getEditor(),
 				toolbar;
 
+			//console.log('sync');
 			toolbar = editor.getToolbar();
 			toolbar.fireEvent('syncButtons');
 		},

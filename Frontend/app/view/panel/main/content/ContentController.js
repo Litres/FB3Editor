@@ -51,7 +51,7 @@ Ext.define(
 			editor = manager.getEditor();
 			toolbar = editor.getToolbar();
 			toolstab.setActiveToolbar(toolbar);
-			manager.syncButtons();
+			//manager.syncButtons();
 		},
 
 		/**

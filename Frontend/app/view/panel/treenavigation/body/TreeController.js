@@ -64,7 +64,7 @@ Ext.define(
 					// устанавливаем фокус на корневом узле главного окна
 					root = manager.getContent();
 					rootNode = root.getNodeHelper().getNode();
-					rootNode.focus();
+					//rootNode.focus();
 
 					// узлы элемента
 					nodes.nodes = Ext.Object.getValues(els.node.nodes);

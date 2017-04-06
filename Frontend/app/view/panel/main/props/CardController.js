@@ -38,6 +38,7 @@ Ext.define(
 
 			// курсор
 
+			/*
 			range = manager.getRange();
 
 			if (!range || range && !range.start.parentNode)
@@ -53,7 +54,7 @@ Ext.define(
 				startNode: range.start,
 				startOffset: range.offset ? range.offset.start : 0
 			};
-			manager.setCursor(cursor);
+			manager.setCursor(cursor);*/
 		},
 
 		/**
