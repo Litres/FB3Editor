@@ -1,0 +1,12 @@
+/**
+ * Панель редактирования элемента strong.
+ *
+ * @author dew1983@mail.ru <Suvorov Andrey M.>
+ */
+
+Ext.define(
+	'FBEditor.view.panel.main.props.desc.editor.strong.Editor',
+	{
+		extend: 'FBEditor.view.panel.main.props.desc.editor.AbstractEditor'
+	}
+);
