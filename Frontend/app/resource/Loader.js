@@ -347,12 +347,18 @@ Ext.define(
 				{
 					if (res)
 					{
-						me.save(res).then(
+						//console.log('res', res);
+						res.load().then(
+							function ()
+							{
+								return me.save(res);
+							}
+						).then(
 							function (xml)
 							{
 								// синхронизируем ресурсы с хабом
 								manager.syncResources(xml);
-								
+
 								if (!resources.length)
 								{
 									resolve(xml);

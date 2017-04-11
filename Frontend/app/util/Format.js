@@ -69,7 +69,7 @@ Ext.define(
 		{
 			var ext;
 
-			ext = name.replace(/.*?\.(\w+)$/, '$1');
+			ext = name.replace(/.*?\.(\w+)(\?.*?)?$/, '$1');
 
 			return ext;
 		},

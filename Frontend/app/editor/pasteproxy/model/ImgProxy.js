@@ -70,6 +70,7 @@ Ext.define(
 			if (res)
 			{
 				console.log('add el', el);
+				
 				// связываем ресурс с элементом изображения
 				res.addElement(el);
 
