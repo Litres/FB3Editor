@@ -88,6 +88,7 @@
 /* блок */
 .main-editor-viewport .el-div {
 	display: inline-block;
+	width: 100%;
 	padding: 1em;
 	min-width: 9.5em;
 }

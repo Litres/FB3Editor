@@ -14,6 +14,7 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.img.ImgElementController',
+		
 		htmlTag: 'img',
 		xmlTag: 'img',
 		cls: 'el-img',
@@ -80,8 +81,8 @@ Ext.define(
 			// ресурс
 			attributes.src = me.resource ? me.resource.fileId : 'undefined';
 
-			// в случае загрузки ресурсов с хаба
-			attributes.src = me.loadingResId ? me.loadingResId : attributes.src;
+			// в случае загрузки внешних ресурсов
+			attributes.src = me.loadingResId ? 'undefined' : attributes.src;
 
 			Ext.Object.each(
 				attributes,

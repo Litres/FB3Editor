@@ -33,12 +33,10 @@ Ext.define(
 							{
 								var statusOK = 200;
 
-								//console.log('response', response);
-
 								if (response.status === statusOK)
 								{
 									// обновляем данные
-									me.updateBytes(response.responseBytes);
+									me.updateData(response);
 
 									resolve();
 								}
@@ -62,15 +60,35 @@ Ext.define(
 		/**
 		 * @private
 		 * Обновляет данные ресурса.
-		 * @param {ArrayBuffer} bytes Двоичное содержимое ресурса.
+		 * @param {Object} response Данные, полученные в ответе на запрос.
 		 */
-		updateBytes: function (bytes)
+		updateData: function (response)
 		{
 			var me = this,
-				img = new Image();
-			
+				img = new Image(),
+				bytes = response.responseBytes,
+				type = me.type,
+				ext;
+
+			if (!type)
+			{
+				// если расширение загружаемого ресурса не было известно до загрузки, то обновляем его
+
+				type = response.getResponseHeader('content-type');
+				me.type = type;
+				ext = FBEditor.util.Format.getExtensionMime(type);
+
+				if (ext)
+				{
+					ext = '.' + ext;
+					me.name += ext;
+					me.baseName += ext;
+					me.rootName += ext;
+				}
+			}
+
 			me.content = bytes;
-			me.blob = new Blob([bytes], {type: me.type});
+			me.blob = new Blob([bytes], {type: type});
 			me.url = window.URL.createObjectURL(me.blob);
 			me.sizeBytes = me.blob.size;
 			img.src = me.url;

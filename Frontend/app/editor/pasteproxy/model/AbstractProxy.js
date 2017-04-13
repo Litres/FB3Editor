@@ -52,11 +52,11 @@ Ext.define(
 				factory = manager.getFactory(),
 				els = {};
 
+			//console.log('==== MOVE: ', el.elementId, parent.getName(), '>', el.getName());
+			//console.log(parent.getXml());
+
 			els.p = factory.createElement('p');
 			els.next = el;
-
-			//console.log('--', parent.getXml());
-			//console.log('---', els.next.getXml());
 
 			while (els.next)
 			{
@@ -73,7 +73,7 @@ Ext.define(
 				if (!els.next.isStyleHolder)
 				{
 					els.t = els.p.last();
-					parent.remove(els.next);
+					//parent.remove(els.next);
 
 					if (els.t && els.t.isText && els.next.isText)
 					{
@@ -94,7 +94,13 @@ Ext.define(
 
 				els.next = els.temp;
 
-				if (els.next && els.next.isStyleHolder)
+				if (els.next && els.next.isEmpty())
+				{
+					// если встречаем пустой элемент, то удаляем его и продолжаем цикл
+					parent.remove(els.next);
+					els.next = els.next.next();
+				}
+				else if (els.next && (els.next.isStyleHolder || !els.next.isStyleType))
 				{
 					// если встретили следующий абзац, то закрываем текущий абзац
 					els.next = els.next.prev() || els.next;
@@ -115,6 +121,15 @@ Ext.define(
 					parent.add(els.p);
 				}
 			}
+
+			/*if (parent.parent)
+			{
+				console.log(' = parent.parent =', parent.elementId, parent.parent.getXml());
+			}
+			else
+			{
+				console.log(' = parent =', parent.elementId, parent.getXml());
+			}*/
 		},
 
 		/**
@@ -125,6 +140,8 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el;
+
+			//console.log('upChildren', el.elementId, el.getXml());
 
 			el.upChildren();
 		},

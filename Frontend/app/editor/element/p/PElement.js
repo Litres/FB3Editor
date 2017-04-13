@@ -29,12 +29,22 @@ Ext.define(
 		getXml: function ()
 		{
 			var me = this,
+				parent = me.parent,
 				xml;
 
 			xml = me.callParent(arguments);
 
-			// заменяем все пустые абзацы на br
-			xml = xml.replace(/<p(.*?)>\n\s+<br(.*?)\/>\n\s+<\/p>/gi, '<br$2/>');
+			if (me.isEmpty())
+			{
+				// заменяем все пустые абзацы на br
+				xml = xml.replace(/<p(.*?)>\n\s+<br(.*?)\/>\n\s+<\/p>/gi, '<br$2/>');
+
+				if (!parent.hisName('section') && parent.first().equal(me))
+				{
+					// для всех элементов, кроме section, первым элементом не может быть br
+					xml = '<p></p>';
+				}
+			}
 
 			return xml;
 		}

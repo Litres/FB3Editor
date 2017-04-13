@@ -280,7 +280,7 @@ Ext.define(
 					}
 
 					// соответствует ли аттрибут схеме
-					if (name && Ext.isObject(elementSchema.attributes[item.name]))
+					if (name && Ext.isObject(elementSchema.attributes[item.name]) && val)
 					{
 						attributes[name] = val;
 					}

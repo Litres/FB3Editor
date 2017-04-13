@@ -66,7 +66,7 @@ Ext.define(
 			el.each(
 				function (child)
 				{
-					//console.log('child', child);
+					//console.log('<child', child.getName(), child.elementId, '>', child.parent.getXml());
 
 					// нормализуем элемент уровня стиля
 					me.normalizeStyle(child);

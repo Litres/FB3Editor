@@ -67,9 +67,29 @@ Ext.define(
 		 */
 		getExtensionFile: function (name)
 		{
-			var ext;
+			var ext = '';
 
-			ext = name.replace(/.*?\.(\w+)(\?.*?)?$/, '$1');
+			if (/.*?\.(\w+)(\?.*?)?$/.test(name))
+			{
+				ext = name.replace(/.*?\.(\w+)(\?.*?)?$/, '$1');
+			}
+
+			return ext;
+		},
+
+		/**
+		 * Парсит mime-тип и возвращает расширение.
+		 * @param {String} type Mime-тип.
+		 * @return {String} расширение.
+		 */
+		getExtensionMime: function (type)
+		{
+			var ext = '';
+
+			ext = type === 'image/svg+xml' ? 'svg' : ext;
+			ext = type === 'image/png' ? 'png' : ext;
+			ext = type === 'image/jpeg' ? 'jpeg' : ext;
+			ext = type === 'image/gif' ? 'gif' : ext;
 
 			return ext;
 		},

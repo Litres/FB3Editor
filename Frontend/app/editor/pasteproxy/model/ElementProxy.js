@@ -20,8 +20,19 @@ Ext.define(
 			if (!me.checkSchema(el))
 			{
 				//console.log('ERR', parent.getName(), '>', el.getName());
-				// если не соответствует схеме, то переносим всех потомков на уровень выше
-				me.upChildren();
+				//console.log('ERR parent', parent.getXml());
+				//console.log('ERR el', el.getXml());
+
+				if (el.first())
+				{
+					// если не соответствует схеме, то переносим всех потомков на уровень выше
+					me.upChildren();
+				}
+				else
+				{
+					parent.remove(el);
+				}
+
 				normalize = true;
 			}
 			else if (el.isEmpty() && !el.first())

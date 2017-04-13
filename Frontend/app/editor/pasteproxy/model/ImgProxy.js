@@ -69,7 +69,7 @@ Ext.define(
 
 			if (res)
 			{
-				console.log('add el', el);
+				//console.log('add el', el, res);
 				
 				// связываем ресурс с элементом изображения
 				res.addElement(el);
@@ -117,42 +117,45 @@ Ext.define(
 						attr,
 						reg;
 
-					if (/width/i.test(name) && el.attributes[name])
+					if (el.attributes[name])
 					{
-						// нормализуем ширину
-
 						attr = el.attributes[name];
 						pattern = item.type.pattern;
 
-						// исправляем паттерн
-						pattern = pattern.replace(/d\+/g, '\\d+');
-
-						reg = new RegExp(pattern);
-
-						if (!reg.test(attr))
+						if (/width/i.test(name))
 						{
-							// некорректный аттрибут
+							// нормализуем ширину
 
-							if (/(\d+)(.\d+)?/.test(attr))
+							// исправляем паттерн
+							pattern = pattern.replace(/d\+/g, '\\d+');
+
+							reg = new RegExp(pattern);
+
+							if (!reg.test(attr))
 							{
-								// исправляем аттрибут
+								// некорректный аттрибут
 
-								attr = FBEditor.util.Format.pixelsToMillimeters(attr);
-
-								if (Ext.isNumber(attr))
+								if (/(\d+)(.\d+)?/.test(attr))
 								{
-									el.attributes[name] = attr.toFixed(2) + 'mm';
+									// исправляем аттрибут
+
+									attr = FBEditor.util.Format.pixelsToMillimeters(attr);
+
+									if (Ext.isNumber(attr))
+									{
+										el.attributes[name] = attr.toFixed(2) + 'mm';
+									}
+									else
+									{
+										// удаляем аттрибут
+										delete el.attributes[name];
+									}
 								}
 								else
 								{
 									// удаляем аттрибут
 									delete el.attributes[name];
 								}
-							}
-							else
-							{
-								// удаляем аттрибут
-								delete el.attributes[name];
 							}
 						}
 					}

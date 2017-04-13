@@ -81,7 +81,6 @@ Ext.define(
 				//Ext.log({level: 'info', msg: 'Фрагмент', dump: els.fragment});
 
 				data.proxy = proxy;
-
 				els.fragP = els.fragment.first();
 
 				if (!els.fragP)
@@ -89,6 +88,9 @@ Ext.define(
 					// пустая вставка
 					return true;
 				}
+
+				// проверяем корректность вставки в текущий элемент
+				me.checkPasteIntoEl(els);
 
 				if (els.fragP.isStyleHolder && els.fragment.children.length === 1 && !els.node.isEmpty())
 				{
@@ -304,7 +306,7 @@ Ext.define(
 					nodes.parent.removeChild(nodes.node);
 				}
 
-				console.log('nodes, els', nodes, els);
+				//console.log('nodes, els', nodes, els);
 
 				// синхронизируем элемент
 				els.parent.sync(data.viewportId);
@@ -473,6 +475,26 @@ Ext.define(
 
 			manager.setSuspendEvent(false);
 			return res;
+		},
+
+		/**
+		 * Проверяет корректность вставки в текущий элемент при необходимотси корректирует вставку.
+		 * @param {Object} els
+		 */
+		checkPasteIntoEl: function (els)
+		{
+			var me = this;
+
+			els.fragment.each(
+				function (el)
+				{
+					if (els.node.hasParentName('div') && el.hisName('div'))
+					{
+						// убираем вложенность блоков
+						el.upChildren();
+					}
+				}
+			);
 		}
 	}
 );

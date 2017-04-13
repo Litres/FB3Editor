@@ -45,7 +45,7 @@ Ext.define(
 			// определяем расширение по url
 			ext = FBEditor.util.Format.getExtensionFile(url);
 
-			name = 'paste' + new Date().getTime() + '.' + ext;
+			name = 'paste' + new Date().getTime() + (ext ? '.' : '') + ext;
 			type = me.getMimeType(name);
 
 			resData = {

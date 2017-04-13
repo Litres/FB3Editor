@@ -13,9 +13,15 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el,
+				parent = el.parent,
 				normalize = true;
 
-			if (!el.parent.isStyleType)
+			if (el.isEmpty())
+			{
+				// удаляем пустой элемент
+				parent.remove(el);
+			}
+			else if (!parent.isStyleType)
 			{
 				// помещаем все стилевые элементы в абзац, если они находятся не в стилевом элементе
 				me.moveElsToNewHolder(el);
