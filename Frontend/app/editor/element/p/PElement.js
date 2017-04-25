@@ -11,10 +11,11 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.p.PElementController',
 			'FBEditor.editor.element.p.PElementControllerWebKit',
-			'FBEditor.editor.command.p.SplitNodeCommand',
-			'FBEditor.editor.command.p.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.p.GetNextHolderCommand',
 			'FBEditor.editor.command.p.JoinNextNodeCommand',
-			'FBEditor.editor.command.p.JoinPrevNodeCommand'
+			'FBEditor.editor.command.p.JoinPrevNodeCommand',
+			'FBEditor.editor.command.p.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.p.SplitNodeCommand'
 		],
 
 		controllerClass: 'FBEditor.editor.element.p.PElementController',

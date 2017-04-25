@@ -13,10 +13,11 @@ Ext.define(
 			'FBEditor.editor.element.subtitle.SubtitleElementControllerWebKit',
 			'FBEditor.editor.command.subtitle.CreateCommand',
 			'FBEditor.editor.command.subtitle.CreateRangeCommand',
-			'FBEditor.editor.command.subtitle.SplitNodeCommand',
-			'FBEditor.editor.command.subtitle.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.subtitle.GetNextHolderCommand',
 			'FBEditor.editor.command.subtitle.JoinNextNodeCommand',
-			'FBEditor.editor.command.subtitle.JoinPrevNodeCommand'
+			'FBEditor.editor.command.subtitle.JoinPrevNodeCommand',
+			'FBEditor.editor.command.subtitle.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.subtitle.SplitNodeCommand'
 		],
 
 		controllerClass: 'FBEditor.editor.element.subtitle.SubtitleElementController',
@@ -27,7 +28,6 @@ Ext.define(
 		cls: 'el-subtitle el-styleholder',
 
 		isSubtitle: true,
-
 		showedOnTree: true,
 
 		createScaffold: function ()

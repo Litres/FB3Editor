@@ -910,7 +910,7 @@ Ext.define(
 				el = target.getElement();
 				manager = el.getManager();
 
-				if (!manager.isSuspendEvent())
+				if (manager && !manager.isSuspendEvent())
 				{
 					e.stopPropagation();
 

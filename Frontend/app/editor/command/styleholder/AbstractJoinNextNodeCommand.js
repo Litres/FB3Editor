@@ -20,6 +20,8 @@ Ext.define(
 				els = {},
 				nodes = {},
 				sel = window.getSelection(),
+				helper,
+				viewportId,
 				manager,
 				range;
 
@@ -28,7 +30,7 @@ Ext.define(
 				// получаем данные из выделения
 				range = sel.getRangeAt(0);
 
-				data.viewportId = range.commonAncestorContainer.viewportId;
+				viewportId = data.viewportId = range.commonAncestorContainer.viewportId;
 
 				nodes.p = range.commonAncestorContainer;
 				els.p = nodes.p.getElement();
@@ -46,25 +48,22 @@ Ext.define(
 				nodes.parentP = nodes.p.parentNode;
 				els.parentP = nodes.parentP.getElement();
 
-				nodes.nextP = nodes.p.nextSibling;
-				els.nextP = nodes.nextP ? nodes.nextP.getElement() : null;
+				els.nextP = els.p.next();
 
 				if (!els.nextP || !els.nextP.hisName(me.elementName))
 				{
-					// отсутствует или не подходит следующий узел
+					// отсутствует или не подходит следующий абзац
 					return false;
 				}
 
-				console.log('join next ' + me.elementName, range);
+				console.log('join next ' + me.elementName, range, els);
 
-				nodes.firstNext = nodes.nextP.firstChild;
-				els.firstNext = nodes.firstNext.getElement();
-
-				nodes.last = nodes.p.lastChild;
-				els.last = nodes.last.getElement();
+				els.firstNext = els.nextP.first();
+				els.last = els.p.last();
 
 				// курсор
-				nodes.cursor = nodes.firstNext;
+				helper = els.firstNext.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 				nodes.startCursor = 0;
 
 				if (els.p.isEmpty() && els.nextP.isEmpty())
@@ -78,12 +77,8 @@ Ext.define(
 				}
 				else if (els.p.isEmpty())
 				{
-					// текущий пустой
-
 					// удаляем пустой
-					els.p.remove(els.last);
-					nodes.p.removeChild(nodes.last);
-
+					els.p.remove(els.last, viewportId);
 					nodes.curEmpty = true;
 				}
 				else if (els.nextP.isEmpty())
@@ -92,20 +87,19 @@ Ext.define(
 
 					nodes.cursor = manager.getDeepLast(nodes.p);
 					nodes.startCursor = nodes.cursor.nodeValue ? nodes.cursor.nodeValue.length : 0;
-
 					nodes.nextEmpty = true;
 				}
 
 				if (!els.nextP.isEmpty())
 				{
 					// переносим все элементы из следующего в текущий
-					nodes.first = nodes.firstNext;
-					while (nodes.first)
+
+					els.first = els.firstNext;
+
+					while (els.first)
 					{
-						els.first = nodes.first.getElement();
-						els.p.add(els.first);
-						nodes.p.appendChild(nodes.first);
-						nodes.first = nodes.nextP.firstChild;
+						els.p.add(els.first, viewportId);
+						els.first = els.nextP.first();
 					}
 
 					if (els.firstNext && els.last && els.firstNext.isText && els.last.isText)
@@ -116,20 +110,21 @@ Ext.define(
 						nodes.offset = els.last.text.length;
 
 						// курсор
-						nodes.cursor = nodes.last;
+						helper = els.last.getNodeHelper();
+						nodes.cursor = helper.getNode(viewportId);
 						nodes.startCursor = nodes.offset;
 
+						helper = els.firstNext.getNodeHelper();
+						nodes.firstNext = helper.getNode(viewportId);
 						manager.joinNode(nodes.firstNext);
 					}
 				}
 
-				// удаляем следующий
-				els.parentP.remove(els.nextP);
-				nodes.parentP.removeChild(nodes.nextP);
+				// удаляем следующий абзац и синхронизируем
+				els.parentP.remove(els.nextP, viewportId);
+				els.parentP.sync(viewportId);
 
 				//console.log('nodes, els', nodes, els);
-
-				els.parentP.sync(data.viewportId);
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -141,6 +136,7 @@ Ext.define(
 
 				// сохраняем ссылки
 				data.nodes = nodes;
+				data.els = els;
 
 				// проверяем по схеме
 				me.verifyElement(els.parentP);
@@ -154,6 +150,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -162,50 +159,46 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				els = {},
-				nodes = {},
-				factory = FBEditor.editor.Factory,
+				helper,
+				viewportId,
+				els,
+				nodes,
 				manager;
 
 			try
 			{
 				// исходные данные
 				nodes = data.nodes;
+				els = data.els;
 
 				console.log('undo join next ' + me.elementName, nodes, els);
 
-				els.p = nodes.p.getElement();
-				els.parentP = nodes.parentP.getElement();
-
+				viewportId = data.viewportId;
 				manager = els.p.getManager();
 				manager.setSuspendEvent(true);
 
-				// новый элемент
-				els.newP = factory.createElement(me.elementName);
-				nodes.newP = els.newP.getNode(data.viewportId);
+				// ссылка на старый абзац
+				els.newP = els.nextP;
 
-				// вставляем
-				nodes.nextP = nodes.p.nextSibling;
-				els.nextP = nodes.nextP ? nodes.nextP.getElement() : null;
-				if (els.nextP)
+				// воссоздаем следующий абзац
+
+				els.next = els.p.next();
+
+				if (els.next)
 				{
-					els.parentP.insertBefore(els.newP, els.nextP);
-					nodes.parentP.insertBefore(nodes.newP, nodes.nextP);
+					els.parentP.insertBefore(els.newP, els.next, viewportId);
 				}
 				else
 				{
-					els.parentP.add(els.newP);
-					nodes.parentP.appendChild(nodes.newP);
+					els.parentP.add(els.newP, viewportId);
 				}
 
 				if (nodes.bothEmpty || nodes.nextEmpty)
 				{
 					// создаем пустой элемент
 					els.empty = manager.createEmptyElement();
-					nodes.empty = els.empty.getNode(data.viewportId);
-
-					els.newP.add(els.empty);
-					nodes.newP.appendChild(nodes.empty);
+					nodes.empty = els.empty.getNode(viewportId);
+					els.newP.add(els.empty, viewportId);
 				}
 				else
 				{
@@ -218,31 +211,32 @@ Ext.define(
 					}
 
 					// переносим элементы в новый
-					nodes.next = nodes.cursor;
-					while (nodes.next)
+
+					//nodes.next = nodes.cursor;
+					els.next = nodes.cursor.getElement();
+
+					while (els.next)
 					{
-						nodes.buf = nodes.next.nextSibling;
-						els.next = nodes.next.getElement();
-						els.newP.add(els.next);
-						nodes.newP.appendChild(nodes.next);
-						nodes.next = nodes.buf;
+						els.buf = els.next.next();
+						els.newP.add(els.next, viewportId);
+						els.next = els.buf;
 					}
 
 					if (els.p.isEmpty())
 					{
 						// создаем пустой элемент
 						els.empty = manager.createEmptyElement();
-						nodes.empty = els.empty.getNode(data.viewportId);
-
-						els.p.add(els.empty);
-						nodes.p.appendChild(nodes.empty);
+						nodes.empty = els.empty.getNode(viewportId);
+						els.p.add(els.empty, viewportId);
 					}
 
 				}
 
-				els.parentP.sync(data.viewportId);
+				els.parentP.sync(viewportId);
 
 				// устанавливаем курсор
+				helper = els.p.getNodeHelper();
+				nodes.p = helper.getNode(viewportId);
 				nodes.cursor = manager.getDeepLast(nodes.p);
 				nodes.startCursor = nodes.cursor.getElement().getText().length;
 				data.saveRange = {
@@ -250,8 +244,6 @@ Ext.define(
 					startOffset: nodes.startCursor
 				};
 				manager.setCursor(data.saveRange);
-
-				data.nodes = nodes;
 
 				res = true;
 			}
@@ -262,6 +254,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}

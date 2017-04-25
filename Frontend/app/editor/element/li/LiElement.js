@@ -10,10 +10,11 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleHolderElement',
 		requires: [
 			'FBEditor.editor.command.li.CreateEmptyPCommand',
+			'FBEditor.editor.command.li.GetNextHolderCommand',
 			'FBEditor.editor.command.li.JoinNextNodeCommand',
 			'FBEditor.editor.command.li.JoinPrevNodeCommand',
-			'FBEditor.editor.command.li.SplitNodeCommand',
 			'FBEditor.editor.command.li.RemoveRangeNodesCommand',
+			'FBEditor.editor.command.li.SplitNodeCommand',
 			'FBEditor.editor.element.li.LiElementController',
 			'FBEditor.editor.element.li.LiElementControllerWebKit'
 		],

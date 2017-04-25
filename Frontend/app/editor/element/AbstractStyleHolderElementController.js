@@ -52,6 +52,8 @@ Ext.define(
 				nodes = {},
 				els = {},
 				manager = me.getElement().getManager(),
+				viewportId,
+				helper,
 				cmd,
 				range,
 				isEnd;
@@ -61,9 +63,11 @@ Ext.define(
 			range = sel.getRangeAt(0);
 
 			nodes.node = range.startContainer;
+			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
-			nodes.p = nodes.node.parentNode;
-			els.p = nodes.p.getElement();
+			els.p = els.node.hisName(name) ? els.node : els.node.parent;
+			helper = els.p.getNodeHelper();
+			nodes.p = helper.getNode(viewportId);
 
 			if (els.node.isEmpty() && nodes.node.firstChild)
 			{
@@ -77,14 +81,14 @@ Ext.define(
 			// курсор в конце элемента?
 			isEnd = range.startOffset === els.node.getText().length;
 
-			//console.log('range, isEnd, nodes', range, isEnd, nodes);
+			//console.log('range, isEnd, nodes', name, range, isEnd, nodes);
 
 			// текущий контейнер в параграфе
 			while (!els.p.hisName(name))
 			{
 				nodes.node = nodes.p;
 				els.node = nodes.node.getElement();
-				nodes.p = nodes.node.parentNode;
+				nodes.p = nodes.node.parentNode ? nodes.node.parentNode : nodes.node;
 				els.p = nodes.p.getElement();
 			}
 
@@ -102,8 +106,18 @@ Ext.define(
 			{
 				// курсор в конце параграфа
 
-				// соединяем параграф со следующим
-				cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinNextNodeCommand');
+				els.nextP = els.p.next();
+
+				if (!els.nextP || !els.nextP.isStyleHolder)
+				{
+					// пытаемся подтянуть первый абзац из следующего блока
+					cmd = Ext.create('FBEditor.editor.command.' + name + '.GetNextHolderCommand');
+				}
+				else
+				{
+					// соединяем абзац со следующим
+					cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinNextNodeCommand');
+				}
 
 				if (cmd.execute())
 				{
