@@ -234,7 +234,8 @@ Ext.define(
 		{
 			var me = this;
 
-			els.nextParent = els.parentP.next();
+			els.next = els.p.next();
+			els.nextParent = els.next || els.parentP.next();
 
 			if (els.nextParent)
 			{
