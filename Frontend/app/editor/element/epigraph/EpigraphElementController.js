@@ -21,7 +21,7 @@ Ext.define(
 			sel = sel || window.getSelection();
 			range = sel.getRangeAt(0);
 
-			nodes.node = range.commonAncestorContainer;
+			nodes.node = range.startContainer;
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
@@ -53,6 +53,8 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 			}
+
+			//console.log('node verify', range, els, nodes);
 
 			return nodes.node;
 		}

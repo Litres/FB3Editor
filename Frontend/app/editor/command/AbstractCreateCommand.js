@@ -156,16 +156,21 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection(),
 				data = me.getData(),
+				viewportId,
+				helper,
 				manager;
 
-			data.oldRange = sel.getRangeAt(0);
-			nodes.p = els.p.nodes[data.viewportId];
-			data.saveRange = {
-				startNode: nodes.p.firstChild,
-				startOffset: nodes.p.firstChild.length
-			};
 
 			manager = els.p.getManager();
+			data.oldRange = sel.getRangeAt(0);
+			viewportId = data.viewportId;
+			els.cursor = els.p.getDeepFirst();
+			helper = els.cursor.getNodeHelper();
+			nodes.cursor = helper.getNode(viewportId);
+			data.saveRange = {
+				startNode: nodes.cursor,
+				startOffset: els.cursor.getText().length
+			};
 			manager.setCursor(data.saveRange);
 		}
 	}
