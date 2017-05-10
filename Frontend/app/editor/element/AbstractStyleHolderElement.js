@@ -29,7 +29,7 @@ Ext.define(
 			if (Ext.isWebKit)
 			{
 				// устанавливаем редактируемость элемента
-				el.setAttribute('contentEditable', true);
+				//el.setAttribute('contentEditable', true);
 			}
 
 			return el;

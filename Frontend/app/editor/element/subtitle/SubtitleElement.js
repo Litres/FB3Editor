@@ -21,7 +21,7 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.subtitle.SubtitleElementController',
-		controllerClassWebkit: 'FBEditor.editor.element.subtitle.SubtitleElementControllerWebKit',
+		//controllerClassWebkit: 'FBEditor.editor.element.subtitle.SubtitleElementControllerWebKit',
 
 		htmlTag: 'subtitle',
 		xmlTag: 'subtitle',

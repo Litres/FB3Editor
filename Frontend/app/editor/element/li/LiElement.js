@@ -20,7 +20,7 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.li.LiElementController',
-		controllerClassWebkit: 'FBEditor.editor.element.li.LiElementControllerWebKit',
+		//controllerClassWebkit: 'FBEditor.editor.element.li.LiElementControllerWebKit',
 
 		htmlTag: 'li',
 		xmlTag: 'li',

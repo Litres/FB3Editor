@@ -21,7 +21,7 @@ Ext.define(
 		controllerClass: 'FBEditor.editor.element.root.RootElementController',
 		controllerClassWebkit: 'FBEditor.editor.element.root.RootElementControllerWebkit',
 		selectionClass: 'FBEditor.editor.element.root.RootSelection',
-		selectionClassWebKit: 'FBEditor.editor.element.root.RootSelectionWebKit',
+		//selectionClassWebKit: 'FBEditor.editor.element.root.RootSelectionWebKit',
 
 		xmlTag: 'root',
 		htmlTag: 'main',
@@ -84,6 +84,7 @@ Ext.define(
 			// аттрибут необходим для возможности установить фокус на  корневой элемент при необходимости
 			el.setAttribute('tabindex', 1);
 
+			/*
 			if (Ext.isWebKit)
 			{
 				// fix скролл WebKit, чтобы не тормозил на больших объёмах текста
@@ -94,6 +95,10 @@ Ext.define(
 				// устанавливаем редактируемость элемента
 				el.setAttribute('contentEditable', true);
 			}
+			*/
+			
+
+			el.setAttribute('contentEditable', true);
 
 			return el;
 		},

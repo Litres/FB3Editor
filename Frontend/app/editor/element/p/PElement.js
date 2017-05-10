@@ -19,7 +19,7 @@ Ext.define(
 		],
 
 		controllerClass: 'FBEditor.editor.element.p.PElementController',
-		controllerClassWebkit: 'FBEditor.editor.element.p.PElementControllerWebKit',
+		//controllerClassWebkit: 'FBEditor.editor.element.p.PElementControllerWebKit',
 
 		htmlTag: 'p',
 		xmlTag: 'p',
