@@ -70,7 +70,7 @@ Ext.define(
 			}
 
 			// получаем xml без текстовых элементов
-			xml = manager.content.getXml(true);
+			xml = manager.getContent().getXml(true);
 
 			//console.log(xml);
 

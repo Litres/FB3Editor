@@ -25,6 +25,12 @@ Ext.define(
 		 */
 		loader: null,
 
+		/**
+		 * @private
+		 * @property {Boolean} Доступна ли синхронизация кнопок.
+		 */
+		_availableSyncButtons: null,
+
 		translateText: {
 			loading: 'Загрузка текста...',
 			saving: 'Сохранение текста...'
@@ -49,6 +55,7 @@ Ext.define(
 			var me = this;
 			
 			me.loader.reset();
+			me._availableSyncButtons = null;
 		},
 
 		createContent: function ()
@@ -59,6 +66,28 @@ Ext.define(
 			
 			// обновляем дерево навигации по тексту
 			me.updateTree();
+		},
+
+		availableSyncButtons: function ()
+		{
+			var me = this,
+				format = FBEditor.util.Format,
+				xml = me.xml,
+				bytes;
+
+			if (me._availableSyncButtons === null)
+			{
+				me._availableSyncButtons = true;
+				bytes = format.byteLength(xml);
+				//console.log('size', bytes);
+
+				if (bytes > 1024 * 1024)
+				{
+					me._availableSyncButtons = false;
+				}
+			}
+
+			return me._availableSyncButtons;
 		},
 
 		setFocusElement: function (elOrNode, sel)

@@ -23,6 +23,16 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает размер строки в байтах.
+		 * @param {String} str Строка.
+		 * @return {Number} Количество байтов.
+		 */
+		byteLength: function (str)
+		{
+			return unescape(encodeURIComponent(str)).length;
+		},
+
+		/**
 		 * Форматирует размер файла (xxx, xxx KБ, xxx MБ).
 		 * @param {Number/String} size Размер файла в байтах.
 		 * @return {String} Отформатированный размер

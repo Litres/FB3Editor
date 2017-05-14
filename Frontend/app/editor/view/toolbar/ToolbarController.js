@@ -19,8 +19,10 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				buttons = view.getButtons(),
-				toggleBtn = view.getToggleButton();
-
+				toggleBtn = view.getToggleButton(),
+				editor = view.getEditor(),
+				manager = editor.getManager();
+			
 			if (buttons)
 			{
 				Ext.Array.each(
@@ -33,14 +35,27 @@ Ext.define(
 						{
 							if (btn.sequence)
 							{
-								// первая кнопка из однотипной последовательности
-								firstBtn = btn.sequence[0];
+								if (!manager.availableSyncButtons())
+								{
+									Ext.each(
+										btn.sequence,
+									    function (item)
+									    {
+										    item.fireEvent('sync');
+									    }
+									);
+								}
+								else
+								{
+									// первая кнопка из однотипной последовательности
+									firstBtn = btn.sequence[0];
 
-								// устанавливаем последовательность однотипных кнопок для первой кнопки
-								firstBtn.setSequence(btn.sequence.slice(1));
+									// устанавливаем последовательность однотипных кнопок для первой кнопки
+									firstBtn.setSequence(btn.sequence.slice(1));
 
-								// синхронизируем
-								firstBtn.fireEvent('sync');
+									// синхронизируем
+									firstBtn.fireEvent('sync');
+								}
 							}
 							else
 							{

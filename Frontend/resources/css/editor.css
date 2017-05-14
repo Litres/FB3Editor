@@ -35,15 +35,12 @@
 
 /* абзац */
 .main-editor-viewport .el-p {
-	position: relative;
+	/*position: relative;*/
 	margin-top: 0;
 	margin-bottom: 0.2em;
 	text-align: justify;
 	text-indent: 1.5em;
 	border: none;
-}
-.main-editor-viewport .el-p:focus {
-	outline: none;
 }
 
 .main-editor-viewport .el-div,
@@ -57,7 +54,7 @@
 .main-editor-viewport .el-stanza,
 .main-editor-viewport .el-notes,
 .main-editor-viewport .el-notebody {
-	position: relative;
+	/*position: relative;*/
 	display: block;
 	padding: 0 0 0 0.2em;
 	margin: 0.5em 0 0.5em 0;
@@ -321,8 +318,8 @@
 .editor-viewport.mode-unprintsymbols .el-p::after,
 .editor-viewport.mode-unprintsymbols .el-li::after,
 .editor-viewport.mode-unprintsymbols .el-subtitle::after {
-	position: absolute;
-	bottom: 0;
+	/*position: absolute;*/
+	/*bottom: 0;
 	margin-left: -1.4em; /* компенсирует text-indent */
 	width: 0;
 	content: '¶';

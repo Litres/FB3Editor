@@ -26,6 +26,12 @@ Ext.define(
 				xml,
 				pos;
 
+			if (!manager.availableSyncButtons())
+			{
+				btn.enable();
+				return;
+			}
+			
 			range = manager.getRange();
 
 			if (!range)

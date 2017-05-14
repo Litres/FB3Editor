@@ -25,6 +25,12 @@ Ext.define(
 				xml,
 				range;
 
+			if (!manager.availableSyncButtons())
+			{
+				btn.enable();
+				return;
+			}
+			
 			range = manager.getRange();
 
 			if (!range)
@@ -182,10 +188,7 @@ Ext.define(
 				// удаляем временный элемент
 				els.parent.children.splice(pos, 1);
 
-				/*if (name === 'table')
-				{
-					console.log('xml', xml);
-				}*/
+				//console.log('xml', xml);
 
 				// проверяем по схеме
 				me.verify(xml);

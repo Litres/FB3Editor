@@ -69,7 +69,7 @@ Ext.define(
 				xml;
 
 			content = manager.getContent();
-			xml = content.getXml(true);
+			xml = content.getXml(true, true);
 
 			return xml;
 		},
@@ -92,7 +92,7 @@ Ext.define(
 			{
 				console.log(enable);
 			}*/
-
+			
 			if (enable)
 			{
 				btn.enable();

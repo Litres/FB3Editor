@@ -23,36 +23,6 @@ Ext.define(
 		enableRevision: false,
 
 		/**
-		 * @private
-		 * @property {FBEditor.editor.History} История редактора.
-		 */
-		history: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.editor.Revision} Ревизия xml.
-		 */
-		revision: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.editor.KeyMap} Привязка клавиатурных сочетаний.
-		 */
-		keymap: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.editor.schema.Schema} Схема.
-		 */
-		schema: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент.
-		 */
-		content: null,
-
-		/**
 		 * @property {Selection} Текущее выделение.
 		 */
 		selection: null,
@@ -90,10 +60,52 @@ Ext.define(
 		selectionToUp: null,
 
 		/**
+		 * @protected
+		 * @property {String} Xml тела книги.
+		 */
+		xml: null,
+
+		/**
+		 * @protected
+		 * @property {Boolean} Отображаются ли непечатаемые символы в настоящий момент.
+		 */
+		unprintedSymbols: false,
+
+		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста.
 		 */
 		editor: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.History} История редактора.
+		 */
+		history: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.Revision} Ревизия xml.
+		 */
+		revision: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.KeyMap} Привязка клавиатурных сочетаний.
+		 */
+		keymap: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.schema.Schema} Схема.
+		 */
+		schema: null,
+
+		/**
+		 * @private
+		 * @property {FBEditor.editor.element.root.RootElement} Корневой элемент.
+		 */
+		content: null,
 
 		/**
 		 * @private
@@ -112,12 +124,6 @@ Ext.define(
 		 * Используется для защиты от многократной синхронизации кнопок.
 		 */
 		cashSyncBtn: null,
-
-		/**
-		 * @private
-		 * @property {Boolean} Отображаются ли непечатаемые символы в настоящий момент.
-		 */
-		unprintedSymbols: false,
 
 		/**
 		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
@@ -161,6 +167,7 @@ Ext.define(
 				xsl,
 				startTime = new Date().getTime();
 
+			me.xml = srcXml;
 			me.resetFocus();
 
 			// экранируем слэш
@@ -196,7 +203,6 @@ Ext.define(
 			//console.log('after CreateContent', new Date().getTime() - startTime);
 
 			content = creator.getContent();
-
 			editor = me.getEditor();
 
 			// устанавливаем связь корневого элемента с редактором
@@ -333,14 +339,14 @@ Ext.define(
 		 * Возвращает xml тела книги.
 		 * @return {String} Строка xml.
 		 */
-		getXml: function ()
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				content = me.content,
 				xml;
 
 			//console.log('content', content);
-			xml = content.getXml();
+			xml = content.getXml(withoutText, withoutFormat);
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			//console.log(xml);
 
@@ -599,6 +605,16 @@ Ext.define(
 		{
 			this.cashSyncBtn = null;
 		},
+
+		/**
+		 * Доступна ли синхронизация кнопок.
+		 * @return {Boolean}
+		 */
+		availableSyncButtons: function ()
+		{
+			return true;
+		},
+		
 
 		/**
 		 * Синхронизирует кнопки элементов с текущим выделением.

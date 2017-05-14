@@ -49,8 +49,7 @@ Ext.define(
 			// заменяем самый первый br на p, согласно схеме
 			reg = new RegExp("(<" + me.xmlTag + ".*?>[\n ]{0,})<br(.*?)\/>", "i");
 			xml = xml.replace(reg, '$1<p></p>');
-
-
+			
 			return xml;
 		},
 
