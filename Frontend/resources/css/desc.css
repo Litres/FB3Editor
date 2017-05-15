@@ -8,6 +8,10 @@
 	margin: 1px 0 0 0;
 }*/
 
+.x-webkit .form-desc .x-form-text {
+	height:  auto;
+}
+
 .form-desc .x-field {
 	margin: 0 0 15px 0;
 }
@@ -23,6 +27,7 @@
 	color: #cf4c35;
 }
 .form-desc .x-form-trigger-wrap-default {
+	height: auto;
 	border-radius: 3px;
 }
 .form-desc .x-form-item-body-default .after-body {
