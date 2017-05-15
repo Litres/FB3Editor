@@ -121,18 +121,21 @@ Ext.define(
 						{
 							xtype: 'desc-fieldcontainer',
 							layout: 'hbox',
-							anchor: '100%',
-							defaults: {
-								anchor: '100%'
-							},
 							items: [
 								{
-									xtype: 'form-desc-sequence-container-custom',
-									prefixName: me.prefixName
-								},
-								{
-									xtype: 'form-desc-sequence-container-search',
-									prefixName: me.prefixName
+									xtype: 'desc-fieldcontainer',
+									layout: 'anchor',
+									flex: 1,
+									items: [
+										{
+											xtype: 'form-desc-sequence-container-custom',
+											prefixName: me.prefixName
+										},
+										{
+											xtype: 'form-desc-sequence-container-search',
+											prefixName: me.prefixName
+										}
+									]
 								}
 							]
 						}

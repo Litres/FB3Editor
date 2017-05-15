@@ -110,16 +110,20 @@ Ext.define(
 					field.setValue(item.title.main);
 					field = nextContainer.query('[name=sequence-title-sub]')[0];
 					field.setValue(item.title.sub ? item.title.sub : '');
+
 					if (item.title.alt)
 					{
 						field = nextContainer.query('[name=sequence-title-alt]')[0];
 						field.fireEvent('loadData', item.title.alt);
 					}
+
 					if (item.sequence)
 					{
+						console.log(item.sequence);
 						putContainer = plugin.putFields();
 						putContainer.fireEvent('putData', item.sequence);
 					}
+
 					if (data[parseInt(index) + 1])
 					{
 						plugin.addFields();
