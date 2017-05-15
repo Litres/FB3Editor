@@ -74,6 +74,9 @@ Ext.define(
 					xtype: 'desc-fieldcontainer',
 					layout: 'anchor',
 					flex: 1,
+					defaults: {
+						anchor: '100%'
+					},
 					items: [
 						{
 							xtype: 'form-desc-relations-subject-container-custom',

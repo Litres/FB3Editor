@@ -26,6 +26,9 @@ Ext.define(
 
 		layout: 'anchor',
 		flex: 1,
+		defaults: {
+			anchor: '100%'
+		},
 
 		/**
 		 * @private

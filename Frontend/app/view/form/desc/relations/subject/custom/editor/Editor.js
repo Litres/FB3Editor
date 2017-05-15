@@ -20,6 +20,11 @@ Ext.define(
 		xtype: 'form-desc-relations-subject-custom-editor',
 		controller: 'form.desc.relations.subject.custom.editor',
 
+		layout: 'anchor',
+		defaults: {
+			anchor: '100%'
+		},
+
 		/**
 		 * @private
 		 * @property {FBEditor.view.form.desc.relations.subject.CustomContainer} Родительский контейнер данных.
