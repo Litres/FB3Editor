@@ -87,60 +87,74 @@ Ext.define(
 		/**
 		 * Загружает описание по url.
 		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
 		 */
 		loadFromUrl: function (art)
 		{
 			var me = this,
-				loader = me.loader;
+				loader = me.loader,
+				promise;
 
-			me.setLoading(art).then(
-				function (art)
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					// загружаем описание с хаба
-					art = art || me.getArtId();
-
-					return loader.load(art);
-				}
-			).then(
-				function (xml)
-				{
-					var resourceManager = FBEditor.resource.Manager;
-
-					// загружаем данные в форму
-					me.loadDataToForm(xml);
-
-					// загружены ли уже ресурсы
-					if (!resourceManager.isLoadUrl())
-					{
-						// загружаем ресурсы
-						resourceManager.loadFromUrl(me.getArtId());
-					}
-				},
-				function (response)
-				{
-					// возникла ошибка
-
-					Ext.log(
+					me.setLoading(art).then(
+						function (art)
 						{
-							level: 'error',
-							msg: 'Ошибка загрузки описания книги',
-							dump: response
+							// загружаем описание с хаба
+							art = art || me.getArtId();
+
+							return loader.load(art);
+						}
+					).then(
+						function (xml)
+						{
+							var resourceManager = FBEditor.resource.Manager;
+
+							// загружаем данные в форму
+							me.loadDataToForm(xml);
+
+							// загружены ли уже ресурсы
+							if (!resourceManager.isLoadUrl())
+							{
+								// загружаем ресурсы
+								resourceManager.loadFromUrl(me.getArtId());
+							}
+
+							resolve(xml);
+						},
+						function (response)
+						{
+							// возникла ошибка
+
+							Ext.log(
+								{
+									level: 'error',
+									msg: 'Ошибка загрузки описания книги',
+									dump: response
+								}
+							);
+
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно загрузить описание книги',
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
+
+							// убираем информационное сообщение о загрузке
+							me.clearLoading();
+
+							reject(response);
 						}
 					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно загрузить описание книги',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
 				}
 			);
+
+
+			return promise;
 		},
 
 		/**

@@ -107,114 +107,125 @@ Ext.define(
 		/**
 		 * Загружает ресурсы с хаба.
 		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
 		 */
 		loadFromUrl: function (art)
 		{
 			var me = this,
 				loader = me.loader,
-				startTime = new Date().getTime();
+				startTime = new Date().getTime(),
+				promise;
 
 			art = art || me.getArtId();
 
-			// загружаем список ресурсов
-			loader.load(art).then(
-				function (xml)
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					var xml2Json = FBEditor.util.xml.Json,
-						json,
-						data;
-
-					// переводим xml в json
-					json = xml2Json.xmlToJson(xml);
-					data = json.Relationships.Relationship;
-
-					data = data && data.length ? data : [];
-
-					return loader.loadResources(data);
-				},
-				function (response)
-				{
-					Ext.log(
+					// загружаем список ресурсов
+					loader.load(art).then(
+						function (xml)
 						{
-							level: 'error',
-							msg: 'Ошибка загрузки списка ресурсов',
-							dump: response
+							var xml2Json = FBEditor.util.xml.Json,
+								json,
+								data;
+
+							// переводим xml в json
+							json = xml2Json.xmlToJson(xml);
+							data = json.Relationships.Relationship;
+
+							data = data && data.length ? data : [];
+
+							return loader.loadResources(data);
+						},
+						function (response)
+						{
+							Ext.log(
+								{
+									level: 'error',
+									msg: 'Ошибка загрузки списка ресурсов',
+									dump: response
+								}
+							);
+
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно загрузить список ресурсов',
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
 						}
-					);
-
-					Ext.Msg.show(
+					).then(
+						function ()
 						{
-							title: 'Ошибка',
-							message: 'Невозможно загрузить список ресурсов',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
+							// получаем данные обложки
+							return loader.getCover();
 						}
-					);
-				}
-			).then(
-				function ()
-				{
-					// получаем данные обложки
-					return loader.getCover();
-				}
-			).then(
-				function (target)
-				{
-					if (!target)
-					{
-						/*
-						Ext.log(
-							{
-								level: 'warn',
-								msg: 'Не удалось загрузить обложку'
-							}
-						);
-
-						Ext.Msg.show(
-							{
-								title: 'Предупреждение',
-								message: 'Не удалось загрузить обложку',
-								buttons: Ext.MessageBox.OK,
-								icon: Ext.MessageBox.WARNING
-							}
-						);
-						*/
-					}
-					else 
-					{
-						Ext.log(
-							{
-								level: 'info',
-								msg: 'Обложка: ' + target
-							}
-						);
-
-						// устанавливаем обложку, игнорируя хаб
-						target = target.replace(/^\//, '');
-						me.setCover(target, true);
-					}
-					
-					// создаем папки
-					me.generateFolders();
-					
-					// убираем выделение с папки, если оно было
-					me.setActiveFolder('');
-					
-					// сортируем ресурсы
-					me.sortData();
-
-					// обновляем панель ресурсов
-					me.updateNavigation();
-
-					Ext.log(
+					).then(
+						function (target)
 						{
-							level: 'info',
-							msg: 'Процесс загрузки завершен за ' +
-							     Number(new Date().getTime() - startTime) + ' мс'
+							if (!target)
+							{
+								/*
+								 Ext.log(
+								 {
+								 level: 'warn',
+								 msg: 'Не удалось загрузить обложку'
+								 }
+								 );
+
+								 Ext.Msg.show(
+								 {
+								 title: 'Предупреждение',
+								 message: 'Не удалось загрузить обложку',
+								 buttons: Ext.MessageBox.OK,
+								 icon: Ext.MessageBox.WARNING
+								 }
+								 );
+								 */
+							}
+							else
+							{
+								Ext.log(
+									{
+										level: 'info',
+										msg: 'Обложка: ' + target
+									}
+								);
+
+								// устанавливаем обложку, игнорируя хаб
+								target = target.replace(/^\//, '');
+								me.setCover(target, true);
+							}
+
+							// создаем папки
+							me.generateFolders();
+
+							// убираем выделение с папки, если оно было
+							me.setActiveFolder('');
+
+							// сортируем ресурсы
+							me.sortData();
+
+							// обновляем панель ресурсов
+							me.updateNavigation();
+
+							Ext.log(
+								{
+									level: 'info',
+									msg: 'Процесс загрузки завершен за ' +
+									     Number(new Date().getTime() - startTime) + ' мс'
+								}
+							);
+
+							resolve();
 						}
 					);
 				}
 			);
+
+			return promise;
 		},
 
 		/**

@@ -13,14 +13,11 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.data.btn,
-				desc = me.data.desc,
-				bodyEditor,
-				bodyManager,
-				cover,
-				descValues,
-				descXml,
-				bodyXml,
-				fb3data,
+				bridgeWindow = me.getBridgeWindow(),
+				editorManager = FBEditor.getEditorManager(true),
+				descManager = bridgeWindow.FBEditor.desc.Manager,
+				content,
+				activePanel,
 				result;
 
 			// предусмотрено на будущее
@@ -28,56 +25,35 @@ Ext.define(
 
 			try
 			{
-				if (!desc.isValid())
+				if (editorManager.isLoadUrl() && !descManager.isLoadUrl())
 				{
-					throw Error('Некорректно заполнено описание книги');
-				}
+					// запоминаем активную панель
+					content = bridgeWindow.Ext.getCmp('panel-main-content');
+					activePanel = content.getLayout().getActiveItem();
 
-				// обложка
-				cover = FBEditor.resource.Manager.getCover();
-
-				descValues = desc.getValues();
-				descXml = FBEditor.desc.Manager.getXml(descValues);
-
-				// редактор тела книги
-				bodyEditor = Ext.getCmp('main-editor');
-				bodyManager = bodyEditor.getManager();
-				bodyXml = bodyManager.getXml();
-
-				fb3data = {
-					thumb: cover,
-					meta: FBEditor.desc.Manager.getMetaXml(descValues),
-					books: [
+					// если описание еще не было загружено по url, то загружаем
+					descManager.loadFromUrl().then(
+						function ()
 						{
-							desc: descXml,
-							bodies: [
-								{
-									content: bodyXml,
-									images: FBEditor.resource.Manager.getResources()
-								}
-							]
-						}
-					]
-				};
+							// переключаем обратно на активную панель
+							content.setActiveItem(activePanel);
 
-				result = FBEditor.file.Manager.saveFB3(
-					fb3data,
-				    function ()
-				    {
-					    // предусмотрено на будущее
-					    Ext.log(
-						    {
-							    level: 'warn',
-							    msg: 'Стали доступны методы FileSaver.onwriteend, FileSaver.onabort'
-						    }
-					    );
-					    btn.enable();
-				    }
-				);
+							// сохраняем описание
+							me.save();
+						}
+					);
+
+					result = true;
+				}
+				else
+				{
+					result = me.save();
+				}
 			}
 			catch (e)
 			{
 				btn.enable();
+
 				Ext.log(
 					{
 						level: 'error',
@@ -85,6 +61,7 @@ Ext.define(
 						dump: e
 					}
 				);
+
 				Ext.Msg.show(
 					{
 						title: 'Ошибка сохранения',
@@ -102,6 +79,75 @@ Ext.define(
 		unExecute: function ()
 		{
 			//
+		},
+
+		/**
+		 * Сохраняет описание.
+		 * @return {Boolean}
+		 */
+		save: function ()
+		{
+			var me = this,
+				btn = me.data.btn,
+				desc = me.data.desc,
+				bodyEditor,
+				bodyManager,
+				cover,
+				descValues,
+				descXml,
+				bodyXml,
+				fb3data,
+				result;
+
+			if (!desc.isValid())
+			{
+				throw Error('Некорректно заполнено описание книги');
+			}
+
+			// обложка
+			cover = FBEditor.resource.Manager.getCover();
+
+			descValues = desc.getValues();
+			descXml = FBEditor.desc.Manager.getXml(descValues);
+
+			// редактор тела книги
+			bodyEditor = Ext.getCmp('main-editor');
+			bodyManager = bodyEditor.getManager();
+			bodyXml = bodyManager.getXml();
+
+			fb3data = {
+				thumb: cover,
+				meta: FBEditor.desc.Manager.getMetaXml(descValues),
+				books: [
+					{
+						desc: descXml,
+						bodies: [
+							{
+								content: bodyXml,
+								images: FBEditor.resource.Manager.getResources()
+							}
+						]
+					}
+				]
+			};
+
+			result = FBEditor.file.Manager.saveFB3(
+				fb3data,
+				function ()
+				{
+					// предусмотрено на будущее
+					Ext.log(
+						{
+							level: 'warn',
+							msg: 'Стали доступны методы FileSaver.onwriteend, FileSaver.onabort'
+						}
+					);
+
+					btn.enable();
+				}
+			);
+
+			return result;
 		}
 	}
 );
