@@ -18,7 +18,7 @@
 	font-size: 150%;
 	line-height: 150%;
 	white-space: pre-wrap;
-	word-break: break-all;
+	/*word-break: break-all;*/
 	background-color: #fff;
 }
 
