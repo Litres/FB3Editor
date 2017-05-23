@@ -134,6 +134,7 @@ Ext.define(
 				// ставим курсор в текст
 				manager.setCursor(
 					{
+						withoutFocus: true,
 						startNode: nodes.text,
 						startOffset: isEnd ? 0 : range.startOffset
 					}
@@ -219,6 +220,7 @@ Ext.define(
 				// ставим курсор в текст
 				manager.setCursor(
 					{
+						withoutFocus: true,
 						startNode: nodes.text,
 						startOffset: isStart ? els.text.getText().length : range.startOffset - 1
 					}

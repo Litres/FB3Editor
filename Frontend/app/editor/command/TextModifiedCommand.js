@@ -59,7 +59,7 @@ Ext.define(
 				text = me.newValue;
 				viewportId = node.viewportId;
 
-				console.log('exec text', node, me.newValue, me.oldValue, 'offset=', me.offset);
+				console.log('exec text'/*, node, me.newValue, me.oldValue, 'offset=', me.offset*/);
 				//console.log(els.parent.getXml());
 
 				el = node.getElement();
@@ -70,6 +70,7 @@ Ext.define(
 				// устанавливаем курсор
 				manager.setCursor(
 					{
+						withoutFocus: true,
 						startNode: node,
 						startOffset: me.offset
 					}

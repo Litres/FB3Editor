@@ -54,7 +54,7 @@ Ext.define(
 
 				viewportId = data.viewportId = nodes.node.viewportId;
 
-				console.log('edit text', data.newValue, els.node, range);
+				console.log('edit text'/*, data.newValue, els.node, range*/);
 
 				data.oldValue = els.node.getText();
 				els.node.setText(data.newValue, viewportId);
@@ -62,6 +62,7 @@ Ext.define(
 
 				manager.setCursor(
 					{
+						withoutFocus: true,
 						startNode: data.range.start,
 						startOffset: offset.start,
 						focusElement: els.node

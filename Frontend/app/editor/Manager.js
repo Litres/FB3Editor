@@ -480,6 +480,7 @@ Ext.define(
 		 * @param {Number} [data.startOffset] Начальное смещение.
 		 * @param {Node} [data.endNode] Конечный узел.
 		 * @param {Number} [data.endOffset] Конечное смещение.
+		 * @param {Boolean} [data.withoutFocus] Без установки фокусного элемента.
 		 * @param {FBEditor.editor.element.AbstractElement} [data.focusElement] Фокусный элемент.
 		 */
 		setCursor: function (data)
@@ -539,9 +540,13 @@ Ext.define(
 					}
 				};
 
-				// сохраняем фокусный элемент
-				helper = data.focusElement.getNodeHelper();
-				me.setFocusElement(helper.getNode(viewportId), sel);
+				if (!data.withoutFocus)
+				{
+					// сохраняем фокусный элемент и ставим фокус
+					helper = data.focusElement.getNodeHelper();
+					me.setFocusElement(helper.getNode(viewportId), sel);
+				}
+
 			}
 			catch (e)
 			{
@@ -614,7 +619,6 @@ Ext.define(
 		{
 			return true;
 		},
-		
 
 		/**
 		 * Синхронизирует кнопки элементов с текущим выделением.
@@ -625,7 +629,7 @@ Ext.define(
 				editor = me.getEditor(),
 				toolbar;
 
-			//console.log('sync');
+			console.log('sync');
 			toolbar = editor.getToolbar();
 			toolbar.fireEvent('syncButtons');
 		},
