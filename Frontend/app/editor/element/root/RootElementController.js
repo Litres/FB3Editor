@@ -100,6 +100,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				relatedTarget = e.relatedTarget,
+				sel = window.getSelection(),
 				manager,
 				helper,
 				range,
@@ -107,6 +108,15 @@ Ext.define(
 
 			els.root = me.getElement();
 			manager = els.root.getManager();
+			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
+			els.start = range && range.startContainer.getElement ? range.startContainer.getElement() : null;
+			els.startRoot = els.start ? els.start.getRoot() : null;
+
+			if (els.startRoot && els.startRoot.equal(els.root))
+			{
+				// восстановление фокуса не требуется
+				return;
+			}
 
 			if (relatedTarget &&
 			    (!relatedTarget.getElement || !relatedTarget.getElement().getRoot().equal(els.root)))
@@ -118,6 +128,7 @@ Ext.define(
 
 				if (range)
 				{
+					console.log(range);
 					// восстанавливаем позицию курсора
 					manager.restoreCursor();
 				}

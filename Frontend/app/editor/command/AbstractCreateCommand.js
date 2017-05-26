@@ -83,6 +83,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -160,17 +161,19 @@ Ext.define(
 				helper,
 				manager;
 
-
 			manager = els.p.getManager();
 			data.oldRange = sel.getRangeAt(0);
 			viewportId = data.viewportId;
 			els.cursor = els.p.getDeepFirst();
 			helper = els.cursor.getNodeHelper();
 			nodes.cursor = helper.getNode(viewportId);
+
 			data.saveRange = {
+				withoutSyncButtons: true,
 				startNode: nodes.cursor,
 				startOffset: els.cursor.getText().length
 			};
+
 			manager.setCursor(data.saveRange);
 		}
 	}

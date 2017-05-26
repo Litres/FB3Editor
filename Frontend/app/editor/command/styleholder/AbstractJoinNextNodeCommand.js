@@ -11,6 +11,7 @@ Ext.define(
 		extend: 'FBEditor.editor.command.AbstractCommand',
 
 		elementName: null,
+		syncButtons: false,
 
 		execute: function ()
 		{

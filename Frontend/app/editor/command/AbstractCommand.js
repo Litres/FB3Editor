@@ -16,6 +16,11 @@ Ext.define(
 		data: null,
 
 		/**
+		 * @property {Boolean} Нужна ли синхронизация кнопок после проверки по схеме.
+		 */
+		syncButtons: true,
+
+		/**
 		 * @param {Object} opts Данные.
 		 */
 		constructor: function (opts)
@@ -76,7 +81,8 @@ Ext.define(
 
 			scopeData = {
 				el: el,
-				debug: debug
+				debug: debug,
+				syncButtons: me.syncButtons
 			};
 
 			// вызываем проверку по схеме
@@ -389,6 +395,7 @@ Ext.define(
 		{
 			var me = this,
 				el = scopeData.el,
+				syncButtons = scopeData.syncButtons,
 				manager,
 				xml;
 
@@ -408,8 +415,11 @@ Ext.define(
 
 			manager = el.getManager();
 
-			// принудительно синхронизируем кнопки, игнорируя кэш
-			//manager.syncButtons();
+			if (syncButtons)
+			{
+				// принудительно синхронизируем кнопки, игнорируя кэш
+				manager.syncButtons();
+			}
 
 			if (manager.updateTree)
 			{

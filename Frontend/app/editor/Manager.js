@@ -567,6 +567,7 @@ Ext.define(
 			{
 				me.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: range.start,
 						startOffset: range.offset.start
 					}
@@ -586,6 +587,7 @@ Ext.define(
 			{
 				me.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: range.start,
 						startOffset: range.offset.start,
 						endNode: range.end,
