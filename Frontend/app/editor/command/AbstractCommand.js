@@ -409,7 +409,7 @@ Ext.define(
 			manager = el.getManager();
 
 			// принудительно синхронизируем кнопки, игнорируя кэш
-			manager.syncButtons();
+			//manager.syncButtons();
 
 			if (manager.updateTree)
 			{

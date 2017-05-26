@@ -225,8 +225,8 @@ Ext.define(
 
 			if (el)
 			{
-				//manager = el.getManager();
-				//manager.setFocusElement(node);
+				manager = el.getManager();
+				manager.setFocusElement(node, null, true);
 				controller = el && el.controller ? el.controller : me;
 
 				switch (e.keyCode)

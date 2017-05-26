@@ -200,6 +200,7 @@ Ext.define(
 				nodes.cursor = manager.getDeepFirst(nodes.newP);
 				manager.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: nodes.cursor
 					}
 				);
@@ -222,6 +223,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -302,7 +304,6 @@ Ext.define(
 
 				// устанавливаем курсор
 				data.saveRange = {
-					startNode: nodes.cursor,
 					startOffset: range.offset.start,
 					focusElement: els.p
 				};

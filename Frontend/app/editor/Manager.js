@@ -357,8 +357,9 @@ Ext.define(
 		 * Устанавливает текущий выделенный элемент в редакторе.
 		 * @param {Node} node Узел.
 		 * @param {Selection} [sel]
+		 * @param {Boolean} [withoutSyncButtons] Без синхронизации кнопок.
 		 */
-		setFocusElement: function (node, sel)
+		setFocusElement: function (node, sel, withoutSyncButtons)
 		{
 			var me = this,
 				panelProps = me.getPanelProps(),
@@ -416,7 +417,11 @@ Ext.define(
 					// синхронизируем кнопки элементов с текущим выделением
 					// защита от многократной синхронизации на одном и том же элементе
 					me.cashSyncBtn = el.elementId;
-					me.syncButtons();
+
+					if (!withoutSyncButtons)
+					{
+						me.syncButtons();
+					}
 				}
 
 				if (panelProps)
@@ -480,7 +485,7 @@ Ext.define(
 		 * @param {Number} [data.startOffset] Начальное смещение.
 		 * @param {Node} [data.endNode] Конечный узел.
 		 * @param {Number} [data.endOffset] Конечное смещение.
-		 * @param {Boolean} [data.withoutFocus] Без установки фокусного элемента.
+		 * @param {Boolean} [data.withoutSyncButtons] Без синхронизации кнопок.
 		 * @param {FBEditor.editor.element.AbstractElement} [data.focusElement] Фокусный элемент.
 		 */
 		setCursor: function (data)
@@ -540,13 +545,9 @@ Ext.define(
 					}
 				};
 
-				if (!data.withoutFocus)
-				{
-					// сохраняем фокусный элемент и ставим фокус
-					helper = data.focusElement.getNodeHelper();
-					me.setFocusElement(helper.getNode(viewportId), sel);
-				}
-
+				// сохраняем фокусный элемент и ставим фокус
+				helper = data.focusElement.getNodeHelper();
+				me.setFocusElement(helper.getNode(viewportId), sel, data.withoutSyncButtons);
 			}
 			catch (e)
 			{
@@ -1376,6 +1377,7 @@ Ext.define(
 			range = sel.getRangeAt(0);
 			viewportId = range.startContainer.viewportId;
 			saveCursor = {
+				withoutSyncButtons: true,
 				startNode: range.startContainer,
 				startOffset: range.startOffset,
 				endNode: range.endContainer,

@@ -62,7 +62,7 @@ Ext.define(
 
 				manager.setCursor(
 					{
-						withoutFocus: true,
+						withoutSyncButtons: true,
 						startNode: data.range.start,
 						startOffset: offset.start,
 						focusElement: els.node

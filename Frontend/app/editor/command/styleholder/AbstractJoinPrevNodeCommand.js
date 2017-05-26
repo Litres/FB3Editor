@@ -105,6 +105,7 @@ Ext.define(
 				nodes.cursor = helper.getNode(viewportId);
 				manager.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: nodes.cursor,
 						startOffset: nodes.startCursor
 					}

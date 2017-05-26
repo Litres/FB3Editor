@@ -70,7 +70,7 @@ Ext.define(
 				// устанавливаем курсор
 				manager.setCursor(
 					{
-						withoutFocus: true,
+						withoutSyncButtons: true,
 						startNode: node,
 						startOffset: me.offset
 					}
