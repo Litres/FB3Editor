@@ -21,6 +21,7 @@ Ext.define(
 			data.oldRange = sel.getRangeAt(0);
 			nodes.p = els.node.nodes[data.viewportId];
 			data.saveRange = {
+				withoutSyncButtons: true,
 				startNode: nodes.p.firstChild,
 				startOffset: nodes.p.firstChild.length
 			};

@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.AbstractCommand',
 
+		syncButtons: false,
 		elementName: 'img',
 
 		execute: function ()
@@ -107,6 +108,7 @@ Ext.define(
 				// устанавливаем курсор
 				manager.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: nodes.node
 					}
 				);

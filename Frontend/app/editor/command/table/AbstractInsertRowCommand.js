@@ -189,6 +189,7 @@ Ext.define(
 			els.p = els.tr.first().first();
 			nodes.p = els.p.nodes[data.viewportId];
 			data.saveRange = {
+				withoutSyncButtons: true,
 				startNode: nodes.p.firstChild,
 				startOffset: nodes.p.firstChild.length
 			};

@@ -359,6 +359,7 @@ Ext.define(
 				// курсор
 				manager.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: range.start,
 						startOffset: range.offset.start,
 						endNode: range.end,

@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.command.AbstractSplitCommand',
 
+		syncButtons: false,
 		elementName: 'section',
 
 		createElement: function (nodes, els)

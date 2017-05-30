@@ -351,6 +351,7 @@ Ext.define(
 				// устанавливаем курсор
 				manager.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: nodes.cursor,
 						startOffset: nodes.cursor.nodeValue.length,
 						focusElement: els.focus
