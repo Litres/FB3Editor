@@ -17,6 +17,8 @@ Ext.define(
 				nodes = {},
 				els = {},
 				factory = FBEditor.editor.Factory,
+				helper,
+				viewportId,
 				manager,
 				sch,
 				range;
@@ -29,14 +31,14 @@ Ext.define(
 				sch = manager.getSchema();
 
 				range = data.range || manager.getRange();
-				data.viewportId = range.start.viewportId;
+				viewportId = data.viewportId = range.start.viewportId;
 
 				console.log('convert ' + data.el.getName() + ' to text ', data);
 
-				els.node = data.el;
-				nodes.node = els.node.nodes[data.viewportId];
+				els.node = data.el.getBlock();
+				//nodes.node = els.node.nodes[data.viewportId];
 				els.parent = els.node.parent;
-				nodes.parent = els.parent.nodes[data.viewportId];
+				//nodes.parent = els.parent.nodes[data.viewportId];
 
 				// проверяем по схеме возможную новую структуру
 
@@ -64,54 +66,67 @@ Ext.define(
 				// помещаем во фрагмент только стилевые элементы и их контейнеры
 				els.node.convertToText(els.fragment);
 
-				nodes.fragment = els.fragment.getNode(data.viewportId);
+				//nodes.fragment = els.fragment.getNode(data.viewportId);
 
-				//console.log('nodes', nodes);
+				console.log('nodes', nodes);
+				
+				els.first = els.fragment.first();
 
-				if (els.verify)
+				if (els.verify && els.first)
 				{
 					// вместо текущего элемента вставляем содержимое фрагмента
 
-					nodes.first = nodes.fragment.firstChild;
-					els.first = nodes.first.getElement();
+					//nodes.first = nodes.fragment.firstChild;
+					//els.first = nodes.first.getElement();
+
 					while (els.first)
 					{
-						els.parent.insertBefore(els.first, els.node);
-						nodes.parent.insertBefore(nodes.first, nodes.node);
-						nodes.first = nodes.fragment.firstChild;
-						els.first = nodes.first ? nodes.first.getElement() : null;
+						els.parent.insertBefore(els.first, els.node, viewportId);
+						//nodes.parent.insertBefore(nodes.first, nodes.node);
+						els.first = els.fragment.first();
+						//nodes.first = nodes.fragment.firstChild;
+						//els.first = nodes.first ? nodes.first.getElement() : null;
 					}
-					els.parent.remove(els.node);
-					nodes.parent.removeChild(nodes.node);
+
+					els.parent.remove(els.node, viewportId);
+					//nodes.parent.removeChild(nodes.node);
 				}
 				else
 				{
 					// вместо содержимого текущего элемента вставляем содержимое фрагмента
 
+					helper = els.node.getNodeHelper();
+					nodes.node = helper.getNode(viewportId);
+					helper = els.parent.getNodeHelper();
+					nodes.parent = helper.getNode(viewportId);
+
 					els.node.removeAll();
 					nodes.oldNode = nodes.node;
-					nodes.node = els.node.getNode(data.viewportId);
+					nodes.node = els.node.getNode(viewportId);
 					nodes.parent.replaceChild(nodes.node, nodes.oldNode);
 
-					nodes.first = nodes.fragment.firstChild;
-					els.first = nodes.first.getElement();
+					//nodes.first = nodes.fragment.firstChild;
+					//els.first = nodes.first.getElement();
+
 					while (els.first)
 					{
-						els.node.add(els.first);
-						nodes.node.appendChild(nodes.first);
-						nodes.first = nodes.fragment.firstChild;
-						els.first = nodes.first ? nodes.first.getElement() : null;
+						els.node.add(els.first, viewportId);
+						//nodes.node.appendChild(nodes.first);
+						els.first = els.fragment.first();
+						//nodes.first = nodes.fragment.firstChild;
+						//els.first = nodes.first ? nodes.first.getElement() : null;
 					}
 				}
 
 				// синхронизируем
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				els.cursor = range.start.getElement();
-				nodes.cursor = els.cursor.nodes[data.viewportId];
+				helper = els.cursor.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,

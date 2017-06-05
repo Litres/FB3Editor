@@ -38,7 +38,7 @@ Ext.define(
 							// переключаем обратно на активную панель
 							content.setActiveItem(activePanel);
 
-							// сохраняем описание
+							// сохраняем книгу
 							me.save();
 						}
 					);
@@ -82,7 +82,7 @@ Ext.define(
 		},
 
 		/**
-		 * Сохраняет описание.
+		 * Сохраняет книгу.
 		 * @return {Boolean}
 		 */
 		save: function ()
