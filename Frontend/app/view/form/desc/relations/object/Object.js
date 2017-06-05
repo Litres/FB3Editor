@@ -74,7 +74,7 @@ Ext.define(
 			var me = this,
 				hiddenCount = 0,
 				items = me.query('form-desc-relations-object-container-custom'),
-				combo = me.down('combosearch'),
+				//combo = me.down('combosearch'),
 				isValid = true;
 
 			Ext.Array.each(
@@ -115,19 +115,14 @@ Ext.define(
 			items.each(
 				function (item)
 				{
-					var val;
+					var custom,
+						val;
 
-					val = {
-						_id: item.down('[name=relations-object-id]').getValue(),
-						_link: item.down('form-desc-relations-object-link').getValue()
-					};
-					val = me.removeEmptyValues(val);
+					custom = item.down('form-desc-relations-object-container-custom');
+					val = custom.getValue();
 
-					if (val && val._id)
+					if (val)
 					{
-						val.title = item.down('[name=relations-object-title]').getValues();
-						val.description = item.down('[name=relations-object-description]').getValue();
-						val = me.removeEmptyValues(val);
 						values = values || [];
 						values.push(val);
 					}

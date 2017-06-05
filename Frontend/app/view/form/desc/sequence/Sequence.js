@@ -179,8 +179,8 @@ Ext.define(
 		{
 			var me = this,
 				prefixName = me.prefixName,
-				data = d || null,
 				items = me.items,
+				data = d || null,
 				values = null;
 
 			items.each(
@@ -189,6 +189,7 @@ Ext.define(
 					var val;
 
 					val = item.getValues();
+
 					if (val)
 					{
 						values = values || [];
@@ -196,6 +197,7 @@ Ext.define(
 					}
 				}
 			);
+
 			if (values)
 			{
 				data = data || {};

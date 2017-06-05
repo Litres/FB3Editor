@@ -92,6 +92,39 @@ Ext.define(
 			];
 
 			me.callParent(arguments);
+		},
+
+		isValid: function ()
+		{
+			var me = this,
+				val = me.getValue(),
+				isValid;
+
+			isValid = val && val._link ? me.callParent(arguments) : true;
+
+			return isValid;
+		},
+
+		getValue: function ()
+		{
+			var me = this,
+				val;
+
+			val = {
+				_id: me.down('[name=relations-object-id]').getValue(),
+				_link: me.down('form-desc-relations-object-link').getValue()
+			};
+			
+			val = me.removeEmptyValues(val);
+
+			if (val && val._link)
+			{
+				val.title = me.down('[name=relations-object-title]').getValues();
+				val.description = me.down('[name=relations-object-description]').getValue();
+				val = me.removeEmptyValues(val);
+			}
+
+			return val;
 		}
 	}
 );
