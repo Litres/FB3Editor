@@ -14,15 +14,13 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				values = view.getValues(),
-				btn = view.getCustomBtn();
+				values = view.getValues();
 
 			if (!values)
 			{
 				// показываем поля поиска
-				btn.switchContainers(true);
+				view.switchContainers(true);
 			}
-
 		},
 
 		/**
@@ -89,11 +87,10 @@ Ext.define(
 		onResetContainer: function ()
 		{
 			var me = this,
-				view = me.getView(),
-				btn = view.getCustomBtn();
+				view = me.getView();
 
 			// показываем поля данных
-			btn.switchContainers();
+			view.switchContainers();
 		}
 	}
 );

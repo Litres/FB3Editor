@@ -8,7 +8,9 @@ Ext.define(
 	'FBEditor.view.form.desc.relations.object.CustomButton',
 	{
 		extend: 'Ext.Button',
+		
 		xtype: 'form-desc-relations-object-customBtn',
+		
 		text: 'Создать вручную',
 		margin: '0 0 0 165px',
 

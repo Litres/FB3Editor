@@ -33,7 +33,7 @@ Ext.define(
 				comboSearch,
 				data;
 
-			data = record[0].data;
+			data = record.data;
 			//console.log('select', data);
 
 			// автоматически добавляем новый блок поиска

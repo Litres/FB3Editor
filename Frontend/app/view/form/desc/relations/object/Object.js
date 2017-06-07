@@ -1,5 +1,5 @@
 /**
- * Объекты имеющие отношение к произведению.
+ * Объекты, имеющие отношение к произведению.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -9,15 +9,12 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.relations.object.SearchContainer',
-			'FBEditor.view.form.desc.relations.object.CustomContainer'
+			'FBEditor.view.form.desc.relations.object.item.ObjectItem'
 		],
 		
 		id: 'form-desc-relations-object',
 		xtype: 'form-desc-relations-object',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
-
-		prefixName: 'relations-object',
 
 		initComponent: function ()
 		{
@@ -25,70 +22,23 @@ Ext.define(
 
 			me.items=  [
 				{
-					xtype: 'desc-fieldcontainer',
-					cls: 'desc-fieldcontainer',
-					layout: 'hbox',
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: 'object',
-						btnPos: 'end',
-						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
-						btnStyle: {
-							margin: '0 0 0 5px',
-							width: '40px',
-							height: '65px'
-						}
-					},
-					listeners: {
-						resetContainer: function ()
-						{
-							var btn;
-
-							// скрываем поля поиска, показываем поля данных
-							btn = this.down('form-desc-relations-object-customBtn');
-							btn.switchContainers();
-						}
-					},
-					items: [
-						{
-							xtype: 'desc-fieldcontainer',
-							layout: 'anchor',
-							flex: 1,
-							items: [
-								{
-									xtype: 'form-desc-relations-object-container-custom',
-									prefixName: me.prefixName
-								},
-								{
-									xtype: 'form-desc-relations-object-container-search'
-								}
-							]
-						}
-					]
+					xtype: 'form-desc-relations-object-item'
 				}
 			];
-			
+						
 			me.callParent(arguments);
 		},
 
 		isValid: function ()
 		{
 			var me = this,
-				hiddenCount = 0,
-				items = me.query('form-desc-relations-object-container-custom'),
-				//combo = me.down('combosearch'),
+				items = me.items,
 				isValid = true;
 
-			Ext.Array.each(
-				items,
+			items.each(
 				function (item)
 				{
-					if (item.isHidden())
-					{
-						hiddenCount++;
-						isValid = true;
-					}
-					else if (!item.isValid())
+					if (!item.isValid())
 					{
 						isValid = false;
 
@@ -96,13 +46,6 @@ Ext.define(
 					}
 				}
 			);
-
-			if (isValid && hiddenCount === items.length)
-			{
-				// если все поля скрыты
-				//isValid = false;
-				//combo.markInvalid(me.translateText.error);
-			}
 
 			return isValid;
 		},
@@ -117,11 +60,9 @@ Ext.define(
 			items.each(
 				function (item)
 				{
-					var custom,
-						val;
+					var val;
 
-					custom = item.down('form-desc-relations-object-container-custom');
-					val = custom.getValue();
+					val = item.getValues();
 
 					if (val)
 					{

@@ -200,7 +200,6 @@ Ext.define(
 
 		/**
 		 * Возвращает вложенный контейнер данных.
-		 *
 		 * @return {FBEditor.view.form.desc.sequence.CustomContainer}
 		 */
 		getCustomInnerContainer: function ()
@@ -217,7 +216,6 @@ Ext.define(
 
 		/**
 		 * Возвращает контейнер данных.
-		 * 
 		 * @return {FBEditor.view.form.desc.sequence.CustomContainer}
 		 */
 		getCustomContainer: function ()
@@ -233,7 +231,6 @@ Ext.define(
 
 		/**
 		 * Возвращает контейнер поиска.
-		 * 
 		 * @return {FBEditor.view.form.desc.sequence.SearchContainer}
 		 */
 		getSearchContainer: function ()
