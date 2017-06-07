@@ -36,9 +36,11 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				descManager = FBEditor.desc.Manager;
 
 			me.hidden = !FBEditor.accessHub;
+			me.hidden = descManager.isLoadedData() ? true : me.hidden;
 
 			me.items = [
 				{

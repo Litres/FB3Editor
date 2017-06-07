@@ -12,8 +12,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
-			'FBEditor.view.form.desc.sequence.CustomContainer',
-			'FBEditor.view.form.desc.sequence.SearchContainer',
+			'FBEditor.view.form.desc.sequence.item.SequenceItem',
 			'FBEditor.view.form.desc.sequence.SequenceController'
 		],
 
@@ -22,163 +21,51 @@ Ext.define(
 		controller: 'form.desc.sequence',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 
-		listeners: {
-			resetFields: 'onResetFields',
-			loadData: 'onLoadData',
-			putData: 'onPutData',
-			putFields: 'onPutFields',
-			removeFields: 'onRemoveFields'
-		},
-
 		layout: 'anchor',
-
-		prefixName: 'sequence',
-
-		translateText: {
-			id: 'ID',
-			idError: 'По шаблону [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}. ' +
-			         'Например: 0dad1004-1430-102c-96f3-af3a14b75ca4',
-			number: 'Номер'
-		},
-
-		/**
-		 * @private
-		 * @property {FBEditor.view.form.desc.sequence.CustomContainer} Контейнер данных.
-		 */
-		_customContainer: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.view.form.desc.sequence.SearchContainer} Контейнер поиска.
-		 */
-		_searchContainer: null,
 
 		initComponent: function ()
 		{
-			var me = this,
-				prefixName = me.prefixName;
+			var me = this;
 
-			me.items = [
+			me.items=  [
 				{
-					xtype: 'desc-fieldcontainer',
-					cls: 'desc-fieldcontainer',
-					layout: 'anchor',
-					anchor: '100%',
-					plugins: {
-						ptype: 'fieldcontainerreplicator',
-						groupName: prefixName,
-						btnPos: 'end',
-						btnCls: 'plugin-fieldcontainerreplicator-big-btn',
-						enableBtnPut: true,
-						btnStyle: {
-							margin: '0 0 0 5px',
-							width: '40px',
-							height: '65px'
-						}
-					},
-					listeners: {
-						putData: function (data)
-						{
-							me.fireEvent('putData', data, this);
-						},
-						putFields: function (btn)
-						{
-							me.fireEvent('putFields', this, btn);
-						},
-						removeFields: function ()
-						{
-							me.fireEvent('removeFields', this);
-						},
-						resetContainer: function ()
-						{
-							var btn;
-
-							// скрываем поля поиска, показываем поля данных
-							btn = this.down('form-desc-sequence-customBtn');
-							btn.switchContainers();
-						}
-					},
-					getValues: function ()
-					{
-						var me = this,
-							itemInner = me.items.getAt(1),
-							values;
-
-						values = {
-							_id: me.down('[name=' + prefixName + '-id]').getValue(),
-							_number: me.down('[name=' + prefixName + '-number]').getValue(),
-							title: me.down('[name=' + prefixName + '-title]').getValues()
-						};
-						if (itemInner)
-						{
-							values[prefixName] = itemInner.getValues();
-						}
-						values = me.removeEmptyValues(values);
-
-						return values;
-					},
-					items: [
-						{
-							xtype: 'desc-fieldcontainer',
-							layout: 'hbox',
-							items: [
-								{
-									xtype: 'desc-fieldcontainer',
-									layout: 'anchor',
-									flex: 1,
-									items: [
-										{
-											xtype: 'form-desc-sequence-container-custom',
-											prefixName: me.prefixName
-										},
-										{
-											xtype: 'form-desc-sequence-container-search',
-											prefixName: me.prefixName
-										}
-									]
-								}
-							]
-						}
-					]
+					xtype: 'form-desc-sequence-item'
 				}
 			];
+			
 			me.callParent(arguments);
 		},
 
-		/**
-		 * Возвращает контейнер данных.
-		 * @return {FBEditor.view.form.desc.sequence.CustomContainer}
-		 */
-		getCustomContainer: function ()
+		isValid: function ()
 		{
 			var me = this,
-				container = me._customContainer;
+				items = me.items,
+				isValid = true,
+				hiddenCount = 0;
 
-			container = container || me.down('form-desc-sequence-container-custom');
-			me._customContainer = container;
+			items.each(
+				function (item)
+				{
+					if (item.isHidden())
+					{
+						hiddenCount++;
+						isValid = true;
+					}
+					else if (!item.isValid())
+					{
+						isValid = false;
 
-			return container;
-		},
+						return false;
+					}
+				}
+			);
 
-		/**
-		 * Возвращает контейнер поиска.
-		 * @return {FBEditor.view.form.desc.sequence.SearchContainer}
-		 */
-		getSearchContainer: function ()
-		{
-			var me = this,
-				container = me._searchContainer;
-
-			container = container || me.down('form-desc-sequence-container-search');
-			me._searchContainer = container;
-			
-			return container;
+			return isValid;
 		},
 
 		getValues: function (d)
 		{
 			var me = this,
-				prefixName = me.prefixName,
 				items = me.items,
 				data = d || null,
 				values = null;
@@ -201,10 +88,61 @@ Ext.define(
 			if (values)
 			{
 				data = data || {};
-				data[prefixName] = values;
+				data.sequence = values;
 			}
 
 			return data;
+		},
+
+		/**
+		 * Добавляет новые секции и устанавливает в них значения полей.
+		 * @param {Object} data Данные.
+		 * @param {FBEditor.ux.FieldContainerReplicator} plug Плагин, с которого начинается установка данных.
+		 */
+		setValues: function (data, plug)
+		{
+			var nextContainer = plug.getCmp(),
+				plugin = plug;
+
+			Ext.Object.each(
+				data,
+				function (index, item)
+				{
+					var field,
+						putContainer;
+
+					// переключаем контейнер секции на данные
+					nextContainer.switchContainers();
+
+					field = nextContainer.query('[name=sequence-id]')[0];
+					field.setValue(item.id);
+					field = nextContainer.query('[name=sequence-number]')[0];
+					field.setValue(item.number ? item.number : '');
+					field = nextContainer.query('[name=sequence-title-main]')[0];
+					field.setValue(item.title.main);
+					field = nextContainer.query('[name=sequence-title-sub]')[0];
+					field.setValue(item.title.sub ? item.title.sub : '');
+
+					if (item.title.alt)
+					{
+						field = nextContainer.query('[name=sequence-title-alt]')[0];
+						field.fireEvent('loadData', item.title.alt);
+					}
+
+					if (item.sequence)
+					{
+						putContainer = plugin.putFields();
+						putContainer.fireEvent('putData', item.sequence);
+					}
+
+					if (data[parseInt(index) + 1])
+					{
+						plugin.addFields();
+						nextContainer = nextContainer.nextSibling();
+						plugin = nextContainer.getPlugin('fieldcontainerreplicator');
+					}
+				}
+			);
 		}
 	}
 );

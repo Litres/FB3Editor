@@ -70,11 +70,10 @@ Ext.define(
 		setSequenceId: function (id)
 		{
 			var me = this,
-				prefixName = me.prefixName,
 				data = {},
 				custom = me.customContainer;
 
-			data[prefixName + '-id'] = id;
+			data['sequence-id'] = id;
 
 			// обновляем ссылку id
 			custom.updateData(data);
@@ -89,17 +88,16 @@ Ext.define(
 		setNameFromSearchField: function ()
 		{
 			var me = this,
-				prefixName = me.prefixName,
 				data = {},
 				search = me.searchContainer,
 				custom = me.customContainer,
 				searchVal;
 
 			// строка в поле поиска
-			searchVal = search.down('[name=' + prefixName + '-search]').getValue();
+			searchVal = search.down('[name=sequence-search]').getValue();
 			searchVal = searchVal ? searchVal.trim() : '';
 
-			data[prefixName + '-title-main'] = searchVal;
+			data['sequence-title-main'] = searchVal;
 
 			// обновляем поле названия
 			custom.updateData(data);

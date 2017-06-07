@@ -14,10 +14,13 @@ Ext.define(
 		{
 			var me = this,
 				nextContainer = me.getView(),
+				d = data,
 				plugin;
 
+			d = Ext.isObject(d) ? d : {0: d};
+
 			Ext.Object.each(
-				data,
+				d,
 				function (index, obj)
 				{
 					var field;
@@ -29,7 +32,8 @@ Ext.define(
 					{
 						field.setValue(obj);
 					}
-					if (data[parseInt(index) + 1])
+					
+					if (d[parseInt(index) + 1])
 					{
 						plugin.addFields();
 						nextContainer = nextContainer.nextSibling();

@@ -34,23 +34,23 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				prefixName = me.prefixName;
+				descManager = FBEditor.desc.Manager;
 
 			me.hidden = !FBEditor.accessHub;
-			me.hidden = FBEditor.desc.Manager.loadingProcess ? true : me.hidden;
+			//me.hidden = descManager.isLoadedData() ? true : me.hidden;
 
 			me.items = [
 				{
 					xtype: 'form-desc-sequence-searchName',
 					fieldLabel: me.translateText.search,
-					name: prefixName + '-search'
+					name: 'sequence-search'
 				},
 				{
 					xtype: 'form-desc-sequence-customBtn',
 					cls: 'form-desc-customBtn',
 					width: 300,
 					searchContainer: me,
-					prefixName: prefixName
+					prefixName: 'sequence'
 				}
 			];
 

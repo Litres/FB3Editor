@@ -234,6 +234,7 @@ Ext.define(
 		},
 
 		/**
+		 * @event addFields
 		 * Добавляет поля.
 		 * @param {[Ext.button.Button]} btn Кнопка добавления.
 		 */
@@ -274,6 +275,8 @@ Ext.define(
 					ownerCt.add(idx, clone);
 				}
 
+				clone.fireEvent('addFields');
+
 				focusField = ownerCt.items.getAt(idx).down('field:focusable');
 
 				if (focusField)
@@ -299,19 +302,29 @@ Ext.define(
 				container,
 				removeBtn,
 				replicatorId,
-				focusField,
 				clone;
 
 			btn = btn || me.getBtnPut();
 			container = btn.ownerCt.ownerCt.ownerCt;
 			replicatorId = container.replicatorId + '-child';
+
 			clone = container.cloneConfig(
 				{
 					replicatorId: replicatorId,
 					style: putStyle
 				}
 			);
+
+			clone.on(
+				'afterrender',
+				function ()
+				{
+					this.down('field:focusable').focus();
+				}
+			);
+
 			removeBtn = clone.down('[name=fieldcontainerreplicator-btn-remove-' + me.groupName + ']');
+
 			removeBtn.on(
 				'afterrender',
 				function ()
@@ -319,12 +332,9 @@ Ext.define(
 					this.enable();
 				}
 			);
+
 			container.add(clone);
 			clone.fireEvent('putFields', btn);
-
-			// ставим фокус
-			focusField = clone.down('field:focusable');
-			focusField.focus();
 
 			return clone;
 		},
@@ -347,7 +357,7 @@ Ext.define(
 			ownerCt = container.ownerCt;
 			replicatorId = container.replicatorId;
 			ownerCt.remove(container);
-			ownerCt.fireEvent('removeFields');
+			ownerCt.fireEvent('removeFields', btn);
 
 			if (!/child/.test(replicatorId))
 			{

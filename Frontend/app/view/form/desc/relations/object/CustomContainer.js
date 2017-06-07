@@ -9,9 +9,13 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
+			'FBEditor.view.form.desc.relations.object.CustomContainerController',
 			'FBEditor.view.form.desc.relations.object.Link'
 		],
+
+		controller: 'form.desc.relations.object.container.custom',
 		xtype: 'form-desc-relations-object-container-custom',
+
 		layout: 'anchor',
 		flex: 1,
 
@@ -26,10 +30,11 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				descManager = FBEditor.desc.Manager;
 
 			me.hidden = FBEditor.accessHub;
-			me.hidden = FBEditor.desc.Manager.loadingProcess ? false : me.hidden;
+			me.hidden = descManager.isLoadedData() ? false : me.hidden;
 
 			me.items = [
 				{

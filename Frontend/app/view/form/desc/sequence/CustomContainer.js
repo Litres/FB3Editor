@@ -23,10 +23,10 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				prefixName = me.prefixName;
+				descManager = FBEditor.desc.Manager;
 
 			me.hidden = FBEditor.accessHub;
-			me.hidden = FBEditor.desc.Manager.loadingProcess ? false : me.hidden;
+			//me.hidden = descManager.isLoadedData() ? false : me.hidden;
 
 			me.items = [
 				{
@@ -49,11 +49,11 @@ Ext.define(
 								{
 									xtype: 'form-desc-field-link-uuid',
 									fieldLabel: me.translateText.id,
-									name: prefixName + '-id'
+									name: 'sequence-id'
 								},
 								{
 									xtype: 'numberfield',
-									name: prefixName + '-number',
+									name: 'sequence-number',
 									fieldLabel: me.translateText.number,
 									cls: 'field-optional'
 								}
@@ -70,7 +70,7 @@ Ext.define(
 							items: [
 								{
 									xtype: 'form-desc-title',
-									name: prefixName + '-title',
+									name: 'sequence-title',
 									layout: 'anchor',
 									defaults: {
 										anchor: '100%',
@@ -85,6 +85,31 @@ Ext.define(
 			];
 
 			me.callParent(arguments);
+		},
+
+		isValid: function ()
+		{
+			var me = this,
+				val = me.getValue(),
+				isValid;
+
+			isValid = val && (val.title || val._number) ? me.callParent(arguments) : true;
+
+			return isValid;
+		},
+
+		getValue: function ()
+		{
+			var me = this,
+				val;
+
+			val = {
+				_id: me.down('[name=sequence-id]').getValue(),
+				_number: me.down('[name=sequence-number]').getValue(),
+				title: me.down('[name=sequence-title]').getValues()
+			};
+
+			return val;
 		}
 	}
 );

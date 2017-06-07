@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.relations.object.SearchContainer',
 			'FBEditor.view.form.desc.relations.object.CustomContainer'
 		],
+		
 		id: 'form-desc-relations-object',
 		xtype: 'form-desc-relations-object',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
@@ -66,6 +67,7 @@ Ext.define(
 					]
 				}
 			];
+			
 			me.callParent(arguments);
 		},
 

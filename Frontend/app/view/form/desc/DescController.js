@@ -25,10 +25,6 @@ Ext.define(
 				form = view.getForm(),
 				descManager = FBEditor.desc.Manager;
 
-
-			// устанавливаем флаг загрузки данных в форму
-			descManager.setLoadedData(true);
-
 			view.fireEvent('reset');
 			form.setValues(data);
 			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
@@ -52,7 +48,11 @@ Ext.define(
 			Ext.getCmp('form-desc-customInfo').fireEvent('loadData', data['custom-info']);
 			Ext.getCmp('form-desc-publishInfo').fireEvent('loadData', data['paper-publish-info']);
 			Ext.getCmp('form-desc-documentInfo-isbn').fireEvent('loadData', data['document-info-isbn']);
+
 			me.expandFieldset(data);
+
+			// устанавливаем флаг загрузки данных в форму
+			descManager.setLoadedData(true);
 		},
 
 		/**
