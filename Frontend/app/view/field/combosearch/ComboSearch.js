@@ -11,19 +11,15 @@ Ext.define(
 		requires: [
 			'FBEditor.view.field.combosearch.ComboSearchController'
 		],
+
 		controller: 'combosearch',
 		xtype: 'combosearch',
 
-		enableKeyEvents: true,
-		autoSelect: false,
-		queryMode: 'remote',
-		minChars: 2,
-		hideTrigger: true,
-		queryDelay: 200,
-		defaultListConfig: {
-			shadow: false,
-			maxHeight: 200
+		listeners: {
+			select: 'onSelect',
+			click: 'onClick'
 		},
+
 		plugins: [
 			{
 				ptype: 'fieldCleaner'
@@ -34,12 +30,19 @@ Ext.define(
 			}
 		],
 
-		keyEnterAsTab: true,
+		enableKeyEvents: true,
+		autoSelect: false,
+		queryMode: 'remote',
+		minChars: 2,
+		hideTrigger: true,
+		queryDelay: 200,
 
-		listeners: {
-			select: 'onSelect',
-			click: 'onClick'
+		defaultListConfig: {
+			shadow: false,
+			maxHeight: 200
 		},
+
+		keyEnterAsTab: true,
 
 		/**
 		 * @property {Number} Задержка запроса после 3 символа.
@@ -124,13 +127,12 @@ Ext.define(
 				data = me.getDataStorage(),
 				store = me.getStore();
 
-			//console.log('expand storage', data);
 			if (data.length)
 			{
-				store.setAutoSort(false);
+				store.setSortOnLoad(false);
 				store.loadData(data);
 				me.expand();
-				store.setAutoSort(true);
+				store.setSortOnLoad(true);
 			}
 		},
 
