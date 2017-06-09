@@ -45,8 +45,6 @@ Ext.define(
 
 		layout: 'hbox',
 
-		prefixName: 'relations-subject',
-
 		/**
 		 * @private
 		 * @property {FBEditor.view.form.desc.relations.subject.CustomButton} Кнопка переключения в ручной режим.
@@ -79,8 +77,7 @@ Ext.define(
 					},
 					items: [
 						{
-							xtype: 'form-desc-relations-subject-container-custom',
-							prefixName: me.prefixName
+							xtype: 'form-desc-relations-subject-container-custom'
 						},
 						{
 							xtype: 'form-desc-relations-subject-container-search'
@@ -90,6 +87,43 @@ Ext.define(
 			];
 			
 			me.callParent(arguments);
+		},
+
+		isValid: function ()
+		{
+			var me = this,
+				custom = me.getCustomContainer(),
+				isValid;
+
+			isValid = custom.isValid();
+
+			return isValid;
+		},
+
+		getValues: function ()
+		{
+			var me = this,
+				custom = me.getCustomContainer(),
+				values;
+
+			values = custom.getValue();
+
+			return values;
+		},
+
+		/**
+		 * Переключает контейнер с поиска на данные или обратно.
+		 * @param {Boolean} customToSearch Переключить ли контейнер на поиск.
+		 */
+		switchContainers: function (customToSearch)
+		{
+			var me = this,
+				hidden = customToSearch,
+				search = me.getSearchContainer(),
+				custom = me.getCustomContainer();
+
+			custom.setHidden(hidden);
+			search.setHidden(!hidden);
 		},
 
 		/**

@@ -11,6 +11,19 @@ Ext.define(
 
 		alias: 'controller.form.desc.relations.subject.item',
 
+		onAccessHub: function ()
+		{
+			var me = this,
+				view = me.getView(),
+				values = view.getValues();
+
+			if (!values)
+			{
+				// показываем поля поиска
+				view.switchContainers(true);
+			}
+		},
+
 		onLoadInnerData: function (data)
 		{
 			var me = this,
@@ -61,38 +74,12 @@ Ext.define(
 		 */
 		onAfterRenderPlugin: function ()
 		{
-			var me = this,
-				view = me.getView(),
-				customContainer = view.getCustomContainer(),
-				customViewer;
-			
-			
+			//
 		},
 
 		onResetContainer: function ()
 		{
-			/*var me = this,
-				view = me.getView(),
-				btn,
-				customContainer,
-				searchContainer;
-
-			btn = view.getCustomBtn();
-
-			if (btn)
-			{
-				// скрываем поля поиска, показываем поля данных
-
-				customContainer = view.getCustomContainer();
-				searchContainer = view.getSearchContainer();
-
-				customContainer.setVisible(true);
-
-				customContainer.fireEvent('showViewer', true);
-				customContainer.fireEvent('showEditor', false);
-
-				searchContainer.setVisible(false);
-			}*/
+			//
 		}
 	}
 );

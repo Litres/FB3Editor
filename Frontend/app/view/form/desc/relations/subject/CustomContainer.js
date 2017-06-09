@@ -46,11 +46,9 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				descManager = FBEditor.desc.Manager;
+			var me = this;
 
 			me.hidden = FBEditor.accessHub;
-			me.hidden = descManager.isLoadedData() ? false : me.hidden;
 
 			me.items = [
 				{
@@ -62,6 +60,46 @@ Ext.define(
 			];
 
 			me.callParent(arguments);
+		},
+
+		isValid: function ()
+		{
+			var me = this,
+				val = me.getValue(),
+				isValid;
+
+			isValid = val && (val['last-name'] || val.title && val.title.main) ? me.callParent(arguments) : true;
+
+			return isValid;
+		},
+
+		getValue: function ()
+		{
+			var me = this,
+				val;
+
+			val = {
+				_id: me.down('[name=relations-subject-id]').getValue(),
+				_link: me.down('form-desc-relations-subject-link').getValue(),
+				_percent: me.down('[name=relations-subject-percent]').getValue(),
+				title: me.down('[name=relations-subject-title]').getValues(),
+				'first-name': me.down('[name=relations-subject-first-name]').getValue(),
+				'middle-name': me.down('[name=relations-subject-middle-name]').getValue(),
+				'last-name': me.down('[name=relations-subject-last-name]').getValue()
+			};
+
+			val = me.removeEmptyValues(val);
+
+			if (val && (val['last-name'] || val.title && val.title.main))
+			{
+				//
+			}
+			else
+			{
+				val = null;
+			}
+
+			return val;
 		},
 
 		/**

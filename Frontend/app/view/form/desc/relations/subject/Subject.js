@@ -36,14 +36,13 @@ Ext.define(
 		isValid: function ()
 		{
 			var me = this,
-				hiddenCount = 0,
-				items = me.query('form-desc-relations-subject-container-custom'),
-				searchName = me.down('form-desc-relations-subject-searchName'),
+				items = me.items,
 				isValid = true,
-				manager = FBEditor.desc.Manager;
+				manager = FBEditor.desc.Manager,
+				hiddenCount = 0,
+				searchName;
 
-			Ext.Array.each(
-				items,
+			items.each(
 				function (item)
 				{
 					if (item.isHidden())
@@ -59,11 +58,12 @@ Ext.define(
 					}
 				}
 			);
-			
+
 			if (isValid && hiddenCount === items.length)
 			{
-				// если все поля скрыты
+				// если все поля данных скрыты, то отмечаем ошибкой первое поле поиска
 				isValid = false;
+				searchName = me.down('form-desc-relations-subject-searchName');
 				searchName.markInvalid(me.translateText.error);
 				manager.fieldsError.push(searchName);
 			}
@@ -83,19 +83,9 @@ Ext.define(
 				{
 					var val;
 
-					val = {
-						_id: item.down('[name=relations-subject-id]').getValue(),
-						_link: item.down('form-desc-relations-subject-link').getValue(),
-						_percent: item.down('[name=relations-subject-percent]').getValue(),
-						title: item.down('[name=relations-subject-title]').getValues(),
-						'first-name': item.down('[name=relations-subject-first-name]').getValue(),
-						'middle-name': item.down('[name=relations-subject-middle-name]').getValue(),
-						'last-name': item.down('[name=relations-subject-last-name]').getValue()
-					};
+					val = item.getValues();
 
-					val = me.removeEmptyValues(val);
-
-					if (val && val['last-name'])
+					if (val)
 					{
 						values = values || [];
 						values.push(val);

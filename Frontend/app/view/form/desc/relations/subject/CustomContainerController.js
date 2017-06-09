@@ -11,7 +11,7 @@ Ext.define(
 
 		alias: 'controller.form.desc.relations.subject.container.custom',
 
-		onAccessHub: function ()
+		_onAccessHub: function ()
 		{
 			var me = this,
 				view = me.getView(),

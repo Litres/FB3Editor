@@ -15,7 +15,7 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				values = view.getValues();
-
+			
 			if (!values)
 			{
 				// показываем поля поиска
