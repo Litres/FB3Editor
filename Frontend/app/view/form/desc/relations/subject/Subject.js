@@ -85,7 +85,7 @@ Ext.define(
 
 					val = item.getValues();
 
-					if (val)
+					if (val && !me.valContains(val, values))
 					{
 						values = values || [];
 						values.push(val);
@@ -97,6 +97,32 @@ Ext.define(
 			data['fb3-relations'].subject = values;
 
 			return data;
+		},
+
+		/**
+		 * Проверяет существует ли переданное значение в массиве.
+		 * @param val {Object} Значение.
+		 * @param values {Object[]} Массив значений.
+		 * @return {Boolean}
+		 */
+		valContains: function (val, values)
+		{
+			var contains = false;
+
+			Ext.each(
+				values,
+				function (item)
+				{
+					if (val._id === item._id && val._link === item._link)
+					{
+						contains = true;
+
+						return false;
+					}
+				}
+			);
+
+			return contains;
 		}
 	}
 );

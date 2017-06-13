@@ -103,7 +103,7 @@ Ext.define(
 				val = me.getValue(),
 				isValid;
 
-			isValid = val && val._link ? me.callParent(arguments) : true;
+			isValid = val && (val._link || val.title && val.title.main) ? me.callParent(arguments) : true;
 
 			return isValid;
 		},
@@ -115,17 +115,12 @@ Ext.define(
 
 			val = {
 				_id: me.down('[name=relations-object-id]').getValue(),
-				_link: me.down('form-desc-relations-object-link').getValue()
+				_link: me.down('form-desc-relations-object-link').getValue(),
+				title: me.down('[name=relations-object-title]').getValues(),
+				description: me.down('[name=relations-object-description]').getValue()
 			};
 			
 			val = me.removeEmptyValues(val);
-
-			if (val && val._link)
-			{
-				val.title = me.down('[name=relations-object-title]').getValues();
-				val.description = me.down('[name=relations-object-description]').getValue();
-				val = me.removeEmptyValues(val);
-			}
 
 			return val;
 		}
