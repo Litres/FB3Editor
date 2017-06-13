@@ -16,16 +16,18 @@ Ext.define(
 
 		xtype: 'form-desc-editor',
 		controller: 'form.desc.editor',
+		
 		cls: 'form-desc-editor',
-
-		layout: 'fit',
-		bodyStyle: {
-			background: 'none'
-		},
 
 		listeners: {
 			loadData: 'onLoadData'
 		},
+
+		bodyStyle: {
+			background: 'none'
+		},
+
+		layout: 'fit',
 
 		/**
 		 * @property {Boolean} Показывать ли тулбар по умолчанию.
@@ -57,6 +59,7 @@ Ext.define(
 					defaultShowToolbar: me.defaultShowToolbar
 				}
 			);
+			
 			me.bodyEditor = bodyEditor;
 			me.add(bodyEditor);
 

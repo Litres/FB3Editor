@@ -8,12 +8,11 @@ Ext.define(
 	'FBEditor.view.form.desc.customInfo.CustomInfo',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
-		id: 'form-desc-customInfo',
+
 		xtype: 'form-desc-customInfo',
+		id: 'form-desc-customInfo',
 		name: 'form-desc-plugin-fieldcontainerreplicator',
 		cls: 'desc-fieldcontainer',
-
-		prefixName: 'custom-info',
 
 		translateText: {
 			infoType: 'Тип',
@@ -22,8 +21,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				prefixName = me.prefixName;
+			var me = this;
 
 			me.items = [
 				{
@@ -46,7 +44,7 @@ Ext.define(
 					items: [
 						{
 							xtype: 'desc-field-text-required',
-							name: prefixName + '-info-type',
+							name: 'custom-info-info-type',
 							flex: 1,
 							labelWidth: 60,
 							fieldLabel: me.translateText.infoType
@@ -64,15 +62,13 @@ Ext.define(
 								},
 								{
 									xtype: 'desc-field-textarea-required',
-									name: prefixName + '-text',
+									cls: 'custom-info-text',
+									name: 'custom-info-text',
 									flex: 1,
-									//grow: true,
-									//growMin: 1,
-									//minHeight: 200,
 									height: 100,
 									plugins: {
 										ptype: 'fieldCleaner',
-										style: 'right: 17px; margin-top: -20px'
+										style: 'right: 17px; margin-top: -22px'
 									},
 									resizable: {
 										handles: 's',
@@ -85,13 +81,13 @@ Ext.define(
 					]
 				}
 			];
+
 			me.callParent(arguments);
 		},
 
 		getValues: function (d)
 		{
 			var me = this,
-				prefixName = me.prefixName,
 				items = me.items,
 				data = d,
 				values = null;
@@ -102,10 +98,12 @@ Ext.define(
 					var val;
 
 					val = {
-						__text: item.down('[name=' + prefixName + '-text]').getValue(),
-						'_info-type': item.down('[name=' + prefixName + '-info-type]').getValue()
+						__text: item.down('[name=custom-info-text]').getValue(),
+						'_info-type': item.down('[name=custom-info-info-type]').getValue()
 					};
+					
 					val = me.removeEmptyValues(val);
+
 					if (val)
 					{
 						values = values || [];
@@ -113,9 +111,10 @@ Ext.define(
 					}
 				}
 			);
+
 			if (values)
 			{
-				data[prefixName] = values;
+				data['custom-info'] = values;
 			}
 
 			return data;

@@ -13,14 +13,16 @@ Ext.define(
 		],
 
 		xtype: 'form-desc-editor-body',
+		
 		cls: 'form-desc-editor-body',
 
-		height: 170,
 		resizable: {
 			handles: 's',
 			minHeight: 100,
 			pinned: true
 		},
+
+		height: 170,
 
 		createManager: function ()
 		{

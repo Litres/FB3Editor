@@ -11,7 +11,9 @@ Ext.define(
 		mixins: {
 			required: 'FBEditor.view.form.desc.field.Required'
 		},
+
 		xtype: 'desc-field-textarea-required',
+
 		allowBlank: false,
 
 		_cls: 'field-required',

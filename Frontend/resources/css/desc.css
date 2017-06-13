@@ -407,6 +407,14 @@
 	margin: 0 0 4px 0;
 }
 
+/* пользовательская инфа */
+.form-desc .custom-info-text .x-form-text {
+	height: 100%;
+}
+.form-desc .custom-info-text .x-form-trigger-wrap-default {
+	height: 100%;
+}
+
 /* плагин клонирования полей */
 .form-desc .plugin-fieldcontainerreplicator-big-btn .fa {
 	font-size: 20px;
