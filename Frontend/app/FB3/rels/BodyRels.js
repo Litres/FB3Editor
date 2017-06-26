@@ -28,6 +28,7 @@ Ext.define(
 			{
 				json = me.getJson();
 				rels = json.Relationships.Relationship || null;
+
 				if (rels)
 				{
 					rels = Ext.isArray(rels) ? rels : [rels];
@@ -53,6 +54,7 @@ Ext.define(
 			{
 				images = rels[FBEditor.FB3.rels.RelType.image];
 				images = Ext.isArray(images) ? images : [images];
+
 				Ext.each(
 					images,
 					function (item, i, selfImages)
@@ -64,6 +66,8 @@ Ext.define(
 						// путь может быть абсолютным или относительным
 						fileName = targetName.substring(0, 1) !== '/' ?
 						           parentRelsDir + '/' + targetName : targetName.substring(1);
+
+						//console.log('fileName', fileName);
 
 						selfImages[i] = Ext.create('FBEditor.FB3.rels.Image', me.getStructure(), fileName);
 						selfImages[i].setId(id);

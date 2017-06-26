@@ -90,6 +90,7 @@ Ext.define(
 			var me = this,
 				btn = me.data.btn,
 				desc = me.data.desc,
+				resources,
 				bodyEditor,
 				bodyManager,
 				cover,
@@ -115,6 +116,10 @@ Ext.define(
 			bodyManager = bodyEditor.getManager();
 			bodyXml = bodyManager.getXml();
 
+			resources = FBEditor.resource.Manager.getResources();
+
+			//console.log('resources', resources);
+
 			fb3data = {
 				thumb: cover,
 				meta: FBEditor.desc.Manager.getMetaXml(descValues),
@@ -124,7 +129,7 @@ Ext.define(
 						bodies: [
 							{
 								content: bodyXml,
-								images: FBEditor.resource.Manager.getResources()
+								images: resources
 							}
 						]
 					}

@@ -163,17 +163,31 @@ Ext.define(
 
 		/**
 		 * Устанавливает обложку.
-		 * @param {FBEditor.resource.Resource} Данные обложки.
+		 * @param {FBEditor.resource.Resource} data Данные обложки.
 		 */
 		setThumb: function (data)
 		{
 			var me = this,
 				content = me.getText(),
+				thumbRel,
 				target;
 
 			target = data.rootName;
-			content = content.replace(/thumbnail" Target="(.*?)"/, 'thumbnail" Target="' + target + '"');
+
+			if (/thumbnail" Target="(.*?)"/.test(content))
+			{
+				content = content.replace(/thumbnail" Target="(.*?)"/, 'thumbnail" Target="' + target + '"');
+			}
+			else
+			{
+				thumbRel = '<Relationship Id="rId0" ' +
+				           'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" ' +
+				           'Target="' + target + '"/>';
+				content = content.replace(/<Relationship Id="rId1"/ig, thumbRel + '<Relationship Id="rId1"');
+			}
+
 			me.setFileContent(content);
+
 			console.log('save thumb', data, content);
 		}
 	}

@@ -130,6 +130,7 @@ Ext.define(
 			{
 				result = name ? me.files[name] : me.files;
 				result = result || null;
+
 				if (!result)
 				{
 					Ext.log(
@@ -171,6 +172,7 @@ Ext.define(
 				zip = me.zip;
 
 			me.files = zip.getFiles();
+			//console.log('me.files', me.files);
 		},
 
 		/**

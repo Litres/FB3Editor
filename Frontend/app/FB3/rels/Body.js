@@ -76,7 +76,12 @@ Ext.define(
 				data,
 			    function (item)
 			    {
-				    zip.file(item.rootName, item.content, {createFolders: true});
+				    var rootName = item.rootName;
+				    
+				    // удаляем первый слеш из пути, если он есть, так как архив является корнем сам по себе
+				    rootName = rootName.replace(/^\//, '');
+				    
+				    zip.file(rootName, item.content, {createFolders: true});
 			    }
 			);
 
