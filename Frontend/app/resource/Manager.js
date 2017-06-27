@@ -277,7 +277,12 @@ Ext.define(
 							if (resources.length)
 							{
 								// продолжаем грузить ресурсы
-								me.load(resources);
+								me.load(resources).then(
+									function ()
+									{
+										resolve();
+									}
+								);
 							}
 							else
 							{
@@ -943,7 +948,7 @@ Ext.define(
 		 * Устанавливает обложку.
 		 * @param {String} coverName Имя обложки.
 		 * @param {Boolean} [ignoreHub] Игнорировать ли установку обложки на хабе. Иногда это необходимо, так как на
-		 * хабе она может быть уже установлена и прилложение об этом знает.
+		 * хабе она может быть уже установлена и приложение об этом знает.
 		 */
 		setCover: function (coverName, ignoreHub)
 		{
@@ -960,14 +965,21 @@ Ext.define(
 				return false;
 			}
 
+			// удаляем первый слеш из пути
+			name = coverName.replace(/^\//ig, '');
+
 			// айди ресурса
-			name = coverName.indexOf(me.rootPath) === 0 ? coverName.substring(me.rootPath.length + 1) : coverName;
+			name = name.indexOf(me.rootPath) === 0 ? name.substring(me.rootPath.length + 1) : name;
+
+			//console.log('coverName', coverName, me.rootPath, name);
 
 			// перебираем все ресурсы
 			Ext.Array.each(
 				data,
 			    function (item)
 			    {
+				    //console.log(item.name, item.isCover);
+
 				    if (item.name === name)
 				    {
 					    // новая обложка
@@ -980,6 +992,8 @@ Ext.define(
 				    }
 			    }
 			);
+
+			//console.log('cover', cover);
 
 			if (cover)
 			{
@@ -1303,9 +1317,12 @@ Ext.define(
 		checkThumbInResources: function (thumb)
 		{
 			var me = this,
+				name,
 				result;
 
-			result = thumb.getFileName().indexOf(me.rootPath) === 0 ? true : false;
+			name = thumb.getFileName();
+			name = name.replace(/^\//, '');
+			result = name.indexOf(me.rootPath) === 0 ? true : false;
 
 			return result;
 		},

@@ -106,14 +106,19 @@ Ext.define(
 									images.push(thumb);
 								}
 
-								// загружаем ресурсы
 								resourceManager.reset();
-								resourceManager.load(images);
 
-								if (thumb)
-								{
-									resourceManager.setCover(thumb.getFileName());
-								}
+								// загружаем ресурсы
+								resourceManager.load(images).then(
+									function ()
+									{
+										if (thumb)
+										{
+											// обложка
+											resourceManager.setCover(thumb.getFileName());
+										}
+									}
+								);
 
 								// редактор тела книги
 								bodyManager = FBEditor.getEditorManager();

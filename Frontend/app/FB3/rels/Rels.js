@@ -103,6 +103,7 @@ Ext.define(
 				rels = me.getRels();
 				books = rels[FBEditor.FB3.rels.RelType.book];
 				books = Ext.isArray(books) ? books : [books];
+				
 				Ext.each(
 					books,
 				    function (item, i, selfBooks)
@@ -116,6 +117,7 @@ Ext.define(
 				    }
 				);
 			}
+			
 			books = Ext.isNumeric(index) ? books[index] : books;
 
 			return books;
@@ -131,12 +133,16 @@ Ext.define(
 				thumb = me.thumb,
 				rels;
 
-			/*if (!thumb)
+			if (!thumb)
 			{
 				rels = me.getRels();
 				thumb = rels[FBEditor.FB3.rels.RelType.thumbnail];
-				thumb = Ext.create('FBEditor.FB3.rels.Thumb', me.getStructure(), thumb[me.prefix + 'Target']);
-			}*/
+
+				if (thumb)
+				{
+					thumb = Ext.create('FBEditor.FB3.rels.Thumb', me.getStructure(), thumb[me.prefix + 'Target']);
+				}
+			}
 
 			return thumb;
 		},
@@ -173,6 +179,9 @@ Ext.define(
 				target;
 
 			target = data.rootName;
+
+			// удаляем первый слеш из пути
+			target = target.replace(/^\//ig, '');
 
 			if (/thumbnail" Target="(.*?)"/.test(content))
 			{

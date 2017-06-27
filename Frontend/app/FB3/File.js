@@ -76,6 +76,7 @@ Ext.define(
 				bodies;
 
 			//console.log('DATA', data);
+			
 			if (data.thumb)
 			{
 				structure.setThumb(data.thumb);

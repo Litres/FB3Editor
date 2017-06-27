@@ -119,6 +119,7 @@ Ext.define(
 			resources = FBEditor.resource.Manager.getResources();
 
 			//console.log('resources', resources);
+			//console.log('cover', cover);
 
 			fb3data = {
 				thumb: cover,
