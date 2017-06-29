@@ -124,7 +124,7 @@ Ext.define(
 								bodyManager = FBEditor.getEditorManager();
 								bodyManager.reset();
 
-								// переключаем контекст на редатор тела книги
+								// переключаем контекст на редактор тела книги
 								content.openBody();
 
 								// создаем контент тела книги

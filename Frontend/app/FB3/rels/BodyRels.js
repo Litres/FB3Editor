@@ -65,12 +65,13 @@ Ext.define(
 
 						// путь может быть абсолютным или относительным
 						fileName = targetName.substring(0, 1) !== '/' ?
-						           parentRelsDir + '/' + targetName : targetName.substring(1);
+						           parentRelsDir + '/' + targetName : targetName/*targetName.substring(1)*/;
 
-						//console.log('fileName', fileName);
+						//console.log('parentRelsDir, targetName, fileName', parentRelsDir, targetName, fileName);
 
 						selfImages[i] = Ext.create('FBEditor.FB3.rels.Image', me.getStructure(), fileName);
-						selfImages[i].setId(id);
+						selfImages[i].setId(decodeURI(id));
+						//console.log('selfImages[i]', selfImages[i]);
 					}
 				);
 			}
@@ -92,14 +93,21 @@ Ext.define(
 				data,
 				function (item)
 				{
-					var rel = '<Relationship Id="{%s}" ' +
+					var rel = '<Relationship Id="{%id}" ' +
 					          'Type="http://www.fictionbook.org/FictionBook3/relationships/image"' +
-					          ' Target="/fb3/img/{%s}"/>';
+					          ' Target="{%target}"/>';
 
-					rel = rel.replace(/{%s}/g, item.fileId);
+					// кодируем кириллицу
+					item.fileId = encodeURI(item.fileId);
+					item.rootName = encodeURI(item.rootName);
+
+					rel = rel.replace(/{%id}/ig, item.fileId);
+					rel = rel.replace(/{%target}/ig, item.rootName);
 					xml += rel;
 				}
 			);
+
+			//console.log('xml', xml);
 			
 			xml += '</Relationships>';
 			me.setFileContent(xml);

@@ -66,7 +66,7 @@ Ext.define(
 			zip = fb3file.zip;
 			zip.file('meta/core.xml');
 			zip.file('fb3/body.xml');
-			//zip.file('cover.jpg');
+			
 			me.callParent(arguments);
 		},
 
@@ -179,9 +179,6 @@ Ext.define(
 				target;
 
 			target = data.rootName;
-
-			// удаляем первый слеш из пути
-			target = target.replace(/^\//ig, '');
 
 			if (/thumbnail" Target="(.*?)"/.test(content))
 			{

@@ -73,6 +73,9 @@ Ext.define(
 			var me = this,
 				zip = me.zip;
 
+			// удаляем первый слеш
+			name = name.replace(/^\//, '');
+			
 			zip.file(name, data, options);
 		},
 

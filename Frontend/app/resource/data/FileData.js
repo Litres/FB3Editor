@@ -44,6 +44,7 @@ Ext.define(
 			blob = me.getBlob(content, file.type);
 			file.size = file.size || blob.size;
 			url = window.URL.createObjectURL(blob);
+			//console.log('fileData', name, file.name);
 
 			data = {
 				blob: blob,

@@ -46,7 +46,7 @@ Ext.define(
 		 * @private
 		 * @property {String} Корневая директория ресурсов в архиве.
 		 */
-		rootPath: 'fb3/img',
+		rootPath: '/fb3/img',
 
 		/**
 		 * @private
@@ -957,6 +957,7 @@ Ext.define(
 				loader = me.loader,
 				panel = Ext.getCmp('panel-cover'),
 				cover = null,
+				reg,
 				oldCover,
 				name;
 
@@ -965,10 +966,10 @@ Ext.define(
 				return false;
 			}
 
-			// удаляем первый слеш из пути
-			name = coverName.replace(/^\//ig, '');
+			reg = new RegExp('^' + me.rootPath);
+			name = /^\//.test(coverName) || !reg.test('/' + coverName) ? coverName : '/' + coverName;
 
-			// айди ресурса
+			// имя ресурса
 			name = name.indexOf(me.rootPath) === 0 ? name.substring(me.rootPath.length + 1) : name;
 
 			//console.log('coverName', coverName, me.rootPath, name);
@@ -1321,8 +1322,10 @@ Ext.define(
 				result;
 
 			name = thumb.getFileName();
-			name = name.replace(/^\//, '');
 			result = name.indexOf(me.rootPath) === 0 ? true : false;
+
+			//console.log('checkThumbInResources', name, me.rootPath, result);
+			//console.log(thumb);
 
 			return result;
 		},

@@ -71,6 +71,7 @@ Ext.define(
 			fb3file = structure.getFb3file();
 			zip = fb3file.zip;
 			zip.remove('fb3/img');
+			zip.remove('/fb3/img');
 
 			Ext.each(
 				data,
@@ -78,9 +79,12 @@ Ext.define(
 			    {
 				    var rootName = item.rootName;
 				    
-				    // удаляем первый слеш из пути, если он есть, так как архив является корнем сам по себе
+				    // удаляем первый слеш
 				    rootName = rootName.replace(/^\//, '');
-				    
+
+				    // кодируем кириллицу
+				    rootName = encodeURI(rootName);
+
 				    zip.file(rootName, item.content, {createFolders: true});
 			    }
 			);

@@ -34,13 +34,17 @@ Ext.define(
 				content = me.fileData.content,
 				isCover = me.fileData.isCover,
 				rootPathUrl = me.rootPathUrl,
-				name = fileName,
+				name,
 				fileType,
 				baseName,
 				url,
 				blob,
 				data;
 
+			fileName = decodeURI(fileName);
+			fileId = decodeURI(fileId);
+			name = fileName;
+			
 			// вырезаем корневую диреткорию из имени файла
 			Ext.Array.each(
 				rootPathUrl,

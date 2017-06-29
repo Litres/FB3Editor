@@ -42,6 +42,8 @@ Ext.define(
 		{
 			var me = this,
 				art = me.getArt(),
+				pImage,
+				pTarget,
 				url,
 				form,
 				promise;
@@ -56,14 +58,18 @@ Ext.define(
 			);
 
 			//console.log(resData);
+			pImage = resData.name;
+			pTarget = target || resData.rootName;
+			pImage = encodeURI(pImage);
+			pTarget = encodeURI(pTarget);
 
 			// данные для запроса
 			form = new FormData();
 			form.append('data', resData.blob);
 			form.append('action', 'put_fb3_image');
 			form.append('art', art);
-			form.append('image', resData.name);
-			form.append('target', target || resData.rootName);
+			form.append('image', pImage);
+			form.append('target', pTarget);
 
 			promise = new Promise(
 				function (resolve, reject)
@@ -131,7 +137,7 @@ Ext.define(
 							params: {
 								action: 'put_fb3_image',
 								art: art,
-								image: id
+								image: encodeURI(id)
 							},
 							scope: me,
 							success: function(response)
@@ -473,7 +479,7 @@ Ext.define(
 
 								if (response && response.responseText && /^\/fb3/ig.test(response.responseText))
 								{
-									target = response.responseText;
+									target = decodeURI(response.responseText);
 									resolve(target);
 								}
 								else
@@ -509,11 +515,11 @@ Ext.define(
 				action: 'put_fb3_cover'
 			};
 
-			console.log(resData);
+			//console.log(resData);
 
 			if (resData)
 			{
-				params.body_image_id = resData.fileId;
+				params.body_image_id = encodeURI(resData.fileId);
 			}
 
 			url = me.getSaveUrl(params);
@@ -574,7 +580,7 @@ Ext.define(
 			me.setCover().then(
 				function (res)
 				{
-
+					//
 				}
 			);
 		}

@@ -18,7 +18,7 @@ Ext.define(
 				name,
 				data;
 			
-			name = me.getFileName().substring(me.rootPath.length);
+			name = me.getFileName().substring(me.rootPath.length + 1);
 			blob = me.getBlob(content, fileType);
 
 			data = {

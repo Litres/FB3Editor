@@ -129,6 +129,9 @@ Ext.define(
 
 			if (me.files)
 			{
+				// удаляем первый слеш
+				name = name ? name.replace(/^\//, '') : name;
+
 				result = name ? me.files[name] : me.files;
 				result = result || null;
 

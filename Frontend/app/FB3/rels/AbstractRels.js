@@ -57,7 +57,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {String} Директория архива FB3, в которой находятися текущая директория _rels.
+		 * @property {String} Директория архива FB3, в которой находится текущая директория _rels.
 		 */
 		parentRelsDir: null,
 
@@ -70,7 +70,7 @@ Ext.define(
 		/**
 		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
 		 * @param {String} fileName Имя файла в архиве.
-		 * @param {String} [parentRelsDir] Директория архива FB3, в которой находятися текущая директория _rels.
+		 * @param {String} [parentRelsDir] Директория архива FB3, в которой находится текущая директория _rels.
 		 */
 		constructor: function (structure, fileName, parentRelsDir)
 		{
@@ -78,14 +78,14 @@ Ext.define(
 				fb3file;
 
 			fb3file = structure.getFb3file();
-			
+
 			if (!fb3file.getFiles(fileName))
 			{
 				me.create(structure, fileName);
 			}
 			
 			me.structure = structure;
-			me.fileName = fileName;
+			me.fileName = decodeURI(fileName);
 			me.parentRelsDir = parentRelsDir ? parentRelsDir : null;
 			me.relsName = me.getRelsName();
 			me.file = me.structure.getFb3file().getFiles(fileName);
@@ -137,9 +137,10 @@ Ext.define(
 		 */
 		getFileName: function ()
 		{
-			var me = this;
+			var me = this,
+				name = me.fileName;
 
-			return me.fileName;
+			return name;
 		},
 
 		/**
@@ -149,7 +150,7 @@ Ext.define(
 		getBaseFileName: function ()
 		{
 			var me = this,
-				fileName = me.fileName,
+				fileName = me.getFileName(),
 				name;
 
 			name = fileName.replace(/.*\/(.*?\.\w+)$/, '$1');
@@ -164,7 +165,7 @@ Ext.define(
 		getExtension: function ()
 		{
 			var me = this,
-				fileName = me.fileName,
+				fileName = me.getFileName(),
 				ext;
 
 			ext = fileName.replace(/.*\/.*?\.(\w+)$/, '$1');
@@ -203,7 +204,10 @@ Ext.define(
 				fileName = fileName.split('/');
 				currentName = fileName.pop();
 				parentDir = fileName.join('/');
-				me.parentDir = parentDir;
+
+				// первый слеш
+				me.parentDir = /^\//.test(parentDir) ? parentDir : '/' + parentDir;
+
 				relsName = parentDir + '/_rels/' + currentName + '.rels';
 			}
 
@@ -309,10 +313,11 @@ Ext.define(
 		{
 			var me = this,
 				fb3file = me.structure.fb3file,
-				fileName = me.fileName,
+				fileName = me.getFileName(),
 				zip;
 
 			zip = fb3file.zip;
+			fileName = encodeURI(fileName);
 			zip.file(fileName, data);
 		},
 
@@ -324,7 +329,7 @@ Ext.define(
 		{
 			var me = this,
 				fb3file = me.structure.fb3file,
-				fileName = me.fileName,
+				fileName = me.getFileName(),
 				newFileName,
 				data,
 				zip;
