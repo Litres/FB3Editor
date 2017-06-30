@@ -8,10 +8,11 @@ Ext.define(
 	'FBEditor.view.panel.toolstab.file.button.saveas.SaveAsController',
 	{
 		extend: 'Ext.app.ViewController',
-		alias: 'controller.panel.toolstab.file.button.saveas',
 		requires: [
 			'FBEditor.command.SaveAsFile'
 		],
+
+		alias: 'controller.panel.toolstab.file.button.saveas',
 
 		/**
 		 * Сохраняет книгу локально.
@@ -27,7 +28,9 @@ Ext.define(
 				btn: btn,
 				desc: Ext.getCmp('form-desc')
 			};
+			
 			cmd = Ext.create('FBEditor.command.SaveAsFile', cmdOpts);
+			
 			if (cmd.execute())
 			{
 				FBEditor.HistoryCommand.add(cmd);

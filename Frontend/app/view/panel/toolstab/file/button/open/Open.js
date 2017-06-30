@@ -20,8 +20,23 @@ Ext.define(
 			change: 'onChange'
 		},
 
+		iconCls: 'fa fa-upload',
+		tooltipType: 'title',
+
 		accept: '', //'application/zip'
-		
-		text: 'Открыть книгу (локально)'
+
+		translateText: {
+			open: 'Открыть книгу (локально)'
+		},
+
+		initComponent: function ()
+		{
+			var me = this;
+
+			me.text = me.translateText.open;
+			me.tooltip = me.translateText.open;
+
+			me.callParent(arguments);
+		}
 	}
 );

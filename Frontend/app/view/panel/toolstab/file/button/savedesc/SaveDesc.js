@@ -16,12 +16,27 @@ Ext.define(
 		xtype: 'panel-toolstab-file-button-savedesc',
 		controller: 'panel.toolstab.file.button.savedesc',
 		
-		text: 'Сохранить описание (хаб)',
-		disabled: true,
-
 		listeners: {
 			click: 'onClick',
 			accessHub: 'onAccessHub'
+		},
+
+		disabled: true,
+		iconCls: 'fa fa-cloud-download',
+		tooltipType: 'title',
+
+		translateText: {
+			save: 'Сохранить описание (хаб)'
+		},
+
+		initComponent: function ()
+		{
+			var me = this;
+
+			me.text = me.translateText.save;
+			me.tooltip = me.translateText.save;
+
+			me.callParent(arguments);
 		},
 
 		/**

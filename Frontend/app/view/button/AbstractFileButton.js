@@ -13,11 +13,12 @@ Ext.define(
 		afterTpl: '<input id="{id}-fileInputEl" data-ref="fileInputEl" class="{childElCls} {inputCls}" ' +
 		          'type="file" size="1" name="{inputName}" role="{role}" ' +
 		          '<tpl if="tabIndex != null">tabindex="{tabIndex}"</tpl> ',
-
+		
 		/**
 		 * @property {String} Допустимые mime-типы для открытия (через запятую, без пробелов).
 		 */
 		accept: '',
+		
 
 		initComponent: function ()
 		{

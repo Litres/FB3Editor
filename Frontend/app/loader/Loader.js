@@ -8,6 +8,10 @@
 Ext.define(
 	'FBEditor.loader.Loader',
 	{
+		requires: [
+			'FBEditor.loader.Observer'
+		],
+		
 		/**
 		 * @property {String} Экшен загрузки.
 		 */
@@ -43,14 +47,41 @@ Ext.define(
 		manager: null,
 
 		/**
+		 * @private
+		 * @property {FBEditor.loader.Observer} Наблюдатель.
+		 */
+		observer: null,
+
+		/**
 		 * @param {Object} [manager] Менеджер.
 		 */
 		constructor: function (manager)
 		{
 			var me = this;
-			
+
 			me.saveAction = me.saveAction || me.loadAction;
 			me.manager = manager;
+			me.setObserver();
+		},
+
+		/**
+		 * @template
+		 * Устанавливает наблюдателя.
+		 */
+		setObserver: function ()
+		{
+			var me = this;
+			
+			me.observer = Ext.create('FBEditor.loader.Observer');
+		},
+
+		/**
+		 * Возвращает наблюдателя.
+		 * @return {FBEditor.loader.Observable}
+		 */
+		getObserver: function ()
+		{
+			return this.observer;
 		},
 
 		/**

@@ -84,6 +84,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает загрузчки.
+		 * @return {FBEditor.resource.Loader}
+		 */
+		getLoader: function ()
+		{
+			return this.loader;
+		},
+
+		/**
 		 * Возвращает объект для управления ресурсами, вставляемыми из буфера.
 		 * @return {FBEditor.resource.Paste}
 		 */

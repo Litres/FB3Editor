@@ -33,7 +33,7 @@ Ext.define(
 		 * @property {Number} Максимальное количество одновременных запросов к хабу.
 		 */
 		maxAsyncRequests: 4,
-
+		
 		/**
 		 * @param {Object} resData Данные ресурса.
 		 * @param {String} [target] Новый путь хранения ресурса. Если передан, то ресурс перемещается.
@@ -254,6 +254,9 @@ Ext.define(
 		},
 
 		/**
+		 * @event beforeLoadResources
+		 * @event afterLoadResources
+		 * 
 		 * Загружает ресурсы.
 		 * @param {Array} data Данные ресурсов.
 		 * @return {Promise}
@@ -261,9 +264,13 @@ Ext.define(
 		loadResources: function (data)
 		{
 			var me = this,
+				observer = me.getObserver(),
 				wwManager = FBEditor.webworker.Manager,
 				master,
 				promise;
+
+			// выбрасываем событие для наблюдателей
+			observer.fireEvent('beforeLoadResources');
 
 			// владелец потока
 			master = wwManager.factory('loadResources');
@@ -322,6 +329,9 @@ Ext.define(
 
 								master.destroy();
 								delete master;
+
+								// выбрасываем событие для наблюдателей
+								observer.fireEvent('afterLoadResources');
 
 								resolve();
 							}
