@@ -12,40 +12,35 @@ Ext.define(
 			'FBEditor.view.form.desc.subject.SubjectTreeController',
 			'FBEditor.view.form.desc.subject.SubjectStore'
 		],
-		id: 'form-desc-subjectTree',
+		
 		xtype: 'form-desc-subjectTree',
 		controller: 'form.desc.subjectTree',
+		
 		cls: 'form-desc-subjectTree',
 
-		resizable: true,
-		floating: true,
-		closeAction: 'hide',
-		width: 450,
-		height: 300,
-		minHeight: 200,
-		maxHeight: 500,
-		autoScroll: true,
 		rootVisible: false,
 		animate: false,
 		useArrows: true,
 		folderSort: true,
-		shadow: false,
 		focusOnToFront: false, // необходимо false, чтобы фокус не прыгал из поля в окно
 
 		displayField: '_title',
 
 		listeners: {
 			filter: 'onFilter',
-			nodeExpand: 'onNodeExpand',
-			nodeCollapse: 'onNodeCollapse',
+			//nodeExpand: 'onNodeExpand',
+			//nodeCollapse: 'onNodeCollapse',
 			click: {
 				element: 'el',
 				fn: 'onClick'
 			},
-			itemClick: 'onItemClick',
-			alignTo: 'onAlignTo',
-			resize: 'onResize'
+			itemClick: 'onItemClick'
 		},
+
+		/**
+		 * @property {String} Адрес которого загружается xml дерева жанров.
+		 */
+		urlTree: 'https://hub.litres.ru/genres_list_2/',
 
 		/**
 		 * @property {Number} Время обновления данных в локальном хранилище. По прошествии этого времени будет
@@ -55,14 +50,9 @@ Ext.define(
 		updateDataTime: 60 * 60 * 24,
 
 		/**
-		 * @property {Boolean} Открыт ли список.
-		 */
-		isShow: false,
-
-		/**
 		 * @property {FBEditor.view.form.desc.subject.Subject} Поле жанра.
 		 */
-		subjectField: null,
+		//subjectField: null,
 
 		/**
 		 * @private
@@ -97,9 +87,15 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Number} Хранит позицию скролла, для его корректировки после открытия/закртыия узлов дерева.
+		 * @property {Number} Хранит позицию скролла, для его корректировки после открытия/закрытия узлов дерева.
 		 */
-		scrollTop: 0,
+		//scrollTop: 0,
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.subject.window.Window} Окно с жанрами и тегами.
+		 */
+		win: null,
 
 		initComponent: function ()
 		{
@@ -131,7 +127,7 @@ Ext.define(
 			);
 		},
 
-		handleFocusEnter: function (e)
+		_handleFocusEnter: function (e)
 		{
 			var me = this,
 				view = me.getView();
@@ -142,66 +138,8 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		show: function ()
-		{
-			var me = this,
-				textfield,
-				val;
-
-			if (me.subjectField)
-			{
-				me.callParent(arguments);
-
-				// выравниваем окно относительно поля ввода
-				me.fireEvent('alignTo');
-
-				me.isShow = true;
-
-				// фильтруем значение
-				textfield = me.getTextField();
-				val = textfield.getValue();
-				me.filterData(val);
-			}
-		},
-
-		afterShow: function()
-		{
-			var me = this;
-
-			// добавляем обработчик события клика по всему документу, чтобы иметь возможность закрывать окно
-			Ext.getBody().on('click', me.onClickBody, me);
-
-			me.callParent(arguments);
-		},
-
-		afterHide: function ()
-		{
-			var me = this;
-
-			me.isShow = false;
-
-			// удаляем обработчки клика по всему документу, чтобы не висел зря
-			Ext.getBody().un('click', me.onClickBody, me);
-
-			me.callParent(arguments);
-
-			// сбрасываем позицию скролла в начало
-			me.scrollTop = 0;
-
-			// сворачиваем узлы
-			me.getRootNode().collapse(true);
-		},
-
 		/**
-		 * Закрываем окно при нажатии на Esc.
-		 */
-		onEsc: function ()
-		{
-			this.close();
-		},
-
-		/**
-		 * Проверяет данные и показывает окно.
+		 * Инициализирует данные.
 		 */
 		initData: function()
 		{
@@ -227,11 +165,21 @@ Ext.define(
 					me.loadData(text);
 				}
 			}
-			else
-			{
-				// показываем окно
-				me.show();
-			}
+		},
+
+		/**
+		 * Возвращает окно (родительский контейнер).
+		 * @return {FBEditor.view.form.desc.subject.window.Window}
+		 */
+		getWindow: function ()
+		{
+			var me = this,
+				win;
+
+			win  = me.win || me.up('form-desc-subject-win');
+			me.win = win;
+
+			return win;
 		},
 
 		/**
@@ -244,7 +192,7 @@ Ext.define(
 
 			Ext.Ajax.request(
 				{
-					url: 'https://hub.litres.ru/genres_list_2/',
+					url: me.urlTree,
 					timeout: 5000,
 					scope: me,
 					success: function (response)
@@ -272,6 +220,7 @@ Ext.define(
 		},
 
 		/**
+		 * @event afterLoadData
 		 * Загружает данные дерева в хранилище.
 		 * @param {String} text Xml-строка.
 		 */
@@ -299,13 +248,13 @@ Ext.define(
 						icon: Ext.Msg.ERROR
 					}
 				);
+				
 				Ext.log({msg: 'Ошибка загрузки дерева жанров', level: 'error'});
 
 				return;
 			}
 
 			json = FBEditor.util.xml.Json.xmlToJson(text);
-
 			rootTreeData = me.getTreeData(json.genres.genre);
 			me.cacheData = Ext.clone(rootTreeData);
 			store.loadData(rootTreeData);
@@ -313,7 +262,6 @@ Ext.define(
 			//console.log('load data', rootTreeData);
 
 			me.dataLoaded = true;
-			me.show();
 		},
 
 		/**
@@ -357,6 +305,7 @@ Ext.define(
 				time: new Date().getTime(),
 				data: text
 			};
+
 			storage.setItem(me.id, Ext.JSON.encode(data));
 		},
 
@@ -380,6 +329,7 @@ Ext.define(
 				cls: 'treenavigation-root treenavigation-root-genres',
 				_id: 'root'
 			};
+
 			rootTreeData[me.defaultRootProperty] = treeChildren;
 			//console.log('rootTreeData', rootTreeData);
 
@@ -542,10 +492,6 @@ Ext.define(
 						// раскрываем все узлы
 						me.getRootNode().expand(true);
 					}
-				}
-				else
-				{
-					me.close();
 				}
 			}
 			else
@@ -721,37 +667,6 @@ Ext.define(
 			}
 
 			return filteredData;
-		},
-
-		/**
-		 * @private
-		 * Возвращает текстовое поле.
-		 * @return {FBEditor.view.form.desc.subject.field.SubjectField}
-		 */
-		getTextField: function ()
-		{
-			return this.subjectField.getSubjectField();
-		},
-
-		/**
-		 * @private
-		 * Закрывает список, если клик произошел не по области списка и при этом не происходит изменение размеров
-		 * дерева.
-		 */
-		onClickBody: function (e, input)
-		{
-			var me = this;
-
-			// isShow ставится в false при изменении размеров окна, чтобы оно не закрылось
-			// (см. в контроллере #onResize())
-			if (!me.isShow)
-			{
-				me.isShow = true;
-			}
-			else
-			{
-				me.close();
-			}
 		}
 	}
 );

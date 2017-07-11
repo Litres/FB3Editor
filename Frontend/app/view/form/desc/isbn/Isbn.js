@@ -11,14 +11,22 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.isbn.IsbnController'
 		],
+		
 		xtype: 'form-desc-isbn',
 		controller: 'form.desc.isbn',
-		layout: 'hbox',
+
 		defaults: {
 			anchor: '100%',
 			flex: 1,
 			labelWidth: 60,
 			labelAlign: 'right'
+		},
+		
+		layout: 'hbox',
+
+		translateText: {
+			isbn: 'ISBN',
+			isbnError: 'По шаблону ([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]. Например 978-5-358-02523-3'
 		},
 
 		/**
@@ -30,11 +38,6 @@ Ext.define(
 		 * @property {String} Имя поля.
 		 */
 		fieldName: '',
-
-		translateText: {
-			isbn: 'ISBN',
-			isbnError: 'По шаблону ([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]. Например 978-5-358-02523-3'
-		},
 
 		initComponent: function ()
 		{
@@ -49,6 +52,7 @@ Ext.define(
 					margin: '0 0 0 5px'
 				}
 			};
+			
 			field = {
 				xtype: 'textfield',
 				name: name,
@@ -71,10 +75,13 @@ Ext.define(
 					}
 				}
 			};
+			
 			Ext.apply(field, me.fieldConfig);
+			
 			me.items = [
 				field
 			];
+			
 			me.callParent(arguments);
 		},
 

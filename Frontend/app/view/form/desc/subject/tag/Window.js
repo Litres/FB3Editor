@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.form.desc.subject.tag.WindowController',
 			'FBEditor.view.container.desc.search.tag.Tag'
 		],
+		
 		id: 'form-desc-tag',
 		xtype: 'form-desc-tag',
 		controller: 'form.desc.tag',

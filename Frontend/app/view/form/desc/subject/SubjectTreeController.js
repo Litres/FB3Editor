@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.subject.SubjectTreeController',
 	{
 		extend: 'Ext.app.ViewController',
+		
 		alias: 'controller.form.desc.subjectTree',
 
 		/**
@@ -23,8 +24,51 @@ Ext.define(
 		},
 
 		/**
+		 * Вызывается при клике на панели дерева.
+		 * @param {Object} evt Объект события.
+		 */
+		onClick: function (evt)
+		{
+			// останавливаем всплытие события, чтобы не допустить закрытия окна
+			evt.stopPropagation();
+		},
+
+		/**
+		 * Вызывается при клике на одном из элементов узла дерева.
+		 * @event selectSubject Выбрасывает событие по факту выбранного жанра.
+		 * @param {Ext.tree.View} node Узел дерева.
+		 * @param {Ext.data.TreeModel} record Модель узла.
+		 */
+		onItemClick: function (node, record)
+		{
+			var me = this,
+				view = me.getView(),
+				win = view.getWindow(),
+				subject = win.getSubject(),
+				data,
+				val;
+
+			node.toggle(record);
+
+			if (!record.isExpandable())
+			{
+				data = record.getData();
+				val = data[view.displayField];
+
+				// вырезаем теги жирности
+				val = val.replace(/<\/?b>/ig, '');
+
+				subject.fireEvent('selectSubject', val);
+				
+				// закрываем окно
+				win.close();
+			}
+		},
+
+		/**
 		 * Вызывается при разворачивании узла.
 		 * @param {Ext.data.NodeInterface} dataNode Узел.
+		 * @deprecated Больше не используется.
 		 */
 		onNodeExpand: function (dataNode)
 		{
@@ -73,8 +117,8 @@ Ext.define(
 
 			scrollTop = posY;
 			/*scrollTop = children > visibleNodes ? posY - marginTopHeight :
-			            (posY + children * nodeHeight > scrollTop + height ?
-			             scrollTop + hiddenChildrenHeight : scrollTop);*/
+			 (posY + children * nodeHeight > scrollTop + height ?
+			 scrollTop + hiddenChildrenHeight : scrollTop);*/
 
 			//console.log(scrollTop);
 
@@ -86,6 +130,7 @@ Ext.define(
 		/**
 		 * Вызывается при сворачивании узла.
 		 * @param {Ext.data.NodeInterface} dataNode Узел.
+		 * @deprecated Больше не используется.
 		 */
 		onNodeCollapse: function (dataNode)
 		{
@@ -96,79 +141,6 @@ Ext.define(
 
 			// восстанавливаем позицию скролла после закрытия узла дерева
 			el.setScrollTop(view.scrollTop);
-		},
-
-		/**
-		 * Вызывается при клике на панели дерева.
-		 * @param {Object} evt Объект события.
-		 */
-		onClick: function (evt)
-		{
-			// останавливаем всплытие события, чтобы не допустить закрытия окна
-			evt.stopPropagation();
-		},
-
-		/**
-		 * @event selectSubject Выбрасывает событие по факту выбранного жанра.
-		 * Вызывается при клике на одном из элементов узла дерева.
-		 * @param {Ext.tree.View} node Узел дерева.
-		 * @param {Ext.data.TreeModel} record Модель узла.
-		 */
-		onItemClick: function (node, record)
-		{
-			var me = this,
-				view = me.getView(),
-				subjectField,
-				data;
-
-			node.toggle(record);
-
-			if (!record.isExpandable())
-			{
-				data = record.getData();
-				subjectField = view.subjectField;
-				subjectField.fireEvent('selectSubject', data);
-				view.close();
-			}
-		},
-
-		/**
-		 * Позиционирует окно относительно поля ввода жанра.
-		 */
-		onAlignTo: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				subject = view.subjectField,
-				subjectField,
-				byX,
-				byY,
-				labelWidth;
-
-			if (view.isVisible() && subject && view.rendered)
-			{
-				subjectField = view.getTextField();
-				labelWidth = 115; // ширина метки поля
-				byX = 0;
-				byY = -2;
-
-				//console.log('align', [byX, byY], subjectField.inputEl);
-
-				// выравниваем окно относительно поля
-				view.alignTo(subjectField.inputEl, 'bl-tl', [byX, byY]);
-			}
-		},
-
-		/**
-		 * Вызывается при изменении размеров окна.
-		 */
-		onResize: function ()
-		{
-			var me = this,
-				view = me.getView();
-
-			// предотвращаем скрытие окна
-			view.isShow = false;
 		}
 	}
 );

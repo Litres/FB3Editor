@@ -11,11 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.subject.field.SubjectFieldController'
 		],
+		
 		xtype: 'form-desc-subject-field',
 		controller: 'form.desc.subject.field',
 		name: 'classification-subject',
-		//selectOnFocus: true,
-		checkChangeBuffer: 200,
 
 		listeners: {
 			click: {
@@ -24,6 +23,12 @@ Ext.define(
 			},
 			change: 'onChange',
 			blur: 'onBlur'
+		},
+
+		checkChangeBuffer: 200,
+
+		translateText: {
+			tip: 'Допустимо вводить несколько жанров/тегов через'
 		},
 
 		/**
@@ -36,6 +41,26 @@ Ext.define(
 		 */
 		emptyValue: 'Не определён',
 
+		/**
+		 * @private
+		 * @property {FBEditor.view.form.desc.subject.Subject} Список жанров/тегов (родительский контейнер).
+		 */
+		subject: null,
+
+		initComponent: function ()
+		{
+			var me = this,
+				tt = me.translateText,
+				tip;
+
+			// подсказка под полем
+			tip = '<span class="after-body">%t %s</span>'.replace('%t', tt.tip).replace('%s', me.separator);
+
+			me.afterBodyEl = tip;
+
+			me.callParent(arguments);
+		},
+
 		afterRender: function ()
 		{
 			var me = this;
@@ -47,11 +72,10 @@ Ext.define(
 					esc: function ()
 					{
 						var field = this,
-							subjectTree = field.getSubjectTree(),
-							tag = field.getTag();
+							subject = field.getSubject(),
+							win = subject.getWindow();
 
-						subjectTree.onEsc();
-						tag.onEsc();
+						win.onEsc();
 					},
 					scope: me
 				}
@@ -60,14 +84,19 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		getSubjectTree: function ()
+		/**
+		 * Возвращает родительский контейнер.
+		 * @return {FBEditor.view.form.desc.subject.Subject}
+		 */
+		getSubject: function ()
 		{
-			return this.up('form-desc-subject').getSubjectTree() || null;
-		},
+			var me = this,
+				subject;
 
-		getTag: function ()
-		{
-			return this.up('form-desc-subject').getTag() || null;
+			subject  = me.subject || me.up('form-desc-subject');
+			me.subject = subject;
+
+			return subject;
 		},
 
 		/**

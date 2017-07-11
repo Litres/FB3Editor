@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.subject.field.SubjectFieldController',
 	{
 		extend: 'Ext.app.ViewController',
+
 		alias: 'controller.form.desc.subject.field',
 
 		/**
@@ -17,18 +18,15 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				subject = view.up('form-desc-subject');
+				subject = view.getSubject();
 
 			// останавливаем всплытие события, чтобы не допустить закрытия окна
 			e.stopPropagation();
 
 			if (FBEditor.accessHub)
 			{
-				// показываем дерево жанров
-				subject.fireEvent('showSubjectTree');
-
-				// показываем список тегов
-				subject.fireEvent('showTag');
+				// показываем окно
+				subject.fireEvent('showWindow');
 			}
 		},
 
@@ -40,29 +38,22 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				value = view.getValue().trim(),
-				subject = view.up('form-desc-subject'),
-				subjectTree = view.getSubjectTree(),
+				subject = view.getSubject(),
+				win = subject.getWindow(),
+				subjectTree = win.getSubjectTree(),
+				tag = win.getTag(),
 				managerDesc = FBEditor.desc.Manager,
 				fieldLabel;
 
 			if (!managerDesc.loadingProcess)
 			{
 				// значение изменилось в результате ручного ввода
-				if (!subjectTree.isShow)
-				{
-					// открываем окно
-					subjectTree.show();
-				}
-
-				// фильтруем дерево жанров
-				subjectTree.fireEvent('filter', value);
-
-				// показываем список тегов
-				subject.fireEvent('showTag');
+				// открываем окно
+				win.show();
 			}
 			else
 			{
-				// значение имзенилось в результате загрузки описания
+				// значение изменилось в результате загрузки описания
 
 				if (view.isEmptyValue())
 				{
@@ -73,7 +64,9 @@ Ext.define(
 				else if (value)
 				{
 					// синхронизируем метку поля со значением (Тег или Жанр)
-					fieldLabel = subjectTree.existValue(value) ? subject.translateText.subject : subject.translateText.tag;
+					fieldLabel = subjectTree.existValue(value) ? 
+					             subject.translateText.subject : subject.translateText.tag;
+					
 					view.setFieldLabel(fieldLabel);
 				}
 
@@ -88,14 +81,18 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				val = view.getValue(),
-				subject = view.ownerCt,
+				subject = view.getSubject(),
+				win = subject.getWindow(),
 				nextSubject = subject.nextSibling(),
 				prevSubject = subject.previousSibling(),
-				subjectTree = subject.subjectTree,
-				isShow = subjectTree && subjectTree.isShow,
+				isShow,
 				plugin;
 
-			//console.log('nextSubject && prevSubject', subject, nextSubject, prevSubject);
+			// открыто ли окно
+			isShow = win && win.isShow;
+
+			//console.log('nextSubject && prevSubject', val, isShow, subject, nextSubject, prevSubject);
+
 			if (!nextSubject && prevSubject && !val && !isShow)
 			{
 				// удаляем поле, если оно последнее, пустое и список закрыт
@@ -132,7 +129,7 @@ Ext.define(
 				reg;
 
 			// разбиваем строку на массив значений
-			reg = new RegExp(view.separator + '[ ]*')
+			reg = new RegExp(view.separator + '[ ]*');
 			values = val.split(reg);
 
 			if (values.length > 1)

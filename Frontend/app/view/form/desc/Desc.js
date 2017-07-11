@@ -156,7 +156,7 @@ Ext.define(
 
 			if (Ext.browser.is.WebKit)
 			{
-				// иправляем баг с тормозным скролом
+				// делаем костыль для исправления бага с тормозным скролом webkit
 				innerCt = me.body.down('.x-autocontainer-innerCt');
 				innerCt.setStyle('opacity', '0.99');
 			}
@@ -228,6 +228,7 @@ Ext.define(
 				              'fb3-classification', 'lang', 'written', 'translated', 'document-info', 'history',
 				              'paper-publish-info', 'custom-info', 'annotation', 'preamble'];
 
+			// получаем данные
 			items.each(
 				function (item)
 				{

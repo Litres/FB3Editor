@@ -10,13 +10,19 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.subject.SubjectController',
-			'FBEditor.view.form.desc.subject.SubjectTree',
 			'FBEditor.view.form.desc.subject.field.SubjectField',
-		    'FBEditor.view.form.desc.subject.tag.Window'
+			'FBEditor.view.form.desc.subject.window.Window'
 		],
+
 		xtype: 'form-desc-subject',
 		controller: 'form.desc.subject',
-		layout: 'hbox',
+
+		listeners: {
+			showWindow: 'onShowWindow',
+			selectSubject: 'onSelectSubject',
+			selectTag: 'onSelectTag'
+		},
+
 		plugins: {
 			ptype: 'fieldcontainerreplicator',
 			groupName: 'classification-subject',
@@ -25,44 +31,37 @@ Ext.define(
 			}
 		},
 
-		listeners: {
-			selectSubject: 'onSelectSubject',
-			selectTag: 'onSelectTag',
-			showSubjectTree: 'onShowSubjectTree',
-			showTag: 'onShowTag'
-		},
+		layout: 'hbox',
 
 		translateText: {
 			subject: 'Жанр',
 			tag: 'Тег',
-			undefined: 'Жанр/Тег'
+			undefined: 'Жанр/Тег',
+			tip: 'Допустимо вводить несколько жанров/тегов через запятую'
 		},
 
 		/**
 		 * @private
 		 * @property {FBEditor.view.form.desc.subject.field.SubjectField} Текстовое поле жанра.
 		 */
-		_subjectField: null,
+		subjectField: null,
 
 		/**
-		 * @property {FBEditor.view.form.desc.subject.SubjectTree} Дерево жанров.
+		 * @private
+		 * @property {FBEditor.view.form.desc.subject.window.Window} Окно с жанрами и тегами.
 		 */
-		subjectTree: null,
-
-		/**
-		 * @property {FBEditor.view.form.desc.subject.tag.Window} Список тегов.
-		 */
-		tag: null,
+		win: null,
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				tt = me.translateText;
 
 			me.items = [
 				{
 					xtype: 'form-desc-subject-field',
 					flex: 1,
-					fieldLabel: me.translateText.undefined,
+					fieldLabel: tt.undefined,
 					labelAlign: 'right',
 					labelWidth: 110,
 					keyEnterAsTab: true
@@ -81,32 +80,25 @@ Ext.define(
 			var me = this,
 				subjectField;
 
-			subjectField  = me._subjectField || me.down('form-desc-subject-field');
-			me._subjectField = subjectField;
+			subjectField  = me.subjectField || me.down('form-desc-subject-field');
+			me.subjectField = subjectField;
 
 			return subjectField;
 		},
 
-		getSubjectTree: function ()
+		/**
+		 * Возвращает окно с жанрами и тегами.
+		 * @return {FBEditor.view.form.desc.subject.window.Window}
+		 */
+		getWindow: function ()
 		{
 			var me = this,
-				subjectTree;
+				win;
 
-			subjectTree  = me.subjectTree || Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree');
-			me.subjectTree = subjectTree;
+			win  = me.win || Ext.getCmp('form-desc-subject-win') || Ext.widget('form-desc-subject-win');
+			me.win = win;
 
-			return subjectTree;
-		},
-
-		getTag: function ()
-		{
-			var me = this,
-				tag;
-
-			tag  = me.tag || Ext.getCmp('form-desc-tag') || Ext.widget('form-desc-tag');
-			me.tag = tag;
-
-			return tag;
+			return win;
 		}
 	}
 );

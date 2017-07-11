@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.form.desc.searchField.WindowController',
 	{
 		extend: 'Ext.app.ViewController',
+		
 		alias: 'controller.form.desc.searchField.window',
 
 		/**

@@ -69,7 +69,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @event startScroll Событие начала
+		 * @event startScroll Событие начала скроллинга
 		 * Вызывается при возникновении события скролла.
 		 */
 		event: function ()
@@ -89,6 +89,7 @@ Ext.define(
 
 		/**
 		 * @private
+		 * @event endScroll Событие окончания скроллинга
 		 * Определяет окончание скролинга и выбрасывает событие.
 		 */
 		endScroll: function ()

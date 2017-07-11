@@ -8,30 +8,40 @@ Ext.define(
 	'FBEditor.view.form.desc.subject.SubjectController',
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
+		
 		alias: 'controller.form.desc.subject',
 
 		/**
-		 * Заполняет текстовое поле выбранным жанром из списка.
-		 * @param {Object} data Данные жанра.
+		 * Показывает окно с жанрами и тегами.
 		 */
-		onSelectSubject: function (data)
+		onShowWindow: function ()
 		{
 			var me = this,
 				view = me.getView(),
-				subjectTree = view.getSubjectTree(),
-				val,
-				textfield,
+				win = view.getWindow();
+
+			// устанавливаем связь с полем
+			win.setSubject(view);
+
+			// показываем окно тегов
+			win.show();
+		},
+		
+		/**
+		 * Заполняет текстовое поле выбранным жанром из списка.
+		 * @param {String} val Данные жанра.
+		 */
+		onSelectSubject: function (val)
+		{
+			var me = this,
+				view = me.getView(),
+				subjectField = view.getSubjectField(),
+				tt = view.translateText,
 				plugin,
 				nextSubject;
 
-			val = data[subjectTree.displayField];
-
-			// вырезаем теги жирности
-			val = val.replace(/<\/?b>/ig, '');
-
-			textfield = view.down('textfield');
-			textfield.setValue(val);
-			textfield.setFieldLabel(view.translateText.subject);
+			subjectField.setValue(val);
+			subjectField.setFieldLabel(tt.subject);
 
 			// следующий жанр
 			nextSubject = view.nextSibling();
@@ -46,26 +56,18 @@ Ext.define(
 
 		/**
 		 * Заполняет текстовое поле выбранным тегом из списка.
-		 * @param {Object} data Данные жанра.
+		 * @param {String} val Данные тега.
 		 */
-		onSelectTag: function (data)
+		onSelectTag: function (val)
 		{
 			var me = this,
 				view = me.getView(),
-				tag = view.getTag(),
-				val,
-				textfield,
+				subjectField = view.getSubjectField(),
 				plugin,
 				nextSubject;
 
-			val = data[tag.displayField];
-
-			// вырезаем теги жирности
-			val = val.replace(/<\/?b>/ig, '');
-
-			textfield = view.down('textfield');
-			textfield.setValue(val);
-			textfield.setFieldLabel(view.translateText.tag);
+			subjectField.setValue(val);
+			subjectField.setFieldLabel(view.translateText.tag);
 
 			// следующий жанр
 			nextSubject = view.nextSibling();
@@ -81,7 +83,7 @@ Ext.define(
 		/**
 		 * Показывает окно жанров.
 		 */
-		onShowSubjectTree: function ()
+		_onShowSubjectTree: function ()
 		{
 			var me = this,
 				view = me.getView(),
@@ -96,7 +98,7 @@ Ext.define(
 		/**
 		 * Показывает окно тегов.
 		 */
-		onShowTag: function ()
+		_onShowTag: function ()
 		{
 			var me = this,
 				view = me.getView(),

@@ -14,16 +14,9 @@ Ext.define(
 		mixins: {
 			behavior: 'FBEditor.view.container.desc.search.OwnerContainerBehavior'
 		},
+		
 		xtype: 'form-desc-searchField-window',
 		controller: 'form.desc.searchField.window',
-
-		floating: true,
-		width: 600,
-		height: 300,
-		maxHeight: 300,
-		closeAction: 'hide',
-		overflowY: 'auto',
-		shadow: false,
 
 		listeners: {
 			loadData: 'onLoadData',
@@ -35,6 +28,14 @@ Ext.define(
 				fn: 'onClick'
 			}
 		},
+
+		floating: true,
+		width: 600,
+		height: 300,
+		//maxHeight: 300,
+		closeAction: 'hide',
+		scrollable: 'y',
+		shadow: false,
 
 		/**
 		 * @property {String} xtype контейнера с результатми поиска.
@@ -73,18 +74,7 @@ Ext.define(
 					},
 					onResize: function ()
 					{
-						var height = me.getHeight(),
-							heightPersons = this.getHeight();
-
-						// регулируем высоту окна по высоте содержимого
-						if (height > heightPersons)
-						{
-							me.setHeight(heightPersons);
-						}
-						else if (height < 300)
-						{
-							me.setHeight(300);
-						}
+						me.onResizeContainerItems();
 					}
 				}
 			];
@@ -162,6 +152,27 @@ Ext.define(
 		getContainerItems: function ()
 		{
 			return this.mixins.behavior.getContainerItems.call(this);
+		},
+
+		/**
+		 * Корректирует размеры контейнера в зависимости от содержимого.
+		 */
+		onResizeContainerItems: function ()
+		{
+			var me = this,
+				containerItems = me.getContainerItems(),
+				height = me.getHeight(),
+				heightPersons = containerItems.getHeight();
+
+			// регулируем высоту окна по высоте содержимого
+			if (height > heightPersons)
+			{
+				me.setHeight(heightPersons);
+			}
+			else if (height < 300)
+			{
+				me.setHeight(300);
+			}
 		}
 	}
 );

@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.container.desc.search.tag.TagController',
 			'FBEditor.view.container.desc.search.tag.TagStore'
 		],
+		
 		controller: 'container.desc.search.tag',
 		xtype: 'container-desc-search-tag',
 		cls: 'container-search-tag',
