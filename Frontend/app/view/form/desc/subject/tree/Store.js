@@ -5,7 +5,7 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.subject.SubjectStore',
+	'FBEditor.view.form.desc.subject.tree.Store',
 	{
 		extend: 'Ext.data.TreeStore',
 

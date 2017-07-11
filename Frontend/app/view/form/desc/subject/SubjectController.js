@@ -78,37 +78,6 @@ Ext.define(
 				plugin = view.getPlugin('fieldcontainerreplicator');
 				plugin.addFields();
 			}
-		},
-
-		/**
-		 * Показывает окно жанров.
-		 */
-		_onShowSubjectTree: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				subjectTree = view.getSubjectTree();
-
-			subjectTree.subjectField = view;
-
-			// показываем окно жанров
-			subjectTree.initData();
-		},
-
-		/**
-		 * Показывает окно тегов.
-		 */
-		_onShowTag: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				tag = view.getTag();
-
-			// устанавливаем связь с полем
-			tag.setSubjectField(view);
-
-			// показываем окно тегов
-			tag.showTags();
 		}
 	}
 );

@@ -40,8 +40,7 @@ Ext.define(
 				value = view.getValue().trim(),
 				subject = view.getSubject(),
 				win = subject.getWindow(),
-				subjectTree = win.getSubjectTree(),
-				tag = win.getTag(),
+				tree = win.getTree(),
 				managerDesc = FBEditor.desc.Manager,
 				fieldLabel;
 
@@ -64,7 +63,7 @@ Ext.define(
 				else if (value)
 				{
 					// синхронизируем метку поля со значением (Тег или Жанр)
-					fieldLabel = subjectTree.existValue(value) ? 
+					fieldLabel = tree.existValue(value) ? 
 					             subject.translateText.subject : subject.translateText.tag;
 					
 					view.setFieldLabel(fieldLabel);

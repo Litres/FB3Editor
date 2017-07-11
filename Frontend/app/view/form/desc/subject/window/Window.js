@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.subject.tag.Tag',
 			'FBEditor.view.form.desc.subject.window.WindowController',
-			'FBEditor.view.form.desc.subject.SubjectTree'
+			'FBEditor.view.form.desc.subject.tree.Tree'
 		],
 
 		id: 'form-desc-subject-win',
@@ -46,9 +46,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.view.form.desc.subject.SubjectTree} Дерево жанров.
+		 * @property {FBEditor.view.form.desc.subject.tree.Tree} Дерево жанров.
 		 */
-		subjectTree: null,
+		tree: null,
 
 		/**
 		 * @private
@@ -62,7 +62,7 @@ Ext.define(
 			
 			me.items = [
 				{
-					xtype: 'form-desc-subjectTree'
+					xtype: 'form-desc-subject-tree'
 				},
 				{
 					xtype: 'form-desc-subject-tag'
@@ -76,13 +76,13 @@ Ext.define(
 		{
 			var me = this,
 				subject = me.getSubject(),
-				subjectTree = me.getSubjectTree(),
+				tree = me.getTree(),
 				tag = me.getTag(),
 				subjectField,
 				val;
 
 			// инициализируем дерево жанров
-			subjectTree.initData();
+			tree.initData();
 
 			if (subject)
 			{
@@ -96,7 +96,7 @@ Ext.define(
 				// фильтруем значение жанров
 				subjectField = subject.getSubjectField();
 				val = subjectField.getValue();
-				subjectTree.fireEvent('filter', val);
+				tree.fireEvent('filter', val);
 				
 				// показываем теги
 				tag.showTags();
@@ -156,17 +156,17 @@ Ext.define(
 
 		/**
 		 * Возвращает дерево жанров.
-		 * @return {FBEditor.view.form.desc.subject.SubjectTree}
+		 * @return {FBEditor.view.form.desc.subject.tree.Tree}
 		 */
-		getSubjectTree: function ()
+		getTree: function ()
 		{
 			var me = this,
-				subjectTree;
+				tree;
 
-			subjectTree  = me.subjectTree || me.down('form-desc-subjectTree');
-			me.subjectTree = subjectTree;
+			tree  = me.tree || me.down('form-desc-subject-tree');
+			me.tree = tree;
 
-			return subjectTree;
+			return tree;
 		},
 
 		/**

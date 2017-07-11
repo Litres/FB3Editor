@@ -5,18 +5,18 @@
  */
 
 Ext.define(
-	'FBEditor.view.form.desc.subject.SubjectTree',
+	'FBEditor.view.form.desc.subject.tree.Tree',
 	{
 		extend: 'Ext.tree.Panel',
 		requires: [
-			'FBEditor.view.form.desc.subject.SubjectTreeController',
-			'FBEditor.view.form.desc.subject.SubjectStore'
+			'FBEditor.view.form.desc.subject.tree.TreeController',
+			'FBEditor.view.form.desc.subject.tree.Store'
 		],
-		
-		xtype: 'form-desc-subjectTree',
-		controller: 'form.desc.subjectTree',
-		
-		cls: 'form-desc-subjectTree',
+
+		xtype: 'form-desc-subject-tree',
+		controller: 'form.desc.subject.tree',
+
+		cls: 'form-desc-subject-tree',
 
 		rootVisible: false,
 		animate: false,
@@ -28,8 +28,6 @@ Ext.define(
 
 		listeners: {
 			filter: 'onFilter',
-			//nodeExpand: 'onNodeExpand',
-			//nodeCollapse: 'onNodeCollapse',
 			click: {
 				element: 'el',
 				fn: 'onClick'
@@ -48,11 +46,6 @@ Ext.define(
 		 * Указывать в секундах.
 		 */
 		updateDataTime: 60 * 60 * 24,
-
-		/**
-		 * @property {FBEditor.view.form.desc.subject.Subject} Поле жанра.
-		 */
-		//subjectField: null,
 
 		/**
 		 * @private
@@ -87,12 +80,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Number} Хранит позицию скролла, для его корректировки после открытия/закрытия узлов дерева.
-		 */
-		//scrollTop: 0,
-
-		/**
-		 * @private
 		 * @property {FBEditor.view.form.desc.subject.window.Window} Окно с жанрами и тегами.
 		 */
 		win: null,
@@ -102,7 +89,7 @@ Ext.define(
 			var me = this,
 				store;
 
-			store = Ext.create('FBEditor.view.form.desc.subject.SubjectStore');
+			store = Ext.create('FBEditor.view.form.desc.subject.tree.Store');
 			me.store = store;
 			me.defaultRootProperty = store.getDefaultRootProperty();
 
@@ -125,17 +112,6 @@ Ext.define(
 					}
 				}
 			);
-		},
-
-		_handleFocusEnter: function (e)
-		{
-			var me = this,
-				view = me.getView();
-
-			// сохраняем позицию скролла
-			me.scrollTop = view.getEl().getScrollTop();
-
-			me.callParent(arguments);
 		},
 
 		/**
@@ -220,8 +196,8 @@ Ext.define(
 		},
 
 		/**
-		 * @event afterLoadData
 		 * Загружает данные дерева в хранилище.
+		 * @event afterLoadData
 		 * @param {String} text Xml-строка.
 		 */
 		loadData: function (text)
@@ -248,7 +224,7 @@ Ext.define(
 						icon: Ext.Msg.ERROR
 					}
 				);
-				
+
 				Ext.log({msg: 'Ошибка загрузки дерева жанров', level: 'error'});
 
 				return;
@@ -368,27 +344,27 @@ Ext.define(
 
 			Ext.Array.each(
 				data,
-			    function (item)
-			    {
-				    var children = item[me.defaultRootProperty];
+				function (item)
+				{
+					var children = item[me.defaultRootProperty];
 
-				    // полный путь элемента в дереве навигации
-				    parentPath = parentPath || '';
-				    item.path = parentPath + '/' + item._id;
-				    item.icon = ' ';
-				    item[me.displayField] = Ext.String.capitalize(item[me.displayField]);
+					// полный путь элемента в дереве навигации
+					parentPath = parentPath || '';
+					item.path = parentPath + '/' + item._id;
+					item.icon = ' ';
+					item[me.displayField] = Ext.String.capitalize(item[me.displayField]);
 
-				    if (children)
-				    {
-					    children = me.getTreeChildren(children, item.path);
-					    item.cls = 'treenavigation-children treenavigation-children-genres';
-				    }
-				    else
-				    {
-					    item.leaf = true;
-					    item.cls = 'treenavigation-children treenavigation-leaf-genres';
-				    }
-			    }
+					if (children)
+					{
+						children = me.getTreeChildren(children, item.path);
+						item.cls = 'treenavigation-children treenavigation-children-genres';
+					}
+					else
+					{
+						item.leaf = true;
+						item.cls = 'treenavigation-children treenavigation-leaf-genres';
+					}
+				}
 			);
 
 

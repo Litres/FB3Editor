@@ -68,8 +68,7 @@ Ext.define(
 			if (!me._scrollWins)
 			{
 				wins = Ext.ComponentQuery.query('form-desc-searchField-window');
-				wins.push(Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree'));
-				wins.push(Ext.getCmp('form-desc-tag') || Ext.widget('form-desc-tag'));
+				wins.push(Ext.getCmp('form-desc-subject-win') || Ext.widget('form-desc-subject-win'));
 				me._scrollWins = wins;
 			}
 
@@ -131,8 +130,7 @@ Ext.define(
 			if (!me._resizeWins)
 			{
 				wins = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
-				wins.push(Ext.getCmp('form-desc-subjectTree') || Ext.widget('form-desc-subjectTree'));
-				wins.push(Ext.getCmp('form-desc-tag') || Ext.widget('form-desc-tag'));
+				wins.push(Ext.getCmp('form-desc-subject-win') || Ext.widget('form-desc-subject-win'));
 				me._resizeWins = wins;
 			}
 
