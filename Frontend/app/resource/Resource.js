@@ -1,5 +1,5 @@
 /**
- * Объект ресурса.
+ * Ресурс.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -147,8 +147,6 @@ Ext.define(
 				function (el)
 				{
 					var data;
-
-					//console.log('el', el);
 
 					data = el.attributes;
 					data.src = me.fileId;

@@ -254,10 +254,9 @@ Ext.define(
 		},
 
 		/**
+		 * Загружает ресурсы.
 		 * @event beforeLoadResources
 		 * @event afterLoadResources
-		 * 
-		 * Загружает ресурсы.
 		 * @param {Array} data Данные ресурсов.
 		 * @return {Promise}
 		 */
@@ -372,16 +371,15 @@ Ext.define(
 						).then(
 							function (xml)
 							{
-								// синхронизируем ресурсы с хабом
-								manager.syncResources(xml);
+								manager.addResource(res);
+
+								// обновляем элементы
+								res.updateElements();
 
 								if (!resources.length)
 								{
 									resolve(xml);
 								}
-
-								// обновляем элементы
-								res.updateElements();
 
 								// продолжаем сохранять ресурсы
 								me.saveResources(resources).then(

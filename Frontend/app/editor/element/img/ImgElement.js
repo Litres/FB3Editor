@@ -256,6 +256,7 @@ Ext.define(
 				resource;
 
 			attributes.src = attributes.src || 'undefined';
+			//console.log('link src', attributes.src);
 			resource = me.resource ||
 			           manager.getResource(attributes.src);
 
@@ -265,6 +266,8 @@ Ext.define(
 				resource.addElement(me);
 				me.resource = resource;
 			}
+
+			//console.log('link res', resource);
 
 			return resource;
 		},

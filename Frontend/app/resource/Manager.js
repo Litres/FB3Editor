@@ -114,6 +114,17 @@ Ext.define(
 		},
 
 		/**
+		 * Добавляет ресурс в коллекцию.
+		 * @param {FBEditor.resource.Resource} res Ресурс.
+		 */
+		addResource: function (res)
+		{
+			var me = this;
+			
+			me.data.push(res);
+		},
+
+		/**
 		 * Загружает ресурсы с хаба.
 		 * @param {Number} [art] Айди произведениея на хабе.
 		 * @return {Promise}
@@ -270,7 +281,7 @@ Ext.define(
 					res.load().then(
 						function ()
 						{
-							me.data.push(res);
+							me.addResource(res);
 
 							//console.log('res', res);
 
@@ -359,9 +370,9 @@ Ext.define(
 			}
 			else
 			{
-				// создаём объект ресурса
+				// создаём ресурс
 				res = Ext.create('FBEditor.resource.Resource', resData);
-				me.data.push(res);
+				me.addResource(res);
 
 				// сортируем ресурсы
 				me.sortData();
@@ -546,8 +557,9 @@ Ext.define(
 					    data,
 					    function (item)
 					    {
-						    if (remoteItem._Id === item.fileId && remoteItem._Target === item.rootName)
+						    if (remoteItem._Target === item.rootName)
 						    {
+							    item.fileId = remoteItem._Id;
 							    contains = true;
 							    return false;
 						    }
@@ -573,7 +585,7 @@ Ext.define(
 						remoteData,
 						function (remoteItem)
 						{
-							if (remoteItem._Id === item.fileId && remoteItem._Target === item.rootName)
+							if (remoteItem._Target === item.rootName)
 							{
 								contains = true;
 								return false;
@@ -661,8 +673,7 @@ Ext.define(
 
 			// ресурс
 			res = Ext.create('FBEditor.resource.Resource', resData);
-			
-			me.data.push(res);
+			me.addResource(res);
 
 			if (res.isCover)
 			{
@@ -1504,6 +1515,7 @@ Ext.define(
 					return res;
 				}
 			);
+
 			me.data = data;
 		},
 

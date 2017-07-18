@@ -78,6 +78,9 @@ Ext.define(
 					loader.saveResources(resources).then(
 						function (xml)
 						{
+							// синхронизируем ресурсы с хабом
+							manager.syncResources(xml);
+							
 							me.afterSave();
 						}
 					);
