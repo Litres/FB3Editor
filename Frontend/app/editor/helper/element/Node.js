@@ -43,6 +43,11 @@ Ext.define(
 				viewportId = viewportId || me.getViewportId();
 				node = viewportId && el.nodes[viewportId] ? el.nodes[viewportId] : Ext.Object.getValues(el.nodes)[0];
 			}
+			else if (viewportId)
+			{
+				// создаем узел
+				node = el.getNode(viewportId);
+			}
 
 			return node;
 		},

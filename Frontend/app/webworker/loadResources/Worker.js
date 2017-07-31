@@ -96,7 +96,7 @@ function W ()
 				resData,
 				url;
 
-			if (data.countRequest === resourcesData.length)
+			if (!resourcesData || data.countRequest === resourcesData.length)
 			{
 				// все запросы отправлены
 				return;

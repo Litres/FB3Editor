@@ -55,7 +55,22 @@ Ext.define(
 				// сохраняем ссылку на родитель абзаца из следующего блока
 				els.parentNextP = els.nextP.parent;
 
+				if (els.parentNextP.isEmpty())
+				{
+					// следующий блок является пустым и поэтому из него нечего переносить
+					return false;
+				}
+
 				console.log('get next holder ' + me.elementName, range, els);
+
+				if (els.parentP.isEmpty())
+				{
+					// удаляем пустой абзац из пустого блока перед тем как перенести в него следующий абзац
+					// это необходимо, чтобы избежать образование пустого верхнего абзаца после подтягивания
+
+					els.isEmpty = true;
+					els.parentP.remove(els.p, viewportId);
+				}
 
 				if (!els.nextP.hisName(me.elementName))
 				{
@@ -82,11 +97,12 @@ Ext.define(
 				if (els.parentNextP.isEmpty())
 				{
 					// удаляем пустой следующий блок
+					els.isEmptyParentNextP = true;
 					els.parentNext = els.parentNextP.parent;
 					els.nextParentNextP = els.parentNextP.next();
 					els.parentNext.remove(els.parentNextP, viewportId);
 				}
-
+				
 				// синхронизируем
 				els.parent.sync(viewportId);
 
@@ -122,6 +138,62 @@ Ext.define(
 			manager.setSuspendEvent(false);
 
 			return res;
+		},
+
+		beforeUnExecute: function ()
+		{
+			var me = this,
+				data = me.getData(),
+				res = false,
+				promise,
+				helper,
+				viewportId,
+				els,
+				nodes,
+				manager;
+
+			// исходные данные
+			nodes = data.nodes;
+			els = data.els;
+
+			console.log('before undo get next holder ' + me.elementName, nodes, els);
+
+			if (els.isEmptyParentNextP)
+			{
+				// восстанавливаем пустой следующий блок и вставляем в него пустой абзац
+				// это необходимо, чтобы соответствовать схеме документа
+
+				viewportId = data.viewportId;
+				manager = els.p.getManager();
+				manager.setSuspendEvent(true);
+
+				if (els.nextParentNextP)
+				{
+					els.parentNext.insertBefore(els.parentNextP, els.nextParentNextP, viewportId);
+				}
+				else
+				{
+					els.parentNext.add(els.parentNextP, viewportId);
+				}
+
+				els.emptyP = manager.createEmptyP();
+				els.parentNextP.add(els.emptyP, viewportId);
+
+				manager.setSuspendEvent(false);
+
+				console.log('cancel undo');
+
+				// отменяем операцию unExecute
+				promise = Promise.reject(false);
+			}
+			else
+			{
+				promise = me.callParent(arguments);
+			}
+
+			els.parent.sync(viewportId);
+
+			return promise;
 		},
 
 		unExecute: function ()

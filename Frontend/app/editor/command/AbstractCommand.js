@@ -90,6 +90,21 @@ Ext.define(
 		},
 
 		/**
+		 * @template
+		 * Выполняется перед отменой операции unExecute.
+		 * В сдучае, если отмена дествительно нужна то выполнит resolve, иначе reject.
+		 * @return {Promise}
+		 */
+		beforeUnExecute: function ()
+		{
+			var promise;
+
+			promise = Promise.resolve(true);
+
+			return promise;
+		},
+
+		/**
 		 * @protected
 		 * Опитмизирует однотипные пересекающиеся элементы.
 		 * @param {FBEditor.editor.element.AbstractElement} el Родительский элемент, относительно которого
@@ -405,12 +420,21 @@ Ext.define(
 			{
 				xml = el.getXml();
 
-				// отменяем действие команды
-				me.unExecute();
+				me.beforeUnExecute().then(
+					function ()
+					{
+						// отменяем действие команды
+						me.unExecute();
 
-				Ext.log({msg: 'Полученная структура элемента не соответствует схеме:' + xml, level: 'info'});
+						Ext.log({msg: 'Полученная структура элемента не соответствует схеме:' + xml, level: 'info'});
 
-				throw Error('Действие команды отменено для ' + el.getName());
+						throw Error('Действие команды отменено для ' + el.getName());
+					},
+				    function ()
+				    {
+					    // 
+				    }
+				);
 			}
 
 			manager = el.getManager();
