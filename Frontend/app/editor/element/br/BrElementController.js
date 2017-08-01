@@ -20,6 +20,7 @@ Ext.define(
 
 			//console.log(e);
 
+			/*
 			if (!me.isSpecialKey(e))
 			{
 				// заменяем пустой элемент на пустой текст
@@ -30,6 +31,7 @@ Ext.define(
 					//
 				}
 			}
+			*/
 
 			return true;
 		},

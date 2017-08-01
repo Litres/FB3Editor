@@ -851,7 +851,7 @@ Ext.define(
 					if (nextSiblingEl.isBr)
 					{
 						// удаляем br
-						parentEl.remove(nextSiblingEl);
+						parentEl.remove(nextSiblingEl, viewportId);
 					}
 
 					parentEl.insertBefore(newEl, nextSiblingEl);
@@ -865,7 +865,7 @@ Ext.define(
 					if (previousSiblingEl.isBr)
 					{
 						// удаляем br
-						parentEl.remove(previousSiblingEl);
+						parentEl.remove(previousSiblingEl, viewportId);
 					}
 
 					parentEl.add(newEl);
@@ -877,7 +877,7 @@ Ext.define(
 					if (parentEl.isEmpty())
 					{
 						// удаляем br
-						parentEl.removeAll();
+						parentEl.removeAll(viewportId);
 					}
 					
 					parentEl.add(newEl);

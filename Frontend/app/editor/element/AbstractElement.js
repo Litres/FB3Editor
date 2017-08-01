@@ -363,7 +363,20 @@ Ext.define(
 						helper = el.getNodeHelper();
 						nodes.child = helper.getNode(viewportId);
 
-						nodes.node.removeChild(nodes.child);
+						try
+						{
+							nodes.node.removeChild(nodes.child);
+						}
+						catch (e)
+						{
+							Ext.log(
+								{
+									msg: 'Попытка удалить узел, непринадлежащий элементу',
+									level: 'warn',
+									dump: e
+								}
+							);
+						}
 					}
 				}
 			}
@@ -462,8 +475,9 @@ Ext.define(
 
 		/**
 		 * Удаляет все дочерние элементы.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
 		 */
-		removeAll: function ()
+		removeAll: function (viewportId)
 		{
 			var me = this,
 				children = me.children,
@@ -472,7 +486,7 @@ Ext.define(
 			while (children.length)
 			{
 				el = children[0];
-				me.remove(el);
+				me.remove(el, viewportId);
 			}
 		},
 

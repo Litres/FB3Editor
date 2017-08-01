@@ -17,13 +17,15 @@ Ext.define(
 				nodes = {},
 				els = {},
 				sel = window. getSelection(),
+				viewportId,
 				manager,
+				factory,
 				range;
 
 			try
 			{
 				range = sel.getRangeAt(0);
-				data.viewportId = range.startContainer.viewportId;
+				viewportId = data.viewportId = range.startContainer.viewportId;
 
 				console.log('replace br to empty text', range);
 
@@ -35,11 +37,11 @@ Ext.define(
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
-				els.parent.removeAll();
-				nodes.parent.removeChild(nodes.parent.firstChild);
+				//els.parent.removeAll(viewportId);
+				//nodes.parent.removeChild(nodes.parent.firstChild);
 
 				// синхронизируем элемент
-				els.parent.sync(data.viewportId);
+				//els.parent.sync(viewportId);
 
 				manager.setSuspendEvent(false);
 
@@ -53,7 +55,6 @@ Ext.define(
 				me.getHistory(els.parent).removeNext();
 			}
 
-			manager.setSuspendEvent(false);
 			return res;
 		},
 
