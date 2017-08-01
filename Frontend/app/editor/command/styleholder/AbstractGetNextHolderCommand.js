@@ -57,7 +57,7 @@ Ext.define(
 
 				if (els.parentNextP.isEmpty())
 				{
-					// следующий блок является пустым и поэтому из него нечего переносить
+					// следующий блок является пустым и поэтому из него нечего подтягивать
 					return false;
 				}
 
@@ -144,9 +144,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				res = false,
 				promise,
-				helper,
 				viewportId,
 				els,
 				nodes,
@@ -180,6 +178,7 @@ Ext.define(
 				els.parentNextP.add(els.emptyP, viewportId);
 
 				manager.setSuspendEvent(false);
+				els.parent.sync(viewportId);
 
 				console.log('cancel undo');
 
@@ -190,8 +189,6 @@ Ext.define(
 			{
 				promise = me.callParent(arguments);
 			}
-
-			els.parent.sync(viewportId);
 
 			return promise;
 		},
@@ -229,6 +226,12 @@ Ext.define(
 					else
 					{
 						els.parentNext.add(els.parentNextP, viewportId);
+					}
+
+					if (els.isEmptyParentNextP)
+					{
+						// удаляем пустой абзац, который был создан для соответсвия схеме
+						els.parentNextP.remove(els.emptyP, viewportId);
 					}
 				}
 
@@ -268,6 +271,13 @@ Ext.define(
 					{
 						els.parentNextP.add(els.nextP, viewportId);
 					}
+				}
+
+				if (els.isEmpty)
+				{
+					// восстанавливаем пустой абзац, который был удален из пустого блока, в который происходило
+					// подтягивание из следующего блока
+					els.parentP.add(els.p, viewportId);
 				}
 
 				els.parent.sync(viewportId);
