@@ -114,7 +114,10 @@ function W ()
 				resData = data.resourcesData[countRequest];
 
 				// формируем url для загрузки ресурса
-				url = resData.url ? resData.url : data.urlRes + '?art=' + data.art + '&image=' + resData._Id;
+				url = resData.url ? 
+				      resData.url : 
+				      data.urlRes + '?art=' + data.art + '&image=' + resData._Id;
+				
 				resData.url = url;
 
 				//console.log(url);

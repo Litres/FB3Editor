@@ -34,54 +34,52 @@ Ext.define(
 		/**
 		 * Загружает описание.
 		 * @param {Number} [art] Айди произведениея на хабе.
+		 * @return {Promise}
 		 */
 		load: function (art)
 		{
 			var me = this,
-				url,
 				promise;
-
-			if (art)
-			{
-				// устанавливаем айди произведения
-				me.setArt(art);
-			}
-
-			url = me.getLoadUrl();
-			
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Загрузка описания из ' + url
-				}
-			);
 			
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// формируем запос
-					Ext.Ajax.request(
-						{
-							url: url,
-							scope: this,
-							success: function(response)
-							{
-								var xml;
+					if (art)
+					{
+						// устанавливаем айди произведения
+						me.setArt(art);
+					}
 
-								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+					me.getLoadUrl().then(
+						function (url)
+						{
+							Ext.log({level: 'info', msg: 'Загрузка описания из ' + url});
+
+							// формируем запос
+							Ext.Ajax.request(
 								{
-									xml = response.responseText;
-									resolve(xml);
+									url: url,
+									scope: this,
+									success: function(response)
+									{
+										var xml;
+
+										if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+										{
+											xml = response.responseText;
+											resolve(xml);
+										}
+										else
+										{
+											reject(response);
+										}
+									},
+									failure: function (response)
+									{
+										reject(response);
+									}
 								}
-								else
-								{
-									reject(response);
-								}
-							},
-							failure: function (response)
-							{
-								reject(response);
-							}
+							);
 						}
 					);
 				}
@@ -93,53 +91,62 @@ Ext.define(
 		/**
 		 * Сохраняет описание на хабе.
 		 * @param {String} xml Описание.
+		 * @return {Promise}
 		 */
 		save: function (xml)
 		{
 			var me = this,
-				url = me.getSaveUrl(),
 				art = me.getArt(),
+				csrf = FBEditor.csrf.Csrf,
+				saveUrl,
 				promise;
 
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Сохранение описания в ' + url
-				}
-			);
-			
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// отправляем запрос
-					Ext.Ajax.request(
+					me.getSaveUrl().then(
+						function (url)
 						{
-							url: url,
-							disableCaching: true,
-							params: {
-								action: 'update_hub_on_fb3_meta',
-								fb3_meta: xml,
-								art: art
-							},
-							success: function (response)
-							{
-								var xmlResponse;
+							saveUrl = url;
 
-								if (response.responseXML)
-								{
-									xmlResponse = response.responseText;
+							return csrf.getToken();
+						}
+					).then(
+						function (token)
+						{
+							Ext.log({level: 'info', msg: 'Сохранение описания ' + saveUrl});
 
-									resolve(xmlResponse);
-								}
-								else
+							Ext.Ajax.request(
 								{
-									reject(response);
+									url: saveUrl,
+									disableCaching: true,
+									params: {
+										action: 'update_hub_on_fb3_meta',
+										fb3_meta: xml,
+										art: art,
+										csrf: token
+									},
+									success: function (response)
+									{
+										var xmlResponse;
+
+										if (response.responseXML)
+										{
+											xmlResponse = response.responseText;
+
+											resolve(xmlResponse);
+										}
+										else
+										{
+											reject(response);
+										}
+									},
+									failure: function (response)
+									{
+										reject(response);
+									}
 								}
-							},
-							failure: function (response)
-							{
-								reject(response);
-							}
+							);
 						}
 					);
 				}

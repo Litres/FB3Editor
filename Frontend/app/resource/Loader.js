@@ -42,62 +42,69 @@ Ext.define(
 		{
 			var me = this,
 				art = me.getArt(),
+				csrf = FBEditor.csrf.Csrf,
+				saveUrl,
 				pImage,
 				pTarget,
-				url,
 				form,
 				promise;
 
-			url = me.getSaveUrl();
-
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Сохранение ресурса на ' + url
-				}
-			);
-
 			//console.log(resData);
-			pImage = resData.name;
-			pTarget = target || resData.rootName;
-			pImage = encodeURI(pImage);
-			pTarget = encodeURI(pTarget);
-
-			// данные для запроса
-			form = new FormData();
-			form.append('data', resData.blob);
-			form.append('action', 'put_fb3_image');
-			form.append('art', art);
-			form.append('image', pImage);
-			form.append('target', pTarget);
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// формируем запрос
-					FBEditor.util.Ajax.request(
+					me.getSaveUrl().then(
+						function (url)
 						{
-							url: url,
-							data: form,
-							scope: me,
-							success: function(response)
-							{
-								var xml;
+							saveUrl = url;
 
-								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+							return csrf.getToken();
+						}
+					).then(
+						function (token)
+						{
+							Ext.log({level: 'info', msg: 'Сохранение ресурса на ' + saveUrl});
+
+							pImage = resData.name;
+							pTarget = target || resData.rootName;
+							pImage = encodeURI(pImage);
+							pTarget = encodeURI(pTarget);
+
+							// данные для запроса
+							form = new FormData();
+							form.append('data', resData.blob);
+							form.append('action', 'put_fb3_image');
+							form.append('art', art);
+							form.append('image', pImage);
+							form.append('target', pTarget);
+							form.append('csrf', token);
+
+							FBEditor.util.Ajax.request(
 								{
-									xml = response.responseText;
-									resolve(xml);
+									url: saveUrl,
+									data: form,
+									scope: me,
+									success: function(response)
+									{
+										var xml;
+
+										if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+										{
+											xml = response.responseText;
+											resolve(xml);
+										}
+										else
+										{
+											reject(response);
+										}
+									},
+									failure: function (response)
+									{
+										reject(response);
+									}
 								}
-								else
-								{
-									reject(response);
-								}
-							},
-							failure: function (response)
-							{
-								reject(response);
-							}
+							);
 						}
 					);
 				}
@@ -115,49 +122,55 @@ Ext.define(
 		{
 			var me = this,
 				art = me.getArt(),
-				url,
+				csrf = FBEditor.csrf.Csrf,
+				removeUrl,
 				promise;
-
-			url = me.getSaveUrl();
-
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Удаление ресурса на ' + url
-				}
-			);
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// формируем запрос
-					Ext.Ajax.request(
+					me.getSaveUrl().then(
+						function (url)
 						{
-							url: url,
-							params: {
-								action: 'put_fb3_image',
-								art: art,
-								image: encodeURI(id)
-							},
-							scope: me,
-							success: function(response)
-							{
-								var xml;
+							removeUrl = url;
 
-								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+							return csrf.getToken();
+						}
+					).then(
+						function (token)
+						{
+							Ext.log({level: 'info', msg: 'Удаление ресурса на ' + removeUrl});
+
+							Ext.Ajax.request(
 								{
-									xml = response.responseText;
-									resolve(xml);
+									url: removeUrl,
+									params: {
+										action: 'put_fb3_image',
+										art: art,
+										image: encodeURI(id),
+										csrf: token
+									},
+									scope: me,
+									success: function(response)
+									{
+										var xml;
+
+										if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+										{
+											xml = response.responseText;
+											resolve(xml);
+										}
+										else
+										{
+											reject(response);
+										}
+									},
+									failure: function (response)
+									{
+										reject(response);
+									}
 								}
-								else
-								{
-									reject(response);
-								}
-							},
-							failure: function (response)
-							{
-								reject(response);
-							}
+							);
 						}
 					);
 				}
@@ -198,7 +211,6 @@ Ext.define(
 		load: function (art)
 		{
 			var me = this,
-				url,
 				promise;
 
 			if (art)
@@ -207,44 +219,42 @@ Ext.define(
 				me.setArt(art);
 			}
 
-			url = me.getLoadUrl();
-
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Загрузка ресурсов из ' + url
-				}
-			);
-
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// формируем запрос
-					Ext.Ajax.request(
+					me.getLoadUrl().then(
+						function (url)
 						{
-							url: url,
-							disableCaching: true,
-							scope: me,
-							success: function(response)
-							{
-								var xml;
+							Ext.log({level: 'info', msg: 'Загрузка ресурсов из ' + url});
 
-								//console.log(response);
-								
-								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+							// формируем запрос
+							Ext.Ajax.request(
 								{
-									xml = response.responseText;
-									resolve(xml);
+									url: url,
+									disableCaching: true,
+									scope: me,
+									success: function(response)
+									{
+										var xml;
+
+										//console.log(response);
+
+										if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+										{
+											xml = response.responseText;
+											resolve(xml);
+										}
+										else
+										{
+											reject(response);
+										}
+									},
+									failure: function (response)
+									{
+										reject(response);
+									}
 								}
-								else
-								{
-									reject(response);
-								}
-							},
-							failure: function (response)
-							{
-								reject(response);
-							}
+							);
 						}
 					);
 				}
@@ -466,39 +476,46 @@ Ext.define(
 		getCover: function ()
 		{
 			var me = this,
-				url,
+				csrf = FBEditor.csrf.Csrf,
 				promise;
-
-			url = me.urlCover + '?art=' + me.getArt();
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					Ext.Ajax.request(
+					csrf.getToken().then(
+						function (token)
 						{
-							url: url,
-							disableCaching: true,
-							scope: me,
-							success: function(response)
-							{
-								var target;
+							var url;
 
-								//console.log(response);
+							url = me.urlCover + '?art=' + me.getArt() + '&csrf=' + token;
 
-								if (response && response.responseText && /^\/fb3/ig.test(response.responseText))
+							Ext.Ajax.request(
 								{
-									target = decodeURI(response.responseText);
-									resolve(target);
+									url: url,
+									disableCaching: true,
+									scope: me,
+									success: function(response)
+									{
+										var target;
+
+										//console.log(response);
+
+										if (response && response.responseText && /^\/fb3/ig.test(response.responseText))
+										{
+											target = decodeURI(response.responseText);
+											resolve(target);
+										}
+										else
+										{
+											resolve(false);
+										}
+									},
+									failure: function (response)
+									{
+										resolve(false);
+									}
 								}
-								else
-								{
-									resolve(false);
-								}
-							},
-							failure: function (response)
-							{
-								resolve(false);
-							}
+							);
 						}
 					);
 				}
@@ -515,61 +532,67 @@ Ext.define(
 		setCover: function (resData)
 		{
 			var me = this,
+				csrf = FBEditor.csrf.Csrf,
+				coverUrl,
 				params,
-				url,
 				promise;
-
-			params = {
-				action: 'put_fb3_cover'
-			};
-
-			//console.log(resData);
-
-			if (resData)
-			{
-				params.body_image_id = encodeURI(resData.fileId);
-			}
-
-			url = me.getSaveUrl(params);
-
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Запрос на обложку ' + url
-				}
-			);
 
 			//console.log(resData);
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					// формируем запрос
-					Ext.Ajax.request(
+					me.getSaveUrl().then(
+						function (url)
 						{
-							url: url,
-							disableCaching: true,
-							scope: me,
-							success: function(response)
-							{
-								var xml;
+							coverUrl = url;
 
-								resolve(response);
+							return csrf.getToken();
+						}
+					).then(
+						function (token)
+						{
+							Ext.log({level: 'info', msg: 'Запрос на установку обложку ' + coverUrl});
 
-								if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
-								{
-									xml = response.responseText;
-									resolve(xml);
-								}
-								else
-								{
-									reject(response);
-								}
-							},
-							failure: function (response)
+							params = {
+								action: 'put_fb3_cover',
+								art: me.getArt(),
+								csrf: token
+							};
+
+							if (resData)
 							{
-								reject(response);
+								params.body_image_id = encodeURI(resData.fileId);
 							}
+
+							Ext.Ajax.request(
+								{
+									url: coverUrl,
+									disableCaching: true,
+									scope: me,
+									params: params,
+									success: function(response)
+									{
+										var xml;
+
+										resolve(response);
+
+										if (response && response.responseText && /^<\?xml/ig.test(response.responseText))
+										{
+											xml = response.responseText;
+											resolve(xml);
+										}
+										else
+										{
+											reject(response);
+										}
+									},
+									failure: function (response)
+									{
+										reject(response);
+									}
+								}
+							);
 						}
 					);
 				}

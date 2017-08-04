@@ -161,22 +161,58 @@ Ext.define(
 
 		/**
 		 * Возвращает url для загрузки.
-		 * @return {String}
+		 * @param {Object} [params] Дополнительные параметры в url.
+		 * @return {Promise} 
 		 */
-		getLoadUrl: function ()
+		getLoadUrl: function (params)
 		{
-			return this.loadUrl;
+			var me = this,
+				url = me.loadUrl,
+				//csrf = FBEditor.csrf.Csrf,
+				promise;
+
+			if (params)
+			{
+				Ext.Object.each(
+					params,
+					function (name, val)
+					{
+						url += '&' + name + '=' + val;
+					}
+				);
+			}
+			
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					resolve(url);
+					/*
+					csrf.getToken().then(
+						function (token)
+						{
+							url = url + '&csrf=' + token;
+
+							resolve(url);
+						}
+					);
+					*/
+				}
+			);
+			
+			return promise;
 		},
 
 		/**
 		 * Возвращает url для сохранения.
 		 * @param {Object} [params] Дополнительные параметры в url.
-		 * @return {String}
+		 * @return {Promise}
 		 */
 		getSaveUrl: function (params)
 		{
 			var me = this,
-				url = me.saveUrl;
+				url = me.saveUrl,
+				//csrf = FBEditor.csrf.Csrf,
+				promise;
 
 			if (params)
 			{
@@ -189,7 +225,24 @@ Ext.define(
 				);
 			}
 
-			return url;
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					resolve(url);
+					/*
+					csrf.getToken().then(
+						function (token)
+						{
+							url = url + '&csrf=' + token;
+
+							resolve(url);
+						}
+					);
+					*/
+				}
+			);
+
+			return promise;
 		}
 	}
 );
