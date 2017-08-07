@@ -198,6 +198,9 @@
             "path": "resources/css/loader.css"
         },
         {
+            "path": "resources/css/fire666.css"
+        },
+        {
             "path": "resources/css/font-awesome.css"
         },
         {
@@ -249,7 +252,7 @@
      */
     "production": {
         "loader": {
-            "cache": "665",
+            "cache": "666",
             "cacheParam": "_v"
         }
     },

@@ -20,6 +20,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				sel = window.getSelection(),
+				viewportId,
 				range,
 				manager;
 
@@ -47,7 +48,7 @@ Ext.define(
 				manager = els.common.getManager();
 				manager.setSuspendEvent(true);
 
-				data.viewportId = nodes.common.viewportId;
+				viewportId = data.viewportId = nodes.common.viewportId;
 
 				els.startContainer = range.startContainer.getElement();
 				els.endContainer = range.endContainer.getElement();
@@ -122,10 +123,9 @@ Ext.define(
 						nodes.next = nodes.common.nextSibling;
 						nodes.prev = nodes.common.previousSibling;
 
-						// удаляем текстовый узел
+						// удаляем пустой текстовый узел
 						//nodes.removed.push(nodes.common);
-						els.parent.removeAll(els.common);
-						nodes.parent.removeChild(nodes.parent.firstChild);
+						els.parent.removeAll(els.common, viewportId);
 
 						if (!els.parent.isStyleHolder)
 						{

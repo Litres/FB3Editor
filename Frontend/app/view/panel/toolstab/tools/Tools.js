@@ -23,7 +23,10 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				version;
+
+			version = FBEditor.version;
 
 			me.tbar = [
 				{
@@ -31,7 +34,7 @@ Ext.define(
 					style: {
 						color: 'gray'
 					},
-					html: me.translateText.version + FBEditor.version
+					html: me.translateText.version + version
 				},
 				{
 					xtype: 'tbspacer',
