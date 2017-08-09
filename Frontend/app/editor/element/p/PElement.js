@@ -27,7 +27,7 @@ Ext.define(
 
 		isP: true,
 
-		getXml: function ()
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				parent = me.parent,
@@ -38,7 +38,15 @@ Ext.define(
 			if (me.isEmpty())
 			{
 				// заменяем все пустые абзацы на br
-				xml = xml.replace(/<p(.*?)>\n\s+<br(.*?)\/>\n\s+<\/p>/gi, '<br$2/>');
+
+				if (!withoutFormat)
+				{
+					xml = xml.replace(/<p(.*?)>\n\s+<br(.*?)\/>\n\s+<\/p>/gi, '<br$2/>');
+				}
+				else
+				{
+					xml = xml.replace(/<p(.*?)><br(.*?)\/><\/p>/gi, '<br$2/>');
+				}
 
 				if (!parent.hisName('section') && parent.first().equal(me))
 				{

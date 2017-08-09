@@ -53,6 +53,8 @@ Ext.define(
 									// устанавливаем последовательность однотипных кнопок для первой кнопки
 									firstBtn.setSequence(btn.sequence.slice(1));
 
+									//console.log('firstBtn', firstBtn);
+
 									// синхронизируем
 									firstBtn.fireEvent('sync');
 								}

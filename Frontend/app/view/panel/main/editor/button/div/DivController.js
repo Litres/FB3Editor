@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.panel.main.editor.button.div.DivController',
 	{
 		extend: 'FBEditor.view.panel.main.editor.button.UnboundedButtonController',
+		
 		alias: 'controller.main.editor.button.div'
 	}
 );

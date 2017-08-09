@@ -11,11 +11,14 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.div.DivController'
 		],
+		
 		id: 'main-editor-button-div',
 		xtype: 'main-editor-button-div',
 		controller: 'main.editor.button.div',
+		
 		html: '<i class="fa fa-cubes"></i>',
 		tooltip: 'Блок (Ctrl+D)',
+		
 		elementName: 'div'
 	}
 );
