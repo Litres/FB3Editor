@@ -18,6 +18,7 @@ Ext.define(
 
 		html: '<i class="fa fa-header"></i>',
 		tooltip: 'Заголовок (Ctrl+H)',
+		
 		elementName: 'title'
 	}
 );

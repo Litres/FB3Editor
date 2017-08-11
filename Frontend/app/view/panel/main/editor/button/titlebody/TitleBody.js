@@ -7,15 +7,20 @@
 Ext.define(
 	'FBEditor.view.panel.main.editor.button.titlebody.TitleBody',
 	{
-		extend: 'FBEditor.view.panel.main.editor.button.title.Title',
+		extend: 'FBEditor.view.panel.main.editor.button.AbstractButton',
 		requires: [
 			'FBEditor.view.panel.main.editor.button.titlebody.TitleBodyController'
 		],
+		
 		id: 'main-editor-button-titlebody',
 		xtype: 'main-editor-button-titlebody',
 		controller: 'main.editor.button.titlebody',
+		
 		html: '<i class="fa fa-header fa-border"></i>',
 		tooltip: 'Заголовок для всей книги',
+
+		elementName: 'title',
+		
 		createOpts: {
 			body: true
 		}
