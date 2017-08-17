@@ -47,17 +47,19 @@ Ext.define(
 			if (d.periodical)
 			{
 				d['periodical-id'] = d.periodical.id;
-				d['periodical-number'] = d.periodical.number.number;
-				d['periodical-year'] = d.periodical.number.year;
-				d['periodical-date'] = d.periodical.number.date ? d.periodical.number.date : '';
-				d['periodical-text'] = d.periodical.number.text ? d.periodical.number.text : '';
+				d['periodical-number'] = d.periodical.issue.number;
+				d['periodical-year'] = d.periodical.issue.year;
+				d['periodical-date'] = d.periodical.issue.date ? d.periodical.issue.date : '';
+				d['periodical-text'] = d.periodical.issue.text ? d.periodical.issue.text : '';
 				d['periodical-issn'] = d.periodical.issn ? d.periodical.issn : '';
+
 				if (d.periodical.title)
 				{
 					d['periodical-title-main'] = d.periodical.title.main;
 					d['periodical-title-sub'] = d.periodical.title.sub ? d.periodical.title.sub : '';
 					d['periodical-title-alt'] = d.periodical.title.alt ? d.periodical.title.alt : '';
 				}
+
 				delete d.periodical;
 			}
 
