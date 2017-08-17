@@ -145,7 +145,7 @@ Ext.define(
 				nodes.next = nodes.start;
 				els.next = nodes.next.getElement();
 
-				while (els.next && els.next.elementId !== els.end.elementId)
+				while (els.next && !els.next.equal(els.end))
 				{
 					els.removed.push(els.next);
 					nodes.removed.push(nodes.next);

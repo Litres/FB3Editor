@@ -58,7 +58,10 @@ Ext.define(
 				range,
 				isEnd;
 
-			e.preventDefault();
+			if (e)
+			{
+				e.preventDefault();
+			}
 
 			range = sel.getRangeAt(0);
 

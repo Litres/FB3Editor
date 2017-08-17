@@ -66,7 +66,7 @@ Ext.define(
 			me.createCss();
 
 			// создаем элемент
-			body = dom.querySelector('body');
+			body = dom.querySelector('fb3-body') || dom.querySelector('body');
 			el = me.createElement(body);
 			
 			return el

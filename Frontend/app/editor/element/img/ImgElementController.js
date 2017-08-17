@@ -27,6 +27,18 @@ Ext.define(
 			me.remove();
 		},
 
+		onKeyDownCtrlX: function (e)
+		{
+			var me = this;
+
+			e.stopPropagation();
+			e.preventDefault();
+
+			me.remove();
+
+			return false;
+		},
+
 		/**
 		 * Удаляет изображение.
 		 */

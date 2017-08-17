@@ -28,6 +28,19 @@ Ext.define(
 		},
 
 		/**
+		 * Устанавливает в буфер строку html.
+		 * @param {String} html
+		 */
+		setHtml: function (html)
+		{
+			var me = this,
+				e = me.evt,
+				data = e.clipboardData;
+
+			data.setData('text/html', html);
+		},
+
+		/**
 		 * Парсит RTF из буфера и возврщает список изображений.
 		 * @return {Object[]} Список изображений.
 		 */

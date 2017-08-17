@@ -407,6 +407,14 @@ Ext.define(
 
 						return false;
 
+					case Ext.event.Event.X:
+						if (e.ctrlKey)
+						{
+							return controller.onKeyDownCtrlX(e);
+						}
+
+						return false;
+
 					default:
 						return controller.onKeyDownDefault(e);
 				}
@@ -490,7 +498,11 @@ Ext.define(
 		{
 			var me = this;
 
-			e.preventDefault();
+			if (e)
+			{
+				e.preventDefault();
+			}
+			
 			me.removeNodes();
 		},
 
@@ -749,6 +761,11 @@ Ext.define(
 			me.getHistory().redo();
 
 			return false;
+		},
+
+		onKeyDownCtrlX: function (e)
+		{
+			//
 		},
 
 		/**

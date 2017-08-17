@@ -49,6 +49,8 @@ Ext.define(
 			paste: 'onPaste',
 			beforecopy: 'onBeforeCopy',
 			copy: 'onCopy',
+			beforecut: 'onBeforecut',
+			cut: 'onCut',
 			scroll: 'onScroll',
 			focus: 'onFocus'
 		},

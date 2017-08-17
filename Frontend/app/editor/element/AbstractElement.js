@@ -9,6 +9,7 @@ Ext.define(
 	'FBEditor.editor.element.AbstractElement',
 	{
 		requires: [
+			'FBEditor.editor.command.CutCommand',
 			'FBEditor.editor.command.PasteCommand',
 			'FBEditor.editor.command.RemoveNodesCommand',
 			'FBEditor.editor.element.AbstractElementController',

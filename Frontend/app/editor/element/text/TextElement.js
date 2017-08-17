@@ -164,6 +164,15 @@ Ext.define(
 		},
 
 		/**
+		 * Возвращает длину текста.
+		 * @return {Number}
+		 */
+		getLength: function ()
+		{
+			return this.text.length;
+		},
+
+		/**
 		 * Создает текстовый узел.
 		 * @return {Node} Возвращает текстовый узел.
 		 */

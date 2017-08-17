@@ -158,7 +158,7 @@ Ext.define(
 		/**
 		 * Вставка из буфера обмена.
 		 * @param {Object} e Событие.
-		 * @param {Node} e.clipboardData Объект буфера.
+		 * @param {clipboardData} e.clipboardData Объект буфера.
 		 */
 		onPaste: function (e)
 		{
@@ -174,7 +174,38 @@ Ext.define(
 			{
 				me.getHistory().add(cmd);
 			}
+		},
 
+		/**
+		 * Вырезание из текста.
+		 * @param {Object} e Событие.
+		 * @param {ClipboardData} e.clipboardData Объект буфера.
+		 */
+		onCut: function (e)
+		{
+			var me = this,
+				focus = me.getFocusNode(e.target),
+				el,
+				cmd;
+
+			console.log(focus);
+
+			if (focus.nodeName === 'IMG')
+			{
+				el = focus.getElement();
+				el.fireEvent('cut');
+			}
+			else
+			{
+				e.preventDefault();
+				e.stopPropagation();
+
+				cmd = Ext.create('FBEditor.editor.command.CutCommand', {e: e});
+
+				// выполняем команду без сохранения в истории, так как сама команда вызовет другую команду, которая как
+				// раз и сохранится в истории
+				cmd.execute();
+			}
 		}
 	}
 );

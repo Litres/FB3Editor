@@ -320,7 +320,7 @@ Ext.define(
 
 		/**
 		 * Возвращает html тела книги.
-		 * @return {HTMLElement}
+		 * @return {Node}
 		 */
 		getNode: function (viewportId)
 		{
@@ -350,6 +350,234 @@ Ext.define(
 			xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
 			//console.log(xml);
 
+			return xml;
+		},
+
+		/**
+		 * Возвращает xml выделенного фрагмента.
+		 * @return {String} Строка xml.
+		 */
+		getRangeXml: function ()
+		{
+			var me = this,
+				sel = window.getSelection(),
+				els = {},
+				nodes = {},
+				pos = {},
+				xml = '',
+				helper,
+				offset,
+				viewportId,
+				range;
+
+			// получаем данные из выделения
+			range = sel.getRangeAt(0);
+
+			if (range.collapsed)
+			{
+				// отсутствует выделение
+				return '';
+			}
+
+			nodes.common = range.commonAncestorContainer;
+			els.common = nodes.common.getElement();
+			els.start = range.startContainer.getElement();
+			els.end = range.endContainer.getElement();
+			els.p = els.common.getStyleHolder();
+
+			viewportId = nodes.common.viewportId;
+
+			if (els.start.equal(els.common) && els.end.equal(els.common) && !els.common.isText)
+			{
+				// некорректное выделение
+				return '';
+			}
+
+			offset = {
+				start: range.startOffset,
+				end: range.endOffset
+			};
+
+			console.log('els', els);
+
+			me.setSuspendEvent(true);
+
+			if (els.common.isText)
+			{
+				// получаем выделенный текст
+				xml = els.common.getText(offset.start, offset.end);
+			}
+			else if (els.p)
+			{
+				els.common = els.p;
+				helper = els.common.getNodeHelper();
+				nodes.common = helper.getNode(viewportId);
+
+				// необходимо ли переместить указатель для последнего выделенного элемента
+				els.needPrevEnd = els.end.isText && offset.end < els.end.getLength();
+
+				// разбиваем конечный узел текущего выделения
+				nodes.container = range.endContainer;
+				nodes.end = me.splitNode(els, nodes, offset.end);
+
+				// разбиваем начальный узел текущего выделения
+				nodes.container = range.startContainer;
+				nodes.start = me.splitNode(els, nodes, offset.start);
+				els.start = nodes.start.getElement();
+				els.prev = els.start.prev();
+
+				nodes.end = els.needPrevEnd ? nodes.end.previousSibling : nodes.end;
+				els.end = nodes.end.getElement();
+
+				if (els.end.isEmpty())
+				{
+					// удаляем пустой конечный узел
+					nodes.prev = nodes.end.previousSibling;
+					els.common.remove(els.end, viewportId);
+					nodes.end = nodes.prev;
+					els.end = nodes.end.getElement();
+				}
+
+				if (els.prev && els.prev.isEmpty())
+				{
+					// удаляем пустой начальный узел
+					els.common.remove(els.prev, viewportId);
+				}
+
+				els.next = els.start;
+
+				while (els.next && !els.next.equal(els.end))
+				{
+					xml += els.next.getXml();
+					els.next = els.next.next();
+				}
+
+				xml += els.end.getXml();
+
+				// объединяем узлы
+
+				if (nodes.end.nextSibling)
+				{
+					me.joinNode(nodes.end.nextSibling);
+
+				}
+
+				if (els.prev)
+				{
+					me.joinNode(nodes.start);
+				}
+
+				// удаляем пустые элементы
+				me.removeEmptyNodes(nodes.common);
+
+				// восстанавливаем выделение
+				me.setCursor(
+					{
+						withoutSyncButtons: true,
+						startNode: me.getDeepFirst(range.startContainer),
+						startOffset: offset.start,
+						endNode: me.getDeepLast(range.endContainer),
+						endOffset: offset.end
+					}
+				);
+			}
+			else 
+			{
+				// первый элемент
+
+				els.first = els.start;
+
+				while (els.first && !els.first.parent.equal(els.common))
+				{
+					els.first = els.isRoot ? els.first.first() : els.first.parent;
+				}
+
+				// последний элемент
+
+				els.last = els.end;
+
+				while (els.last && !els.last.parent.equal(els.common))
+				{
+					els.last = els.isRoot ? els.last.last() : els.last.parent;
+				}
+
+				// позиция выделения относительно затронутых элементов
+				pos.isStart = els.first.isStartRange(range);
+				pos.isEnd = els.last.isEndRange(range);
+
+				if (!pos.isStart)
+				{
+					// разбиваем первый элемент
+					nodes.container = range.startContainer;
+					nodes.start = me.splitNode(els, nodes, offset.start);
+					els.start = nodes.start.getElement();
+				}
+				else
+				{
+					els.start = els.first;
+				}
+
+				if (!pos.isEnd)
+				{
+					// разбиваем последний элемент
+					nodes.container = range.endContainer;
+					nodes.end = me.splitNode(els, nodes, offset.end);
+					els.end = nodes.end.previousSibling.getElement();
+				}
+				else
+				{
+					els.end = els.last;
+				}
+
+				els.next = els.start;
+
+				while (els.next && !els.next.equal(els.end))
+				{
+					xml += els.next.getXml();
+					els.next = els.next.next();
+				}
+
+				xml += els.next.getXml();
+
+				// воединяем разбитые узлы обратно
+
+				if (!pos.isStart)
+				{
+					// соединяем первый элемент
+					nodes.prev = nodes.start.previousSibling;
+					me.joinNode(nodes.start);
+
+					// удаляем пустые элементы
+					me.removeEmptyNodes(nodes.prev);
+				}
+
+				if (!pos.isEnd)
+				{
+					// соединяем последний элемент
+
+					nodes.next = nodes.end.nextSibling || nodes.end;
+					me.joinNode(nodes.next);
+
+					// удаляем пустые элементы
+					me.removeEmptyNodes(nodes.end);
+				}
+
+				// восстанавливаем выделение
+				me.setCursor(
+					{
+						withoutSyncButtons: true,
+						startNode: range.startContainer,
+						startOffset: offset.start,
+						endNode: range.endContainer,
+						endOffset: offset.end
+					}
+				);
+			}
+
+			me.setSuspendEvent(false);
+
+			console.log('getRangeXml', xml);
+			
 			return xml;
 		},
 

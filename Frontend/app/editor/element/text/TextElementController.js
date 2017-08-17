@@ -22,7 +22,10 @@ Ext.define(
 				newValue,
 				range;
 
-			e.preventDefault();
+			if (e)
+			{
+				e.preventDefault();
+			}
 
 			range = sel.getRangeAt(0);
 
