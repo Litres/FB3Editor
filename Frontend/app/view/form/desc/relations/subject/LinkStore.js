@@ -155,6 +155,18 @@ Ext.define(
 				name: 'Сценарист'
 			},
 			{
+				value: 'contributing_editor',
+				name: 'Главный редактор'
+			},
+			{
+				value: 'editorial_board_member',
+				name: 'Член редколлегии'
+			},
+			{
+				value: 'managing_editor',
+				name: 'Ответственный редактор'
+			},
+			{
 				value: 'other',
 				name: 'Прочее'
 			},

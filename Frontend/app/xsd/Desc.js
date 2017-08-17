@@ -68,8 +68,11 @@ attributeFormDefault="unqualified">\
 					</enumeration>\
 					<enumeration value="screenwriter">\
 					</enumeration>\
-				      <enumeration value="other" />\
-				      <enumeration value="undef" />\
+						<enumeration value="contributing_editor" />\
+						<enumeration value="editorial_board_member" />\
+						<enumeration value="managing_editor" />\
+				        <enumeration value="other" />\
+				        <enumeration value="undef" />\
 			      </restriction>\
 		</simpleType>\
           <simpleType name="ObjectRelationEnumType">\
