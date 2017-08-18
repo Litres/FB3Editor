@@ -17,6 +17,11 @@ Ext.define(
 
 		text: 'Превратить в текст',
 
+		/**
+		 * @property {FBEditor.editor.element.AbstractElement} Ссылка на элемент.
+		 */
+		element: null,
+
 		handler: function ()
 		{
 			var me = this,

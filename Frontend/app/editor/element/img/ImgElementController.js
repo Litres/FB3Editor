@@ -39,6 +39,15 @@ Ext.define(
 			return false;
 		},
 
+		onFocus: function (e)
+		{
+			var me = this,
+				sel = window.getSelection();
+
+			sel.removeAllRanges();
+			me.callParent(arguments);
+		},
+
 		/**
 		 * Удаляет изображение.
 		 */

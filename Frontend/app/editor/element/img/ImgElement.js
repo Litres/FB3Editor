@@ -137,6 +137,7 @@ Ext.define(
 					resData[key] = val ? val : '';
 				}
 			);
+			
 			resData.src = me.attributes.src ? me.attributes.src : 'undefined';
 			data = Ext.apply(data, resData);
 

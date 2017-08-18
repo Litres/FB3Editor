@@ -787,16 +787,14 @@ Ext.define(
 				manager,
 				node,
 				el;
-
-
+			
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
 			manager = el ? el.getManager() : null;
 
 			if (manager)
 			{
-				// фокус на элемент
-				manager.setFocusElement(node);
+				el.fireEvent('focus', e);
 			}
 		},
 
@@ -811,7 +809,17 @@ Ext.define(
 
 		onFocus: function (e)
 		{
-			//
+			var me = this,
+				manager,
+				node,
+				el;
+
+			node = me.getFocusNode(e.target);
+			el = node.getElement ? node.getElement() : null;
+			manager = el ? el.getManager() : null;
+
+			// фокус на элемент
+			manager.setFocusElement(node);
 		},
 
 		/**

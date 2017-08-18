@@ -13,6 +13,7 @@ Ext.define(
 		],
 		id: 'button-editor-delete-element',
 		xtype: 'button-editor-delete-element',
+
 		text: 'Удалить',
 
 		/**

@@ -104,7 +104,7 @@ Ext.define(
 					convertBtn.setVisible(false);
 				}
 
-				if (!editor || editor && editor.elementName !== data.elementName)
+				if (!editor || editor && !editor.element.equal(data.el))
 				{
 					if (editor)
 					{

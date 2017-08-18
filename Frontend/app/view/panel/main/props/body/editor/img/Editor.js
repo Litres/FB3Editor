@@ -98,6 +98,7 @@ Ext.define(
 			var me = this,
 				prefix = me.prefixName,
 				prefixData = {},
+				form,
 				picture;
 
 			me.isLoad = isLoad;
@@ -115,7 +116,8 @@ Ext.define(
 			    }
 			);
 
-			me.getForm().setValues(prefixData);
+			form = me.getForm();
+			form.setValues(prefixData);
 
 			// обновляем изображение
 			picture = me.getPicture();

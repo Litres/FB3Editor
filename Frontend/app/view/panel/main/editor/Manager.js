@@ -357,11 +357,12 @@ Ext.define(
 			parent.each(
 				function (el)
 				{
-					var data = {};
+					var data;
 
 					// если изображение соответствует ожидаемому ресурсу
 					if (el.isImg && el.isLoadingRes(res.fileId))
 					{
+						data = el.attributes;
 						data.src = res.fileId;
 
 						// обновляем изображение
