@@ -41,123 +41,15 @@ Ext.define(
 
 		xtype: 'main-editor-toolbar',
 
-		items: [
-			{
-				xtype: 'main-editor-button-notes'
-			},
-			{
-				xtype: 'main-editor-button-notebody'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'main-editor-button-titlebody'
-			},
-			{
-				xtype: 'main-editor-button-section'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'main-editor-button-title'
-			},
-			{
-				xtype: 'main-editor-button-epigraph'
-			},
-			{
-				xtype: 'main-editor-button-annotation'
-			},
-			{
-				xtype: 'main-editor-button-subscription'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'main-editor-button-div'
-			},
-			{
-				xtype: 'main-editor-button-subtitle'
-			},
-			{
-				xtype: 'main-editor-button-blockquote'
-			},
-			{
-				xtype: 'main-editor-button-pre'
-			},
-			{
-				xtype: 'main-editor-button-poem'
-			},
-			{
-				xtype: 'main-editor-button-ul'
-			},
-			{
-				xtype: 'main-editor-button-ol'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'main-editor-button-table'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'main-editor-button-img'
-			},
-			{
-				xtype: 'main-editor-button-a'
-			},
-			{
-				xtype: 'main-editor-button-note'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'main-editor-button-strong'
-			},
-			{
-				xtype: 'main-editor-button-em'
-			},
-			{
-				xtype: 'main-editor-button-underline'
-			},
-			{
-				xtype: 'main-editor-button-strikethrough'
-			},
-			{
-				xtype: 'main-editor-button-spacing'
-			},
-			{
-				xtype: 'main-editor-button-sub'
-			},
-			{
-				xtype: 'main-editor-button-sup'
-			},
-			{
-				xtype: 'main-editor-button-code'
-			},
-			{
-				xtype: 'main-editor-button-span'
-			},
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'editor-toggleButton'
-			}
-		],
+		afterRender: function ()
+		{
+			var me = this;
+
+			// формируем кнопки адаптивно
+			me.responsiveButtons();
+
+			me.callParent(arguments);
+		},
 
 		createButtons: function ()
 		{
@@ -207,6 +99,289 @@ Ext.define(
 
 			xtype = 'main-editor-button-' + name;
 			btn = me.down(xtype);
+
+			return btn;
+		},
+
+		/**
+		 * Формирует кнопки на панели адаптивно.
+		 */
+		responsiveButtons: function ()
+		{
+			var me = this,
+				bodyWidth = Ext.getBody().getWidth(),
+				maxWidth = 1250,
+				menuButton,
+				items;
+
+			console.log(bodyWidth);
+
+			menuButton = me.getMenuButton();
+
+			if (/*bodyWidth > maxWidth*/true)
+			{
+				items = [
+					{
+						xtype: 'main-editor-button-notes'
+					},
+					{
+						xtype: 'main-editor-button-notebody'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-titlebody'
+					},
+					{
+						xtype: 'main-editor-button-section'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-title'
+					},
+					{
+						xtype: 'main-editor-button-epigraph'
+					},
+					{
+						xtype: 'main-editor-button-annotation'
+					},
+					{
+						xtype: 'main-editor-button-subscription'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-div'
+					},
+					{
+						xtype: 'main-editor-button-subtitle'
+					},
+					{
+						xtype: 'main-editor-button-blockquote'
+					},
+					{
+						xtype: 'main-editor-button-pre'
+					},
+					{
+						xtype: 'main-editor-button-poem'
+					},
+					{
+						xtype: 'main-editor-button-ul'
+					},
+					{
+						xtype: 'main-editor-button-ol'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-table'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-img'
+					},
+					{
+						xtype: 'main-editor-button-a'
+					},
+					{
+						xtype: 'main-editor-button-note'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-strong'
+					},
+					{
+						xtype: 'main-editor-button-em'
+					},
+					{
+						xtype: 'main-editor-button-underline'
+					},
+					{
+						xtype: 'main-editor-button-strikethrough'
+					},
+					{
+						xtype: 'main-editor-button-spacing'
+					},
+					{
+						xtype: 'main-editor-button-sub'
+					},
+					{
+						xtype: 'main-editor-button-sup'
+					},
+					{
+						xtype: 'main-editor-button-code'
+					},
+					{
+						xtype: 'main-editor-button-span'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'editor-toggleButton'
+					}
+				];
+			}
+			else
+			{
+				items = [
+					{
+						xtype: 'main-editor-button-notes'
+					},
+					{
+						xtype: 'main-editor-button-notebody'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-titlebody'
+					},
+					{
+						xtype: 'main-editor-button-section'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-title'
+					},
+					{
+						xtype: 'main-editor-button-epigraph'
+					},
+					{
+						xtype: 'main-editor-button-annotation'
+					},
+					{
+						xtype: 'main-editor-button-subscription'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-div'
+					},
+					{
+						xtype: 'main-editor-button-subtitle'
+					},
+					{
+						xtype: 'main-editor-button-blockquote'
+					},
+					{
+						xtype: 'main-editor-button-pre'
+					},
+					{
+						xtype: 'main-editor-button-poem'
+					},
+					{
+						xtype: 'main-editor-button-ul'
+					},
+					{
+						xtype: 'main-editor-button-ol'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-table'
+					},
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'main-editor-button-img'
+					},
+					{
+						xtype: 'main-editor-button-a'
+					},
+					{
+						xtype: 'main-editor-button-note'
+					},
+					menuButton/*,
+					{
+						xtype: 'tbspacer',
+						width: 20
+					},
+					{
+						xtype: 'editor-toggleButton'
+					}*/
+				];
+			}
+
+			me.removeAll();
+			me.add(items);
+		},
+
+		/**
+		 * Возвращает адаптивное меню с кнопками.
+		 * @return {Ext.button.Button}
+		 */
+		getMenuButton: function ()
+		{
+			var me = this,
+				btn;
+
+			btn = {
+				xtype: 'button',
+				html: '<i class="fa fa-angle-double-right"></i>',
+				menu: {
+					plain: true,
+					width: 20,
+					defaults: {
+						width: 20
+					},
+					items: [
+						{
+							xtype: 'main-editor-button-strong'
+						},
+						{
+							xtype: 'main-editor-button-em'
+						},
+						{
+							xtype: 'main-editor-button-underline'
+						},
+						{
+							xtype: 'main-editor-button-strikethrough'
+						},
+						{
+							xtype: 'main-editor-button-spacing'
+						},
+						{
+							xtype: 'main-editor-button-sub'
+						},
+						{
+							xtype: 'main-editor-button-sup'
+						},
+						{
+							xtype: 'main-editor-button-code'
+						},
+						{
+							xtype: 'main-editor-button-span'
+						}
+					]
+				}
+			};
 
 			return btn;
 		}

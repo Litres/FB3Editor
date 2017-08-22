@@ -117,18 +117,19 @@ Ext.define(
 											// обложка
 											resourceManager.setCover(thumb.getFileName());
 										}
+										
+										// редактор тела книги
+										bodyManager = FBEditor.getEditorManager();
+										bodyManager.reset();
+
+										// переключаем контекст на редактор тела книги
+										content.openBody();
+
+										// создаем контент тела книги
+										bodyManager.createContent(contentBody);
 									}
 								);
 
-								// редактор тела книги
-								bodyManager = FBEditor.getEditorManager();
-								bodyManager.reset();
-
-								// переключаем контекст на редактор тела книги
-								content.openBody();
-
-								// создаем контент тела книги
-								bodyManager.createContent(contentBody);
 							}
 							catch (e)
 							{

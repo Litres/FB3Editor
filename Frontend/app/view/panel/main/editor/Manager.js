@@ -360,8 +360,10 @@ Ext.define(
 					var data;
 
 					// если изображение соответствует ожидаемому ресурсу
-					if (el.isImg && el.isLoadingRes(res.fileId))
+					if (el.isImg && el.isLoadingRes(res.fileId) || el.marker && el.marker.img.isLoadingRes(res.fileId))
 					{
+						console.log('linkImagesToRes', el, res);
+
 						data = el.attributes;
 						data.src = res.fileId;
 

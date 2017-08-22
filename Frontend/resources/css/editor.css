@@ -86,8 +86,10 @@
 .main-editor-viewport .el-div {
 	display: inline-block;
 	width: 100%;
-	padding: 1em;
+	margin: 0 1em;
+	padding: 0;
 	min-width: 9.5em;
+	overflow: hidden;
 }
 .main-editor-viewport .el-div[border] {
 	border: 1px solid black;

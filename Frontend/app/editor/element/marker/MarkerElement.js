@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.element.marker.img.ImgElement'
 		],
+		
 		htmlTag: 'marker',
 		xmlTag: 'marker',
 		cls: 'el-marker',

@@ -1171,10 +1171,14 @@ Ext.define(
 				resource,
 				resourceIndex;
 
+			//console.log('getResource', data, search);
+
 			// ищем индекс
 			resourceIndex = me.getResourceIndexByProp('fileId', search);
 			resourceIndex = resourceIndex === null ? me.getResourceIndexByProp('url', search) : resourceIndex;
 			resourceIndex = resourceIndex === null ? me.getResourceIndexByProp('name', search) : resourceIndex;
+
+			//console.log(resourceIndex);
 
 			resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 			resource = resource && resource[0] ? resource[0] : null;
