@@ -357,17 +357,47 @@ Ext.define(
 			parent.each(
 				function (el)
 				{
-					var data;
+					var data = {},
+						markerImg,
+						attrs;
 
-					// если изображение соответствует ожидаемому ресурсу
-					if (el.isImg && el.isLoadingRes(res.fileId) || el.marker && el.marker.img.isLoadingRes(res.fileId))
+					// изображение маркера
+					markerImg = el.marker && el.marker.img ? el.marker.img : null;
+
+					if (el.isImg && el.isLoadingRes(res.fileId))
 					{
-						console.log('linkImagesToRes', el, res);
+						// если изображение соответствует ожидаемому ресурсу
+						
+						//console.log('linkImagesToRes', el, res);
 
 						data = el.attributes;
 						data.src = res.fileId;
 
 						// обновляем изображение
+						el.update(data);
+					}
+					else if (markerImg && markerImg.isLoadingRes(res.fileId))
+					{
+						// если у элемента есть маркер
+
+						//console.log('linkImagesToRes marker', el, res);
+
+						// аттрибуты маркера
+						attrs = markerImg.attributes;
+
+						// добавляем индекс маркера перед аттрибутами
+						Ext.Object.each(
+							attrs,
+						    function (key, val)
+						    {
+							    data['marker-' + key] = val;
+						    }
+						);
+
+						data['marker-src'] = res.fileId;
+						data.marker = 'true';
+
+						// обновляем изображение маркера
 						el.update(data);
 					}
 					else if (el.children.length)

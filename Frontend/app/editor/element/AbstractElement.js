@@ -170,7 +170,6 @@ Ext.define(
 				    if (item.isMarker)
 				    {
 					    me.marker = item;
-					    console.log('marker', item, me);
 				    }
 				    else
 				    {
@@ -866,8 +865,7 @@ Ext.define(
 				}
 			);
 
-			console.log('data', data);
-			console.log('resData, markerData', resData, markerData);
+			//console.log('resData, markerData', resData, markerData);
 
 			if (markerData)
 			{
