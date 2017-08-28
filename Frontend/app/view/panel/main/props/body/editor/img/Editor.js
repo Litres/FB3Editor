@@ -134,10 +134,11 @@ Ext.define(
 			var me = this,
 				emptyData;
 
-			// сбрасываем изображение
 			emptyData = {
 				url: 'undefined'
 			};
+
+			// сбрасываем изображение
 			me.updateData(emptyData);
 
 			me.callParent(arguments);

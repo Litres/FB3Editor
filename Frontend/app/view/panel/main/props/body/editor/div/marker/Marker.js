@@ -11,13 +11,8 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.props.body.editor.div.marker.img.Img'
 		],
+		
 		xtype: 'panel-props-body-editor-marker',
-
-		collapsible: true,
-		collapsed: true,
-		border: true,
-		padding: 10,
-		margin: '10 0 0 0',
 
 		listeners: {
 			collapse: function ()
@@ -32,6 +27,18 @@ Ext.define(
 				this.setMarker(true);
 			}
 		},
+
+		collapsible: true,
+		collapsed: true,
+		border: true,
+		padding: 10,
+		margin: '10 0 0 0',
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.props.body.editor.div.marker.img.Img} Изображение маркера.
+		 */
+		img: null,
 
 		initComponent: function ()
 		{
@@ -55,22 +62,39 @@ Ext.define(
 		updateData: function (data, isLoad)
 		{
 			var me = this,
+				img = me.getImg(),
 				marker,
 				imgData;
 
 			marker = data.el.marker;
+			
 			if (marker)
 			{
 				me.expand();
 
 				// обновляем данные изображения
 				imgData = marker.img.getData();
-				me.down('panel-props-body-editor-marker-img').updateData(imgData, isLoad);
+				img.updateData(imgData, isLoad);
 			}
 			else
 			{
 				me.collapse();
 			}
+		},
+
+		/**
+		 * Возвразает изображение маркера.
+		 * @return {FBEditor.view.panel.main.props.body.editor.div.marker.img.Img}
+		 */
+		getImg: function ()
+		{
+			var me = this,
+				img;
+			
+			img = me.img || me.down('panel-props-body-editor-marker-img');
+			me.img = img;
+			
+			return img;
 		},
 
 		/**
@@ -90,9 +114,10 @@ Ext.define(
 		 */
 		reset: function ()
 		{
-			var me = this;
+			var me = this,
+				img = me.getImg();
 
-			me.down('panel-props-body-editor-marker-img').reset();
+			img.reset();
 		}
 	}
 );

@@ -11,10 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.props.body.editor.div.marker.img.ImgController'
 		],
-		controller: 'panel.props.body.editor.marker.img',
-		xtype: 'panel-props-body-editor-marker-img',
 
-		prefixName: 'marker-',
+		xtype: 'panel-props-body-editor-marker-img',
+		controller: 'panel.props.body.editor.marker.img',
 
 		defaults: {
 			xtype: 'textfield',
@@ -28,12 +27,16 @@ Ext.define(
 			}
 		},
 
+		prefixName: 'marker-',
+
 		updateData: function (data, isLoad)
 		{
 			var me = this,
 				prefix = me.prefixName,
 				prefixData = {},
 				picture;
+
+			//console.log('updateData', data, isLoad);
 
 			data.src = data.src ? data.src : data.name;
 			data.url = data.url ? data.url : data.src;
@@ -50,7 +53,7 @@ Ext.define(
 
 			me.getForm().setValues(prefixData);
 
-			if (picture = me.down('image-editor-picture'))
+			if (picture = me.getPicture())
 			{
 				picture.updateView({url: data.url});
 			}
