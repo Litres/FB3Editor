@@ -642,6 +642,8 @@ Ext.define(
 			var me = this,
 				children = me.children,
 				tag = me.htmlTag,
+				container,
+				markerContainer,
 				node;
 
 			node = document.createElement(tag);
@@ -651,18 +653,35 @@ Ext.define(
 
 			if (me.marker)
 			{
+				// создаем отдельный контейнер для содержимого, если у элемента есть маркер
+				markerContainer = document.createElement('div');
+				markerContainer.getElement = function ()
+				{
+					return me;
+				};
+
 				node.appendChild(me.marker.getNode(viewportId));
+
+				// добавляем контейнер
+				node.appendChild(markerContainer);
 			}
 
 			if (children && children.length)
 			{
+				container = markerContainer ? markerContainer : node;
+
 				Ext.Array.each(
 					children,
 					function (item)
 					{
-						node.appendChild(item.getNode(viewportId));
+						container.appendChild(item.getNode(viewportId));
 					}
 				);
+
+				if (markerContainer)
+				{
+					node.appendChild(container);
+				}
 			}
 
 			return node;
@@ -1750,7 +1769,15 @@ Ext.define(
 		 */
 		setStyleHtml: function ()
 		{
-			return this.style;
+			var me = this,
+				style;
+			
+			style = me.style;
+			
+			// если есть маркер, то выравниваем его слева от остального содержимого
+			style += me.marker ? 'display: flex' : '';
+			
+			return style;
 		},
 
 		/**

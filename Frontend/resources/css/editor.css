@@ -84,6 +84,7 @@
 
 /* блок */
 .main-editor-viewport .el-div {
+	position: relative;
 	display: inline-block;
 	width: 100%;
 	margin: 0 1em;
@@ -305,15 +306,12 @@
 
 /* маркер */
 .main-editor-viewport .el-marker {
-	float: left;
-	margin-left: -1em;
-	padding: 0 1.2em 0 0;
+	padding: 0 0.2em;
 }
 
 /* элементы следующие за маркером */
 .main-editor-viewport .el-marker ~ * {
-	padding-left: 1.6em;
-	text-indent: 0;
+	/*text-indent: 0;*/
 }
 
 /* непечатаемый символ новой строки */

@@ -63,6 +63,7 @@ Ext.define(
 				style;
 
 			style = me.callParent();
+
 			style += style ? ' ' : '';
 			style += attributes['min-width'] ? 'min-width: ' + attributes['min-width'] + '; ' : '';
 			style += attributes['max-width'] ? 'max-width: ' + attributes['max-width'] + '; ' : '';
