@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.poem.PoemController'
 		],
-		id: 'main-editor-button-poem',
+		
 		xtype: 'main-editor-button-poem',
 		controller: 'main.editor.button.poem',
+		
 		html: '<i class="fa fa-pinterest fa-lg"></i>',
 		tooltip: 'Поэма',
 		elementName: 'poem'

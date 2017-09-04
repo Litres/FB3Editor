@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.notes.NotesController'
 		],
-		id: 'main-editor-button-notes',
+		
 		xtype: 'main-editor-button-notes',
 		controller: 'main.editor.button.notes',
+		
 		html: '<i class="fa fa-clone"></i>',
 		tooltip: 'Сноски',
 		elementName: 'notes'

@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.InsertColPrevCommand'
 		],
-		id: 'main-editor-button-table-menu-insertColPrev',
+		
 		xtype: 'main-editor-button-table-menu-insertColPrev',
 
 		text: 'Вставить столбец слева',

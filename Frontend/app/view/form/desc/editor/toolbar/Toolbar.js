@@ -35,7 +35,7 @@ Ext.define(
 				]
 			);
 
-			me.buttons.push(cleanBtn);
+			me.addSyncButton('form-desc-editor-toolbar-button-cleaner');
 		}
 	}
 );

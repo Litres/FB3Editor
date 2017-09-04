@@ -259,3 +259,8 @@ body {
 .panel-empty .message {
 	font-size: 3em;
 }
+
+/* кнпоки адапитвной панели форматирования */
+.main-editor-toolbar-responsive-panel .x-btn {
+	margin: 1px 0;
+}

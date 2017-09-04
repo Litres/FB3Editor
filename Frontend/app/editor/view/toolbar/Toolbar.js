@@ -28,14 +28,14 @@ Ext.define(
 			},
 			{
 				xtype: 'editor-toolbar-button-a'
-			},
+			}/*,
 			{
 				xtype: 'tbspacer',
 				width: 20
 			},
 			{
 				xtype: 'editor-toggleButton'
-			}
+			}*/
 		],
 
 		listeners: {
@@ -52,11 +52,11 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.view.toolbar.button.AbstractButton[]} Кнопки элементов.
-		 * @property {FBEditor.editor.view.toolbar.button.AbstractButton[]} [Object.sequence] Список кнопок.
+		 * @property {String[]} Кнопки элементов.
+		 * @property {String[]} [Object.sequence] Список кнопок для синхронизации.
 		 * Список sequence содержит в себе однотипные кнопки элементов, которые проверяются по схеме одинаково.
 		 */
-		buttons: null,
+		syncButtons: null,
 
 		/**
 		 * @private
@@ -84,22 +84,31 @@ Ext.define(
 			me.callParent(arguments);
 
 			// создаем список кнопок для синхронизации
-			me.createButtons();
+			me.createSyncButtons();
 		},
 
 		/**
 		 * @template
 		 * Создает список кнопок для синхронизации.
 		 */
-		createButtons: function ()
+		createSyncButtons: function ()
 		{
 			var me = this;
 
-			me.buttons = [
-				me.down('editor-toolbar-button-a'),
-				me.down('editor-toolbar-button-em'),
-				me.down('editor-toolbar-button-strong')
+			me.syncButtons = [
+				'editor-toolbar-button-a',
+				'editor-toolbar-button-em',
+				'editor-toolbar-button-strong'
 			];
+		},
+
+		/**
+		 * Добавляет кнопку для синхронизации.
+		 * @param {String} button xtype кнопки.
+		 */
+		addSyncButton: function (button)
+		{
+			this.syncButtons.push(button);
 		},
 
 		/**
@@ -175,10 +184,8 @@ Ext.define(
 				btn,
 				xtype;
 
-			//console.log(name);
-
 			xtype = 'editor-toolbar-button-' + name;
-			btn = me.down(xtype);
+			btn = Ext.ComponentQuery.query(xtype)[0];
 
 			return btn;
 		},
@@ -187,9 +194,9 @@ Ext.define(
 		 * Возвращает список кнопок для синхронизации.
 		 * @return {Object[]}
 		 */
-		getButtons: function ()
+		getSyncButtons: function ()
 		{
-			return this.buttons;
+			return this.syncButtons;
 		},
 
 		/**

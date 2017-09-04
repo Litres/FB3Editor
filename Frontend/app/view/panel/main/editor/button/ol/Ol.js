@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.ol.OlController'
 		],
-		id: 'main-editor-button-ol',
+		
 		xtype: 'main-editor-button-ol',
 		controller: 'main.editor.button.ol',
+		
 		html: '<i class="fa fa-list-ol"></i>',
 		tooltip: 'Нумерованный список',
 		elementName: 'ol'

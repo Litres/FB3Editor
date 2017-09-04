@@ -10,13 +10,18 @@ Ext.define(
 		extend: 'FBEditor.editor.view.toolbar.button.ButtonController',
 		alias: 'controller.editor.toolbar.button.togglebutton',
 
-		onClick: function ()
+		onClick: function (button, e)
 		{
 			var me = this,
 				btn = me.getView(),
 				manager = btn.getEditorManager(),
 				name,
 				opts;
+
+			if (e)
+			{
+				e.stopPropagation();
+			}
 
 			name = btn.elementName;
 			opts = btn.createOpts;
@@ -53,7 +58,8 @@ Ext.define(
 
 			if (!range)
 			{
-				btn.disable();
+				me.verifyResult(false);
+				//btn.disable();
 
 				return;
 			}
@@ -73,18 +79,21 @@ Ext.define(
 
 			//console.log('state', state);
 
-			btn.enable();
+			me.verifyResult(true);
+			//btn.enable();
 
 			if (!state)
 			{
 				// активность кнопки для отжатого состояния
 				if (!btn.isActiveSelection())
 				{
-					btn.disable();
+					me.verifyResult(false);
+					//btn.disable();
 				}
 				else
 				{
-					btn.enable();
+					me.verifyResult(true);
+					//btn.enable();
 				}
 			}
 		}

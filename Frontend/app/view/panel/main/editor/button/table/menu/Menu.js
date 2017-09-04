@@ -23,7 +23,6 @@ Ext.define(
 
 		],
 		
-		id: 'main-editor-button-table-menu',
 		xtype: 'main-editor-button-table-menu',
 		controller: 'main.editor.button.table.menu',
 

@@ -38,26 +38,49 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.view.toolbar.button.AbstractButton[]} Список однотипных кнопок.
+		 * @property {String[]} Список однотипных кнопок.
 		 */
 		sequence: null,
 
 		/**
 		 * Устанавливает список однотипных кнопок.
-		 * @param {FBEditor.editor.view.toolbar.button.AbstractButton[]} seq Список однотипных кнопок.
+		 * @param {String[]} seq Список однотипных кнопок.
 		 */
 		setSequence: function (seq)
 		{
-			this.sequence = seq;
+			var me = this,
+				sequence = [];
+			
+			Ext.each(
+				seq,
+			    function (item)
+			    {
+				    var btn;
+				    
+				    btn = Ext.ComponentQuery.query(item)[0];
+				    sequence.push(btn);
+			    }
+			);
+			
+			me.sequence = sequence;
 		},
 
 		/**
 		 * Возвращает список однотипных кнопок.
-		 * @param {FBEditor.editor.view.toolbar.button.AbstractButton[]} seq Список однотипных кнопок.
+		 * @return {String[]} seq Список однотипных кнопок.
 		 */
-		getSequence: function (seq)
+		getSequence: function ()
 		{
 			return this.sequence;
+		},
+
+		/**
+		 * Устанавливает связь с панелью.
+		 * @param {FBEditor.editor.view.toolbar.Toolbar} toolbar
+		 */
+		setToolbar: function (toolbar)
+		{
+			this.toolbar = toolbar;
 		},
 
 		/**

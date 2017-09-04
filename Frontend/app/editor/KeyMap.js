@@ -222,24 +222,11 @@ Ext.define(
 				manager = me.manager,
 				name = args.name,
 				editor,
-				toolbar,
-				btn;
+				toolbar;
 
 			editor = manager.getEditor();
 			toolbar = editor.getToolbar();
-			btn = toolbar.getButton(name);
-
-			//console.log(name, toolbar, btn);
-
-			if (btn && !btn.disabled)
-			{
-				if (btn.enableToggle)
-				{
-					btn.toggle();
-				}
-
-				btn.fireEvent('click');
-			}
+			toolbar.callClickButton(name);
 		}
 	}
 );

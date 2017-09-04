@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.InsertRowNextCommand'
 		],
-		id: 'main-editor-button-table-menu-insertRowNext',
+		
 		xtype: 'main-editor-button-table-menu-insertRowNext',
 
 		text: 'Вставить строку ниже',

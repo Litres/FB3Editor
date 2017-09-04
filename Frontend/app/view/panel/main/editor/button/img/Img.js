@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.img.ImgController'
 		],
-		id: 'main-editor-button-img',
+		
 		xtype: 'main-editor-button-img',
 		controller: 'main.editor.button.img',
+		
 		html: '<i class="fa fa-picture-o"></i>',
 		tooltip: 'Изображение (Ctrl+P)',
 		elementName: 'img',

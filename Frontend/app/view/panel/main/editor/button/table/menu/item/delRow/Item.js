@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.DelRowCommand'
 		],
-		id: 'main-editor-button-table-menu-delRow',
+		
 		xtype: 'main-editor-button-table-menu-delRow',
 
 		text: 'Удалить строку',

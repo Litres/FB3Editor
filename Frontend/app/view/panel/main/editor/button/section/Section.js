@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.section.SectionController'
 		],
-		id: 'main-editor-button-section',
+		
 		xtype: 'main-editor-button-section',
 		controller: 'main.editor.button.section',
+		
 		html: '<i class="fa fa-cube"></i>',
 		tooltip: 'Вложенная секция (Ctrl+Shift+S)',
 		elementName: 'section',

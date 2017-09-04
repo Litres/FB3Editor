@@ -20,16 +20,19 @@ Ext.define(
 				// можно ли создать вложенный список
 				if (me.allowInnerList())
 				{
-					btn.enable();
+					me.verifyResult(true);
+					//btn.enable();
 				}
 				else
 				{
-					btn.disable();
+					me.verifyResult(false);
+					//btn.disable();
 				}
 			}
 			else
 			{
-				btn.enable();
+				me.verifyResult(true);
+				//btn.enable();
 			}
 		},
 

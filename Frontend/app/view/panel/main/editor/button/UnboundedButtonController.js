@@ -27,7 +27,8 @@ Ext.define(
 
 			if (!manager.availableSyncButtons())
 			{
-				btn.enable();
+				me.verifyResult(true);
+				//btn.enable();
 				return;
 			}
 			
@@ -35,7 +36,8 @@ Ext.define(
 
 			if (!range)
 			{
-				btn.disable();
+				me.verifyResult(false);
+				//btn.disable();
 				return false;
 			}
 
@@ -45,7 +47,8 @@ Ext.define(
 
 				if (!nodes.common.getElement || nodes.common.getElement().isRoot)
 				{
-					btn.disable();
+					me.verifyResult(false);
+					//btn.disable();
 					return false;
 				}
 
@@ -62,7 +65,8 @@ Ext.define(
 					els.common = nodes.common.getElement();
 					if (els.common.isRoot)
 					{
-						btn.disable();
+						me.verifyResult(false);
+						//btn.disable();
 						return false;
 					}
 				}
@@ -153,7 +157,8 @@ Ext.define(
 
 				if (!nodes.node.getElement || nodes.node.getElement().isRoot)
 				{
-					btn.disable();
+					me.verifyResult(false);
+					//btn.disable();
 					return false;
 				}
 

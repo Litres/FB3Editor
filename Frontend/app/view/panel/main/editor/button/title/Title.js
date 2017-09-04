@@ -12,7 +12,6 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.title.TitleController'
 		],
 
-		id: 'main-editor-button-title',
 		xtype: 'main-editor-button-title',
 		controller: 'main.editor.button.title',
 

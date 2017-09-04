@@ -10,22 +10,30 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.editor.button.UnboundedButtonController',
 		alias: 'controller.main.editor.button.table',
 
-		onClick: function ()
+		onClick: function (button, e)
 		{
-			// ничего не делаем
+			e.stopPropagation();
 		},
 
 		verifyResult: function (enable, scopeData)
 		{
 			var me = this,
 				view = me.getView(),
-				manager = view.getEditorManager(),
-				menu = view.getMenu(),
-				insertTableItem = view.getInsertTable(),
 				nodes = {},
 				els = {},
+				manager,
+				menu,
+				insertTableItem,
 				range;
 
+			if (!view)
+			{
+				return;
+			}
+
+			manager = view.getEditorManager();
+			menu = view.getMenu();
+			insertTableItem = view.getInsertTable();
 			range = manager.getRange();
 			
 			if (!range)

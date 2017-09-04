@@ -36,58 +36,88 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.title.Title',
 			'FBEditor.view.panel.main.editor.button.titlebody.TitleBody',
 			'FBEditor.view.panel.main.editor.button.ul.Ul',
-			'FBEditor.view.panel.main.editor.button.underline.Underline'
+			'FBEditor.view.panel.main.editor.button.underline.Underline',
+			'FBEditor.view.panel.main.editor.toolbar.responsive.button.Button',
+			'FBEditor.view.panel.main.editor.toolbar.ToolbarController'
 		],
 
 		xtype: 'main-editor-toolbar',
+		controller: 'main.editor.toolbar',
 
-		afterRender: function ()
-		{
-			var me = this;
-
-			// формируем кнопки адаптивно
-			me.responsiveButtons();
-
-			me.callParent(arguments);
+		listeners: {
+			resize: 'onResize',
+			syncHiddenButtons: 'onSyncHiddenButtons'
 		},
 
-		createButtons: function ()
+		/**
+		 * @property {Object} Адаптивные размеры, в зависимости от которых, отображается нужное количество кнопок на
+		 * панели.
+		 * Каждый размер предсталвяет собой минимальную ширину панели, при которой на ней помещается определенная
+		 * группа кнопок.
+		 */
+		responsiveSizes: {
+			group1: 440, // помещается только первая группа кнопок (деление на группы условно)
+			group2: 740, // помещается первая и вторая группа кнопок
+			group3: 970, // и т.д.
+			fit: 1260 // все кнопки помещаются
+		},
+
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.editor.toolbar.responsive.button.Button} Адаптивная кнопка.
+		 */
+		responsiveBtn: null,
+
+		/**
+		 * @private
+		 * @property {Number} Текущий адаптивный размер из #responsiveSizes
+		 * Используется для определения необходимости обновления кнопок на панели.
+		 */
+		currentResponsiveSize: null,
+
+		/**
+		 * @private
+		 * @property {Object[]} Список видимых кнопок.
+		 */
+		visibleButtons: null,
+		
+		createSyncButtons: function ()
 		{
 			var me = this;
 
-			me.buttons = [
-				me.down('main-editor-button-notes'),
-				me.down('main-editor-button-notebody'),
-				me.down('main-editor-button-titlebody'),
-				me.down('main-editor-button-section'),
-				me.down('#main-editor-button-title'),
-				me.down('main-editor-button-epigraph'),
-				me.down('main-editor-button-annotation'),
-				me.down('main-editor-button-subscription'),
+			me.syncButtons = [
+				'main-editor-button-notes',
+				'main-editor-button-notebody',
+				'main-editor-button-titlebody',
+				'main-editor-button-section',
+				'main-editor-button-title',
+				'main-editor-button-epigraph',
+				'main-editor-button-annotation',
+				'main-editor-button-subscription',
 				{
 					sequence: [
-						me.down('main-editor-button-div'),
-						me.down('main-editor-button-subtitle'),
-						me.down('main-editor-button-blockquote'),
-						me.down('main-editor-button-pre'),
-						me.down('main-editor-button-poem')
+						'main-editor-button-div',
+						'main-editor-button-subtitle',
+						'main-editor-button-blockquote',
+						'main-editor-button-pre',
+						'main-editor-button-poem'
 					]
 				},
-				me.down('main-editor-button-ul'),
-				me.down('main-editor-button-ol'),
-				me.down('main-editor-button-table'),
-				me.down('main-editor-button-img'),
-				me.down('main-editor-button-a'),
-				me.down('main-editor-button-note'),
-				me.down('main-editor-button-strong'),
-				me.down('main-editor-button-em'),
-				me.down('main-editor-button-underline'),
-				me.down('main-editor-button-strikethrough'),
-				me.down('main-editor-button-spacing'),
-				me.down('main-editor-button-sub'),
-				me.down('main-editor-button-sup'),
-				me.down('main-editor-button-code'),
-				me.down('main-editor-button-span')
+				'main-editor-button-ul',
+				'main-editor-button-ol',
+				'main-editor-button-table',
+				'main-editor-button-img',
+				'main-editor-button-a',
+				'main-editor-button-note',
+				'main-editor-button-strong',
+				'main-editor-button-em',
+				'main-editor-button-underline',
+				'main-editor-button-strikethrough',
+				'main-editor-button-spacing',
+				'main-editor-button-sub',
+				'main-editor-button-sup',
+				'main-editor-button-code',
+				'main-editor-button-span'
 			];
 		},
 
@@ -98,260 +128,323 @@ Ext.define(
 				xtype;
 
 			xtype = 'main-editor-button-' + name;
-			btn = me.down(xtype);
+			btn = Ext.ComponentQuery.query(xtype)[0];
 
 			return btn;
 		},
 
 		/**
-		 * Формирует кнопки на панели адаптивно.
+		 * Выполняте нажатие по кнопке форматирования.
+		 * @param {String} name Имя кнопки.
 		 */
-		responsiveButtons: function ()
+		callClickButton: function (name)
 		{
 			var me = this,
-				bodyWidth = Ext.getBody().getWidth(),
-				maxWidth = 1250,
-				menuButton,
-				items;
+				btn = me.getButton(name);
 
-			console.log(bodyWidth);
-
-			menuButton = me.getMenuButton();
-
-			if (/*bodyWidth > maxWidth*/true)
+			function doClick(button)
 			{
-				items = [
+				if (!button.disabled)
+				{
+					if (button.enableToggle)
 					{
-						xtype: 'main-editor-button-notes'
-					},
-					{
-						xtype: 'main-editor-button-notebody'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-titlebody'
-					},
-					{
-						xtype: 'main-editor-button-section'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-title'
-					},
-					{
-						xtype: 'main-editor-button-epigraph'
-					},
-					{
-						xtype: 'main-editor-button-annotation'
-					},
-					{
-						xtype: 'main-editor-button-subscription'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-div'
-					},
-					{
-						xtype: 'main-editor-button-subtitle'
-					},
-					{
-						xtype: 'main-editor-button-blockquote'
-					},
-					{
-						xtype: 'main-editor-button-pre'
-					},
-					{
-						xtype: 'main-editor-button-poem'
-					},
-					{
-						xtype: 'main-editor-button-ul'
-					},
-					{
-						xtype: 'main-editor-button-ol'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-table'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-img'
-					},
-					{
-						xtype: 'main-editor-button-a'
-					},
-					{
-						xtype: 'main-editor-button-note'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-strong'
-					},
-					{
-						xtype: 'main-editor-button-em'
-					},
-					{
-						xtype: 'main-editor-button-underline'
-					},
-					{
-						xtype: 'main-editor-button-strikethrough'
-					},
-					{
-						xtype: 'main-editor-button-spacing'
-					},
-					{
-						xtype: 'main-editor-button-sub'
-					},
-					{
-						xtype: 'main-editor-button-sup'
-					},
-					{
-						xtype: 'main-editor-button-code'
-					},
-					{
-						xtype: 'main-editor-button-span'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'editor-toggleButton'
+						button.toggle();
 					}
-				];
+
+					button.fireEvent('click');
+				}
+			}
+
+			function afterVerifyResult(button)
+			{
+				// удаляем событие, чтобы не было повтора
+				button.removeListener('afterVerifyResult', afterVerifyResult);
+				
+				// делаем клик по кнопке
+				doClick(button);
+				
+				// удаляем кнопку
+				button.destroy();
+			}
+
+			if (btn)
+			{
+				// клик по кнопке
+				doClick(btn);
 			}
 			else
 			{
-				items = [
-					{
-						xtype: 'main-editor-button-notes'
-					},
-					{
-						xtype: 'main-editor-button-notebody'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-titlebody'
-					},
-					{
-						xtype: 'main-editor-button-section'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-title'
-					},
-					{
-						xtype: 'main-editor-button-epigraph'
-					},
-					{
-						xtype: 'main-editor-button-annotation'
-					},
-					{
-						xtype: 'main-editor-button-subscription'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-div'
-					},
-					{
-						xtype: 'main-editor-button-subtitle'
-					},
-					{
-						xtype: 'main-editor-button-blockquote'
-					},
-					{
-						xtype: 'main-editor-button-pre'
-					},
-					{
-						xtype: 'main-editor-button-poem'
-					},
-					{
-						xtype: 'main-editor-button-ul'
-					},
-					{
-						xtype: 'main-editor-button-ol'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-table'
-					},
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'main-editor-button-img'
-					},
-					{
-						xtype: 'main-editor-button-a'
-					},
-					{
-						xtype: 'main-editor-button-note'
-					},
-					menuButton/*,
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'editor-toggleButton'
-					}*/
-				];
-			}
+				// создаем временную кнопку
+				btn = me.createTempButton(name);
 
-			me.removeAll();
-			me.add(items);
+				// событие вызовется после синхронизации кнопки
+				btn.on('afterVerifyResult',	afterVerifyResult);
+
+				// синхронизируем
+				btn.fireEvent('sync');
+			}
 		},
 
 		/**
-		 * Возвращает адаптивное меню с кнопками.
-		 * @return {Ext.button.Button}
+		 * Создает временную кнопку, которая помто будет удалена.
+		 * @return {FBEditor.editor.view.toolbar.button.AbstractButton} Кнопка.
 		 */
-		getMenuButton: function ()
+		createTempButton: function (name)
+		{
+			var me = this,
+				btn,
+				xtype;
+
+			xtype = 'main-editor-button-' + name;
+			btn = Ext.widget(xtype);
+			btn.setToolbar(me);
+
+			return btn;
+		},
+
+		/**
+		 * Обновляет кнопки на панели.
+		 * При необходимости формирует их положение адаптивно, скрывая непомещающиеся кнопки в адаптивной кнопке.
+		 */
+		updateButtons: function ()
+		{
+			var me = this,
+				visibleButtons;
+
+			if (me.needUpdateButtons())
+			{
+				// получаем кнопки, которые будут отображены на панели
+				visibleButtons = me.getVisibleButtons();
+
+				// удаляем кнопки (в старом расположении)
+				me.removeAll();
+
+				// добавляем кнопки (в новом расположении)
+				me.add(visibleButtons);
+			}
+		},
+
+		/**
+		 * Возвращает скрытые кнопки, которые не поместились на панели.
+		 * @return {Object[]}
+		 */
+		getHiddenButtons: function ()
+		{
+			var me = this,
+				buttons = me.getSyncButtons(),
+				hiddenButtons = [];
+
+			// если кнопка из общего списка не доступна, то значит она сркыта
+			Ext.each(
+				buttons,
+				function (item)
+				{
+					var btn;
+
+					if (Ext.isObject(item) && item.sequence)
+					{
+						Ext.each(
+							item.sequence,
+							function (itemSeq)
+							{
+								btn = Ext.ComponentQuery.query(itemSeq)[0];
+
+								if (!btn || btn.hidden)
+								{
+									if (!btn)
+									{
+										btn = Ext.widget(itemSeq);
+										btn.setToolbar(me);
+									}
+
+									hiddenButtons.push(btn);
+								}
+							}
+						);
+					}
+					else
+					{
+						btn = Ext.ComponentQuery.query(item)[0];
+
+						//console.log('hiddenbtn', Ext.ComponentQuery.query(item));
+						
+						if (!btn || btn.hidden)
+						{
+							if (!btn)
+							{
+								btn = Ext.widget(item);
+								btn.setToolbar(me);
+							}
+
+							hiddenButtons.push(btn);
+						}
+					}
+				}
+			);
+
+			hiddenButtons = hiddenButtons.length ? hiddenButtons : null;
+
+			return hiddenButtons;
+		},
+
+		/**
+		 * Устанавливает связь с адаптивной кнопкой.
+		 * @param {FBEditor.view.panel.main.editor.toolbar.responsive.button.Button} btn
+		 */
+		setResponsiveButton: function (btn)
+		{
+			var me = this;
+
+			me.responsiveBtn = btn;
+		},
+
+		/**
+		 * Возвращает адаптивную кнпоку.
+		 * @return {FBEditor.view.panel.main.editor.toolbar.responsive.button.Button}
+		 */
+		getResponsiveButton: function ()
 		{
 			var me = this,
 				btn;
 
-			btn = {
-				xtype: 'button',
-				html: '<i class="fa fa-angle-double-right"></i>',
-				menu: {
-					plain: true,
-					width: 20,
-					defaults: {
-						width: 20
-					},
-					items: [
+			btn = me.responsiveBtn || Ext.widget('main-editor-toolbar-responsive-button');
+			me.responsiveBtn = btn;
+
+			// устанавливаем связб
+			btn.setToolbar(me);
+
+			return btn;
+		},
+
+		/**
+		 * @private
+		 * Возвращает кнопки, которые помещаются на панели.
+		 * @return {Object[]}
+		 */
+		getVisibleButtons: function ()
+		{
+			var me = this,
+				responsiveSizes = me.responsiveSizes,
+				bodyWidth = Ext.getBody().getWidth(),
+				responsiveBtn,
+				spacer,
+				buttons;
+
+			// сбрасываем текущий сохраненный адаптивный размер
+			me.currentResponsiveSize = null;
+
+			// отступ между группами кнопок на панели
+			spacer = me.getSpacer();
+
+			// кнопки, которые всегда помещаются на панели
+			buttons = [
+				{
+					xtype: 'main-editor-button-notes'
+				},
+				{
+					xtype: 'main-editor-button-notebody'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-titlebody'
+				},
+				{
+					xtype: 'main-editor-button-section'
+				},
+				spacer
+			];
+
+			if (bodyWidth >= responsiveSizes.group1)
+			{
+				// сохраняем текущий адаптивный размер
+				me.currentResponsiveSize = responsiveSizes.group1;
+
+				Ext.Array.push(
+					buttons,
+					[
+						spacer,
+						{
+							xtype: 'main-editor-button-title'
+						},
+						{
+							xtype: 'main-editor-button-epigraph'
+						},
+						{
+							xtype: 'main-editor-button-annotation'
+						},
+						{
+							xtype: 'main-editor-button-subscription'
+						}
+					]
+				);
+			}
+
+			if (bodyWidth >= responsiveSizes.group2)
+			{
+				me.currentResponsiveSize = responsiveSizes.group2;
+
+				Ext.Array.push(
+					buttons,
+				    [
+					    spacer,
+					    {
+						    xtype: 'main-editor-button-div'
+					    },
+					    {
+						    xtype: 'main-editor-button-subtitle'
+					    },
+					    {
+						    xtype: 'main-editor-button-blockquote'
+					    },
+					    {
+						    xtype: 'main-editor-button-pre'
+					    },
+					    {
+						    xtype: 'main-editor-button-poem'
+					    },
+					    {
+						    xtype: 'main-editor-button-ul'
+					    },
+					    {
+						    xtype: 'main-editor-button-ol'
+					    }
+				    ]
+				);
+			}
+
+			if (bodyWidth >= responsiveSizes.group3)
+			{
+				me.currentResponsiveSize = responsiveSizes.group3;
+
+				Ext.Array.push(
+					buttons,
+					[
+						spacer,
+						{
+							xtype: 'main-editor-button-table'
+						},
+						spacer,
+						{
+							xtype: 'main-editor-button-img'
+						},
+						{
+							xtype: 'main-editor-button-a'
+						},
+						{
+							xtype: 'main-editor-button-note'
+						}
+					]
+				);
+			}
+
+			if (bodyWidth >= responsiveSizes.fit)
+			{
+				me.currentResponsiveSize = responsiveSizes.fit;
+
+				Ext.Array.push(
+					buttons,
+					[
+						spacer,
 						{
 							xtype: 'main-editor-button-strong'
 						},
@@ -380,10 +473,72 @@ Ext.define(
 							xtype: 'main-editor-button-span'
 						}
 					]
-				}
+				);
+			}
+			else
+			{
+				// адаптивная кнопка
+				me.setResponsiveButton(null);
+				responsiveBtn = me.getResponsiveButton();
+
+				// последний разделитель делаем растягивающимся, чтобы адаптивная кнопка поместилась в конец панели
+				buttons.push(
+					{
+						xtype: 'tbspacer',
+						flex: 1
+					}
+				);
+
+				// добавляем кнопку
+				buttons.push(responsiveBtn);
+			}
+
+			// сохраняем список видимых кнопок, чтобы в дальнейшем определить списко невидимых
+			me.visibleButtons = buttons;
+
+			return buttons;
+		},
+
+		/**
+		 * @private
+		 * Возвращает отступ между кнопками на панели.
+		 * @return {Object}
+		 */
+		getSpacer: function ()
+		{
+			var me = this,
+				spacer;
+
+			spacer = {
+				xtype: 'tbspacer',
+				width: 20
 			};
 
-			return btn;
+			return spacer;
+		},
+
+		/**
+		 * @private
+		 * Определяет нужно ли обновлять кнопки на панели.
+		 * @return {Boolean}
+		 */
+		needUpdateButtons: function ()
+		{
+			var me = this,
+				responsiveSizes = me.responsiveSizes,
+				bodyWidth = Ext.getBody().getWidth(),
+				currentResponsiveSize = me.currentResponsiveSize,
+				responsiveSize = null,
+				need;
+
+			responsiveSize = bodyWidth >= responsiveSizes.group1 ? responsiveSizes.group1 : responsiveSize;
+			responsiveSize = bodyWidth >= responsiveSizes.group2 ? responsiveSizes.group2 : responsiveSize;
+			responsiveSize = bodyWidth >= responsiveSizes.group3 ? responsiveSizes.group3 : responsiveSize;
+			responsiveSize = bodyWidth >= responsiveSizes.fit ? responsiveSizes.fit : responsiveSize;
+
+			need = responsiveSize !== currentResponsiveSize;
+
+			return need;
 		}
 	}
 );

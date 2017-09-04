@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.subtitle.SubtitleController'
 		],
-		id: 'main-editor-button-subtitle',
+		
 		xtype: 'main-editor-button-subtitle',
 		controller: 'main.editor.button.subtitle',
+		
 		html: '<i class="fa fa-h-square fa-lg"></i>',
 		tooltip: 'Подзаголовок',
 		elementName: 'subtitle'

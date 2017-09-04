@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.DeleteCommand'
 		],
-		id: 'main-editor-button-table-menu-delTable',
+		
 		xtype: 'main-editor-button-table-menu-delTable',
 
 		text: 'Удалить таблицу',

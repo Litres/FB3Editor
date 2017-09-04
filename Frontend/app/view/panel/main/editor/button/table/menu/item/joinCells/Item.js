@@ -12,7 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.table.menu.item.joinCells.ItemController',
 			'FBEditor.editor.command.table.JoinCellsCommand'
 		],
-		id: 'main-editor-button-table-menu-joinCells',
+		
 		xtype: 'main-editor-button-table-menu-joinCells',
 		controller: 'main.editor.button.table.menu.item.joinCells',
 

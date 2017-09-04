@@ -13,7 +13,6 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.table.menu.Menu'
 		],
 
-		id: 'main-editor-button-table',
 		xtype: 'main-editor-button-table',
 		controller: 'main.editor.button.table',
 

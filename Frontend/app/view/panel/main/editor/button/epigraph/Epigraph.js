@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.epigraph.EpigraphController'
 		],
-		id: 'main-editor-button-epigraph',
+		
 		xtype: 'main-editor-button-epigraph',
 		controller: 'main.editor.button.epigraph',
+		
 		html: '<i class="fa fa-pinterest-p"></i>',
 		tooltip: 'Эпиграф (Ctrl+E)',
 		elementName: 'epigraph'

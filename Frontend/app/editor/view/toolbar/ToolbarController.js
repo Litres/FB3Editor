@@ -18,57 +18,81 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				buttons = view.getButtons(),
-				toggleBtn = view.getToggleButton(),
+				buttons = view.getSyncButtons(),
+				//toggleBtn = view.getToggleButton(),
 				editor = view.getEditor(),
 				manager = editor.getManager();
-			
+
 			if (buttons)
 			{
 				Ext.Array.each(
 					buttons,
-					function (btn)
+					function (item)
 					{
-						var firstBtn;
+						var btn;
 
-						if (btn)
+						if (item)
 						{
-							if (btn.sequence)
+							if (Ext.isObject(item) && item.sequence)
 							{
 								if (!manager.availableSyncButtons())
 								{
 									Ext.each(
-										btn.sequence,
-									    function (item)
+										item.sequence,
+									    function (itemSeq)
 									    {
-										    item.fireEvent('sync');
+										    btn = Ext.ComponentQuery.query(itemSeq)[0];
+										    btn && btn.fireEvent('sync');
 									    }
 									);
 								}
 								else
 								{
 									// первая кнопка из однотипной последовательности
-									firstBtn = btn.sequence[0];
+									btn = Ext.ComponentQuery.query(item.sequence[0])[0];
 
-									// устанавливаем последовательность однотипных кнопок для первой кнопки
-									firstBtn.setSequence(btn.sequence.slice(1));
-
-									//console.log('firstBtn', firstBtn);
+									// устанавливаем последовательность однотипных кнопок
+									btn && btn.setSequence(item.sequence.slice(1));
 
 									// синхронизируем
-									firstBtn.fireEvent('sync');
+									btn && btn.fireEvent('sync');
 								}
 							}
 							else
 							{
-								btn.fireEvent('sync');
+								btn = Ext.ComponentQuery.query(item)[0];
+								//console.log('btn', Ext.ComponentQuery.query(item));
+								btn && btn.fireEvent('sync');
 							}
 						}
 					}
 				);
 			}
 
-			toggleBtn.enable();
+			//toggleBtn.enable();
+		},
+
+		/**
+		 * Синхронизирует кнопки на адаптивной панели.
+		 * @param {Object[]} [hiddenButtons] Кнопки на адпитвной панели.
+		 */
+		onSyncHiddenButtons: function (hiddenButtons)
+		{
+			var me = this,
+				view = me.getView();
+
+			hiddenButtons = hiddenButtons || view.getHiddenButtons();
+
+			if (hiddenButtons)
+			{
+				Ext.Array.each(
+					hiddenButtons,
+					function (item)
+					{
+						item.fireEvent('sync');
+					}
+				);
+			}
 		},
 
 		/**
@@ -78,37 +102,41 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				buttons = view.getButtons(),
-				toggleBtn = view.getToggleButton();
+				buttons = view.getSyncButtons()/*,
+				toggleBtn = view.getToggleButton()*/;
 
 			if (buttons)
 			{
 				Ext.Array.each(
 					buttons,
-					function (btn)
+					function (item)
 					{
-						if (btn)
+						var btn;
+						
+						if (item)
 						{
-							if (btn.sequence)
+							if (Ext.isObject(item) && item.sequence)
 							{
 								Ext.Array.each(
-									btn.sequence,
-									function (seqBtn)
+									item.sequence,
+									function (itemSeq)
 									{
-										seqBtn.disable();
+										btn = Ext.ComponentQuery.query(itemSeq)[0];
+										btn && btn.disable();
 									}
 								);
 							}
 							else
 							{
-								btn.disable();
+								btn = Ext.ComponentQuery.query(item)[0];
+								btn && btn.disable();
 							}
 						}
 					}
 				);
 			}
 
-			toggleBtn.disable();
+			//toggleBtn.disable();
 		}
 	}
 );

@@ -12,7 +12,6 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.annotation.AnnotationController'
 		],
 
-		id: 'main-editor-button-annotation',
 		xtype: 'main-editor-button-annotation',
 		controller: 'main.editor.button.annotation',
 

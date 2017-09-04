@@ -12,7 +12,6 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.div.DivController'
 		],
 		
-		id: 'main-editor-button-div',
 		xtype: 'main-editor-button-div',
 		controller: 'main.editor.button.div',
 		

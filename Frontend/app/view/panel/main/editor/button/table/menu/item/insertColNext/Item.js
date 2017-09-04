@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.InsertColNextCommand'
 		],
-		id: 'main-editor-button-table-menu-insertColNext',
+		
 		xtype: 'main-editor-button-table-menu-insertColNext',
 
 		text: 'Вставить столбец справа',

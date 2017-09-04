@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.subscription.SubscriptionController'
 		],
-		id: 'main-editor-button-subscription',
+		
 		xtype: 'main-editor-button-subscription',
 		controller: 'main.editor.button.subscription',
+		
 		html: '<i class="fa fa-thumb-tack"></i>',
 		tooltip: 'Подпись',
 		elementName: 'subscription'

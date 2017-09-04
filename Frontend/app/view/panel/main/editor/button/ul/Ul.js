@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.ul.UlController'
 		],
-		id: 'main-editor-button-ul',
+
 		xtype: 'main-editor-button-ul',
 		controller: 'main.editor.button.ul',
+		
 		html: '<i class="fa fa-list-ul"></i>',
 		tooltip: 'Маркированный список',
 		elementName: 'ul'

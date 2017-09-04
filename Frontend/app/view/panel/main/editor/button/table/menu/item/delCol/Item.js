@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.DelColCommand'
 		],
-		id: 'main-editor-button-table-menu-delCol',
+		
 		xtype: 'main-editor-button-table-menu-delCol',
 
 		text: 'Удалить столбец',

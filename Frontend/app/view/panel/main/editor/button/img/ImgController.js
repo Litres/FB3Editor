@@ -13,7 +13,7 @@ Ext.define(
 			'FBEditor.view.window.img.Create'
 		],
 
-		onClick: function ()
+		onClick: function (button, e)
 		{
 			var me = this,
 				btn = me.getView(),
@@ -21,6 +21,8 @@ Ext.define(
 				win,
 				sel,
 				range;
+
+			e.stopPropagation();
 
 			sel = manager.getSelection();
 

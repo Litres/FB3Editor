@@ -10,12 +10,17 @@ Ext.define(
 		extend: 'Ext.app.ViewController',
 		alias: 'controller.editor.toolbar.button',
 
-		onClick: function ()
+		onClick: function (button, e)
 		{
 			var me = this,
 				btn = me.getView(),
 				manager = btn.getEditorManager();
 
+			if (e)
+			{
+				e.stopPropagation();
+			}
+			
 			manager.createElement(btn.elementName, btn.createOpts);
 		},
 
@@ -29,11 +34,13 @@ Ext.define(
 
 			if (!btn.isActiveSelection())
 			{
-				btn.disable();
+				me.verifyResult(false);
+				//btn.disable();
 			}
 			else
 			{
-				btn.enable();
+				me.verifyResult(true);
+				//btn.enable();
 			}
 		},
 
@@ -77,6 +84,7 @@ Ext.define(
 		/**
 		 * @protected
 		 * Получает результат проверки по схеме.
+		 * @event afterVerifyResult
 		 * @param {Boolean} enable Прошла ли проверка.
 		 * @param {Object} [scopeData]
 		 */
@@ -86,6 +94,12 @@ Ext.define(
 				btn = me.getView(),
 				sequence;
 
+			if (!btn)
+			{
+				// для скрытых кнопок
+				return;
+			}
+			
 			sequence = btn.getSequence();
 
 			/*if (btn.elementName === 'table')
@@ -120,6 +134,10 @@ Ext.define(
 					}
 				);
 			}
+
+			//console.log('verifyResult', btn, me);
+
+			btn.fireEvent('afterVerifyResult', btn, enable);
 		}
 	}
 );

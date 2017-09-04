@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.button.blockquote.BlockquoteController'
 		],
-		id: 'main-editor-button-blockquote',
+		
 		xtype: 'main-editor-button-blockquote',
 		controller: 'main.editor.button.blockquote',
+		
 		html: '<i class="fa fa-quote-right"></i>',
 		tooltip: 'Цитата (Ctrl+Q)',
 		elementName: 'blockquote'

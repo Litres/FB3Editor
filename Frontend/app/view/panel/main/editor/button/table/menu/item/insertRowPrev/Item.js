@@ -11,7 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.command.table.InsertRowPrevCommand'
 		],
-		id: 'main-editor-button-table-menu-insertRowPrev',
+		
 		xtype: 'main-editor-button-table-menu-insertRowPrev',
 
 		text: 'Вставить строку выше',
