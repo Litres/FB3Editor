@@ -30,6 +30,7 @@
     "x2js": "~1.1.7",
     "Blob.js": "eligrey/Blob.js",
     "xmllint": "http://syssgx.github.com/xml.js/js/xmllint.js",
-    "jsdiff": "^2.2.2"
+    "jsdiff": "^2.2.2",
+    "normalize-css": "^7.0.0"
   }
 }

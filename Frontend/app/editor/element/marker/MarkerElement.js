@@ -36,6 +36,7 @@ Ext.define(
 			me.children = [];
 			me.img = Ext.create('FBEditor.editor.element.marker.img.ImgElement', img.attributes);
 			me.img.parent = me;
+
 		},
 
 		getNode: function (viewportId)
@@ -77,15 +78,32 @@ Ext.define(
 
 		setNode: function (node)
 		{
-			var me = this;
+			var me = this,
+				parent = me.parent;
 
 			me.callParent(arguments);
 			
 			node.getElement = function ()
 			{
 				// ссылается на элемент, который содержит маркер
-				return me.parent;
+				return parent;
 			};
+		},
+
+		initCls: function ()
+		{
+			var me = this,
+				parent = me.parent,
+				first = parent.first(),
+				markerCls,
+				nextName;
+
+			// класс маркера
+			nextName = first.getName();
+			markerCls = 'el-marker-' + nextName;
+			me.baseCls = markerCls;
+
+			me.callParent(arguments);
 		}
 	}
 );

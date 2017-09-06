@@ -308,11 +308,16 @@
 .main-editor-viewport .el-marker {
 	padding: 0 0.2em;
 }
+.main-editor-viewport .el-marker-ul,
+.main-editor-viewport .el-marker-ol{
+	padding-top: 20px;
+}
 
 /* элементы следующие за маркером */
 .main-editor-viewport .el-marker ~ * {
 	/*text-indent: 0;*/
 }
+
 
 /* непечатаемый символ новой строки */
 .editor-viewport.mode-unprintsymbols .el-p::after,

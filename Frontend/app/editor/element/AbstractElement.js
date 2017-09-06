@@ -1896,13 +1896,10 @@ Ext.define(
 		initCls: function ()
 		{
 			var me = this,
-				cls = '';
+				baseCls = me.baseCls,
+				cls = me.cls;
 
-			if (me.baseCls || me.cls)
-			{
-				cls = me.baseCls ? me.baseCls : '';
-				cls += cls ? ' ' + me.cls : me.cls;
-			}
+			cls = baseCls && cls.indexOf(baseCls) === -1 ? cls + ' ' + baseCls : cls;
 
 			me.cls = cls;
 		},

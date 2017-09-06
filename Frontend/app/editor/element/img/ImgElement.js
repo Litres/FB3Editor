@@ -88,13 +88,16 @@ Ext.define(
 				attributes,
 				function (key, val)
 				{
-					if (withoutText && Ext.Array.contains(['alt'], key) || key === 'tabindex')
+					if (val)
 					{
-						// пропускаем
-					}
-					else
-					{
-						attr += key + '="' + val + '" ';
+						if (withoutText && Ext.Array.contains(['alt'], key) || key === 'tabindex')
+						{
+							// пропускаем
+						}
+						else
+						{
+							attr += key + '="' + val + '" ';
+						}
 					}
 				}
 			);

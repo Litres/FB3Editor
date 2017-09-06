@@ -191,6 +191,9 @@
      */
     "css": [
         {
+            "path": "bower_components/normalize-css/normalize.css"
+        },
+        {
             "path": "bootstrap.css",
             "bootstrap": true
         },
@@ -252,7 +255,7 @@
      */
     "production": {
         "loader": {
-            "cache": "679",
+            "cache": "680",
             "cacheParam": "_v"
         }
     },
