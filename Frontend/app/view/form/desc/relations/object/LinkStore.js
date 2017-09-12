@@ -75,6 +75,22 @@ Ext.define(
 				name: 'Переиздание'
 			},
 			{
+				value: 'alt_translation',
+				name: 'Другой перевод'
+			},
+			{
+				value: 'alt_translation_and_media',
+				name: 'Другой перевод на другом носителе'
+			},
+			{
+				value: 'alt_translation_compilation',
+				name: 'Сборник (другой перевод)'
+			},
+			{
+				value: 'alt_translation_part',
+				name: 'Часть (другой перевод)'
+			},
+			{
 				value: 'undef',
 				name: 'Не определено'
 			}

@@ -91,6 +91,10 @@ attributeFormDefault="unqualified">\
 		          <enumeration value="sequel" />\
 		          <enumeration value="prequel" />\
 		          <enumeration value="reissue" />\
+		          <enumeration value="alt_translation" />\
+		          <enumeration value="alt_translation_and_media" />\
+		          <enumeration value="alt_translation_compilation" />\
+		          <enumeration value="alt_translation_part" />\
 		          <enumeration value="undef" />\
 	          </restriction>\
           </simpleType>\
