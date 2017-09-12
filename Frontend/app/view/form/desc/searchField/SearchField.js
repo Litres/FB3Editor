@@ -11,20 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.view.form.desc.searchField.SearchFieldController'
 		],
+		
 		controller: 'form.desc.searchField',
 		xtype: 'form-desc-searchField',
-		checkChangeBuffer: 200,
-		plugins: [
-			{
-				ptype: 'fieldCleaner'
-			},
-			{
-				ptype: 'searchField',
-				style: 'margin-left: 258px'
-			}
-		],
-
-		keyEnterAsTab: true,
 
 		listeners: {
 			select: 'onSelect',
@@ -35,6 +24,19 @@ Ext.define(
 				fn: 'onClick'
 			}
 		},
+		
+		plugins: [
+			{
+				ptype: 'fieldCleaner'
+			},
+			{
+				ptype: 'searchField',
+				style: 'margin-left: 258px'
+			}
+		],
+		
+		checkChangeBuffer: 200,
+		keyEnterAsTab: true,
 
 		/**
 		 * @property {Number} Максимальное количество записей хранящихся в локальном хранилище.

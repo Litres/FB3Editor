@@ -16,7 +16,7 @@ Ext.define(
 		
 		xtype: 'form-desc-relations-subject-item',
 		controller: 'form.desc.relations.subject.item',
-		
+
 		cls: 'desc-fieldcontainer',
 		
 		listeners: {

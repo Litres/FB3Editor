@@ -147,6 +147,9 @@
 .form-desc .desc-fieldset-relations-subject .desc-fieldcontainer:nth-child(even) {
 	background-color: #f8f5ff;
 }
+.form-desc-relations-subject-custom-viewer {
+	cursor: pointer;
+}
 
 /* связанные объекты */
 .form-desc .desc-fieldset-relations-object .x-fieldset-header-default {

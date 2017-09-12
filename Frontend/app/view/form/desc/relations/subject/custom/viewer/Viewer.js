@@ -17,7 +17,8 @@ Ext.define(
 
 		xtype: 'form-desc-relations-subject-custom-viewer',
 		controller: 'form.desc.relations.subject.custom.viewer',
-		
+		cls: 'form-desc-relations-subject-custom-viewer',
+
 		listeners: {
 			setTitle: 'onSetTitle',
 			setLink: 'onSetLink',
@@ -28,6 +29,7 @@ Ext.define(
 		},
 
 		layout: 'hbox',
+		height: 20,
 
 		/**
 		 * @private
@@ -73,10 +75,6 @@ Ext.define(
 			];
 
 			me.callParent(arguments);
-		},
-		
-		style: {
-		  'cursor': 'pointer'
 		},
 
 		afterRender: function ()
