@@ -43,8 +43,8 @@ Ext.define(
 						fields: ['value', 'text'],
 						data : [
 							{value: '', text: 'ничего'},
-							{value: 'left', text: 'слева'},
-							{value: 'right', text: 'справа'},
+							{value: 'left', text: 'прижать влево'},
+							{value: 'right', text: 'прижать вправо'},
 							{value: 'center', text: 'по центру'},
 							{value: 'default', text: 'по умолчанию'}
 						]
@@ -56,8 +56,8 @@ Ext.define(
 						fields: ['text'],
 						data : [
 							{value: '', text: 'ничего'},
-							{value: 'left', text: 'слева'},
-							{value: 'right', text: 'справа'},
+							{value: 'left', text: 'влево'},
+							{value: 'right', text: 'вправо'},
 							{value: 'center', text: 'по центру'},
 							{value: 'justify', text: 'по ширине'}
 						]
