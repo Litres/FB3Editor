@@ -82,7 +82,7 @@ Ext.define(
 			attributes.src = me.resource ? me.resource.fileId : 'undefined';
 
 			// в случае загрузки внешних ресурсов
-			attributes.src = me.loadingResId ? 'undefined' : attributes.src;
+			attributes.src = me.loadingResId ? 'undefined' : encodeURI(attributes.src);
 
 			Ext.Object.each(
 				attributes,
