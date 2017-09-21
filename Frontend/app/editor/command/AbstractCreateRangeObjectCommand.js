@@ -1,12 +1,12 @@
 /**
- * Абстрактная команда создания элемента из выделения.
+ * Абстрактная команда создания элемента из выделения с объектом.
  *
  * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.editor.command.AbstractCreateRangeCommand',
+	'FBEditor.editor.command.AbstractCreateRangeObjectCommand',
 	{
 		extend: 'FBEditor.editor.command.AbstractCommand',
 
@@ -32,120 +32,9 @@ Ext.define(
 
 			try
 			{
-				if (data.saveRange)
-				{
-					// восстанваливаем выделение
-					els.node = data.saveRange.startNode.getElement();
-					manager = els.node.getManager();
-					manager.setCursor(data.saveRange);
-				}
-
-				// получаем данные из выделения
-				sel = data.sel || window.getSelection();
-				range = sel.getRangeAt(0);
-
-				nodes.common = range.commonAncestorContainer;
-				els.common = nodes.common.getElement();
-
-				manager = els.common.getManager();
-				manager.setSuspendEvent(true);
-
-				// ищем самый верхниий элемент, который может делиться на несколько
-				while (!els.common.splittable)
-				{
-					nodes.common = nodes.common.parentNode;
-					els.common = nodes.common.getElement();
-
-					if (els.common.isRoot)
-					{
-						return false;
-					}
-				}
-
-				data.viewportId = nodes.common.viewportId;
-				collapsed = range.collapsed;
-
-				offset = {
-					start: range.startOffset,
-					end: range.endOffset
-				};
-
-				joinStartContainer = range.startOffset === 0 ?
-				                     !manager.isFirstNode(nodes.common, range.startContainer) : true;
-
-				joinEndContainer = range.endOffset === range.endContainer.nodeValue.length ?
-				                   !manager.isLastNode(nodes.common, range.endContainer) : true;
-
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					prevParentStart: range.startContainer.parentNode.previousSibling,
-					collapsed: collapsed,
-					offset: offset,
-					joinStartContainer: joinStartContainer,
-					joinEndContainer : joinEndContainer
-				};
-
-				//console.log('range', data.range);
-
-				nodes.startContainer = range.startContainer;
-				nodes.endContainer = range.endContainer;
-
-				// разбиваем конечный узел текущего выделения
-				nodes.container = nodes.endContainer;
-				nodes.endContainer = manager.splitNode(els, nodes, offset.end);
-				els.endContainer = nodes.endContainer.getElement();
-
-				if (els.endContainer.isEmpty() && !els.common.isEmpty() && nodes.endContainer.previousSibling)
-				{
-					// удаляем пустой последний контейнер
-					//console.log('удален пустой узел после разделения');
-					nodes.prev = nodes.endContainer.previousSibling;
-
-					els.common.remove(els.endContainer);
-					nodes.common.removeChild(nodes.endContainer);
-
-					nodes.endContainer = nodes.prev;
-					nodes.endContainer = joinEndContainer ? nodes.endContainer.previousSibling : nodes.endContainer;
-				}
-
-				// начальный узел текущего выделения
-				if (collapsed)
-				{
-					nodes.startContainer = nodes.endContainer;
-				}
-				else
-				{
-					// разбиваем начальный узел текущего выделения
-					nodes.container = nodes.startContainer;
-					nodes.startContainer = manager.splitNode(els, nodes, offset.start);
-				}
-
-				//console.log('nodes', nodes, data.range);
-
-				els.startContainer = nodes.startContainer.getElement();
-				nodes.endContainer = nodes.endContainer.parentNode ? nodes.endContainer : nodes.startContainer;
-				els.endContainer = nodes.endContainer.getElement();
-
-				// создаем новый элемент
-				me.createNewElement(els, nodes);
-
-				// синхронизируем
-				els.common.sync(data.viewportId);
-
-				// устанавливаем курсор
-				manager.setCursor(
-					{
-						startNode: nodes.node.firstChild
-					}
-				);
-
-				// сохраянем узлы
-				data.saveNodes = nodes;
-
-				// проверяем по схеме
-				me.verifyElement(els.parent);
+				console.log('AbstractCreateRangeObjectCommand', data);
+				
+				return false;
 
 				res = true;
 			}
@@ -156,6 +45,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 

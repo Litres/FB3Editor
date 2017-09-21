@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.editor.command.div.SplitCommand',
 			'FBEditor.editor.command.div.CreateCommand',
 			'FBEditor.editor.command.div.CreateRangeCommand',
+			'FBEditor.editor.command.div.CreateRangeObjectCommand',
 			'FBEditor.editor.element.div.DivElementController'
 		],
 

@@ -288,8 +288,8 @@ Ext.define(
 				if (nodes.empty && els.endContainer.isEmpty())
 				{
 					// удаляем пустой контейнер
-					els.common.remove(els.endContainer);
-					nodes.common.removeChild(nodes.endContainer);
+					els.common.remove(els.endContainer, viewportId);
+					//nodes.common.removeChild(nodes.endContainer);
 				}
 
 				// синхронизируем

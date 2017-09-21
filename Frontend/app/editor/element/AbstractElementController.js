@@ -35,12 +35,22 @@ Ext.define(
 		onCreateElement: function (sel, opts)
 		{
 			var me = this,
-				el,
+				nodes = {},
+				els = {},
+				isCreateRange,
 				cmd,
-				name,
-				node;
+				name;
 
-			if (sel && !sel.getRangeAt(0).collapsed && me.createFromRange)
+			//console.log('sel', sel);
+
+			// фокусный элемент
+			nodes.focus = sel ? sel.focusNode : null;
+			els.focus = nodes.focus ? nodes.focus.getElement() : null;
+
+			// создавать ли элемент из выделения
+			isCreateRange = els.focus && me.createFromRange && (!sel.getRangeAt(0).collapsed || els.focus.isImg);
+
+			if (isCreateRange)
 			{
 				// создаем элемент из выделения
 				me.createRangeElement(sel, opts);
@@ -49,19 +59,19 @@ Ext.define(
 			{
 				//console.log(sel, opts);
 				// получаем узел из выделения и одновременно проверяем элемент по схеме
-				node = me.getNodeVerify(sel, opts);
+				nodes.node = me.getNodeVerify(sel, opts);
 
-				if (node)
+				if (nodes.node)
 				{
 					// если элемент прошел проверку, то создаем его
 					name = me.getNameElement();
 					cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateCommand',
-					                 {node: node, sel: sel, opts: opts});
+					                 {node: nodes.node, sel: sel, opts: opts});
 
 					if (cmd.execute())
 					{
-						el = node.getElement();
-						me.getHistory(el).add(cmd);
+						els.el = nodes.node.getElement();
+						me.getHistory(els.el).add(cmd);
 					}
 				}
 			}
@@ -75,21 +85,36 @@ Ext.define(
 		createRangeElement: function (sel, opts)
 		{
 			var me = this,
-				el,
+				nodes = {},
+				els = {},
+				commandName,
 				name,
 				cmd;
+
+			opts = opts || {};
 
 			// проверяем элемент по схеме
 			if (me.checkRangeVerify(sel))
 			{
 				// если элемент прошел проверку, то создаем его
+
+				// фокусный элемент
+				nodes.focus = sel ? sel.focusNode : null;
+				els.focus = nodes.focus ? nodes.focus.getElement() : null;
+				opts.focus = nodes.focus;
+
+				// название команды
 				name = me.getNameElement();
-				cmd = Ext.create('FBEditor.editor.command.' + name + '.CreateRangeCommand', {sel: sel, opts: opts});
+				commandName = els.focus.isImg ? 'CreateRangeObjectCommand' : 'CreateRangeCommand';
+				commandName = 'FBEditor.editor.command.' + name + '.' + commandName;
+
+				// создаем команду
+				cmd = Ext.create(commandName, {sel: sel, opts: opts});
 
 				if (cmd.execute())
 				{
-					el = sel.getRangeAt(0).startContainer.getElement();
-					me.getHistory(el).add(cmd);
+					els.el = sel.getRangeAt(0).startContainer.getElement();
+					me.getHistory(els.el).add(cmd);
 				}
 			}
 		},

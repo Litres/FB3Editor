@@ -42,9 +42,33 @@ Ext.define(
 		onFocus: function (e)
 		{
 			var me = this,
-				sel = window.getSelection();
+				el = me.getElement(),
+				sel = window.getSelection(),
+				nodes = {},
+				els = {},
+				viewportId,
+				helper;
 
-			sel.removeAllRanges();
+			// текущий фокусный элемент в выделении
+			nodes.focus = sel.focusNode;
+			els.focus = nodes.focus.getElement();
+			viewportId = nodes.focus.viewportId;
+
+			if (!els.focus.isImg)
+			{
+				// снимаем выделение в тексте, чтобы не было одновременно двух выделений
+				sel.removeAllRanges();
+
+				helper = el.getNodeHelper();
+				nodes.focus = helper.getNode(viewportId);
+
+				// устанвливаем в качестве выделения текущее изображение
+				sel.collapse(nodes.focus, 0);
+
+				// восстанавливаем фокус на изображении
+				nodes.focus.focus();
+			}
+
 			me.callParent(arguments);
 		},
 
