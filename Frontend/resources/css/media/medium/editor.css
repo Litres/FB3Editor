@@ -1,7 +1,7 @@
 @media (min-width: 376px) and (max-width: 1024px)
 {
 	.main-editor-viewport {
-		font-size: 260%;
+		/*font-size: 260%;*/
 		line-height: 130%;
 	}
 
