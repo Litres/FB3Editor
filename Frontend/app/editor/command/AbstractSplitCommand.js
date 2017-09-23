@@ -27,6 +27,7 @@ Ext.define(
 				offset = {},
 				sel = window.getSelection(),
 				factory = FBEditor.editor.Factory,
+				viewportId,
 				manager,
 				range,
 				joinStartContainer,
@@ -44,6 +45,8 @@ Ext.define(
 
 				// получаем данные выделения
 				range = sel.getRangeAt(0);
+
+				console.log('split', me.elementName);
 
 				if (!data.node)
 				{
@@ -64,7 +67,7 @@ Ext.define(
 				//console.log('data.node', data.node);
 
 				nodes.prevNode = data.node;
-				data.viewportId = nodes.prevNode.viewportId;
+				viewportId = data.viewportId = nodes.prevNode.viewportId;
 				els.prevNode = nodes.prevNode.getElement();
 
 				manager = els.prevNode.getManager();
@@ -130,14 +133,27 @@ Ext.define(
 				nodes.endContainer = manager.splitNode(els, nodes, offset.end);
 				els.endContainer = nodes.endContainer.getElement();
 
+				if (els.endContainer.isEmpty() && !els.common.isEmpty() && nodes.endContainer.nextSibling)
+				{
+					// удаляем пустой последний контейнер
+					//console.log('удален пустой узел после разделения');
+					nodes.next = nodes.endContainer.nextSibling;
+
+					els.common.remove(els.endContainer, viewportId);
+
+					nodes.endContainer = nodes.next;
+					els.endContainer = nodes.endContainer.getElement();
+					//nodes.endContainer = joinEndContainer ? nodes.endContainer.previousSibling : nodes.endContainer;
+				}
+
 				if (els.endContainer.isEmpty() && !els.common.isEmpty())
 				{
 					// вставляем пустой элемент
 					//console.log('вставлен пустой элемент');
 					els.empty = manager.createEmptyElement();
-					nodes.empty = els.empty.getNode(data.viewportId);
-					els.endContainer.add(els.empty);
-					nodes.endContainer.appendChild(nodes.empty);
+					//nodes.empty = els.empty.getNode(viewportId);
+					els.endContainer.add(els.empty, viewportId);
+					//nodes.endContainer.appendChild(nodes.empty);
 				}
 
 				//console.log('nodes', nodes, els);
@@ -163,19 +179,22 @@ Ext.define(
 				// вставляем новый элемент
 				nodes.parent = nodes.prevNode.parentNode;
 				els.parent = nodes.parent.getElement();
-				nodes.next = nodes.prevNode.nextSibling;
-				nodes.nextPrevNode = nodes.next;
-				nodes.node = els.node.getNode(data.viewportId);
-				if (nodes.next)
+				//nodes.next = nodes.prevNode.nextSibling;
+				els.next = els.prevNode.next();
+				//nodes.nextPrevNode = nodes.next;
+				els.nextPrevNode = els.next;
+				nodes.node = els.node.getNode(viewportId);
+
+				if (els.next)
 				{
-					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.node, els.next);
-					nodes.parent.insertBefore(nodes.node, nodes.next);
+					//els.next = nodes.next.getElement();
+					els.parent.insertBefore(els.node, els.next, viewportId);
+					//nodes.parent.insertBefore(nodes.node, nodes.next);
 				}
 				else
 				{
-					els.parent.add(els.node);
-					nodes.parent.appendChild(nodes.node);
+					els.parent.add(els.node, viewportId);
+					//nodes.parent.appendChild(nodes.node);
 				}
 
 				// заполняем новый элемент
@@ -185,7 +204,7 @@ Ext.define(
 				me.moveToCreateElement(nodes, els);
 
 				// синхронизируем
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				//console.log('nodes', nodes);
 
@@ -331,6 +350,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 
@@ -383,11 +403,13 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				factory = FBEditor.editor.Factory;
+				factory = FBEditor.editor.Factory,
+				viewportId;
 
 			// переносим элементы, которые находятся в текущем выделении, из старого элемента в новый
 			if (!data.range.collapsed)
 			{
+				viewportId = data.viewportId;
 				nodes.next = nodes.startContainer;
 				els.next = nodes.next ? nodes.next.getElement() : null;
 				nodes.parentNext = nodes.next.parentNode;
@@ -397,8 +419,8 @@ Ext.define(
 				{
 					nodes.buf = nodes.next.nextSibling;
 
-					els.node.add(els.next);
-					nodes.node.appendChild(nodes.next);
+					els.node.add(els.next, viewportId);
+					//nodes.node.appendChild(nodes.next);
 					//els.parentNext.remove(els.next);
 
 					nodes.next = nodes.buf;
@@ -408,18 +430,18 @@ Ext.define(
 				// создаем новый блок
 
 				els.node = factory.createElement(me.elementName);
-				nodes.node = els.node.getNode(data.viewportId);
+				//nodes.node = els.node.getNode(viewportId);
 
-				if (nodes.nextPrevNode)
+				if (els.nextPrevNode)
 				{
-					els.nextPrevNode = nodes.nextPrevNode.getElement();
-					els.parent.insertBefore(els.node, els.nextPrevNode);
-					nodes.parent.insertBefore(nodes.node, nodes.nextPrevNode);
+					//els.nextPrevNode = nodes.nextPrevNode.getElement();
+					els.parent.insertBefore(els.node, els.nextPrevNode, viewportId);
+					//nodes.parent.insertBefore(nodes.node, nodes.nextPrevNode);
 				}
 				else
 				{
-					els.parent.add(els.node);
-					nodes.parent.appendChild(nodes.node);
+					els.parent.add(els.node, viewportId);
+					//nodes.parent.appendChild(nodes.node);
 				}
 			}
 		},
@@ -433,33 +455,39 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId,
 				manager;
 
+			viewportId = data.viewportId;
 			els.node = nodes.node.getElement();
-			nodes.next = nodes.endContainer;
-			nodes.parentNext = nodes.next.parentNode ? nodes.next.parentNode : null;
-			els.parentNext = nodes.parentNext ? nodes.parentNext.getElement() : null;
+			//nodes.next = nodes.endContainer;
+			els.next = els.endContainer;
+			//nodes.parentNext = nodes.next.parentNode ? nodes.next.parentNode : null;
+			//els.parentNext = nodes.parentNext ? nodes.parentNext.getElement() : null;
+			els.parentNext = els.next.next() ? els.next.next().parent : null;
 
-			while (nodes.next)
+			while (els.next)
 			{
-				nodes.buf = nodes.next.nextSibling;
-				els.next = nodes.next.getElement();
+				//nodes.buf = nodes.next.nextSibling;
+				els.buf = els.next.next();
+				//els.next = nodes.next.getElement();
 
-				els.node.add(els.next);
-				nodes.node.appendChild(nodes.next);
+				els.node.add(els.next, viewportId);
+				//nodes.node.appendChild(nodes.next);
 				//els.parentNext.remove(els.next);
 
-				nodes.next = nodes.buf;
+				//nodes.next = nodes.buf;
+				els.next = els.buf;
 			}
 
-			if (!nodes.parentNext.firstChild)
+			if (els.parentNext && !els.parentNext.first()/*nodes.parentNext.firstChild*/)
 			{
 				// добавляем пустой параграф в старый элемент
 
 				manager = els.node.getManager();
 				els.p = manager.createEmptyP();
-				els.parentNext.add(els.p);
-				nodes.parentNext.appendChild(els.p.getNode(data.viewportId));
+				els.parentNext.add(els.p, viewportId);
+				//nodes.parentNext.appendChild(els.p.getNode(data.viewportId));
 			}
 		}
 	}
