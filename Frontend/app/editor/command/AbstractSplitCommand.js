@@ -78,11 +78,20 @@ Ext.define(
 					end: range.endOffset
 				};
 
+				nodes.startContainer = range.startContainer;
+				nodes.endContainer = range.endContainer;
+				els.startContainer = nodes.startContainer.getElement();
+				els.endContainer = nodes.endContainer.getElement();
+
 				// необходимо ли после операции undo соединять узлы
 				joinStartContainer = range.startOffset === 0 ?
 				                     !manager.isFirstNode(data.node, range.startContainer) : true;
-				joinEndContainer = range.endOffset === range.endContainer.nodeValue.length ?
-				                   !manager.isLastNode(data.node, range.endContainer) : true;
+
+				joinEndContainer = els.startContainer.equal(els.endContainer) && range.collapsed ? false : true;
+				joinEndContainer = range.startOffset === 0 ||
+				                   range.endOffset === range.endContainer.nodeValue.length ?
+				                   !manager.isLastNode(data.node, range.endContainer) : joinEndContainer;
+
 				data.range = {
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
@@ -95,11 +104,6 @@ Ext.define(
 				};
 
 				//console.log('range', data.range);
-
-				nodes.startContainer = range.startContainer;
-				nodes.endContainer = range.endContainer;
-				els.startContainer = nodes.startContainer.getElement();
-				els.endContainer = nodes.endContainer.getElement();
 
 				if (!range.collapsed)
 				{
@@ -285,6 +289,7 @@ Ext.define(
 				me.restoreElement(nodes, els, range);
 
 				nodes.first = nodes.node.firstChild;
+
 				if (nodes.first)
 				{
 					me.moveNodes(nodes, els);
@@ -299,6 +304,7 @@ Ext.define(
 				{
 					manager.joinNode(nodes.startContainer);
 				}
+
 				if (range.joinEndContainer)
 				{
 					manager.joinNode(nodes.endContainer);
