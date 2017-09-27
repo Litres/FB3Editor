@@ -14,6 +14,7 @@ Ext.define(
 				'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />' +
 				'<Default Extension="png" ContentType="image/png"/>' +
 				'<Default Extension="jpg" ContentType="image/jpeg"/>' +
+				'<Default Extension="jpeg" ContentType="image/jpeg"/>' +
 				'<Default Extension="gif" ContentType="image/gif"/>' +
 				'<Default Extension="svg" ContentType="image/svg+xml"/>' +
 				'<Default Extension="xml" ContentType="application/xml"/>' +
