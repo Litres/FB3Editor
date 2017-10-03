@@ -147,7 +147,6 @@ Ext.define(
 
 					nodes.endContainer = nodes.next;
 					els.endContainer = nodes.endContainer.getElement();
-					//nodes.endContainer = joinEndContainer ? nodes.endContainer.previousSibling : nodes.endContainer;
 				}
 
 				if (els.endContainer.isEmpty() && !els.common.isEmpty())
@@ -155,9 +154,7 @@ Ext.define(
 					// вставляем пустой элемент
 					//console.log('вставлен пустой элемент');
 					els.empty = manager.createEmptyElement();
-					//nodes.empty = els.empty.getNode(viewportId);
 					els.endContainer.add(els.empty, viewportId);
-					//nodes.endContainer.appendChild(nodes.empty);
 				}
 
 				//console.log('nodes', nodes, els);

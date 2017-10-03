@@ -18,71 +18,60 @@ Ext.define(
 				opts = data.opts || {},
 				range = data.range,
 				factory = FBEditor.editor.Factory,
+				viewportId,
 				manager;
 
+			viewportId = data.viewportId;
 			manager = els.node.getManager();
-
-			els.node = factory.createElement(me.elementName);
+			els.newNode = factory.createElement(me.elementName);
 
 			if (opts.body)
 			{
 				// заголовок для всей книги
 				els.parent = manager.getContent();
-				nodes.parent = els.parent.nodes[data.viewportId];
 			}
 			else
 			{
-				nodes.parent = nodes.node.parentNode;
-				nodes.node = nodes.parent.getElement().hisName(els.node.getName()) ? nodes.parent : nodes.node;
-				nodes.parent = nodes.node.parentNode;
+				els.parent = nodes.node.getElement().parent;
+				els.node = els.parent.hisName(me.elementName) ? els.parent : els.node;
+				els.parent = els.node.parent;
 			}
-
-			nodes.first = nodes.parent.firstChild;
-			els.parent = nodes.parent.getElement();
 
 			if (range.collapsed)
 			{
 				// содержимое по умолчанию
 				els.p = factory.createElement('p');
 				els.t = factory.createElementText('Заголовок');
-				els.p.add(els.t);
-				els.node.add(els.p);
+				els.p.add(els.t, viewportId);
 			}
 
-			nodes.node = els.node.getNode(data.viewportId);
+            els.first = els.parent.first();
 
-			if (nodes.first)
+            if (els.first)
 			{
-				els.first = nodes.first.getElement();
-				els.parent.insertBefore(els.node, els.first);
-				nodes.parent.insertBefore(nodes.node, nodes.first);
+				els.parent.insertBefore(els.newNode, els.first, viewportId);
 			}
 			else
 			{
-				els.parent.add(els.node);
-				nodes.parent.appendChild(nodes.node);
+				els.parent.add(els.newNode, viewportId);
 			}
 
 			if (!range.collapsed)
 			{
-				// переносим выделенный параграф в заголовок
+				// переносим выделенный абзац в заголовок
 
 				nodes.p = range.start;
 				els.p = nodes.p.getElement();
-				els.isRoot = els.p.isRoot;
-				while (els.p && !els.p.isP)
-				{
-					nodes.p = els.isRoot ? nodes.p.firstChild : nodes.p.parentNode;
-					els.p = nodes.p ? nodes.p.getElement() : null;
-				}
+				els.p = els.p.getStyleHolder();
 
-				nodes.next = nodes.p.nextSibling;
+				// для undo
+				els.next = els.p.next();
 
-				els.node.add(els.p);
-				nodes.node.appendChild(nodes.p);
+				els.newNode.add(els.p, viewportId);
 			}
 
 			me.data.nodes = nodes;
+            me.data.els = els;
 		},
 
 		unExecute: function ()
@@ -92,6 +81,8 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				helper,
+				viewportId,
 				manager,
 				range;
 
@@ -104,35 +95,32 @@ Ext.define(
 					return me.callParent(arguments);
 				}
 
+				viewportId = data.viewportId;
 				nodes = data.nodes;
-				els.node = nodes.node.getElement();
-				els.parent = nodes.parent.getElement();
-				els.p = nodes.p.getElement();
-
+                els = data.els;
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				// возвращаем параграф на старое место из элемента
-				if (nodes.next)
+				if (els.next)
 				{
-					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.p, els.next);
-					nodes.parent.insertBefore(nodes.p, nodes.next);
+					els.oldParent = els.next.parent;
+					els.oldParent.insertBefore(els.p, els.next, viewportId);
 				}
 				else
 				{
-					els.parent.add(els.p);
-					nodes.parent.appendChild(nodes.p);
+					els.parent.add(els.p, viewportId);
 				}
 
 				// удаляем элемент
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.newNode, viewportId);
 
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
-				nodes.cursor = manager.getDeepLast(nodes.p);
+				els.cursor = els.p.getDeepLast(els.p);
+				helper = els.cursor.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 				data.saveRange = {
 					startNode: nodes.cursor,
 					startOffset: 0,
@@ -150,6 +138,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}
