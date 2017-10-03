@@ -37,37 +37,82 @@ Ext.define(
 				els.parent = els.node.parent;
 			}
 
-			if (range.collapsed)
-			{
-				// содержимое по умолчанию
-				els.p = factory.createElement('p');
-				els.t = factory.createElementText('Заголовок');
-				els.p.add(els.t, viewportId);
-			}
-
             els.first = els.parent.first();
 
-            if (els.first)
+            // находим выделенный абзац
+            nodes.p = range.start;
+            els.p = nodes.p.getElement();
+            els.p = els.p.getStyleHolder();
+
+            if (range.collapsed)
 			{
-				els.parent.insertBefore(els.newNode, els.first, viewportId);
-			}
+                // содержимое по умолчанию
+                els = Ext.apply(els, els.newNode.createScaffold());
+
+                if (els.first)
+                {
+                    els.parent.insertBefore(els.newNode, els.first, viewportId);
+                }
+                else
+                {
+                    els.parent.add(els.newNode, viewportId);
+                }
+            }
 			else
 			{
-				els.parent.add(els.newNode, viewportId);
-			}
+                if (!opts.body && !els.p.isFirst())
+                {
+                    // добавляем секцию, после текущей
 
-			if (!range.collapsed)
-			{
-				// переносим выделенный абзац в заголовок
+					// текущая секция
+					els.section = els.p.getParentName('section');
+					els.sectionParent = els.section.parent;
 
-				nodes.p = range.start;
-				els.p = nodes.p.getElement();
-				els.p = els.p.getStyleHolder();
+					// новая секция
+					els.newSection = factory.createElement('section');
 
-				// для undo
-				els.next = els.p.next();
+					if (els.section.next())
+					{
+						els.sectionNext = els.section.next();
+                        els.sectionParent.insertBefore(els.sectionNext, els.newSection, viewportId);
+					}
+					else
+					{
+						els.sectionParent.add(els.newSection, viewportId);
+					}
 
-				els.newNode.add(els.p, viewportId);
+					// добавляем заголовок в новую секцию
+                    els.newSection.add(els.newNode, viewportId);
+
+                    if (!els.p.next())
+                    {
+                        // добавляем пустой абзац после заголовка, чтобы соответствовать схеме
+                        els.emptyP = manager.createEmptyP();
+                        els.newSection.add(els.emptyP, viewportId);
+                    }
+
+					// переносим элементы в новую секцию
+
+					els.next = els.p;
+
+                    while (els.next)
+                    {
+                    	els.buf = els.next.next();
+                        els.newSection.add(els.next, viewportId);
+                        els.next = els.buf;
+                    }
+                }
+                else
+				{
+                    // для undo
+                    els.next = els.p.next();
+                    els.oldParent = els.p.parent;
+
+                    els.parent.insertBefore(els.newNode, els.first, viewportId);
+				}
+
+                // переносим выделенный абзац в заголовок
+                els.newNode.add(els.p, viewportId);
 			}
 
 			me.data.nodes = nodes;
@@ -89,19 +134,22 @@ Ext.define(
 			try
 			{
 				range = data.range;
+                nodes = data.nodes;
+                els = data.els;
+                viewportId = data.viewportId;
 
 				if (range.collapsed)
 				{
+					helper = els.newNode.getNodeHelper();
+                    data.saveNode = helper.getNode(viewportId);
+
 					return me.callParent(arguments);
 				}
 
-				viewportId = data.viewportId;
-				nodes = data.nodes;
-                els = data.els;
-				manager = els.node.getManager();
+				manager = els.p.getManager();
 				manager.setSuspendEvent(true);
 
-				// возвращаем параграф на старое место из элемента
+				// возвращаем абзац на старое место из заголовка
 				if (els.next)
 				{
 					els.oldParent = els.next.parent;
@@ -109,11 +157,34 @@ Ext.define(
 				}
 				else
 				{
-					els.parent.add(els.p, viewportId);
+                    els.oldParent = els.oldParent ? els.oldParent : els.parent;
+					els.oldParent.add(els.p, viewportId);
 				}
 
-				// удаляем элемент
-				els.parent.remove(els.newNode, viewportId);
+				if (els.newSection)
+				{
+					if (!els.emptyP)
+					{
+						// переносим элементы в старую секцию
+
+						els.next = els.newNode.next();
+
+						while (els.next)
+						{
+							els.buf = els.next.next();
+                            els.section.add(els.next, viewportId);
+                            els.next = els.buf;
+						}
+					}
+
+					// удаляем новую секцию
+					els.sectionParent.remove(els.newSection, viewportId);
+				}
+				else
+				{
+                    // удаляем элемент
+                    els.parent.remove(els.newNode, viewportId);
+				}
 
 				els.parent.sync(viewportId);
 
