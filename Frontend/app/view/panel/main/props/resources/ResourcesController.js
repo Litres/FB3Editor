@@ -42,6 +42,7 @@ Ext.define(
 				bridgeProps.Ext.getCmp('props-resources-info').update(data);
 				me.setResourceButtons(data.name);
 				me.setVisibleItems(true);
+
 				if (data.isFolder)
 				{
 					// папки не могут иметь кнопку сохранения и пермещения

@@ -18,17 +18,21 @@ Ext.define(
 			'FBEditor.view.panel.resources.tpl.ListResource',
 			'FBEditor.view.panel.resources.tpl.TableResource'
 		],
+
 		xtype: 'view-resources',
 		id: 'view-resources',
 		controller: 'view.resources',
+
+        listeners: {
+            focuschange: 'onFocusChange',
+            itemdblclick: 'onItemDblClick',
+            itemclick: 'onItemClick',
+			itemkeydown: 'onItemKeyDown'
+        },
+
 		itemSelector: 'div.resource-thumb-wrap',
 		emptyText: 'Нет доступных ресурсов',
 		deferEmptyText: false,
-		listeners: {
-			focuschange: 'onFocusChange',
-			itemdblclick: 'onItemDblClick',
-			itemclick: 'onItemClick'
-		},
 
 		/**
 		 * @property {Object} Типы шаблонов отображения.
@@ -46,6 +50,12 @@ Ext.define(
 		 * @property {String} Тип шаблона по умолчанию.
 		 */
 		tplDefaultType: 'great',
+
+        /**
+		 * @private
+		 * @property {FBEditor.view.panel.resources.Resources} Панель ресурсов.
+         */
+        panelResources: null,
 
 		initComponent: function ()
 		{
@@ -99,6 +109,21 @@ Ext.define(
 			tplName = 'FBEditor.view.panel.resources.tpl.' + tplName;
 
 			return tplName;
+		},
+
+        /**
+		 * Возвращает панель ресурсов.
+         * @return {FBEditor.view.panel.resources.Resources}
+         */
+        getPanelResources: function ()
+		{
+			var me = this,
+				panelResources = me.panelResources;
+
+            panelResources = panelResources || me.up('panel-resources');
+            me.panelResources = panelResources;
+
+			return panelResources;
 		}
 	}
 );

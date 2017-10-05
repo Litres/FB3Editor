@@ -8,6 +8,19 @@ Ext.define(
 	'FBEditor.view.button.AbstractOperationResource',
 	{
 		extend: 'Ext.button.Button',
+		requires: [
+			'FBEditor.view.button.AbstractOperationResourceController'
+		],
+
+		controller: 'button.operation.resource',
+
+		listeners: {
+			click: {
+				el: 'body',
+				fn: 'onClick'
+			}
+		},
+
 		width: '100%',
 
 		/**
@@ -20,19 +33,6 @@ Ext.define(
 		 * @property {String} Имя ресурса.
 		 */
 		nameResource: null,
-
-		handler:  function ()
-		{
-			var me = this,
-				cmdClass = me.cmdClass,
-				cmd;
-
-			cmd = Ext.create(cmdClass, {nameResource: me.nameResource});
-			if (cmd && cmd.execute())
-			{
-				FBEditor.HistoryCommand.add(cmd);
-			}
-		},
 
 		/**
 		 * Устанавливает имя ресурса.

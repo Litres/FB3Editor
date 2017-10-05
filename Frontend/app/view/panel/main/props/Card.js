@@ -14,15 +14,18 @@ Ext.define(
 			'FBEditor.view.panel.main.props.resources.Resources',
 			'FBEditor.view.panel.main.props.body.Body'
 		],
+
 		id: 'panel-main-props-card',
 		xtype: 'panel-main-props-card',
 		controller: 'panel.main.props.card',
+
+        listeners: {
+            activePanelResources: 'onActivePanelResources',
+            activePanelDesc: 'onActivePanelDesc',
+            activePanelBody: 'onActivePanelBody'
+        },
+
 		layout: 'card',
-		listeners: {
-			activePanelResources: 'onActivePanelResources',
-			activePanelDesc: 'onActivePanelDesc',
-			activePanelBody: 'onActivePanelBody'
-		},
 
 		initComponent: function ()
 		{
@@ -39,6 +42,7 @@ Ext.define(
 					xtype: 'panel-props-body'
 				}
 			];
+
 			me.callParent(arguments);
 		}
 	}

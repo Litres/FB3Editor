@@ -11,8 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.command.DeleteResource'
 		],
+
 		id: 'button-delete-resource',
 		xtype: 'button-delete-resource',
+
 		text: 'Удалить',
 		cmdClass: 'FBEditor.command.DeleteResource'
 	}

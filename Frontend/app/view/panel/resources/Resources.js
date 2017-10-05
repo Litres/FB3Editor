@@ -13,9 +13,11 @@ Ext.define(
 			'FBEditor.view.panel.resources.view.ResourcesView',
 			'FBEditor.view.panel.resources.control.Control'
 		],
+
 		id: 'panel-resources',
 		xtype: 'panel-resources',
 		controller: 'panel.resources',
+
 		autoScroll: true,
 		bodyPadding: 5,
 
@@ -31,7 +33,23 @@ Ext.define(
 					xtype: 'view-resources'
 				}
 			];
+
 			me.callParent(arguments);
+		},
+
+        /**
+		 * Возвращает кнопку удаления ресурса.
+         * @return {FBEditor.view.button.DeleteResource}
+         */
+		getButtonDeleteResource: function ()
+		{
+			var me = this,
+				bridgeProps = FBEditor.getBridgeProps(),
+				btn;
+
+			btn = bridgeProps.Ext.getCmp('button-delete-resource');
+
+			return btn;
 		}
 	}
 );

@@ -772,6 +772,7 @@ Ext.define(
 				}
 			}
 
+            me.updatePanelResources();
 			me.generateFolders();
 			me.sortData();
 			me.updateNavigation();
@@ -1379,6 +1380,20 @@ Ext.define(
 				    me
 				);
 			}
+		},
+
+        /**
+		 * Обновляет панель свойств ресурсов.
+		 * @param {Ext.data.Model} [data] Данные панели свойств. Если данные не переданы, то панель будет чистой.
+         */
+        updatePanelResources: function (data)
+		{
+            var me = this,
+                bridgeProps = FBEditor.getBridgeProps(),
+                panelResources;
+
+            panelResources = bridgeProps.Ext.getCmp('panel-props-resources');
+            panelResources.fireEvent('loadData', data);
 		},
 
 		/**

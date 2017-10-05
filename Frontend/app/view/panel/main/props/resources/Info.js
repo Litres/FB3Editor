@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.panel.main.props.resources.Info',
 	{
 		extend: 'Ext.Component',
+
 		xtype: 'props-resources-info',
 		id: 'props-resources-info',
 
@@ -27,6 +28,7 @@ Ext.define(
 					'<tpl if="totalElements"><div><span>Использован в тексте:</span> {totalElements}</div></tpl>',
 			    '</div>'
 			);
+
 			me.callParent(arguments);
 		}
 	}

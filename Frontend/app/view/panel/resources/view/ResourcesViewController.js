@@ -63,6 +63,48 @@ Ext.define(
 				// вызываем колбэк-функцию выбора ресурса
 				selectFunction(data);
 			}
+		},
+
+        /**
+		 * Вызывается при нажатии клавиши.
+         * @param view
+         * @param record
+         * @param item
+         * @param index
+         * @param e
+         * @param eOpts
+         */
+        onItemKeyDown: function (view, record, item, index, e, eOpts)
+		{
+			var me = this;
+
+            e.stopPropagation();
+
+            switch (e.keyCode)
+            {
+                case Ext.event.Event.DELETE:
+                    return me.onItemKeyDownDelete(view, record, item, index, e, eOpts);
+            }
+		},
+
+        /**
+		 * Вызывается при нажатии клавиши DEL.
+         * @param view
+         * @param record
+         * @param item
+         * @param index
+         * @param e
+         * @param eOpts
+         */
+        onItemKeyDownDelete: function (view, record, item, index, e, eOpts)
+		{
+			var me = this,
+				panel = view.getPanelResources(),
+				btnDel;
+
+			// вызываем событие нажатия кнопки удаления
+            btnDel = panel.getButtonDeleteResource();
+			btnDel.fireEvent('click');
 		}
 	}
 );
