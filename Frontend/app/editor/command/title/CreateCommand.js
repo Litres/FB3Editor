@@ -74,7 +74,7 @@ Ext.define(
 					if (els.section.next())
 					{
 						els.sectionNext = els.section.next();
-                        els.sectionParent.insertBefore(els.sectionNext, els.newSection, viewportId);
+                        els.sectionParent.insertBefore(els.newSection, els.sectionNext, viewportId);
 					}
 					else
 					{
