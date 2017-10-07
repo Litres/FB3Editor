@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <title>Editor 3</title>
+    <title>Editor</title>
 
     <!-- Костыль для десктопной версии firefox исправляет баг после отключения режима симуляции касаний -->
     <script type="text/javascript">
@@ -80,28 +80,13 @@ c.updatedAssets.push(a)):a.uncache()}catch(h){l("Error parsing delta patch for "
 a.cache()}c.notifyUpdateReady()},notifyUpdateReady:function(){"checking"!==c.appCacheState&&c.updatedAssetsReady&&("updated"===c.appCacheState||c.updatedManifest)&&(c.appUpdate={updated:!0,app:"updated"===c.appCacheState,manifest:c.updatedManifest&&c.updatedManifest.exportContent()},c.fireAppUpdate())},fireAppUpdate:function(){Ext.GlobalEvents&&Ext.defer(function(){Ext.GlobalEvents.fireEvent("appupdate",c.appUpdate)},1E3)},checksum:function(a,c){if(!a||!c)return!1;var b=!0,e=c.length,f=a.substring(0,
 1);"/"==f?a.substring(2,e+2)!==c&&(b=!1):"f"==f?a.substring(10,e+10)!==c&&(b=!1):"."==f&&a.substring(1,e+1)!==c&&(b=!1);return b},parseResult:function(a){var c={};!a.exception&&0!==a.status||f.env.phantom?200<=a.status&&300>a.status||304===a.status||f.env.phantom||0===a.status&&0<a.content.length?c.content=a.content:c.error=!0:c.error=!0;return c}};return c}();Ext.manifest=Ext.manifest||"bootstrap";Ext.Microloader.run();</script>
 
-    <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="resources/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/images/favicon.png" type="image/x-icon">
 
 </head>
 <body>
 <div class="app-loading">
     <div class="app-loader"></div>
-    <!--div class="zone-wrap">
-        <div class="zone">
-            <div class="magnets">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <div class="sphere">
-                <div class="core"></div>
-            </div>
-        </div>
-    </div-->
     <div class="app-loading-info fire">Загрузка</div>
     <div class="app-blinker"></div>
 </div>
