@@ -28,6 +28,7 @@ Ext.define(
 				viewportId,
 				el;
 
+
 			try
 			{
 				me.newValue = me.newValue || data.newValue;
@@ -38,6 +39,7 @@ Ext.define(
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 				data.node = nodes.node;
+                viewportId = data.node.viewportId;
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
@@ -49,32 +51,31 @@ Ext.define(
 					els.text = factory.createElementText('');
 					nodes.text = els.text.getNode(nodes.node.viewportId);
 
-					els.parent.replace(els.text, els.node);
-					nodes.parent.replaceChild(nodes.text, nodes.node);
+					els.parent.replace(els.text, els.node, viewportId);
+					//nodes.parent.replaceChild(nodes.text, nodes.node);
 
 					data.node = nodes.text;
 				}
 
 				node = data.node;
 				text = me.newValue;
-				viewportId = node.viewportId;
 
 				console.log('exec text'/*, node, me.newValue, me.oldValue, 'offset=', me.offset*/);
 				//console.log(els.parent.getXml());
 
 				el = node.getElement();
-				el.setText(text, viewportId);
+				el.setText(text);
 
 				el.sync(viewportId);
 
 				// устанавливаем курсор
-				manager.setCursor(
+				/*manager.setCursor(
 					{
 						withoutSyncButtons: true,
 						startNode: node,
 						startOffset: me.offset
 					}
-				);
+				);*/
 
 				res = true;
 			}
