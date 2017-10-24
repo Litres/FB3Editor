@@ -255,7 +255,7 @@
      */
     "production": {
         "loader": {
-            "cache": "699",
+            "cache": "700",
             "cacheParam": "_v"
         }
     },
