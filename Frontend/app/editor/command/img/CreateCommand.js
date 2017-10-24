@@ -20,6 +20,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				factory = FBEditor.editor.Factory,
+                viewportId,
 				manager,
 				range;
 
@@ -29,7 +30,7 @@ Ext.define(
 
 				console.log('create img', data.opts);
 
-				data.viewportId = range.start.viewportId;
+                viewportId = data.viewportId = range.start.viewportId;
 				data.oldValue = range.start.nodeValue;
 
 				nodes.start = range.start;
@@ -56,9 +57,17 @@ Ext.define(
 					els.startValue = nodes.start.nodeValue.substring(0, range.offset);
 					els.endValue = nodes.start.nodeValue.substring(range.offset);
 
-					// меняем текст исходного элемента
-					els.start.setText(els.startValue);
-					nodes.start.nodeValue = els.startValue;
+					if (els.startValue)
+					{
+                        // меняем текст исходного элемента
+                        els.start.setText(els.startValue, viewportId);
+                        //nodes.start.nodeValue = els.startValue;
+					}
+					else
+					{
+						// удаляем текст
+						els.parent.remove(els.start, viewportId);
+					}
 				}
 				else
 				{
@@ -66,8 +75,8 @@ Ext.define(
 					
 					nodes.start = els.start.isStyleHolder ? nodes.start.firstChild : nodes.start;
 					els.start = nodes.start.getElement();
-					els.parent.remove(els.start);
-					nodes.parent.removeChild(nodes.start);
+					els.parent.remove(els.start, viewportId);
+					//nodes.parent.removeChild(nodes.start);
 
 					data.isEmpty = true;
 				}
@@ -75,13 +84,13 @@ Ext.define(
 				// вставляем изображение
 				if (els.next)
 				{
-					els.parent.insertBefore(els.node, els.next);
-					nodes.parent.insertBefore(nodes.node, nodes.next);
+					els.parent.insertBefore(els.node, els.next, viewportId);
+					//nodes.parent.insertBefore(nodes.node, nodes.next);
 				}
 				else
 				{
-					els.parent.add(els.node);
-					nodes.parent.appendChild(nodes.node);
+					els.parent.add(els.node, viewportId);
+					//nodes.parent.appendChild(nodes.node);
 				}
 
 				// новый текстовый элемент c последней частью текста
@@ -92,18 +101,18 @@ Ext.define(
 
 					if (els.next)
 					{
-						els.parent.insertBefore(els.t, els.next);
-						nodes.parent.insertBefore(nodes.t, nodes.next);
+						els.parent.insertBefore(els.t, els.next, viewportId);
+						//nodes.parent.insertBefore(nodes.t, nodes.next);
 					}
 					else
 					{
-						els.parent.add(els.t);
-						nodes.parent.appendChild(nodes.t);
+						els.parent.add(els.t, viewportId);
+						//nodes.parent.appendChild(nodes.t);
 					}
 				}
 
 				// синхронизируем элемент
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -128,6 +137,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 

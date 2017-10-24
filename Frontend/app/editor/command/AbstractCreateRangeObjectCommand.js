@@ -1,5 +1,5 @@
 /**
- * Абстрактная команда создания элемента из выделения с объектом.
+ * Абстрактная команда создания элемента из выделения с объектом (изображение).
  *
  * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
@@ -22,19 +22,61 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
-				offset = {},
 				manager,
-				sel,
-				collapsed,
-				range,
-				joinStartContainer,
-				joinEndContainer;
-
+				factory,
+                viewportId;
 			try
 			{
-				console.log('AbstractCreateRangeObjectCommand', data);
-				
-				return false;
+				// выделенный элемент
+                nodes.focus = data.opts.focus;
+                els.focus = nodes.focus.getElement();
+                els.holder = els.focus.getStyleHolder();
+                els.nextHolder = els.holder.next();
+                els.prevHolder = els.holder.prev();
+                els.common = els.holder.parent;
+				viewportId = data.viewportId = nodes.focus.viewportId;
+                manager = data.manager = els.focus.getManager();
+                factory = manager.getFactory();
+                manager.setSuspendEvent(true);
+
+                // разбиваем узел текущего выделения
+                nodes.container = nodes.focus;
+                nodes.splitContainer = manager.splitNode(els, nodes, 0);
+                els.splitContainer = nodes.splitContainer.getElement();
+
+                // создаем новый элемент c выделенным объектом
+				els.node = factory.createElement(me.elementName);
+				els.common.insertBefore(els.node, els.splitContainer, viewportId);
+				els.p = factory.createElement('p');
+                els.node.add(els.p, viewportId);
+                els.p.add(els.focus, viewportId);
+
+                if (els.holder.isEmpty())
+				{
+					// удаляем, ставший пустым, исходный абзац объекта
+					els.common.remove(els.holder, viewportId);
+				}
+
+				if (els.splitContainer.isEmpty())
+                {
+                    // удаляем лишний пустой абзац
+                    els.common.remove(els.splitContainer, viewportId);
+                }
+
+                // синхронизируем
+                els.common.sync(data.viewportId);
+
+                // устанавливаем курсор
+                /*manager.setCursor(
+                    {
+                        startNode: nodes.focus
+                    }
+                );*/
+
+                data.els = els;
+
+                // проверяем по схеме
+                me.verifyElement(els.common);
 
 				res = true;
 			}
@@ -63,71 +105,13 @@ Ext.define(
 			try
 			{
 				range = data.range;
-				nodes = data.saveNodes;
-				viewportId = nodes.node.viewportId;
+				els = data.els;
+				viewportId = data.viewportId;
+				manager = data.manager;
 
-				console.log('undo create range ' + me.elementName, range, nodes);
+				console.log('undo create element ' + me.elementName + ' from object', els);
 
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
 
-				manager = els.node.getManager();
-				manager.setSuspendEvent(true);
-
-				// переносим все элементы обратно в исходный контейнер
-
-				nodes.first = nodes.node.firstChild;
-				els.first = nodes.first.getElement();
-
-				while (els.first)
-				{
-					els.parent.insertBefore(els.first, els.node);
-					nodes.parent.insertBefore(nodes.first, nodes.node);
-					nodes.first = nodes.node.firstChild;
-					els.first = nodes.first ? nodes.first.getElement() : null;
-				}
-
-				// удаляем новый элемент
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
-
-				// объединяем элементы в точках разделения
-				if (range.joinStartContainer)
-				{
-					manager.joinNode(nodes.startContainer);
-				}
-				if (range.joinEndContainer)
-				{
-					manager.joinNode(nodes.endContainer);
-				}
-
-				// синхронизируем
-				els.parent.sync(viewportId);
-
-				// устанавливаем выделение
-				if (!range.joinStartContainer)
-				{
-					range.start = nodes.startContainer;
-					range.common = range.start.getElement().isText ? range.start.parentNode : range.start;
-				}
-				else
-				{
-					range.common = range.common.getElement().isText ? range.common.parentNode : range.common;
-				}
-
-				range.common = range.common ? range.common : range.prevParentStart.parentNode;
-				range.start = range.start.parentNode ? range.start : range.prevParentStart.nextSibling;
-				range.end = range.collapsed || !range.end.parentNode ? range.start : range.end;
-				range.end = !range.collapsed && range.end.firstChild ? range.end.firstChild : range.end;
-
-				data.saveRange = {
-					startNode: range.start,
-					endNode: range.end,
-					startOffset: range.offset.start,
-					endOffset: range.offset.end
-				};
-				manager.setCursor(data.saveRange);
 
 				res = true;
 			}
@@ -138,48 +122,8 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
-		},
-
-		/**
-		 * Создает новый элемент.
-		 * @param {Object} els
-		 * @param {Object} nodes
-		 */
-		createNewElement: function (els, nodes)
-		{
-			var me = this,
-				data = me.getData(),
-				factory = FBEditor.editor.Factory;
-
-			els.node = factory.createElement(me.elementName);
-			nodes.node = els.node.getNode(data.viewportId);
-
-			// вставляем новый элемент
-			els.common.insertBefore(els.node, els.startContainer);
-			nodes.common.insertBefore(nodes.node, nodes.startContainer);
-
-			// переносим элементы, которые находятся в текущем выделении в новый элемент
-
-			nodes.next = nodes.startContainer;
-			els.next = nodes.next.getElement();
-
-			while (els.next && els.next.elementId !== els.endContainer.elementId)
-			{
-				nodes.buf = nodes.next.nextSibling;
-
-				els.node.add(els.next);
-				nodes.node.appendChild(nodes.next);
-
-				nodes.next = nodes.buf;
-				els.next = nodes.next ? nodes.next.getElement() : null;
-			}
-
-			if (els.next && els.next.elementId === els.endContainer.elementId && !data.range.joinEndContainer)
-			{
-				els.node.add(els.next);
-				nodes.node.appendChild(nodes.next);
-			}
 		}
 	}
 );

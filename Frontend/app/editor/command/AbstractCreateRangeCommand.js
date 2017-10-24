@@ -145,7 +145,7 @@ Ext.define(
 				data.saveNodes = nodes;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.common);
 
 				res = true;
 			}
@@ -248,6 +248,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		},
 

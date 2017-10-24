@@ -215,7 +215,7 @@ Ext.define(
 			if (el.parent)
 			{
 				// удаляем ссылку на добавляемый элемент из старого родителя
-				el.parent.remove(el);
+				el.parent.remove(el, viewportId);
 			}
 
 			el.parent = me;
