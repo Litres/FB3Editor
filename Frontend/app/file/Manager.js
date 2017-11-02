@@ -182,9 +182,7 @@ Ext.define(
 						{
 							try
 							{
-								//Ext.suspendLayouts();
 								FBEditor.resource.Manager.loadResource({file: file.file, content: data});
-								//Ext.resumeLayouts(true);
 							}
 							catch (e)
 							{

@@ -19,7 +19,8 @@ Ext.define(
 			'FBEditor.resource.data.ExternalData',
 			'FBEditor.resource.data.FileData',
 			'FBEditor.resource.data.PasteData',
-			'FBEditor.resource.data.UrlData'
+			'FBEditor.resource.data.UrlData',
+			'FBEditor.resource.replacer.Window'
 		],
 
 		/**
@@ -72,6 +73,13 @@ Ext.define(
 		 */
 		paste: null,
 
+        /**
+		 * @private
+		 * @property {FBEditor.resource.replacer.Window} Окно выбора действий для уже имеющегося ресурса
+		 * во время его загрузки.
+         */
+		replacer: null,
+
 		init: function ()
 		{
 			var me = this;
@@ -99,6 +107,29 @@ Ext.define(
 		getPaste: function ()
 		{
 			return this.paste;
+		},
+
+        /**
+		 * Возвращает окно выбора действий для уже имеющегося ресурса во время его загрузки.
+		 * @param {Object} resData Данные ресурса.
+         */
+        getReplacer: function (resData)
+		{
+			var me = this,
+				replacer = me.replacer,
+				data = Ext.clone(resData);
+
+			if (replacer)
+			{
+                replacer.setResourceData(data);
+			}
+			else
+			{
+				replacer = Ext.create('FBEditor.resource.replacer.Window', data);
+                me.replacer = replacer;
+            }
+
+			return replacer;
 		},
 
 		/**
@@ -338,6 +369,7 @@ Ext.define(
 			var me = this,
 				file = data.file,
 				loader = me.loader,
+				replacer,
 				resData,
 				res;
 
@@ -353,33 +385,49 @@ Ext.define(
 
 			if (me.containsResource(resData.name))
 			{
-				throw Error('Ресурс с именем ' + resData.name + ' уже существует');
+				// окно выбора действий в случае уже существующего ресурса
+				replacer = me.getReplacer(resData);
+				replacer.show();
+
+				return;
 			}
 
-			if (FBEditor.accessHub && loader.getArt())
-			{
-				//console.log(resData);
-				// сохраняем ресурс на хабе
-				me.saveToUrl(resData).then(
-					function (xml)
-					{
-						// синхронизируем ресурсы с хабом
-						me.syncResources(xml);
-					}
-				);
-			}
-			else
-			{
-				// создаём ресурс
-				res = Ext.create('FBEditor.resource.Resource', resData);
-				me.addResource(res);
+            me.createResource(resData);
+		},
 
-				// сортируем ресурсы
-				me.sortData();
+        /**
+		 * Создает новый ресурс.
+         * @param {Object} resData Данные ресурса.
+         */
+		createResource: function (resData)
+		{
+            var me = this,
+                loader = me.loader,
+                res;
 
-				// обновляем дерево навигации
-				me.updateNavigation();
-			}
+            if (FBEditor.accessHub && loader.getArt())
+            {
+                // сохраняем ресурс на хабе
+                me.saveToUrl(resData).then(
+                    function (xml)
+                    {
+                        // синхронизируем ресурсы с хабом
+                        me.syncResources(xml);
+                    }
+                );
+            }
+            else
+            {
+                // создаём ресурс
+                res = Ext.create('FBEditor.resource.Resource', resData);
+                me.addResource(res);
+
+                // сортируем ресурсы
+                me.sortData();
+
+                // обновляем дерево навигации
+                me.updateNavigation();
+            }
 		},
 
 		/**
@@ -734,6 +782,10 @@ Ext.define(
 				resource = resourceIndex !== null ? data.slice(resourceIndex, resourceIndex + 1) : null;
 				resource = resource && resource[0] ? resource[0] : null;
 			}
+			else
+			{
+                resourceIndex = me.getResourceIndexByProp('name', resource.name);
+            }
 
 			if (!resource)
 			{
@@ -873,6 +925,71 @@ Ext.define(
 			}
 
 			return result;
+		},
+
+        /**
+		 * Заменяет имеющийся ресурс на новый.
+         * @param {Object} resData Данные ресурса.
+         */
+        replaceResource: function (resData)
+		{
+			var me = this,
+				loader = me.loader,
+				res,
+				id;
+
+            // ресурс
+            res = Ext.create('FBEditor.resource.Resource', resData);
+
+            if (FBEditor.accessHub && loader.getArt())
+            {
+                id = res.fileId;
+
+                // удаляем имеющийся ресурс
+                loader.remove(id).then(
+                    function (xml)
+                    {
+                        // сохраняем ресурс на хабе
+                        return me.saveToUrl(resData);
+                    },
+                    function (response)
+                    {
+                        Ext.log(
+                            {
+                                level: 'error',
+                                msg: 'Ошибка удаления ресурса',
+                                dump: response
+                            }
+                        );
+
+                        Ext.Msg.show(
+                            {
+                                title: 'Ошибка',
+                                message: 'Невозможно удалить ресурс',
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            }
+                        );
+                    }
+                ).then(
+                    function (xml)
+                    {
+                        // синхронизируем ресурсы с хабом
+                        me.syncResources(xml);
+                    }
+                );
+            }
+            else
+            {
+				// удаляем имеющийся ресурс
+				me.deleteResource(res);
+
+                // новый ресурс
+                res = Ext.create('FBEditor.resource.Resource', resData);
+
+				// добавляем новый
+                me.addResource(res);
+            }
 		},
 
 		/**
@@ -1185,6 +1302,29 @@ Ext.define(
 			resource = resource && resource[0] ? resource[0] : null;
 
 			return resource;
+		},
+
+        /**
+		 * Возвращает новое имя ресурса для уже существующего.
+         * @param {String} oldName Имя ресурса.
+		 * @return {String} Новое имя ресурса.
+         */
+        getNewResourceName: function (oldName)
+		{
+			var me = this,
+				counter = 1,
+				name,
+				res;
+
+			do
+			{
+				name = oldName.replace(/(\.\w+)$/ig, '_' + counter + '$1');
+                res = me.getResource(name);
+                counter++;
+            }
+            while (res);
+
+			return name;
 		},
 
 		/**

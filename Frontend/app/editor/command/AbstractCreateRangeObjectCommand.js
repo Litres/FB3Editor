@@ -25,6 +25,7 @@ Ext.define(
 				manager,
 				factory,
                 viewportId;
+
 			try
 			{
 				// выделенный элемент
