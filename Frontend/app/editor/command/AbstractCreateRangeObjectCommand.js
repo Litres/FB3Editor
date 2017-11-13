@@ -31,6 +31,7 @@ Ext.define(
 				// выделенный элемент
                 nodes.focus = data.opts.focus;
                 els.focus = nodes.focus.getElement();
+                els.prev = els.focus.prev(); // для undo
                 els.holder = els.focus.getStyleHolder();
                 els.nextHolder = els.holder.next();
                 els.prevHolder = els.holder.prev();
@@ -62,17 +63,18 @@ Ext.define(
                 {
                     // удаляем лишний пустой абзац
                     els.common.remove(els.splitContainer, viewportId);
+                    els.splitIsEmpty = true;
                 }
 
                 // синхронизируем
                 els.common.sync(data.viewportId);
 
                 // устанавливаем курсор
-                /*manager.setCursor(
+                manager.setCursor(
                     {
                         startNode: nodes.focus
                     }
-                );*/
+                );
 
                 data.els = els;
 
@@ -100,19 +102,78 @@ Ext.define(
 				els = {},
 				nodes = {},
 				manager,
-				range,
+				helper,
 				viewportId;
 
 			try
 			{
-				range = data.range;
+				//range = data.range;
 				els = data.els;
 				viewportId = data.viewportId;
 				manager = data.manager;
+                manager.setSuspendEvent(true);
+                nodes.focus = data.opts.focus;
 
 				console.log('undo create element ' + me.elementName + ' from object', els);
 
+                // переносим объект обратно
 
+				if (els.holder.isEmpty())
+				{
+					els.common.insertBefore(els.holder, els.node, viewportId);
+                    els.holder.add(els.focus, viewportId);
+				}
+				else if (els.prev)
+                {
+                    els.prev.parent.add(els.focus, viewportId);
+                }
+                else
+				{
+                    els.holder.add(els.focus, viewportId);
+				}
+
+                // удаляем новый элемент
+                els.common.remove(els.node, viewportId);
+
+                // переносим элементы из разделенного абзаца обратно
+
+				els.first = els.splitContainer.first();
+                els.join = els.first;
+
+				while (els.first)
+				{
+					els.holder.add(els.first, viewportId);
+                    els.first = els.splitContainer.first();
+				}
+
+				// удаляем новый абзац
+                if (!els.splitIsEmpty)
+				{
+					els.common.remove(els.splitContainer, viewportId);
+                }
+
+				if (els.prev && !els.join.isText)
+				{
+                    // соединяем разделенные элементы в абзаце
+					helper = els.join.getNodeHelper();
+					nodes.join = helper.getNode(viewportId);
+					manager.joinNode(nodes.join);
+
+					// удаляем пустые узлы после соединения
+                    helper = els.holder.getNodeHelper();
+                    nodes.holder = helper.getNode(viewportId);
+					manager.removeEmptyNodes(nodes.holder);
+				}
+
+                // синхронизируем
+                els.common.sync(data.viewportId);
+
+                // устанавливаем курсор
+                manager.setCursor(
+                    {
+                        startNode: nodes.focus
+                    }
+                );
 
 				res = true;
 			}
