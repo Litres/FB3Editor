@@ -476,46 +476,40 @@ Ext.define(
 		getCover: function ()
 		{
 			var me = this,
-				csrf = FBEditor.csrf.Csrf,
 				promise;
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					csrf.getToken().then(
-						function (token)
+					var url;
+
+					url = me.urlCover + '?art=' + me.getArt();
+
+					Ext.Ajax.request(
 						{
-							var url;
+							url: url,
+							disableCaching: true,
+							scope: me,
+							success: function(response)
+							{
+								var target;
 
-							url = me.urlCover + '?art=' + me.getArt() + '&csrf=' + token;
+								//console.log(response);
 
-							Ext.Ajax.request(
+								if (response && response.responseText && /^\/fb3/ig.test(response.responseText))
 								{
-									url: url,
-									disableCaching: true,
-									scope: me,
-									success: function(response)
-									{
-										var target;
-
-										//console.log(response);
-
-										if (response && response.responseText && /^\/fb3/ig.test(response.responseText))
-										{
-											target = decodeURI(response.responseText);
-											resolve(target);
-										}
-										else
-										{
-											resolve(false);
-										}
-									},
-									failure: function (response)
-									{
-										resolve(false);
-									}
+									target = decodeURI(response.responseText);
+									resolve(target);
 								}
-							);
+								else
+								{
+									resolve(false);
+								}
+							},
+							failure: function (response)
+							{
+								resolve(false);
+							}
 						}
 					);
 				}
