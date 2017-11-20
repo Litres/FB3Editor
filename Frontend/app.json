@@ -255,11 +255,12 @@
      */
     "production": {
         "loader": {
-            "cache": "703",
+            "cache": "704",
             "cacheParam": "_v"
         }
     },
     
+
     "testing": {
     },
     

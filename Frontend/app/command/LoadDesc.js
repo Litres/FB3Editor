@@ -14,8 +14,9 @@ Ext.define(
 			var me = this,
 				data = me.data,
 				result = false,
-				bridge = FBEditor.getBridgeWindow(),
+				bridge = me.getBridgeWindow(),
 				manager = bridge.FBEditor.desc.Manager,
+				content,
 				url;
 
 			url = manager.loadUrl;
@@ -24,7 +25,15 @@ Ext.define(
 			{
 				if (url)
 				{
-					manager.loadFromUrl(url);
+                    content = bridge.Ext.getCmp('panel-main-content');
+
+                    manager.loadFromUrl().then(
+                        function ()
+                        {
+                            content.fireEvent('contentDesc');
+                        }
+                    );
+
 					result = true;
 				}
 			}

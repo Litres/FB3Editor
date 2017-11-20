@@ -66,6 +66,19 @@ Ext.define(
 
 		},
 
+        /**
+		 * Возвращает форму описания.
+         * @return {FBEditor.view.form.desc.Desc}
+         */
+        getFormDesc: function ()
+        {
+            var panel;
+
+            panel = Ext.getCmp('form-desc');
+
+            return panel;
+        },
+
 		/**
 		 * Очищает стили и сообщения об ошибках заполнения полей.
 		 */

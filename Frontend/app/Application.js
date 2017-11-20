@@ -306,6 +306,30 @@ Ext.define(
 					)
 				}
 			);
+		},
+
+        /**
+		 * Устанаваливает заголовок окна.
+         * @param {String} title Заголовок.
+         */
+        setTitle: function (title)
+		{
+			var app;
+
+			title = title || 'Введите название книги';
+			document.title = title;
+
+			Ext.Object.each(
+                FBEditor.childWindow,
+				function (key, win)
+				{
+                    if (win)
+                    {
+                        app = win.FBEditor.getApplication();
+                        app.setTitle(win.title + ' | ' + title);
+                    }
+				}
+			);
 		}
 	}
 );

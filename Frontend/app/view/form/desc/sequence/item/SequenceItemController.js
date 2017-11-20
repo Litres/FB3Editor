@@ -89,7 +89,7 @@ Ext.define(
 			var me = this,
 				view = me.getView();
 
-			// показываем поля данных
+			// показываем поля данных или поле поиска, если доступен хаб
 			view.switchContainers();
 		}
 	}

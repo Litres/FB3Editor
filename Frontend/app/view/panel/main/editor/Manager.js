@@ -183,21 +183,20 @@ Ext.define(
 			).then(
 				function (xml)
 				{
-					var resourceManager = FBEditor.resource.Manager,
+					var descManager = FBEditor.desc.Manager,
 						revision = me.getRevision(),
 						btn,
 						rev;
 
+                    if (!descManager.isLoadUrl())
+                    {
+                        // если описание еще не было загружено по url, то загружаем
+                        descManager.loadFromUrl();
+                    }
+
 					//console.log(xml);
 					rev = xml.match(/rev (\d+) -->$/);
 					rev = rev[1];
-
-					// загружены ли уже ресурсы
-					if (!resourceManager.isLoadUrl())
-					{
-						// загружаем ресурсы с хаба
-						resourceManager.loadFromUrl(me.getArtId());
-					}
 
 					// загружаем данные в редактор
 					me.loadDataToEditor(xml);

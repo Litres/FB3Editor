@@ -12,9 +12,11 @@ Ext.define(
 			'FBEditor.view.form.desc.titleArt.TitleArtController',
 			'FBEditor.view.panel.main.props.desc.search.arts.Arts'
 		],
+
 		controller: 'form.desc.titleArt',
 		xtype: 'form-desc-titleArt',
 		id: 'form-desc-title',
+
 		cls: 'container-valid',
 
 		listeners: {

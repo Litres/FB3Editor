@@ -18,7 +18,11 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				loading = FBEditor.desc.Manager.loadingProcess,
-				name = view.getMain().getValue();
+				name = view.getMain().getValue(),
+				desc = view.getFormDesc();
+
+			// меняем название в заголовке окна
+            desc.setTitleApp();
 
 			// игнорируем поиск при автоматическом заполнении полей описания (загрузка из книги или по ссылке)
 			if (!loading && FBEditor.accessHub)

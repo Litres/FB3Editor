@@ -15,14 +15,17 @@ Ext.define(
 			'FBEditor.view.panel.treenavigation.desc.Tree',
 			'FBEditor.view.panel.treenavigation.body.Tree'
 		],
+
 		id: 'panel-treenavigation',
 		xtype: 'panel-treenavigation',
 		controller: 'panel.treenavigation',
+
+        listeners: {
+            clearSelection: 'onClearSelection'
+        },
+
 		defaults: {
 			width: '100%'
-		},
-		listeners: {
-			clearSelection: 'onClearSelection'
 		},
 
 		/**
@@ -43,6 +46,7 @@ Ext.define(
 					xtype: 'panel-body-navigation'
 				}
 			];
+
 			me.callParent(arguments);
 		},
 

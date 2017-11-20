@@ -293,7 +293,6 @@ Ext.define(
 				function (name)
 				{
 					var editor,
-						manager,
 						data,
 						reg;
 
@@ -321,14 +320,9 @@ Ext.define(
 
 			if (FBEditor.accessHub)
 			{
-				// TODO возможно устаревшее условие, так как событие теперь выбрасывается для всех компонентов формы
-				// автоматически после получения доступа к хабу
-				
 				// если доступ к хабу есть, то показываем поля поиска
 				form.fireEvent('accessHub');
 			}
-
-			content.fireEvent('contentDesc');
 		},
 
 		/**

@@ -6,7 +6,9 @@ Ext.define(
 	'FBEditor.view.main.MainController',
 	{
 	    extend: 'Ext.app.ViewController',
+
 	    alias: 'controller.main',
+
 		routes: {
 			'panel/:name': {
 				before: 'beforeCreatePanel',
@@ -113,13 +115,16 @@ Ext.define(
 
 			box = FBEditor.getLocalStorage().getItem(name);
 			box = Ext.Object.fromQueryString(box, true);
+
 			params = 'width=' +box.width +
 				',height=' + box.height +
 				',top=' + box.top +
 				',left=' + box.left +
 				',toolbar=no' +
 				',location=no';
+
 			win = window.open('#panel/' + name, name, params);
+
 			if (win)
 			{
 				// сохраняем ссылку на дочернее окно

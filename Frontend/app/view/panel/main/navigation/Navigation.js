@@ -12,9 +12,11 @@ Ext.define(
 		    'FBEditor.view.panel.main.navigation.NavigationController',
 	        'FBEditor.view.panel.treenavigation.TreeNavigation'
 	    ],
+
 	    id: 'panel-main-navigation',
 	    xtype: 'panel-main-navigation',
 	    controller: 'panel.main.navigation',
+
 	    title: 'Навигация',
 	    panelName: 'navigation',
 	    layout: 'anchor',
@@ -32,6 +34,7 @@ Ext.define(
 				    xtype: 'panel-treenavigation'
 			    }
 		    ];
+
 		    me.callParent(arguments);
 	    }
     }

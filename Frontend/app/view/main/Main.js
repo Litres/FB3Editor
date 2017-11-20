@@ -16,22 +16,26 @@ Ext.define(
 		    'FBEditor.view.panel.main.content.Content',
 	        'FBEditor.view.panel.main.props.Props'
 	    ],
+
 		id: 'main',
 	    xtype: 'main',
 	    controller: 'main',
+
+        cls: 'fb3',
+
+        listeners: {
+            resize: 'onResize',
+            focusDetachPanels: 'onFocusDetachPanels',
+            checkWidthPanels: 'onCheckWidthPanels',
+            closedetachpanels: 'onDetachPanel',
+            closeapplication: 'onCloseApplication',
+            restoredetachpanel: 'onRestoreDetachPanel',
+            accessHub: 'onAccessHub'
+        },
+
 	    layout: {
 	        type: 'border'
 	    },
-		cls: 'fb3',
-		listeners: {
-			resize: 'onResize',
-			focusDetachPanels: 'onFocusDetachPanels',
-			checkWidthPanels: 'onCheckWidthPanels',
-			closedetachpanels: 'onDetachPanel',
-			closeapplication: 'onCloseApplication',
-			restoredetachpanel: 'onRestoreDetachPanel',
-			accessHub: 'onAccessHub'
-		},
 
 		/**
 		 * @property {Object} Конфигурация панелей по умолчанию.
@@ -103,6 +107,7 @@ Ext.define(
 					}
 				);
 			}
+
 			me.callParent(arguments);
 		},
 
@@ -113,17 +118,27 @@ Ext.define(
 		createPanel: function (name)
 		{
 			var me = this,
-				xtype,
+				bridgeWindow = FBEditor.getBridgeWindow(),
+				app = FBEditor.getApplication(),
+				title,
+                desc,
+                bookName,
+                xtype,
 				panel;
 
 			xtype = 'panel-main-' + name;
+
 			panel = me.add(
 				{
 					xtype: xtype,
 					region: 'center'
 				}
 			);
-			document.title = document.title + ' - ' + panel.title;
+
+            desc = bridgeWindow.Ext.getCmp('form-desc');
+            bookName = desc.getBookName();
+            title = panel.title + ' | ' + bookName;
+			app.setTitle(title);
 		},
 
 		/**
@@ -137,6 +152,7 @@ Ext.define(
 				id;
 
 			id = 'panel-main-' + name;
+
 			if (!me.contains(Ext.getCmp(id)))
 			{
 				FBEditor.childWindow[name] = null;
@@ -158,6 +174,7 @@ Ext.define(
 			name = win.name;
 			me.windowPanels[name] = win;
 			id = 'panel-main-' + name;
+
 			if (me.contains(Ext.getCmp(id)))
 			{
 				Ext.getCmp(id).close();

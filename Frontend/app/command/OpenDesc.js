@@ -39,12 +39,17 @@ Ext.define(
 			if (editorManager.isLoadUrl() && !descManager.isLoadUrl())
 			{
 				// если описание еще не было загружено по url, то загружаем
-				descManager.loadFromUrl();
+				descManager.loadFromUrl().then(
+					function ()
+					{
+                        content.fireEvent('contentDesc');
+					}
+				);
 			}
-			else 
+			else
 			{
 				content.fireEvent('contentDesc');
-			}
+            }
 
 			props = bridgeProps.Ext.getCmp('panel-main-props-card');
 			me.activePanelProps = props.getLayout().getActiveItem();

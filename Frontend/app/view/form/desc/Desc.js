@@ -152,6 +152,8 @@ Ext.define(
 		{
 			var me = this,
 				manager = FBEditor.desc.Manager,
+                bridgeWindow = FBEditor.getBridgeWindow(),
+				content,
 				innerCt;
 
 			if (Ext.browser.is.WebKit)
@@ -167,7 +169,14 @@ Ext.define(
 				Ext.defer(
 					function ()
 					{
-						manager.loadFromUrl();
+                        content = bridgeWindow.Ext.getCmp('panel-main-content');
+
+                        manager.loadFromUrl().then(
+                            function ()
+                            {
+                                content.fireEvent('contentDesc');
+                            }
+                        );
 					},
 				    100
 				);
@@ -252,6 +261,39 @@ Ext.define(
 			);
 
 			return orderData;
+		},
+
+        /**
+		 * Усстанавливает заголовок окна приложения.
+         */
+        setTitleApp: function ()
+		{
+			var me = this,
+                app = FBEditor.getApplication(),
+            	bookName,
+				title;
+
+			// получаем название книги
+            bookName = me.getBookName();
+
+            title = bookName;
+
+			app.setTitle(title);
+		},
+
+        /**
+		 * Возвращает название книги.
+         * @return {String}
+         */
+		getBookName: function ()
+		{
+            var me = this,
+                titlePanel = me.down('form-desc-titleArt'),
+                bookName;
+
+            bookName = titlePanel.getMain().getValue();
+
+			return bookName;
 		}
 	}
 );
