@@ -86,7 +86,7 @@ Ext.define(
 												// сохраняем токены
 												me.data = GUAjaxData;
 
-												resolve();
+												resolve(me.data);
 											}
 										}
 									}
@@ -120,32 +120,17 @@ Ext.define(
 		getToken: function ()
 		{
 			var me = this,
-				data = me.data,
 				promise;
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
-					if (me.isReceived() && data.csrf)
-					{
-						resolve(data.csrf);
-					}
-					else
-					{
-						Ext.defer(
-							function ()
-							{
-								this.getToken().then(
-									function (token)
-									{
-										resolve(token);
-									}
-								);
-							},
-						    100,
-							me
-						);
-					}
+                    me.init().then(
+                        function (data)
+                        {
+                            resolve(data.csrf);
+                        }
+                    );
 				}
 			);
 

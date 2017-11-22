@@ -285,9 +285,9 @@ Ext.define(
 			// по умолчанию считаем, что хаб не доступен
 			FBEditor.accessHub = false;
 
-			// инициализируем токены
-			csrf.init().then(
-				function ()
+			// проверяем доступ к хабу
+			csrf.getToken().then(
+				function (token)
 				{
 					// токены получены - хаб доступен
 					FBEditor.accessHub = true;
@@ -296,14 +296,7 @@ Ext.define(
 					Ext.getCmp('main').fireEvent('accessHub');
 
 					Ext.log({msg: 'Хаб доступен', level: 'info'});
-
-					csrf.getToken().then
-					(
-						function (token)
-						{
-							Ext.log({msg: 'Токен CSRF ' + token, level: 'info'});
-						}
-					)
+                    Ext.log({msg: 'Токен CSRF ' + token, level: 'info'});
 				}
 			);
 		},
