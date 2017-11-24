@@ -128,7 +128,7 @@ Ext.define(
                     me.init().then(
                         function (data)
                         {
-                            resolve(data.csrf);
+                            resolve(data.csrfs.csrf[0]);
                         }
                     );
 				}
