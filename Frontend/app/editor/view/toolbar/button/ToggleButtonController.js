@@ -72,8 +72,6 @@ Ext.define(
 			state = (start.hisName(name) || start.hasParentName(name)) &&
 			        (end.hisName(name) || end.hasParentName(name));
 
-			//console.log(name, state);
-
 			// переключаем состояние
 			btn.toggle(state);
 

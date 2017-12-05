@@ -41,6 +41,12 @@ Ext.define(
 		 */
 		cleanResultContainer: {},
 
+        /**
+         * @private
+         * @property {FBEditor.view.form.desc.editor.toolbar.Toolbar} Панель кнопок форматирования редактора текста.
+         */
+        toolbar: null,
+
 		/**
 		 * @private
 		 * @property {FBEditor.desc.Loader} Загрузчик описания с хаба.
@@ -83,6 +89,20 @@ Ext.define(
 			me._loadedData = false;
 			loader.reset();
 		},
+
+        /**
+		 * Возвращает тулбар для полей редактоирования текста.
+         * @return {FBEditor.view.form.desc.editor.toolbar.Toolbar}
+         */
+		getToolbar: function ()
+		{
+			var me = this,
+				toolbar = me.toolbar;
+
+            me.toolbar = toolbar || Ext.create('FBEditor.view.form.desc.editor.toolbar.Toolbar');
+
+            return me.toolbar;
+        },
 
 		/**
 		 * Загружает описание по url.

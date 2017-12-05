@@ -34,7 +34,14 @@ Ext.define(
 
 		createToolbar: function ()
 		{
-			return Ext.create('FBEditor.view.form.desc.editor.toolbar.Toolbar');
+			var me = this,
+				descManager = FBEditor.desc.Manager,
+				toolbar;
+
+			// в форме описания используется один общий тулбар
+			toolbar = descManager.getToolbar();
+
+			return toolbar;
 		}
 	}
 );

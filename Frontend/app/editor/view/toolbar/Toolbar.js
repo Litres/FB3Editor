@@ -13,30 +13,12 @@ Ext.define(
 			'FBEditor.editor.view.toolbar.ToolbarController',
 			'FBEditor.editor.view.toolbar.button.a.A',
 			'FBEditor.editor.view.toolbar.button.em.Em',
-			'FBEditor.editor.view.toolbar.button.strong.Strong'
+			'FBEditor.editor.view.toolbar.button.strong.Strong',
+            'FBEditor.editor.view.toolbar.button.unstyle.Unstyle'
 		],
 
 		xtype: 'editor-toolbar',
 		controller: 'editor.toolbar',
-
-		items: [
-			{
-				xtype: 'editor-toolbar-button-strong'
-			},
-			{
-				xtype: 'editor-toolbar-button-em'
-			},
-			{
-				xtype: 'editor-toolbar-button-a'
-			}/*,
-			{
-				xtype: 'tbspacer',
-				width: 20
-			},
-			{
-				xtype: 'editor-toggleButton'
-			}*/
-		],
 
 		listeners: {
 			syncButtons: 'onSyncButtons',
@@ -83,7 +65,7 @@ Ext.define(
 
 			me.callParent(arguments);
 
-			// создаем список кнопок для синхронизации
+            // создаем список кнопок для синхронизации
 			me.createSyncButtons();
 		},
 
@@ -98,7 +80,8 @@ Ext.define(
 			me.syncButtons = [
 				'editor-toolbar-button-a',
 				'editor-toolbar-button-em',
-				'editor-toolbar-button-strong'
+				'editor-toolbar-button-strong',
+                'editor-toolbar-button-unstyle'
 			];
 		},
 

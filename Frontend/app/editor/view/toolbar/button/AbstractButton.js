@@ -42,6 +42,13 @@ Ext.define(
 		 */
 		sequence: null,
 
+		afterRender: function ()
+		{
+			var me = this;
+
+			me.callParent(arguments);
+		},
+
 		/**
 		 * Устанавливает список однотипных кнопок.
 		 * @param {String[]} seq Список однотипных кнопок.
@@ -111,14 +118,18 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает менеджер редактора текста.
+		 * Возвращает активный менеджер редактора текста.
 		 */
 		getEditorManager: function ()
 		{
+			/*
 			var me = this,
 				editor = me.getEditor();
 
 			return editor.getManager();
+			*/
+
+			return FBEditor.getEditorManager();
 		},
 
 		/**

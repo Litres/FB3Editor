@@ -169,8 +169,6 @@ Ext.define(
 
 				els.parent.sync(data.viewportId);
 
-				manager.setSuspendEvent(false);
-
 				// устанавливаем курсор
 				data.saveRange = {
 					startNode: range.start,
@@ -188,6 +186,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+
 			return res;
 		}
 	}

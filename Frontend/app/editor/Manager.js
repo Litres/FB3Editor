@@ -603,9 +603,10 @@ Ext.define(
 				me.selection = sel || window.getSelection();
 				range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
 
-				if (range)
+                if (range)
 				{
 					difCollapsed = me.range ? me.range.collapsed !== range.collapsed : true;
+
 					me.range = {
 						collapsed: range.collapsed,
 						common: range.commonAncestorContainer,
@@ -624,6 +625,7 @@ Ext.define(
 				else
 				{
 					difCollapsed = true;
+
 					me.range = {
 						collapsed: true,
 						common: node,
@@ -652,11 +654,11 @@ Ext.define(
 					}
 				}
 
-				if (panelProps)
-				{
-					// сохраняем глобальную ссылку на активный менеджер
-					FBEditor.setEditorManager(me);
+                // сохраняем глобальную ссылку на активный менеджер
+                FBEditor.setEditorManager(me);
 
+                if (panelProps)
+				{
 					// обновляем информацию о выделенном элементе в панели свойств
 					panelProps.fireEvent('loadData', el);
 				}
@@ -1467,10 +1469,11 @@ Ext.define(
 		 * Рекурсивно возвращает список параграфов начиная с узла cur до элемента els.lastP.
 		 * @param {Node} cur Узел, с которого начинается поиск параграфов в тексте.
 		 * @param {Object} nodes
-		 * @param els
+		 * @param {Object} els
+		 * @param {FBEditor.editor.element.AbstractElement} els.common Общий родительский элемент выделения.
 		 * @param {FBEditor.editor.element.AbstractElement} els.lastP Последний параграф,
 		 * перед которым поиск должен завершиться.
-		 * @return {Array} Список параграфов (p/li/subtitle).
+         * @return {Array} Список абзацев (p/li/subtitle).
 		 */
 		getNodesPP: function (cur, nodes, els)
 		{
@@ -1487,7 +1490,7 @@ Ext.define(
 
 			els.cur = cur.getElement();
 
-			if (els.cur.elementId === els.lastP.elementId)
+			if (els.cur.equal(els.lastP))
 			{
 				// сигнал остановить рекурсию
 				nodes.ppStop = true;
@@ -1501,6 +1504,7 @@ Ext.define(
 
 				nodes.first = cur.firstChild;
 				els.first = nodes.first ? nodes.first.getElement() : null;
+
 				if (els.first && !els.first.isText)
 				{
 					//console.log('first');
@@ -1529,7 +1533,7 @@ Ext.define(
 				nodes.parent = cur.parentNode;
 				els.parent = nodes.parent.getElement();
 
-				while (!nodes.parent.nextSibling && els.parent.elementId !== els.common.elementId)
+				while (!nodes.parent.nextSibling && !els.parent.equal(els.common))
 				{
 					nodes.parent = nodes.parent.parentNode;
 					els.parent = nodes.parent.getElement();
@@ -1537,7 +1541,7 @@ Ext.define(
 
 				nodes.parentNext = nodes.parent.nextSibling;
 
-				if (nodes.parentNext && els.parent.elementId !== els.common.elementId)
+				if (nodes.parentNext && !els.parent.equal(els.common))
 				{
 					//console.log('parent next');
 					p = me.getNodesPP(nodes.parentNext, nodes, els);

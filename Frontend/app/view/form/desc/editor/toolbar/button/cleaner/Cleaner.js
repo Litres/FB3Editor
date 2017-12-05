@@ -39,6 +39,15 @@ Ext.define(
 			me.editor = editor;
 
 			return editor;
-		}
+		},
+
+        /**
+         * Устанавливает связь с панелью.
+         * @param {FBEditor.view.form.desc.editor.toolbar.Toolbar} toolbar
+         */
+        setToolbar: function (toolbar)
+        {
+            this.toolbar = toolbar;
+        }
 	}
 );

@@ -61,7 +61,7 @@ Ext.define(
 							else
 							{
 								btn = Ext.ComponentQuery.query(item)[0];
-								//console.log('btn', Ext.ComponentQuery.query(item));
+								//console.log('btn', item, Ext.ComponentQuery.query(item));
 								btn && btn.fireEvent('sync');
 							}
 						}

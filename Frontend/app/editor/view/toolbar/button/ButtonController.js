@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.editor.view.toolbar.button.ButtonController',
 	{
 		extend: 'Ext.app.ViewController',
+
 		alias: 'controller.editor.toolbar.button',
 
 		onClick: function (button, e)

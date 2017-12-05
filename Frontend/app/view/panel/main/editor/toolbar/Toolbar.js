@@ -37,6 +37,7 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.titlebody.TitleBody',
 			'FBEditor.view.panel.main.editor.button.ul.Ul',
 			'FBEditor.view.panel.main.editor.button.underline.Underline',
+            'FBEditor.view.panel.main.editor.button.unstyle.Unstyle',
 			'FBEditor.view.panel.main.editor.toolbar.responsive.button.Button',
 			'FBEditor.view.panel.main.editor.toolbar.ToolbarController'
 		],
@@ -59,7 +60,7 @@ Ext.define(
 			group1: 440, // помещается только первая группа кнопок (деление на группы условно)
 			group2: 740, // помещается первая и вторая группа кнопок
 			group3: 970, // и т.д.
-			fit: 1260 // все кнопки помещаются
+			fit: 1310 // все кнопки помещаются
 		},
 
 		/**
@@ -117,7 +118,8 @@ Ext.define(
 				'main-editor-button-sub',
 				'main-editor-button-sup',
 				'main-editor-button-code',
-				'main-editor-button-span'
+                'main-editor-button-span',
+                'main-editor-button-unstyle'
 			];
 		},
 
@@ -471,7 +473,10 @@ Ext.define(
 						},
 						{
 							xtype: 'main-editor-button-span'
-						}
+						},
+                        {
+                            xtype: 'main-editor-button-unstyle'
+                        }
 					]
 				);
 			}

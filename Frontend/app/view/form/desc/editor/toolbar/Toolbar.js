@@ -12,7 +12,37 @@ Ext.define(
 			'FBEditor.view.form.desc.editor.toolbar.button.cleaner.Cleaner'
 		],
 
+		id: 'form-desc-editor-toolbar',
 		xtype: 'form-desc-editor-toolbar',
+
+        initComponent: function ()
+        {
+            var me = this;
+
+            me.items = [
+                {
+                    xtype: 'editor-toolbar-button-strong'
+                },
+                {
+                    xtype: 'editor-toolbar-button-em'
+                },
+                {
+                    xtype: 'editor-toolbar-button-a'
+                },
+                {
+                    xtype: 'editor-toolbar-button-unstyle'
+                }/*,
+				{
+					xtype: 'tbspacer',
+					width: 20
+				},
+				{
+					xtype: 'editor-toggleButton'
+				}*/
+            ];
+
+            me.callParent(arguments);
+        },
 
 		afterRender: function ()
 		{
@@ -24,6 +54,7 @@ Ext.define(
 			// добавляем кнопку уборки
 
 			cleanBtn = Ext.widget('form-desc-editor-toolbar-button-cleaner');
+            cleanBtn.setToolbar(me);
 
 			me.add(
 				[

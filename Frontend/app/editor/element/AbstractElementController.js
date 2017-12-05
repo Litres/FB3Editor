@@ -843,9 +843,9 @@ Ext.define(
 			el = node.getElement ? node.getElement() : null;
 			manager = el ? el.getManager() : null;
 
-			// фокус на элемент
+            // фокус на элемент
 			manager.setFocusElement(node);
-		},
+        },
 
 		/**
 		 * Вставка нового узла.
