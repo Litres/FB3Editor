@@ -31,6 +31,7 @@
     "Blob.js": "eligrey/Blob.js",
     "xmllint": "http://syssgx.github.com/xml.js/js/xmllint.js",
     "jsdiff": "^2.2.2",
-    "normalize-css": "^7.0.0"
+    "normalize-css": "^7.0.0",
+    "es6-promise-polyfill": "^1.2.0"
   }
 }

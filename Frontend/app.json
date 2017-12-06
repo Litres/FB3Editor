@@ -127,6 +127,10 @@
             "includeInBundle": true
         },
         {
+            "path": "${workspace.dir}/bower_components/es6-promise-polyfill/promise.min.js",
+            "includeInBundle": true
+        },
+        {
             "path": "${workspace.dir}/bower_components/FileSaver.js/FileSaver.js",
             "includeInBundle": true
         },
@@ -255,7 +259,7 @@
      */
     "production": {
         "loader": {
-            "cache": "707",
+            "cache": "708",
             "cacheParam": "_v"
         }
     },
