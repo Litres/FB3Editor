@@ -12,6 +12,20 @@ Ext.define(
 
 		isLiHolder: true,
 
+        createScaffold: function ()
+        {
+            var me = this,
+				factory = FBEditor.editor.Factory,
+                els = {};
+
+            els.li = factory.createElement('li');
+            els.t = factory.createElementText('Список');
+            els.li.add(els.t);
+            me.add(els.li);
+
+            return els;
+        },
+
 		convertToText: function (fragment)
 		{
 			var me = this,

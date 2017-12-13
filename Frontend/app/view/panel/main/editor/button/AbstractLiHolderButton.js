@@ -49,7 +49,9 @@ Ext.define(
 			// проверяем элемент по схеме
 			sch = manager.getSchema();
 			name = els.parent.getName();
-			enable = sch.verify(name, nameElements);
+			enable = sch.verify(name, nameElements, true);
+
+			console.log('active', enable, name, nameElements);
 
 			return enable;
 		}

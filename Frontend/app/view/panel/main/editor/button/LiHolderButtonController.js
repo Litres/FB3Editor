@@ -11,62 +11,61 @@ Ext.define(
 
 		onSync: function ()
 		{
-			var me = this,
-				btn = me.getView();
+            var me = this,
+                btn = me.getView(),
+                manager = btn.getEditorManager(),
+                factory = FBEditor.editor.Factory,
+                nodes = {},
+                els = {},
+                name = btn.elementName,
+                range,
+                xml;
 
-			// можно ли создать список
-			if (!btn.isActiveSelection())
-			{
-				// можно ли создать вложенный список
-				if (me.allowInnerList())
-				{
-					me.verifyResult(true);
-					//btn.enable();
-				}
-				else
-				{
-					me.verifyResult(false);
-					//btn.disable();
-				}
-			}
-			else
-			{
-				me.verifyResult(true);
-				//btn.enable();
-			}
-		},
+            if (!manager.availableSyncButtons())
+            {
+                btn.enable();
+                return;
+            }
 
-		/**
-		 * Проверяет можно ли создать вложенный список.
-		 * @return {Boolean}
-		 */
-		allowInnerList: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				manager = view.getEditorManager(),
-				els = {},
-				nodes = {},
-				range,
-				res;
+            range = manager.getRange();
 
-			range = manager.getRange();
+            if (!range)
+            {
+                btn.disable();
+                return;
+            }
 
-			if (!range)
-			{
-				return false;
-			}
+            nodes.node = range.common;
 
-			nodes.node = range.start;
-			els.node = nodes.node.getElement ? nodes.node.getElement() : null;
+            if (!nodes.node.getElement || nodes.node.getElement().isRoot)
+            {
+                btn.disable();
+                return;
+            }
 
-			// внешний список
-			els.li = els.node ? els.node.getParentName('li')  : null;
+            els.node = nodes.node.getElement();
+            els.p = els.node.getStyleHolder();
+            els.parent = els.p.parent;
 
-			// вложенный список не может быть первым элементом внешнего списка
-			res = els.li && els.li.prev() ? true : false;
+            // создаем временный элемент для проверки новой структуры
+            els.new = factory.createElement(name);
+            els.new.createScaffold();
 
-			return res;
+            //els.parent.children.push(els.newEl);
+			els.parent.insertBefore(els.new, els.p);
+            els.parent.remove(els.p);
+
+            // получаем xml
+            xml = manager.getContent().getXml(true);
+
+            //console.log(name, xml);
+
+            // восстанавливаем абзац и удаляем временный элемент
+            els.parent.insertBefore(els.p, els.new);
+            els.parent.remove(els.new);
+
+            // проверяем по схеме
+            me.verify(xml);
 		}
 	}
 );
