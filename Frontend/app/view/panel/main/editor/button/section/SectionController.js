@@ -39,6 +39,8 @@ Ext.define(
 				return;
 			}
 
+			//console.log('range', range);
+
 			viewportId = nodes.node.viewportId;
 
 			els.node = nodes.node.getElement();

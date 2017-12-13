@@ -29,14 +29,7 @@ Ext.define(
 
 		onKeyDownCtrlX: function (e)
 		{
-			var me = this;
-
-			e.stopPropagation();
-			e.preventDefault();
-
-			me.remove();
-
-			return false;
+			//
 		},
 
 		onFocus: function (e)
@@ -71,6 +64,14 @@ Ext.define(
 
 			me.callParent(arguments);
 		},
+
+		onCut: function (e)
+		{
+            var me = this;
+
+            // удаляем изображение из модели
+            me.remove();
+        },
 
 		/**
 		 * Удаляет изображение.

@@ -18,6 +18,11 @@ Ext.define(
 		htmlTag: 'img',
 		xmlTag: 'img',
 		cls: 'el-img',
+
+		listeners: {
+			cut: 'onCut'
+		},
+
 		defaultAttributes: {
 			tabindex: 0
 		},

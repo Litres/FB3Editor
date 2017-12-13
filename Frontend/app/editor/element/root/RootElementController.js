@@ -188,12 +188,12 @@ Ext.define(
 				el,
 				cmd;
 
-			console.log(focus);
+			//console.log(focus);
 
 			if (focus.nodeName === 'IMG')
 			{
 				el = focus.getElement();
-				el.fireEvent('cut');
+				el.fireEvent('cut', e);
 			}
 			else
 			{
