@@ -45,6 +45,12 @@ Ext.define(
 
             els.node = nodes.node.getElement();
             els.p = els.node.getStyleHolder();
+
+            if (!els.p)
+            {
+                return;
+            }
+
             els.parent = els.p.parent;
 
             // создаем временный элемент для проверки новой структуры

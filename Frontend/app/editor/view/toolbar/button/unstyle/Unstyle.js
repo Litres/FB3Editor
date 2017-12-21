@@ -56,7 +56,12 @@ Ext.define(
                 return res;
             }
 
-            range = sel.getRangeAt(0);
+            range = sel.rangeCount ? sel.getRangeAt(0) : null;
+
+            if (!range)
+            {
+                return false;
+            }
 
             els.common = range.commonAncestorContainer.getElement();
             els.first = range.startContainer.getElement();
