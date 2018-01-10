@@ -11,9 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.props.resources.ResourcesController',
 			'FBEditor.view.panel.main.props.resources.Info',
+            'FBEditor.view.button.resource.ReplaceResource',
 			'FBEditor.view.button.DeleteResource',
-			'FBEditor.view.button.SaveResource',
-			'FBEditor.view.button.MoveResource'
+            'FBEditor.view.button.MoveResource',
+			'FBEditor.view.button.SaveResource'
 		],
 
 		id: 'panel-props-resources',
@@ -49,7 +50,10 @@ Ext.define(
 				},
 				{
 					xtype: 'button-move-resource'
-				}
+				},
+                {
+                    xtype: 'button-replace-resource'
+                }
 			];
 
 			me.callParent(arguments);

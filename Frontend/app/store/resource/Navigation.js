@@ -8,11 +8,14 @@ Ext.define(
 	'FBEditor.store.resource.Navigation',
 	{
 		extend: 'Ext.data.TreeStore',
+
 		defaultRootText: 'Ресурсы',
 		rootVisible: false,
+
 		proxy: {
 			type: 'memory'
 		},
+
 		/*folderSort: true,
 		sorters: [
 			{
@@ -20,7 +23,9 @@ Ext.define(
 				direction: 'ASC'
 			}
 		],*/
+
 		filters: [], // обязательное свойство
+
 		root: {
 			//expandable: false,
 			icon: ' ',

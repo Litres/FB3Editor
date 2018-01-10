@@ -396,6 +396,99 @@ Ext.define(
 		},
 
         /**
+         * Заменяет существующий ресурс на новый из файла, сохраняя все связанные ссылки.
+		 * @param {String} nameResource Имя существующего ресурса.
+         * @param {Object} data Данные ресурса.
+         * @param {ArrayBuffer} data.content Бинарное содержимое файла.
+         * @param {Object} data.file Данные файла.
+         * @param {String} data.file.name Имя файла.
+         * @param {String} data.file.type Тип файла.
+         * @param {String} data.file.size Размер файла.
+         * @param {String} data.file.lastModifiedDate Дата последнего изменения файла.
+         */
+        reloadResource: function (nameResource, data)
+        {
+            var me = this,
+                file = data.file,
+                loader = me.loader,
+				elements,
+				id,
+                resData,
+                res;
+
+            // проверяем тип ресурса
+            if (file && !me.checkType(file.type))
+            {
+                throw Error('Недопустимый тип ресурса');
+            }
+
+            // существующий ресурс
+            res = me.getResource(nameResource);
+
+            // создаём данные ресурса
+            resData = data.getData ? data : Ext.create('FBEditor.resource.data.FileData', data);
+            resData = resData.getData();
+
+            if (FBEditor.accessHub && loader.getArt())
+            {
+                id = res.fileId;
+                elements = res.getElements();
+
+                // удаляем имеющийся ресурс
+                loader.remove(id).then(
+                    function (xml) {
+                        // сохраняем ресурс на хабе
+                        return me.saveToUrl(resData);
+                    },
+                    function (response) {
+                        Ext.log(
+                            {
+                                level: 'error',
+                                msg: 'Ошибка удаления ресурса',
+                                dump: response
+                            }
+                        );
+
+                        Ext.Msg.show(
+                            {
+                                title: 'Ошибка',
+                                message: 'Невозможно удалить ресурс',
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            }
+                        );
+                    }
+                ).then(
+                    function (xml) {
+                        // синхронизируем ресурсы с хабом
+                        me.syncResources(xml).then(
+                        	function (addedData)
+							{
+								// новый ресурс
+                                res = me.getResource(resData.name);
+
+                                // связываем со старыми элементами
+                                res.setElements(elements);
+
+                                // обновляем
+                                res.updateElements();
+							}
+						);
+                    }
+                );
+            }
+            else
+            {
+                // обновляем изображение текущего ресурса
+                res.updateData(resData);
+
+                me.sortData();
+                me.updateNavigation();
+                me.updatePanelResources();
+            }
+        },
+
+        /**
 		 * Создает новый ресурс.
          * @param {Object} resData Данные ресурса.
          */
@@ -577,8 +670,11 @@ Ext.define(
 				data = me.data,
 				addedData= [],
 				removedData = [],
+				promise,
 				remoteData,
 				json;
+
+			promise = Promise.resolve(true);
 
 			//console.log(xml);
 
@@ -659,21 +755,28 @@ Ext.define(
 
 			if (addedData.length)
 			{
-				// загружаем добавленные ресурсы
-				loader.loadResources(addedData).then(
-					function ()
+				promise = new Promise(
+					function (resolve, reject)
 					{
-						me.generateFolders();
-						me.sortData();
-						me.updateNavigation();
+                        // загружаем добавленные ресурсы
+                        loader.loadResources(addedData).then(
+                            function ()
+                            {
+                                me.generateFolders();
+                                me.sortData();
+                                me.updateNavigation();
 
-						Ext.log(
-							{
-								level: 'info',
-								msg: 'Добавлены новые ресурсы',
-								dump: addedData
-							}
-						);
+                                Ext.log(
+                                    {
+                                        level: 'info',
+                                        msg: 'Добавлены новые ресурсы',
+                                        dump: addedData
+                                    }
+                                );
+
+                                resolve(addedData);
+                            }
+                        );
 					}
 				);
 			}
@@ -697,6 +800,8 @@ Ext.define(
 				    }
 				);
 			}
+
+			return promise;
 		},
 
 		/**

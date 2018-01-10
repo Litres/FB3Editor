@@ -45,9 +45,10 @@ Ext.define(
 
 				if (data.isFolder)
 				{
-					// папки не могут иметь кнопку сохранения и пермещения
+					// папки не могут иметь некоторые кнопки
 					bridgeProps.Ext.getCmp('button-save-resource').setVisible(false);
 					bridgeProps.Ext.getCmp('button-move-resource').setVisible(false);
+                    bridgeProps.Ext.getCmp('button-replace-resource').setVisible(false);
 				}
 			}
 			else
@@ -97,7 +98,8 @@ Ext.define(
 				buttons = [
 					bridgeProps.Ext.getCmp('button-delete-resource'),
 					bridgeProps.Ext.getCmp('button-save-resource'),
-					bridgeProps.Ext.getCmp('button-move-resource')
+					bridgeProps.Ext.getCmp('button-move-resource'),
+                    bridgeProps.Ext.getCmp('button-replace-resource')
 				];
 				
 				Ext.Array.each(

@@ -66,6 +66,7 @@ Ext.define(
 			tplName = me.getTplName(tplType);
 			me.tpl = Ext.create(tplName);
 			me.store = Ext.create('FBEditor.store.resource.Resource');
+
 			me.callParent(arguments);
 		},
 

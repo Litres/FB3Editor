@@ -12,9 +12,11 @@ Ext.define(
 			'FBEditor.view.panel.resources.navigation.NavigationController',
 			'FBEditor.store.resource.Navigation'
 		],
+
 		id: 'panel-resources-navigation',
 		xtype: 'panel-resources-navigation',
 		controller: 'panel.resources.navigation',
+
 		useArrows: true,
 		animate: false,
 		manageHeight: false,
@@ -42,6 +44,7 @@ Ext.define(
 				bridge = FBEditor.getBridgeWindow();
 
 			me.store = Ext.create('FBEditor.store.resource.Navigation');
+
 			me.callParent(arguments);
 		},
 
@@ -52,10 +55,12 @@ Ext.define(
 				resData;
 
 			resData = bridge.FBEditor.resource.Manager.getData();
+
 			if (resData.length)
 			{
 				me.loadData(resData);
 			}
+
 			me.callParent(arguments);
 		},
 
@@ -70,6 +75,7 @@ Ext.define(
 
 			treeData = me.getTreeData(data);
 			me.store.loadData(treeData);
+
 			Ext.defer(
 				function ()
 				{
@@ -112,6 +118,7 @@ Ext.define(
 				    }
 			    }
 			);
+
 			rootTreeData = [
 				{
 					root: true,

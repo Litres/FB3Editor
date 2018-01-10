@@ -165,49 +165,33 @@ Ext.define(
 		/**
 		 * Открывает файл ресурса.
 		 * @param {Object} evt Событие открытие файла.
-		 * @return {Boolean} Успешно ли открытие.
+		 * @return {Promise|Boolean}
 		 */
 		openResource: function (evt)
 		{
 			var me = this,
 				file = me.getFileFromEvent(evt),
-				result = false;
+				promise = false;
 
 			if (file)
 			{
-				result = file.read(
+				promise = new Promise(
+					function (resolve, reject)
 					{
-						type: file.LOAD_TYPE_ARRAYBUFFER,
-						load: function (data)
-						{
-							try
-							{
-								FBEditor.resource.Manager.loadResource({file: file.file, content: data});
-							}
-							catch (e)
-							{
-								Ext.log(
-									{
-										level: 'error',
-										msg: e,
-										dump: e
-									}
-								);
-								Ext.Msg.show(
-									{
-										title: 'Ошибка',
-										message: 'Невозможно заугрузить ресурс ' + (e ? '(' + e + ')' : ''),
-										buttons: Ext.MessageBox.OK,
-										icon: Ext.MessageBox.ERROR
-									}
-								);
-							}
-						}
+                        file.read(
+                            {
+                                type: file.LOAD_TYPE_ARRAYBUFFER,
+                                load: function (data)
+                                {
+                                	resolve({file: file.file, content: data});
+                                }
+                            }
+                        );
 					}
 				);
 			}
 
-			return result;
+			return promise;
 		},
 
 		/**

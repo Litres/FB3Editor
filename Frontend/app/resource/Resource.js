@@ -38,34 +38,78 @@ Ext.define(
 
 		/**
 		 * Инициализирует ресурс.
-		 * @param {Object} data Данные ресурса.
+		 * @param {FBEditor.resource.data.AbstractData} data Данные ресурса.
 		 */
 		constructor: function (data)
 		{
-			var me = this,
-				img = new Image();
+			var me = this;
 
-			me.fileId = data.fileId || data.name;
-			me.content = data.content;
-			me.blob = data.blob;
-			me.url = data.url;
-			me.name = data.name;
-			me.baseName = data.baseName;
-			me.rootName = data.rootName;
-			me.modifiedDate = data.modifiedDate;
-			me.sizeBytes = data.sizeBytes;
-			me.type = data.type;
-			me.isCover = data.isCover;
-			me.size = me.getSizeFormat();
-			me.date = me.getDateFormat();
-			me.extension = me.getExtension();
-			me.elements = [];
-			img.src = me.url;
-			img.onload = function ()
-			{
-				me.width = img.width;
-				me.height = img.height;
-			};
+            me.elements = [];
+			me.setData(data);
+		},
+
+        /**
+		 * Возвращает связанные с ресурсом.
+         * @return {FBEditor.editor.element.ImgElement[]}
+         */
+        getElements: function ()
+		{
+			return Ext.clone(this.elements);
+		},
+
+        /**
+         * Связывает элементы с ресурсом.
+         * @param {FBEditor.editor.element.ImgElement[]} elements Элементы текста.
+         */
+        setElements: function (elements)
+        {
+            this.elements = elements;
+        },
+
+        /**
+         * Обновляет данные ресурса и связанные элементы в тексте.
+         * @param {FBEditor.resource.data.AbstractData} data Данные для обновления.
+         */
+        updateData: function (data)
+        {
+            var me = this;
+
+            me.setData(data);
+
+            // обновляем элементы в тексте
+            me.updateElements();
+        },
+
+        /**
+         * Устанавливает данные ресурса.
+         * @param {FBEditor.resource.data.AbstractData} data Данные.
+         */
+		setData: function (data)
+		{
+            var me = this,
+                img = new Image();
+
+            me.fileId = data.fileId || data.name;
+            me.content = data.content;
+            me.blob = data.blob;
+            me.url = data.url;
+            me.name = data.name;
+            me.baseName = data.baseName;
+            me.rootName = data.rootName;
+            me.modifiedDate = data.modifiedDate;
+            me.sizeBytes = data.sizeBytes;
+            me.type = data.type;
+            me.isCover = data.isCover;
+            me.size = me.getSizeFormat();
+            me.date = me.getDateFormat();
+            me.extension = me.getExtension();
+            img.src = me.url;
+
+            img.onload = function ()
+            {
+                me.width = img.width;
+                me.height = img.height;
+            };
 		},
 
 		/**
@@ -109,7 +153,7 @@ Ext.define(
 		},
 
 		/**
-		 * Удаляет элемент изображения тела книги из коллекци ресурса.
+		 * Удаляет элемент изображения тела книги из коллекции ресурса.
 		 * @param {FBEditor.editor.element.ImgElement} el Элемент изображения, использующий ресурс.
 		 */
 		removeElement: function (el)
@@ -127,6 +171,7 @@ Ext.define(
 					}
 				}
 			);
+
 			me.totalElements = elements.length;
 			me.elements = elements;
 		},

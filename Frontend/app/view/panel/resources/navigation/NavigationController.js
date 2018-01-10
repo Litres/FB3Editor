@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.command.OpenResources'
 		],
+
 		alias: 'controller.panel.resources.navigation',
 
 		/**
@@ -28,6 +29,7 @@ Ext.define(
 				folder;
 
 			me.callParent(arguments);
+
 			manager = bridge.FBEditor.resource.Manager;
 
 			if ((selectFunction = manager.getSelectFunction()) && !record.isLeaf())

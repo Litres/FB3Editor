@@ -11,8 +11,10 @@ Ext.define(
 		requires: [
 			'FBEditor.command.MoveResource'
 		],
+
 		id: 'button-move-resource',
 		xtype: 'button-move-resource',
+
 		text: 'Переместить',
 		cmdClass: 'FBEditor.command.MoveResource'
 	}
