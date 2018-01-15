@@ -16,7 +16,7 @@ Ext.define(
 		name: 'id',
 		fieldLabel: 'ID',
 		anchor: '100%',
-		regex: /^[_a-z0-9][0-9a-z._-]*$/i,
+		regex: /^[_a-z][0-9a-z._-]*$/i,
 
 		translateText: {
 			idError: 'Не соответствует схеме xsd:ID'
