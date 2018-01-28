@@ -28,7 +28,6 @@ Ext.define(
 				viewportId,
 				el;
 
-
 			try
 			{
 				me.newValue = me.newValue || data.newValue;

@@ -360,13 +360,18 @@ Ext.define(
 
 						helper = me.getNodeHelper();
 						nodes.node = helper.getNode(viewportId);
+						//console.log(nodes.node);
 
 						helper = el.getNodeHelper();
 						nodes.child = helper.getNode(viewportId);
+                        //console.log(nodes.child);
 
 						try
 						{
-							nodes.node.removeChild(nodes.child);
+							if (nodes.node.contains(nodes.child))
+							{
+								nodes.node.removeChild(nodes.child);
+                            }
 						}
 						catch (e)
 						{
