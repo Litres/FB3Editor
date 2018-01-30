@@ -1,0 +1,19 @@
+{
+  "name": "fb3editor",
+  "version": "0.0.2",
+  "description": "FB3Editor =========",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyBook/FB3Editor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MyBook/FB3Editor/issues"
+  },
+  "homepage": "https://github.com/MyBook/FB3Editor#readme"
+}
