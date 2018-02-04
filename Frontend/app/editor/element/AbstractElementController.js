@@ -983,50 +983,6 @@ Ext.define(
 			e.preventDefault();
 		},
 
-		/**
-		 * Перед копированием.
-		 * @param {Event} e Объект события.
-		 */
-		onBeforeCopy: function (e)
-		{
-			var me = this,
-				el = me.getElement(),
-				root;
-
-			e.stopPropagation();
-
-			root = el.getRoot();
-
-			// изменяем данные элементов перед копированием
-			root.beforeCopy();
-		},
-
-		/**
-		 * Копирование.
-		 * @param {Event} e Объект события.
-		 */
-		onCopy: function (e)
-		{
-			var me = this,
-				el = me.getElement(),
-				root;
-
-			//console.log('copy', e);
-
-			e.stopPropagation();
-
-			root = el.getRoot();
-
-			Ext.defer(
-				function ()
-				{
-					// изменяем данные элементов после копирования
-					root.afterCopy();
-				},
-				10 // задержка необходима для того, чтобы процесс начинался после копирования
-			);
-		},
-
 		onScroll: function (e)
 		{
 			//

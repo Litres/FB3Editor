@@ -74,12 +74,12 @@ Ext.define(
 				if (!html)
 				{
 					// получаем html из буфера обмена
-					html = evt.clipboardData.getData('text/html');
+					html = me.clipboardData.getHtml();
 
 					if (!html)
 					{
 						// получаем обычный текст из буфера обмена
-						html = evt.clipboardData.getData('text');
+						html = me.clipboardData.getText();
 
 						// преобразуем обычный текст к html
 						html = me.convertTextToHtml(html);
@@ -90,6 +90,8 @@ Ext.define(
 						html = html.replace(/\n+|\t+/g, ' ');
 					}
 				}
+
+				//console.log(html);
 
 				// создаем модель элемента из DOM
 				me.createModel(html);

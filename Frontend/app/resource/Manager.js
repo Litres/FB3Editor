@@ -1641,6 +1641,50 @@ Ext.define(
             panelResources.fireEvent('loadData', data);
 		},
 
+        /**
+         * Вставляет в xml данные всех изображений в виде base64.
+         * @param {String} xml Исходный xml.
+		 * @return {String} Преобразованный xml.
+         */
+        convertImgToBase64: function (xml)
+        {
+            var me = this,
+				images,
+				newXml;
+
+            newXml = xml;
+
+            // получаем все изображения из xml
+            images = newXml.match(/<img(.*?)>/ig);
+            //console.log('images', images);
+
+            Ext.each(
+                images,
+                function (item)
+                {
+                    var img,
+                        src,
+                        res,
+                        reg;
+
+                    img = item.match(/src="(.*?)"/i);
+                    src = img[1];
+                    //console.log(src);
+
+                    // ресурс
+                    res = me.getResource(src);
+                    //console.log(res);
+
+                    reg = new RegExp('<img src="' + src + '"', 'ig');
+
+                    // заменяем данные
+                    newXml = newXml.replace(reg, '<img src="' + res.base64 + '" id="' + res.fileId + '"');
+                }
+            );
+
+			return newXml;
+        },
+
 		/**
 		 * @private
 		 * Создает директории для их отображения.

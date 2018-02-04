@@ -27,6 +27,38 @@ Ext.define(
 			me.evt = evt;
 		},
 
+        /**
+		 * Возвращает данные из буфера в виде простого текста.
+         * @return {String}
+         */
+		getText: function ()
+		{
+            var me = this,
+                e = me.evt,
+                data = e.clipboardData,
+				text;
+
+            text = data.getData('text');
+
+            return text;
+		},
+
+        /**
+         * Возвращает данные из буфера в виде html.
+         * @return {String}
+         */
+        getHtml: function ()
+        {
+            var me = this,
+                e = me.evt,
+                data = e.clipboardData,
+                html;
+
+            html = data.getData('text/html');
+
+            return html;
+        },
+
 		/**
 		 * Устанавливает в буфер строку html.
 		 * @param {String} html
@@ -39,6 +71,19 @@ Ext.define(
 
 			data.setData('text/html', html);
 		},
+
+        /**
+         * Устанавливает в буфер текст.
+         * @param {String} text
+         */
+        setText: function (text)
+        {
+            var me = this,
+                e = me.evt,
+                data = e.clipboardData;
+
+            data.setData('text', text);
+        },
 
 		/**
 		 * Парсит RTF из буфера и возврщает список изображений.

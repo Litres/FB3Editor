@@ -398,7 +398,7 @@ Ext.define(
 				end: range.endOffset
 			};
 
-			console.log('els', els);
+			//console.log('els', els);
 
 			me.setSuspendEvent(true);
 
@@ -576,7 +576,7 @@ Ext.define(
 
 			me.setSuspendEvent(false);
 
-			console.log('getRangeXml', xml);
+			//console.log('getRangeXml', xml);
 			
 			return xml;
 		},

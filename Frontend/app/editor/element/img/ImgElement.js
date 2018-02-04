@@ -229,29 +229,6 @@ Ext.define(
 			return me.loadingResId === resId;
 		},
 
-		beforeCopy: function ()
-		{
-			var me = this,
-				resource = me.resource;
-
-			if (resource)
-			{
-				//me.updateSrc('#' + resource.fileId);
-			}
-		},
-
-		afterCopy: function ()
-		{
-			var me = this;
-
-			if (me.resource)
-			{
-				// после копирования восстанавливаем изображение
-				me.updateSrc(me.attributes.src);
-				//console.log('after copy img');
-			}
-		},
-
 		/**
 		 * @private
 		 * Связывает изображение с ресурсом.

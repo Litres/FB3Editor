@@ -32,9 +32,16 @@ Ext.define(
 		formatDate: 'd.m.Y H:i',
 
 		/**
+		 * @private
 		 * @property {FBEditor.editor.element.ImgElement[]} Элементы изображения в теле книги, связанные с ресурсом.
 		 */
 		elements: null,
+
+        /**
+		 * @private
+         * @property {FBEditor.editor.element.ImgElement} Элемент изображения, который вставлен в текст после копипаста.
+         */
+        pasteEl: null,
 
 		/**
 		 * Инициализирует ресурс.
@@ -55,6 +62,15 @@ Ext.define(
         getElements: function ()
 		{
 			return Ext.clone(this.elements);
+		},
+
+        /**
+		 * Возвращает элемент, который был вставлен в тексте после копипаста.
+         * @return {FBEditor.editor.element.ImgElement}
+         */
+		getPasteElement: function ()
+		{
+			return this.pasteEl;
 		},
 
         /**
@@ -110,6 +126,14 @@ Ext.define(
                 me.width = img.width;
                 me.height = img.height;
             };
+
+            // получаем base64
+            me.getBase64().then(
+                function (base64)
+                {
+                    me.base64 = base64;
+                }
+            );
 		},
 
 		/**
@@ -152,6 +176,17 @@ Ext.define(
 			}
 		},
 
+        /**
+		 * Устанавливает элемент, который вставлен в текст после копипаста.
+         * @param el
+         */
+        setPasteElement: function (el)
+		{
+			var me = this;
+
+			me.pasteEl = el;
+		},
+
 		/**
 		 * Удаляет элемент изображения тела книги из коллекции ресурса.
 		 * @param {FBEditor.editor.element.ImgElement} el Элемент изображения, использующий ресурс.
@@ -176,45 +211,57 @@ Ext.define(
 			me.elements = elements;
 		},
 
+        /**
+         * Обновляет связанный элемент.
+         */
+        updateElement: function (el)
+        {
+            var me = this,
+                panelProps,
+                focusEl,
+                manager,
+				data;
+
+            data = el.attributes;
+            data.src = me.fileId;
+
+            manager = el.getManager();
+
+            //console.log('el', el);
+
+            el.update(data);
+
+            if (manager)
+            {
+                focusEl = manager.getFocusElement();
+
+                if (el.equal(focusEl))
+                {
+                    // панель свойств
+                    panelProps = manager.getPanelProps();
+
+                    if (panelProps)
+                    {
+                        // обновляем информацию о выделенном элементе в панели свойств
+                        panelProps.fireEvent('loadData', el);
+                    }
+                }
+            }
+        },
+
 		/**
 		 * Обновляет связанные элементы.
 		 */
 		updateElements: function ()
 		{
 			var me = this,
-				elements = me.elements,
-				panelProps,
-				focusEl,
-				manager;
+				elements = me.elements;
 
 			Ext.each(
 				elements,
 				function (el)
 				{
-					var data;
-
-					data = el.attributes;
-					data.src = me.fileId;
-					el.update(data);
-
-					manager = manager || el.getManager();
-
-					if (manager)
-					{
-						focusEl = manager.getFocusElement();
-
-						if (el.equal(focusEl))
-						{
-							// панель свойств
-							panelProps = manager.getPanelProps();
-
-							if (panelProps)
-							{
-								// обновляем информацию о выделенном элементе в панели свойств
-								panelProps.fireEvent('loadData', el);
-							}
-						}
-					}
+					me.updateElement(el);
 				}
 			);
 		},
@@ -296,6 +343,36 @@ Ext.define(
 			ext = FBEditor.util.Format.getExtensionFile(fileName);
 
 			return ext;
+		},
+
+        /**
+		 * Возвращает данные ресурса в виде base64 строки (data:<image/type>;base64,<data>).
+         * @return {Promise}
+         */
+		getBase64: function ()
+		{
+			var me = this,
+				blob = me.blob,
+				promise;
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					var str,
+					reader;
+
+                    reader = new FileReader();
+                    reader.readAsDataURL(blob);
+
+                    reader.onloadend = function()
+                    {
+                        str = reader.result;
+                        resolve(str);
+                    };
+				}
+			);
+
+			return promise;
 		}
 	}
 );

@@ -13,9 +13,12 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el,
-				paste = FBEditor.resource.Manager.getPaste(),
+				resourceManager = FBEditor.resource.Manager,
+				paste = resourceManager.getPaste(),
 				modelProxy = me.modelProxy,
 				pasteProxy = modelProxy.pasteProxy,
+				existRes,
+				fileId,
 				src,
 				blob,
 				data,
@@ -36,59 +39,73 @@ Ext.define(
 
 			src = el.attributes.src;
 
-			if (/^data:(image\/.*?);base64,/i.test(src))
+			// айди ресурса
+			fileId = el.attributes.id || null;
+
+			// ищем существующий ресурс
+            res = fileId ? resourceManager.getResource(fileId) : null;
+
+			//console.log('res', res);
+
+			if (!res)
 			{
-				// получаем данные для ресурса из атрибута src
-				blob = FBEditor.util.Img.urlDataToBlob(src);
-				data = Ext.create('FBEditor.resource.data.PasteData', {blob: blob});
-				res = Ext.create('FBEditor.resource.Resource', data.getData());
+                if (/^data:(image\/.*?);base64,/i.test(src))
+                {
+                    // получаем данные для ресурса из атрибута src
+                    blob = FBEditor.util.Img.urlDataToBlob(src);
+                    data = Ext.create('FBEditor.resource.data.PasteData', {blob: blob});
+                    res = Ext.create('FBEditor.resource.Resource', data.getData());
+                }
+
+                if (/^(http|https):/i.test(src))
+                {
+                    // создаем внешний ресурс
+                    data = Ext.create('FBEditor.resource.data.ExternalData', {url: src});
+                    res = Ext.create('FBEditor.resource.ExternalResource', data.getData());
+                }
+
+                if (/^file:/i.test(src))
+                {
+                    // создаем ресурс из RTF (для Word)
+
+                    // получаем данные изображения из буфера формата RTF
+                    image = pasteProxy.getImageFromRtf(src);
+
+                    //console.log('file', src, image);
+
+                    if (image)
+                    {
+                        data = Ext.create('FBEditor.resource.data.PasteData', {blob: image.blob});
+                        res = Ext.create('FBEditor.resource.Resource', data.getData());
+                    }
+                }
 			}
 
-			if (/^(http|https):/i.test(src))
-			{
-				// создаем внешний ресурс
-				data = Ext.create('FBEditor.resource.data.ExternalData', {url: src});
-				res = Ext.create('FBEditor.resource.ExternalResource', data.getData());
-			}
+            if (res)
+            {
+                //console.log('add el', el, res);
 
-			if (/^file:/i.test(src))
-			{
-				// создаем ресурс из RTF (для Word)
+                // связываем ресурс с элементом изображения
+                res.addElement(el);
 
-				// получаем данные изображения из буфера формата RTF
-				image = pasteProxy.getImageFromRtf(src);
+                // указываем элемент, который вставлен в текст после копипаста
+                res.setPasteElement(el);
 
-				//console.log('file', src, image);
-				
-				if (image)
-				{
-					data = Ext.create('FBEditor.resource.data.PasteData', {blob: image.blob});
-					res = Ext.create('FBEditor.resource.Resource', data.getData());
-				}
-			}
+                // добавляем ресурс в очередь вставщика для последующего его сохранения
+                paste.add(res);
 
-			if (res)
-			{
-				//console.log('add el', el, res);
-				
-				// связываем ресурс с элементом изображения
-				res.addElement(el);
+                if (!el.parent.isStyleType)
+                {
+                    // помещаем изображение в абзац, если оно находится не в стилевом элементе или абзаце
+                    me.moveElsToNewHolder(el);
+                }
+            }
+            else
+            {
+                el.attributes.src = 'undefined';
+                Ext.log({level: 'warn', msg: 'Невозможно создать ресурс из буфера ' + src});
+            }
 
-				// добавляем ресурс в очередь вставщика для последующего его сохранения
-				paste.add(res);
-
-				if (!el.parent.isStyleType)
-				{
-					// помещаем изображение в абзац, если оно находится не в стилевом элементе или абзаце
-					me.moveElsToNewHolder(el);
-				}
-			}
-			else
-			{
-				el.attributes.src = 'undefined';
-				Ext.log({level: 'warn', msg: 'Невозможно создать ресурс из буфера ' + src});
-			}
-			
 			return true;
 		},
 

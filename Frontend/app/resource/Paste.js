@@ -64,34 +64,64 @@ Ext.define(
 			var me = this,
 				resources = Ext.clone(me.resources),
 				manager = me.manager,
-				loader = manager.loader;
+				loader = manager.loader,
+				saveResources = [];
 
 			if (resources.length)
 			{
 				//console.log('paste resources', resources);
 
-				if (FBEditor.accessHub && loader.getArt())
-				{
-					resources = resources.reverse();
+				// проверяем вставленные ресурсы на существование
+				Ext.each(
+                    resources,
+					function (res)
+					{
+						var existRes,
+                            pasteEl;
 
-					// сохраняем ресурсы на хабе
-					loader.saveResources(resources).then(
-						function (xml)
+                        existRes = manager.getResource(res.fileId);
+
+						if (!existRes)
 						{
-							// синхронизируем ресурсы с хабом
-							manager.syncResources(xml);
-							
-							me.afterSave();
+							// добавляем ресурс в коллекцию на сохранение
+                            saveResources.push(res);
 						}
-					);
-				}
-				else
-				{
-					// загружаем в редактор
-					manager.load(resources);
+						else
+						{
+                            pasteEl = existRes.getPasteElement();
+                            //console.log(pasteEl);
 
-					me.afterSave();
-				}
+							// обновляем изображение в тексте
+							existRes.updateElement(pasteEl);
+						}
+					}
+				);
+
+				if (saveResources.length)
+				{
+					if (FBEditor.accessHub && loader.getArt())
+                    {
+                        saveResources = saveResources.reverse();
+
+                        // сохраняем ресурсы на хабе
+                        loader.saveResources(saveResources).then(
+                            function (xml)
+                            {
+                                // синхронизируем ресурсы с хабом
+                                manager.syncResources(xml);
+
+                                me.afterSave();
+                            }
+                        );
+                    }
+                    else
+                    {
+                        // загружаем в редактор
+                        manager.load(saveResources);
+
+                        me.afterSave();
+                    }
+                }
 			}
 		},
 

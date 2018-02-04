@@ -947,10 +947,11 @@ Ext.define(
 				me.style = '';
 
 				// обновляем узлы элемента
+                manager.setSuspendEvent(true);
 				viewportId = Ext.Object.getKeys(me.nodes)[0];
 				oldNode = helper.getNode(viewportId);
-				manager.setSuspendEvent(true);
 				newNode = me.getNode(viewportId);
+                //console.log('updateView newNode, oldNode', me.xmlTag, newNode, oldNode);
 				oldNode.parentNode.replaceChild(newNode, oldNode);
 				me.sync(viewportId);
 				manager.setSuspendEvent(false);
@@ -1668,38 +1669,6 @@ Ext.define(
 					pos++;
 				}
 			}
-		},
-
-		/**
-		 * Изменяет данные элемента перед копированием.
-		 */
-		beforeCopy: function ()
-		{
-			var me = this;
-
-			Ext.Array.each(
-				me.children,
-				function (el)
-				{
-					el.beforeCopy();
-				}
-			);
-		},
-
-		/**
-		 * Изменяет данные элемента после копирования.
-		 */
-		afterCopy: function ()
-		{
-			var me = this;
-
-			Ext.Array.each(
-				me.children,
-				function (el)
-				{
-					el.afterCopy();
-				}
-			);
 		},
 
 		/**
