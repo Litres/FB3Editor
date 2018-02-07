@@ -12,30 +12,52 @@ Ext.define(
 		getData: function ()
 		{
 			var me = this,
-				fileType = me.getType(),
-				content = me.getArrayBuffer(),
-				blob,
+				data,
 				name,
-				data;
+				promise;
 			
 			name = me.getFileName().substring(me.rootPath.length + 1);
-			blob = me.getBlob(content, fileType);
 
-			data = {
-				blob: blob,
-				fileId: me.getId(),
-				content: content,
-				url: me.getUrl(),
-				name: name,
-				baseName: me.getBaseFileName(),
-				rootName: me.getFileName(),
-				modifiedDate: me.getDate(),
-				sizeBytes: me.getSize(),
-				type: fileType,
-				isCover: me.getIsCover()
-			};
+            data = {
+                fileId: me.getId(),
+                name: name,
+                baseName: me.getBaseFileName(),
+                rootName: me.getFileName(),
+                modifiedDate: me.getDate(),
+                isCover: me.getIsCover()
+            };
 
-			return data;
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    me.getArrayBuffer().then(
+                        function (arraybuffer)
+                        {
+                            data.content = arraybuffer;
+
+                            return me.getBlob();
+                        }
+                    ).then(
+                    	function (blob)
+						{
+                            data.blob = blob;
+                            data.sizeBytes = blob.size;
+                            data.type = blob.type;
+
+                            return me.getUrl();
+						}
+					).then(
+                        function (url)
+                        {
+                            data.url = url;
+
+                            resolve(data);
+                        }
+                    );
+				}
+			);
+
+			return promise;
 		}
 	}
 );

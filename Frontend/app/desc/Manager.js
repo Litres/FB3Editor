@@ -292,13 +292,17 @@ Ext.define(
 				desc;
 
 			desc = FBEditor.util.xml.Json.xmlToJson(xml);
+
+			if (!desc || !desc['fb3-description'])
+			{
+				throw Error ('Ошибка в description.xml');
+			}
+
 			desc = desc['fb3-description'];
 			me.fb3DescId = desc._id;
 			desc.xml = xml;
 
 			xml = xml.replace(/[\n\r\t]/g, '');
-			//console.log('xml desc', xml);
-			//console.log('desc', desc);
 
 			// конвертируем данные для формы
 			desc = converter.toForm(desc);

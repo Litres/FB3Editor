@@ -302,13 +302,99 @@ Ext.define(
 				resData,
 				promise;
 
+			function loadRes (resource, resources)
+			{
+				var pr;
+
+				pr = new Promise(
+					function (resolve, reject)
+					{
+                        resource.load().then(
+                            function ()
+                            {
+                                me.addResource(resource);
+
+                                //console.log('res', res);
+
+                                if (resource.isCover)
+                                {
+                                    // устанавливаем обложку
+                                    me.setCover(resource.name);
+                                }
+
+                                // обновляем элементы
+                                resource.updateElements();
+
+                                if (resources.length)
+                                {
+                                    // продолжаем грузить ресурсы
+                                    me.load(resources).then(
+                                        function ()
+                                        {
+                                            resolve();
+                                        }
+                                    );
+                                }
+                                else
+                                {
+                                    // все ресурсы загружены
+
+                                    //console.log('data', me.data);
+                                    me.sortData();
+                                    me.updateNavigation();
+                                    me.generateFolders();
+                                    me.setActiveFolder('');
+
+                                    resolve();
+                                }
+                            }
+                        );
+					}
+				);
+
+				return pr;
+			}
+
+			if (!resources)
+			{
+				return Promise.resolve(null);
+			}
+
 			resources = Ext.isArray(resources) ? resources : [resources];
 			resData = resources.pop();
-			res = resData.getData ? Ext.create('FBEditor.resource.Resource', resData.getData()) : resData;
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
+					if (resData.getData)
+					{
+						resData.getData().then(
+                            function (data)
+                            {
+                                res = Ext.create('FBEditor.resource.Resource', data);
+
+                                loadRes(res, resources).then(
+                                	function ()
+									{
+										resolve();
+									}
+								);
+                            }
+                        );
+                    }
+                    else
+					{
+						res = resData;
+
+                        loadRes(res, resources).then(
+                            function ()
+                            {
+                                resolve();
+                            }
+                        );
+					}
+
+					/*
 					res.load().then(
 						function ()
 						{
@@ -344,10 +430,12 @@ Ext.define(
 								me.updateNavigation();
 								me.generateFolders();
 								me.setActiveFolder('');
+
 								resolve();
 							}
 						}
 					);
+					*/
 				}
 			);
 

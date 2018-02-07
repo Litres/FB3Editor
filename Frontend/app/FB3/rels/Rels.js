@@ -53,7 +53,13 @@ Ext.define(
 			var me = this;
 
 			me.callParent(arguments);
-			me.books = me.getBooks();
+
+			me.getBooks().then(
+				function (books)
+				{
+					me.books = books;
+				}
+			);
 		},
 
 		create: function (structure, fileName)
@@ -74,97 +80,165 @@ Ext.define(
 		{
 			var me = this,
 				rels = me.rels,
-				json;
+				promise;
 
 			if (!rels)
 			{
-				json = me.getJson();
-				rels = json.Relationships.Relationship;
-				rels = Ext.isArray(rels) ? rels : [rels];
-				rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        me.getJson().then(
+                            function (json)
+                            {
+                                rels = json.Relationships.Relationship;
+                                rels = Ext.isArray(rels) ? rels : [rels];
+                                rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+
+                                resolve(rels);
+                            }
+                        );
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(rels);
 			}
 
-			return rels;
+			return promise;
 		},
 
 		/**
 		 * Возвращает книгу или все книги, если не передан параметр index.
 		 * @param {Number} [index] Индекс книги в массиве.
-		 * @return {FBEditor.FB3.rels.Book|FBEditor.FB3.rels.Book[]} Книга или массив книг.
+		 * @resolve {FBEditor.FB3.rels.Book|FBEditor.FB3.rels.Book[]} Книга или массив книг.
+		 * @return {Promise}
 		 */
 		getBooks: function (index)
 		{
 			var me = this,
 				books = me.books,
-				rels;
+				promise;
 
 			if (!books)
 			{
-				rels = me.getRels();
-				books = rels[FBEditor.FB3.rels.RelType.book];
-				books = Ext.isArray(books) ? books : [books];
-				
-				Ext.each(
-					books,
-				    function (item, i, selfBooks)
-				    {
-					    var targetName = item[me.prefix + 'Target'];
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        me.getRels().then(
+                            function (rels)
+                            {
+                                books = rels[FBEditor.FB3.rels.RelType.book];
+                                books = Ext.isArray(books) ? books : [books];
 
-					    // путь может быть абсолютным или относительным
-					    targetName = targetName.replace(/^[/]/, '');
+                                Ext.each(
+                                    books,
+                                    function (item, i, selfBooks)
+                                    {
+                                        var targetName = item[me.prefix + 'Target'];
 
-					    selfBooks[i] = Ext.create('FBEditor.FB3.rels.Book', me.getStructure(), targetName);
-				    }
+                                        // путь может быть абсолютным или относительным
+                                        targetName = targetName.replace(/^[/]/, '');
+
+                                        selfBooks[i] = Ext.create('FBEditor.FB3.rels.Book', me.getStructure(),
+											targetName);
+                                    }
+                                );
+
+                                books = Ext.isNumeric(index) ? books[index] : books;
+
+                                resolve(books);
+                            }
+                        );
+					}
 				);
 			}
-			
-			books = Ext.isNumeric(index) ? books[index] : books;
+			else
+			{
+                books = Ext.isNumeric(index) ? books[index] : books;
+				promise = Promise.resolve(books);
+			}
 
-			return books;
+			return promise;
 		},
 
 		/**
 		 * Возвращает обложку.
-		 * @return {FBEditor.FB3.rels.Thumb}
+		 * @resolve {FBEditor.FB3.rels.Thumb}
+		 * @return {Promise}
 		 */
 		getThumb: function ()
 		{
 			var me = this,
 				thumb = me.thumb,
-				rels;
+				promise;
 
 			if (!thumb)
 			{
-				rels = me.getRels();
-				thumb = rels[FBEditor.FB3.rels.RelType.thumbnail];
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        me.getRels().then(
+                            function (rels)
+                            {
+                                thumb = rels[FBEditor.FB3.rels.RelType.thumbnail];
 
-				if (thumb)
-				{
-					thumb = Ext.create('FBEditor.FB3.rels.Thumb', me.getStructure(), thumb[me.prefix + 'Target']);
-				}
+                                thumb = thumb ?
+                                    Ext.create('FBEditor.FB3.rels.Thumb', me.getStructure(),
+                                        thumb[me.prefix + 'Target']) :
+                                    null;
+
+                                resolve(thumb);
+                            }
+                        );
+					}
+				);
+			}
+			else
+			{
+                promise = Promise.resolve(thumb);
 			}
 
-			return thumb;
+			return promise;
 		},
 
 		/**
 		 * Возвращает мета-информацию.
-		 * @return {FBEditor.FB3.rels.Meta}
+		 * @resolve {FBEditor.FB3.rels.Meta}
+		 * @return {Promise}
 		 */
 		getMeta: function ()
 		{
 			var me = this,
 				meta = me.meta,
-				rels;
+				promise;
 
 			if (!meta)
 			{
-				rels = me.getRels();
-				meta = rels[FBEditor.FB3.rels.RelType.coreProperties];
-				meta = Ext.create('FBEditor.FB3.rels.Meta', me.getStructure(), meta[me.prefix + 'Target']);
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        me.getRels().then(
+                        	function (rels)
+							{
+                                meta = rels[FBEditor.FB3.rels.RelType.coreProperties];
+
+                                meta = meta ?
+									Ext.create('FBEditor.FB3.rels.Meta', me.getStructure(), meta[me.prefix + 'Target']) :
+									null;
+
+                                resolve(meta);
+							}
+						);
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(meta);
 			}
 
-			return meta;
+			return promise;
 		},
 
 		/**

@@ -45,91 +45,255 @@ Ext.define(
 						type: file.LOAD_TYPE_ARRAYBUFFER,
 						load: function (data)
 						{
-							var resourceManager = FBEditor.resource.Manager,
-								descManager = FBEditor.desc.Manager,
-								routeManager = FBEditor.route.Manager,
-								content = Ext.getCmp('panel-main-content'),
-								bodyManager,
-								structure,
-								thumb,
-								meta,
-								books,
-								desc,
-								bodies,
-								images,
-								contentBody,
-								contentTypes,
-								fileName;
+							var fileName;
 
 							try
 							{
-								Ext.getCmp('panel-treenavigation').fireEvent('clearSelection');
-
+                                // создаем модель файла fb3
 								me.fb3file = Ext.create('FBEditor.FB3.File', {file: file.file, content: data});
-								structure = me.fb3file.getStructure();
-								fileName = me.fb3file.getName();
-								thumb = structure.getThumb();
-								contentTypes = structure.getContentTypes();
-								contentTypes = FBEditor.converter.contentTypes.Data.toNormalize(contentTypes);
-								meta = structure.getMeta();
-								books = structure.getBooks();
-								desc = structure.getDesc(books[0]);
-								bodies = structure.getBodies(books[0]);
-								images = structure.getImages(bodies[0]);
-								contentBody = structure.getContent(bodies[0]);
 
-								//console.log('contentTypes', contentTypes);
-								//console.log('thumb', thumb);
-								//console.log('meta', meta);
-								//console.log('books', books);
-								//console.log('desc', desc);
-								//console.log('images', images);
-								//console.log('contentBody', contentBody);
+								// получаем имя файла
+                                fileName = me.fb3file.getName();
 
-								// удаляем параметры из хэша, которые предназначались для загрузки книги с хаба
-								routeManager.removeParams(['art', 'body_art']);
-
-								// показываем редактор описания на тот случай, если он еще не был зарендерин
-								content.fireEvent('contentDesc');
-
-								Ext.getCmp('panel-filename').fireEvent('setName', fileName);
-								Ext.suspendLayouts();
-
-								// загружаем описание в форму
-								descManager.reset();
-								descManager.loadDataToForm(desc);
-
-								if (thumb && !resourceManager.checkThumbInResources(thumb))
-								{
-									// если обложка находится не в директории ресурсов, то перемещаем ее туда
-									thumb.moveTo(resourceManager.getDefaultThumbPath());
-									images.push(thumb);
-								}
-
-								resourceManager.reset();
-
-								// загружаем ресурсы
-								resourceManager.load(images).then(
-									function ()
+                                // получаем структуру файла
+                                me.fb3file.getStructure().then(
+                                	function (structure)
 									{
-										if (thumb)
-										{
-											// обложка
-											resourceManager.setCover(thumb.getFileName());
-										}
-										
-										// редактор тела книги
-										bodyManager = FBEditor.getEditorManager();
-										bodyManager.reset();
+                                        var resourceManager = FBEditor.resource.Manager,
+                                            descManager = FBEditor.desc.Manager,
+                                            routeManager = FBEditor.route.Manager,
+                                            navigationPanel,
+                                            contentPanel,
+											namePanel,
+                                            localBooks,
+                                            localDesc,
+                                            localBodies,
+                                            localImages,
+                                            localThumb;
 
-										// переключаем контекст на редактор тела книги
-										content.openBody();
+                                        // панель редактора контента
+                                        contentPanel = Ext.getCmp('panel-main-content');
 
-										// создаем контент тела книги
-										bodyManager.createContent(contentBody);
+                                        // панель навигации
+                                        navigationPanel = Ext.getCmp('panel-treenavigation');
+
+                                        // убираем выделение c панели навигации
+                                        navigationPanel.fireEvent('clearSelection');
+
+                                        // удаляем параметры из хэша URL,
+										// которые предназначались для загрузки книги с хаба
+                                        routeManager.removeParams(['art', 'body_art']);
+
+                                        // показываем редактор описания на тот случай, если он еще не был зарендерин
+                                        contentPanel.fireEvent('contentDesc');
+
+                                        // панель названия книги
+                                        namePanel = Ext.getCmp('panel-filename');
+
+                                        // устанавливаем название книги
+                                        namePanel.fireEvent('setName', fileName);
+
+                                        // замораживаем отрисовку
+                                        Ext.suspendLayouts();
+
+                                        // получаем список книг
+                                        structure.getBooks().then(
+                                        	function (books)
+											{
+                                                // сохраняем в локальную переменную для последующего использования
+                                                localBooks = books;
+
+                                                //console.log('books', books);
+
+												// получаем описание
+												return structure.getDesc(books[0]);
+											}
+										).then(
+                                        	function (desc) {
+                                                // сохраняем в локальную переменную для последующего использования
+                                                localDesc = desc;
+
+                                                //console.log('desc', desc);
+
+                                                // сбрасываем форму описания
+                                                descManager.reset();
+
+                                                // загружаем описание в форму
+                                                descManager.loadDataToForm(desc);
+
+                                                // получаем список тел
+                                                return structure.getBodies(localBooks[0]);
+                                            }
+                                        ).then(
+                                            function (bodies) {
+                                                // сохраняем в локальную переменную для последующего использования
+                                                localBodies = bodies;
+
+                                                //console.log('bodies', bodies);
+
+                                                // получаем xml тела книги
+                                                return structure.getContent(bodies[0]);
+                                            }
+                                        ).then(
+                                            function (contentBody) {
+                                            	var bodyManager;
+
+                                                // редактор тела книги
+                                                bodyManager = FBEditor.getEditorManager();
+
+                                                // сбрасываем
+                                                bodyManager.reset();
+
+                                                // переключаем контекст на редактор тела книги
+                                                contentPanel.openBody();
+
+                                                // создаем контент тела книги
+                                                bodyManager.createContent(contentBody);
+
+                                                // получаем ресурсы
+                                                return structure.getImages(localBodies[0]);
+											}
+										).then(
+											function (images)
+											{
+												// сохраняем в локальную переменную для последующего использования
+												localImages = images;
+
+                                                //console.log('images', images);
+
+												// получаем обложку
+												return structure.getThumb();
+											}
+										).then(
+											function (thumb)
+											{
+												var bodyNavigationPanel;
+
+												// сохраняем в локальную переменную для последующего использования
+                                                localThumb = thumb;
+
+                                                if (thumb && !resourceManager.checkThumbInResources(thumb))
+                                                {
+                                                    // если обложка находится не в директории ресурсов,
+                                                    // то перемещаем ее туда
+                                                    thumb.moveTo(resourceManager.getDefaultThumbPath());
+
+                                                    localImages.push(thumb);
+                                                }
+
+                                                // дерево текста
+                                                bodyNavigationPanel = Ext.getCmp('panel-body-navigation');
+
+                                                // фокус на дерево текста
+                                                bodyNavigationPanel.selectRoot();
+
+                                                // размораживаем отрисовку
+                                                Ext.resumeLayouts(true);
+
+                                                // сбрасываем ресурсы
+                                                resourceManager.reset();
+
+                                                // загружаем ресурсы
+                                                return resourceManager.load(localImages)
+											}
+										).then(
+                                            function ()
+                                            {
+                                                if (localThumb)
+                                                {
+                                                    // устанавливаем обложку
+                                                    resourceManager.setCover(localThumb.getFileName());
+                                                }
+                                            }
+                                        ).catch(
+                                        	function (e)
+											{
+                                                Ext.log(
+                                                    {
+                                                        level: 'error',
+                                                        msg: e,
+                                                        dump: e
+                                                    }
+                                                );
+                                                Ext.Msg.show(
+                                                    {
+                                                        title: 'Ошибка',
+                                                        message: 'Невозможно открыть книгу (' + e.message + ')',
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    }
+                                                );
+
+                                                Ext.resumeLayouts(true);
+											}
+										);
+
+
+                                        /*
+                                        structure.getContentTypes().then(
+                                        	function (contentTypes)
+											{
+												var converter = FBEditor.converter.contentTypes.Data;
+
+                                                contentTypes = converter.toNormalize(contentTypes);
+											}
+										);
+										*/
+
+
+                                        //meta = structure.getMeta();
+
+                                        //books = structure.getBooks();
+
+										/*
+                                        structure.getBodies(books[0]).then(
+                                        	function (bodies)
+											{
+												return bodies;
+											}
+										);
+										*/
+
+                                        //images = structure.getImages(bodies[0]);
+
+                                        //contentBody = structure.getContent(bodies[0]);
+
+										/*
+                                        if (thumb && !resourceManager.checkThumbInResources(thumb))
+                                        {
+                                            // если обложка находится не в директории ресурсов, то перемещаем ее туда
+                                            thumb.moveTo(resourceManager.getDefaultThumbPath());
+                                            images.push(thumb);
+                                        }
+                                        */
+
+										/*
+                                        resourceManager.reset();
+
+                                        // загружаем ресурсы
+                                        resourceManager.load(images).then(
+                                            function ()
+                                            {
+                                                if (thumb)
+                                                {
+                                                    // обложка
+                                                    resourceManager.setCover(thumb.getFileName());
+                                                }
+
+                                                // редактор тела книги
+                                                bodyManager = FBEditor.getEditorManager();
+                                                bodyManager.reset();
+
+                                                // переключаем контекст на редактор тела книги
+                                                content.openBody();
+
+                                                // создаем контент тела книги
+                                                bodyManager.createContent(contentBody);
+                                            }
+                                        );
+                                        */
 									}
 								);
-
 							}
 							catch (e)
 							{
@@ -143,17 +307,14 @@ Ext.define(
 								Ext.Msg.show(
 									{
 										title: 'Ошибка',
-										message: 'Невозможно открыть книгу',
+										message: 'Невозможно открыть книгу (' + e.message + ')',
 										buttons: Ext.MessageBox.OK,
 										icon: Ext.MessageBox.ERROR
 									}
 								);
+
+                                Ext.resumeLayouts(true);
 							}
-
-							// фокус на дерево текста
-							Ext.getCmp('panel-body-navigation').selectRoot();
-
-							Ext.resumeLayouts(true);
 						}
 					}
 				);
@@ -212,14 +373,12 @@ Ext.define(
 		 * Сохраняет книгу FB3 в файле.
 		 * @param {Object} data Данные книги.
 		 * @param {Function} fn Функция обратного вызова.
-		 * @return {Boolean} Вызвано ли окно сохранения.
 		 */
 		saveFB3: function (data, fn)
 		{
 			var me = this,
 				fb3file = me.fb3file,
 				fileName,
-				blob,
 				fs;
 
 			if (fb3file)
@@ -233,15 +392,18 @@ Ext.define(
 			}
 
 			me.fb3file = fb3file;
-			blob = fb3file.generateBlob();
-			fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3';
-			fs = window.saveAs(blob, fileName);
 
-			// данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
-			fs.onwriteend = fn;
-			fs.onabort = fn;
+			fb3file.generateBlob().then(
+				function (blob)
+				{
+                    fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3';
+                    fs = window.saveAs(blob, fileName);
 
-			return fs ? true : false;
+                    // данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
+                    fs.onwriteend = fn;
+                    fs.onabort = fn;
+				}
+			);
 		},
 
 		/**

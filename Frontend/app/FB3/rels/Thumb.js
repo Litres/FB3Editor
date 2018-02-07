@@ -13,7 +13,7 @@ Ext.define(
 
 		getRels: function ()
 		{
-			return null;
+            return Promise.resolve(null);
 		}
 	}
 );

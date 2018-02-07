@@ -11,18 +11,32 @@ Ext.define(
 
 		getRels: function ()
 		{
-			return null;
+            return Promise.resolve(null);
 		},
 
 		/**
 		 * Возвращает мета-информацию в виде json.
-		 * @return {Object} Мета-информация.
+		 * @resolve {Object} Мета-информация.
+		 * @return {Promise}
 		 */
 		getContent: function ()
 		{
-			var me = this;
+			var me = this,
+				promise;
 
-			return me.getJson().coreProperties;
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    me.getJson().then(
+                    	function (json)
+						{
+							resolve(json.coreProperties);
+						}
+					);
+				}
+			);
+
+			return promise;
 		},
 
 		/**

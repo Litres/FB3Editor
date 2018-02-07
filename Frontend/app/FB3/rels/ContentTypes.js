@@ -26,18 +26,32 @@ Ext.define(
 
 		getRels: function ()
 		{
-			return null;
+			return Promise.resolve(null);
 		},
 
 		/**
 		 * Возвращает типы данных в виде json.
-		 * @return {Object} Типы данных.
+		 * @resolve {Object} Типы данных.
+		 * @return {Promise}
 		 */
 		getContent: function ()
 		{
-			var me = this;
+			var me = this,
+				promise;
 
-			return me.getJson().Types;
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    me.getJson().then(
+                        function (json)
+                        {
+                            resolve(json.Types);
+                        }
+                    );
+				}
+			);
+
+			return promise;
 		}
 	}
 );

@@ -24,19 +24,32 @@ Ext.define(
 			var me = this,
 				rels = me.rels,
 				relsName = me.getRelsName(),
-				parentDir = me.getParentDir();
+				parentDir = me.getParentDir(),
+				promise;
 
 			if (!rels)
 			{
-				rels = Ext.create('FBEditor.FB3.rels.BodyRels', me.getStructure(), relsName, parentDir);
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        rels = Ext.create('FBEditor.FB3.rels.BodyRels', me.getStructure(), relsName, parentDir);
+
+                        resolve(rels);
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(rels);
 			}
 
-			return rels;
+			return promise;
 		},
 
 		/**
 		 * Возвращает xml тела книги.
-		 * @return {String} Строка xml.
+		 * @resolve {String} Строка xml.
+		 * @return {Promise}
 		 */
 		getContent: function ()
 		{

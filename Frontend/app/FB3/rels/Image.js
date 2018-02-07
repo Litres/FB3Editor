@@ -22,7 +22,12 @@ Ext.define(
 		 * @property {String} Айди изображения в архиве.
 		 */
 		id: null,
-		
+
+        /**
+		 * Возвращает данные.
+		 * @resolve {Object}
+         * @return {Promise}
+         */
 		getData: function ()
 		{
 			var me = this;
@@ -32,7 +37,7 @@ Ext.define(
 
 		getRels: function ()
 		{
-			return null;
+            return Promise.resolve(null);
 		},
 
 		/**

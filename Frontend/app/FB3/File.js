@@ -44,24 +44,41 @@ Ext.define(
 
 		/**
 		 * Возвращает структуру архива FB3.
-		 * @return {FBEditor.FB3.Structure} Структура архива FB3.
+		 * @resolve {FBEditor.FB3.Structure} Структура архива FB3.
+		 * @return {Promise|FBEditor.FB3.Structure}
 		 */
 		getStructure: function ()
 		{
 			var me = this,
 				zip = me.zip,
 				data = me.data.content,
-				structure = me.structure;
+				structure = me.structure,
+				promise;
 
 			if (!structure)
 			{
-				zip.unPackage(data);
-				me.setFiles();
-				structure = Ext.create('FBEditor.FB3.Structure', me);
-				me.structure = structure.load();
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        zip.unPackage(data).then(
+                            function (unpackData)
+                            {
+                                me.setFiles();
+                                structure = Ext.create('FBEditor.FB3.Structure', me);
+                                me.structure = structure.load();
+
+                                resolve(structure);
+                            }
+                        );
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(structure);
 			}
 
-			return structure;
+			return promise;
 		},
 
 		/**
@@ -90,16 +107,20 @@ Ext.define(
 			    function (index, bookData)
 			    {
 				    structure.setDesc(books[index], bookData.desc);
-				    bodies = structure.getBodies(books[index]);
-				    
-				    Ext.each(
-					    bookData.bodies,
-					    function (bodyData, i)
-					    {
-						    structure.setContent(bodies[i], bodyData.content);
-						    structure.setImages(bodies[i], bodyData.images);
-					    }
-				    );
+
+				    structure.getBodies(books[index]).then(
+				    	function (bodies)
+						{
+                            Ext.each(
+                                bookData.bodies,
+                                function (bodyData, i)
+                                {
+                                    structure.setContent(bodies[i], bodyData.content);
+                                    structure.setImages(bodies[i], bodyData.images);
+                                }
+                            );
+						}
+					);
 			    }
 			);
 		},
@@ -181,14 +202,15 @@ Ext.define(
 
 		/**
 		 * Генерирует файл FB3 в Blob.
-		 * @return {Blob} Данные Blob.
+		 * @resolve {Blob} Данные Blob.
+		 * @return {Promise}
 		 */
 		generateBlob: function ()
 		{
 			var me = this,
 				zip = me.zip;
 
-			return zip.generateBlob();
+            return zip.generateBlob();
 		}
 	}
 );

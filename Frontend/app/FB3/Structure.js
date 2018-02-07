@@ -93,30 +93,39 @@ Ext.define(
 
 		getContentTypes: function ()
 		{
-			var me = this;
+			var me = this,
+				rel = me.contentTypes.rel;
 
-			return me.contentTypes.rel.getContent();
+			return rel.getContent();
 		},
 
 		getThumb: function ()
 		{
 			var me = this;
 
-			return me.getRels().getThumb();
+            return me.getRels().getThumb();
 		},
 
 		getMeta: function ()
 		{
-			var me = this;
+            var me = this,
+                promise;
 
-			return me.getRels().getMeta().getContent();
+            promise =  me.getRels().getMeta().then(
+            	function (meta)
+				{
+					return meta.getContent();
+				}
+			);
+
+            return promise;
 		},
 
 		getBooks: function ()
 		{
-			var me = this;
+            var me = this;
 
-			return me.getRels().getBooks();
+            return me.getRels().getBooks();
 		},
 
 		getDesc: function (book)
@@ -126,7 +135,16 @@ Ext.define(
 
 		getBodies: function (book)
 		{
-			return book.getRels().getBodies();
+            var promise;
+
+            promise =  book.getRels().then(
+                function (rels)
+                {
+                    return rels.getBodies();
+                }
+            );
+
+            return promise;
 		},
 
 		getContent: function (body)
@@ -136,7 +154,17 @@ Ext.define(
 
 		getImages: function (body)
 		{
-			return body.getRels().getImages();
+            var me = this,
+                promise;
+
+            promise =  body.getRels().then(
+                function (rels)
+                {
+                    return rels.getImages();
+                }
+            );
+
+            return promise;
 		},
 
 		setThumb: function (data)
@@ -148,9 +176,14 @@ Ext.define(
 
 		setMeta: function (data)
 		{
-			var me = this;
+            var me = this;
 
-			me.getRels().getMeta().setContent(data);
+            me.getRels().getMeta.then(
+            	function (meta)
+				{
+					meta.setContent(data);
+				}
+			);
 		},
 
 		setDesc: function (book, data)

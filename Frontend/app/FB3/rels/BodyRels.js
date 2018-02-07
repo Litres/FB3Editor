@@ -22,21 +22,38 @@ Ext.define(
 		{
 			var me = this,
 				rels = me.rels,
-				json;
+				promise;
 
 			if (!rels)
 			{
-				json = me.getJson();
-				rels = json.Relationships.Relationship || null;
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        me.getJson().then(
+                        	function (json)
+							{
+                                rels = json.Relationships.Relationship || null;
 
-				if (rels)
-				{
-					rels = Ext.isArray(rels) ? rels : [rels];
-					rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
-				}
+                                if (rels)
+                                {
+                                    rels = Ext.isArray(rels) ? rels : [rels];
+                                    rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+                                }
+
+                                me.rels = rels;
+
+                                resolve(rels);
+							}
+						);
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(rels);
 			}
 
-			return rels;
+			return promise;
 		},
 
 		/**
@@ -48,35 +65,58 @@ Ext.define(
 			var me = this,
 				images = me.images,
 				parentRelsDir = me.getParentRelsDir(),
-				rels = me.getRels();
+				promise;
 
-			if (!images && rels)
+			if (!images)
 			{
-				images = rels[FBEditor.FB3.rels.RelType.image];
-				images = Ext.isArray(images) ? images : [images];
-
-				Ext.each(
-					images,
-					function (item, i, selfImages)
+				promise = new Promise(
+					function (resolve, reject)
 					{
-						var id = item[me.prefix + 'Id'],
-							targetName = item[me.prefix + 'Target'],
-							fileName;
+                        me.getRels().then(
+                            function (rels)
+                            {
+                                if (rels)
+                                {
+                                    images = rels[FBEditor.FB3.rels.RelType.image];
+                                    images = Ext.isArray(images) ? images : [images];
 
-						// путь может быть абсолютным или относительным
-						fileName = targetName.substring(0, 1) !== '/' ?
-						           parentRelsDir + '/' + targetName : targetName/*targetName.substring(1)*/;
+                                    Ext.each(
+                                        images,
+                                        function (item, i, selfImages)
+                                        {
+                                            var id = item[me.prefix + 'Id'],
+                                                targetName = item[me.prefix + 'Target'],
+                                                fileName;
 
-						//console.log('parentRelsDir, targetName, fileName', parentRelsDir, targetName, fileName);
+                                            // путь может быть абсолютным или относительным
+                                            fileName = targetName.substring(0, 1) !== '/' ?
+                                                parentRelsDir + '/' + targetName : targetName;
 
-						selfImages[i] = Ext.create('FBEditor.FB3.rels.Image', me.getStructure(), fileName);
-						selfImages[i].setId(decodeURI(id));
-						//console.log('selfImages[i]', selfImages[i]);
+                                            selfImages[i] = Ext.create('FBEditor.FB3.rels.Image', me.getStructure(),
+												fileName);
+                                            selfImages[i].setId(decodeURI(id));
+                                        }
+                                    );
+
+                                    me.images = images;
+
+                                    resolve(images);
+                                }
+                                else
+                                {
+                                    resolve(null);
+                                }
+                            }
+                        );
 					}
 				);
 			}
+			else if (images)
+			{
+				promise = Promise.resolve(images);
+			}
 
-			return images;
+			return promise;
 		},
 
 		/**

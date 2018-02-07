@@ -90,6 +90,7 @@ Ext.define(
 			var me = this,
 				btn = me.data.btn,
 				desc = me.data.desc,
+                result = true,
 				resources,
 				bodyEditor,
 				bodyManager,
@@ -97,8 +98,7 @@ Ext.define(
 				descValues,
 				descXml,
 				bodyXml,
-				fb3data,
-				result;
+				fb3data;
 
 			if (!desc.isValid())
 			{
@@ -137,7 +137,7 @@ Ext.define(
 				]
 			};
 
-			result = FBEditor.file.Manager.saveFB3(
+			FBEditor.file.Manager.saveFB3(
 				fb3data,
 				function ()
 				{

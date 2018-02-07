@@ -20,7 +20,7 @@ Ext.define(
 		prefix: '',
 
 		/**
-		 * @private
+		 * @protected
 		 * @property {Object} Ссылки на части архива.
 		 */
 		rels: null,
@@ -67,6 +67,17 @@ Ext.define(
 		 */
 		blob: null,
 
+        /**
+         * @abstract
+         * Возвращает связи для файла.
+         * @resolve {Object} Связи.
+         * @return {Promise}
+         */
+        getRels: function ()
+        {
+            throw Error('Не реализован метод FB3.rels.AbstractRels#getRels');
+        },
+
 		/**
 		 * @param {FBEditor.FB3.Structure} structure Структура архива FB3.
 		 * @param {String} fileName Имя файла в архиве.
@@ -75,7 +86,8 @@ Ext.define(
 		constructor: function (structure, fileName, parentRelsDir)
 		{
 			var me = this,
-				fb3file;
+				fb3file,
+				mimeType;
 
 			fb3file = structure.getFb3file();
 
@@ -83,15 +95,32 @@ Ext.define(
 			{
 				me.create(structure, fileName);
 			}
-			
+
 			me.structure = structure;
 			me.fileName = decodeURI(fileName);
 			me.parentRelsDir = parentRelsDir ? parentRelsDir : null;
 			me.relsName = me.getRelsName();
 			me.file = me.structure.getFb3file().getFiles(fileName);
 			me.prefix = FBEditor.util.xml.Json.prefix;
-			me.rels = me.getRels();
-			me.blob = new Blob([me.file.asArrayBuffer()], {type: me.parseMimeType()});
+
+			me.getRels().then(
+				function (rels)
+				{
+					me.rels = rels;
+
+					return me.getBlob();
+				}
+			).then(
+                function (blob)
+                {
+                    mimeType = me.parseMimeType();
+
+                    if (mimeType)
+					{
+                        me.blob = new Blob([blob], {type: mimeType});
+					}
+                }
+            );
 		},
 
 		/**
@@ -111,16 +140,6 @@ Ext.define(
 		},
 
 		/**
-		 * @abstract
-		 * Возвращает связи для файла.
-		 * @return {Object} Связи.
-		 */
-		getRels: function ()
-		{
-			throw Error('Не реализован метод FB3.rels.AbstractRels#getRels');
-		},
-
-		/**
 		 * Возвращает структуру архива FB3.
 		 * @return {FBEditor.FB3.Structure} Структура архива FB3.
 		 */
@@ -137,10 +156,9 @@ Ext.define(
 		 */
 		getFileName: function ()
 		{
-			var me = this,
-				name = me.fileName;
+			var me = this;
 
-			return name;
+			return me.fileName;
 		},
 
 		/**
@@ -238,71 +256,176 @@ Ext.define(
 
 		/**
 		 * Возвращает содержмиое файла как JSON.
-		 * @return {Object} Xml в виде JSON.
+		 * @resolve {Object} Xml в виде JSON.
+		 * @return {Promise}
 		 */
 		getJson: function ()
 		{
 			var me = this,
-				text = me.getText(),
-				result;
+				promise;
 
-			result = FBEditor.util.xml.Json.xmlToJson(text);
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    me.getText().then(
+                        function (text)
+                        {
+                            var utilJson = FBEditor.util.xml.Json,
+                                json;
 
-			return result;
+                            json = utilJson.xmlToJson(text);
+
+                            resolve(json);
+                        }
+                    );
+				}
+			);
+
+			return promise;
 		},
 
 		/**
 		 * Возвращает содержмиое файла как текст.
-		 * @return {String} XML в виде текста.
+		 * @resolve {String} XML в виде текста.
+		 * @return {Promise}
 		 */
 		getText: function ()
 		{
 			var me = this,
 				file = me.file;
 
-			return file.asText();
+			return file.async('string');
 		},
 
 		/**
 		 * Возвращает содержимое файла в ArrayBuffer.
-		 * @return {ArrayBuffer} Содержимое файла.
+		 * @resolve {ArrayBuffer} Содержимое файла.
+         * @return {Promise}
 		 */
 		getArrayBuffer: function ()
 		{
-			return this.file.asArrayBuffer();
+            var me = this,
+                file = me.file;
+
+            return file.async('arraybuffer');
 		},
+
+        /**
+         * Возвращает содержимое файла в ArrayBuffer.
+         * @resolve {ArrayBuffer} Содержимое файла.
+         * @return {Promise}
+         */
+        getBlob: function ()
+        {
+            var me = this,
+                file = me.file,
+				blob = me.blob,
+				promise;
+
+            if (!blob)
+			{
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        file.async('blob').then(
+                        	function (blob)
+							{
+                                var mimeType = me.parseMimeType();
+
+                                me.blob = new Blob([blob], {type: mimeType});
+
+                                resolve(me.blob);
+							}
+						);
+					}
+				);
+
+			}
+			else
+			{
+                promise = Promise.resolve(blob);
+			}
+
+            return promise;
+        },
 
 		/**
 		 * Возвращает URL для доступа к ресурсу.
-		 * @return {String} Путь к картинке.
+		 * @resolve {String} Путь к картинке.
+		 * @return {Promise}
 		 */
 		getUrl: function ()
 		{
 			var me = this,
-				blob = me.blob,
-				url;
+				promise;
 
-			url = window.URL.createObjectURL(blob);
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					me.getBlob().then(
+						function (blob)
+						{
+							var url;
 
-			return url;
+                            url = window.URL.createObjectURL(blob);
+
+                            resolve(url);
+						}
+					);
+				}
+			);
+
+			return promise;
 		},
 
 		/**
 		 * Вовзращает размер файла в байтах.
-		 * @return {Number} Размер файла.
+		 * @resolve {Number} Размер файла.
+		 * @return {Promise}
 		 */
 		getSize: function ()
 		{
-			return this.blob.size;
+            var me = this,
+                promise;
+
+            promise = new Promise(
+                function (resolve, reject)
+                {
+                    me.getBlob().then(
+                        function (blob)
+                        {
+                            resolve(blob.size);
+                        }
+                    );
+                }
+            );
+
+            return promise;
 		},
 
 		/**
 		 * Вовзращает mime-тип файла.
-		 * @return {String} Mime-тип.
+		 * @resolve {String} Mime-тип.
+		 * @return {Promise}
 		 */
 		getType: function ()
 		{
-			return this.blob.type;
+            var me = this,
+                promise;
+
+            promise = new Promise(
+                function (resolve, reject)
+                {
+                    me.getBlob().then(
+                        function (blob)
+                        {
+                            resolve(blob.type);
+                        }
+                    );
+                }
+            );
+
+            return promise;
 		},
 
 		/**
@@ -331,15 +454,19 @@ Ext.define(
 				fb3file = me.structure.fb3file,
 				fileName = me.getFileName(),
 				newFileName,
-				data,
 				zip;
 
 			zip = fb3file.zip;
 			newFileName = folder + '/' + me.getBaseFileName();
-			data = me.file.asArrayBuffer();
-			zip.file(newFileName, data);
-			zip.remove(fileName);
-			me.fileName = newFileName;
+
+			me.getArrayBuffer().then(
+				function (arraybuffer)
+				{
+                    zip.file(newFileName, arraybuffer);
+                    zip.remove(fileName);
+                    me.fileName = newFileName;
+				}
+			);
 		},
 
 		/**

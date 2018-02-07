@@ -4,9 +4,13 @@ layout: default
 section: api
 ---
 
-__Description__ : Filter nested files/folders with the specified function.
+Filter nested files/folders with the specified function.
 
-__Arguments__
+__Returns__ : An array of matching ZipObject.
+
+__Since__: v1.0.0
+
+## Arguments
 
 name      | type     | description
 ----------|----------|------------
@@ -16,26 +20,20 @@ The predicate has the following signature : `function (relativePath, file) {...}
 
 name         | type      | description
 -------------|-----------|------------
-relativePath | string    | the filename and its path, reliatively to the current folder.
+relativePath | string    | the filename and its path, relative to the current folder.
 file         | ZipObject | the file being tested. See [ZipObject]({{site.baseurl}}/documentation/api_zipobject.html).
 
 The predicate must return true if the file should be included, false otherwise.
 
 
-__Returns__ : An array of matching ZipObject.
-
-__Throws__ : Nothing.
-
-<!-- __Complexity__ : **O(k)** where k is the number of entries. -->
-
-__Example__
+## Examples
 
 ```js
 var zip = new JSZip().folder("dir");
 zip.file("readme.txt", "content");
 zip.filter(function (relativePath, file){
   // relativePath == "readme.txt"
-  // file = {name:"dir/readme.txt",options:{...},asText:function}
+  // file = {name:"dir/readme.txt",options:{...},async:function}
   return true/false;
 });
 ```

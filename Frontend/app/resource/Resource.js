@@ -127,13 +127,16 @@ Ext.define(
                 me.height = img.height;
             };
 
-            // получаем base64
-            me.getBase64().then(
-                function (base64)
-                {
-                    me.base64 = base64;
-                }
-            );
+            if (me.blob)
+			{
+                // получаем base64
+                me.getBase64().then(
+                    function (base64)
+                    {
+                        me.base64 = base64;
+                    }
+                );
+			}
 		},
 
 		/**
@@ -352,17 +355,16 @@ Ext.define(
 		getBase64: function ()
 		{
 			var me = this,
-				blob = me.blob,
 				promise;
 
 			promise = new Promise(
 				function (resolve, reject)
 				{
 					var str,
-					reader;
+						reader;
 
                     reader = new FileReader();
-                    reader.readAsDataURL(blob);
+                    reader.readAsDataURL(me.blob);
 
                     reader.onloadend = function()
                     {

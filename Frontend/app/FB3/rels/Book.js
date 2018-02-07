@@ -27,7 +27,13 @@ Ext.define(
 			var me = this;
 
 			me.callParent(arguments);
-			me.desc = me.getDesc();
+
+			me.getDesc().then(
+				function (desc)
+				{
+					me.desc = desc;
+				}
+			);
 		},
 
 		getRels: function ()
@@ -35,31 +41,42 @@ Ext.define(
 			var me = this,
 				rels = me.rels,
 				relsName = me.getRelsName(),
-				parentDir = me.getParentDir();
+				parentDir = me.getParentDir(),
+				promise;
 
 			if (!rels)
 			{
-				rels = Ext.create('FBEditor.FB3.rels.BookRels', me.getStructure(), relsName, parentDir);
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        var bookRels = Ext.create('FBEditor.FB3.rels.BookRels', me.getStructure(), relsName, parentDir);
+
+                        resolve(bookRels);
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(rels);
 			}
 
-			return rels;
+			return promise;
 		},
 
 		/**
 		 * Возвращает описание книги.
-		 * @return {String} Строка xml.
+		 * @resolve {String} Строка xml.
+		 * @return {Promise}
 		 */
 		getDesc: function ()
 		{
 			var me = this,
-				desc = me.desc;
+				desc = me.desc,
+				promise;
 
-			if (!desc)
-			{
-				desc = me.getText();
-			}
+            promise = !desc ? me.getText() : Promise.resolve(desc);
 
-			return desc;
+			return promise;
 		},
 
 		/**

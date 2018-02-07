@@ -25,17 +25,28 @@ Ext.define(
 		/**
 		 * Распаковывает архив.
 		 * @param {ArrayBuffer} data Нераспокованные данные архива.
-		 * @return {Object} Распокованные данные архива.
+		 * @resolve {Object} Распокованные данные архива.
+		 * @return {Promise}
 		 */
 		unPackage: function (data)
 		{
 			var me = this,
 				zip = me.zip,
-				unPackData;
+				promise;
 
-			unPackData = zip.load(data);
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    zip.loadAsync(data).then(
+                    	function (unpackData)
+						{
+							resolve(unpackData);
+						}
+					)
+				}
+			);
 
-			return unPackData;
+			return promise;
 		},
 
 		/**
@@ -52,14 +63,28 @@ Ext.define(
 
 		/**
 		 * Генерирует архив в Blob.
-		 * @return {Blob} Данные Blob.
+		 * @resolve {Blob} Данные Blob.
+		 * @return {Promise}
 		 */
 		generateBlob: function ()
 		{
 			var me = this,
-				zip = me.zip;
+				zip = me.zip,
+				promise;
 
-			return zip.generate({type: 'blob'});
+			promise = new  Promise(
+				function (resolve, reject)
+				{
+                    zip.generateAsync({type: 'blob'}).then(
+                    	function (blob)
+						{
+							resolve(blob);
+						}
+					);
+				}
+			);
+
+			return promise;
 		},
 
 		/**

@@ -25,52 +25,85 @@ Ext.define(
 		{
 			var me = this,
 				rels = me.rels,
-				json;
+				promise;
 
 			if (!rels)
 			{
-				json = me.getJson();
-				rels = json.Relationships.Relationship;
-				rels = Ext.isArray(rels) ? rels : [rels];
-				rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+				promise = new Promise(
+					function (resolve, reject)
+					{
+                        me.getJson().then(
+                        	function (json)
+							{
+                                rels = json.Relationships.Relationship;
+                                rels = Ext.isArray(rels) ? rels : [rels];
+                                rels = Ext.Array.toValueMap(rels, me.prefix + 'Type', 2);
+
+                                resolve(rels);
+							}
+						);
+					}
+				);
+			}
+			else
+			{
+				promise = Promise.resolve(rels);
 			}
 
-			return rels;
+			return promise;
 		},
 
 		/**
 		 * Возвращает несколько тел книги.
-		 * @return {FBEditor.FB3.rels.Body[]} Массив тел книги.
+		 * @resolve {FBEditor.FB3.rels.Body[]} Массив тел книги.
+		 * @return {Promise}
 		 */
 		getBodies: function ()
 		{
 			var me = this,
 				bodies = me.bodies,
 				parentRelsDir = me.getParentRelsDir(),
-				rels;
+				promise;
 
 			if (!bodies)
 			{
-				rels = me.getRels();
-				bodies = rels[FBEditor.FB3.rels.RelType.body];
-				bodies = Ext.isArray(bodies) ? bodies : [bodies];
-				Ext.each(
-					bodies,
-					function (item, i, selfBodies)
+				promise = new Promise(
+					function (resolve, reject)
 					{
-						var targetName = item[me.prefix + 'Target'],
-							fileName;
+                        me.getRels().then(
+                            function (rels)
+                            {
+                                bodies = rels[FBEditor.FB3.rels.RelType.body];
+                                bodies = Ext.isArray(bodies) ? bodies : [bodies];
 
-						// путь может быть абсолютным или относительным
-						fileName = targetName.substring(0, 1) !== '/' ?
-						           parentRelsDir + '/' + targetName : targetName.substring(1);
+                                Ext.each(
+                                    bodies,
+                                    function (item, i, selfBodies)
+                                    {
+                                        var targetName = item[me.prefix + 'Target'],
+                                            fileName;
 
-						selfBodies[i] = Ext.create('FBEditor.FB3.rels.Body', me.getStructure(), fileName);
+                                        // путь может быть абсолютным или относительным
+                                        fileName = targetName.substring(0, 1) !== '/' ?
+                                            parentRelsDir + '/' + targetName : targetName.substring(1);
+
+                                        selfBodies[i] = Ext.create('FBEditor.FB3.rels.Body', me.getStructure(),
+											fileName);
+                                    }
+                                );
+
+                                resolve(bodies);
+                            }
+                        );
 					}
 				);
 			}
+			else
+			{
+				promise = Promise.resolve(bodies);
+			}
 
-			return bodies;
+			return promise;
 		}
 	}
 );
