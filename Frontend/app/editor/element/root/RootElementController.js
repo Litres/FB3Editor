@@ -214,7 +214,7 @@ Ext.define(
          */
         onBeforeCopy: function (e)
         {
-            //console.log('onBeforeCopy', e);
+            //console.log('navigator', navigator);
         },
 
         /**
@@ -227,27 +227,30 @@ Ext.define(
                 el = me.getElement(),
 				editorManager = el.getManager(),
                 resourceManager = FBEditor.resource.Manager,
+                clipboardData,
 				rangeXml,
-                clipboardData;
+                text;
 
             //console.log('onCopy', e);
 
-            // объект для работы с буфером
-            clipboardData = Ext.create('FBEditor.util.ClipboardData', e);
-
-            // предотвращаем вставку по умолчанию
             e.preventDefault();
 
             // получаем xml выделенного фрагмента текста
             rangeXml = editorManager.getRangeXml();
 
+            // получаем только текст, вырезая теги
+            text = rangeXml.replace(/<(.*?)>/ig, '');
+
             // вставляем данные всех выделенных изображений в скопированный текст в виде base64
             rangeXml = resourceManager.convertImgToBase64(rangeXml);
 
-            //console.log(rangeXml);
+            clipboardData = Ext.create('FBEditor.util.ClipboardData', e);
 
-            // записываем новые данные в буфер
+            // перезаписываем данные в буфер обмена
+            clipboardData.setText(text);
             clipboardData.setHtml(rangeXml);
+
+            e.preventDefault();
         }
 	}
 );

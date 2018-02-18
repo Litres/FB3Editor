@@ -32,6 +32,7 @@
     "xmllint": "http://syssgx.github.com/xml.js/js/xmllint.js",
     "jsdiff": "^2.2.2",
     "normalize-css": "^7.0.0",
-    "es6-promise-polyfill": "^1.2.0"
+    "es6-promise-polyfill": "^1.2.0",
+    "clipboard-polyfill": "https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js"
   }
 }

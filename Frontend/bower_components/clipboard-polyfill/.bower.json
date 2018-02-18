@@ -1,0 +1,14 @@
+{
+  "name": "clipboard-polyfill",
+  "_cacheHeaders": {
+    "ETag": "\"82fec6fd5caac2860583d9fe7afa0c33ba81b2db\"",
+    "Content-Length": "4757",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:82fec6fd5",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js",
+  "_direct": true
+}

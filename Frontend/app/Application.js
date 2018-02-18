@@ -57,6 +57,7 @@ Ext.define(
 			'FBEditor.route.Manager',
 			'FBEditor.scroll.Scroll',
 			'FBEditor.util.Ajax',
+            'FBEditor.util.ClipboardData',
 			'FBEditor.util.Diff',
 			'FBEditor.util.Format',
 			'FBEditor.util.Img',

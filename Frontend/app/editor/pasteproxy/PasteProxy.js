@@ -11,8 +11,7 @@ Ext.define(
 			'FBEditor.editor.pasteproxy.DomProxy',
 			'FBEditor.editor.pasteproxy.FileProxy',
 			'FBEditor.editor.pasteproxy.ModelProxy',
-		    'FBEditor.resource.data.PasteData',
-		    'FBEditor.util.ClipboardData'
+		    'FBEditor.resource.data.PasteData'
 		],
 
 		/**

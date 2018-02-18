@@ -123,6 +123,10 @@
             "includeInBundle": true
         },
         {
+            "path": "${workspace.dir}/bower_components/clipboard-polyfill/index.js",
+            "includeInBundle": true
+        },
+        {
             "path": "${workspace.dir}/bower_components/jszip/dist/jszip.js",
             "includeInBundle": true
         },
@@ -259,7 +263,7 @@
      */
     "production": {
         "loader": {
-            "cache": "716",
+            "cache": "717",
             "cacheParam": "_v"
         }
     },
