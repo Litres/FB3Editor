@@ -260,6 +260,8 @@ Ext.define(
 			var me = this,
 				elements = me.elements;
 
+            //console.log('el', elements);
+
 			Ext.each(
 				elements,
 				function (el)

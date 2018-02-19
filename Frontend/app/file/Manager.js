@@ -131,25 +131,6 @@ Ext.define(
 
                                                 //console.log('bodies', bodies);
 
-                                                // получаем xml тела книги
-                                                return structure.getContent(bodies[0]);
-                                            }
-                                        ).then(
-                                            function (contentBody) {
-                                            	var bodyManager;
-
-                                                // редактор тела книги
-                                                bodyManager = FBEditor.getEditorManager();
-
-                                                // сбрасываем
-                                                bodyManager.reset();
-
-                                                // переключаем контекст на редактор тела книги
-                                                contentPanel.openBody();
-
-                                                // создаем контент тела книги
-                                                bodyManager.createContent(contentBody);
-
                                                 // получаем ресурсы
                                                 return structure.getImages(localBodies[0]);
 											}
@@ -167,8 +148,6 @@ Ext.define(
 										).then(
 											function (thumb)
 											{
-												var bodyNavigationPanel;
-
 												// сохраняем в локальную переменную для последующего использования
                                                 localThumb = thumb;
 
@@ -181,20 +160,11 @@ Ext.define(
                                                     localImages.push(thumb);
                                                 }
 
-                                                // дерево текста
-                                                bodyNavigationPanel = Ext.getCmp('panel-body-navigation');
-
-                                                // фокус на дерево текста
-                                                bodyNavigationPanel.selectRoot();
-
-                                                // размораживаем отрисовку
-                                                Ext.resumeLayouts(true);
-
                                                 // сбрасываем ресурсы
                                                 resourceManager.reset();
 
                                                 // загружаем ресурсы
-                                                return resourceManager.load(localImages)
+                                                return resourceManager.load(localImages);
 											}
 										).then(
                                             function ()
@@ -204,6 +174,35 @@ Ext.define(
                                                     // устанавливаем обложку
                                                     resourceManager.setCover(localThumb.getFileName());
                                                 }
+
+                                                // получаем xml тела книги
+                                                return structure.getContent(localBodies[0]);
+                                            }
+                                        ).then(
+                                            function (contentBody) {
+                                                var bodyNavigationPanel,
+													bodyManager;
+
+                                                // редактор тела книги
+                                                bodyManager = FBEditor.getEditorManager();
+
+                                                // сбрасываем
+                                                bodyManager.reset();
+
+                                                // переключаем контекст на редактор тела книги
+                                                contentPanel.openBody();
+
+                                                // создаем контент тела книги
+                                                bodyManager.createContent(contentBody);
+
+                                                // дерево текста
+                                                bodyNavigationPanel = Ext.getCmp('panel-body-navigation');
+
+                                                // фокус на дерево текста
+                                                bodyNavigationPanel.selectRoot();
+
+                                                // размораживаем отрисовку
+                                                Ext.resumeLayouts(true);
                                             }
                                         ).catch(
                                         	function (e)

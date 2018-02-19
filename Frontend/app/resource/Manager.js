@@ -314,7 +314,7 @@ Ext.define(
                             {
                                 me.addResource(resource);
 
-                                //console.log('res', res);
+                                //console.log('res', resource);
 
                                 if (resource.isCover)
                                 {
