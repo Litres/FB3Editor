@@ -58,7 +58,7 @@ Ext.define(
 
             range = sel.rangeCount ? sel.getRangeAt(0) : null;
 
-            if (!range)
+            if (!range || !range.commonAncestorContainer.getElement)
             {
                 return false;
             }

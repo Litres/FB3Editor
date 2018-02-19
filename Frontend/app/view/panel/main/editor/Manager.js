@@ -53,7 +53,8 @@ Ext.define(
 		reset: function ()
 		{
 			var me = this;
-			
+
+			me.resetFocus();
 			me.loader.reset();
 			me._availableSyncButtons = null;
 		},
