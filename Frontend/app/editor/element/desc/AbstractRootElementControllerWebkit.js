@@ -17,6 +17,13 @@ Ext.define(
 			var me = this;
 
 			me.mixins.controller.onMouseUp.call(me, e);
-		}
+		},
+
+        onMouseDown: function (e)
+        {
+            var me = this;
+
+            me.mixins.controller.onMouseDown.call(me, e);
+        }
 	}
 );

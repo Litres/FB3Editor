@@ -59,40 +59,24 @@ Ext.define(
 			}
 		},
 
-		onMouseDown: function (e)
-		{
-			var me = this,
-				nodes = {},
-				els = {},
-				manager,
-				helper,
-				viewportId;
+        /**
+         * Отпускание кнопки мыши определяет элемент, на котором находится фокус.
+         * @param {Event} e Объект события.
+         */
+        onMouseUp: function (e)
+        {
+            var me = this,
+                nodes = {},
+                els = {};
 
-			nodes.target = e.target;
-			els.target = nodes.target.getElement ? nodes.target.getElement() : null;
+            nodes.target = e.target;
+            els.target = nodes.target.getElement ? nodes.target.getElement() : null;
 
-			if (els.target.isRoot)
-			{
-				// при клике по пустому корневому элементу ставим курсор в конец строки самого последнего абзаца
-
-				manager = els.target.getManager();
-				viewportId = nodes.target.viewportId;
-
-				els.last = els.target.getDeepLast();
-				helper = els.last.getNodeHelper();
-				nodes.last = helper.getNode(viewportId);
-				els.offset = els.last.isText ? els.last.text.length  : 0;
-
-				manager.setCursor(
-					{
-						startNode: nodes.last,
-						startOffset: els.offset
-					}
-				);
-
-				e.preventDefault();
-			}
-		},
+            if (!els.target.isRoot)
+            {
+                me.callParent(arguments);
+            }
+        },
 
 		onFocus: function (e)
 		{
@@ -128,7 +112,7 @@ Ext.define(
 
 				if (range)
 				{
-					console.log(range);
+					//console.log(range);
 					// восстанавливаем позицию курсора
 					manager.restoreCursor();
 				}

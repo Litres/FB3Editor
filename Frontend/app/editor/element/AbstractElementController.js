@@ -812,7 +812,7 @@ Ext.define(
 				manager,
 				node,
 				el;
-			
+
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
 			manager = el ? el.getManager() : null;

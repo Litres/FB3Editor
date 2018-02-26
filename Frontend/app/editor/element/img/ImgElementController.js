@@ -37,17 +37,20 @@ Ext.define(
 			var me = this,
 				el = me.getElement(),
 				sel = window.getSelection(),
+                target = e.target,
 				nodes = {},
 				els = {},
 				viewportId,
 				helper;
 
+			//console.log('sel', sel, e);
+
 			// текущий фокусный элемент в выделении
 			nodes.focus = sel.focusNode;
-			els.focus = nodes.focus.getElement();
-			viewportId = nodes.focus.viewportId;
+			els.focus = nodes.focus && nodes.focus.getElement ? nodes.focus.getElement() : null;
+			viewportId = target.viewportId;
 
-			if (!els.focus.isImg)
+			if (els.focus && !els.focus.isImg)
 			{
 				// снимаем выделение в тексте, чтобы не было одновременно двух выделений
 				sel.removeAllRanges();
