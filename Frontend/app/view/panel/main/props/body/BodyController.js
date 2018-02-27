@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.view.panel.main.props.body.BodyController',
 	{
 		extend: 'Ext.app.ViewController',
+
 		alias: 'controller.panel.props.body',
 
 		onBeforeActivate: function ()
@@ -85,6 +86,8 @@ Ext.define(
 				// обновляем инфу
 				propsInfo.update(data);
 
+                Ext.suspendLayouts();
+
 				// устанавливаем путь
 				propsPath.updateData(el);
 
@@ -126,6 +129,8 @@ Ext.define(
 						editor = null;
 					}
 				}
+
+                Ext.resumeLayouts();
 
 				if (editor)
 				{

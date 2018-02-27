@@ -123,7 +123,7 @@ Ext.define(
 			picture = me.getPicture();
 			picture.updateView({url: data.url});
 
-			me.isLoad = false;
+            me.isLoad = false;
 		},
 
 		/**

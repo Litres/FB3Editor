@@ -54,15 +54,16 @@ Ext.define(
 		xtype: 'panel-props-body',
 		controller: 'panel.props.body',
 
-		layout: 'anchor',
+        listeners: {
+            beforeactivate: 'onBeforeActivate',
+            afterRender: 'onAfterRender',
+            loadData: 'onLoadData'
+        },
+
+        layout: 'anchor',
+
 		defaults: {
 			anchor: '100%'
-		},
-
-		listeners: {
-			beforeactivate: 'onBeforeActivate',
-			afterRender: 'onAfterRender',
-			loadData: 'onLoadData'
 		},
 
 		/**

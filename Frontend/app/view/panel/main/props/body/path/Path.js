@@ -16,6 +16,7 @@ Ext.define(
 		xtype: 'panel-props-body-path',
 
 		margin: '0 0 10px 0',
+
 		defaults: {
 			style: {
 				float: 'left'

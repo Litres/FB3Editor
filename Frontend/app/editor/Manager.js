@@ -599,6 +599,15 @@ Ext.define(
 
 			if (el)
 			{
+                // сохраняем глобальную ссылку на активный менеджер
+                FBEditor.setEditorManager(me);
+
+                if (panelProps)
+                {
+                    // обновляем информацию о выделенном элементе в панели свойств
+                    panelProps.fireEvent('loadData', el);
+                }
+
 				me.focusElement = el;
 				me.selection = sel || window.getSelection();
 				range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
@@ -652,15 +661,6 @@ Ext.define(
 					{
 						me.syncButtons();
 					}
-				}
-
-                // сохраняем глобальную ссылку на активный менеджер
-                FBEditor.setEditorManager(me);
-
-                if (panelProps)
-				{
-					// обновляем информацию о выделенном элементе в панели свойств
-					panelProps.fireEvent('loadData', el);
 				}
 			}
 		},
