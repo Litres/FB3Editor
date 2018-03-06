@@ -1,13 +1,13 @@
 /**
- * Открывает файл, выбранный из окна проводника при помощи кнопки.
+ * Открывает файл, перетаскиваемый в браузер.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.command.OpenFile',
-	{
-		extend: 'FBEditor.command.AbstractCommand',
+    'FBEditor.command.DropFile',
+    {
+        extend: 'FBEditor.command.AbstractCommand',
 
         execute: function ()
         {
@@ -16,13 +16,13 @@ Ext.define(
                 fileManager = FBEditor.file.Manager,
                 evt,
                 fileEvent,
-				file,
+                file,
                 result;
 
             evt = data.evt;
 
             // событие
-            fileEvent = Ext.create('FBEditor.file.event.Button', evt);
+            fileEvent = Ext.create('FBEditor.file.event.Drop', evt);
 
             // файл
             file = fileEvent.getFile();
@@ -30,12 +30,15 @@ Ext.define(
             // открываем книгу
             result = fileManager.openFB3(file);
 
+            // очищаем данные
+            fileEvent.clear();
+
             return result;
         },
 
-		unExecute: function ()
-		{
-			// закрывает открытый файл
-		}
-	}
+        unExecute: function ()
+        {
+            // закрывает открытый файл
+        }
+    }
 );

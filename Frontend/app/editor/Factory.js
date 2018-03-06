@@ -103,6 +103,8 @@ Ext.define(
 
 			nameEl = 'FBEditor.editor.element.' + n + 'Element';
 
+			//console.log(name, nameEl);
+
 			try
 			{
 				attributes = attributes || {};

@@ -69,6 +69,11 @@ Ext.define(
 
                                 resolve(structure);
                             }
+                        ).catch(
+                            function (e)
+                            {
+                                reject(e);
+                            }
                         );
 					}
 				);

@@ -6,6 +6,9 @@ Ext.define(
 	'FBEditor.view.main.MainController',
 	{
 	    extend: 'Ext.app.ViewController',
+		requires: [
+            'FBEditor.command.DropFile'
+		],
 
 	    alias: 'controller.main',
 
@@ -90,6 +93,38 @@ Ext.define(
 				me.onCheckWidthPanels();
 			}
 		},
+
+        /**
+		 * Вызывается при перетаскивании файла в браузер в момент отпускания файла.
+         * @param {DragEvent} e Событие.
+         */
+		onDrop: function (e)
+		{
+			var me = this,
+				cmd;
+
+			e.preventDefault();
+
+            // команда открытия файла
+            cmd = Ext.create('FBEditor.command.DropFile', {evt: e});
+
+            if (cmd.execute())
+            {
+                FBEditor.HistoryCommand.add(cmd);
+            }
+		},
+
+        /**
+         * Вызывается при перетаскивании файла в браузер.
+         * @param {DragEvent} e Событие.
+         */
+        onDragover: function (e)
+        {
+            var me = this;
+
+            // отменяем поведение по умолчанию
+            e.preventDefault();
+        },
 
 		/**
 		 * Вызывается перед закрытием главного окна.

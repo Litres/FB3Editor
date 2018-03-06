@@ -312,7 +312,7 @@ Ext.define(
 			me.loadingProcess = true;
 
 			// создаем контент в полях редактора текста
-			Ext.Array.each(
+			Ext.each(
 				editorNames,
 				function (name)
 				{
@@ -371,13 +371,18 @@ Ext.define(
 				// редактор текста
 				bodyEditor = editor.getBodyEditor();
 
+                //console.log('bodyEditor', bodyEditor);
+
 				// менеджер редактора
 				manager = bodyEditor.getManager();
+
+                //console.log('manager', manager);
 
 				// создаем контент редактора из xml-строки
 				manager.createContent(data);
 			}
 
+			//console.log('editor', editor.rendered);
 
 			if (editor.rendered)
 			{

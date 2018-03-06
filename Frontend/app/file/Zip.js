@@ -42,7 +42,12 @@ Ext.define(
 						{
 							resolve(unpackData);
 						}
-					)
+					).catch(
+						function (e)
+						{
+							reject(e);
+						}
+					);
 				}
 			);
 

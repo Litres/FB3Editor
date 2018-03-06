@@ -25,6 +25,8 @@ Ext.define(
 
         listeners: {
             resize: 'onResize',
+            drop: 'onDrop',
+            dragover: 'onDragover',
             focusDetachPanels: 'onFocusDetachPanels',
             checkWidthPanels: 'onCheckWidthPanels',
             closedetachpanels: 'onDetachPanel',
@@ -106,6 +108,21 @@ Ext.define(
 						}
 					}
 				);
+
+				// добавляем события Drag&Drop
+                me.getEl().on(
+                    {
+                        drop: function (e)
+                        {
+                            this.fireEvent('drop', e.event, this);
+                        },
+                        dragover: function (e)
+                        {
+                            this.fireEvent('dragover', e.event, this);
+                        },
+                        scope: me
+                    }
+                );
 			}
 
 			me.callParent(arguments);

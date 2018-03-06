@@ -20,6 +20,7 @@ Ext.define(
 		constructor: function (content)
 		{
 			var me = this,
+				fn,
 				ce,
 				ct;
 
@@ -33,10 +34,15 @@ Ext.define(
 				return FBEditor.editor.Factory.createElementText(text);
 			};
 
-			//console.log(content);
+			//console.log('content', content);
+
+            fn = new Function('ce, ct', 'var a = ' + content + '; return a;');
+            me.content = fn(ce, ct);
 
 			// преобразование строки в объект
-			eval('me.content = ' + content);
+            //me.content = eval('(' + content + ')');
+
+           // console.log('me.content', me.content);
 		},
 
 		/**
