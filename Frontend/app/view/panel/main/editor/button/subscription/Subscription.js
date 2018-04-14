@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.subscription',
 		
 		html: '<i class="fa fa-thumb-tack"></i>',
-		tooltip: 'Подпись',
+
+		tooltipText: 'Подпись',
 		elementName: 'subscription'
 	}
 );

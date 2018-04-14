@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.subtitle',
 		
 		html: '<i class="fa fa-h-square fa-lg"></i>',
-		tooltip: 'Подзаголовок',
+
+		tooltipText: 'Подзаголовок',
 		elementName: 'subtitle'
 	}
 );

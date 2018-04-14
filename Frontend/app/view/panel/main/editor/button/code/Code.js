@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.code',
 
 		html: '<i class="fa fa-code"></i>',
-		tooltip: 'Код',
+
+		tooltipText: 'Код',
 		elementName: 'code'
 	}
 );

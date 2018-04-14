@@ -451,18 +451,16 @@ Ext.define(
 			var me = this,
 				target = e.target,
 				manager,
-				keymap,
 				el;
 
 			el = target.getElement ? target.getElement() : null;
 
 			if (el)
 			{
-				// проверяем сочитание нажатых клавиш
+                manager = el.getManager();
 
-				manager = el.getManager();
-				keymap = manager.getKeymap();
-				keymap.key(e);
+                // провереям нажатие горячих клавиш
+                manager.checkHotkeys(e);
 			}
 		},
 

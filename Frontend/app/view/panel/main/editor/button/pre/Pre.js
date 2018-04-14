@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.pre',
 		
 		html: '<span style="position: relative; font-family: monospace; font-size: 1.4em; top: 2px;">M</span>',
-		tooltip: 'Предварительно отформатированный текст (Ctrl+M)',
+
+		tooltipText: 'Предварительно отформатированный текст',
 		elementName: 'pre'
 	}
 );

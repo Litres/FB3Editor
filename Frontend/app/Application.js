@@ -53,6 +53,7 @@ Ext.define(
 			'FBEditor.command.HistoryCommand',
 			'FBEditor.csrf.Csrf',
 			'FBEditor.file.Manager',
+            'FBEditor.hotkeys.Manager',
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
 			'FBEditor.scroll.Scroll',
@@ -60,6 +61,7 @@ Ext.define(
             'FBEditor.util.ClipboardData',
 			'FBEditor.util.Diff',
 			'FBEditor.util.Format',
+            'FBEditor.util.Hotkey',
 			'FBEditor.util.Img',
 			'FBEditor.util.xml.Jsxml',
 			'FBEditor.webworker.Manager',
@@ -194,6 +196,9 @@ Ext.define(
 
 			// инициализируем менеджер ресурсов
 			FBEditor.resource.Manager.init();
+
+            // инициализируем менеджер горячих клавиш
+            FBEditor.hotkeys.Manager.init();
 
 			// получаем список токенов csrf и определяем доступность хаба
 			me.initCsrf();

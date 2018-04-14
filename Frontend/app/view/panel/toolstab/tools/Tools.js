@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
+            'FBEditor.view.panel.toolstab.tools.button.hotkeys.Hotkeys',
 			'FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols'
 		],
 
@@ -42,7 +43,10 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-tools-button-unprintsymbols'
-				}
+				},
+                {
+                    xtype: 'panel-toolstab-tools-button-hotkeys'
+                }
 			];
 
 			me.callParent(arguments);

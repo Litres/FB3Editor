@@ -12,8 +12,8 @@ Ext.define(
 		xtype: 'editor-toolbar-button-strong',
 
 		html: '<i class="fa fa-bold"></i>',
-		tooltip: 'Полужирный (Ctrl+B)',
 
-		elementName: 'strong'
+		elementName: 'strong',
+        tooltipText: 'Полужирный'
 	}
 );

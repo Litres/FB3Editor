@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.ol',
 		
 		html: '<i class="fa fa-list-ol"></i>',
-		tooltip: 'Нумерованный список',
+
+		tooltipText: 'Нумерованный список',
 		elementName: 'ol'
 	}
 );

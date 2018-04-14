@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.span',
 		
 		html: '<i class="fa fa-anchor"></i>',
-		tooltip: 'span',
+
+		tooltipText: 'span',
 		elementName: 'span'
 	}
 );

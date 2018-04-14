@@ -22,7 +22,7 @@ Ext.define(
 		/**
 		 * @private
 		 * @property {Object} Токены.
-		 * @property {String} Object.csrf Токен
+		 * @property {String} Object.csrf Токен.
 		 * @property {Object} Object.csrfs Список токенов.
 		 */
 		data: null,
@@ -35,6 +35,7 @@ Ext.define(
 
 		/**
 		 * Получает список токенов.
+		 * @resolve {Object}
 		 * @return {Promise}
 		 */
 		init: function ()

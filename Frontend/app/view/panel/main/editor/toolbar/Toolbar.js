@@ -123,6 +123,126 @@ Ext.define(
 			];
 		},
 
+        linkHotkeys: function ()
+        {
+            var me = this;
+
+            me.hotkeys = [
+				{
+					xtype: 'main-editor-button-notes',
+                    numberSlot: 1
+                },
+				{
+                    xtype: 'main-editor-button-notebody',
+                    numberSlot: 2
+                },
+				{
+                    xtype: 'main-editor-button-titlebody',
+                    numberSlot: 3
+                },
+				{
+                    xtype: 'main-editor-button-section',
+                    numberSlot: 4
+                },
+				{
+                    xtype: 'main-editor-button-title',
+                    numberSlot: 5
+                },
+				{
+                    xtype: 'main-editor-button-epigraph',
+                    numberSlot: 6
+                },
+				{
+                    xtype: 'main-editor-button-annotation',
+                    numberSlot: 7
+                },
+				{
+                    xtype: 'main-editor-button-subscription',
+                    numberSlot: 8
+                },
+				{
+                    xtype: 'main-editor-button-div',
+                    numberSlot: 9
+                },
+				{
+                    xtype: 'main-editor-button-subtitle',
+                    numberSlot: 10
+                },
+				{
+                    xtype: 'main-editor-button-blockquote',
+                    numberSlot: 11
+                },
+				{
+                    xtype: 'main-editor-button-pre',
+                    numberSlot: 12
+                },
+				{
+                    xtype: 'main-editor-button-poem',
+                    numberSlot: 13
+                },
+				{
+                    xtype: 'main-editor-button-ul',
+                    numberSlot: 14
+                },
+				{
+                    xtype: 'main-editor-button-ol',
+                    numberSlot: 15
+                },
+				{
+                    xtype: 'main-editor-button-img',
+                    numberSlot: 16
+                },
+				{
+                    xtype: 'main-editor-button-a',
+                    numberSlot: 17
+                },
+				{
+                    xtype: 'main-editor-button-note',
+                    numberSlot: 18
+                },
+				{
+                    xtype: 'main-editor-button-strong',
+                    numberSlot: 19
+                },
+				{
+                    xtype: 'main-editor-button-em',
+                    numberSlot: 20
+                },
+				{
+                    xtype: 'main-editor-button-underline',
+                    numberSlot: 21
+                },
+				{
+                    xtype: 'main-editor-button-strikethrough',
+                    numberSlot: 22
+                },
+				{
+                    xtype: 'main-editor-button-spacing',
+                    numberSlot: 23
+                },
+				{
+                    xtype: 'main-editor-button-sub',
+                    numberSlot: 24
+                },
+				{
+                    xtype: 'main-editor-button-sup',
+                    numberSlot: 25
+                },
+				{
+                    xtype: 'main-editor-button-code',
+                    numberSlot: 26
+                },
+				{
+                    xtype: 'main-editor-button-span',
+                    numberSlot: 27
+                },
+				{
+                    xtype: 'main-editor-button-unstyle',
+                    numberSlot: 28
+                }
+            ];
+        },
+
 		getButton: function (name)
 		{
 			var me = this,
@@ -131,75 +251,6 @@ Ext.define(
 
 			xtype = 'main-editor-button-' + name;
 			btn = Ext.ComponentQuery.query(xtype)[0];
-
-			return btn;
-		},
-
-		/**
-		 * Выполняте нажатие по кнопке форматирования.
-		 * @param {String} name Имя кнопки.
-		 */
-		callClickButton: function (name)
-		{
-			var me = this,
-				btn = me.getButton(name);
-
-			function doClick(button)
-			{
-				if (!button.disabled)
-				{
-					if (button.enableToggle)
-					{
-						button.toggle();
-					}
-
-					button.fireEvent('click');
-				}
-			}
-
-			function afterVerifyResult(button)
-			{
-				// удаляем событие, чтобы не было повтора
-				button.removeListener('afterVerifyResult', afterVerifyResult);
-				
-				// делаем клик по кнопке
-				doClick(button);
-				
-				// удаляем кнопку
-				button.destroy();
-			}
-
-			if (btn)
-			{
-				// клик по кнопке
-				doClick(btn);
-			}
-			else
-			{
-				// создаем временную кнопку
-				btn = me.createTempButton(name);
-
-				// событие вызовется после синхронизации кнопки
-				btn.on('afterVerifyResult',	afterVerifyResult);
-
-				// синхронизируем
-				btn.fireEvent('sync');
-			}
-		},
-
-		/**
-		 * Создает временную кнопку, которая помто будет удалена.
-		 * @return {FBEditor.editor.view.toolbar.button.AbstractButton} Кнопка.
-		 */
-		createTempButton: function (name)
-		{
-			var me = this,
-				btn,
-				xtype;
-
-			xtype = 'main-editor-button-' + name;
-			btn = Ext.widget(xtype);
-			btn.setToolbar(me);
 
 			return btn;
 		},

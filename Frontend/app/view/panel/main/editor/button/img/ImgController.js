@@ -22,7 +22,10 @@ Ext.define(
 				sel,
 				range;
 
-			e.stopPropagation();
+            if (e)
+            {
+                e.stopPropagation();
+            }
 
 			sel = manager.getSelection();
 

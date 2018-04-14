@@ -57,12 +57,17 @@ Ext.define(
 
 			me.createController();
 
-			// заменяем сущности на спецсимволы <, >
+            // заменяем сущности на спецсимволы
+            me.text = Ext.String.htmlDecode(me.text);
+
+            /*
+            // заменяем сущности на спецсимволы <, >
 			me.text = me.text.replace(/&lt;/g, '<');
 			me.text = me.text.replace(/&gt;/g, '>');
 
 			// преобразуем сущность &nbsp; в пробел
 			me.text = me.text.replace(/&nbsp;/g, " ");
+			*/
 		},
 
 		getNode: function (viewportId)

@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.notes',
 		
 		html: '<i class="fa fa-clone"></i>',
-		tooltip: 'Сноски',
+
+		tooltipText: 'Сноски',
 		elementName: 'notes'
 	}
 );

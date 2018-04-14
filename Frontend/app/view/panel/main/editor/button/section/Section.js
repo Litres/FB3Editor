@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.section',
 		
 		html: '<i class="fa fa-cube"></i>',
-		tooltip: 'Вложенная секция (Ctrl+Shift+S)',
+
+		tooltipText: 'Вложенная секция',
 		elementName: 'section',
 
 		createOpts: {

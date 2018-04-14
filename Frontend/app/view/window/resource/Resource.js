@@ -8,8 +8,10 @@ Ext.define(
 	'FBEditor.view.window.resource.Resource',
 	{
 		extend: 'Ext.Window',
+
 		xtype: 'window-resource',
 		id: 'window-resource',
+
 		title: 'Выбор ресурса',
 		//minWidth: 400,
 		//minHeight: 400,

@@ -16,7 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.ul',
 		
 		html: '<i class="fa fa-list-ul"></i>',
-		tooltip: 'Маркированный список',
+
+		tooltipText: 'Маркированный список',
 		elementName: 'ul'
 	}
 );

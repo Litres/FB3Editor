@@ -16,8 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.title',
 
 		html: '<i class="fa fa-header"></i>',
-		tooltip: 'Заголовок (Ctrl+H)',
-		
+
+		tooltipText: 'Заголовок',
 		elementName: 'title'
 	}
 );

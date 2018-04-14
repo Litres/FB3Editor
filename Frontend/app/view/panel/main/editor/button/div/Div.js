@@ -16,8 +16,8 @@ Ext.define(
 		controller: 'main.editor.button.div',
 		
 		html: '<i class="fa fa-cubes"></i>',
-		tooltip: 'Блок (Ctrl+D)',
-		
+
+		tooltipText: 'Блок',
 		elementName: 'div'
 	}
 );

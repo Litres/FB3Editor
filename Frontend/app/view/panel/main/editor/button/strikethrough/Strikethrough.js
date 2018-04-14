@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.strikethrough',
 		
 		html: '<i class="fa fa-strikethrough"></i>',
-		tooltip: 'Зачёркнутый (Alt+Shift+5)',
+
+		tooltipText: 'Зачёркнутый',
 		elementName: 'strikethrough'
 	}
 );

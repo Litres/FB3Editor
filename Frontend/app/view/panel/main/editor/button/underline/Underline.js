@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.underline',
 
 		html: '<i class="fa fa-underline"></i>',
-		tooltip: 'Подчёркнутый (Ctrl+U)',
+
+		tooltipText: 'Подчёркнутый',
 		elementName: 'underline'
 	}
 );

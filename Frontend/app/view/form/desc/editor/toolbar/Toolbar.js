@@ -15,35 +15,6 @@ Ext.define(
 		id: 'form-desc-editor-toolbar',
 		xtype: 'form-desc-editor-toolbar',
 
-        initComponent: function ()
-        {
-            var me = this;
-
-            me.items = [
-                {
-                    xtype: 'editor-toolbar-button-strong'
-                },
-                {
-                    xtype: 'editor-toolbar-button-em'
-                },
-                {
-                    xtype: 'editor-toolbar-button-a'
-                },
-                {
-                    xtype: 'editor-toolbar-button-unstyle'
-                }/*,
-				{
-					xtype: 'tbspacer',
-					width: 20
-				},
-				{
-					xtype: 'editor-toggleButton'
-				}*/
-            ];
-
-            me.callParent(arguments);
-        },
-
 		afterRender: function ()
 		{
 			var me = this,
@@ -51,18 +22,37 @@ Ext.define(
 
 			me.callParent(arguments);
 
-			// добавляем кнопку уборки
-
-			cleanBtn = Ext.widget('form-desc-editor-toolbar-button-cleaner');
+            // кнопка уборки
+            cleanBtn = Ext.widget('form-desc-editor-toolbar-button-cleaner');
             cleanBtn.setToolbar(me);
 
-			me.add(
-				[
+            me.add(
+            	[
+					{
+						xtype: 'editor-toolbar-button-strong'
+					},
+					{
+						xtype: 'editor-toolbar-button-em'
+					},
+					{
+						xtype: 'editor-toolbar-button-a'
+					},
+					{
+						xtype: 'editor-toolbar-button-unstyle'
+					},
+					/*,
 					{
 						xtype: 'tbspacer',
 						width: 20
 					},
-					cleanBtn
+					{
+						xtype: 'editor-toggleButton'
+					},*/
+                    {
+                        xtype: 'tbspacer',
+                        width: 20
+                    },
+                    cleanBtn
 				]
 			);
 

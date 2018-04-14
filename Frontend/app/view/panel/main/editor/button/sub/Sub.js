@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.sub',
 		
 		html: '<i class="fa fa-subscript"></i>',
-		tooltip: 'Нижний индекс (Ctrl+,)',
+
+		tooltipText: 'Нижний индекс',
 		elementName: 'sub'
 	}
 );

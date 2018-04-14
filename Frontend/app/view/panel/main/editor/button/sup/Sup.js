@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.sup',
 		
 		html: '<i class="fa fa-superscript"></i>',
-		tooltip: 'Верхний индекс (Ctrl+.)',
+
+		tooltipText: 'Верхний индекс',
 		elementName: 'sup'
 	}
 );

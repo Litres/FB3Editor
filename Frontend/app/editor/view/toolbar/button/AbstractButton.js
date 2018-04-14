@@ -14,16 +14,30 @@ Ext.define(
 		],
 
 		controller: 'editor.toolbar.button',
+        xtype: 'editor-toolbar-button',
+
+        listeners: {
+            click: 'onClick',
+            sync: 'onSync'
+        },
 
 		disabled: true,
 		tooltipType: 'title',
 
-		listeners: {
-			click: 'onClick',
-			sync: 'onSync'
-		},
+        /**
+		 * @property {String} Имя элемента.
+         */
+		elementName: '',
 
-		elementName: null,
+        /**
+         * @property {String} Подсказка кнопки.
+         */
+        tooltipText: '',
+
+        /**
+		 * @property {Number} Номер слота горячей клавиши, к которому привязана кнопка.
+         */
+        numberSlot: null,
 
 		/**
 		 * @property {Object} Опции, которые передаются в команду создания элемента.
@@ -45,6 +59,9 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this;
+
+			// инициализируем горячие клавиши для кнопки
+			me.initHotkey();
 
 			me.callParent(arguments);
 		},
@@ -122,13 +139,6 @@ Ext.define(
 		 */
 		getEditorManager: function ()
 		{
-			/*
-			var me = this,
-				editor = me.getEditor();
-
-			return editor.getManager();
-			*/
-
 			return FBEditor.getEditorManager();
 		},
 
@@ -139,6 +149,84 @@ Ext.define(
 		isActiveSelection: function ()
 		{
 			return false;
+		},
+
+        /**
+		 * Возвращает номер слота горячей клавиши, к которому привящана кнопка.
+		 * @return {Number}
+         */
+        getNumberSlot: function ()
+		{
+			return this.numberSlot;
+		},
+
+        /**
+		 * @private
+		 * Устанавливает горячие клавиши для кнопки.
+         */
+        initHotkey: function ()
+		{
+			var me = this,
+				toolbar = me.getToolbar(),
+				xtype = me.getXType(),
+				hotkeysManager = FBEditor.hotkeys.Manager,
+				numberSlot,
+				hotkeys,
+				slot,
+				data;
+
+			// получаем связи кнопок с горячими клавишами
+			hotkeys = toolbar.getHotkeys();
+
+			Ext.each(
+				hotkeys,
+				function (item)
+				{
+					if (item.xtype === xtype)
+					{
+						numberSlot = item.numberSlot;
+						me.numberSlot = numberSlot;
+
+						return false;
+					}
+				}
+			);
+
+			if (numberSlot)
+			{
+                // получаем слот горячей клавиши для текщуего элемента
+                slot = hotkeysManager.getSlot(numberSlot);
+                data = slot.getData();
+			}
+
+            me.updateTooltip(data);
+		},
+
+        /**
+		 * Обновляет подсказку кнопки.
+         * @param {Object} [data] Данные сочетания клавиш.
+         * @param {Number} data.slot
+         * @param {String} [data.key]
+         * @param {Boolean} [data.ctrl]
+         * @param {Boolean} [data.alt]
+         * @param {Boolean} [data.shift]
+         */
+		updateTooltip: function (data)
+		{
+			var me = this,
+                tooltip = me.tooltipText,
+                hotkeysManager = FBEditor.hotkeys.Manager,
+				keysText;
+
+			if (data)
+			{
+                // текст сочетания клавиш
+                keysText = hotkeysManager.getFormatKeysText(data);
+                tooltip += keysText ? ' (' + keysText + ')' : '';
+			}
+
+            // подсказка кнопки
+            me.setTooltip(tooltip);
 		}
 	}
 );

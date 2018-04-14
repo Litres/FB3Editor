@@ -264,3 +264,15 @@ body {
 .main-editor-toolbar-responsive-panel .x-btn {
 	margin: 1px 0;
 }
+
+/* редактор горячих клавиш */
+.window-hotkeys-slot {
+	padding: 5px;
+}
+.window-hotkeys-slot:hover {
+	background-color: #B9E7DC;
+	cursor: pointer;
+}
+.window-hotkeys-slot-keys {
+	font-weight: bold;
+}

@@ -185,7 +185,7 @@ Ext.define(
 
 			// xsl-трансформация xml в промежуточную строку, которая затем будет преобразована в элемент
 			xsl = FBEditor.xsl.Editor.getXsl();
-			//console.log(xsl);
+			//console.log(xml);
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
 
 			// нормализуем строку
@@ -881,6 +881,49 @@ Ext.define(
 			if (toolbar)
 			{
 				toolbar.fireEvent('disableButtons');
+			}
+		},
+
+        /**
+		 * Проверяет нажатие горячих клавиш.
+         * @param {KeyboardEvent} e Событие нажатия клавиши.
+         */
+        checkHotkeys: function (e)
+		{
+			var me = this,
+                hotkeysManager = FBEditor.hotkeys.Manager,
+				data,
+				evt,
+                numberSlot,
+                editor,
+                toolbar;
+
+			// обертка события
+			evt = Ext.create('Ext.event.Event', e);
+
+			if (!evt.isSpecialKey() && (evt.ctrlKey || evt.shiftKey || evt.altKey))
+			{
+				data = {
+					key: e.key.toUpperCase(),
+					ctrl: evt.ctrlKey,
+					shift: evt.shiftKey,
+					alt: evt.altKey
+				};
+
+                // получаем слот, связанный с горячими клавишами
+                numberSlot = hotkeysManager.getNumberSlot(data);
+
+                //console.log('numberSlot', numberSlot, data);
+
+                if (numberSlot)
+                {
+                    e.preventDefault();
+                    editor = me.getEditor();
+                    toolbar = editor.getToolbar();
+
+                    // выполняем соответствующую функцию
+                    toolbar.callClickButton(numberSlot);
+                }
 			}
 		},
 

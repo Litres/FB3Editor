@@ -16,9 +16,9 @@ Ext.define(
         xtype: 'editor-toolbar-button-unstyle',
 
         html: '<i class="fa fa-eraser"></i>',
-        tooltip: 'Убрать форматирование',
 
         elementName: 'unstyle',
+        tooltipText: 'Убрать форматирование',
 
         isActiveSelection: function ()
         {

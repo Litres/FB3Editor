@@ -40,6 +40,12 @@ Ext.define(
 		 */
 		syncButtons: null,
 
+        /**
+         * @private
+         * @property {Array} Хранит связи кнопок и горячих клавиш.
+         */
+        hotkeys: null,
+
 		/**
 		 * @private
 		 * @property {FBEditor.editor.view.Editor} Редактор текста.
@@ -61,12 +67,24 @@ Ext.define(
 
 		afterRender: function ()
 		{
-			var me = this;
+			var me = this,
+                hotkeysManager = FBEditor.hotkeys.Manager;
 
 			me.callParent(arguments);
 
             // создаем список кнопок для синхронизации
 			me.createSyncButtons();
+
+			// связываем кнопки с горячими клавишами
+			me.linkHotkeys();
+
+			// отслеживаем обновление горячих клавиш
+            hotkeysManager.on(
+                {
+                    changed: me.updateHotkeys,
+					scope: me
+                }
+            );
 		},
 
 		/**
@@ -84,6 +102,34 @@ Ext.define(
                 'editor-toolbar-button-unstyle'
 			];
 		},
+
+        /**
+         * @template
+         * Связывает кнопки с горячими клавишами.
+         */
+        linkHotkeys: function ()
+        {
+            var me = this;
+
+            me.hotkeys = [
+                {
+                    xtype: 'editor-toolbar-button-a',
+                    numberSlot: 17
+                },
+                {
+                    xtype: 'editor-toolbar-button-em',
+                    numberSlot: 20
+                },
+                {
+                    xtype: 'editor-toolbar-button-strong',
+                    numberSlot: 19
+                },
+                {
+                    xtype: 'editor-toolbar-button-unstyle',
+                    numberSlot: 27
+                }
+            ];
+        },
 
 		/**
 		 * Добавляет кнопку для синхронизации.
@@ -141,6 +187,15 @@ Ext.define(
 			return this.editor;
 		},
 
+        /**
+         * Возвращает связи кнопок с горячими клавишами.
+         * @return {Array}
+         */
+        getHotkeys: function ()
+        {
+            return this.hotkeys;
+        },
+
 		/**
 		 * Возвращает кнопку переключения между редактором исходного xml и редактором обычного текста.
 		 * @return {FBEditor.editor.view.toggleButton.ToggleButton}
@@ -172,6 +227,111 @@ Ext.define(
 
 			return btn;
 		},
+
+        /**
+		 * Возвращает кнопку, которая привязана к соответствуещему слоту горячих клавиш.
+         * @param {Number} numberSlot Номер слота.
+         * @return {FBEditor.editor.view.toolbar.button.AbstractButton} Кнопка.
+         */
+        getButtonForSlot: function (numberSlot)
+        {
+            var me = this,
+                btn,
+                query;
+
+            query = 'editor-toolbar-button[numberSlot=' + numberSlot + ']';
+			btn = me.down(query);
+
+            return btn;
+        },
+
+        /**
+         * Выполняет нажатие по кнопке форматирования, которая связана с соответствующим слотом горячих клавиш.
+         * @param {Number} numberSlot Номер слота.
+         */
+        callClickButton: function (numberSlot)
+        {
+            var me = this,
+                btn = me.getButtonForSlot(numberSlot);
+
+            function doClick(button)
+            {
+                if (!button.disabled)
+                {
+                    if (button.enableToggle)
+                    {
+                        button.toggle();
+                    }
+
+                    button.fireEvent('click');
+                }
+            }
+
+            function afterVerifyResult(button)
+            {
+                // удаляем событие, чтобы не было повтора
+                button.removeListener('afterVerifyResult', afterVerifyResult);
+
+                // делаем клик по кнопке
+                doClick(button);
+
+                // удаляем кнопку
+                button.destroy();
+            }
+
+            //console.log('btn', numberSlot, btn);
+
+            if (btn)
+            {
+                // клик по кнопке
+                doClick(btn);
+            }
+            else
+            {
+                // создаем временную кнопку
+                btn = me.createTempButton(numberSlot);
+
+                // событие вызовется после синхронизации кнопки
+                btn.on('afterVerifyResult',	afterVerifyResult);
+
+                // синхронизируем
+                btn.fireEvent('sync');
+            }
+        },
+
+        /**
+         * Создает временную кнопку, которая потом будет удалена.
+         * @param {Number} numberSlot Номер слота горячей клавиши.
+         * @return {FBEditor.editor.view.toolbar.button.AbstractButton} Кнопка.
+         */
+        createTempButton: function (numberSlot)
+        {
+            var me = this,
+                hotkeys = me.getHotkeys(),
+                btn = null,
+                xtype;
+
+            Ext.each(
+                hotkeys,
+                function (item)
+                {
+                    if (item.numberSlot === numberSlot)
+                    {
+                        xtype = item.xtype;
+
+                        return false;
+                    }
+                }
+            );
+
+            if (xtype)
+            {
+                btn = Ext.widget(xtype);
+                btn.setToolbar(me);
+            }
+
+            return btn;
+        },
 
 		/**
 		 * Возвращает список кнопок для синхронизации.
@@ -213,6 +373,31 @@ Ext.define(
 			me.toolstab = toolstab;
 
 			return toolstab;
+		},
+
+        /**
+		 * @private
+		 * Обновляет подсказку горячих клавиш для кнопки.
+         * @param {Object} data Данные сочетания клавиш.
+         * @param {Number} data.slot
+         * @param {String} [data.key]
+         * @param {Boolean} [data.ctrl]
+         * @param {Boolean} [data.alt]
+         * @param {Boolean} [data.shift]
+         */
+        updateHotkeys: function (data)
+		{
+            var me = this,
+                numberSlot,
+                btn;
+
+            numberSlot = data.slot;
+            btn = me.getButtonForSlot(numberSlot);
+
+            if (btn)
+			{
+				btn.updateTooltip(data);
+			}
 		}
 	}
 );

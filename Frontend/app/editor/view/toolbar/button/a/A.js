@@ -16,9 +16,9 @@ Ext.define(
 		controller: 'editor.toolbar.button.a',
 
 		html: '<i class="fa fa-link"></i>',
-		tooltip: 'Ссылка (Ctrl+L)',
 
 		elementName: 'a',
+        tooltipText: 'Ссылка',
 
 		translateText: {
 			enterAddress: 'Пожалуйста, введите адрес'

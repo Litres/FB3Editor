@@ -13,7 +13,8 @@ Ext.define(
 		//controller: 'main.editor.button.note',
 		
 		html: '<i class="fa fa-sticky-note-o"></i>',
-		tooltip: 'Сноска (Ctrl+Alt+N)',
+
+		tooltipText: 'Сноска',
 		elementName: 'note'
 	}
 );
