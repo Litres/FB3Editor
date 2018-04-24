@@ -11,7 +11,6 @@ Ext.define(
 			'FBEditor.editor.CreateContent',
 			'FBEditor.editor.Factory',
 			'FBEditor.editor.History',
-			'FBEditor.editor.KeyMap',
 			'FBEditor.editor.Revision',
 			'FBEditor.editor.schema.Schema',
 			'FBEditor.xsl.Editor'
@@ -91,12 +90,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.KeyMap} Привязка клавиатурных сочетаний.
-		 */
-		keymap: null,
-
-		/**
-		 * @private
 		 * @property {FBEditor.editor.schema.Schema} Схема.
 		 */
 		schema: null,
@@ -138,9 +131,6 @@ Ext.define(
 
 			// создаем историю
 			me.history = Ext.create('FBEditor.editor.History');
-
-			// создаем сочетание клавиш
-			me.keymap = Ext.create('FBEditor.editor.KeyMap', me);
 
 			if (me.enableRevision)
 			{
@@ -307,15 +297,6 @@ Ext.define(
 		getRevision: function ()
 		{
 			return this.revision;
-		},
-
-		/**
-		 * Возвращает сочетание клавиш.
-		 * @return {FBEditor.editor.KeyMap}
-		 */
-		getKeymap: function ()
-		{
-			return this.keymap;
 		},
 
 		/**
