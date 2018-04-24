@@ -24,6 +24,7 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.poem.Poem',
 			'FBEditor.view.panel.main.editor.button.pre.Pre',
 			'FBEditor.view.panel.main.editor.button.section.Section',
+            'FBEditor.view.panel.main.editor.button.smallcaps.Smallcaps',
 			'FBEditor.view.panel.main.editor.button.spacing.Spacing',
 			'FBEditor.view.panel.main.editor.button.span.Span',
 			'FBEditor.view.panel.main.editor.button.strikethrough.Strikethrough',
@@ -60,7 +61,7 @@ Ext.define(
 			group1: 440, // помещается только первая группа кнопок (деление на группы условно)
 			group2: 740, // помещается первая и вторая группа кнопок
 			group3: 970, // и т.д.
-			fit: 1310 // все кнопки помещаются
+			fit: 1350 // все кнопки помещаются
 		},
 
 		/**
@@ -119,6 +120,7 @@ Ext.define(
 				'main-editor-button-sup',
 				'main-editor-button-code',
                 'main-editor-button-span',
+                'main-editor-button-smallcaps',
                 'main-editor-button-unstyle'
 			];
 		},
@@ -239,6 +241,10 @@ Ext.define(
 				{
                     xtype: 'main-editor-button-unstyle',
                     numberSlot: 28
+                },
+                {
+                    xtype: 'main-editor-button-smallcaps',
+                    numberSlot: 29
                 }
             ];
         },
@@ -525,6 +531,9 @@ Ext.define(
 						{
 							xtype: 'main-editor-button-span'
 						},
+                        {
+                            xtype: 'main-editor-button-smallcaps'
+                        },
                         {
                             xtype: 'main-editor-button-unstyle'
                         }

@@ -37,6 +37,7 @@ Ext.define(
 			'FBEditor.editor.element.poem.PoemElement',
 			'FBEditor.editor.element.pre.PreElement',
 			'FBEditor.editor.element.section.SectionElement',
+            'FBEditor.editor.element.smallcaps.SmallcapsElement',
 			'FBEditor.editor.element.spacing.SpacingElement',
 			'FBEditor.editor.element.span.SpanElement',
 			'FBEditor.editor.element.stanza.StanzaElement',

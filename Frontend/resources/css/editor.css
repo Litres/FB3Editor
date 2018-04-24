@@ -199,6 +199,10 @@
 	background-color: #fffa7e;
 }
 
+.main-editor-viewport .el-smallcaps {
+	font-variant: small-caps;
+}
+
 .main-editor-viewport .el-epigraph {
 	font-size: 80%;
 	border-color: black;

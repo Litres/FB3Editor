@@ -13,6 +13,7 @@ Ext.define(
 			'FBEditor.editor.command.strikethrough.CreateRangeCommand',
 			'FBEditor.editor.command.strikethrough.DeleteWrapperCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.strikethrough.StrikethroughElementController',
 		htmlTag: 'strikethrough',
 		xmlTag: 'strikethrough',

@@ -195,6 +195,10 @@ Ext.define(
                 key: 'D',
                 ctrl: true,
                 alt: true
+            },
+            {
+                // Капитель
+                slot: 29
             }
         ],
 
@@ -206,21 +210,27 @@ Ext.define(
         init: function ()
         {
             var me = this,
-                store,
-                data;
+                store;
 
             // хранилище горячих клавиш
             store = Ext.create('FBEditor.hotkeys.Store');
             me.store = store;
-            data = store.getData();
 
-            if (!data.length)
-            {
-                // устанавливаем данные по умолчанию
-                store.add(me.defaultData);
-            }
+            Ext.each(
+                me.defaultData,
+                function (item)
+                {
+                    var slot;
 
-            //console.log('init', store.getData());
+                    slot = me.getSlot(item.slot);
+
+                    if (!slot)
+                    {
+                        // устанавливаем данные по умолчанию
+                        store.add(item);
+                    }
+                }
+            );
         },
 
         /**
@@ -312,6 +322,29 @@ Ext.define(
         },
 
         /**
+         * Сбрасывает данные слота по умолчанию.
+         * @param {Number} numberSlot Номер слота.
+         */
+        resetSlot: function (numberSlot)
+        {
+            var me = this,
+                defaultData = me.defaultData;
+
+            Ext.each(
+                defaultData,
+                function (item)
+                {
+                    if (item.slot === numberSlot)
+                    {
+                        me.updateSlotData(item);
+
+                        return true;
+                    }
+                }
+            );
+        },
+
+        /**
          * Обновляет данные слота.
          * @event changed
          * @param {Object} data Данные сочетания клавиш.
@@ -332,10 +365,16 @@ Ext.define(
             if (record)
             {
                 record.set(data);
-
-                // вбрасываем событие для подписчиков
-                me.fireEvent('changed', data);
             }
+            else
+            {
+                store.add(data);
+                record = store.getById(data.slot);
+                record.set(data);
+            }
+
+            // вбрасываем событие для подписчиков
+            me.fireEvent('changed', data);
         }
     }
 );

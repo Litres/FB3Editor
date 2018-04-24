@@ -270,6 +270,7 @@ Ext.define(
 			catch (e)
 			{
 				xsd = '';
+
 				Ext.log(
 					{
 						level: 'error',

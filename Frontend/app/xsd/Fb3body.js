@@ -140,10 +140,14 @@ Ext.define(
 							</choice>\
 							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
 						</sequence>\
+						<element name="clipped"><complexType/></element>\
 					</choice>\
 				</sequence>\
 				<attribute name="id" type="fb3b:UUIDType" use="required"/>\
 				<attribute name="article" type="boolean" use="optional"/>\
+				<attribute name="doi" type="fb3b:DOIType" use="optional"/>\
+				<attribute name="clipped" type="boolean"/>\
+				<attribute name="first-char-pos" type="positiveInteger"/>\
 			</extension>\
 		</complexContent>\
 	</complexType>\
@@ -269,6 +273,7 @@ Ext.define(
 			</element>\
 			<element name="note" type="fb3b:NoteType"/>\
 			<element name="a" type="fb3b:LinkType"/>\
+			<element name="smallcaps" type="fb3b:StyleType"/>\
 			<element name="img" type="fb3b:ImgType"/>\
 			<element name="paper-page-break" type="fb3b:PaperPageBreakType"/>\
 		</choice>\
@@ -293,6 +298,7 @@ Ext.define(
 					</complexContent>\
 				</complexType>\
 			</element>\
+			<element name="smallcaps" type="fb3b:StyleType"/>\
 			<element name="img" type="fb3b:ImgType"/>\
 			<element name="paper-page-break" type="fb3b:PaperPageBreakType"/>\
 		</choice>\
@@ -428,6 +434,11 @@ Ext.define(
 	<simpleType name="UUIDType">\
 		<restriction base="token">\
 			<pattern value="[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}"/>\
+		</restriction>\
+	</simpleType>\
+	<simpleType name="DOIType">\
+        <restriction base="string">\
+            <pattern value=\'(10[.][0-9]{3,})(\\.[0-9]+)*/[^"]([^"&amp;&lt;&gt;])+\'/>\
 		</restriction>\
 	</simpleType>\
 	<attribute name="role" default="auto">\

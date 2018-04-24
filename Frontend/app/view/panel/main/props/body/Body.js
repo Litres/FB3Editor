@@ -31,6 +31,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.poem.Editor',
 			'FBEditor.view.panel.main.props.body.editor.pre.Editor',
 			'FBEditor.view.panel.main.props.body.editor.section.Editor',
+            'FBEditor.view.panel.main.props.body.editor.smallcaps.Editor',
 			'FBEditor.view.panel.main.props.body.editor.spacing.Editor',
 			'FBEditor.view.panel.main.props.body.editor.span.Editor',
 			'FBEditor.view.panel.main.props.body.editor.stanza.Editor',
