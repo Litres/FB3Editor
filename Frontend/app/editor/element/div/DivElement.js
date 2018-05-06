@@ -36,6 +36,34 @@ Ext.define(
 			return els;
 		},
 
+        getXml: function (withoutText, withoutFormat)
+        {
+            var me = this,
+				first = me.first(),
+                xml,
+                xmlMarker;
+
+            xml = me.callParent(arguments);
+
+            if (me.marker)
+            {
+            	// добавляем маркер
+
+                xmlMarker = me.marker.getXml(withoutText, withoutFormat);
+
+                if (first && first.isTitle)
+				{
+					xml = xml.replace(/^<\/title>/i, '</title>' + xmlMarker);
+				}
+				else
+				{
+                    xml = xml.replace(/^<div(.*?)>/i, '<div$1>' + xmlMarker);
+				}
+            }
+
+            return xml;
+        },
+
 		getAttributesXml: function (withoutText)
 		{
 			var me = this,

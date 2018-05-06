@@ -121,35 +121,42 @@ Ext.define(
 			//console.log('resources', resources);
 			//console.log('cover', cover);
 
-			fb3data = {
-				thumb: cover,
-				meta: FBEditor.desc.Manager.getMetaXml(descValues),
-				books: [
-					{
-						desc: descXml,
-						bodies: [
-							{
-								content: bodyXml,
-								images: resources
-							}
-						]
-					}
-				]
-			};
-
-			FBEditor.file.Manager.saveFB3(
-				fb3data,
-				function ()
+			// получаем мету
+            FBEditor.desc.Manager.getMetaXml(descValues).then(
+            	function (meta)
 				{
-					// предусмотрено на будущее
-					Ext.log(
-						{
-							level: 'warn',
-							msg: 'Стали доступны методы FileSaver.onwriteend, FileSaver.onabort'
-						}
-					);
+                    fb3data = {
+                        thumb: cover,
+                        meta: meta,
+                        books: [
+                            {
+                                desc: descXml,
+                                bodies: [
+                                    {
+                                        content: bodyXml,
+                                        images: resources
+                                    }
+                                ]
+                            }
+                        ]
+                    };
 
-					btn.enable();
+                    // сохраняем
+                    FBEditor.file.Manager.saveFB3(
+                        fb3data,
+                        function ()
+                        {
+                            // предусмотрено на будущее
+                            Ext.log(
+                                {
+                                    level: 'warn',
+                                    msg: 'Стали доступны методы FileSaver.onwriteend, FileSaver.onabort'
+                                }
+                            );
+
+                            btn.enable();
+                        }
+                    );
 				}
 			);
 

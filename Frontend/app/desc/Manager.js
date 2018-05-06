@@ -575,16 +575,16 @@ Ext.define(
 		/**
 		 * Возвращает мета-данные в виде строки xml.
 		 * @param {Object} [values] Данные формы.
-		 * @return {String} Строка xml.
+		 * @resolve {String} Строка xml.
+		 * @return {Promise}
 		 */
 		getMetaXml: function (values)
 		{
 			var me = this,
 				form = Ext.getCmp('form-desc'),
-				fileManager = FBEditor.file.Manager,
+				promise,
 				xml,
 				data,
-				rev,
 				metaData;
 
 			/**
@@ -614,40 +614,56 @@ Ext.define(
 			}
 
 			data = values || form.getValues();
-			rev = fileManager.fb3file ? Number(fileManager.fb3file.getStructure().getMeta().revision.__text) : 0;
-			rev = Ext.isNumber(rev) ? rev + 1 : 1;
-			metaData = {
-				coreProperties: {
-					__prefix: 'cp',
-					'_xmlns:cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
-					'_xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-					'_xmlns:dcterms': 'http://purl.org/dc/terms/',
-					'_xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
-					'dc:title': data.title.main,
-					'dc:creator': getCreator(data['fb3-relations'].subject),
-					'cp:revision': rev,
-					'cp:contentStatus': data['fb3-classification']['class'] ?
-					                    data['fb3-classification']['class']._contents : '',
-					'cp:category': data['fb3-classification']['class'] ?
-					               data['fb3-classification']['class'].__text : '',
-					'dcterms:modified': data['document-info']._updated,
-					'dcterms:created': data['document-info']._created
-				}
-			};
-			if (data.title && data.title.sub)
-			{
-				metaData.coreProperties['dc:subject'] = data.title.sub;
-			}
-			if (data.annotation)
-			{
-				metaData.coreProperties['dc:description'] = Ext.util.Format.stripTags(data.annotation);
-			}
-			console.log('save meta', metaData);
-			xml = FBEditor.util.xml.Json.jsonToXml(metaData);
-			xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + xml;
-			//console.log(xml);
 
-			return xml;
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    // получаем номер ревизии
+                    me.getNumberRev().then(
+                        function (rev)
+                        {
+                            metaData = {
+                                coreProperties: {
+                                    __prefix: 'cp',
+                                    '_xmlns:cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
+                                    '_xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+                                    '_xmlns:dcterms': 'http://purl.org/dc/terms/',
+                                    '_xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
+                                    'dc:title': data.title.main,
+                                    'dc:creator': getCreator(data['fb3-relations'].subject),
+                                    'cp:revision': rev,
+                                    'cp:contentStatus': data['fb3-classification']['class'] ?
+                                        data['fb3-classification']['class']._contents : '',
+                                    'cp:category': data['fb3-classification']['class'] ?
+                                        data['fb3-classification']['class'].__text : '',
+                                    'dcterms:modified': data['document-info']._updated,
+                                    'dcterms:created': data['document-info']._created
+                                }
+                            };
+
+                            if (data.title && data.title.sub)
+                            {
+                                metaData.coreProperties['dc:subject'] = data.title.sub;
+                            }
+
+                            if (data.annotation)
+                            {
+                                metaData.coreProperties['dc:description'] = Ext.util.Format.stripTags(data.annotation);
+                            }
+
+                            console.log('save meta', metaData);
+
+                            xml = FBEditor.util.xml.Json.jsonToXml(metaData);
+                            xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + xml;
+                            //console.log(xml);
+
+                            resolve(xml);
+                        }
+                    );
+				}
+			);
+
+			return promise;
 		},
 
 		/**
@@ -732,6 +748,51 @@ Ext.define(
 
 			// показываем панель описания
 			contentPanel.fireEvent('contentDesc');
+		},
+
+        /**
+		 * @private
+		 * Возвращает номер ревизии.
+		 * @resolve {Number} Номер ревизии
+         * @return {Promise}
+         */
+		getNumberRev: function ()
+		{
+			var me = this,
+                fileManager = FBEditor.file.Manager,
+				promise;
+
+            if (fileManager.fb3file)
+            {
+                promise = new Promise(
+                    function (resolve, reject)
+                    {
+                        fileManager.fb3file.getStructure().then(
+                            function (structure)
+                            {
+                                return structure.getMeta();
+                            }
+                        ).then(
+                            function (meta)
+                            {
+                            	var rev;
+
+                                // номер ревизии
+                                rev = Number(meta.revision.__text);
+                                rev = Ext.isNumber(rev) ? rev + 1 : 1;
+
+                                resolve(rev);
+                            }
+                        );
+                    }
+                );
+            }
+            else
+            {
+                promise = Promise.resolve(0);
+            }
+
+            return promise;
 		}
 	}
 );

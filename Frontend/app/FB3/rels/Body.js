@@ -76,7 +76,6 @@ Ext.define(
 		setImages: function (data)
 		{
 			var me = this,
-				rels = me.getRels(),
 				structure = me.getStructure(),
 				fb3file,
 				zip;
@@ -102,7 +101,12 @@ Ext.define(
 			    }
 			);
 
-			rels.setContent(data);
+            me.getRels().then(
+            	function (rels)
+				{
+                    rels.setContent(data);
+				}
+			);
 		}
 	}
 );

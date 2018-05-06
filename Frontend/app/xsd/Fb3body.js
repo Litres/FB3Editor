@@ -315,7 +315,17 @@ Ext.define(
 		<complexContent mixed="true">\
 			<extension base="fb3b:StyleInLinkType">\
 				<attribute name="href" type="IDREF" use="required"/>\
-				<attribute ref="fb3b:role" use="optional"/>\
+				<attribute name="role" use="optional" default="auto">\
+					<simpleType>\
+						<restriction base="token">\
+							<enumeration value="auto"/>\
+							<enumeration value="footnote"/>\
+							<enumeration value="endnote"/>\
+							<enumeration value="comment"/>\
+							<enumeration value="other"/>\
+						</restriction>\
+					</simpleType>\
+				</attribute>\
 				<attribute name="autotext" type="boolean" use="optional"/>\
 			</extension>\
 		</complexContent>\

@@ -31,6 +31,12 @@ Ext.define(
 				me.attributes,
 				function (key, val)
 				{
+                    if (key === 'href' && withoutText)
+                    {
+                        // xmllint не может корректно проверить ссылки с &
+                        val = val.replace(/&/g, '');
+                    }
+
 					//attr += (key === 'href' && !withoutText ? 'l:' : '') + key + '="' + val + '" ';
 					attr += (key === 'role' && !withoutText ? 'xlink:' : '') + key + '="' + val + '" ';
 				}

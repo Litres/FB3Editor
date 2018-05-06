@@ -169,21 +169,41 @@ Ext.define(
 
 		setThumb: function (data)
 		{
-			var me = this;
+			var me = this,
+				promise;
 
-			me.getRels().setThumb(data);
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    me.getRels().setThumb(data);
+
+                    resolve();
+				}
+			);
+
+			return promise;
 		},
 
 		setMeta: function (data)
 		{
-            var me = this;
+            var me = this,
+                promise;
 
-            me.getRels().getMeta.then(
-            	function (meta)
-				{
-					meta.setContent(data);
-				}
-			);
+            promise = new Promise(
+                function (resolve, reject)
+                {
+                    me.getRels().getMeta().then(
+                        function (meta)
+                        {
+                            meta.setContent(data);
+                        }
+                    );
+
+                    resolve();
+                }
+            );
+
+            return promise;
 		},
 
 		setDesc: function (book, data)

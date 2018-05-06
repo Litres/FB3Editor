@@ -93,9 +93,7 @@ Ext.define(
 		updateStructure: function (data)
 		{
 			var me = this,
-				structure = me.structure,
-				books,
-				bodies;
+				structure = me.structure;
 
 			//console.log('DATA', data);
 			
@@ -105,28 +103,32 @@ Ext.define(
 			}
 
 			structure.setMeta(data.meta);
-			books = structure.getBooks();
-			
-			Ext.Object.each(
-				data.books,
-			    function (index, bookData)
-			    {
-				    structure.setDesc(books[index], bookData.desc);
 
-				    structure.getBodies(books[index]).then(
-				    	function (bodies)
-						{
-                            Ext.each(
-                                bookData.bodies,
-                                function (bodyData, i)
+            structure.getBooks().then(
+            	function (books)
+				{
+                    Ext.Object.each(
+                        data.books,
+                        function (index, bookData)
+                        {
+                            structure.setDesc(books[index], bookData.desc);
+
+                            structure.getBodies(books[index]).then(
+                                function (bodies)
                                 {
-                                    structure.setContent(bodies[i], bodyData.content);
-                                    structure.setImages(bodies[i], bodyData.images);
+                                    Ext.each(
+                                        bookData.bodies,
+                                        function (bodyData, i)
+                                        {
+                                            structure.setContent(bodies[i], bodyData.content);
+                                            structure.setImages(bodies[i], bodyData.images);
+                                        }
+                                    );
                                 }
                             );
-						}
-					);
-			    }
+                        }
+                    );
+				}
 			);
 		},
 

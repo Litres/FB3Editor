@@ -248,27 +248,31 @@ Ext.define(
 		setThumb: function (data)
 		{
 			var me = this,
-				content = me.getText(),
 				thumbRel,
 				target;
 
 			target = data.rootName;
 
-			if (/thumbnail" Target="(.*?)"/.test(content))
-			{
-				content = content.replace(/thumbnail" Target="(.*?)"/, 'thumbnail" Target="' + target + '"');
-			}
-			else
-			{
-				thumbRel = '<Relationship Id="rId0" ' +
-				           'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" ' +
-				           'Target="' + target + '"/>';
-				content = content.replace(/<Relationship Id="rId1"/ig, thumbRel + '<Relationship Id="rId1"');
-			}
+            me.getText().then(
+            	function (content)
+				{
+                    if (/thumbnail" Target="(.*?)"/.test(content))
+                    {
+                        content = content.replace(/thumbnail" Target="(.*?)"/, 'thumbnail" Target="' + target + '"');
+                    }
+                    else
+                    {
+                        thumbRel = '<Relationship Id="rId0" ' +
+                            'Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" ' +
+                            'Target="' + target + '"/>';
+                        content = content.replace(/<Relationship Id="rId1"/ig, thumbRel + '<Relationship Id="rId1"');
+                    }
 
-			me.setFileContent(content);
+                    me.setFileContent(content);
 
-			console.log('save thumb', data, content);
+                    console.log('save thumb', data, content);
+				}
+			);
 		}
 	}
 );

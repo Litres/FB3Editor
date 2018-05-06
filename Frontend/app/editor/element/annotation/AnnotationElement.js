@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.editor.command.annotation.CreateCommand',
 			'FBEditor.editor.element.annotation.AnnotationElementController'
 		],
+
 		controllerClass: 'FBEditor.editor.element.annotation.AnnotationElementController',
 		htmlTag: 'annotation',
 		xmlTag: 'annotation',

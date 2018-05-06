@@ -702,6 +702,7 @@ Ext.define(
 				children = me.children;
 
 			delete me.nodes[viewportId];
+
 			if (children.length)
 			{
 				Ext.Array.each(
@@ -757,17 +758,12 @@ Ext.define(
 			xml = spacesBefore + '<' + tag;
 			xml += attr ? ' ' + attr : '';
 
-			if (me.marker)
-			{
-				xml += '>\n' + spacesBefore + '  ' + me.marker.getXml(withoutText, withoutFormat);
-			}
-
 			if (children && children.length)
 			{
 				// счётчик количества пробелов перед тегом
 				self.countSpaces++;
 
-				xml += me.marker ? '' : '>' + nlBefore;
+				xml += '>' + nlBefore;
 
 				Ext.Array.each(
 					children,
@@ -783,7 +779,7 @@ Ext.define(
 			}
 			else
 			{
-				xml += me.marker ? '\n' + spacesAfter + '</' + tag + '>\n' : '/>' + nlAfter;
+				xml += '/>' + nlAfter;
 			}
 
 			return xml;
