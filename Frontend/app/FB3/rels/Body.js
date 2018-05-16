@@ -72,11 +72,14 @@ Ext.define(
 		/**
 		 * Устанавливает ресурсы книги.
 		 * @param {FBEditor.resource.Resource[]} data Ресурсы.
+		 * @resolve {Object} Связи.
+		 * @return {Promise}
 		 */
 		setImages: function (data)
 		{
 			var me = this,
 				structure = me.getStructure(),
+				promise,
 				fb3file,
 				zip;
 
@@ -101,12 +104,21 @@ Ext.define(
 			    }
 			);
 
-            me.getRels().then(
-            	function (rels)
+			promise = new Promise(
+				function (resolve, reject)
 				{
-                    rels.setContent(data);
+                    me.getRels().then(
+                        function (rels)
+                        {
+                            rels.setContent(data);
+
+                            resolve(rels);
+                        }
+                    );
 				}
 			);
+
+			return promise;
 		}
 	}
 );

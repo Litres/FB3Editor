@@ -175,9 +175,12 @@ Ext.define(
 			promise = new Promise(
 				function (resolve, reject)
 				{
-                    me.getRels().setThumb(data);
-
-                    resolve();
+                    me.getRels().setThumb(data).then(
+                    	function (content)
+						{
+							resolve(content);
+						}
+					);
 				}
 			);
 
@@ -196,10 +199,10 @@ Ext.define(
                         function (meta)
                         {
                             meta.setContent(data);
+
+                            resolve(meta);
                         }
                     );
-
-                    resolve();
                 }
             );
 
@@ -218,7 +221,7 @@ Ext.define(
 
 		setImages: function (body, data)
 		{
-			body.setImages(data);
+			return body.setImages(data);
 		},
 
 		/**

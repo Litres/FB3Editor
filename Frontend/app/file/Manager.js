@@ -299,30 +299,36 @@ Ext.define(
 		{
 			var me = this,
 				fb3file = me.fb3file,
+				promise,
 				fileName,
 				fs;
 
 			if (fb3file)
 			{
-				fb3file.updateStructure(data);
+				promise = fb3file.updateStructure(data);
 			}
 			else
 			{
 				fb3file = Ext.create('FBEditor.FB3.File', data);
-				fb3file.createStructure();
+				promise = fb3file.createStructure();
 			}
 
-			me.fb3file = fb3file;
-
-			fb3file.generateBlob().then(
-				function (blob)
+			promise.then(
+				function (structure)
 				{
-                    fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3';
-                    fs = window.saveAs(blob, fileName);
+                    me.fb3file = fb3file;
 
-                    // данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
-                    fs.onwriteend = fn;
-                    fs.onabort = fn;
+                    fb3file.generateBlob().then(
+                        function (blob)
+                        {
+                            fileName = Ext.getCmp('panel-filename-display').getValue() + '.fb3';
+                            fs = window.saveAs(blob, fileName);
+
+                            // данные функции должны быть реализованы в будущих браузерах, пока же они не выполняются
+                            fs.onwriteend = fn;
+                            fs.onabort = fn;
+                        }
+                    );
 				}
 			);
 		},

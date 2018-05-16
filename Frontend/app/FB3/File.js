@@ -89,60 +89,68 @@ Ext.define(
 		/**
 		 * Обновляет структуру и данные архива FB3.
 		 * @param {Object} data Данные книги.
+		 * @resolve
+		 * @return {Promise}
 		 */
 		updateStructure: function (data)
 		{
 			var me = this,
-				structure = me.structure;
+				structure = me.structure,
+				booksData,
+				promise;
 
 			//console.log('DATA', data);
-			
-			if (data.thumb)
-			{
-				structure.setThumb(data.thumb);
-			}
 
-			structure.setMeta(data.meta);
-
-            structure.getBooks().then(
-            	function (books)
+			promise = new Promise(
+				function (resolve, reject)
 				{
-                    Ext.Object.each(
-                        data.books,
-                        function (index, bookData)
-                        {
-                            structure.setDesc(books[index], bookData.desc);
+					// подшивки
+                    booksData = data.books;
 
-                            structure.getBodies(books[index]).then(
-                                function (bodies)
-                                {
-                                    Ext.each(
-                                        bookData.bodies,
-                                        function (bodyData, i)
-                                        {
-                                            structure.setContent(bodies[i], bodyData.content);
-                                            structure.setImages(bodies[i], bodyData.images);
-                                        }
-                                    );
-                                }
-                            );
+                    structure.setThumb(data.thumb).then(
+                    	function (thumbContent)
+						{
+                            return structure.setMeta(data.meta);
+						}
+					).then(
+						function (meta)
+						{
+                            return structure.getBooks();
+						}
+					).then(
+                        function (books)
+                        {
+                        	// устанавливаем данные подшивок
+                        	return me.setBooksContent(books, booksData);
                         }
-                    );
+                    ). then(
+                    	function ()
+						{
+							resolve(structure);
+						}
+					);
 				}
 			);
+
+			return promise;
 		},
 
 		/**
 		 * Создает структуру архива FB3 и обновляет в ней данные.
+		 * @resolve
+		 * @return {Promise}
 		 */
 		createStructure: function ()
 		{
 			var me = this,
+				promise,
 				structure;
 
 			structure = Ext.create('FBEditor.FB3.Structure', me);
 			me.structure = structure.create();
-			me.updateStructure(me.data);
+			promise = me.updateStructure(me.data);
+
+			return promise;
 		},
 
 		/**
@@ -218,6 +226,129 @@ Ext.define(
 				zip = me.zip;
 
             return zip.generateBlob();
+		},
+
+        /**
+		 * @private
+		 * Устанавливает содержимое подшивок.
+         * @param {FBEditor.FB3.rels.Book|FBEditor.FB3.rels.Book[]} books Книга или массив книг.
+		 * @param {Object} booksData Данные подшивок.
+		 * @param {Number} [bookNumber] Номер подшивки.
+		 * @resolve
+		 * @return {Promise}
+         */
+        setBooksContent: function (books, booksData, bookNumber)
+		{
+			var me = this,
+                structure = me.structure,
+				book,
+                bookData,
+				promise;
+
+            bookNumber = bookNumber || 0;
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    if (bookNumber < books.length)
+					{
+						// подшивка
+						book = books[bookNumber];
+
+						// данные подшивки
+                        bookData = booksData[bookNumber];
+
+                        // устанавливаем описание
+                        structure.setDesc(book, bookData.desc);
+
+                        // получаем тела книги
+                        structure.getBodies(book).then(
+                        	function (bodies)
+							{
+                                // устанавливаем содержимое тел книг
+								return me.setBodiesContent(bodies, bookData.bodies);
+							}
+						).then(
+							function ()
+							{
+                                // переходим к следующей подшивке
+                                return me.setBooksContent(books, booksData, bookNumber + 1);
+							}
+						).then(
+							function ()
+							{
+								resolve();
+							}
+						);
+                    }
+                    else
+					{
+                        // все подшивки перебрали, возвращаем результат
+                        resolve();
+					}
+				}
+			);
+
+			return promise;
+		},
+
+        /**
+		 * @private
+		 * Усьанавливает содержимое тел книг.
+         * @param {FBEditor.FB3.rels.Body[]} bodies Тела книг.
+         * @param {Object} bodiesData Данные тел книг.
+		 * @param {Number} [bodyNumber] Номер тела книги.
+		 * @resolve
+		 * @return {Promise}
+         */
+        setBodiesContent: function (bodies, bodiesData, bodyNumber)
+		{
+			var me = this,
+                structure = me.structure,
+				body,
+				bodyData,
+				promise;
+
+            bodyNumber = bodyNumber || 0;
+
+			promise = new Promise(
+				function (resolve, reject)
+				{
+                    if (bodyNumber < bodies.length)
+					{
+                        // тело книги
+                        body = bodies[bodyNumber];
+
+                        // данные тела книги
+                        bodyData = bodiesData[bodyNumber];
+
+                        // устанавливаем данные тела книги
+                        structure.setContent(body, bodyData.content);
+
+                        // устанавливаем данные ресурсов
+                        structure.setImages(body, bodyData.images).then(
+                            function (imagesRels)
+                            {
+                                // переходим к следующему телу книги
+								return me.setBodiesContent(bodies, bodiesData, bodyNumber + 1);
+                            }
+                        ).then(
+                        	function ()
+							{
+								resolve();
+							}
+						);
+					}
+					else
+					{
+                        // все тела книги перебрали, возвращаем результат
+						resolve();
+					}
+
+				}
+			);
+
+			return promise;
 		}
 	}
 );
