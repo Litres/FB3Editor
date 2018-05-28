@@ -14,7 +14,7 @@ Ext.define(
 		
 		html: '<i class="fa fa-superscript"></i>',
 
-		tooltipText: 'Верхний индекс',
+		tooltipText: 'Надстрочный текст',
 		elementName: 'sup'
 	}
 );

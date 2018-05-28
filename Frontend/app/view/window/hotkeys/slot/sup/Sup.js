@@ -1,5 +1,5 @@
 /**
- * Верхний индекс.
+ * Надстрочный текст.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -12,6 +12,6 @@ Ext.define(
         id: 'window-hotkeys-slot-sup',
         xtype: 'window-hotkeys-slot-sup',
 
-        titleText: 'Верхний индекс'
+        titleText: 'Надстрочный текст'
     }
 );

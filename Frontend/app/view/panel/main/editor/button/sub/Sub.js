@@ -14,7 +14,7 @@ Ext.define(
 		
 		html: '<i class="fa fa-subscript"></i>',
 
-		tooltipText: 'Нижний индекс',
+		tooltipText: 'Подстрочный текст',
 		elementName: 'sub'
 	}
 );

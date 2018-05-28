@@ -1,5 +1,5 @@
 /**
- * Нижний индекс.
+ * Подстрочный текст.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -12,6 +12,6 @@ Ext.define(
         id: 'window-hotkeys-slot-sub',
         xtype: 'window-hotkeys-slot-sub',
 
-        titleText: 'Нижний индекс'
+        titleText: 'Подстрочный текст'
     }
 );
