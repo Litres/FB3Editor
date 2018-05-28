@@ -447,26 +447,39 @@ Ext.define(
 		/**
 		 * Перемещает файл в новую директорию архива.
 		 * @param {String} folder Путь к директории.
+		 * @resolve {String} Новое имя файла.
+		 * @return {Promise}
 		 */
 		moveTo: function (folder)
 		{
 			var me = this,
 				fb3file = me.structure.fb3file,
 				fileName = me.getFileName(),
+				promise,
 				newFileName,
 				zip;
 
 			zip = fb3file.zip;
 			newFileName = folder + '/' + me.getBaseFileName();
 
-			me.getArrayBuffer().then(
-				function (arraybuffer)
+			promise = new Promise(
+				function (resolve, reject)
 				{
-                    zip.file(newFileName, arraybuffer);
-                    zip.remove(fileName);
-                    me.fileName = newFileName;
+                    me.getArrayBuffer().then(
+                        function (arraybuffer)
+                        {
+                            zip.file(newFileName, arraybuffer);
+                            zip.remove(fileName);
+                            me.fileName = newFileName;
+
+                            resolve(newFileName);
+                        }
+                    );
 				}
 			);
+
+
+			return promise;
 		},
 
 		/**

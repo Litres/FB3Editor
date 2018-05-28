@@ -149,6 +149,8 @@ Ext.define(
                                     ).then(
                                         function (thumb)
                                         {
+                                        	var pr;
+
                                             // сохраняем в локальную переменную для последующего использования
                                             localThumb = thumb;
 
@@ -156,11 +158,20 @@ Ext.define(
                                             {
                                                 // если обложка находится не в директории ресурсов,
                                                 // то перемещаем ее туда
-                                                thumb.moveTo(resourceManager.getDefaultThumbPath());
+                                                pr = thumb.moveTo(resourceManager.getDefaultThumbPath());
 
                                                 localImages.push(thumb);
                                             }
+                                            else
+											{
+												pr = Promise.resolve();
+											}
 
+											return pr;
+                                        }
+                                    ).then(
+                                        function ()
+                                        {
                                             // сбрасываем ресурсы
                                             resourceManager.reset();
 
