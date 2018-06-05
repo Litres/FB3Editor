@@ -15,6 +15,8 @@ Ext.define(
         controllerClass: 'FBEditor.editor.element.clipped.ClippedElementController',
         htmlTag: 'clipped',
         xmlTag: 'clipped',
-        cls: 'el-clipped'
+        cls: 'el-clipped',
+
+        isClipped: true
     }
 );

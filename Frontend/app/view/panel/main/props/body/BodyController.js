@@ -118,7 +118,7 @@ Ext.define(
 					try
 					{
 						// добавляем новую панель редактирования
-						name = data.elementName.replace(/-/, '');
+						name = data.elementName.replace(/-/g, '');
 						name = name.toLowerCase();
 						name = 'FBEditor.view.panel.main.props.body.editor.' + name + '.Editor';
 						editor = Ext.create(name, {elementName: data.elementName});

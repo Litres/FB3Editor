@@ -29,6 +29,7 @@ Ext.define(
 					xtype: 'panel-main-props-card'
 				}
 			];
+
 			me.callParent(arguments);
 		}
     }

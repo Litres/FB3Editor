@@ -66,6 +66,13 @@ Ext.define(
             els.common = range.commonAncestorContainer.getElement();
             els.first = range.startContainer.getElement();
             els.firstP = els.first.getStyleHolder();
+
+            if (!els.firstP)
+            {
+                // нет ни одного абзаца
+                return false;
+            }
+
             els.last = range.endContainer.getElement();
             els.lastP = els.last.getStyleHolder();
             nodes.pp = [];

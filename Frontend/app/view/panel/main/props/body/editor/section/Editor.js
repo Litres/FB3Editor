@@ -10,7 +10,12 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 
 		translateText: {
-			article: 'article'
+			article: 'article',
+			clipped: 'clipped',
+            doi: 'doi',
+			pos: 'first-char-pos',
+            idError: 'Не соответствует схеме fb3d:UUIDType',
+            doiError: 'Не соответствует схеме fb3d:DOIType'
 		},
 
 		initComponent: function ()
@@ -19,9 +24,11 @@ Ext.define(
 
 			me.items = [
 				{
-					xtype: 'panel-props-body-editor-fields-id',
-					allowBlank: false
-				}/*,
+                    name: 'id',
+                    fieldLabel: 'ID',
+                    anchor: '100%',
+                    regex: /^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/i
+				},
 				{
 					xtype: 'checkbox',
 					name: 'article',
@@ -29,7 +36,28 @@ Ext.define(
 					labelWidth: 50,
 					fieldLabel: me.translateText.article,
 					inputValue: 'true'
-				}*/
+				},
+                {
+                    name: 'doi',
+                    fieldLabel: me.translateText.doi,
+                    anchor: '100%',
+                    regex: /^(10[.][0-9]{3,})(\.[0-9]+)*\/[^"]([^"&amp;&lt;&gt;&apos;])+$/i
+                },
+                {
+                    xtype: 'checkbox',
+                    name: 'clipped',
+                    labelAlign: 'left',
+                    labelWidth: 50,
+                    fieldLabel: me.translateText.clipped,
+                    inputValue: 'true'
+                },
+                {
+                	xtype: 'numberfield',
+                    name: 'first-char-pos',
+                    labelAlign: 'left',
+                    fieldLabel: me.translateText.pos,
+                    minValue: 0
+                }
 			];
 
 			me.callParent(arguments);

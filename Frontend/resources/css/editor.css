@@ -323,6 +323,21 @@
 	/*text-indent: 0;*/
 }
 
+/* разрыв бумажной страницы */
+.main-editor-viewport .el-paperpagebreak {
+	position: relative;
+	display: block;
+	margin: 20px 0 12px 0;
+	border-top: 2px dashed #000;
+}
+
+/* разрыв бумажной страницы */
+.main-editor-viewport .el-clipped {
+	position: relative;
+	display: block;
+	height: 30px;
+	border: 2px dotted #000;
+}
 
 /* непечатаемый символ новой строки */
 .editor-viewport.mode-unprintsymbols .el-p::after,
