@@ -27,6 +27,7 @@ Ext.define(
             'FBEditor.view.panel.main.editor.button.smallcaps.Smallcaps',
 			'FBEditor.view.panel.main.editor.button.spacing.Spacing',
 			'FBEditor.view.panel.main.editor.button.span.Span',
+            'FBEditor.view.panel.main.editor.button.splitsection.SplitSection',
 			'FBEditor.view.panel.main.editor.button.strikethrough.Strikethrough',
 			'FBEditor.view.panel.main.editor.button.strong.Strong',
 			'FBEditor.view.panel.main.editor.button.sub.Sub',
@@ -58,10 +59,10 @@ Ext.define(
 		 * группа кнопок.
 		 */
 		responsiveSizes: {
-			group1: 440, // помещается только первая группа кнопок (деление на группы условно)
-			group2: 740, // помещается первая и вторая группа кнопок
-			group3: 970, // и т.д.
-			fit: 1350 // все кнопки помещаются
+			group1: 480, // помещается только первая группа кнопок (деление на группы условно)
+			group2: 780, // помещается первая и вторая группа кнопок
+			group3: 1010, // и т.д.
+			fit: 1390 // все кнопки помещаются
 		},
 
 		/**
@@ -92,6 +93,7 @@ Ext.define(
 				'main-editor-button-notebody',
 				'main-editor-button-titlebody',
 				'main-editor-button-section',
+                'main-editor-button-splitsection',
 				'main-editor-button-title',
 				'main-editor-button-epigraph',
 				'main-editor-button-annotation',
@@ -410,6 +412,9 @@ Ext.define(
 				{
 					xtype: 'main-editor-button-section'
 				},
+                {
+                    xtype: 'main-editor-button-splitsection'
+                },
 				spacer
 			];
 
