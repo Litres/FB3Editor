@@ -28,6 +28,7 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.spacing.Spacing',
 			'FBEditor.view.panel.main.editor.button.span.Span',
             'FBEditor.view.panel.main.editor.button.splitsection.SplitSection',
+            'FBEditor.view.panel.main.editor.button.splitelement.SplitElement',
 			'FBEditor.view.panel.main.editor.button.strikethrough.Strikethrough',
 			'FBEditor.view.panel.main.editor.button.strong.Strong',
 			'FBEditor.view.panel.main.editor.button.sub.Sub',
@@ -94,6 +95,7 @@ Ext.define(
 				'main-editor-button-titlebody',
 				'main-editor-button-section',
                 'main-editor-button-splitsection',
+                'main-editor-button-splitelement',
 				'main-editor-button-title',
 				'main-editor-button-epigraph',
 				'main-editor-button-annotation',
@@ -247,6 +249,14 @@ Ext.define(
                 {
                     xtype: 'main-editor-button-smallcaps',
                     numberSlot: 29
+                },
+                {
+                    xtype: 'main-editor-button-splitsection',
+                    numberSlot: 30
+                },
+                {
+                    xtype: 'main-editor-button-splitelement',
+                    numberSlot: 31
                 }
             ];
         },
@@ -414,6 +424,9 @@ Ext.define(
 				},
                 {
                     xtype: 'main-editor-button-splitsection'
+                },
+                {
+                    xtype: 'main-editor-button-splitelement'
                 },
 				spacer
 			];

@@ -11,7 +11,8 @@ Ext.define(
         extend: 'Ext.Container',
         requires: [
             'FBEditor.view.window.hotkeys.slot.AbstractSlotController',
-            'FBEditor.view.window.hotkeys.slot.component.keys.Keys'
+            'FBEditor.view.window.hotkeys.slot.component.keys.Keys',
+            'FBEditor.view.window.hotkeys.slot.component.title.Title'
         ],
 
         controller: 'window.hotkeys.slot',

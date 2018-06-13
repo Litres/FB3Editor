@@ -873,6 +873,7 @@ Ext.define(
 		{
 			var me = this,
                 hotkeysManager = FBEditor.hotkeys.Manager,
+				keyName,
 				data,
 				evt,
                 numberSlot,
@@ -882,7 +883,11 @@ Ext.define(
 			// обертка события
 			evt = Ext.create('Ext.event.Event', e);
 
-			if (!evt.isSpecialKey() && (evt.ctrlKey || evt.shiftKey || evt.altKey))
+            keyName = evt.getKeyName();
+
+            //console.log('checkHotkeys', evt.isSpecialKey(), evt.getKeyName());
+
+			if ((!evt.isSpecialKey() || keyName === 'ENTER') && (evt.ctrlKey || evt.shiftKey || evt.altKey))
 			{
 				data = {
 					key: e.key.toUpperCase(),
@@ -905,6 +910,11 @@ Ext.define(
                     // выполняем соответствующую функцию
                     toolbar.callClickButton(numberSlot);
                 }
+                else if (keyName === 'ENTER')
+				{
+					// предотвращаем изменение стурктуры
+                    e.preventDefault();
+				}
 			}
 		},
 

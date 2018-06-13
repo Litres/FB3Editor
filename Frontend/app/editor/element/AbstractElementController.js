@@ -323,13 +323,14 @@ Ext.define(
 				switch (e.keyCode)
 				{
 					case Ext.event.Event.ENTER:
-						if (e.shiftKey)
-						{
-							return controller.onKeyDownShiftEnter(e);
-						}
-						else if (e.ctrlKey)
+						if (e.ctrlKey)
 						{
 							return controller.onKeyDownCtrlEnter(e);
+						}
+						else if (e.shiftKey)
+						{
+							// данное сочетание клавиш можно установить через редактор горячих клавиш
+                            return controller.onKeyDownDefault(e);
 						}
 
 						return controller.onKeyDownEnter(e);
@@ -462,26 +463,6 @@ Ext.define(
                 // провереям нажатие горячих клавиш
                 manager.checkHotkeys(e);
 			}
-		},
-
-		/**
-		 * Комбинация клавиш Shift+Enter разделяет контейнер на две части.
-		 * @param {Event} e Событие.
-		 * @return {Boolean} false
-		 */
-		onKeyDownShiftEnter: function (e)
-		{
-			var me = this,
-				node,
-				el;
-
-			e.preventDefault();
-			node = me.getFocusNode(e.target);
-			el = node.getElement ? node.getElement() : null;
-			//console.log('shift+enter', node, el);
-			el.fireEvent('splitElement', node, false);
-
-			return false;
 		},
 
 		/**

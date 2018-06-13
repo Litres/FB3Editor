@@ -27,6 +27,8 @@ Ext.define(
             'FBEditor.view.window.hotkeys.slot.smallcaps.Smallcaps',
             'FBEditor.view.window.hotkeys.slot.spacing.Spacing',
             'FBEditor.view.window.hotkeys.slot.span.Span',
+            'FBEditor.view.window.hotkeys.slot.splitelement.SplitElement',
+            'FBEditor.view.window.hotkeys.slot.splitsection.SplitSection',
             'FBEditor.view.window.hotkeys.slot.stanza.Stanza',
             'FBEditor.view.window.hotkeys.slot.strikethrough.Strikethrough',
             'FBEditor.view.window.hotkeys.slot.sub.Sub',
@@ -99,6 +101,14 @@ Ext.define(
                 {
                     xtype: 'window-hotkeys-slot-section',
                     numberSlot: 4
+                },
+                {
+                    xtype: 'window-hotkeys-slot-splitsection',
+                    numberSlot: 30
+                },
+                {
+                    xtype: 'window-hotkeys-slot-splitelement',
+                    numberSlot: 31
                 },
                 {
                     xtype: 'window-hotkeys-slot-title',
