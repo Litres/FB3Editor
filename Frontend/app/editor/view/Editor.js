@@ -12,8 +12,7 @@ Ext.define(
 			'FBEditor.editor.Manager',
 			'FBEditor.editor.view.EditorController',
 			'FBEditor.editor.view.toolbar.Toolbar',
-			'FBEditor.editor.view.viewport.Viewport',
-			'FBEditor.editor.view.viewport.source.Source'
+			'FBEditor.editor.view.viewport.Viewport'
 		],
 
 		xtype: 'base-editor',
@@ -22,9 +21,7 @@ Ext.define(
 		layout: 'fit',
 
 		listeners: {
-			loadData: 'onLoadData',
-			switchToSource: 'onSwitchToSource',
-			switchToText: 'onSwitchToText'
+			loadData: 'onLoadData'
 		},
 
 		/**
@@ -37,12 +34,6 @@ Ext.define(
 		 * @property {FBEditor.editor.view.viewport.Viewport} Контейнер редактора текста.
 		 */
 		viewport: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.editor.view.viewport.source.Source} Контейнер исходного xml.
-		 */
-		sourceViewport: null,
 
 		/**
 		 * @private
@@ -72,9 +63,6 @@ Ext.define(
 
 			// инициализируем вид редактора
 			me.initEditor();
-
-			// добавляем контейнер исходного xml
-			me.addSource();
 
 			// создаем тулбар
 			toolbar = me.createToolbar();
@@ -109,13 +97,17 @@ Ext.define(
 		 */
 		initEditor: function ()
 		{
-			var me = this;
+            var me = this,
+                viewport;
 
-			me.add(
-				{
-					xtype: 'editor-viewport'
-				}
-			);
+            viewport = Ext.widget(
+                {
+                    xtype: 'editor-viewport'
+                }
+            );
+
+            me.viewport = viewport;
+            me.add(viewport);
 		},
 
 		/**
@@ -126,25 +118,6 @@ Ext.define(
 		createToolbar: function ()
 		{
 			return Ext.create('FBEditor.editor.view.toolbar.Toolbar');
-		},
-
-		/**
-		 * Добавляет контейнер исходного xml.
-		 */
-		addSource: function ()
-		{
-			var me = this,
-				source;
-
-			source = Ext.widget(
-				{
-					xtype: 'editor-viewport-source',
-					hidden: true
-				}
-			);
-
-			me.sourceViewport = source;
-			me.add(source);
 		},
 
 		/**
@@ -202,15 +175,6 @@ Ext.define(
 			me.viewport = viewport;
 
 			return viewport;
-		},
-
-		/**
-		 * Возвращает контейнер исходного xml.
-		 * @return {FBEditor.editor.view.viewport.source.Source} Контейнер исходного xml.
-		 */
-		getSourceViewport: function ()
-		{
-			return this.sourceViewport;
 		},
 
 		/**

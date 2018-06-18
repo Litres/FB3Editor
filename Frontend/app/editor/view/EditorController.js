@@ -30,32 +30,6 @@ Ext.define(
 
 			// загружаем узел в окно
 			viewport.loadData(node);
-		},
-
-		/**
-		 * Переключает на окно исходного xml.
-		 */
-		onSwitchToSource: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				sourceViewport = view.getSourceViewport(),
-				manager = view.getManager();
-
-			sourceViewport.setVisible(true);
-		},
-
-		/**
-		 * Переключает на окно обычного текста.
-		 */
-		onSwitchToText: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				sourceViewport = view.getSourceViewport(),
-				manager = view.getManager();
-
-			sourceViewport.setHidden(true);
 		}
 	}
 );

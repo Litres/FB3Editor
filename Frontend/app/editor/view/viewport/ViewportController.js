@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.editor.view.viewport.ViewportController',
 	{
 		extend: 'Ext.app.ViewController',
+
 		alias: 'controller.editor.viewport'
 	}
 );

@@ -58,7 +58,7 @@ Ext.define(
 			me.setTooltip(me.translateText.textEdit);
 
 			editor = toolbar.getEditor();
-			editor.fireEvent('switchToSource');
+			//editor.fireEvent('switchToSource');
 		},
 
 		/**
@@ -73,7 +73,7 @@ Ext.define(
 			me.setTooltip(me.translateText.sourceEdit);
 
 			editor = toolbar.getEditor();
-			editor.fireEvent('switchToText');
+			//editor.fireEvent('switchToText');
 		},
 
 		/**
