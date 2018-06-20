@@ -40,29 +40,36 @@ Ext.define(
                 target = e.target,
 				nodes = {},
 				els = {},
+				range,
 				viewportId,
 				helper;
 
-			//console.log('sel', sel, e);
+			//console.log('sel img', sel, e);
 
-			// текущий фокусный элемент в выделении
-			nodes.focus = sel.focusNode;
-			els.focus = nodes.focus && nodes.focus.getElement ? nodes.focus.getElement() : null;
-			viewportId = target.viewportId;
+			range = sel.rangeCount ? sel.getRangeAt(0) : null;
 
-			if (els.focus && !els.focus.isImg)
+			if (range && sel.isCollapsed)
 			{
-				// снимаем выделение в тексте, чтобы не было одновременно двух выделений
-				sel.removeAllRanges();
+                // текущий фокусный элемент в выделении
+                nodes.focus = sel.focusNode;
+                els.focus = nodes.focus && nodes.focus.getElement ? nodes.focus.getElement() : null;
 
-				helper = el.getNodeHelper();
-				nodes.focus = helper.getNode(viewportId);
+                if (els.focus && !els.focus.isImg)
+                {
+                    viewportId = target.viewportId;
 
-				// устанвливаем в качестве выделения текущее изображение
-				sel.collapse(nodes.focus, 0);
+                    // снимаем выделение в тексте, чтобы не было одновременно двух выделений
+                    sel.removeAllRanges();
 
-				// восстанавливаем фокус на изображении
-				nodes.focus.focus();
+                    helper = el.getNodeHelper();
+                    nodes.focus = helper.getNode(viewportId);
+
+                    // устанвливаем в качестве выделения текущее изображение
+                    sel.collapse(nodes.focus, 0);
+
+                    // восстанавливаем фокус на изображении
+                    nodes.focus.focus();
+                }
 			}
 
 			me.callParent(arguments);

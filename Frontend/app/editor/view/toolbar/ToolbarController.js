@@ -19,7 +19,6 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				buttons = view.getSyncButtons(),
-				//toggleBtn = view.getToggleButton(),
 				editor = view.getEditor(),
 				manager = editor.getManager();
 
@@ -68,8 +67,6 @@ Ext.define(
 					}
 				);
 			}
-
-			//toggleBtn.enable();
 		},
 
 		/**
@@ -102,8 +99,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				buttons = view.getSyncButtons()/*,
-				toggleBtn = view.getToggleButton()*/;
+				buttons = view.getSyncButtons();
 
 			if (buttons)
 			{
@@ -135,8 +131,6 @@ Ext.define(
 					}
 				);
 			}
-
-			//toggleBtn.disable();
 		}
 	}
 );
