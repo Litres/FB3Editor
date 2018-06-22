@@ -19,7 +19,6 @@ Ext.define(
 			me.tpl = new Ext.XTemplate(
 				'<div class="element-info">',
 				'<div class="element-info-name">{elementName}</div>',
-				/*'<div><tpl if="htmlPath"><span>html:</span> {htmlPath}</tpl></div>',*/
 				'</div>'
 			);
 			

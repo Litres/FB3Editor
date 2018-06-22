@@ -15,11 +15,26 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				panelProps = view.getPanelProps(),
-				el = view.getFocusEl();
+				el = view.getFocusEl(),
+				manager = el.getManager(),
+				nodes = {},
+				helper;
 			
-			// обновляем панель свойств с новыми данными
-			panelProps.fireEvent('loadData', el);
+			// выделение всего элемента в тексте
+
+			helper = el.getNodeHelper();
+			nodes.node = helper.getNode();
+			nodes.start = manager.getDeepFirst(nodes.node);
+            nodes.last = manager.getDeepLast(nodes.node);
+
+			manager.setCursor(
+				{
+                    focusElement: el,
+					startNode: nodes.start,
+                    endNode: nodes.last,
+					endOffset: nodes.last.length
+				}
+			);
 		}
 	}
 );

@@ -805,8 +805,7 @@ Ext.define(
 
 			data = {
 				el: el,
-				elementName: el.getName().toUpperCase(),
-				htmlPath: me.getHtmlPath(node) // путь html от курсора
+				elementName: el.getName().toUpperCase()
 			};
 			
 			Ext.Object.each(
@@ -1019,33 +1018,6 @@ Ext.define(
 			}
 
 			return el;
-		},
-
-		/**
-		 * Рекурсивно возвращает путь html элемента от текущего до корневого элемента.
-		 * @param {Node} node Узел текущего элемента.
-		 * @param {String} [path] Данный параметр не указывается, он необходим для рекурсии.
-		 * @return {String} Путь html.
-		 */
-		getHtmlPath: function (node, path)
-		{
-			var me = this,
-				name,
-				parentNode,
-				newPath;
-
-			parentNode = node && node.parentNode ? node.parentNode : null;
-			name = node && node.nodeType !== Node.TEXT_NODE ? node.nodeName : '';
-			newPath = name + (path ? ' > ' + path : '');
-			
-			//console.log(node, name, parentNode.parentNode, path, newPath);
-			
-			if (name !== 'MAIN' && parentNode)
-			{
-				newPath = me.getHtmlPath(parentNode, newPath);
-			}
-
-			return newPath;
 		},
 
 		/**

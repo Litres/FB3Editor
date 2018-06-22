@@ -325,7 +325,7 @@ Ext.define(
 		/**
 		 * Устанавливает или сбрасывает выделение элемента.
 		 * @param {Boolean} selected Установить ли выделение.
-		 * @param {String} viewportId Id окна.
+		 * @param {String} [viewportId] Id окна.
 		 */
 		selectNode: function (selected, viewportId)
 		{
