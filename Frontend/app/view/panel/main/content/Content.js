@@ -149,6 +149,20 @@ Ext.define(
 			return toolstab;
 		},
 
+        /**
+		 * Возвращает панель управления вложенностью секций.
+         * @return {FBEditor.view.panel.main.navigation.section.Panel}
+         */
+		getSectionPanel: function ()
+		{
+            var bridge = FBEditor.getBridgeNavigation(),
+                panel;
+
+            panel = bridge.Ext.getCmp('panel-navigation-section');
+
+            return panel;
+		},
+
 		/**
 		 * Активана ли панель.
 		 * @param {String} itemId Id панели.

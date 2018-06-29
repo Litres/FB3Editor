@@ -841,10 +841,13 @@ Ext.define(
 		{
 			var me = this,
 				editor = me.getEditor(),
+				panelSection,
 				toolbar;
 
 			console.log('sync');
-			toolbar = editor.getToolbar();
+
+			// синхронизируем кнопки на тулбаре
+            toolbar = editor.getToolbar();
 			toolbar.fireEvent('syncButtons');
 		},
 

@@ -91,6 +91,21 @@ Ext.define(
 			return me._availableSyncButtons;
 		},
 
+        /**
+         * Синхронизирует кнопки элементов с текущим выделением.
+         */
+        syncButtons: function ()
+        {
+            var me = this,
+                panelSection;
+
+            me.callParent(arguments);
+
+            // синхронизируем кнопки сдвига секции
+            panelSection = me.getPanelSection();
+            panelSection.fireEvent('sync');
+        },
+
 		setFocusElement: function (elOrNode, sel)
 		{
 			var me = this,
@@ -104,6 +119,20 @@ Ext.define(
 			// разворачиваем узел элемента в дереве навигации по тексту
 			panelNav.expandElement(el);
 		},
+
+        /**
+         * Возвращает панель кнопок для сдвига секции.
+         * @return {FBEditor.view.panel.main.navigation.section.Panel}
+         */
+        getPanelSection: function ()
+        {
+            var bridge = FBEditor.getBridgeNavigation(),
+                panel;
+
+            panel = bridge.Ext.getCmp('panel-navigation-section');
+
+            return panel;
+        },
 
 		getPanelProps: function ()
 		{

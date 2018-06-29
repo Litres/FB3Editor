@@ -41,6 +41,7 @@ Ext.define(
 				panelToolstab = view.getPanelMainToolstab(),
 				toolstab = view.getToolstab(),
 				manager = FBEditor.getEditorManager(true),
+				sectionPanel = view.getSectionPanel(),
 				editor,
 				toolbar;
 
@@ -52,6 +53,8 @@ Ext.define(
 			toolbar = editor.getToolbar();
 			toolstab.setActiveToolbar(toolbar);
 			//manager.syncButtons();
+
+            sectionPanel.fireEvent('enablePanel');
 		},
 
 		/**
@@ -63,6 +66,7 @@ Ext.define(
 				view = me.getView(),
 				panelToolstab = view.getPanelMainToolstab(),
 				toolstab = view.getToolstab(),
+                sectionPanel = view.getSectionPanel(),
 				manager,
 				editor,
 				toolbar;
@@ -76,6 +80,8 @@ Ext.define(
 			toolstab.setActiveToolbar(toolbar);
 			manager = editor.getManager();
 			manager.syncButtons();
+
+            sectionPanel.fireEvent('disablePanel');
 		},
 
 		/**
@@ -86,6 +92,7 @@ Ext.define(
 			var me = this,
 				view = me.getView(),
 				toolstab = view.getToolstab(),
+                sectionPanel = view.getSectionPanel(),
 				manager,
 				editor,
 				toolbar;
@@ -102,6 +109,7 @@ Ext.define(
 				manager.disableButtons();
 			}
 
+            sectionPanel.fireEvent('disablePanel');
 		},
 
 		/**

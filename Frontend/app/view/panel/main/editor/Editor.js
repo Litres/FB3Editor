@@ -136,6 +136,7 @@ Ext.define(
 				panel;
 
 			panel = me.panelContent || Ext.getCmp('panel-main-content');
+            me.panelContent = panel;
 
 			return panel;
 		},

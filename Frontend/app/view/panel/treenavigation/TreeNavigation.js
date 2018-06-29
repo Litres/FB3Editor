@@ -45,6 +45,7 @@ Ext.define(
 				{
 					xtype: 'panel-body-navigation'
 				}
+
 			];
 
 			me.callParent(arguments);
@@ -99,6 +100,7 @@ Ext.define(
 				//data.view.expandPath(data.record.getPath());
 				recordData = data.record.getData();
 				//console.log('restore data', data.record.getPath(), recordData);
+
 				if (recordData.path)
 				{
 					data.view.selectPath(recordData.path);

@@ -10,6 +10,7 @@ Ext.define(
         extend: 'FBEditor.view.panel.main.AbstractDetach',
 	    requires: [
 		    'FBEditor.view.panel.main.navigation.NavigationController',
+            'FBEditor.view.panel.main.navigation.section.Panel',
 	        'FBEditor.view.panel.treenavigation.TreeNavigation'
 	    ],
 
@@ -32,7 +33,10 @@ Ext.define(
 		    me.items = [
 			    {
 				    xtype: 'panel-treenavigation'
-			    }
+			    },
+				{
+					xtype: 'panel-navigation-section'
+				}
 		    ];
 
 		    me.callParent(arguments);
