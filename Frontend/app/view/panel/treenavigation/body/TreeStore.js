@@ -8,16 +8,19 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.body.TreeStore',
 	{
 		extend: 'Ext.data.TreeStore',
+
+        proxy: {
+            type: 'memory'
+        },
+
+        root: {
+            //expandable: false,
+            icon: ' ',
+            cls: 'treenavigation-root treenavigation-root-body'//,
+            //iconCls: 'treenavigation-root-icon treenavigation-root-icon-body fa fa-lg'
+        },
+
 		defaultRootText: 'Текст',
-		rootVisible: true,
-		proxy: {
-			type: 'memory'
-		},
-		root: {
-			//expandable: false,
-			icon: ' ',
-			cls: 'treenavigation-root treenavigation-root-body'//,
-			//iconCls: 'treenavigation-root-icon treenavigation-root-icon-body fa fa-lg'
-		}
+		rootVisible: true
 	}
 );

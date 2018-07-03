@@ -8,7 +8,7 @@
 Ext.define(
     'FBEditor.editor.command.section.RightCommand',
     {
-        extend: 'FBEditor.editor.command.AbstractCreateCommand',
+        extend: 'FBEditor.editor.command.AbstractCommand',
 
         execute: function ()
         {

@@ -69,6 +69,7 @@ Ext.define(
 
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
 			activeItem = content.getLayout().getActiveItem();
+
 			if (activeItem.id === contentId)
 			{
 				me.selectPath('/root');

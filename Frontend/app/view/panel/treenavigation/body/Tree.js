@@ -70,7 +70,6 @@ Ext.define(
 		loadData: function (data)
 		{
 			var me = this,
-				bridge = FBEditor.getBridgeWindow(),
 				treeData;
 
 			me.saveStateNodes();
@@ -261,7 +260,7 @@ Ext.define(
 				store= me.store,
 				root;
 
-			root = store && store.first() ? store.first() : me.callParrent();
+			root = store && store.first() ? store.first() : me.callParent();
 
 			return root;
 		}

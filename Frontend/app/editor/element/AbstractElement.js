@@ -1,5 +1,5 @@
 /**
- * Класс абстрактого элемента.
+ * Класс абстрактного элемента.
  *
  * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>

@@ -42,6 +42,9 @@ Ext.define(
                 // текущая секция
                 els.section = els.focus.isSection ? els.focus : els.focus.getParentName('section');
 
+                // предыдущая секция или элемент
+                els.prev = els.section.prev();
+
                 // родительская секция
                 els.parent = els.section && els.section.parent ? els.section.parent : null;
 

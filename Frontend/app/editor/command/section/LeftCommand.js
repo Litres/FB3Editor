@@ -7,7 +7,7 @@
 Ext.define(
     'FBEditor.editor.command.section.LeftCommand',
     {
-        extend: 'FBEditor.editor.command.AbstractCreateCommand',
+        extend: 'FBEditor.editor.command.AbstractCommand',
 
         execute: function ()
         {
@@ -51,11 +51,11 @@ Ext.define(
                     return false;
                 }
 
-                els.sectionPrev = els.section.prev() && els.section.prev().isSection ? els.section.prev() : null;
+                els.sectionPrev = els.section.prev();
 
                 if (els.sectionPrev)
                 {
-                    // переносим все секции, расположенные выше текущей, в новую секцию
+                    // переносим все элементы, расположенные выше текущей, в новую секцию
 
                     els.sectionNew = factory.createElement('section');
                     els.sectionParent.insertBefore(els.sectionNew, els.parent, viewportId);
@@ -65,6 +65,13 @@ Ext.define(
                     {
                         els.sectionNew.add(els.first, viewportId);
                         els.first = els.parent.first();
+                    }
+
+                    if (!els.sectionPrev.isSection)
+                    {
+                        // добавляем пустой абзац
+                        els.emptyP = manager.createEmptyP();
+                        els.sectionNew.add(els.emptyP, viewportId);
                     }
                 }
 
@@ -135,6 +142,12 @@ Ext.define(
 
                 if (els.sectionNew)
                 {
+                    if (els.emptyP)
+                    {
+                        // удаляем пустой абзац
+                        els.sectionNew.remove(els.emptyP);
+                    }
+
                     // переносим все секции, расположенные выше текущей, обратно в родительскую секцию
 
                     els.first = els.sectionNew.first();
