@@ -39,13 +39,16 @@ Ext.define(
                 manager = els.node.getManager();
                 els.focus = manager.getFocusElement();
 
-                // текущая секция
-                els.section = els.focus.isSection ? els.focus : els.focus.getParentName('section');
+                if (els.focus)
+                {
+                    // текущая секция
+                    els.section = els.focus.isSection ? els.focus : els.focus.getParentName('section');
 
-                // предыдущая секция
-                els.sectionPrev = els.section ? els.section.prev() : null;
+                    // предыдущая секция
+                    els.sectionPrev = els.section ? els.section.prev() : null;
 
-                isActive = els.sectionPrev && els.sectionPrev.isSection ? true : isActive;
+                    isActive = els.sectionPrev && els.sectionPrev.isSection ? true : isActive;
+                }
             }
 
             return isActive;
