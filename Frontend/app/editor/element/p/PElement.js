@@ -39,9 +39,11 @@ Ext.define(
 			{
 				// заменяем все пустые абзацы на br
 
-				if (!withoutFormat)
+                if (!withoutFormat)
 				{
-					xml = xml.replace(/<p(.*?)>\n\s+<br(.*?)\/>\n\s+<\/p>/gi, '<br$2/>');
+                    //console.log(me.isEmpty(), me, xml);
+
+                    xml = xml.replace(/<p(.*?)>\n\s*<br(.*?)\/>\n\s*<\/p>/gi, '<br$2/>');
 				}
 				else
 				{
@@ -53,7 +55,9 @@ Ext.define(
 					// для всех элементов, кроме section, первым элементом не может быть br
 					xml = '<p></p>';
 				}
-			}
+
+                //console.log(xml);
+            }
 
 			return xml;
 		}

@@ -22,6 +22,7 @@ Ext.define(
 	    panelName: 'navigation',
 	    layout: 'anchor',
 	    overflowY: 'auto',
+
 	    defaults: {
 		    anchor: '100%'
 	    },
@@ -33,10 +34,7 @@ Ext.define(
 		    me.items = [
 			    {
 				    xtype: 'panel-treenavigation'
-			    },
-				{
-					xtype: 'panel-navigation-section'
-				}
+			    }
 		    ];
 
 		    me.callParent(arguments);

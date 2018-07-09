@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.Manager',
 		requires: [
-			'FBEditor.view.panel.main.editor.Loader'
+			'FBEditor.view.panel.main.editor.Loader',
+            'FBEditor.view.panel.main.xml.Manager'
 		],
 
 		enableRevision: true,
@@ -24,6 +25,12 @@ Ext.define(
 		 * @property {FBEditor.view.panel.main.editor.Loader} Загрузчик тела с хаба.
 		 */
 		loader: null,
+
+        /**
+         * @private
+         * @property {FBEditor.view.panel.main.xml.Manager} Менеджер редактора xml.
+         */
+        managerXml: null,
 
 		/**
 		 * @private
@@ -45,6 +52,9 @@ Ext.define(
 
 			// загрузчик
 			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
+
+            // менеджер редактора xml
+            me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
 		},
 
 		/**
@@ -68,6 +78,15 @@ Ext.define(
 			// обновляем дерево навигации по тексту
 			me.updateTree();
 		},
+
+        /**
+         * Возвращает менеджер редактора xml.
+         * @return {FBEditor.view.panel.main.xml.Manager}
+         */
+        getManagerXml: function ()
+        {
+            return this.managerXml;
+        },
 
 		availableSyncButtons: function ()
 		{
@@ -162,11 +181,17 @@ Ext.define(
 		updateTree: function ()
 		{
 			var me = this,
-				panel = me.getPanelNavigation();
+				data = me.content,
+				panel = me.getPanelNavigation(),
+				managerXml = me.getManagerXml();
 
 			if (panel)
 			{
-				panel.loadData(me.content);
+				// обновляем дерево навигации по тексту
+                panel.loadData(data);
+
+                // обновляем дерево навигации по xml
+                managerXml.updateTree();
 			}
 			else
 			{

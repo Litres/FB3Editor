@@ -164,6 +164,14 @@
             "remote": true
         },
         {
+            "path": "bower_components/codemirror/lib/codemirror.js",
+            "remote": true
+        },
+        {
+            "path": "bower_components/codemirror/mode/xml/xml.js",
+            "remote": true
+        },
+        {
             "path": "${ext.dir}/build/ext-all-rtl-debug.js"
         },
         {
@@ -231,6 +239,9 @@
         },
         {
             "path": "resources/css/media/small/editor.css"
+        },
+        {
+            "path": "bower_components/codemirror/lib/codemirror.css"
         }
     ],
 
@@ -263,7 +274,7 @@
      */
     "production": {
         "loader": {
-            "cache": "738",
+            "cache": "739",
             "cacheParam": "_v"
         }
     },

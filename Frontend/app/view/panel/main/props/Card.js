@@ -10,9 +10,10 @@ Ext.define(
 		extend: 'Ext.panel.Panel',
 		requires: [
 			'FBEditor.view.panel.main.props.CardController',
+            'FBEditor.view.panel.main.props.body.Body',
 			'FBEditor.view.panel.main.props.desc.Desc',
 			'FBEditor.view.panel.main.props.resources.Resources',
-			'FBEditor.view.panel.main.props.body.Body'
+            'FBEditor.view.panel.main.props.xml.Xml'
 		],
 
 		id: 'panel-main-props-card',
@@ -22,7 +23,8 @@ Ext.define(
         listeners: {
             activePanelResources: 'onActivePanelResources',
             activePanelDesc: 'onActivePanelDesc',
-            activePanelBody: 'onActivePanelBody'
+            activePanelBody: 'onActivePanelBody',
+            activePanelXml: 'onActivePanelXml'
         },
 
 		layout: 'card',
@@ -38,9 +40,12 @@ Ext.define(
 				{
 					xtype: 'panel-props-resources'
 				},
-				{
-					xtype: 'panel-props-body'
-				}
+                {
+                    xtype: 'panel-props-body'
+                },
+                {
+                    xtype: 'panel-props-xml'
+                }
 			];
 
 			me.callParent(arguments);

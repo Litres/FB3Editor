@@ -8,6 +8,7 @@ Ext.define(
 	'FBEditor.editor.view.EditorController',
 	{
 		extend: 'Ext.app.ViewController',
+
 		alias: 'controller.view.editor',
 
 		/**

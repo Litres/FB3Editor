@@ -37,6 +37,7 @@ Ext.define(
 			if (me.createRootElement)
 			{
 				me.callParent(arguments);
+
 				manager = editor.getManager();
 
 				if (manager.isLoadUrl() && !descManager.isLoadUrl())

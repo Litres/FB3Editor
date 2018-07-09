@@ -1,7 +1,7 @@
 {
   "name": "FBEditor",
   "version": "1.0.0",
-  "description": "FB3Editor - open source online eBook editor",
+  "description": "FB3Editor - open source online fb3 editor",
   "main": "index.html",
   "keywords": [
     "fb3editor",
@@ -33,6 +33,7 @@
     "jsdiff": "^2.2.2",
     "normalize-css": "^7.0.0",
     "es6-promise-polyfill": "^1.2.0",
-    "clipboard-polyfill": "https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js"
+    "clipboard-polyfill": "https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js",
+    "codemirror": "^5.39.0"
   }
 }

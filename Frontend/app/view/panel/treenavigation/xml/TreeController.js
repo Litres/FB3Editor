@@ -15,7 +15,7 @@ Ext.define(
         alias: 'controller.panel.xml.navigation',
 
         /**
-         * Вызывается при двойном клике на одном из элементов узла дерева.
+         * Вызывается при клике на одном из элементов узла дерева.
          * @param {Ext.tree.View} nodeView Узел дерева.
          * @param {Ext.data.TreeModel} record Модель узла.
          */
@@ -25,27 +25,25 @@ Ext.define(
 
             me.callParent(arguments);
 
-            // устанавливаем курсор на элементе и прокурчиваем к нему окно
+            // показываем выбранный элемент в редакторе xml
             me.setFocusElement(record);
         },
 
         /**
-         * Устанавливает фокус на элементе и прокуручивает к нему скролл.
+         * Показывает элемент в редакторе xml.
          * @param {Ext.data.TreeModel} record Модель узла.
          */
         setFocusElement: function (record)
         {
             var me = this,
                 data = record.getData(),
-                els = {},
-                nodes = {},
-                manager = FBEditor.getEditorManager(),
-                root,
-                rootNode;
+                managerEditor = FBEditor.getEditorManager(),
+                managerXml,
+                el;
 
             if (!me.isActiveXml())
             {
-                // ждем рендеринга панели тела
+                // ждем рендеринга панели
                 Ext.defer(
                     function ()
                     {
@@ -57,48 +55,16 @@ Ext.define(
             else
             {
                 // получаем элемент по его id
-                els.node = manager.getElementById(data.elementId);
+                el = managerEditor.getElementById(data.elementId);
 
-                if (els.node)
-                {
-                    // устанавливаем фокус на корневом узле главного окна
-                    root = manager.getContent();
-                    rootNode = root.getNodeHelper().getNode();
-                    //rootNode.focus();
-
-                    // узлы элемента
-                    nodes.nodes = Ext.Object.getValues(els.node.nodes);
-
-                    // перематываем скролл во всех окнах
-                    Ext.Array.each(
-                        nodes.nodes,
-                        function (item)
-                        {
-                            item.scrollIntoView();
-                        }
-                    );
-
-                    // получаем самый вложенный первый элемент
-                    nodes.first = nodes.nodes[0];
-                    while (nodes.first.firstChild)
-                    {
-                        nodes.first = nodes.first.firstChild;
-                    }
-
-                    els.first = nodes.first.getElement();
-
-                    // устанавливаем курсор на соответствующем элементе в главном окне
-                    manager.setCursor(
-                        {
-                            startNode: nodes.first
-                        }
-                    );
-                }
+                // загружаем данные в редактор xml
+                managerXml = managerEditor.getManagerXml();
+                managerXml.loadData(el);
             }
         },
 
         /**
-         * Открывает панель текста.
+         * Открывает панель xml.
          */
         openContent: function ()
         {
@@ -128,7 +94,7 @@ Ext.define(
                 res;
 
             mainContent = bridge.Ext.getCmp('panel-main-content');
-            res = mainContent.isActiveItem('main-editor-xml');
+            res = mainContent.isActiveItem('main-xml');
 
             return res;
         }

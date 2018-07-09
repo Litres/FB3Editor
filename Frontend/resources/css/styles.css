@@ -27,6 +27,7 @@ body {
 }
 
 /* Деревья панели навигации */
+
 .treenavigation-root {
 	font-size: 15px;
 }
@@ -66,13 +67,11 @@ body {
 .treenavigation-children-desc.x-grid-item-focused {
 	color: #1d458a;
 }
-
 .treenavigation-root-desc span:before {
 	content: "\f03a";
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
-
 .treenavigation-children-desc span:before {
 	content: "\f1dd";
 }
@@ -153,35 +152,38 @@ body {
 .treenavigation-children-el-undefined span:before {
 	content: "\f128";
 }
+/* <-- Дерево текста */
+
+/* Дерево xml */
+.treenavigation-root-xml span:before {
+	content: "\f1c9";
+	font-size: 1.33333333em;
+	vertical-align: -15%;
+}
+/* <-- Дерево xml */
 
 /* Дерево ресурсов */
-
 .treenavigation-root-resource,
 .treenavigation-children-resource,
 .treenavigation-root-resource.x-grid-item-focused,
 .treenavigation-children-resource.x-grid-item-focused {
 	color: #743e45;
 }
-
 .treenavigation-root-resource span:before {
 	content: "\f1c0";
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
-
 .treenavigation-children-resource span:before {
 	content: "\f07b";
 }
-
 .window-panel-resources-tree-name {
 	padding: 10px;
 }
-
 .window-panel-resources-tree-name span {
 	font-weight: bold;
 	color: #743e45;
 }
-
 /* <-- Дерево ресурсов */
 
 .panel-filename-display .x-form-display-field-default {

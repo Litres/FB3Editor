@@ -43,7 +43,7 @@ Ext.define(
             }
             else
             {
-                content.fireEvent('contentBody');
+                content.fireEvent('contentXml');
             }
 
             props = bridgeProps.Ext && bridgeProps.Ext.getCmp ? bridgeProps.Ext.getCmp('panel-main-props-card') : null;
@@ -51,7 +51,7 @@ Ext.define(
             if (props)
             {
                 me.activePanelProps = props.getLayout().getActiveItem();
-                props.fireEvent('activePanelBody');
+                props.fireEvent('activePanelXml');
             }
 
             return result;

@@ -27,35 +27,21 @@ Ext.define(
 		onActivePanelBody: function ()
 		{
 			var me = this,
-				view = me.getView(),
-				manager = FBEditor.getEditorManager(),
-				cursor,
-				root,
-				rootNode,
-				range;
+				view = me.getView();
 
 			view.setActiveItem('panel-props-body');
-
-			// курсор
-
-			/*
-			range = manager.getRange();
-
-			if (!range || range && !range.start.parentNode)
-			{
-				root = manager.getContent();
-				rootNode = root.getNodeHelper().getNode();
-				range = {
-					start: manager.getDeepFirst(rootNode)
-				};
-			}
-
-			cursor = {
-				startNode: range.start,
-				startOffset: range.offset ? range.offset.start : 0
-			};
-			manager.setCursor(cursor);*/
 		},
+
+        /**
+         * Актвиврует панель свойств редактора текста.
+         */
+        onActivePanelXml: function ()
+        {
+            var me = this,
+                view = me.getView();
+
+            view.setActiveItem('panel-props-xml');
+        },
 
 		/**
 		 * Актвиврует панель свойств редактора описания книги.

@@ -25,7 +25,7 @@ Ext.define(
 			items.each(
 				function (item)
 				{
-					if (item.id !== exceptId)
+					if (item.id !== exceptId && item.clearSelection)
 					{
 						item.clearSelection();
 					}

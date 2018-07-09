@@ -9,9 +9,10 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.Abstract',
 		requires: [
+            'FBEditor.view.form.desc.Desc',
 			'FBEditor.view.panel.main.content.ContentController',
 			'FBEditor.view.panel.main.editor.Editor',
-			'FBEditor.view.form.desc.Desc',
+            'FBEditor.view.panel.main.xml.Xml',
 			'FBEditor.view.panel.resources.Resources',
 			'FBEditor.view.panel.empty.Empty'
 		],
@@ -32,12 +33,16 @@ Ext.define(
 			},
 			{
 				xtype: 'main-editor'
-			}
+			},
+            {
+                xtype: 'main-xml'
+            }
 		],
 
 		listeners: {
 			resize: 'onResize',
 			contentBody: 'onContentBody',
+            contentXml: 'onContentXml',
 			contentDesc: 'onContentDesc',
 			contentResources: 'onContentResources',
 			contentEmpty: 'onContentEmpty'
@@ -204,7 +209,6 @@ Ext.define(
 
 			Ext.create('FBEditor.command.OpenBody').execute();
 			nav = Ext.getCmp('panel-body-navigation');
-			//console.log('root nav', nav.getRootNode());
 			nav.selectRoot();
 		}
     }

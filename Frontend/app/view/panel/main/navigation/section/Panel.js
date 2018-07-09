@@ -28,7 +28,7 @@ Ext.define(
             margin: '0 5 0 0'
         },
 
-        margin: '10 0 0 45',
+        margin: '5 0 5 45',
         hidden: true,
 
         /**

@@ -52,10 +52,37 @@ Ext.define(
 			editor = manager.getEditor();
 			toolbar = editor.getToolbar();
 			toolstab.setActiveToolbar(toolbar);
-			//manager.syncButtons();
 
             sectionPanel.fireEvent('enablePanel');
 		},
+
+        /**
+         * Переключает контент на xml тела книги.
+         */
+        onContentXml: function ()
+        {
+            var me = this,
+                view = me.getView(),
+                toolstab = view.getToolstab(),
+                manager = FBEditor.getEditorManager(true),
+                sectionPanel = view.getSectionPanel(),
+                editor,
+                toolbar;
+
+            view.setActiveItem('main-xml');
+
+            // блокируем кнопки форматирования
+            toolbar = toolstab.getActiveToolbar();
+
+            if (toolbar)
+            {
+                editor = toolbar.getEditor();
+                manager = editor.getManager();
+                manager.disableButtons();
+            }
+
+            sectionPanel.fireEvent('disablePanel');
+        },
 
 		/**
 		 * Переключает контент на описание книги.
