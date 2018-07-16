@@ -36,8 +36,7 @@ Ext.define(
             me.lib = lib = lib(
                 content,
                 {
-                    mode: 'xml',
-                    lineNumbers: true
+                    mode: 'xml'
                 }
             );
 
