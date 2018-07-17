@@ -17,6 +17,10 @@ Ext.define(
         xtype: 'panel-xml-navigation',
         controller: 'panel.xml.navigation',
 
+        listeners: {
+            openElement: 'onOpenElement'
+        },
+
         stateId: 'panel-xml-navigation',
         stateful: true,
         useArrows: true,
@@ -66,7 +70,7 @@ Ext.define(
         },
 
         /**
-         * Загружает в дерево ресурсы.
+         * Загружает в дерево данные.
          * @param {FBEditor.editor.element.AbstractElement} data Корневой элемент тела книги.
          */
         loadData: function (data)
@@ -123,51 +127,6 @@ Ext.define(
                 val = null,
                 manager = FBEditor.getEditorManager();
 
-
-            /*
-            if (el.isStyleHolder)
-            {
-                return null;
-            }
-
-            if (!el.isStyleHolder)
-            {
-                // сохраняем полный путь элемента в дереве навигации
-                parentPath = parentPath || '';
-                el.treePath = parentPath + '/' + el.elementId;
-                //console.log('tree', el.treePath);
-            }
-
-            val = {};
-            val.text = el.getNameTree();
-            val.elementId = el.elementId;
-            val.expanded = manager.stateExpandedNodesTree[el.elementId] ? true : false;
-            val.icon = ' ';
-            val.cls = 'treenavigation-children treenavigation-children-xml';
-            val.cls += el.cls ? ' treenavigation-children-' + el.cls : '';
-
-            if (!el.isStyleHolder)
-            {
-                Ext.Array.each(
-                    el.children,
-                    function (item)
-                    {
-                        var child;
-
-                        // отображаем элемент в дереве
-                        child = me.getTreeChildren(item, el.treePath);
-
-                        if (child)
-                        {
-                            val.children = val.children || [];
-                            val.children.push(child);
-                        }
-                    }
-                );
-            }
-
-            val.leaf = !val.children;
-            */
 
             if (el.showedOnTree)
             {

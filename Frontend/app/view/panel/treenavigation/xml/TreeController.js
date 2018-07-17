@@ -29,6 +29,20 @@ Ext.define(
             me.setFocusElement(record);
         },
 
+        onOpenElement: function (el)
+        {
+            var me = this,
+                managerEditor = el.getManager(),
+                managerXml;
+
+            // открываем панель xml
+            me.openContent();
+
+            // загружаем данные в редактор xml
+            managerXml = managerEditor.getManagerXml();
+            managerXml.loadData(el);
+        },
+
         /**
          * Показывает элемент в редакторе xml.
          * @param {Ext.data.TreeModel} record Модель узла.

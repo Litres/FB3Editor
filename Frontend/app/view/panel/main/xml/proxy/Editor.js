@@ -1,6 +1,6 @@
 /**
  * Прокси для стороннего редактора xml.
- * Используется http://codemirror.net/
+ * Используется http://codemirror.net
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -36,7 +36,8 @@ Ext.define(
             me.lib = lib = lib(
                 content,
                 {
-                    mode: 'xml'
+                    mode: 'xml',
+                    lineWrapping: true // перенос строк
                 }
             );
 

@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'Ext.Container',
 		requires: [
+            'FBEditor.view.panel.main.props.body.path.edit.Edit',
 			'FBEditor.view.panel.main.props.body.path.el.El'
 		],
 
@@ -33,7 +34,8 @@ Ext.define(
 			var me = this,
 				parent = focusEl,
 				splitter,
-				el;
+				el,
+				edit;
 
 			me.resetData();
 			
@@ -50,12 +52,18 @@ Ext.define(
 					el = {
 						xtype: 'component',
 						html: parent.getName().toUpperCase()
-					}
+					};
 				}
 				else
 				{
 					// создаем элемент пути
 					el = Ext.create('FBEditor.view.panel.main.props.body.path.el.El', {focusEl: parent});
+
+                    // создаем кнопку редактирования xml элемента пути
+                    edit = Ext.create('FBEditor.view.panel.main.props.body.path.edit.Edit', {focusEl: parent});
+
+                    // вставляем в начало пути
+                    me.insert(0, edit);
 				}
 
 				// вставляем в начало пути

@@ -230,6 +230,14 @@ body {
 .panel-props-body-path-el:hover {
 	text-decoration: underline;
 }
+.panel-props-body-path-edit {
+	margin: 0 0 0 2px;
+	cursor: pointer;
+	color: #2e9577;
+}
+.panel-props-body-path-edit:hover {
+	color: #2e6d4f;
+}
 
 /* ячейка пикера создания элемента таблицы */
 .picker-create-table-cell {

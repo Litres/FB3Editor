@@ -43,6 +43,7 @@ Ext.define(
 
 			me.focusEl = focusEl;
 			me.html = '<span>' + name.toUpperCase() + '</span>';
+
 			me.callParent(arguments);
 		},
 
