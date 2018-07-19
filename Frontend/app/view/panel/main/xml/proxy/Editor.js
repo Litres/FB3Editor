@@ -36,8 +36,7 @@ Ext.define(
             me.lib = lib = lib(
                 content,
                 {
-                    mode: 'xml',
-                    lineWrapping: true // перенос строк
+                    mode: 'xml'
                 }
             );
 
@@ -63,6 +62,18 @@ Ext.define(
                 lib = me.getLib();
 
             lib.setValue(data);
+        },
+
+        /**
+         * Устанавливаем перенос длинных строк.
+         * @param {Boolean} wrap true - включить перенос.
+         */
+        setLineWrap: function (wrap)
+        {
+            var me = this,
+                lib = me.getLib();
+
+            lib.setOption('lineWrapping', wrap);
         }
     }
 );

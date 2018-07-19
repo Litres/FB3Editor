@@ -15,7 +15,7 @@ Ext.define(
 		enableToggle: true,
 		tooltipType: 'title',
 		html: '<i class="fa fa-paragraph"></i>',
-		tooltip: 'Непечатаемые символы',
+		tooltip: 'Показывать непечатаемые символы в редакторе текста',
 
 		handler: function ()
 		{
@@ -32,7 +32,7 @@ Ext.define(
 				{
 					viewport.showUnprintedSymbols(isPressed);
 				}
-			)
+			);
 		},
 
 		/**

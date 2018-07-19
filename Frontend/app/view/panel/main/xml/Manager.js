@@ -135,6 +135,19 @@ Ext.define(
                 bridge.Ext.getCmp('panel-xml-navigation') : null;
 
             return panel;
+        },
+
+        /**
+         * Включает/отключает перенос длинных строк.
+         * @param {Boolean} wrap true - включить перенос.
+         */
+        lineWrap: function (wrap)
+        {
+            var me = this,
+                proxy = me.getProxyEditor();
+
+            // устанавливаем перенос
+            proxy.setLineWrap(wrap);
         }
     }
 );

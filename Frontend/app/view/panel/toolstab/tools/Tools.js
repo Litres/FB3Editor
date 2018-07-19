@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'Ext.panel.Panel',
 		requires: [
             'FBEditor.view.panel.toolstab.tools.button.hotkeys.Hotkeys',
-			'FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols'
+			'FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols',
+            'FBEditor.view.panel.toolstab.tools.button.xmlwordwrap.XmlWordWrap'
 		],
 
 		id:'panel-toolstab-tools',
@@ -44,6 +45,9 @@ Ext.define(
 				{
 					xtype: 'panel-toolstab-tools-button-unprintsymbols'
 				},
+                {
+                    xtype: 'panel-toolstab-tools-button-xmlwordwrap'
+                },
                 {
                     xtype: 'panel-toolstab-tools-button-hotkeys'
                 }
