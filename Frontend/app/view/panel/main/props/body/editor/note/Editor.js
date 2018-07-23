@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 		requires: [
+            'FBEditor.view.panel.main.props.body.editor.note.AutotextStore',
 			'FBEditor.view.panel.main.props.body.editor.note.RoleStore'
 		],
 
@@ -21,9 +22,11 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
-				roleStore;
+				roleStore,
+                autotextStore;
 
 			roleStore = Ext.create('FBEditor.view.panel.main.props.body.editor.note.RoleStore');
+            autotextStore = Ext.create('FBEditor.view.panel.main.props.body.editor.note.AutotextStore');
 
 			me.items = [
 				{
@@ -41,16 +44,18 @@ Ext.define(
 					fieldLabel: me.translateText.role,
 					anchor: '100%',
 					store: roleStore,
-					valueField: 'value'
+					valueField: 'value',
+					value: 'auto'
 				},
-				{
-					xtype: 'checkbox',
-					name: 'autotext',
-					fieldLabel: me.translateText.autotext,
-					labelAlign: 'left',
-					labelWidth: 70,
-					inputValue: 'true'
-				}
+                {
+                    xtype: 'combobox',
+                    name: 'autotext',
+                    fieldLabel: me.translateText.autotext,
+                    anchor: '100%',
+                    store: autotextStore,
+                    valueField: 'value',
+					value: '1'
+                }
 			];
 
 			me.callParent(arguments);

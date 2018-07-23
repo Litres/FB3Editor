@@ -13,13 +13,17 @@ Ext.define(
 			'FBEditor.editor.command.note.CreateRangeCommand',
 			'FBEditor.editor.command.note.DeleteWrapperCommand'
 		],
+
 		controllerClass: 'FBEditor.editor.element.note.NoteElementController',
 		htmlTag: 'note',
 		xmlTag: 'note',
 		cls: 'el-note',
 		showedOnTree: false,
+
 		defaultAttributes: {
-			href: 'undefined'
+			href: 'undefined',
+			role: 'auto',
+			autotext: '1'
 		},
 
 		getAttributesXml: function (withoutText)

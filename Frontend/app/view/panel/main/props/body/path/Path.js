@@ -58,15 +58,13 @@ Ext.define(
 				{
 					// создаем элемент пути
 					el = Ext.create('FBEditor.view.panel.main.props.body.path.el.El', {focusEl: parent});
-
-                    // создаем кнопку редактирования xml элемента пути
-                    edit = Ext.create('FBEditor.view.panel.main.props.body.path.edit.Edit', {focusEl: parent});
-
-                    // вставляем в начало пути
-                    me.insert(0, edit);
 				}
 
-				// вставляем в начало пути
+                // создаем кнопку редактирования xml элемента пути
+                edit = Ext.create('FBEditor.view.panel.main.props.body.path.edit.Edit', {focusEl: parent});
+
+                // вставляем в начало пути
+                me.insert(0, edit);
 				me.insert(0, el);
 				
 				parent = parent.parent;

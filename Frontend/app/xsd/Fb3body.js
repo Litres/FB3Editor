@@ -326,7 +326,17 @@ Ext.define(
 						</restriction>\
 					</simpleType>\
 				</attribute>\
-				<attribute name="autotext" type="boolean" use="optional"/>\
+				<attribute name="autotext" default="1" use="optional">\
+					<simpleType>\
+						<restriction base="token">\
+							<enumeration value="1"/>\
+							<enumeration value="i"/>\
+							<enumeration value="a"/>\
+							<enumeration value="*"/>\
+							<enumeration value="keep"/>\
+						</restriction>\
+					</simpleType>\
+            	</attribute>\
 			</extension>\
 		</complexContent>\
 	</complexType>\
