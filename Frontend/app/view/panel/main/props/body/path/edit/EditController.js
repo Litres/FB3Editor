@@ -16,13 +16,20 @@ Ext.define(
             var me = this,
                 view = me.getView(),
                 el = view.getFocusEl(),
-                treePanel;
+                treePanel,
+                xmlTreePanel;
 
-            // панель дерева навигации по xml
+            // панель дерева навигации по тексту
             treePanel = view.getTreePanel();
 
+            // снимаем выделение в дереве навигации по тексту
+            treePanel.clearSelection();
+
+            // панель дерева навигации по xml
+            xmlTreePanel = view.getXmlTreePanel();
+
             // открываем редактирование xml элемента
-            treePanel.fireEvent('openElement', el);
+            xmlTreePanel.fireEvent('openElement', el);
         }
     }
 );

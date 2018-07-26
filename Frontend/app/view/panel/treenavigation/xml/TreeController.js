@@ -29,9 +29,14 @@ Ext.define(
             me.setFocusElement(record);
         },
 
+        /**
+         * Открывает элемент для редактирования.
+         * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+         */
         onOpenElement: function (el)
         {
             var me = this,
+                view = me.getView(),
                 managerEditor = el.getManager(),
                 managerXml;
 
@@ -41,6 +46,8 @@ Ext.define(
             // загружаем данные в редактор xml
             managerXml = managerEditor.getManagerXml();
             managerXml.loadData(el);
+
+            view.expandElement(el);
         },
 
         /**

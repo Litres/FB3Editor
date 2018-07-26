@@ -134,7 +134,7 @@ Ext.define(
                 {
                     // сохраняем полный путь элемента в дереве навигации
                     parentPath = parentPath || '';
-                    el.treePath = parentPath + '/' + el.elementId;
+                    el.xmlTreePath = parentPath + '/' + el.elementId;
                     //console.log('tree', el.treePath);
                 }
 
@@ -231,15 +231,15 @@ Ext.define(
         {
             var me = this;
 
-            if (Ext.isEmpty(el.treePath) && el.parent)
+            if (Ext.isEmpty(el.xmlTreePath) && el.parent)
             {
                 me.expandElement(el.parent);
 
                 return;
             }
 
-            //console.log('expandElement', el.treePath, el);
-            me.selectPath(el.treePath, 'elementId');
+            //console.log('expandElement', el.xmlTreePath, el);
+            me.selectPath(el.xmlTreePath, 'elementId');
         },
 
         /**

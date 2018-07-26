@@ -28,10 +28,25 @@ Ext.define(
         },
 
         /**
+         * Возвращает дерево навигации по тексту.
+         * @return {FBEditor.view.panel.treenavigation.body.Tree}
+         */
+        getTreePanel: function ()
+        {
+            var me = this,
+                bridge = FBEditor.getBridgeNavigation(),
+                panel;
+
+            panel = bridge.Ext.getCmp('panel-body-navigation');
+
+            return panel;
+        },
+
+        /**
          * Возвращает дерево навигации по xml.
          * @return {FBEditor.view.panel.treenavigation.xml.Tree}
          */
-        getTreePanel: function ()
+        getXmlTreePanel: function ()
         {
             var me = this,
                 bridge = FBEditor.getBridgeNavigation(),

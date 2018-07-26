@@ -43,6 +43,7 @@ Ext.define(
 					name: 'role',
 					fieldLabel: me.translateText.role,
 					anchor: '100%',
+                    editable: false,
 					store: roleStore,
 					valueField: 'value',
 					value: 'auto'
@@ -52,6 +53,7 @@ Ext.define(
                     name: 'autotext',
                     fieldLabel: me.translateText.autotext,
                     anchor: '100%',
+					editable: false,
                     store: autotextStore,
                     valueField: 'value',
 					value: '1'
