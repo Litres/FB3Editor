@@ -183,7 +183,7 @@ Ext.define(
 							// переводим xml в json
 							json = xml2Json.xmlToJson(xml);
 							data = json.Relationships.Relationship;
-
+							data = data && !Ext.isArray(data) ? [data] : data;
 							data = data && data.length ? data : [];
 
 							return loader.loadResources(data);

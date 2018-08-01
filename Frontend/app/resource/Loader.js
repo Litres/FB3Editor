@@ -307,6 +307,8 @@ Ext.define(
 								resData,
 								msg;
 
+							//console.log('responseData', responseData);
+
 							resData = resourcesData[indexRequest];
 
 							if (responseData.status === statusOk)
