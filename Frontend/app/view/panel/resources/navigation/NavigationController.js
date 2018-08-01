@@ -8,9 +8,6 @@ Ext.define(
 	'FBEditor.view.panel.resources.navigation.NavigationController',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTreeController',
-		requires: [
-			'FBEditor.command.OpenResources'
-		],
 
 		alias: 'controller.panel.resources.navigation',
 
@@ -41,20 +38,6 @@ Ext.define(
 			{
 				folder = data.path ? data.path : '';
 				manager.setActiveFolder(folder);
-			}
-		},
-
-		/**
-		 * Открывает панель ресурсов.
-		 */
-		openContent: function ()
-		{
-			var cmd;
-
-			cmd = Ext.create('FBEditor.command.OpenResources');
-			if (cmd.execute())
-			{
-				FBEditor.HistoryCommand.add(cmd);
 			}
 		}
 	}

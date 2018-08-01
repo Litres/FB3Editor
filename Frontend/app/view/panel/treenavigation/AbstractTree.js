@@ -24,6 +24,11 @@ Ext.define(
 		 */
 		syncContentId: '',
 
+        /**
+		 * @property {String} Название команды для открытия текущей панели.
+         */
+        cmdName: '',
+
 		afterRender: function ()
 		{
 			var me = this;
@@ -53,6 +58,50 @@ Ext.define(
 				view.deselect(selection[0], false);
 			}
 		},
+
+        /**
+		 * @event openContent
+         * Открывает текущую панель.
+         */
+        openContent: function ()
+        {
+            var me = this,
+                cmdName = me.cmdName,
+                contentId = me.syncContentId,
+                cmd;
+
+            // если панель не открыта
+            if (!me.isActivePanel())
+            {
+            	// вбрасываем событие открытия панели
+                me.fireEvent('openContent', contentId);
+
+                cmd = Ext.create(cmdName);
+
+                if (cmd.execute())
+                {
+                    FBEditor.HistoryCommand.add(cmd);
+                }
+            }
+        },
+
+        /**
+         * Активна ли текущая панель.
+         * @return {Boolean} true - активна.
+         */
+        isActivePanel: function ()
+        {
+            var me = this,
+                contentId = me.syncContentId,
+                bridge = FBEditor.getBridgeWindow(),
+                mainContent,
+                res;
+
+            mainContent = bridge.Ext.getCmp('panel-main-content');
+            res = mainContent.isActiveItem(contentId);
+
+            return res;
+        },
 
 		/**
 		 * @private

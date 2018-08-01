@@ -51,7 +51,6 @@ Ext.define(
                 {
                     xtype: 'panel-xml-navigation'
                 }
-
 			];
 
 			me.callParent(arguments);

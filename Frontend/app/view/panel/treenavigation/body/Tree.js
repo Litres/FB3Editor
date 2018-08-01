@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTree',
 		requires: [
+            'FBEditor.command.OpenBody',
 			'FBEditor.view.panel.treenavigation.body.TreeController',
 			'FBEditor.view.panel.treenavigation.body.TreeStore'
 		],
@@ -27,6 +28,7 @@ Ext.define(
 		},
 
 		syncContentId: 'main-editor',
+        cmdName: 'FBEditor.command.OpenBody',
 
 		initComponent: function ()
 		{

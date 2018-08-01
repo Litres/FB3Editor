@@ -8,9 +8,7 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.desc.TreeController',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTreeController',
-		requires: [
-			'FBEditor.command.OpenDesc'
-		],
+
 		alias: 'controller.panel.desc.navigation',
 
 		/**
@@ -25,24 +23,11 @@ Ext.define(
 				data = record.getData();
 
 			me.callParent(arguments);
+
 			if (data.anchor)
 			{
 				// переходим к определенному блоку описания
 				bridge.location = '#' + data.anchor;
-			}
-		},
-
-		/**
-		 * Открывает панель описания книги.
-		 */
-		openContent: function ()
-		{
-			var cmd;
-
-			cmd = Ext.create('FBEditor.command.OpenDesc');
-			if (cmd.execute())
-			{
-				FBEditor.HistoryCommand.add(cmd);
 			}
 		}
 	}

@@ -9,16 +9,20 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTree',
 		requires: [
+            'FBEditor.command.OpenDesc',
 			'FBEditor.view.panel.treenavigation.desc.TreeController',
 			'FBEditor.view.panel.treenavigation.desc.TreeStore'
 		],
+
 		id: 'panel-desc-navigation',
 		xtype: 'panel-desc-navigation',
 		controller: 'panel.desc.navigation',
+
 		useArrows: true,
 		animate: false,
 
 		syncContentId: 'form-desc',
+        cmdName: 'FBEditor.command.OpenDesc',
 
 		initComponent: function ()
 		{

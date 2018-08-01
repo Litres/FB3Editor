@@ -8,9 +8,6 @@ Ext.define(
     'FBEditor.view.panel.treenavigation.xml.TreeController',
     {
         extend: 'FBEditor.view.panel.treenavigation.AbstractTreeController',
-        requires: [
-            'FBEditor.command.OpenXml'
-        ],
 
         alias: 'controller.panel.xml.navigation',
 
@@ -41,7 +38,7 @@ Ext.define(
                 managerXml;
 
             // открываем панель xml
-            me.openContent();
+            view.openContent();
 
             // загружаем данные в редактор xml
             managerXml = managerEditor.getManagerXml();
@@ -57,12 +54,13 @@ Ext.define(
         setFocusElement: function (record)
         {
             var me = this,
+                view = me.getView(),
                 data = record.getData(),
                 managerEditor = FBEditor.getEditorManager(),
                 managerXml,
                 el;
 
-            if (!me.isActiveXml())
+            if (!view.isActivePanel())
             {
                 // ждем рендеринга панели
                 Ext.defer(
@@ -82,42 +80,6 @@ Ext.define(
                 managerXml = managerEditor.getManagerXml();
                 managerXml.loadData(el);
             }
-        },
-
-        /**
-         * Открывает панель xml.
-         */
-        openContent: function ()
-        {
-            var me = this,
-                cmd;
-
-            // если панель не открыта
-            if (!me.isActiveXml())
-            {
-                cmd = Ext.create('FBEditor.command.OpenXml');
-
-                if (cmd.execute())
-                {
-                    FBEditor.HistoryCommand.add(cmd);
-                }
-            }
-        },
-
-        /**
-         * Активна ли панель xml.
-         * @return {Boolean}
-         */
-        isActiveXml: function ()
-        {
-            var bridge = FBEditor.getBridgeWindow(),
-                mainContent,
-                res;
-
-            mainContent = bridge.Ext.getCmp('panel-main-content');
-            res = mainContent.isActiveItem('main-xml');
-
-            return res;
         }
     }
 );

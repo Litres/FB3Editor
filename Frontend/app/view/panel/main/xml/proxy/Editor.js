@@ -65,6 +65,21 @@ Ext.define(
         },
 
         /**
+         * Возвращает содержимое редатора xml.
+         * @return {String} Данные.
+         */
+        getData: function ()
+        {
+            var me = this,
+                lib = me.getLib(),
+                data;
+
+            data = lib.getValue();
+
+            return data;
+        },
+
+        /**
          * Устанавливаем перенос длинных строк.
          * @param {Boolean} wrap true - включить перенос.
          */

@@ -22,12 +22,12 @@ Ext.define(
 			//console.log('onItemClick', arguments);
 			me.clearSelection();
 
-			if (me.openContent)
+			if (view.openContent)
 			{
 				if (!view.inWindow)
 				{
 					// открываем соответствующую панель контента
-					me.openContent();
+                    view.openContent();
 				}
 
 				Ext.getCmp('panel-treenavigation').saveSelectData({view: me.getView(), node: node, record: record});

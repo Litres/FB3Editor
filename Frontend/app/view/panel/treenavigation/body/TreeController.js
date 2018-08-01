@@ -8,9 +8,6 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.body.TreeController',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTreeController',
-		requires: [
-			'FBEditor.command.OpenBody'
-		],
 		
 		alias: 'controller.panel.body.navigation',
 
@@ -36,14 +33,13 @@ Ext.define(
 		setFocusElement: function (record)
 		{
 			var me = this,
+                view = me.getView(),
 				data = record.getData(),
 				els = {},
 				nodes = {},
-				manager = FBEditor.getEditorManager(),
-				root,
-				rootNode;
+				manager = FBEditor.getEditorManager();
 
-			if (!me.isActiveBody())
+			if (!view.isActivePanel())
 			{
 				// ждем рендеринга панели тела
 				Ext.defer(
@@ -61,11 +57,6 @@ Ext.define(
 
 				if (els.node)
 				{
-					// устанавливаем фокус на корневом узле главного окна
-					root = manager.getContent();
-					rootNode = root.getNodeHelper().getNode();
-					//rootNode.focus();
-
 					// узлы элемента
 					nodes.nodes = Ext.Object.getValues(els.node.nodes);
 
@@ -95,42 +86,6 @@ Ext.define(
 					);
 				}
 			}
-		},
-
-		/**
-		 * Открывает панель текста.
-		 */
-		openContent: function ()
-		{
-			var me = this,
-				cmd;
-
-			// если панель не открыта
-			if (!me.isActiveBody())
-			{
-				cmd = Ext.create('FBEditor.command.OpenBody');
-
-				if (cmd.execute())
-				{
-					FBEditor.HistoryCommand.add(cmd);
-				}
-			}
-		},
-
-		/**
-		 * Активна ли панель тела.
-		 * @return {Boolean}
-		 */
-		isActiveBody: function ()
-		{
-			var bridge = FBEditor.getBridgeWindow(),
-				mainContent,
-				res;
-
-			mainContent = bridge.Ext.getCmp('panel-main-content');
-			res = mainContent.isActiveItem('main-editor');
-
-			return res;
 		}
 	}
 );

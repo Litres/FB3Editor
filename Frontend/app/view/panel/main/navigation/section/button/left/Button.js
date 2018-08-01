@@ -33,7 +33,7 @@ Ext.define(
             sel = window.getSelection();
             range = sel.rangeCount ? sel.getRangeAt(0) : null;
 
-            if (range)
+            if (range && range.commonAncestorContainer.getElement)
             {
                 els.node = range.commonAncestorContainer.getElement();
                 manager = els.node.getManager();

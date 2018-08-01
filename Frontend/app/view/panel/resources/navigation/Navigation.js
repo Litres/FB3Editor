@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.treenavigation.AbstractTree',
 		requires: [
+            'FBEditor.command.OpenResources',
 			'FBEditor.view.panel.resources.navigation.NavigationController',
 			'FBEditor.store.resource.Navigation'
 		],
@@ -22,6 +23,7 @@ Ext.define(
 		manageHeight: false,
 
 		syncContentId: 'panel-resources',
+        cmdName: 'FBEditor.command.OpenResources',
 
 		/**
 		 * @property {Boolean} Отображать ли файлы в структуре.
@@ -40,8 +42,7 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this,
-				bridge = FBEditor.getBridgeWindow();
+			var me = this;
 
 			me.store = Ext.create('FBEditor.store.resource.Navigation');
 

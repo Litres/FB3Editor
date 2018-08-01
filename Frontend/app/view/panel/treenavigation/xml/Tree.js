@@ -9,6 +9,7 @@ Ext.define(
     {
         extend: 'FBEditor.view.panel.treenavigation.AbstractTree',
         requires: [
+            'FBEditor.command.OpenXml',
             'FBEditor.view.panel.treenavigation.xml.TreeController',
             'FBEditor.view.panel.treenavigation.xml.TreeStore'
         ],
@@ -32,6 +33,7 @@ Ext.define(
         },
 
         syncContentId: 'main-xml',
+        cmdName: 'FBEditor.command.OpenXml',
 
         initComponent: function ()
         {
