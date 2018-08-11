@@ -68,10 +68,11 @@ Ext.define(
 				nl,
 				xml;
 
-			self.countSpaces++;
+			//self.countSpaces++;
 			nl = withoutFormat ? '' : '\n';
 			xml = nl + me.callParent(arguments);
-			self.countSpaces = 0;
+			//self.countSpaces = 0;
+            self.countSpaces = 1;
 
 			return xml;
 		},

@@ -52,10 +52,16 @@ Ext.define(
         {
             var me = this,
                 manager = me.getManager(),
-                proxyEditor = manager.getProxyEditor();
+                proxyEditor = manager.getProxyEditor(),
+                xml;
 
+            //console.log('data', data);
             data = data.trim();
             proxyEditor.setData(data);
+
+            // сохраняем исходный xml
+            xml = proxyEditor.getData();
+            manager.setSrcXml(xml);
         },
 
         /**

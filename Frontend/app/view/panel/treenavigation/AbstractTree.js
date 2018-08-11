@@ -60,39 +60,57 @@ Ext.define(
 		},
 
         /**
-		 * @event openContent
          * Открывает текущую панель.
          */
         openContent: function ()
         {
             var me = this,
                 cmdName = me.cmdName,
-                contentId = me.syncContentId,
+				managerXml = FBEditor.view.panel.main.xml.Manager.getInstance(),
+				promise,
                 cmd;
 
             // если панель не открыта
             if (!me.isActivePanel())
             {
-            	// вбрасываем событие открытия панели
-                me.fireEvent('openContent', contentId);
-
-                cmd = Ext.create(cmdName);
-
-                if (cmd.execute())
-                {
-                    FBEditor.HistoryCommand.add(cmd);
+            	if (!me.isActivePanel('main-xml'))
+				{
+					promise = Promise.resolve(true);
+				}
+				else
+				{
+					// проверяем и синхронизируем xml c моделью
+					promise = managerXml.sync();
                 }
+
+                promise.then(
+                    function (res)
+                    {
+                        if (res)
+                        {
+                        	// открываем панель
+                            cmd = Ext.create(cmdName);
+
+                            if (cmd.execute())
+                            {
+                                FBEditor.HistoryCommand.add(cmd);
+                            }
+                        }
+                    }
+                );
             }
         },
 
         /**
          * Активна ли текущая панель.
+		 * @param {String} [id] Айди панели, которая проверяется на активность, если ацди не передано,
+		 * то проверяется текущая панель.
          * @return {Boolean} true - активна.
          */
-        isActivePanel: function ()
+        isActivePanel: function (id)
         {
             var me = this,
-                contentId = me.syncContentId,
+                contentId = id || me.syncContentId,
                 bridge = FBEditor.getBridgeWindow(),
                 mainContent,
                 res;

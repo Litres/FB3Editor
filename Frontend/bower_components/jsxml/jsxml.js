@@ -108,7 +108,7 @@
 		context: window,
 		name: 'JSXML',
 		file_cache: true,
-		errors: 'alert', // throw, ignore
+		errors: 'throw', // throw, ignore
 		encoding: 'UTF-8'
 	};
 	if (!cfg) cfg = {};

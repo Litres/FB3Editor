@@ -20,7 +20,7 @@ Ext.define(
 			/**
 			 * @property {Number} Количество оступов перед элементом в формируемом xml.
 			 */
-			countSpaces: 0
+			countSpaces: 1
 		},
 
 		/**
@@ -117,6 +117,12 @@ Ext.define(
 		 * @property {String} Полный путь элемента в дереве навигации.
 		 */
 		treePath: '',
+
+        /**
+		 * @private
+         * @property {String} Xml элемента.
+         */
+        xml: null,
 
 		/**
 		 * @private
@@ -735,6 +741,11 @@ Ext.define(
 				xml,
 				attr;
 
+			if (me.xml)
+			{
+				return me.xml;
+			}
+
 			if (!withoutFormat)
 			{
 				// получаем опции для форматирования xml
@@ -744,6 +755,8 @@ Ext.define(
 				nlBefore = formatOptions.nlBefore;
 				nlAfter = formatOptions.nlAfter;
 			}
+
+			//console.log(me.xmlTag, self.countSpaces, formatOptions);
 
 			try
 			{
@@ -783,6 +796,15 @@ Ext.define(
 			}
 
 			return xml;
+		},
+
+        /**
+		 * Устанавливает xml для элемента.
+         * @param {String} xml
+         */
+		setXml: function (xml)
+		{
+			this.xml = xml;
 		},
 
 		/**

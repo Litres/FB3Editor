@@ -24,9 +24,26 @@ Ext.define(
 		trans: function (xml, xsl)
 		{
 			var me = this,
-				jsxml = me.jsxml || me.createJsxml();
+				jsxml,
+                err,
+                transStr;
 
-			return jsxml.transReady(xml, xsl);
+            jsxml = me.jsxml || me.createJsxml();
+
+            try
+			{
+				transStr = jsxml.transReady(xml, xsl);
+            }
+            catch (e)
+			{
+				err = e.message;
+                err = err.match(/ errors:(.*?)\n/i);
+				e.error = err[1] || err;
+
+				throw e;
+			}
+
+			return transStr;
 		},
 
 		/**

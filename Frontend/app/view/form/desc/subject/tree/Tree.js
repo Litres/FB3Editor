@@ -18,6 +18,15 @@ Ext.define(
 
 		cls: 'form-desc-subject-tree',
 
+        listeners: {
+            filter: 'onFilter',
+            click: {
+                element: 'el',
+                fn: 'onClick'
+            },
+            itemClick: 'onItemClick'
+        },
+
 		rootVisible: false,
 		animate: false,
 		useArrows: true,
@@ -26,19 +35,15 @@ Ext.define(
 
 		displayField: '_title',
 
-		listeners: {
-			filter: 'onFilter',
-			click: {
-				element: 'el',
-				fn: 'onClick'
-			},
-			itemClick: 'onItemClick'
-		},
-
 		/**
 		 * @property {String} Адрес которого загружается xml дерева жанров.
 		 */
 		urlTree: 'https://hub.litres.ru/genres_list_2/',
+
+        /**
+		 * @property {Number} Таймаут запроса дерева жанров с сервера (миллисекунды).
+         */
+        requestTimeout: 10000,
 
 		/**
 		 * @property {Number} Время обновления данных в локальном хранилище. По прошествии этого времени будет
@@ -169,7 +174,7 @@ Ext.define(
 			Ext.Ajax.request(
 				{
 					url: me.urlTree,
-					timeout: 5000,
+					timeout: me.requestTimeout,
 					scope: me,
 					success: function (response)
 					{
@@ -253,6 +258,7 @@ Ext.define(
 				data;
 
 			data = storage.getItem(me.id);
+			//console.log('data', data);
 			data = Ext.JSON.decode(data);
 
 			if (data)
@@ -275,6 +281,7 @@ Ext.define(
 		{
 			var me = this,
 				storage = FBEditor.getLocalStorage(),
+				encodeData,
 				data;
 
 			data = {
@@ -282,7 +289,8 @@ Ext.define(
 				data: text
 			};
 
-			storage.setItem(me.id, Ext.JSON.encode(data));
+            encodeData = Ext.JSON.encode(data);
+			storage.setItem(me.id, encodeData);
 		},
 
 		/**

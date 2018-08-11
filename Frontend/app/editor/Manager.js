@@ -144,21 +144,81 @@ Ext.define(
 
 		/**
 		 * Создает контент из xml.
-		 * @param {String} srcXml Исходный xml тела книги.
+		 * @param {String} xml Исходный xml тела книги.
 		 */
-		createContent: function (srcXml)
+		createContent: function (xml)
 		{
 			var me = this,
-				xml = srcXml,
-				transContent,
+				oldContent = me.content,
 				content,
-				editor,
-				creator,
-				xsl,
-				startTime = new Date().getTime();
+				editor;
 
-			me.xml = srcXml;
-			me.resetFocus();
+			try
+			{
+                // получаем модель
+                content = me.getModelFromXml(xml);
+
+                // сохраняем исходный xml
+				me.setXml(xml);
+
+                // обвновляем содержимое редактора текста
+				me.updateContent(content);
+            }
+            catch (e)
+			{
+				me.content = oldContent;
+
+				throw e;
+			}
+		},
+
+        /**
+		 * Устанавливает исходный xml.
+         * @param {String} xml
+         */
+		setXml: function (xml)
+		{
+			this.xml = xml;
+		},
+
+        /**
+		 * Обновляет содержимое текста.
+         * @param {FBEditor.editor.element.AbstractElement} content Модель.
+         */
+		updateContent: function (content)
+		{
+            var me = this,
+                editor;
+
+            me.content = content;
+
+            // сбрасываем все данные о фокусе в тексте
+            me.resetFocus();
+
+            // устанавливаем связь корневого элемента с редактором
+            editor = me.getEditor();
+            content.setEditor(editor);
+
+            // сбрасываем историю редактора текста
+            me.getHistory().clear();
+
+            // загружаем контент в редактор
+            editor.fireEvent('loadData');
+		},
+
+        /**
+		 * Получает модель из xml.
+         * @param {String} xml Исходный xml.
+         * @return {FBEditor.editor.element.AbstractElement} Модель.
+         */
+		getModelFromXml: function (xml)
+		{
+            var me = this,
+                transContent,
+                content,
+                creator,
+                xsl,
+                startTime = new Date().getTime();
 
 			// экранируем слэш
 			xml = xml.replace(/\\/g, "\\\\");
@@ -177,6 +237,7 @@ Ext.define(
 			xsl = FBEditor.xsl.Editor.getXsl();
 			//console.log(xml);
 			transContent = FBEditor.util.xml.Jsxml.trans(xml, xsl);
+			//console.log(transContent);
 
 			// нормализуем строку
 
@@ -193,20 +254,9 @@ Ext.define(
 			//console.log('after CreateContent', new Date().getTime() - startTime);
 
 			content = creator.getContent();
-			editor = me.getEditor();
-
-			// устанавливаем связь корневого элемента с редактором
-			content.setEditor(editor);
-
-			// сбрасываем историю редактора текста
-			me.getHistory().clear();
-
-			me.content = content;
-
-			// загружаем контент в редактор
-			editor.fireEvent('loadData');
-
 			//console.log('after fireEvent loadData', new Date().getTime() - startTime);
+
+			return content;
 		},
 
 		/**

@@ -274,11 +274,10 @@
      */
     "production": {
         "loader": {
-            "cache": "746",
+            "cache": "747.2",
             "cacheParam": "_v"
         }
     },
-    
 
     "testing": {
     },
