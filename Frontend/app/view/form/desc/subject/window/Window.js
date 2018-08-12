@@ -81,10 +81,10 @@ Ext.define(
 				subjectField,
 				val;
 
-			// инициализируем дерево жанров
+            // инициализируем дерево жанров
 			tree.initData();
 
-			if (subject)
+            if (subject)
 			{
 				me.callParent(arguments);
 
@@ -107,7 +107,7 @@ Ext.define(
 		{
 			var me = this;
 
-			// добавляем обработчик события клика по всему документу, чтобы иметь возможность закрывать окно
+            // добавляем обработчик события клика по всему документу, чтобы иметь возможность закрывать окно
 			Ext.getBody().on('click', me.onClickBody, me);
 
 			me.callParent(arguments);

@@ -89,6 +89,10 @@ Ext.define(
 		 */
 		win: null,
 
+		translateText: {
+			loading: 'Загрузка дерева жанров...'
+		},
+
 		initComponent: function ()
 		{
 			var me = this,
@@ -171,7 +175,21 @@ Ext.define(
 		{
 			var me = this;
 
-			Ext.Ajax.request(
+			// устанавливаем маску загрузки
+            me.on(
+            	'afterRender',
+                function ()
+                {
+                    var me = this,
+                        tt = me.translateText,
+                        win = me.getWindow();
+
+                    win.setLoading(tt.loading);
+                },
+				me
+			);
+
+            Ext.Ajax.request(
 				{
 					url: me.urlTree,
 					timeout: me.requestTimeout,
@@ -179,7 +197,10 @@ Ext.define(
 					success: function (response)
 					{
 						var me = this,
-							text = response.responseText;
+							text = response.responseText,
+							win = me.getWindow();
+
+						win.setLoading(false);
 
 						// сохраняем
 						me.saveToLocal(text);
@@ -190,6 +211,11 @@ Ext.define(
 					},
 					failure: function (response)
 					{
+                        var me = this,
+                            win = me.getWindow();
+
+                        win.setLoading(false);
+
 						console.log('Не удалось загрузить дерево жанров с удаленного ресурса', response);
 
 						// загружаем локальные данные
@@ -201,14 +227,15 @@ Ext.define(
 		},
 
 		/**
+         * @event afterLoadData
 		 * Загружает данные дерева в хранилище.
-		 * @event afterLoadData
 		 * @param {String} text Xml-строка.
 		 */
 		loadData: function (text)
 		{
 			var me = this,
 				store = me.getStore(),
+				win = me.getWindow(),
 				json,
 				rootTreeData;
 
@@ -238,11 +265,17 @@ Ext.define(
 			json = FBEditor.util.xml.Json.xmlToJson(text);
 			rootTreeData = me.getTreeData(json.genres.genre);
 			me.cacheData = Ext.clone(rootTreeData);
-			store.loadData(rootTreeData);
-			me.fireEvent('afterLoadData');
-			//console.log('load data', rootTreeData);
 
-			me.dataLoaded = true;
+			// обновляем хранилище
+			store.loadData(rootTreeData);
+
+            me.dataLoaded = true;
+
+			me.fireEvent('afterLoadData');
+
+			// обновляем окно
+			win.hide();
+            win.show();
 		},
 
 		/**
