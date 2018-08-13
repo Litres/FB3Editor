@@ -22,6 +22,7 @@ Ext.define(
 		stateful: true,
 		useArrows: true,
 		animate: false,
+
 		selModel: {
 			// предотвращаем перенос фокуса
 			preventFocus: true

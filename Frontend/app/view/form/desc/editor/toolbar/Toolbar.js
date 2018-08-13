@@ -40,14 +40,6 @@ Ext.define(
 					{
 						xtype: 'editor-toolbar-button-unstyle'
 					},
-					/*,
-					{
-						xtype: 'tbspacer',
-						width: 20
-					},
-					{
-						xtype: 'editor-toggleButton'
-					},*/
                     {
                         xtype: 'tbspacer',
                         width: 20

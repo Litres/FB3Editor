@@ -59,9 +59,16 @@ Ext.define(
         setData: function (data)
         {
             var me = this,
-                lib = me.getLib();
+                lib = me.getLib(),
+                count;
 
             lib.setValue(data);
+
+            // общее количество строк в редакторе xml
+            count = me.getLineCount();
+
+            // устанавливаем отображение всех строк в редакторе xml
+            lib.setOption('viewportMargin', count);
         },
 
         /**
@@ -89,6 +96,21 @@ Ext.define(
                 lib = me.getLib();
 
             lib.setOption('lineWrapping', wrap);
+        },
+
+        /**
+         * Возвращает общее количество строк в редакторе xml.
+         * @return {Number} Количество строк.
+         */
+        getLineCount: function ()
+        {
+            var me = this,
+                lib = me.getLib(),
+                count;
+
+            count = lib.lineCount();
+
+            return count;
         }
     }
 );
