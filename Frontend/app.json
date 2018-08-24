@@ -172,6 +172,10 @@
             "remote": true
         },
         {
+            "path": "bower_components/codemirror/addon/search/searchcursor.js",
+            "remote": true
+        },
+        {
             "path": "${ext.dir}/build/ext-all-rtl-debug.js"
         },
         {
@@ -223,6 +227,9 @@
             "path": "resources/css/font-awesome.css"
         },
         {
+            "path": "bower_components/codemirror/lib/codemirror.css"
+        },
+        {
             "path": "resources/css/editor.css"
         },
         {
@@ -235,13 +242,13 @@
             "path": "resources/css/resources.css"
         },
         {
+            "path": "resources/css/xml.css"
+        },
+        {
             "path": "resources/css/media/medium/editor.css"
         },
         {
             "path": "resources/css/media/small/editor.css"
-        },
-        {
-            "path": "bower_components/codemirror/lib/codemirror.css"
         }
     ],
 
@@ -274,7 +281,7 @@
      */
     "production": {
         "loader": {
-            "cache": "749",
+            "cache": "750",
             "cacheParam": "_v"
         }
     },

@@ -9,6 +9,8 @@ Ext.define(
     {
         extend: 'Ext.panel.Panel',
         requires: [
+            'FBEditor.view.panel.main.xml.search.Search',
+            'FBEditor.view.panel.main.xml.Content',
             'FBEditor.view.panel.main.xml.XmlController'
         ],
 
@@ -20,17 +22,34 @@ Ext.define(
             loadData: 'onLoadData'
         },
 
-        layout: 'fit',
+        layout: 'vbox',
 
-        afterRender: function ()
+        /**
+         * @private
+         * @property {FBEditor.view.panel.main.xml.Content} Панель контента редактора xml.
+         */
+        contentPanel: null,
+
+        /**
+         * @private
+         * @property {FBEditor.view.panel.main.xml.search.Search} Панель поиска.
+         */
+        searchPanel: null,
+
+        initComponent: function ()
         {
-            var me = this,
-                manager = me.getManager(),
-                proxyEditor;
+            var me = this;
 
-            // инициализиурем прокси
-            proxyEditor = manager.getProxyEditor();
-            proxyEditor.init(me);
+            me.items = [
+                {
+                    xtype: 'panel-xml-search',
+                    hidden: true
+                },
+                {
+                    xtype: 'panel-xml-content',
+                    flex: 1
+                }
+            ];
 
             me.callParent(arguments);
         },
@@ -65,12 +84,48 @@ Ext.define(
         },
 
         /**
-         * Возвращает контент редактора.
+         * Возвращает узел контента редактора.
          * @return {Node}
          */
-        getContent: function ()
+        getNode: function ()
         {
-            return this.getEl().dom.firstChild;
+            var me = this,
+                contentPanel = me.getContentPanel(),
+                node;
+
+            node = contentPanel.getNode();
+
+            return node;
+        },
+
+        /**
+         * Возвращает панель контента.
+         * @return {FBEditor.view.panel.main.xml.Content}
+         */
+        getContentPanel: function ()
+        {
+            var me = this,
+                panel;
+
+            panel = me.contentPanel || me.down('panel-xml-content');
+            me.contentPanel = panel;
+
+            return panel;
+        },
+
+        /**
+         * Возвращает панель поиска.
+         * @return {FBEditor.view.panel.main.xml.search.Search}
+         */
+        getSearchPanel: function ()
+        {
+            var me = this,
+                panel;
+
+            panel = me.searchPanel || me.down('panel-xml-search');
+            me.searchPanel = panel;
+
+            return panel;
         }
     }
 );

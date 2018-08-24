@@ -58,6 +58,12 @@ Ext.define(
          */
         srcXml: null,
 
+        /**
+         * @private
+         * @property {FBEditor.view.panel.main.xml.search.Search} Панель поиска по xml.
+         */
+        searchPanel: null,
+
         translateText: {
             invalidXml: 'Невалидный XML',
             invalidXmlMsg: 'Покинуть редактор XML без сохранения всех изменений?'
@@ -273,6 +279,142 @@ Ext.define(
 
             // устанавливаем перенос
             proxy.setLineWrap(wrap);
+        },
+
+        /**
+         * Выполняет поиск по тексту.
+         * @param {Object} [data] Данные поиска. Если данные не переданы, то убираем подсветку текущего поиска.
+         * @param {String} data.searchText Строка поиска.
+         * @param {Boolean} [data.isReg] Регулярное ли выражение в строке поиска.
+         * @param {Boolean} [data.ignoreCase] Игнорировать ли регистр символов.
+         * @param {Boolean} [data.words] Поиск целых слов.
+         * @return {Number} Количество найденных совпадений.
+         */
+        search: function (data)
+        {
+            var me = this,
+                proxy = me.getProxyEditor(),
+                count = 0,
+                query,
+                ignoreCase,
+                isReg,
+                words,
+                search;
+
+	        // прокси поиска
+	        search = proxy.getSearch();
+	        
+	        if (data)
+            {
+	            query = data.searchText;
+	            isReg = data.isReg;
+	            ignoreCase = data.ignoreCase;
+	            words = data.words;
+	
+	            // выполняем поиск
+	            count = search.find(query, isReg, ignoreCase, words);
+            }
+            else
+            {
+                // убираем подсветку
+                search.removeOverlay();
+            }
+            
+            return count;
+        },
+	
+	    /**
+         * Переводит курсор к следующему результату поиска.
+	     */
+	    findNext: function ()
+        {
+	        var me = this,
+		        proxy = me.getProxyEditor(),
+		        search;
+	
+	        // прокси поиска
+	        search = proxy.getSearch();
+	        
+	        search.findNext();
+        },
+	
+	    /**
+	     * Переводит курсор к предыдущему результату поиска.
+	     */
+	    findPrev: function ()
+	    {
+		    var me = this,
+			    proxy = me.getProxyEditor(),
+			    search;
+		
+		    // прокси поиска
+		    search = proxy.getSearch();
+		
+		    search.findPrev();
+	    },
+
+        /**
+         * Вызывает панель поиска по тексту.
+         * @param {Object} lib Внешний редактор xml.
+         */
+        doSearch: function (lib)
+        {
+            var me = lib.getManager(),
+                panel;
+
+            panel = me.getSearchPanel();
+
+            if (panel.isHidden())
+            {
+                panel.show();
+            }
+            else
+            {
+                panel.hide();
+            }
+        },
+
+        /**
+         * Вызывает панель замены по тексту.
+         * @param {Object} lib Внешний редактор xml.
+         */
+        doReplace: function (lib)
+        {
+            var me = lib.getManager();
+
+            me.doSearch(lib);
+        },
+
+        /**
+         * Закрывает панель поиска.
+         * @param {Object} lib Внешний редактор xml.
+         */
+        doEsc: function (lib)
+        {
+            var me = lib.getManager(),
+                panel;
+
+            panel = me.getSearchPanel();
+
+            if (!panel.isHidden())
+            {
+                panel.hide();
+            }
+        },
+
+        /**
+         * Возвращает панель поиска по xml.
+         * @return {FBEditor.view.panel.main.xml.search.Search}
+         */
+        getSearchPanel: function ()
+        {
+            var me = this,
+                panel = me.getPanel(),
+                searchPanel;
+
+            searchPanel = panel.getSearchPanel();
+
+            return searchPanel;
         },
 
         /**
