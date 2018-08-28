@@ -15,10 +15,14 @@ Ext.define(
         {
             var me = this,
                 view = me.getView(),
-	            searchPanel = view.getSearchPanel();
+	            searchPanel = view.getSearchPanel(),
+	            xmlPanel,
+	            xmlManager;
 
             // скрываем панель поиска
-	        searchPanel.hide();
+	        xmlPanel = searchPanel.getXmlPanel();
+	        xmlManager = xmlPanel.getManager();
+	        xmlManager.doEsc();
         }
     }
 );

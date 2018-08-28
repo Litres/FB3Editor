@@ -63,6 +63,14 @@ Ext.define(
          * @property {FBEditor.view.panel.main.xml.search.Search} Панель поиска по xml.
          */
         searchPanel: null,
+	
+	    /**
+         * @private
+         * @property {Object} Позиция курсора.
+	     * @property {Number} Object.line Номер строки.
+	     * @property {Number} Object.ch Номер колонки.
+	     */
+	    posCursor: null,
 
         translateText: {
             invalidXml: 'Невалидный XML',
@@ -363,14 +371,14 @@ Ext.define(
                 panel;
 
             panel = me.getSearchPanel();
-
+            
             if (panel.isHidden())
             {
                 panel.show();
             }
             else
             {
-                panel.hide();
+                //panel.hide();
             }
         },
 
@@ -387,18 +395,23 @@ Ext.define(
 
         /**
          * Закрывает панель поиска.
-         * @param {Object} lib Внешний редактор xml.
+         * @param {Object} [lib] Внешний редактор xml.
          */
         doEsc: function (lib)
         {
-            var me = lib.getManager(),
+            var me = lib ? lib.getManager() : this,
+                proxy = me.getProxyEditor(),
                 panel;
 
             panel = me.getSearchPanel();
 
             if (!panel.isHidden())
             {
+                // скрываем панель поиска
                 panel.hide();
+                
+                // восстанавливаем фокус
+                proxy.focus();
             }
         },
 

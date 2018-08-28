@@ -296,6 +296,20 @@ Ext.define(
             option = option || {};
             option['Esc'] = fn;
             lib.setOption('extraKeys', option);
-        }
+        },
+	
+	    /**
+	     * Устанавливает фокус в окне редактора.
+	     */
+	    focus: function ()
+	    {
+		    var me = this,
+			    lib = me.getLib();
+		
+		    if (!lib.hasFocus())
+		    {
+		    	lib.focus();
+		    }
+	    }
     }
 );

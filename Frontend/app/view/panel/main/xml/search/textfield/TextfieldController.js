@@ -25,12 +25,17 @@ Ext.define(
         {
 	        var me = this,
 		        view = me.getView(),
-		        searchPanel;
+		        searchPanel,
+	            xmlPanel,
+	            xmlManager;
 	
 	        if (e.getKey() === Ext.event.Event.ESC)
             {
+            	// скрываем панель поиска
 	            searchPanel = view.getSearchPanel();
-	            searchPanel.hide();
+	            xmlPanel = searchPanel.getXmlPanel();
+	            xmlManager = xmlPanel.getManager();
+	            xmlManager.doEsc();
             }
         }
     }
