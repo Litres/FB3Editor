@@ -19,6 +19,19 @@ Ext.define(
 
             searchPanel = view.getSearchPanel();
             searchPanel.fireEvent('change');
+        },
+	
+	    onKeydown: function (cmp, e)
+        {
+	        var me = this,
+		        view = me.getView(),
+		        searchPanel;
+	
+	        if (e.getKey() === Ext.event.Event.ESC)
+            {
+	            searchPanel = view.getSearchPanel();
+	            searchPanel.hide();
+            }
         }
     }
 );

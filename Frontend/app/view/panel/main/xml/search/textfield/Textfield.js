@@ -19,8 +19,11 @@ Ext.define(
         controller: 'panel.xml.search.textfield',
 
         listeners: {
-            change: 'onChange'
+            change: 'onChange',
+            keydown: 'onKeydown'
         },
+	
+	    enableKeyEvents: true,
 
         getSearchPanel: function ()
         {
