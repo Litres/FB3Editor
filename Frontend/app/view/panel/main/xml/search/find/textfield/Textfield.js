@@ -5,18 +5,18 @@
  */
 
 Ext.define(
-    'FBEditor.view.panel.main.xml.search.textfield.Textfield',
+    'FBEditor.view.panel.main.xml.search.find.textfield.Textfield',
     {
         extend: 'Ext.form.field.Text',
         requires: [
-            'FBEditor.view.panel.main.xml.search.textfield.TextfieldController'
+            'FBEditor.view.panel.main.xml.search.find.textfield.TextfieldController'
         ],
         mixins: {
             cmp: 'FBEditor.view.panel.main.xml.search.AbstractComponent'
         },
 
-        xtype: 'panel-xml-search-textfield',
-        controller: 'panel.xml.search.textfield',
+        xtype: 'panel-xml-search-find-textfield',
+        controller: 'panel.xml.search.find.textfield',
 
         listeners: {
             change: 'onChange',

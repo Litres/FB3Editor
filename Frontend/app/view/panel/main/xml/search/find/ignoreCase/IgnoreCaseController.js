@@ -1,15 +1,15 @@
 /**
- * Контроллер чекбокса установки регулярного выражения.
+ * Контроллер чекбокса установки регистра.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.xml.search.regex.RegexController',
+	'FBEditor.view.panel.main.xml.search.find.ignoreCase.IgnoreCaseController',
 	{
 		extend: 'Ext.app.ViewController',
 		
-		alias: 'controller.panel.xml.search.regex',
+		alias: 'controller.panel.xml.search.find.ignorecase',
 		
 		onChange: function (cmp, newVal, oldVal)
 		{

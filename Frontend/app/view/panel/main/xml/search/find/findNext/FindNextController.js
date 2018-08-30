@@ -1,15 +1,15 @@
 /**
- * Контроллер кнопки перемещения к предыдущему результату поиска.
+ * Контроллер кнопки перемещения к следующему результату поиска.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.xml.search.findPrev.FindPrevController',
+	'FBEditor.view.panel.main.xml.search.find.findNext.FindNextController',
 	{
 		extend: 'Ext.app.ViewController',
 		
-		alias: 'controller.panel.xml.search.findprev',
+		alias: 'controller.panel.xml.search.find.findnext',
 		
 		onClick: function ()
 		{
@@ -18,7 +18,7 @@ Ext.define(
 				searchPanel = view.getSearchPanel();
 			
 			// переходим к следующему результату поиска
-			searchPanel.fireEvent('findPrev');
+			searchPanel.fireEvent('findNext');
 		}
 	}
 );

@@ -1,31 +1,31 @@
 /**
- * Чекбокс установки поиска слов.
+ * Чекбокс установки регистра.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.xml.search.words.Words',
+	'FBEditor.view.panel.main.xml.search.find.ignoreCase.IgnoreCase',
 	{
 		extend: 'Ext.form.field.Checkbox',
 		requires: [
-			'FBEditor.view.panel.main.xml.search.words.WordsController'
+			'FBEditor.view.panel.main.xml.search.find.ignoreCase.IgnoreCaseController'
 		],
 		mixins: {
 			cmp: 'FBEditor.view.panel.main.xml.search.AbstractComponent'
 		},
 		
-		xtype: 'panel-xml-search-words',
-		controller: 'panel.xml.search.words',
+		xtype: 'panel-xml-search-find-ignorecase',
+		controller: 'panel.xml.search.find.ignorecase',
 		
-		cls: 'panel-xml-search-words',
-
+		cls: 'panel-xml-search-ignorecase',
+		
 		listeners: {
 			change: 'onChange'
 		},
 		
 		translateText: {
-			words: 'Слова'
+			ignoreCase: 'Регистр'
 		},
 		
 		initComponent: function ()
@@ -33,7 +33,7 @@ Ext.define(
 			var me = this,
 				tt = me.translateText;
 			
-			me.boxLabel = tt.words;
+			me.boxLabel = tt.ignoreCase;
 			
 			me.callParent(arguments);
 		},

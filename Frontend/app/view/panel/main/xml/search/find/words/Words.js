@@ -1,31 +1,31 @@
 /**
- * Чекбокс установки регулярного выражения.
+ * Чекбокс установки поиска слов.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.xml.search.regex.Regex',
+	'FBEditor.view.panel.main.xml.search.find.words.Words',
 	{
 		extend: 'Ext.form.field.Checkbox',
 		requires: [
-			'FBEditor.view.panel.main.xml.search.regex.RegexController'
+			'FBEditor.view.panel.main.xml.search.find.words.WordsController'
 		],
 		mixins: {
 			cmp: 'FBEditor.view.panel.main.xml.search.AbstractComponent'
 		},
 		
-		xtype: 'panel-xml-search-regex',
-		controller: 'panel.xml.search.regex',
+		xtype: 'panel-xml-search-find-words',
+		controller: 'panel.xml.search.find.words',
 		
-		cls: 'panel-xml-search-regex',
-		
+		cls: 'panel-xml-search-words',
+
 		listeners: {
 			change: 'onChange'
 		},
 		
 		translateText: {
-			regex: 'Регулярное выражение'
+			words: 'Слова'
 		},
 		
 		initComponent: function ()
@@ -33,7 +33,7 @@ Ext.define(
 			var me = this,
 				tt = me.translateText;
 			
-			me.boxLabel = tt.regex;
+			me.boxLabel = tt.words;
 			
 			me.callParent(arguments);
 		},

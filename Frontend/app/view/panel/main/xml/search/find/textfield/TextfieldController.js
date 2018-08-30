@@ -5,11 +5,11 @@
  */
 
 Ext.define(
-    'FBEditor.view.panel.main.xml.search.textfield.TextfieldController',
+    'FBEditor.view.panel.main.xml.search.find.textfield.TextfieldController',
     {
         extend: 'Ext.app.ViewController',
 
-        alias: 'controller.panel.xml.search.textfield',
+        alias: 'controller.panel.xml.search.find.textfield',
 
         onChange: function (cmp, newVal, oldVal)
         {

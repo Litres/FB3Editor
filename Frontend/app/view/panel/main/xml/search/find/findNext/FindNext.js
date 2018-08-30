@@ -1,24 +1,24 @@
 /**
- * Кнопка перемещения к предыдущему результату поиска.
+ * Кнопка перемещения к следующему результату поиска.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.xml.search.findPrev.FindPrev',
+	'FBEditor.view.panel.main.xml.search.find.findNext.FindNext',
 	{
 		extend: 'Ext.Component',
 		requires: [
-			'FBEditor.view.panel.main.xml.search.findPrev.FindPrevController'
+			'FBEditor.view.panel.main.xml.search.find.findNext.FindNextController'
 		],
 		mixins: {
 			cmp: 'FBEditor.view.panel.main.xml.search.AbstractComponent'
 		},
 		
-		xtype: 'panel-xml-search-findprev',
-		controller: 'panel.xml.search.findprev',
+		xtype: 'panel-xml-search-find-findnext',
+		controller: 'panel.xml.search.find.findnext',
 		
-		cls: 'panel-xml-search-findprev',
+		cls: 'panel-xml-search-findnext',
 		
 		listeners: {
 			click: {
@@ -27,7 +27,7 @@ Ext.define(
 			}
 		},
 		
-		html: '<i class="fa fa-arrow-up"></i>',
+		html: '<i class="fa fa-arrow-down"></i>',
 		
 		getSearchPanel: function ()
 		{

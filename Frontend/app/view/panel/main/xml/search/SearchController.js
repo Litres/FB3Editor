@@ -18,7 +18,8 @@ Ext.define(
         {
             var me = this,
                 view = me.getView(),
-                countField = view.getCountField(),
+	            findPanel = view.getFindPanel(),
+                countField = findPanel.getCountField(),
                 count,
                 data,
                 xmlPanel,

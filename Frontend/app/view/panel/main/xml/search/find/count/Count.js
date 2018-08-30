@@ -5,11 +5,11 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.main.xml.search.count.Count',
+	'FBEditor.view.panel.main.xml.search.find.count.Count',
 	{
 		extend: 'Ext.Component',
 		
-		xtype: 'panel-xml-search-count',
+		xtype: 'panel-xml-search-find-count',
 		
 		cls: 'panel-xml-search-count',
 
