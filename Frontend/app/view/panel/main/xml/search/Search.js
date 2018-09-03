@@ -11,7 +11,8 @@ Ext.define(
         requires: [
             'FBEditor.view.panel.main.xml.search.SearchController',
             'FBEditor.view.panel.main.xml.search.close.Close',
-	        'FBEditor.view.panel.main.xml.search.find.Find'
+	        'FBEditor.view.panel.main.xml.search.find.Find',
+	        'FBEditor.view.panel.main.xml.search.replace.Replace'
         ],
 
         id: 'panel-xml-search',
@@ -40,6 +41,12 @@ Ext.define(
 	     * @property {FBEditor.view.panel.main.xml.search.find.Find} Панель поиска.
 	     */
 	    findPanel: null,
+	
+	    /**
+	     * @private
+	     * @property {FBEditor.view.panel.main.xml.search.replace.Replace} Панель замены.
+	     */
+	    replacePanel: null,
 
         initComponent: function ()
         {
@@ -53,6 +60,9 @@ Ext.define(
 		            items: [
 			            {
 				            xtype: 'panel-xml-search-find'
+			            },
+			            {
+				            xtype: 'panel-xml-search-replace'
 			            }
 		            ]
 	            },
@@ -93,6 +103,50 @@ Ext.define(
 
 	        me.callParent(arguments);
         },
+	
+	    /**
+	     * Выполнняет замену.
+	     * @param {Boolean} [all] Заменить ли все совпадения.
+	     */
+	    replace: function (all)
+	    {
+		    var me = this,
+			    replacePanel,
+			    replaceField,
+			    xmlPanel,
+			    xmlManager,
+			    replaceStr,
+		        count;
+		
+		    replacePanel = me.getReplacePanel();
+		    xmlPanel = me.getXmlPanel();
+		    xmlManager = xmlPanel.getManager();
+		
+		    // строка для замены
+		    replaceField = replacePanel.getReplaceField();
+		    replaceStr = replaceField.getValue();
+		
+		    // выполняем замену
+		    count = xmlManager.replace(replaceStr, all);
+		    
+		    if (Ext.isNumber(count))
+		    {
+		    	me.setCount(count);
+		    }
+	    },
+	
+	    /**
+	     * Устанавливает количество найденных результатов.
+	     * @param {Number} count
+	     */
+	    setCount: function (count)
+	    {
+	    	var me = this,
+			    findPanel = me.getFindPanel(),
+			    countField = findPanel.getCountField();
+		    
+		    countField.setCount(count);
+	    },
 
         /**
          * Возвращает редактор xml.
@@ -120,6 +174,21 @@ Ext.define(
 		
 		    panel = me.findPanel || me.down('panel-xml-search-find');
 		    me.findPanel = panel;
+		
+		    return panel;
+	    },
+	
+	    /**
+	     * Возвращает панель замены по xml.
+	     * @return {FBEditor.view.panel.main.xml.search.replace.Replace}
+	     */
+	    getReplacePanel: function ()
+	    {
+		    var me = this,
+			    panel;
+		
+		    panel = me.replacePanel || me.down('panel-xml-search-replace');
+		    me.replacePanel = panel;
 		
 		    return panel;
 	    },

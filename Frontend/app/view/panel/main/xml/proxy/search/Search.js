@@ -160,6 +160,80 @@ Ext.define(
 	    },
 	
 	    /**
+	     * Заменяет текущее найденное совпадение.
+	     * @param {String} replaceStr Строка замены.
+	     * @return {Number} Количество оставшихся совпадений после замены.
+	     */
+	    replace: function (replaceStr)
+	    {
+		    var me = this,
+			    state = me.getState(),
+			    queryText,
+			    count,
+			    cursor;
+		    
+		    cursor = state.getCursor();
+		    count = state.getCount();
+		    
+		    if (cursor)
+		    {
+			    queryText = state.getQueryText();
+			    
+			    if (queryText !== replaceStr)
+			    {
+				    // заменяем текущее совпадение
+				    cursor.replace(replaceStr);
+			    }
+			    
+			    // перемещаем курсор к следующему совпадению
+			    me.findNext();
+			    
+			    count = count - 1;
+			    state.setCount(count);
+		    }
+		    
+		    return count;
+	    },
+	
+	    /**
+	     * Заменяет все найденные совпадения.
+	     * @param {String} replaceStr Строка замены.
+	     * @return {Boolean} Успешна ли замена.
+	     */
+	    replaceAll: function (replaceStr)
+	    {
+		    var me = this,
+			    state = me.getState(),
+			    proxy = me.getProxy(),
+			    res = false,
+			    queryText,
+			    cursor;
+		
+		    queryText = state.getQueryText();
+		
+		    if (queryText !== replaceStr)
+		    {
+		    	proxy.operation(
+		    		function ()
+				    {
+					    while (cursor = state.getCursor())
+					    {
+						    // заменяем текущее совпадение
+						    cursor.replace(replaceStr);
+						
+						    // перемещаем курсор к следующему совпадению
+						    me.findNext();
+						
+						    res = true;
+					    }
+				    }
+			    );
+		    }
+		    
+		    return res;
+	    },
+	
+	    /**
          * Убирает подсветку найденных результатов.
 	     */
 	    removeOverlay: function ()

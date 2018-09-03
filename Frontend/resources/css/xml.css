@@ -32,3 +32,10 @@
 .panel-xml-search-close {
     margin: 2px 4px 0 0;
 }
+.panel-xml-search-replace {
+    margin: 4px 0 0 0
+}
+.panel-xml-search-replace-current,
+.panel-xml-search-replace-all{
+    margin: 0 0 0 10px;
+}

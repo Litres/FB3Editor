@@ -26,17 +26,34 @@ Ext.define(
 	        var me = this,
 		        view = me.getView(),
 		        searchPanel,
+		        replacePanel,
 	            xmlPanel,
 	            xmlManager;
+
+	        searchPanel = view.getSearchPanel();
+	        replacePanel = searchPanel.getReplacePanel();
 	
 	        if (e.getKey() === Ext.event.Event.ESC)
             {
             	// скрываем панель поиска
-	            searchPanel = view.getSearchPanel();
 	            xmlPanel = searchPanel.getXmlPanel();
 	            xmlManager = xmlPanel.getManager();
 	            xmlManager.doEsc();
             }
+	        else if (e.getKey() === Ext.event.Event.F)
+	        {
+		        // скрываем панель замены
+		        replacePanel.hide();
+		
+		        e.preventDefault();
+	        }
+	        else if (e.getKey() === Ext.event.Event.R)
+	        {
+		        // показываем панель замены
+		        replacePanel.show();
+		        
+		        e.preventDefault();
+	        }
         }
     }
 );

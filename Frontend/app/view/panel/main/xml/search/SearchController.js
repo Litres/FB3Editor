@@ -18,8 +18,6 @@ Ext.define(
         {
             var me = this,
                 view = me.getView(),
-	            findPanel = view.getFindPanel(),
-                countField = findPanel.getCountField(),
                 count,
                 data,
                 xmlPanel,
@@ -34,7 +32,8 @@ Ext.define(
             // выполняем поиск и получаем количество найденных совпадений
             count = manager.search(data);
 	
-	        countField.setCount(count);
+            // отображаем количество найденных результатов
+            view.setCount(count);
         },
 	
 	    /**

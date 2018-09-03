@@ -360,6 +360,40 @@ Ext.define(
 		
 		    search.findPrev();
 	    },
+	
+	    /**
+         * Выполняет замену.
+	     * @param {String} replaceStr Строка замены.
+	     * @param {Boolean} [all] Заменить ли все совпадения.
+         * @return {Number} Количество оставшихся совпадений.
+	     */
+	    replace: function (replaceStr, all)
+        {
+	        var me = this,
+		        proxy = me.getProxyEditor(),
+                count,
+                state,
+		        search;
+	
+	        // прокси поиска
+	        search = proxy.getSearch();
+	        
+	        if (all)
+            {
+                // заменяем все совпадения
+                if (search.replaceAll(replaceStr))
+                {
+                    count = 0;
+                }
+            }
+            else
+            {
+                // заменяем текущее совпадение
+	            count = search.replace(replaceStr);
+            }
+            
+            return count;
+        },
 
         /**
          * Вызывает панель поиска по тексту.
@@ -368,7 +402,8 @@ Ext.define(
         doSearch: function (lib)
         {
             var me = lib.getManager(),
-                panel;
+                panel,
+	            replacePanel;
 
             panel = me.getSearchPanel();
             
@@ -376,10 +411,9 @@ Ext.define(
             {
                 panel.show();
             }
-            else
-            {
-                //panel.hide();
-            }
+
+	        replacePanel = panel.getReplacePanel();
+	        replacePanel.hide();
         },
 
         /**
@@ -388,9 +422,29 @@ Ext.define(
          */
         doReplace: function (lib)
         {
-            var me = lib.getManager();
+	        var me = lib.getManager(),
+		        panel,
+                findPanel,
+                replacePanel,
+		        searchField;
+	
+	        panel = me.getSearchPanel();
+	
+	        if (panel.isHidden())
+	        {
+		        panel.show();
+	        }
+	        else
+            {
+	            // ставим фокус в поле поиска
+	            findPanel = panel.getFindPanel();
+	            searchField = findPanel.getSearchField();
+	            searchField.focus();
+            }
 
-            me.doSearch(lib);
+	        // показываем панель замены
+	        replacePanel = panel.getReplacePanel();
+	        replacePanel.show();
         },
 
         /**

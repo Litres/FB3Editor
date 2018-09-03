@@ -249,6 +249,18 @@ Ext.define(
 	        
 	        lib.removeOverlay(overlay);
         },
+	
+	    /**
+	     * Выполняет несколько операций как одну.
+	     * @param {Function} fn Функция, которая выполняет несколько операций.
+	     */
+	    operation: function (fn)
+	    {
+		    var me = this,
+			    lib = me.getLib();
+		
+		    lib.operation(fn);
+	    },
 
         /**
          * Устанавливает функцию вызова поиска по тексту.
