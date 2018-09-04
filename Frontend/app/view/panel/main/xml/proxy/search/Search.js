@@ -82,7 +82,7 @@ Ext.define(
 	            count = 0,
                 overlay,
                 cursor;
-	
+            
             state.setQueryText(query);
 	        state.setIgnoreCase(ignoreCase);
 	        state.setIsReg(isReg);
@@ -328,6 +328,7 @@ Ext.define(
 		    {
 			    try
 			    {
+				    query = me.compileQuery(query);
 				    query = words ? borderStart + query + borderEnd : query;
 				    query = new RegExp(query, ignoreCase ? 'giu' : 'gu');
 			    }
@@ -385,6 +386,10 @@ Ext.define(
 				    // преобразуем строку в регулярное выражение, экранируя все спецсимволы регулярных выражений
 				    queryText = queryText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 			    }
+			    else
+			    {
+				    queryText = me.compileQuery(queryText);
+			    }
 
 			    query = words ? borderStart + queryText + borderEnd : queryText;
 			    query = new RegExp(query, mods);
@@ -397,6 +402,23 @@ Ext.define(
 		    //console.log('parseQuery', query);
 		    
 		    return query;
+	    },
+	
+	    /**
+	     * Возвращает компилированную строку для RegExp.
+	     * @param {String} query Строка поиска.
+	     * @return {String} Компилированная строка.
+	     */
+	    compileQuery: function (query)
+	    {
+	    	var str,
+		        w;
+	    	
+	    	// заменяем \w
+	    	w = FBEditor.ExcludedCompiler.regexpW;
+	    	str = query.replace(/\\\w/g, w);
+	    	
+		    return str;
 	    },
 	
 	    /**

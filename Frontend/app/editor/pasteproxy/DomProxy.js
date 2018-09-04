@@ -317,7 +317,7 @@ Ext.define(
 		cleanText: function (node)
 		{
 			var t = node.nodeValue,
-				reg = FBEditor.regexpUtf;
+				reg = FBEditor.ExcludedCompiler.regexpUtf;
 
 			if (node.previousSibling &&
 			    node.previousSibling.nodeType === Node.COMMENT_NODE &&

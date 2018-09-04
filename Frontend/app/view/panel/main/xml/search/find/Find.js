@@ -76,7 +76,8 @@ Ext.define(
 					xtype: 'panel-xml-search-find-ignorecase'
 				},
 				{
-					xtype: 'panel-xml-search-find-words'
+					xtype: 'panel-xml-search-find-words',
+					hidden: true
 				},
 				{
 					xtype: 'panel-xml-search-find-regex'

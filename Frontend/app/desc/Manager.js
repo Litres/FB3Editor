@@ -687,7 +687,7 @@ Ext.define(
 		{
 			var reg;
 			
-			reg = FBEditor.regexpUtf;
+			reg = FBEditor.ExcludedCompiler.regexpUtf;
 
 			return reg;
 		},
