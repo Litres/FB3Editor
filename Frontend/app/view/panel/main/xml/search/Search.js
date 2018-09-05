@@ -73,21 +73,6 @@ Ext.define(
 
             me.callParent(arguments);
         },
-
-        afterShow: function ()
-        {
-            var me = this,
-	            findPanel = me.getFindPanel(),
-                searchField = findPanel.getSearchField();
-
-            // ставим фокус в текстовое поле
-            searchField.focus();
-            
-            // вбрасываем событие для нового поиска
-            me.fireEvent('change');
-
-            me.callParent(arguments);
-        },
         
         afterHide: function ()
         {
@@ -103,6 +88,38 @@ Ext.define(
 
 	        me.callParent(arguments);
         },
+	
+	    /**
+	     * Устанавливает в поле поиска фокус и выделнную часть текста из редактора xml.
+	     */
+	    setFocusSearchField: function ()
+	    {
+		    var me = this,
+			    xmlPanel,
+			    manager,
+			    proxyEditor,
+			    text,
+			    findPanel,
+			    searchField;
+		
+		    xmlPanel = me.getXmlPanel();
+		    manager = xmlPanel.getManager();
+		    proxyEditor = manager.getProxyEditor();
+		    findPanel = me.getFindPanel();
+		    searchField = findPanel.getSearchField();
+		
+		    // получаем выделенный текст из редактора
+		    text = proxyEditor.getSelection();
+		
+		    if (text)
+		    {
+			    // устанавилваем выделенный текст в поле поиска
+			    searchField.setValue(text);
+		    }
+		
+		    // ставим фокус в поле поиска
+		    searchField.focus(true);
+	    },
 	
 	    /**
 	     * Выполнняет замену.

@@ -194,11 +194,26 @@ Ext.define(
 	     */
 	    setSelection: function (from, to)
         {
-	        var me = this,
+	        var me        = this,
 		        lib = me.getLib();
 	
 	        lib.setSelection(from, to);
         },
+	
+	    /**
+	     * Возвращает выделенную часть текста.
+	     * @return {String}
+	     */
+	    getSelection: function ()
+	    {
+		    var me = this,
+			    lib = me.getLib(),
+			    text;
+		
+		    text = lib.getSelection();
+		
+		    return text;
+	    },
 	
 	    /**
          * Прокручивает скролл к нужной поизции в тексте.

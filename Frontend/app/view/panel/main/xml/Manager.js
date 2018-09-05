@@ -403,6 +403,8 @@ Ext.define(
         {
             var me = lib.getManager(),
                 panel,
+	            findPanel,
+	            searchField,
 	            replacePanel;
 
             panel = me.getSearchPanel();
@@ -411,6 +413,12 @@ Ext.define(
             {
                 panel.show();
             }
+	
+	        // ставим фокус в поле поиска
+	        panel.setFocusSearchField();
+	
+	        // вбрасываем событие для нового поиска
+	        panel.fireEvent('change');
 
 	        replacePanel = panel.getReplacePanel();
 	        replacePanel.hide();
@@ -424,9 +432,7 @@ Ext.define(
         {
 	        var me = lib.getManager(),
 		        panel,
-                findPanel,
-                replacePanel,
-		        searchField;
+                replacePanel;
 	
 	        panel = me.getSearchPanel();
 	
@@ -437,9 +443,7 @@ Ext.define(
 	        else
             {
 	            // ставим фокус в поле поиска
-	            findPanel = panel.getFindPanel();
-	            searchField = findPanel.getSearchField();
-	            searchField.focus();
+	            panel.setFocusSearchField();
             }
 
 	        // показываем панель замены
