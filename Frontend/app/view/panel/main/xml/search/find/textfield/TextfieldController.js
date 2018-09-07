@@ -32,27 +32,27 @@ Ext.define(
 
 	        searchPanel = view.getSearchPanel();
 	        replacePanel = searchPanel.getReplacePanel();
+	        xmlPanel = searchPanel.getXmlPanel();
+	        xmlManager = xmlPanel.getManager();
 	
 	        if (e.getKey() === Ext.event.Event.ESC)
             {
             	// скрываем панель поиска
-	            xmlPanel = searchPanel.getXmlPanel();
-	            xmlManager = xmlPanel.getManager();
 	            xmlManager.doEsc();
             }
-	        else if (e.getKey() === Ext.event.Event.F)
+	        else if (e.getKey() === Ext.event.Event.F && e.ctrlKey)
 	        {
+		        e.preventDefault();
+
 		        // скрываем панель замены
 		        replacePanel.hide();
-		
-		        e.preventDefault();
 	        }
-	        else if (e.getKey() === Ext.event.Event.R)
+	        else if (e.getKey() === Ext.event.Event.R && e.ctrlKey)
 	        {
-		        // показываем панель замены
-		        replacePanel.show();
-		        
 		        e.preventDefault();
+
+		        // показываем панель замены
+		        xmlManager.doReplace();
 	        }
         }
     }

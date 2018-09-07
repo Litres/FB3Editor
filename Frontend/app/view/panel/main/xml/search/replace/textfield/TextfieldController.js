@@ -25,30 +25,29 @@ Ext.define(
 				xmlPanel,
 				xmlManager;
 			
+			searchPanel = view.getSearchPanel();
+			xmlPanel = searchPanel.getXmlPanel();
+			xmlManager = xmlPanel.getManager();
+			
 			if (e.getKey() === Ext.event.Event.ENTER)
 			{
 				// выполняем замену
-				searchPanel = view.getSearchPanel();
 				searchPanel.replace();
 			}
 			else if (e.getKey() === Ext.event.Event.ESC)
 			{
 				// скрываем панель поиска/замены
-				searchPanel = view.getSearchPanel();
-				xmlPanel = searchPanel.getXmlPanel();
-				xmlManager = xmlPanel.getManager();
 				xmlManager.doEsc();
 			}
-			else if (e.getKey() === Ext.event.Event.F)
+			else if (e.getKey() === Ext.event.Event.F && e.ctrlKey)
 			{
 				// скрываем панель замены
-				searchPanel = view.getSearchPanel();
 				replacePanel = searchPanel.getReplacePanel();
 				replacePanel.hide();
 				
 				e.preventDefault();
 			}
-			else if (e.getKey() === Ext.event.Event.R)
+			else if (e.getKey() === Ext.event.Event.R && e.ctrlKey)
 			{
 				// игнорируем обновление страницы
 				e.preventDefault();

@@ -24,7 +24,9 @@ Ext.define(
         listeners: {
             change: 'onChange',
 	        findNext: 'onFindNext',
-	        findPrev: 'onFindPrev'
+	        findPrev: 'onFindPrev',
+	        enableButtons: 'onEnableButtons',
+	        disableButtons: 'onDisableButtons'
         },
 	
 	    layout: 'hbox',
@@ -47,6 +49,12 @@ Ext.define(
 	     * @property {FBEditor.view.panel.main.xml.search.replace.Replace} Панель замены.
 	     */
 	    replacePanel: null,
+	
+	    /**
+	     * @private
+	     * @property {Array} Кнопки для синхронизации с полем поиска.
+	     */
+	    buttonsSync: [],
 
         initComponent: function ()
         {
@@ -90,6 +98,27 @@ Ext.define(
         },
 	
 	    /**
+	     * Возвращает кнопки для синхронизации с полем поиска.
+	     * @returns {Array}
+	     */
+	    getButtonsSync: function ()
+	    {
+	    	return this.buttonsSync;
+	    },
+	
+	    /**
+	     * Добавляет кнопку для синхронизации с полем поиска.
+	     * @param {Object} btn Кнопка.
+	     */
+	    addButtonSync: function (btn)
+	    {
+	    	var me = this,
+		        buttons = me.buttonsSync;
+	    	
+	    	buttons.push(btn);
+	    },
+	
+	    /**
 	     * Устанавливает в поле поиска фокус и выделнную часть текста из редактора xml.
 	     */
 	    setFocusSearchField: function ()
@@ -115,6 +144,11 @@ Ext.define(
 		    {
 			    // устанавилваем выделенный текст в поле поиска
 			    searchField.setValue(text);
+		    }
+		    else
+		    {
+			    // вбрасываем событие для нового поиска
+			    me.fireEvent('change');
 		    }
 		
 		    // ставим фокус в поле поиска
@@ -163,6 +197,24 @@ Ext.define(
 			    countField = findPanel.getCountField();
 		    
 		    countField.setCount(count);
+	    },
+	
+	    /**
+	     * Синхронизирует кнопки с полем поиска.
+	     * @param {Number} count Количество найженных результатов
+	     */
+	    syncButtons: function (count)
+	    {
+	    	var me = this;
+	    	
+	    	if (count)
+		    {
+		    	me.fireEvent('enableButtons');
+		    }
+		    else
+		    {
+			    me.fireEvent('disableButtons');
+		    }
 	    },
 
         /**

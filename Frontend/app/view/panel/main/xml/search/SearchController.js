@@ -34,6 +34,9 @@ Ext.define(
 	
             // отображаем количество найденных результатов
             view.setCount(count);
+            
+            // синхронизируем кнопки с полем поиска
+            view.syncButtons(count);
         },
 	
 	    /**
@@ -64,6 +67,42 @@ Ext.define(
 		    xmlPanel = view.getXmlPanel();
 		    manager = xmlPanel.getManager();
 		    manager.findPrev();
+	    },
+	
+	    /**
+	     * Деактивирует кнопки.
+	     */
+	    onDisableButtons: function ()
+	    {
+	    	var me = this,
+		        view = me.getView(),
+		        buttons = view.getButtonsSync();
+	    	
+	    	Ext.each(
+	    		buttons,
+			    function (btn)
+			    {
+			    	btn.disable();
+			    }
+		    )
+	    },
+	
+	    /**
+	     * Активирует кнопки.
+	     */
+	    onEnableButtons: function ()
+	    {
+		    var me = this,
+			    view = me.getView(),
+			    buttons = view.getButtonsSync();
+		
+		    Ext.each(
+			    buttons,
+			    function (btn)
+			    {
+				    btn.enable();
+			    }
+		    )
 	    }
     }
 );

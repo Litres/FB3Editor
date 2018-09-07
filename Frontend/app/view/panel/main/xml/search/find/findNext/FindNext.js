@@ -27,7 +27,30 @@ Ext.define(
 			}
 		},
 		
-		html: '<i class="fa fa-arrow-down"></i>',
+		translateText: {
+			title: 'Следующее совпадение'
+		},
+		
+		initComponent: function ()
+		{
+			var me = this,
+				tt = me.translateText;
+			
+			me.html = '<i title="' + tt.title + '" class="fa fa-arrow-down"></i>';
+			
+			me.callParent(arguments);
+		},
+		
+		afterRender: function ()
+		{
+			var me = this,
+				panel = me.getSearchPanel();
+			
+			// добавляем кнопку для синхронизации с полем поиска
+			panel.addButtonSync(me);
+			
+			me.callParent(arguments);
+		},
 		
 		getSearchPanel: function ()
 		{

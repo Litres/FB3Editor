@@ -30,6 +30,20 @@ Ext.define(
 		 */
 		replaceField: null,
 		
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.xml.search.replace.current.Current} Кнопка замены текущего найденного
+		 * совпадения.
+		 */
+		currentBtn: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.xml.search.replace.all.All} Кнопка замены замены всех найденных
+		 * совпадений.
+		 */
+		allBtn: null,
+		
 		initComponent: function ()
 		{
 			var me = this;
@@ -61,6 +75,36 @@ Ext.define(
 			
 			cmp = me.searchField || me.down('panel-xml-search-replace-textfield');
 			me.searchField = cmp;
+			
+			return cmp;
+		},
+		
+		/**
+		 * Возвращает кнопку замены текущего найденного совпадения.
+		 * @return {FBEditor.view.panel.main.xml.search.replace.current.Current}
+		 */
+		getCurrentBtn: function ()
+		{
+			var me = this,
+				cmp;
+			
+			cmp = me.currentBtn || me.down('panel-xml-search-replace-current');
+			me.currentBtn = cmp;
+			
+			return cmp;
+		},
+		
+		/**
+		 * Возвращает кнопку замены всех найденных совпадений.
+		 * @return {FBEditor.view.panel.main.xml.search.replace.all.All}
+		 */
+		getAllBtn: function ()
+		{
+			var me = this,
+				cmp;
+			
+			cmp = me.allBtn || me.down('panel-xml-search-replace-all');
+			me.allBtn = cmp;
 			
 			return cmp;
 		}

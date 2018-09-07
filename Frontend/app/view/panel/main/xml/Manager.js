@@ -397,14 +397,12 @@ Ext.define(
 
         /**
          * Вызывает панель поиска по тексту.
-         * @param {Object} lib Внешний редактор xml.
+         * @param {Object} [lib] Внешний редактор xml.
          */
         doSearch: function (lib)
         {
-            var me = lib.getManager(),
+            var me = lib ? lib.getManager() : this,
                 panel,
-	            findPanel,
-	            searchField,
 	            replacePanel;
 
             panel = me.getSearchPanel();
@@ -417,20 +415,17 @@ Ext.define(
 	        // ставим фокус в поле поиска
 	        panel.setFocusSearchField();
 	
-	        // вбрасываем событие для нового поиска
-	        panel.fireEvent('change');
-
 	        replacePanel = panel.getReplacePanel();
 	        replacePanel.hide();
         },
 
         /**
          * Вызывает панель замены по тексту.
-         * @param {Object} lib Внешний редактор xml.
+         * @param {Object} [lib] Внешний редактор xml.
          */
         doReplace: function (lib)
         {
-	        var me = lib.getManager(),
+	        var me = lib ? lib.getManager() : this,
 		        panel,
                 replacePanel;
 	
@@ -440,12 +435,10 @@ Ext.define(
 	        {
 		        panel.show();
 	        }
-	        else
-            {
-	            // ставим фокус в поле поиска
-	            panel.setFocusSearchField();
-            }
-
+	
+	        // ставим фокус в поле поиска
+	        panel.setFocusSearchField();
+	
 	        // показываем панель замены
 	        replacePanel = panel.getReplacePanel();
 	        replacePanel.show();

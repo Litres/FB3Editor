@@ -18,6 +18,17 @@ Ext.define(
 		
 		text: 'Заменить',
 		
+		afterRender: function ()
+		{
+			var me = this,
+				panel = me.getSearchPanel();
+			
+			// добавляем кнопку для синхронизации с полем поиска
+			panel.addButtonSync(me);
+			
+			me.callParent(arguments);
+		},
+		
 		handler: function ()
 		{
 			var me = this,

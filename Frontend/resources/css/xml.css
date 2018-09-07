@@ -17,6 +17,10 @@
     color: #000;
     cursor: pointer;
 }
+.panel-xml-search-findprev .x-mask,
+.panel-xml-search-findnext .x-mask {
+    background-color: rgba(255, 255, 255, 0.3);
+}
 .panel-xml-search-ignorecase,
 .panel-xml-search-words,
 .panel-xml-search-regex {
