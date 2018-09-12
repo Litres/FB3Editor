@@ -385,6 +385,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 

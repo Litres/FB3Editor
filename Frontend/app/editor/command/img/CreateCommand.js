@@ -220,6 +220,8 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			manager.updateTree();
+			
 			return res;
 		}
 	}

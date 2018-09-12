@@ -153,7 +153,7 @@ Ext.define(
 
 			/**
 			 * Устанавливает активный менеджер редактора текста.
-			 * @param {FBEditor.editor.view.Editor} manager
+			 * @param {FBEditor.editor.Manager} manager
 			 */
 			FBEditor.setEditorManager = function (manager)
 			{
