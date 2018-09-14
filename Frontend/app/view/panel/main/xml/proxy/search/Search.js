@@ -167,22 +167,47 @@ Ext.define(
 	    replace: function (replaceStr)
 	    {
 		    var me = this,
+			    proxy = me.getProxy(),
 			    state = me.getState(),
+			    str = replaceStr,
+			    reg,
+			    matches,
+			    sel,
 			    queryText,
+			    query,
+			    isReg,
 			    count,
 			    cursor;
 		    
 		    cursor = state.getCursor();
 		    count = state.getCount();
+		    isReg = state.getIsReg();
 		    
 		    if (cursor)
 		    {
 			    queryText = state.getQueryText();
 			    
-			    if (queryText !== replaceStr)
+			    if (queryText !== str)
 			    {
+			    	if (isReg)
+				    {
+				    	sel = proxy.getSelection();
+				    	query = me.parseQuery(true);
+					    matches = sel.match(query);
+					    
+					    if (matches[1])
+					    {
+						    // преобразуем текущую строку замены с учетом скобочных групп в поисковой строке
+						    for (var i = 1; i < matches.length; i++)
+						    {
+						    	reg = new RegExp('\\$' + i, 'g');
+						    	str = str.replace(reg, matches[i]);
+						    }
+					    }
+				    }
+				    
 				    // заменяем текущее совпадение
-				    cursor.replace(replaceStr);
+				    cursor.replace(str);
 			    }
 			    
 			    // перемещаем курсор к следующему совпадению
@@ -219,10 +244,7 @@ Ext.define(
 					    while (cursor = state.getCursor())
 					    {
 						    // заменяем текущее совпадение
-						    cursor.replace(replaceStr);
-						
-						    // перемещаем курсор к следующему совпадению
-						    me.findNext();
+						    me.replace(replaceStr);
 						
 						    res = true;
 					    }
@@ -362,15 +384,16 @@ Ext.define(
 	    /**
 	     * @private
 	     * Возвращает преобразованную поисковую строку.
+	     * @param {Boolean} [ignoreGlobal] Игнорировать ли глобальный поиск.
 	     * @return {RegExp}
 	     */
-	    parseQuery: function ()
+	    parseQuery: function (ignoreGlobal)
 	    {
 		    var me = this,
 			    state = me.getState(),
 			    queryText = state.getQueryText(),
 			    isReg = state.getIsReg(),
-			    ignoreCase = state. getIgnoreCase(),
+			    ignoreCase = state.getIgnoreCase(),
 			    words = state.getWords(),
 			    borderStart = me.getBorderRegExp(),
 			    borderEnd = me.getBorderRegExp(true),
@@ -379,7 +402,8 @@ Ext.define(
 		    
 		    try
 		    {
-			    mods = ignoreCase ? 'giu' : 'gu';
+		    	mods = ignoreGlobal ? 'u' : 'gu';
+			    mods = ignoreCase ? mods + 'i' : mods;
 			
 			    if (!isReg)
 			    {
