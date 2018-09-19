@@ -48,16 +48,16 @@ Ext.define(
             if (me.marker)
             {
             	// добавляем маркер
-
+	
                 xmlMarker = me.marker.getXml(withoutText, withoutFormat);
 
                 if (first && first.isTitle)
 				{
-					xml = xml.replace(/^<\/title>/i, '</title>' + xmlMarker);
+					xml = xml.replace(/^(\s+)?<\/title>(\n)?/i, '$1</title>$2' + xmlMarker);
 				}
 				else
 				{
-                    xml = xml.replace(/^<div(.*?)>/i, '<div$1>' + xmlMarker);
+                    xml = xml.replace(/^(\s+)?<div(.*?)>(\n)?/i, '$1<div$2>$3' + xmlMarker);
 				}
             }
 

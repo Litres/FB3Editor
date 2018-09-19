@@ -53,25 +53,51 @@ Ext.define(
 			return node;
 		},
 
-		getXml: function ()
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
+				self = FBEditor.editor.element.AbstractElement,
+				img = me.img,
 				tag = me.xmlTag,
+				nlBefore = '',
+				nlAfter = '',
+				spacesBefore = '',
+				spacesAfter = '',
+				formatOptions = {},
 				xml,
 				attr;
-
+			
+			self.countSpaces++;
+			
+			if (!withoutFormat)
+			{
+				// получаем опции для форматирования xml
+				formatOptions = me.getFormatOptionsXml();
+				spacesBefore = formatOptions.spacesBefore;
+				spacesAfter = formatOptions.spacesAfter;
+				nlBefore = formatOptions.nlBefore;
+				nlAfter = formatOptions.nlAfter;
+			}
+			
 			attr = me.getAttributesXml();
-			xml = '<' + tag;
+			xml = spacesBefore + '<' + tag;
 			xml += attr ? ' ' + attr : '';
 			
-			if (me.img)
+			if (img)
 			{
-				xml += '>' + me.img.getXml() + '</' + tag + '>';
+				self.countSpaces++;
+				xml += '>' + nlBefore;
+				xml += img.getXml(withoutText, withoutFormat);
+				xml += spacesAfter + '</' + tag + '>' + nlAfter;
+				self.countSpaces--;
+				
 			}
 			else
 			{
-				xml += '/>';
+				xml += '/>' + nlAfter;
 			}
+			
+			self.countSpaces--;
 
 			return xml;
 		},
