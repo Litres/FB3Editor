@@ -211,7 +211,7 @@ Ext.define(
 				modelProxy,
 				el,
 				model;
-
+			
 			// получаем DOM для вставляемого html
 			dom = parser.parseFromString(html, 'text/html');
 

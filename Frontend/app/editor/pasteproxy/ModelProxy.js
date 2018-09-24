@@ -63,30 +63,33 @@ Ext.define(
 		{
 			var me = this;
 
-			el.each(
-				function (child)
-				{
-					//console.log('<child', child.getName(), child.elementId, '>', child.parent.getXml());
-
-					// нормализуем элемент уровня стиля
-					me.normalizeStyle(child);
-
-					// нормализуем элемент уровня текста
-					me.normalizeText(child);
-
-					// нормализуем элемент списка
-					me.normalizeList(child);
-
-					// нормализуем элемент изображения
-					me.normalizeImg(child);
-
-					// нормализуем дочерний элемент
-					me.normalizeElement(child);
-
-					// общая нормализация для любых элементов
-					me.normalizeEl(child);
-				}
-			);
+			if (el)
+			{
+				el.each(
+					function (child)
+					{
+						//console.log('<child', child.getName(), child.elementId, '>', child.parent.getXml());
+						
+						// нормализуем элемент уровня стиля
+						me.normalizeStyle(child);
+						
+						// нормализуем элемент уровня текста
+						me.normalizeText(child);
+						
+						// нормализуем элемент списка
+						me.normalizeList(child);
+						
+						// нормализуем элемент изображения
+						me.normalizeImg(child);
+						
+						// нормализуем дочерний элемент
+						me.normalizeElement(child);
+						
+						// общая нормализация для любых элементов
+						me.normalizeEl(child);
+					}
+				);
+			}
 		},
 
 		/**
@@ -156,7 +159,7 @@ Ext.define(
 				elProxy = Ext.create('FBEditor.editor.pasteproxy.model.TextProxy', {el: el, modelProxy: me});
 				normalize = elProxy.normalize();
 			}
-
+			
 			if (normalize)
 			{
 				me.normalizeElement(parent);

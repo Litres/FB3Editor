@@ -221,6 +221,11 @@ Ext.define(
 
             // получаем xml выделенного фрагмента текста
             rangeXml = editorManager.getRangeXml();
+            
+            // меняем название элемента title в буфере, чтобы он корректно парсился при вставке в другую книгу
+            rangeXml = rangeXml.replace(/<([/]?)title(.*?)>/ig, '<$1fb3-title$2>');
+            
+            //console.log(rangeXml);
 
             // получаем только текст, вырезая теги
             text = rangeXml.replace(/<(.*?)>/ig, '');

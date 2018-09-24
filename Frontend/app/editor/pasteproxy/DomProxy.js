@@ -217,7 +217,7 @@ Ext.define(
 				{
 					// создаем вложенный родительский элемент
 
-					// получаем разрашенные аттрибуты
+					// получаем разрашенные атрибуты
 					attributes = me.getAttributes(node, elementSchema);
 
 					// создаем элемент с аттрибутами
@@ -356,6 +356,11 @@ Ext.define(
 			{
 				// жестко игнорим, ибо там только мусор
 				return false;
+			}
+			else if (nodeName === 'fb3-title')
+			{
+				// преобразуем название элемента в title
+				return 'title';
 			}
 
 			name = schema.elements[nodeName] ? nodeName : false;

@@ -25,7 +25,7 @@ Ext.define(
 
 			if (!el.parent.isStyleType)
 			{
-				//console.log('<text>', el.text);
+				//console.log('<text>', el.text, el.parent.getName());
 				
 				// помещаем текст в абзац, если он находится не в стилевом элементе
 				me.moveElsToNewHolder(el);

@@ -146,7 +146,6 @@ Ext.define(
 				isChild;
 
 			//console.log(parent, children);
-
 			isChild = Ext.Array.contains(children, child);
 
 			return isChild;
@@ -207,6 +206,33 @@ Ext.define(
 
 										name = Ext.Object.getKeys(itemChoice)[0];
 										children.push(name);
+									}
+								);
+								
+								Ext.Array.each(
+									item.choice.sequence,
+									function (itemSequence)
+									{
+										var name;
+										
+										if (itemSequence.element)
+										{
+											name = Ext.Object.getKeys(itemSequence.element)[0];
+											children.push(name);
+										}
+										else if (itemSequence.choice)
+										{
+											Ext.Array.each(
+												itemSequence.choice.elements,
+												function (itemChoice)
+												{
+													var name;
+													
+													name = Ext.Object.getKeys(itemChoice)[0];
+													children.push(name);
+												}
+											);
+										}
 									}
 								);
 							}
