@@ -776,9 +776,11 @@ Ext.define(
                             function (meta)
                             {
                             	var rev;
+                            	
+                            	//console.log('meta', meta);
 
                                 // номер ревизии
-                                rev = Number(meta.revision.__text);
+                                rev = meta.revision ? Number(meta.revision.__text) : 0;
                                 rev = Ext.isNumber(rev) ? rev + 1 : 1;
 
                                 resolve(rev);

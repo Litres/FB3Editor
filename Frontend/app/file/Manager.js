@@ -31,7 +31,7 @@ Ext.define(
 
 		/**
 		 * Открывает файл FB3.
-		 * @param {File} file Файл.
+		 * @param {FBEditor.file.File} file Файл.
 		 * @return {Boolean} Успешно ли открытие.
 		 */
 		openFB3: function (file)
@@ -49,6 +49,8 @@ Ext.define(
 						load: function (data)
 						{
 							var fileName;
+							
+							//console.log('file data', data);
 
                             // создаем модель файла fb3
                             me.fb3file = Ext.create('FBEditor.FB3.File', {file: file.file, content: data});

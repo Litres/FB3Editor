@@ -28,11 +28,15 @@ Ext.define(
 		/**
 		 * @private
 		 * @property {Object} Данные книги.
+		 * @property {File} Object.file Файл.
+		 * @property {ArrayBuffer} Object.content Данные файла.
 		 */
 		data: null,
 
 		/**
 		 * @param {Object} data Данные книги.
+		 * @param {File} data.file Файл.
+		 * @param {ArrayBuffer} data.content Данные файла.
 		 */
 		constructor: function (data)
 		{
@@ -63,6 +67,7 @@ Ext.define(
                         zip.unPackage(data).then(
                             function (unpackData)
                             {
+                            	//console.log('unpackData', unpackData);
                                 me.setFiles();
                                 structure = Ext.create('FBEditor.FB3.Structure', me);
                                 me.structure = structure.load();

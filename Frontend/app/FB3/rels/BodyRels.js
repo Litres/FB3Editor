@@ -91,10 +91,11 @@ Ext.define(
                                             // путь может быть абсолютным или относительным
                                             fileName = targetName.substring(0, 1) !== '/' ?
                                                 parentRelsDir + '/' + targetName : targetName;
-
+	
                                             selfImages[i] = Ext.create('FBEditor.FB3.rels.Image', me.getStructure(),
 												fileName);
                                             selfImages[i].setId(decodeURI(id));
+	                                        //console.log('fileName', i, selfImages[i]);
                                         }
                                     );
 

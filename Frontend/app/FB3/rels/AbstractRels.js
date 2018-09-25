@@ -102,6 +102,8 @@ Ext.define(
 			me.relsName = me.getRelsName();
 			me.file = me.structure.getFb3file().getFiles(fileName);
 			me.prefix = FBEditor.util.xml.Json.prefix;
+			
+			//console.log('file', me.file);
 
 			me.getRels().then(
 				function (rels)
@@ -113,12 +115,14 @@ Ext.define(
 			).then(
                 function (blob)
                 {
+                	/*
                     mimeType = me.parseMimeType();
 
                     if (mimeType)
 					{
                         me.blob = new Blob([blob], {type: mimeType});
 					}
+					*/
                 }
             );
 		},
@@ -311,7 +315,7 @@ Ext.define(
 		},
 
         /**
-         * Возвращает содержимое файла в ArrayBuffer.
+         * Возвращает содержимое файла в Blob.
          * @resolve {ArrayBuffer} Содержимое файла.
          * @return {Promise}
          */
@@ -331,9 +335,9 @@ Ext.define(
                         	function (blob)
 							{
                                 var mimeType = me.parseMimeType();
-
+                                
+                                //console.log('blob', mimeType, blob);
                                 me.blob = new Blob([blob], {type: mimeType});
-
                                 resolve(me.blob);
 							}
 						);
