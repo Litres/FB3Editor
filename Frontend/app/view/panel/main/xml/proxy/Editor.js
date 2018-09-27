@@ -9,6 +9,7 @@ Ext.define(
     'FBEditor.view.panel.main.xml.proxy.Editor',
     {
         requires: [
+	        'FBEditor.view.panel.main.xml.proxy.Hotkeys',
             'FBEditor.view.panel.main.xml.proxy.search.Search'
         ],
 
@@ -29,6 +30,12 @@ Ext.define(
          * @property {FBEditor.view.panel.main.xml.proxy.search.Search} Прокси для поиска.
          */
         search: null,
+	
+	    /**
+	     * @private
+	     * @property {FBEditor.view.panel.main.xml.proxy.Hotkeys} Прокси горячих клавиш.
+	     */
+	    hotkeys: null,
 
         constructor: function ()
         {
@@ -38,6 +45,9 @@ Ext.define(
 
             // прокси для поиска
             me.search = Ext.create('FBEditor.view.panel.main.xml.proxy.search.Search', me);
+            
+            // прокси горячих клавиш
+            me.hotkeys = Ext.create('FBEditor.view.panel.main.xml.proxy.Hotkeys', me);
         },
 
         /**
@@ -48,6 +58,7 @@ Ext.define(
         {
             var me = this,
                 lib = me.getLib(),
+	            hotkeys = me.hotkeys,
                 panel,
                 node;
 
@@ -68,11 +79,9 @@ Ext.define(
             {
                 return manager;
             };
-
-            me.setSearchFunction(manager.doSearch);
-            me.setReplaceFunction(manager.doReplace);
-            me.setEscFunction(manager.doEsc);
-
+            
+            // инициализируем горячие клавиши
+            hotkeys.init(manager);
         },
 	
 	    /**
@@ -276,54 +285,6 @@ Ext.define(
 		
 		    lib.operation(fn);
 	    },
-
-        /**
-         * Устанавливает функцию вызова поиска по тексту.
-         * @param {Function} fn Функция, которая будет вызвана при нажатии Ctrl+F.
-         */
-        setSearchFunction: function (fn)
-        {
-            var me = this,
-                lib = me.getLib(),
-                option;
-
-            option = lib.getOption('extraKeys');
-            option = option || {};
-            option['Ctrl-F'] = fn;
-            lib.setOption('extraKeys', option);
-        },
-
-        /**
-         * Устанавливает функцию вызова поиска по тексту.
-         * @param {Function} fn Функция, которая будет вызвана при нажатии Ctrl+F.
-         */
-        setReplaceFunction: function (fn)
-        {
-            var me = this,
-                lib = me.getLib(),
-                option;
-
-            option = lib.getOption('extraKeys');
-            option = option || {};
-            option['Ctrl-R'] = fn;
-            lib.setOption('extraKeys', option);
-        },
-
-        /**
-         * Устанавливает функцию Esc.
-         * @param {Function} fn Функция, которая будет вызвана при нажатии Esc.
-         */
-        setEscFunction: function (fn)
-        {
-            var me = this,
-                lib = me.getLib(),
-                option;
-
-            option = lib.getOption('extraKeys');
-            option = option || {};
-            option['Esc'] = fn;
-            lib.setOption('extraKeys', option);
-        },
 	
 	    /**
 	     * Устанавливает фокус в окне редактора.
@@ -335,7 +296,7 @@ Ext.define(
 		
 		    if (!lib.hasFocus())
 		    {
-		    	lib.focus();
+			    lib.focus();
 		    }
 	    }
     }

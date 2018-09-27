@@ -209,7 +209,19 @@ Ext.define(
                 slot: 31,
                 key: 'ENTER',
                 shift: true
-            }
+            },
+	        {
+		        // Поиск
+		        slot: 32,
+		        key: 'F',
+		        ctrl: true
+	        },
+	        {
+		        // Замена
+		        slot: 33,
+		        key: 'R',
+		        ctrl: true
+	        }
         ],
 
         constructor: function (config)
@@ -275,15 +287,18 @@ Ext.define(
          * @param {Boolean} [data.ctrl]
          * @param {Boolean} [data.alt]
          * @param {Boolean} [data.shift]
+         * @param {String} [splitter] Символ разделяющий комбинацию клавиш. По умолчанию +.
          * @return {String} Название.
          */
-        getFormatKeysText: function (data)
+        getFormatKeysText: function (data, splitter)
         {
-            var text;
-
-            text = data.ctrl ? 'CTRL+' : '';
-            text += data.alt ? 'ALT+' : '';
-            text += data.shift ? 'SHIFT+' : '';
+            var text,
+                split;
+	
+	        split = splitter || '+';
+	        text = data.shift ? 'SHIFT' + split : '';
+            text += data.ctrl ? 'CTRL' + split : '';
+            text += data.alt ? 'ALT' + split : '';
             text += data.key ? data.key : '';
 
             return text;

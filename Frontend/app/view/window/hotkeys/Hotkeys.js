@@ -23,6 +23,8 @@ Ext.define(
             'FBEditor.view.window.hotkeys.slot.notes.Notes',
             'FBEditor.view.window.hotkeys.slot.ol.Ol',
             'FBEditor.view.window.hotkeys.slot.pre.Pre',
+	        'FBEditor.view.window.hotkeys.slot.replace.Replace',
+	        'FBEditor.view.window.hotkeys.slot.search.Search',
             'FBEditor.view.window.hotkeys.slot.section.Section',
             'FBEditor.view.window.hotkeys.slot.smallcaps.Smallcaps',
             'FBEditor.view.window.hotkeys.slot.spacing.Spacing',
@@ -209,7 +211,15 @@ Ext.define(
                 {
                     xtype: 'window-hotkeys-slot-unstyle',
                     numberSlot: 28
-                }
+                },
+	            {
+		            xtype: 'window-hotkeys-slot-search',
+		            numberSlot: 32
+	            },
+	            {
+		            xtype: 'window-hotkeys-slot-replace',
+		            numberSlot: 33
+	            }
             ];
 
             return slots;
