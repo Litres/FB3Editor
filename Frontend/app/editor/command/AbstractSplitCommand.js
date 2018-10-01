@@ -180,22 +180,17 @@ Ext.define(
 				// вставляем новый элемент
 				nodes.parent = nodes.prevNode.parentNode;
 				els.parent = nodes.parent.getElement();
-				//nodes.next = nodes.prevNode.nextSibling;
 				els.next = els.prevNode.next();
-				//nodes.nextPrevNode = nodes.next;
 				els.nextPrevNode = els.next;
 				nodes.node = els.node.getNode(viewportId);
 
 				if (els.next)
 				{
-					//els.next = nodes.next.getElement();
 					els.parent.insertBefore(els.node, els.next, viewportId);
-					//nodes.parent.insertBefore(nodes.node, nodes.next);
 				}
 				else
 				{
 					els.parent.add(els.node, viewportId);
-					//nodes.parent.appendChild(nodes.node);
 				}
 
 				// заполняем новый элемент
@@ -213,9 +208,10 @@ Ext.define(
 
 				// устанавливаем курсор
 				nodes.cursor = nodes.cursor ? nodes.cursor : nodes.node;
+				nodes.cursor = manager.getDeepFirst(nodes.cursor);
 				manager.setCursor(
 					{
-						startNode: nodes.cursor.firstChild
+						startNode: nodes.cursor
 					}
 				);
 
@@ -424,8 +420,6 @@ Ext.define(
 					nodes.buf = nodes.next.nextSibling;
 
 					els.node.add(els.next, viewportId);
-					//nodes.node.appendChild(nodes.next);
-					//els.parentNext.remove(els.next);
 
 					nodes.next = nodes.buf;
 					els.next = nodes.next ? nodes.next.getElement() : null;
@@ -434,18 +428,14 @@ Ext.define(
 				// создаем новый блок
 
 				els.node = factory.createElement(me.elementName);
-				//nodes.node = els.node.getNode(viewportId);
 
 				if (els.nextPrevNode)
 				{
-					//els.nextPrevNode = nodes.nextPrevNode.getElement();
 					els.parent.insertBefore(els.node, els.nextPrevNode, viewportId);
-					//nodes.parent.insertBefore(nodes.node, nodes.nextPrevNode);
 				}
 				else
 				{
 					els.parent.add(els.node, viewportId);
-					//nodes.parent.appendChild(nodes.node);
 				}
 			}
 		},
