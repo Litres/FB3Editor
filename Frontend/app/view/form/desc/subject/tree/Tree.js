@@ -468,11 +468,14 @@ Ext.define(
 			{
 				return;
 			}
+			
+			// показываем дерево
+			me.show();
 
 			// идет процесс фильтрации
 			me.filterProcess = true;
 			me.setLoading();
-
+			
 			// фильтруем данные
 			if (val && !/^[0-9]+$/.test(val) && /[\wа-яА-Я]{2,}/.test(val))
 			{
@@ -480,7 +483,7 @@ Ext.define(
 				{
 					// фильтруем данные
 					filteredData = me.filterFn(val, data[0]);
-
+					
 					// сохраняем в кэш результаты фильтрации
 					me.cacheFilteredData[val] = Ext.clone(filteredData);
 				}
@@ -510,13 +513,23 @@ Ext.define(
 						me.getRootNode().expand(true);
 					}
 				}
+				else
+				{
+					// прячем дерево
+					me.hide();
+				}
 			}
-			else
+			else if (!val)
 			{
 				store.loadData(data);
 
 				// раскрываем только корневой узел
 				me.getRootNode().expand();
+			}
+			else
+			{
+				// прячем дерево
+				me.hide();
 			}
 
 			// процесс фильтрации закончен
