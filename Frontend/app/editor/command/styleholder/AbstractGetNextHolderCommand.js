@@ -61,7 +61,7 @@ Ext.define(
 					return false;
 				}
 
-				console.log('get next holder ' + me.elementName, range, els);
+				console.log('get next holder ' + me.elementName, els);
 
 				if (els.parentP.isEmpty())
 				{
@@ -90,8 +90,18 @@ Ext.define(
 				}
 				else
 				{
-					// просто переносим следующий абзац
-					els.parentP.add(els.nextP, viewportId);
+					// переносим следующий абзац
+					
+					els.next = els.p.next();
+					
+					if (!els.next)
+					{
+						els.parentP.add(els.nextP, viewportId);
+					}
+					else
+					{
+						els.parentP.insertBefore(els.nextP, els.next, viewportId);
+					}
 				}
 
 				if (els.parentNextP.isEmpty())
@@ -210,7 +220,7 @@ Ext.define(
 				nodes = data.nodes;
 				els = data.els;
 
-				console.log('undo get next holder ' + me.elementName, nodes, els);
+				console.log('undo get next holder ' + me.elementName, els);
 
 				viewportId = data.viewportId;
 				manager = els.p.getManager();
