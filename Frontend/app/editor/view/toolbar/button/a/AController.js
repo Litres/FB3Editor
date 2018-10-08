@@ -24,12 +24,17 @@ Ext.define(
 
 				text = btn.translateText.enterAddress;
 				href = window.prompt(text, 'http://');
-
+				
+				if (!href)
+				{
+					btn.toggle();
+					return;
+				}
+				
 				// передаем в команду создания элемента необходимый аттрибут
 				opts.attributes = opts.attributes || {};
 				opts.attributes.href = href;
 				btn.createOpts = opts;
-
 			}
 
 			me.callParent(arguments);
