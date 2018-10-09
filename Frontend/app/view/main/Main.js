@@ -31,8 +31,7 @@ Ext.define(
             checkWidthPanels: 'onCheckWidthPanels',
             closedetachpanels: 'onDetachPanel',
             closeapplication: 'onCloseApplication',
-            restoredetachpanel: 'onRestoreDetachPanel',
-            accessHub: 'onAccessHub'
+            restoredetachpanel: 'onRestoreDetachPanel'
         },
 
 	    layout: {

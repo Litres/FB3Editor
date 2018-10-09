@@ -10,19 +10,6 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 		alias: 'controller.form.desc.sequence.item',
 
-		onAccessHub: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				values = view.getValues();
-
-			if (!values)
-			{
-				// показываем поля поиска
-				view.switchContainers(true);
-			}
-		},
-
 		/**
 		 * Вкладывает новые поля в родительский контейнер.
 		 *
@@ -88,9 +75,7 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView();
-
-			// показываем поля данных или поле поиска, если доступен хаб
-			view.switchContainers();
+			
 		}
 	}
 );

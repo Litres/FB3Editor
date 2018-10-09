@@ -29,8 +29,6 @@ Ext.define(
 		{
 			var me = this,
 				editor = me.getEditor(),
-				bridgeWindow = FBEditor.getBridgeWindow(),
-				descManager = bridgeWindow.FBEditor.desc.Manager,
 				manager;
 
 			// надо ли создавать корневой элемент, так как при разделении окна содержимое копируется из оригинала
@@ -39,12 +37,6 @@ Ext.define(
 				me.callParent(arguments);
 
 				manager = editor.getManager();
-
-				if (manager.isLoadUrl() && !descManager.isLoadUrl())
-				{
-					// загружаем тело с хаба
-					manager.loadFromUrl();
-				}
 
 				// обновляем дерево навигации по тексту
 				manager.updateTree();

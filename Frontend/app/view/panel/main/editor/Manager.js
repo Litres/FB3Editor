@@ -9,23 +9,14 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.Manager',
 		requires: [
-			'FBEditor.view.panel.main.editor.Loader',
             'FBEditor.view.panel.main.xml.Manager'
 		],
-
-		enableRevision: true,
 
 		/**
 		 * @property {String} Id корневого элемента fb3-body.
 		 */
 		fb3BodyId: '',
-
-		/**
-		 * @private
-		 * @property {FBEditor.view.panel.main.editor.Loader} Загрузчик тела с хаба.
-		 */
-		loader: null,
-
+		
         /**
          * @private
          * @property {FBEditor.view.panel.main.xml.Manager} Менеджер редактора xml.
@@ -50,9 +41,6 @@ Ext.define(
 		{
 			var me = this;
 
-			// загрузчик
-			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
-
             // менеджер редактора xml
             me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
 		},
@@ -65,7 +53,6 @@ Ext.define(
 			var me = this;
 
 			me.resetFocus();
-			me.loader.reset();
 			me._availableSyncButtons = null;
 		},
 
@@ -164,18 +151,6 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает айди произведения, загружаемого с хаба.
-		 * @return {String}
-		 */
-		getArtId: function ()
-		{
-			var me = this,
-				loader = me.loader;
-
-			return loader.getArt();
-		},
-
-		/**
 		 * Обновляет дерево навигации по тексту.
 		 */
 		updateTree: function ()
@@ -203,198 +178,6 @@ Ext.define(
 					200
 				);
 			}
-		},
-
-		/**
-		 * Загружается ли тело отдельно по url.
-		 * @return {Boolean}
-		 */
-		isLoadUrl: function ()
-		{
-			var me = this,
-				loader = me.loader;
-
-			return loader.isLoad();
-		},
-
-		/**
-		 * Загружает тело из url.
-		 * @param {Number} [art] Айди произведениея на хабе.
-		 */
-		loadFromUrl: function (art)
-		{
-			var me = this,
-				loader = me.loader;
-
-			me.setLoading(art).then(
-				function (art)
-				{
-					// загружаем тело с хаба
-
-					art = art || me.getArtId();
-
-					return loader.load(art);
-				}
-			).then(
-				function (xml)
-				{
-					var descManager = FBEditor.desc.Manager,
-						revision = me.getRevision(),
-						btn,
-						rev;
-
-                    if (!descManager.isLoadUrl())
-                    {
-                        // если описание еще не было загружено по url, то загружаем
-                        descManager.loadFromUrl();
-                    }
-
-					//console.log(xml);
-					rev = xml.match(/rev (\d+) -->$/);
-					rev = rev[1];
-
-					// загружаем данные в редактор
-					me.loadDataToEditor(xml);
-
-					if (me.enableRevision)
-					{
-						// сохраняем ревизию
-						revision.setRev(rev, xml);
-					}
-
-					// активируем кнопку сохранения тела книги
-					btn = Ext.getCmp('panel-toolstab-file-button-savebody');
-					btn.setActive(true);
-				},
-				function (response)
-				{
-					// возникла ошибка
-
-					Ext.log(
-						{
-							level: 'error',
-							msg: 'Ошибка загрузки тела книги',
-							dump: response
-						}
-					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно загрузить тело книги',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
-				}
-			);
-		},
-
-		/**
-		 * Сохраняет тело на хабе.
-		 */
-		saveToUrl: function ()
-		{
-			var me = this,
-				loader = me.loader,
-				art = me.getArtId(),
-				revision = me.getRevision(),
-				rev = revision.getRev();
-
-			me.setLoading(art, me.translateText.saving).then(
-				function ()
-				{
-					// загружаем дифф с хаба
-					return loader.loadDiff(rev);
-				}
-			).then(
-				function (response)
-				{
-					var responseDiff = response.diff,
-						responseRev = response.rev;
-
-					//console.log('response', rev, response);
-
-					if (responseRev !== rev)
-					{
-						// применяем дифф к тексту
-						if (revision.applyDiff(responseDiff))
-						{
-							// устанавливаем новую ревизию
-							revision.setRev(responseRev);
-							rev = responseRev;
-						}
-					}
-
-					// сохраняем дифф
-					return loader.saveDiff(rev);
-				},
-				function (response)
-				{
-					// возникла ошибка
-
-					Ext.log(
-						{
-							level: 'error',
-							msg: 'Ошибка загрузки дифф тела книги',
-							dump: response
-						}
-					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно загрузить дифф тела книги',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
-				}
-			).then(
-				function (response)
-				{
-					var responseRev = response.rev;
-
-					if (responseRev)
-					{
-						// устанавливаем новую ревизию
-						revision.setRev(responseRev);
-					}
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
-				},
-				function (response)
-				{
-					// возникла ошибка
-
-					Ext.log(
-						{
-							level: 'error',
-							msg: 'Ошибка сохранения дифф тела книги',
-							dump: response
-						}
-					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно сохранить дифф тела книги',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
-				}
-			);
 		},
 
 		/**

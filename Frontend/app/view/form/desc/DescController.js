@@ -91,10 +91,8 @@ Ext.define(
 		{
 			var bridgeProps = FBEditor.getBridgeProps(),
 				cmpArr = [
-					Ext.getCmp('form-desc-sequence'),
 					Ext.getCmp('form-desc-relations-subject'),
-					Ext.getCmp('form-desc-relations-object'),
-					Ext.getCmp('panel-toolstab-file-button-savedesc')
+					Ext.getCmp('form-desc-relations-object')
 				];
 
 			if (bridgeProps && bridgeProps.Ext.getCmp)

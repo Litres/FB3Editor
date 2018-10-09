@@ -8,9 +8,6 @@ Ext.define(
 	'FBEditor.desc.Manager',
 	{
 		singleton: true,
-		requires: [
-			'FBEditor.desc.Loader'
-		],
 
 		/**
 		 * @property {String[]|Object[]} Список имен полей редактора текста.
@@ -49,26 +46,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.desc.Loader} Загрузчик описания с хаба.
-		 */
-		loader: null,
-
-		/**
-		 * @private
 		 * @property {Boolean} Загружены ли данные в форму.
 		 */
 		_loadedData: false,
-
-		/**
-		 * Инициализирует менеджер.
-		 */
-		init: function ()
-		{
-			var me = this;
-
-			// создаем загрузчик
-			me.loader = Ext.create('FBEditor.desc.Loader', me);
-		},
 
 		/**
 		 * Выполняется после рендеринга приложения.
@@ -83,11 +63,9 @@ Ext.define(
 		 */
 		reset: function ()
 		{
-			var me = this,
-				loader = me.loader;
+			var me = this;
 			
 			me._loadedData = false;
-			loader.reset();
 		},
 
         /**
@@ -105,91 +83,6 @@ Ext.define(
         },
 
 		/**
-		 * Загружает описание по url.
-		 * @param {Number} [art] Айди произведениея на хабе.
-		 * @return {Promise}
-		 */
-		loadFromUrl: function (art)
-		{
-			var me = this,
-				loader = me.loader,
-				promise;
-
-			promise = new Promise(
-				function (resolve, reject)
-				{
-					me.setLoading(art).then(
-						function (art)
-						{
-							// загружаем описание с хаба
-							art = art || me.getArtId();
-
-							return loader.load(art);
-						}
-					).then(
-						function (xml)
-						{
-							var resourceManager = FBEditor.resource.Manager;
-
-							// загружаем данные в форму
-							me.loadDataToForm(xml);
-
-							// загружены ли уже ресурсы
-							if (!resourceManager.isLoadUrl())
-							{
-								// загружаем ресурсы
-								resourceManager.loadFromUrl(me.getArtId());
-							}
-
-							resolve(xml);
-						},
-						function (response)
-						{
-							// возникла ошибка
-
-							Ext.log(
-								{
-									level: 'error',
-									msg: 'Ошибка загрузки описания книги',
-									dump: response
-								}
-							);
-
-							Ext.Msg.show(
-								{
-									title: 'Ошибка',
-									message: 'Невозможно загрузить описание книги',
-									buttons: Ext.MessageBox.OK,
-									icon: Ext.MessageBox.ERROR
-								}
-							);
-
-							// убираем информационное сообщение о загрузке
-							me.clearLoading();
-
-							reject(response);
-						}
-					);
-				}
-			);
-
-
-			return promise;
-		},
-
-		/**
-		 * Загружается ли описание отдельно по url.
-		 * @return {Boolean}
-		 */
-		isLoadUrl: function ()
-		{
-			var me = this,
-				loader = me.loader;
-
-			return loader.isLoad();
-		},
-
-		/**
 		 * Определяет произошла ли заргузка данных.
 		 * @return {Boolean} true - загрзука произошла.
 		 */
@@ -205,77 +98,6 @@ Ext.define(
 		setLoadedData: function (loaded)
 		{
 			this._loadedData = loaded;
-		},
-
-		/**
-		 * Сохраняет описание на хабе.
-		 */
-		saveToUrl: function (resolve, reject)
-		{
-			var me = this,
-				loader = me.loader,
-				xml;
-
-			// получаем xml
-			xml = me.getXml();
-
-			me.setLoading('Сохранение описания...').then(
-				function ()
-				{
-					return loader.save(xml);
-				}
-			).then(
-				function (xml)
-				{
-					Ext.log(
-						{
-							level: 'info', 
-							msg: 'Описание сохранено'
-						}
-					);
-
-					// загружаем полученный с хаба xml в форму
-					me.loadDataToForm(xml);
-
-					// убираем информационное сообщение
-					me.clearLoading();
-					
-					resolve();
-				},
-				function (response)
-				{
-					var statusOk = 200,
-						err;
-
-					err = response.status === statusOk ?
-					      response.responseText.match(/(unknown.*?)\n/ig) || response.responseText :
-					      response.statusText;
-					
-					Ext.log(
-						{
-							level: 'error', 
-							msg: 'Ошибка сохранения описания книги', 
-							dump: err
-						}
-					);
-
-					err = Ext.isArray(err) ? '<p>Ошибки:</p>' + err.join('</br></br>') : err;
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно сохранить описание книги ' + err,
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение
-					me.clearLoading();
-					
-					reject();
-				}
-			);
 		},
 
 		/**
@@ -341,12 +163,6 @@ Ext.define(
 			form.fireEvent('loadDesc', desc);
 
 			me.loadingProcess = false;
-
-			if (FBEditor.accessHub)
-			{
-				// если доступ к хабу есть, то показываем поля поиска
-				form.fireEvent('accessHub');
-			}
 		},
 
 		/**
@@ -427,98 +243,17 @@ Ext.define(
 		},
 
 		/**
-		 * Генерирует новый id и передает в функцию-колбэк.
-		 * @param options Опции.
-		 * @param {Function} options.fn Колбэк-функция, принимающая в качестве парметра новый id.
-		 * @param {Object} options.scope Владелец функции fn.
+		 * Генерирует новый id.
+		 * @return {String}
 		 */
-		getNewId: function (options)
+		getNewId: function ()
 		{
 			var me = this,
-				total = 10,
-				id = [],
-				fn = options.fn,
-				scope = options.scope,
-				url = options.url,
-				property = options.property,
-				i;
-
-			// генерируем необходимую порцию новых id
-			for (i = 0; i < total; i++)
-			{
-				id.push(me.generateNewId());
-			}
-			//console.log('id', id);
-
-			// отправляем запрос на получение списка записей соответствущих новым id
-			try
-			{
-				Ext.Ajax.request(
-					{
-						url: url,
-						method: 'GET',
-						params: {
-							uuid: id.join(',')
-						},
-						success: function (response)
-						{
-							var json,
-								newId = id[0],
-								root;
-
-							try
-							{
-								json = JSON.parse(response.responseText)
-							}
-							catch (e)
-							{
-								Ext.callback(fn, scope, [newId]);
-								return;
-							}
-
-							root = json[property] || [];
-							//console.log('success', root);
-
-							Ext.Array.each(
-								id,
-							    function (uuid)
-							    {
-								    var res;
-
-								    // ищем uuid в списке персон
-								    res = Ext.Array.findBy(
-									    root,
-								        function (item)
-								        {
-									        return item.uuid === uuid;
-								        }
-								    );
-
-								    if (!res)
-								    {
-									    // новый uuid найден, заканчиваем поиск
-
-									    newId = uuid;
-
-									    return false;
-								    }
-							    }
-							);
-
-							// колбэк
-							Ext.callback(fn, scope, [newId]);
-						},
-						failure: function ()
-						{
-							Ext.callback(fn, scope, [id[0]]);
-						}
-					}
-				);
-			}
-			catch (e)
-			{
-				Ext.callback(fn, scope, [id[0]]);
-			}
+				id;
+			
+			id = me.generateNewId();
+			
+			return id;
 		},
 
 		/**

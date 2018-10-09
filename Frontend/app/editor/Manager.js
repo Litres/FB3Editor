@@ -11,15 +11,9 @@ Ext.define(
 			'FBEditor.editor.CreateContent',
 			'FBEditor.editor.Factory',
 			'FBEditor.editor.History',
-			'FBEditor.editor.Revision',
 			'FBEditor.editor.schema.Schema',
 			'FBEditor.xsl.Editor'
 		],
-
-		/**
-		 * @property {Boolean} Использовать ли ревизии.
-		 */
-		enableRevision: false,
 
 		/**
 		 * @property {Selection} Текущее выделение.
@@ -84,12 +78,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.Revision} Ревизия xml.
-		 */
-		revision: null,
-
-		/**
-		 * @private
 		 * @property {FBEditor.editor.schema.Schema} Схема.
 		 */
 		schema: null,
@@ -132,12 +120,6 @@ Ext.define(
 			// создаем историю
 			me.history = Ext.create('FBEditor.editor.History');
 
-			if (me.enableRevision)
-			{
-				// создаем ревизию
-				me.revision = Ext.create('FBEditor.editor.Revision', me);
-			}
-			
 			// создаем схему
 			me.schema = Ext.create('FBEditor.editor.schema.Schema', rootElementName);
 		},
@@ -338,15 +320,6 @@ Ext.define(
 		getHistory: function ()
 		{
 			return this.history;
-		},
-
-		/**
-		 * Возвращает ревизию.
-		 * @return {FBEditor.editor.Revision}
-		 */
-		getRevision: function ()
-		{
-			return this.revision;
 		},
 
 		/**

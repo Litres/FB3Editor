@@ -90,23 +90,7 @@ Ext.define(
 			//  создаем корневой элемент редактора текста книги
 			mainEditor.createRootElement();
 
-			editorManager = mainEditor.getManager();
-
 			me.callParent(arguments);
-
-			if (editorManager.isLoadUrl())
-			{
-				// показываем редактор тела книги
-				Ext.defer(
-					function ()
-					{
-						//me.fireEvent('contentBody');
-						cmd = Ext.create('FBEditor.command.OpenBody');
-						cmd.execute();
-					},
-				    100
-				);
-			}
 		},
 
 		/**

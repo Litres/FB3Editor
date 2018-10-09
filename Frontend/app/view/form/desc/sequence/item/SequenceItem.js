@@ -10,8 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.sequence.item.SequenceItemController',
-			'FBEditor.view.form.desc.sequence.CustomContainer',
-			'FBEditor.view.form.desc.sequence.SearchContainer'
+			'FBEditor.view.form.desc.sequence.CustomContainer'
 		],
 
 		xtype: 'form-desc-sequence-item',
@@ -50,21 +49,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.view.form.desc.sequence.CustomButton} Кнопка переключения в ручной режим.
-		 */
-		_customBtn: null,
-
-		/**
-		 * @private
 		 * @property {FBEditor.view.form.desc.sequence.CustomContainer} Контейнер данных.
 		 */
 		_customContainer: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.view.form.desc.sequence.SearchContainer} Контейнер поиска.
-		 */
-		_searchContainer: null,
 
 		/**
 		 * @private
@@ -88,9 +75,6 @@ Ext.define(
 							items: [
 								{
 									xtype: 'form-desc-sequence-container-custom'
-								},
-								{
-									xtype: 'form-desc-sequence-container-search'
 								}
 							]
 						}
@@ -134,26 +118,6 @@ Ext.define(
 		},
 
 		/**
-		 * Переключает контейнер с поиска на данные или обратно.
-		 * @param {Boolean} customToSearch Переключить ли контейнер на поиск.
-		 */
-		switchContainers: function (customToSearch)
-		{
-			var me = this,
-				hidden,
-				search,
-				custom;
-
-			search = me.getSearchContainer();
-			custom = me.getCustomContainer();
-
-			hidden = customToSearch;
-
-			custom.setHidden(hidden);
-			search.setHidden(!hidden);
-		},
-
-		/**
 		 * Возвращает родительский контейнер всех серий.
 		 * @return {FBEditor.view.form.desc.sequence.Sequence}
 		 */
@@ -166,21 +130,6 @@ Ext.define(
 			me._sequenceContainer = container;
 
 			return container;
-		},
-
-		/**
-		 * Возвращает кнопку переключения.
-		 * @return {FBEditor.view.form.desc.sequence.CustomButton}
-		 */
-		getCustomBtn: function ()
-		{
-			var me = this,
-				btn = me._customBtn;
-
-			btn = btn || me.down('form-desc-sequence-customBtn');
-			me._customBtn = btn;
-
-			return btn;
 		},
 
 		/**
@@ -225,21 +174,6 @@ Ext.define(
 
 			container = container || me.down('form-desc-sequence-container-custom');
 			me._customContainer = container;
-
-			return container;
-		},
-
-		/**
-		 * Возвращает контейнер поиска.
-		 * @return {FBEditor.view.form.desc.sequence.SearchContainer}
-		 */
-		getSearchContainer: function ()
-		{
-			var me = this,
-				container = me._searchContainer;
-
-			container = container || me.down('form-desc-sequence-container-search');
-			me._searchContainer = container;
 
 			return container;
 		}

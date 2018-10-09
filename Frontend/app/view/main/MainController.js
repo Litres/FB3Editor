@@ -28,28 +28,6 @@ Ext.define(
 	    },
 
 		/**
-		 * Оповещает все необходимые компоненты, что хаб доступен.
-		 */
-		onAccessHub: function ()
-		{
-			var cmpArr = [
-					Ext.getCmp('form-desc'),
-					Ext.getCmp('panel-toolstab-file-button-savebody')
-				];
-
-			Ext.Array.each(
-				cmpArr,
-				function (cmp)
-				{
-					if (cmp)
-					{
-						cmp.fireEvent('accessHub');
-					}
-				}
-			);
-		},
-
-		/**
 		 * Выполняет необходимые проверки перед тем как создать панель.
 		 * @param {String} name Имя панели.
 		 * @param {Object} action Необходимые колбэки для передачи управления.

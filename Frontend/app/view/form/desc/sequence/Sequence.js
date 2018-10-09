@@ -111,9 +111,6 @@ Ext.define(
 					var field,
 						putContainer;
 
-					// переключаем контейнер секции на данные
-					nextContainer.switchContainers();
-
 					field = nextContainer.query('[name=sequence-id]')[0];
 					field.setValue(item.id);
 					field = nextContainer.query('[name=sequence-number]')[0];

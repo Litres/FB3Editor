@@ -16,7 +16,6 @@ Ext.define(
 		controller: 'form.desc.abstractField',
 
 		listeners: {
-			accessHub: 'onAccessHub',
 			resetFields: 'onResetFields',
 			loadData: 'onLoadData',
 			loadInnerData: 'onLoadInnerData',
@@ -59,11 +58,6 @@ Ext.define(
 			}
 
 			me.callParent(arguments);
-		},
-
-		onAccessHub: function ()
-		{
-
 		},
 
         /**

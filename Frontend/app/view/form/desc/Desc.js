@@ -49,7 +49,6 @@ Ext.define(
 		cls: 'form-desc',
 
 		listeners: {
-			accessHub: 'onAccessHub',
 			loadDesc: 'onLoadData',
 			reset: 'onReset',
 			activate: 'onActivate',
@@ -142,9 +141,6 @@ Ext.define(
 				}
 			];
 
-			// инициализируем менеджер описания
-			manager.init();
-
 			me.callParent(arguments);
 		},
 
@@ -161,25 +157,6 @@ Ext.define(
 				// делаем костыль для исправления бага с тормозным скролом webkit
 				innerCt = me.body.down('.x-autocontainer-innerCt');
 				innerCt.setStyle('opacity', '0.99');
-			}
-
-			if (manager.isLoadUrl())
-			{
-				// загружаем описание из url
-				Ext.defer(
-					function ()
-					{
-                        content = bridgeWindow.Ext.getCmp('panel-main-content');
-
-                        manager.loadFromUrl().then(
-                            function ()
-                            {
-                                content.fireEvent('contentDesc');
-                            }
-                        );
-					},
-				    100
-				);
 			}
 
 			me.callParent(arguments);

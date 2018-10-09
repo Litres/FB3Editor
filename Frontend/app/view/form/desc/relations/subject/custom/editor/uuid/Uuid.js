@@ -15,36 +15,21 @@ Ext.define(
 		{
 			var me = this,
 				val = me.getValue(),
-				manager = FBEditor.desc.Manager;
+				manager = FBEditor.desc.Manager,
+				id;
 
 			me.callParent(arguments);
 
 			if (!val)
 			{
 				// получаем новый id
-				manager.getNewId(
-					{
-						url: 'https://hub.litres.ru/pages/machax_persons/',
-						property: 'persons',
-						fn: me.setSubjectId,
-						scope: me
-					}
-				);
+				id = manager.getNewId();
+				
+				// обновляем поле ссылки id
+				me.setValue(id);
+				
+				me.disableLink(true);
 			}
-		},
-
-		/**
-		 * Устанавливает id в поле.
-		 * @param {String} id uuid.
-		 */
-		setSubjectId: function (id)
-		{
-			var me = this;
-
-			// обновляем поле ссылки id
-			me.setValue(id);
-
-			me.disableLink(true);
 		}
 	}
 );

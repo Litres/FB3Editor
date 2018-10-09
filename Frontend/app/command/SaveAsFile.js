@@ -13,11 +13,6 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.data.btn,
-				bridgeWindow = me.getBridgeWindow(),
-				editorManager = FBEditor.getEditorManager(true),
-				descManager = bridgeWindow.FBEditor.desc.Manager,
-				content,
-				activePanel,
 				result;
 
 			// предусмотрено на будущее
@@ -25,30 +20,7 @@ Ext.define(
 
 			try
 			{
-				if (editorManager.isLoadUrl() && !descManager.isLoadUrl())
-				{
-					// запоминаем активную панель
-					content = bridgeWindow.Ext.getCmp('panel-main-content');
-					activePanel = content.getLayout().getActiveItem();
-
-					// если описание еще не было загружено по url, то загружаем
-					descManager.loadFromUrl().then(
-						function ()
-						{
-							// переключаем обратно на активную панель
-							content.setActiveItem(activePanel);
-
-							// сохраняем книгу
-							me.save();
-						}
-					);
-
-					result = true;
-				}
-				else
-				{
-					result = me.save();
-				}
+				result = me.save();
 			}
 			catch (e)
 			{

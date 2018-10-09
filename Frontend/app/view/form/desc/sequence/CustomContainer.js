@@ -47,7 +47,13 @@ Ext.define(
 								{
 									xtype: 'form-desc-field-link-uuid',
 									fieldLabel: me.translateText.id,
-									name: 'sequence-id'
+									name: 'sequence-id',
+									listeners: {
+										afterrender: function ()
+										{
+											me.setSequenceId(this);
+										}
+									}
 								},
 								{
 									xtype: 'numberfield',
@@ -108,6 +114,30 @@ Ext.define(
 			};
 
 			return val;
+		},
+		
+		/**
+		 * Устанавливает id в поле.
+		 * @param {FBEditor.view.form.desc.field.link.uuid.Link} cmp Поле ID.
+		 */
+		setSequenceId: function (cmp)
+		{
+			var me = this,
+				data = {},
+				sequenceId = cmp,
+				manager = FBEditor.desc.Manager,
+				id;
+			
+			// получаем новый id
+			id = manager.getNewId();
+			
+			data['sequence-id'] = id;
+			
+			// обновляем ссылку id
+			me.updateData(data);
+			
+			// делаем ссылку неактивной
+			sequenceId.disableLink();
 		}
 	}
 );

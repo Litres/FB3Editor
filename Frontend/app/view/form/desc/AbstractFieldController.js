@@ -76,27 +76,6 @@ Ext.define(
 		},
 
 		/**
-		 * @event accessHub
-		 * Передает событие дочерним компонентам.
-		 */
-		onAccessHub: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				items = view.items;
-
-			//console.log('>', view);
-
-			items.each(
-				function (item)
-				{
-					//console.log('----', item);
-					item.fireEvent('accessHub');
-				}
-			);
-		},
-
-		/**
 		 * Устанавливает редактируемость полей.
 		 * @param {Boolean} editable Редактируемые ли поля.
 		 */

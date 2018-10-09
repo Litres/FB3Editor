@@ -10,9 +10,7 @@ Ext.define(
 		extend: 'Ext.panel.Panel',
 		requires: [
 			'FBEditor.view.panel.toolstab.file.button.open.Open',
-			'FBEditor.view.panel.toolstab.file.button.saveas.SaveAs',
-			'FBEditor.view.panel.toolstab.file.button.savedesc.SaveDesc',
-			'FBEditor.view.panel.toolstab.file.button.savebody.SaveBody'
+			'FBEditor.view.panel.toolstab.file.button.saveas.SaveAs'
 		],
 		id:'panel-toolstab-file',
 		xtype: 'panel-toolstab-file',
@@ -28,12 +26,6 @@ Ext.define(
 				},
 				{
 					xtype: 'panel-toolstab-file-button-saveas'
-				},
-				{
-					xtype: 'panel-toolstab-file-button-savedesc'
-				},
-				{
-					xtype: 'panel-toolstab-file-button-savebody'
 				}
 			];
 			

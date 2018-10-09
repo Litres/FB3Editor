@@ -10,9 +10,6 @@
 {String} Версия
 FBEditor.version
 
-{Boolean} Доступен ли хаб
-FBEditor.accessHub
-
 {Window} Родительское окно
 FBEditor.parentWindow
 
@@ -51,7 +48,6 @@ Ext.define(
 
 		requires: [
 			'FBEditor.command.HistoryCommand',
-			'FBEditor.csrf.Csrf',
 			'FBEditor.file.Manager',
             'FBEditor.hotkeys.Manager',
 			'FBEditor.resource.Manager',
@@ -193,9 +189,6 @@ Ext.define(
 
             // инициализируем менеджер горячих клавиш
             FBEditor.hotkeys.Manager.init();
-
-			// получаем список токенов csrf и определяем доступность хаба
-			me.initCsrf();
 		},
 
 	    launch: function ()
@@ -272,33 +265,6 @@ Ext.define(
 			{
 				//
 			}
-		},
-
-		/**
-		 * Получает список токенов для защиты от CSRF уязвимости приложения.
-		 * Так же проверяет доступность хаба, если список доступен.
-		 */
-		initCsrf: function ()
-		{
-			var csrf = FBEditor.csrf.Csrf;
-			
-			// по умолчанию считаем, что хаб не доступен
-			FBEditor.accessHub = false;
-
-			// проверяем доступ к хабу
-			csrf.getToken().then(
-				function (token)
-				{
-					// токены получены - хаб доступен
-					FBEditor.accessHub = true;
-
-					// оповещаем все необходимые компоненты, что хаб доступен
-					Ext.getCmp('main').fireEvent('accessHub');
-
-					Ext.log({msg: 'Хаб доступен', level: 'info'});
-                    Ext.log({msg: 'Токен CSRF ' + token, level: 'info'});
-				}
-			);
 		},
 
         /**

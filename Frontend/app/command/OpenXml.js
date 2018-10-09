@@ -35,16 +35,8 @@ Ext.define(
 
             content = bridgeWindow.Ext.getCmp('panel-main-content');
             me.activePanelContent = content.getLayout().getActiveItem();
-
-            if (descManager.isLoadUrl() && !editorManager.isLoadUrl())
-            {
-                // если тело еще не было загружено по url, то загружаем
-                editorManager.loadFromUrl();
-            }
-            else
-            {
-                content.fireEvent('contentXml');
-            }
+	
+	        content.fireEvent('contentXml');
 
             props = bridgeProps.Ext && bridgeProps.Ext.getCmp ? bridgeProps.Ext.getCmp('panel-main-props-card') : null;
 
