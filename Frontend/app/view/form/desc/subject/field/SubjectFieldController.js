@@ -12,43 +12,18 @@ Ext.define(
 		alias: 'controller.form.desc.subject.field',
 
 		/**
-		 * Вызывается при клике по полю.
-		 */
-		onClick: function (e, input)
-		{
-			var me = this,
-				view = me.getView(),
-				subject = view.getSubject();
-
-			// останавливаем всплытие события, чтобы не допустить закрытия окна
-			e.stopPropagation();
-
-			if (FBEditor.accessHub)
-			{
-				// показываем окно
-				subject.fireEvent('showWindow');
-			}
-		},
-
-		/**
 		 * Вызывается при изменение значения поля.
 		 */
 		onChange: function ()
 		{
 			var me = this,
 				view = me.getView(),
-				value = view.getValue().trim(),
 				subject = view.getSubject(),
-				win = subject.getWindow(),
-				tree = win.getTree(),
-				managerDesc = FBEditor.desc.Manager,
-				fieldLabel;
+				managerDesc = FBEditor.desc.Manager;
 
 			if (!managerDesc.loadingProcess)
 			{
 				// значение изменилось в результате ручного ввода
-				// открываем окно
-				win.show();
 			}
 			else
 			{
@@ -60,15 +35,6 @@ Ext.define(
 					view.setRawValue('');
 					view.setFieldLabel(subject.translateText.undefined);
 				}
-				else if (value)
-				{
-					// синхронизируем метку поля со значением (Тег или Жанр)
-					fieldLabel = tree.existValue(value) ? 
-					             subject.translateText.subject : subject.translateText.tag;
-					
-					view.setFieldLabel(fieldLabel);
-				}
-
 			}
 		},
 
@@ -81,20 +47,15 @@ Ext.define(
 				view = me.getView(),
 				val = view.getValue(),
 				subject = view.getSubject(),
-				win = subject.getWindow(),
 				nextSubject = subject.nextSibling(),
 				prevSubject = subject.previousSibling(),
-				isShow,
 				plugin;
 
-			// открыто ли окно
-			isShow = win && win.isShow;
+			//console.log('nextSubject && prevSubject', val, subject, nextSubject, prevSubject);
 
-			//console.log('nextSubject && prevSubject', val, isShow, subject, nextSubject, prevSubject);
-
-			if (!nextSubject && prevSubject && !val && !isShow)
+			if (!nextSubject && prevSubject && !val)
 			{
-				// удаляем поле, если оно последнее, пустое и список закрыт
+				// удаляем поле, если оно последнее и пустое
 				Ext.defer(
 					function ()
 					{

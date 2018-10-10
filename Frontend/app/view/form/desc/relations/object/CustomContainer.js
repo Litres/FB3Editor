@@ -32,8 +32,6 @@ Ext.define(
 		{
 			var me = this;
 
-			me.hidden = FBEditor.accessHub;
-
 			me.items = [
 				{
 					xtype: 'desc-fieldcontainer',
@@ -55,7 +53,13 @@ Ext.define(
 								{
 									xtype: 'form-desc-field-link-uuid',
 									fieldLabel: me.translateText.id,
-									name: 'relations-object-id'
+									name: 'relations-object-id',
+									listeners: {
+										afterrender: function ()
+										{
+											me.setObjectId(this);
+										}
+									}
 								},
 								{
 									xtype: 'form-desc-relations-object-link',
@@ -123,6 +127,31 @@ Ext.define(
 			val = me.removeEmptyValues(val);
 
 			return val;
+		},
+		
+		/**
+		 * Устанавливает id в поле.
+		 * @param {FBEditor.view.form.desc.field.link.uuid.Link} cmp Поле ID.
+		 */
+		setObjectId: function (cmp)
+		{
+			var me = this,
+				data = {},
+				objectId = cmp,
+				manager = FBEditor.desc.Manager,
+				id;
+			
+			// получаем id
+			id = objectId.getValue();
+			
+			if (!id)
+			{
+				id = manager.getNewId();
+				data['relations-object-id'] = id;
+				
+				// обновляем ссылку id
+				me.updateData(data);
+			}
 		}
 	}
 );

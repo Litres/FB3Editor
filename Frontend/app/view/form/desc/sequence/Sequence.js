@@ -36,33 +36,6 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		isValid: function ()
-		{
-			var me = this,
-				items = me.items,
-				isValid = true,
-				hiddenCount = 0;
-
-			items.each(
-				function (item)
-				{
-					if (item.isHidden())
-					{
-						hiddenCount++;
-						isValid = true;
-					}
-					else if (!item.isValid())
-					{
-						isValid = false;
-
-						return false;
-					}
-				}
-			);
-
-			return isValid;
-		},
-
 		getValues: function (d)
 		{
 			var me = this,

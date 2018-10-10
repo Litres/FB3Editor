@@ -33,11 +33,6 @@ Ext.define(
 		 */
 		fieldsError: [],
 
-		/**
-		 * @property {Object} Нужно ли очищать контейнеры с результатами поиска.
-		 */
-		cleanResultContainer: {},
-
         /**
          * @private
          * @property {FBEditor.view.form.desc.editor.toolbar.Toolbar} Панель кнопок форматирования редактора текста.
@@ -228,18 +223,6 @@ Ext.define(
 					}
 				);
 			}
-		},
-
-		/**
-		 * Возвращает айди произведения, загружаемого с хаба.
-		 * @return {String}
-		 */
-		getArtId: function ()
-		{
-			var me = this,
-				loader = me.loader;
-			
-			return loader.getArt();
 		},
 
 		/**

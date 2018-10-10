@@ -17,10 +17,6 @@ Ext.define(
 		name: 'classification-subject',
 
 		listeners: {
-			click: {
-				element: 'el',
-				fn: 'onClick'
-			},
 			change: 'onChange',
 			blur: 'onBlur'
 		},
@@ -57,29 +53,6 @@ Ext.define(
 			tip = '<span class="after-body">%t %s</span>'.replace('%t', tt.tip).replace('%s', me.separator);
 
 			me.afterBodyEl = tip;
-
-			me.callParent(arguments);
-		},
-
-		afterRender: function ()
-		{
-			var me = this;
-
-			// обрабатываем esc в поле ввода
-			me.keyNav = new Ext.util.KeyNav(
-				{
-					target: me.inputEl,
-					esc: function ()
-					{
-						var field = this,
-							subject = field.getSubject(),
-							win = subject.getWindow();
-
-						win.onEsc();
-					},
-					scope: me
-				}
-			);
 
 			me.callParent(arguments);
 		},

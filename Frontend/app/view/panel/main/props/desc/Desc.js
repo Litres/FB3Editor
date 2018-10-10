@@ -10,9 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.Abstract',
 		requires: [
 			'FBEditor.view.panel.main.props.desc.DescController',
-			'FBEditor.view.panel.main.props.desc.editor.Container',
-			'FBEditor.view.panel.main.props.desc.search.arts.Arts',
-			'FBEditor.view.panel.main.props.desc.search.persons.Persons'
+			'FBEditor.view.panel.main.props.desc.editor.Container'
 		],
 
 		id: 'panel-props-desc',
@@ -28,9 +26,7 @@ Ext.define(
 		 * из этого списка должны быть скрыты
 		 */
 		containerList: [
-			'panel-props-desc-editor-container',
-			'props-desc-search-arts',
-			'props-desc-search-persons'
+			'panel-props-desc-editor-container'
 		],
 
 		initComponent: function ()
@@ -40,12 +36,6 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'panel-props-desc-editor-container'
-				},
-				{
-					xtype: 'props-desc-search-arts'
-				},
-				{
-					xtype: 'props-desc-search-persons'
 				}
 			];
 

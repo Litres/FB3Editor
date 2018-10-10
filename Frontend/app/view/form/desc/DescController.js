@@ -60,56 +60,7 @@ Ext.define(
 		 */
 		onStartScroll: function ()
 		{
-			var me = this,
-				wins = me._scrollWins || [];
-
-			// TODO рефакторинг
-			// окна
-			if (!me._scrollWins)
-			{
-				wins = Ext.ComponentQuery.query('form-desc-searchField-window');
-				wins.push(Ext.getCmp('form-desc-subject-win') || Ext.widget('form-desc-subject-win'));
-				me._scrollWins = wins;
-			}
-
-			Ext.Array.each(
-				wins,
-				function (item)
-				{
-					if (item)
-					{
-						item.close();
-					}
-				}
-			);
-		},
-
-		/**
-		 * Xаб доступен.
-		 */
-		onAccessHub: function ()
-		{
-			var bridgeProps = FBEditor.getBridgeProps(),
-				cmpArr = [
-					Ext.getCmp('form-desc-relations-subject'),
-					Ext.getCmp('form-desc-relations-object')
-				];
-
-			if (bridgeProps && bridgeProps.Ext.getCmp)
-			{
-				cmpArr.push(bridgeProps.Ext.getCmp('panel-props-desc'));
-			}
-
-			Ext.Array.each(
-				cmpArr,
-			    function (cmp)
-			    {
-				    if (cmp)
-				    {
-					    cmp.fireEvent('accessHub');
-				    }
-			    }
-			);
+			//
 		},
 
 		/**
@@ -122,29 +73,7 @@ Ext.define(
 		 */
 		onResize: function (cmp, width, height, oldWidth, oldHeight)
 		{
-			var me = this,
-				wins = me._resizeWins || [];
-
-			if (!me._resizeWins)
-			{
-				wins = Ext.ComponentQuery.query('form-desc-relations-subject-searchName-resultContainer');
-				wins.push(Ext.getCmp('form-desc-subject-win') || Ext.widget('form-desc-subject-win'));
-				me._resizeWins = wins;
-			}
-
-			if (width !== oldWidth)
-			{
-				Ext.Array.each(
-					wins,
-					function (item)
-					{
-						if (item)
-						{
-							item.fireEvent('alignTo');
-						}
-					}
-				);
-			}
+			//
 		},
 
 		/**

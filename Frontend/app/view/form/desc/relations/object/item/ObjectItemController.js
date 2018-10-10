@@ -10,19 +10,6 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 		alias: 'controller.form.desc.relations.object.item',
 
-		onAccessHub: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				values = view.getValues();
-			
-			if (!values)
-			{
-				// показываем поля поиска
-				view.switchContainers(true);
-			}
-		},
-
 		/**
 		 * Вызывается при сбрасывании данных.
 		 */
@@ -30,9 +17,6 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView();
-
-			// показываем поля данных
-			view.switchContainers();
 		}
 	}
 );

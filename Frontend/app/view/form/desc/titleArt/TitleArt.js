@@ -9,8 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.title.Title',
 		requires: [
-			'FBEditor.view.form.desc.titleArt.TitleArtController',
-			'FBEditor.view.panel.main.props.desc.search.arts.Arts'
+			'FBEditor.view.form.desc.titleArt.TitleArtController'
 		],
 
 		controller: 'form.desc.titleArt',
@@ -22,18 +21,13 @@ Ext.define(
 		listeners: {
 			changeTitle: 'onChangeTitle',
 			blurTitle: 'onBlurTitle',
-			focusTitle: 'onFocusTitle',
-			cleanResultContainer: 'onCleanResultContainer'
+			focusTitle: 'onFocusTitle'
 		},
 
 		enableSub: true,
 		enableAlt: true,
 		mainConfig: {
 			plugins: [
-				{
-					ptype: 'searchField',
-					style: 'right: 24px'
-				},
 				{
 					ptype: 'fieldCleaner'
 				}
@@ -44,52 +38,6 @@ Ext.define(
 				btnStyle: {
 					margin: '4px 0 0 5px'
 				}
-			}
-		},
-
-		/**
-		 * Возвращает контейнер для отображения результатов поиска.
-		 * @return {Ext.container}
-		 */
-		getResultContainer: function ()
-		{
-			var bridge = FBEditor.getBridgeProps();
-
-			return bridge.Ext.getCmp('props-desc-search-arts');
-		},
-
-		/**
-		 * Возвращает контейнер для отображения персон.
-		 * @return {FBEditor.view.panel.main.props.desc.persons.Persons}
-		 */
-		getPersonsContainer: function ()
-		{
-			var bridge = FBEditor.getBridgeProps();
-
-			return bridge.Ext.getCmp('props-desc-search-persons');
-		},
-
-		/**
-		 * Вызывается после загрузки данных.
-		 * @param {Array} data Данные.
-		 */
-		afterLoad: function (data)
-		{
-			var me = this,
-				input = me.getMain(),
-				plugin;
-
-			plugin = input.getPlugin('searchField');
-
-			if (data)
-			{
-				// скрываем индикатор
-				plugin.hideLoader();
-			}
-			else
-			{
-				// меняем индикатор
-				plugin.emptyLoader();
 			}
 		}
 	}

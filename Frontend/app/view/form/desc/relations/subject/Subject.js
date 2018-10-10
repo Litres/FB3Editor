@@ -33,44 +33,6 @@ Ext.define(
 			me.callParent(arguments);
 		},
 
-		isValid: function ()
-		{
-			var me = this,
-				items = me.items,
-				isValid = true,
-				manager = FBEditor.desc.Manager,
-				hiddenCount = 0,
-				searchName;
-
-			items.each(
-				function (item)
-				{
-					if (item.isHidden())
-					{
-						hiddenCount++;
-						isValid = true;
-					}
-					else if (!item.isValid())
-					{
-						isValid = false;
-
-						return false;
-					}
-				}
-			);
-
-			if (isValid && hiddenCount === items.length)
-			{
-				// если все поля данных скрыты, то отмечаем ошибкой первое поле поиска
-				isValid = false;
-				searchName = me.down('form-desc-relations-subject-searchName');
-				searchName.markInvalid(me.translateText.error);
-				manager.fieldsError.push(searchName);
-			}
-
-			return isValid;
-		},
-
 		getValues: function (d)
 		{
 			var me = this,

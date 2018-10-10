@@ -10,18 +10,11 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.subject.SubjectController',
-			'FBEditor.view.form.desc.subject.field.SubjectField',
-			'FBEditor.view.form.desc.subject.window.Window'
+			'FBEditor.view.form.desc.subject.field.SubjectField'
 		],
 
 		xtype: 'form-desc-subject',
 		controller: 'form.desc.subject',
-
-		listeners: {
-			showWindow: 'onShowWindow',
-			selectSubject: 'onSelectSubject',
-			selectTag: 'onSelectTag'
-		},
 
 		plugins: {
 			ptype: 'fieldcontainerreplicator',
@@ -34,8 +27,6 @@ Ext.define(
 		layout: 'hbox',
 
 		translateText: {
-			subject: 'Жанр',
-			tag: 'Тег',
 			undefined: 'Жанр/Тег',
 			tip: 'Допустимо вводить несколько жанров/тегов через запятую'
 		},
@@ -45,12 +36,6 @@ Ext.define(
 		 * @property {FBEditor.view.form.desc.subject.field.SubjectField} Текстовое поле жанра.
 		 */
 		subjectField: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.view.form.desc.subject.window.Window} Окно с жанрами и тегами.
-		 */
-		win: null,
 
 		initComponent: function ()
 		{
@@ -84,21 +69,6 @@ Ext.define(
 			me.subjectField = subjectField;
 
 			return subjectField;
-		},
-
-		/**
-		 * Возвращает окно с жанрами и тегами.
-		 * @return {FBEditor.view.form.desc.subject.window.Window}
-		 */
-		getWindow: function ()
-		{
-			var me = this,
-				win;
-
-			win  = me.win || Ext.getCmp('form-desc-subject-win') || Ext.widget('form-desc-subject-win');
-			me.win = win;
-
-			return win;
 		}
 	}
 );

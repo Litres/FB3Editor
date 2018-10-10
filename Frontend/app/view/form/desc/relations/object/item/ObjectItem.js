@@ -10,7 +10,6 @@ Ext.define(
 		extend: 'FBEditor.view.form.desc.AbstractFieldContainer',
 		requires: [
 			'FBEditor.view.form.desc.relations.object.item.ObjectItemController',
-			'FBEditor.view.form.desc.relations.object.SearchContainer',
 			'FBEditor.view.form.desc.relations.object.CustomContainer'
 		],
 
@@ -38,21 +37,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.view.form.desc.relations.object.CustomButton} Кнопка переключения в ручной режим.
-		 */
-		_customBtn: null,
-
-		/**
-		 * @private
 		 * @property {FBEditor.view.form.desc.relations.object.CustomContainer} Контейнер данных.
 		 */
 		_customContainer: null,
-
-		/**
-		 * @private
-		 * @property {FBEditor.view.form.desc.relations.object.SearchContainer} Контейнер поиска.
-		 */
-		_searchContainer: null,
 
 		initComponent: function ()
 		{
@@ -66,9 +53,6 @@ Ext.define(
 					items: [
 						{
 							xtype: 'form-desc-relations-object-container-custom'
-						},
-						{
-							xtype: 'form-desc-relations-object-container-search'
 						}
 					]
 				}
@@ -100,41 +84,6 @@ Ext.define(
 		},
 
 		/**
-		 * Переключает контейнер с поиска на данные или обратно.
-		 * @param {Boolean} customToSearch Переключить ли контейнер на поиск.
-		 */
-		switchContainers: function (customToSearch)
-		{
-			var me = this,
-				hidden,
-				search,
-				custom;
-
-			search = me.getSearchContainer();
-			custom = me.getCustomContainer();
-
-			hidden = customToSearch;
-
-			custom.setHidden(hidden);
-			search.setHidden(!hidden);
-		},
-
-		/**
-		 * Возвращает кнопку переключения.
-		 * @return {FBEditor.view.form.desc.relations.object.CustomButton}
-		 */
-		getCustomBtn: function ()
-		{
-			var me = this,
-				btn = me._customBtn;
-
-			btn = btn || me.down('form-desc-relations-object-customBtn');
-			me._customBtn = btn;
-
-			return btn;
-		},
-
-		/**
 		 * Возвращает контейнер данных.
 		 * @return {FBEditor.view.form.desc.relations.object.CustomContainer}
 		 */
@@ -145,21 +94,6 @@ Ext.define(
 
 			container = container || me.down('form-desc-relations-object-container-custom');
 			me._customContainer = container;
-
-			return container;
-		},
-
-		/**
-		 * Возвращает контейнер поиска.
-		 * @return {FBEditor.view.form.desc.relations.object.SearchContainer}
-		 */
-		getSearchContainer: function ()
-		{
-			var me = this,
-				container = me._searchContainer;
-
-			container = container || me.down('form-desc-relations-object-container-search');
-			me._searchContainer = container;
 
 			return container;
 		}

@@ -128,16 +128,17 @@ Ext.define(
 				manager = FBEditor.desc.Manager,
 				id;
 			
-			// получаем новый id
-			id = manager.getNewId();
+			// получаем id
+			id = sequenceId.getValue();
 			
-			data['sequence-id'] = id;
-			
-			// обновляем ссылку id
-			me.updateData(data);
-			
-			// делаем ссылку неактивной
-			sequenceId.disableLink();
+			if (!id)
+			{
+				id = manager.getNewId();
+				data['sequence-id'] = id;
+				
+				// обновляем ссылку id
+				me.updateData(data);
+			}
 		}
 	}
 );

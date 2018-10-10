@@ -27,8 +27,6 @@ Ext.define(
 				
 				// обновляем поле ссылки id
 				me.setValue(id);
-				
-				me.disableLink(true);
 			}
 		}
 	}

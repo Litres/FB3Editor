@@ -29,7 +29,7 @@ Ext.define(
 		 * @private
 		 * @property {Boolean} Деактивировать ли ссылку.
 		 */
-		_disableLink: false,
+		_disableLink: true,
 
 		/**
 		 * Деактивирует ссылку, показывая вместо нее текст.

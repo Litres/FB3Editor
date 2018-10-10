@@ -16,10 +16,6 @@ Ext.define(
 		checkChangeBuffer: 200,
 		plugins: [
 			{
-				ptype: 'searchField',
-				style: 'right: 24px'
-			},
-			{
 				ptype: 'fieldCleaner'
 			}
 		],
@@ -32,9 +28,7 @@ Ext.define(
 
 		listeners: {
 			change: 'onChange',
-			focus: 'onFocus',
-			cleanResultContainer: 'onCleanResultContainer',
-			abortSearch: 'onAbortSearch'
+			focus: 'onFocus'
 		},
 
 		/**
