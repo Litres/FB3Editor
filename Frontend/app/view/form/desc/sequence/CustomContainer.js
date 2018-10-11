@@ -24,8 +24,6 @@ Ext.define(
 		{
 			var me = this;
 
-			me.hidden = FBEditor.accessHub;
-
 			me.items = [
 				{
 					xtype: 'desc-fieldcontainer',

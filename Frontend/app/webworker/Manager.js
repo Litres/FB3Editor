@@ -32,11 +32,6 @@ Ext.define(
 				name: 'httpRequest',
 				cfg: {},
 				_master: null // private
-			},
-			{
-				name: 'loadResources',
-				cfg: {},
-				_master: null // private
 			}
 		],
 

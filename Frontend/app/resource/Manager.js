@@ -12,7 +12,6 @@ Ext.define(
 			'FBEditor.resource.ExplorerManager',
 			'FBEditor.resource.ExternalResource',
 			'FBEditor.resource.FolderResource',
-			'FBEditor.resource.Loader',
 			'FBEditor.resource.Paste',
 			'FBEditor.resource.Resource',
 			'FBEditor.resource.TreeManager',
@@ -63,12 +62,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.resource.Loader} Загрузчик ресурсов с хаба.
-		 */
-		loader: null,
-
-		/**
-		 * @private
 		 * @property {FBEditor.resource.Paste} Объект для управления ресурсами, вставляемыми из буфера.
 		 */
 		paste: null,
@@ -84,20 +77,8 @@ Ext.define(
 		{
 			var me = this;
 
-			// создаем загрузчик
-			me.loader = Ext.create('FBEditor.resource.Loader', me);
-
 			// создаем объект для управления ресурсами, вставляемыми из буфера
 			me.paste = Ext.create('FBEditor.resource.Paste', me);
-		},
-
-		/**
-		 * Возвращает загрузчки.
-		 * @return {FBEditor.resource.Loader}
-		 */
-		getLoader: function ()
-		{
-			return this.loader;
 		},
 
 		/**
@@ -140,7 +121,6 @@ Ext.define(
 			var me = this;
 
 			me.data = [];
-			me.loader.reset();
 			me.paste.reset();
 		},
 
@@ -153,142 +133,6 @@ Ext.define(
 			var me = this;
 			
 			me.data.push(res);
-		},
-
-		/**
-		 * Загружает ресурсы с хаба.
-		 * @param {Number} [art] Айди произведениея на хабе.
-		 * @return {Promise}
-		 */
-		loadFromUrl: function (art)
-		{
-			var me = this,
-				loader = me.loader,
-				startTime = new Date().getTime(),
-				promise;
-
-			art = art || me.getArtId();
-
-			promise = new Promise(
-				function (resolve, reject)
-				{
-					// загружаем список ресурсов
-					loader.load(art).then(
-						function (xml)
-						{
-							var xml2Json = FBEditor.util.xml.Json,
-								json,
-								data;
-
-							// переводим xml в json
-							json = xml2Json.xmlToJson(xml);
-							data = json.Relationships.Relationship;
-							data = data && !Ext.isArray(data) ? [data] : data;
-							data = data && data.length ? data : [];
-
-							return loader.loadResources(data);
-						},
-						function (response)
-						{
-							Ext.log(
-								{
-									level: 'error',
-									msg: 'Ошибка загрузки списка ресурсов',
-									dump: response
-								}
-							);
-
-							Ext.Msg.show(
-								{
-									title: 'Ошибка',
-									message: 'Невозможно загрузить список ресурсов',
-									buttons: Ext.MessageBox.OK,
-									icon: Ext.MessageBox.ERROR
-								}
-							);
-						}
-					).then(
-						function ()
-						{
-							// получаем данные обложки
-							return loader.getCover();
-						}
-					).then(
-						function (target)
-						{
-							if (!target)
-							{
-								/*
-								 Ext.log(
-								 {
-								 level: 'warn',
-								 msg: 'Не удалось загрузить обложку'
-								 }
-								 );
-
-								 Ext.Msg.show(
-								 {
-								 title: 'Предупреждение',
-								 message: 'Не удалось загрузить обложку',
-								 buttons: Ext.MessageBox.OK,
-								 icon: Ext.MessageBox.WARNING
-								 }
-								 );
-								 */
-							}
-							else
-							{
-								Ext.log(
-									{
-										level: 'info',
-										msg: 'Обложка: ' + target
-									}
-								);
-
-								// устанавливаем обложку, игнорируя хаб
-								target = target.replace(/^\//, '');
-								me.setCover(target, true);
-							}
-
-							// создаем папки
-							me.generateFolders();
-
-							// убираем выделение с папки, если оно было
-							me.setActiveFolder('');
-
-							// сортируем ресурсы
-							me.sortData();
-
-							// обновляем панель ресурсов
-							me.updateNavigation();
-
-							Ext.log(
-								{
-									level: 'info',
-									msg: 'Процесс загрузки завершен за ' +
-									     Number(new Date().getTime() - startTime) + ' мс'
-								}
-							);
-
-							resolve();
-						}
-					);
-				}
-			);
-
-			return promise;
-		},
-
-		/**
-		 * Загружаются ли ресурсы отдельно по url.
-		 * @return {Boolean}
-		 */
-		isLoadUrl: function ()
-		{
-			var me = this,
-				loader = me.loader;
-
-			return loader.isLoad();
 		},
 
 		/**
@@ -456,7 +300,6 @@ Ext.define(
 		{
 			var me = this,
 				file = data.file,
-				loader = me.loader,
 				replacer,
 				resData,
 				res;
@@ -498,9 +341,6 @@ Ext.define(
         {
             var me = this,
                 file = data.file,
-                loader = me.loader,
-				elements,
-				id,
                 resData,
                 res;
 
@@ -516,64 +356,13 @@ Ext.define(
             // создаём данные ресурса
             resData = data.getData ? data : Ext.create('FBEditor.resource.data.FileData', data);
             resData = resData.getData();
-
-            if (FBEditor.accessHub && loader.getArt())
-            {
-                id = res.fileId;
-                elements = res.getElements();
-
-                // удаляем имеющийся ресурс
-                loader.remove(id).then(
-                    function (xml) {
-                        // сохраняем ресурс на хабе
-                        return me.saveToUrl(resData);
-                    },
-                    function (response) {
-                        Ext.log(
-                            {
-                                level: 'error',
-                                msg: 'Ошибка удаления ресурса',
-                                dump: response
-                            }
-                        );
-
-                        Ext.Msg.show(
-                            {
-                                title: 'Ошибка',
-                                message: 'Невозможно удалить ресурс',
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            }
-                        );
-                    }
-                ).then(
-                    function (xml) {
-                        // синхронизируем ресурсы с хабом
-                        me.syncResources(xml).then(
-                        	function (addedData)
-							{
-								// новый ресурс
-                                res = me.getResource(resData.name);
-
-                                // связываем со старыми элементами
-                                res.setElements(elements);
-
-                                // обновляем
-                                res.updateElements();
-							}
-						);
-                    }
-                );
-            }
-            else
-            {
-                // обновляем изображение текущего ресурса
-                res.updateData(resData);
-
-                me.sortData();
-                me.updateNavigation();
-                me.updatePanelResources();
-            }
+	
+	        // обновляем изображение текущего ресурса
+	        res.updateData(resData);
+	
+	        me.sortData();
+	        me.updateNavigation();
+	        me.updatePanelResources();
         },
 
         /**
@@ -583,350 +372,17 @@ Ext.define(
 		createResource: function (resData)
 		{
             var me = this,
-                loader = me.loader,
                 res;
-
-            if (FBEditor.accessHub && loader.getArt())
-            {
-                // сохраняем ресурс на хабе
-                me.saveToUrl(resData).then(
-                    function (xml)
-                    {
-                        // синхронизируем ресурсы с хабом
-                        me.syncResources(xml);
-                    }
-                );
-            }
-            else
-            {
-                // создаём ресурс
-                res = Ext.create('FBEditor.resource.Resource', resData);
-                me.addResource(res);
-
-                // сортируем ресурсы
-                me.sortData();
-
-                // обновляем дерево навигации
-                me.updateNavigation();
-            }
-		},
-
-		/**
-		 * Сохраняет ресурс на хабе.
-		 * @param {Object} resData Данные ресурса.
-		 * @return {Promise}
-		 */
-		saveToUrl: function (resData)
-		{
-			var me = this,
-				loader = me.loader,
-				promise;
 			
-			promise = new Promise(
-				function (resolve, reject)
-				{
-					loader.save(resData).then(
-						function (xml)
-						{
-							resolve(xml);
-						},
-						function (response)
-						{
-							Ext.log(
-								{
-									level: 'error',
-									msg: 'Ошибка сохранения ресурса на хабе',
-									dump: response
-								}
-							);
-
-							Ext.Msg.show(
-								{
-									title: 'Ошибка',
-									message: 'Невозможно сохранить ресурс на хабе',
-									buttons: Ext.MessageBox.OK,
-									icon: Ext.MessageBox.ERROR
-								}
-							);
-							
-							reject(response);
-						}
-					);
-				}
-			);
-			
-			return promise;
-		},
-
-		/**
-		 * Удаляет ресурс на хабе.
-		 * @param {String} name Имя ресурса. Если ресурс является папкой, то метод будет взываться рекурсивно до тех
-		 * пор пока не будут удалены все русурсы директории
-		 */
-		deleteFromUrl: function (name)
-		{
-			var me = this,
-				loader = me.loader,
-				folderData = [],
-				res,
-				id;
-
-			res = me.getResource(name);
-
-			if (res && res.isFolder)
-			{
-				// получаем ресурсы папки
-				folderData = me.getFolderData(name);
-
-				Ext.log(
-					{
-						level: 'info',
-						msg: 'Удаляется папка ' + name,
-						dump: folderData
-					}
-				);
-
-				// берем последний ресурс из списка
-				res = folderData.length ? folderData.pop() : false;
-
-				if (res && res.isFolder)
-				{
-					//console.log('res', res.name, me.getFolderData(res.name));
-
-					// удаляем ресурсы в подпапке
-					me.deleteFromUrl(res.name);
-
-					return;
-				}
-			}
-
-			if (!res)
-			{
-				return;
-			}
-
-			id = res.fileId;
-
-			loader.remove(id).then(
-				function (xml)
-				{
-					if (folderData.length)
-					{
-						// удаляем ресурс
-						me.deleteResource(res.name);
-
-						// если в папке еще остались ресурсы, то продолжаем их удалять
-						me.deleteFromUrl(name);
-					}
-					else
-					{
-						// синхронизируем ресурсы с хабом
-						me.syncResources(xml);
-					}
-				},
-				function (response)
-				{
-					Ext.log(
-						{
-							level: 'error',
-							msg: 'Ошибка удаления ресурса',
-							dump: response
-						}
-					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно удалить ресурс',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-				}
-			);
-		},
-
-		/**
-		 * Синхронизирует ресурсы с хабом.
-		 * @param {String} xml Список ресурсов с хаба из body.rels.
-		 */
-		syncResources: function (xml)
-		{
-			var me = this,
-				loader = me.loader,
-				xml2Json = FBEditor.util.xml.Json,
-				data = me.data,
-				addedData= [],
-				removedData = [],
-				promise,
-				remoteData,
-				json;
-
-			promise = Promise.resolve(true);
-
-			//console.log(xml);
-
-			// переводим xml в json
-			json = xml2Json.xmlToJson(xml);
-			remoteData = json.Relationships.Relationship;
-
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Данные ресурсов',
-					dump: {'Ресурсы с хаба': remoteData, 'Текущие ресурсы': data}
-				}
-			);
-
-			// получаем список добавленных ресурсов
-			Ext.Array.each(
-				remoteData,
-			    function (remoteItem)
-			    {
-				    var contains = false;
-
-				    Ext.Array.each(
-					    data,
-					    function (item)
-					    {
-						    if (remoteItem._Target === item.rootName)
-						    {
-							    item.fileId = remoteItem._Id;
-							    contains = true;
-							    return false;
-						    }
-					    },
-					    this
-				    );
-
-				    if (!contains)
-				    {
-					    addedData.push(remoteItem);
-				    }
-			    }
-			);
-
-			// получаем список удаленных ресурсов
-			Ext.Array.each(
-				data,
-				function (item)
-				{
-					var contains = false;
-
-					Ext.Array.each(
-						remoteData,
-						function (remoteItem)
-						{
-							if (remoteItem._Target === item.rootName)
-							{
-								contains = true;
-								return false;
-							}
-						},
-						this
-					);
-
-					if (!contains && !item.isFolder)
-					{
-						removedData.push(item);
-					}
-				}
-			);
-
-			Ext.log(
-				{
-					level: 'info',
-					msg: 'Затрагиваемые ресурсы',
-					dump: {'Добавить': addedData, 'Удалить': removedData}
-				}
-			);
-
-			if (addedData.length)
-			{
-				promise = new Promise(
-					function (resolve, reject)
-					{
-                        // загружаем добавленные ресурсы
-                        loader.loadResources(addedData).then(
-                            function ()
-                            {
-                                me.generateFolders();
-                                me.sortData();
-                                me.updateNavigation();
-
-                                Ext.log(
-                                    {
-                                        level: 'info',
-                                        msg: 'Добавлены новые ресурсы',
-                                        dump: addedData
-                                    }
-                                );
-
-                                resolve(addedData);
-                            }
-                        );
-					}
-				);
-			}
-
-			if (removedData.length)
-			{
-				// удаляем ресурсы
-				Ext.Array.each(
-					removedData,
-				    function (item)
-				    {
-					    me.deleteResource(item.name);
-
-					    Ext.log(
-						    {
-							    level: 'info',
-							    msg: 'Удалён ресурс ' + item.name,
-							    dump: item
-						    }
-					    );
-				    }
-				);
-			}
-
-			return promise;
-		},
-
-		/**
-		 * Добавляет в редактор ресурс загруженный с хаба.
-		 * @param {Object} data Данные ресурса.
-		 */
-		addLoadedResource: function (data)
-		{
-			var me = this,
-				editorManager = FBEditor.getEditorManager(),
-				urlData,
-				res,
-				resData;
-
-			// объект данных
-			urlData = Ext.create('FBEditor.resource.data.UrlData', data);
-
-			// данные
-			resData = urlData.getData();
-
-			//console.log('resData', resData);
-
-			// ресурс
+			// создаём ресурс
 			res = Ext.create('FBEditor.resource.Resource', resData);
 			me.addResource(res);
-
-			if (res.isCover)
-			{
-				// устанавливаем обложку
-				me.setCover(res.name);
-				me.data.pop();
-			}
-			else
-			{
-				// связываем изображения в теле книги с загруженным ресурсом
-				editorManager.linkImagesToRes(res);
-			}
+			
+			// сортируем ресурсы
+			me.sortData();
+			
+			// обновляем дерево навигации
+			me.updateNavigation();
 		},
 
 		/**
@@ -1062,7 +518,6 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				loader = me.loader,
 				newFolder = folder === '/' ? '' : folder,
 				resourceIndex,
 				resource,
@@ -1096,24 +551,9 @@ Ext.define(
 				if (newName !== oldName)
 				{
 					result = true;
-
-					if (FBEditor.accessHub && loader.getArt())
-					{
-						// перемещаем ресурс на хабе
-						loader.move(resource, newName).then(
-							function (xml)
-							{
-								// синхронизируем ресурсы с хабом
-								me.syncResources(xml);
-								me.setActiveFolder(newFolder);
-							}
-						);
-					}
-					else
-					{
-						resource.rename(newName);
-						me.setActiveFolder(newFolder);
-					}
+					
+					resource.rename(newName);
+					me.setActiveFolder(newFolder);
 				}
 			}
 
@@ -1127,62 +567,20 @@ Ext.define(
         replaceResource: function (resData)
 		{
 			var me = this,
-				loader = me.loader,
 				res,
 				id;
 
             // ресурс
             res = Ext.create('FBEditor.resource.Resource', resData);
-
-            if (FBEditor.accessHub && loader.getArt())
-            {
-                id = res.fileId;
-
-                // удаляем имеющийся ресурс
-                loader.remove(id).then(
-                    function (xml)
-                    {
-                        // сохраняем ресурс на хабе
-                        return me.saveToUrl(resData);
-                    },
-                    function (response)
-                    {
-                        Ext.log(
-                            {
-                                level: 'error',
-                                msg: 'Ошибка удаления ресурса',
-                                dump: response
-                            }
-                        );
-
-                        Ext.Msg.show(
-                            {
-                                title: 'Ошибка',
-                                message: 'Невозможно удалить ресурс',
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            }
-                        );
-                    }
-                ).then(
-                    function (xml)
-                    {
-                        // синхронизируем ресурсы с хабом
-                        me.syncResources(xml);
-                    }
-                );
-            }
-            else
-            {
-				// удаляем имеющийся ресурс
-				me.deleteResource(res);
-
-                // новый ресурс
-                res = Ext.create('FBEditor.resource.Resource', resData);
-
-				// добавляем новый
-                me.addResource(res);
-            }
+			
+			// удаляем имеющийся ресурс
+			me.deleteResource(res);
+			
+			// новый ресурс
+			res = Ext.create('FBEditor.resource.Resource', resData);
+			
+			// добавляем новый
+			me.addResource(res);
 		},
 
 		/**
@@ -1278,14 +676,11 @@ Ext.define(
 		/**
 		 * Устанавливает обложку.
 		 * @param {String} coverName Имя обложки.
-		 * @param {Boolean} [ignoreHub] Игнорировать ли установку обложки на хабе. Иногда это необходимо, так как на
-		 * хабе она может быть уже установлена и приложение об этом знает.
 		 */
-		setCover: function (coverName, ignoreHub)
+		setCover: function (coverName)
 		{
 			var me = this,
 				data = me.data,
-				loader = me.loader,
 				panel = Ext.getCmp('panel-cover'),
 				cover = null,
 				reg,
@@ -1329,57 +724,15 @@ Ext.define(
 
 			if (cover)
 			{
-				if (!cover.isCover && FBEditor.accessHub && loader.getArt() && !ignoreHub)
+				if (oldCover)
 				{
-					// устанавливаем обложку на хабе
-					loader.setCover(cover).then(
-						function (res)
-						{
-							if (oldCover)
-							{
-								// снимаем с обложки
-								oldCover.isCover = false;
-							}
-
-							// ставим новую обложку
-							cover.isCover = true;
-							panel.fireEvent('load', cover);
-						},
-					    function (res)
-					    {
-						    var msg = ' ' + res.status + ' (' + res.statusText + ')';
-
-						    Ext.log(
-							    {
-								    level: 'error',
-								    msg: 'Ошибка установки обложки' + msg,
-								    dump: res
-							    }
-						    );
-
-						    Ext.Msg.show(
-							    {
-								    title: 'Ошибка',
-								    message: 'Невозможно установить обложку' + msg,
-								    buttons: Ext.MessageBox.OK,
-								    icon: Ext.MessageBox.ERROR
-							    }
-						    );
-					    }
-					);
+					// снимаем с обложки
+					oldCover.isCover = false;
 				}
-				else
-				{
-					if (oldCover)
-					{
-						// снимаем с обложки
-						oldCover.isCover = false;
-					}
-
-					// ставим новую обложку
-					cover.isCover = true;
-					panel.fireEvent('load', cover);
-				}
+				
+				// ставим новую обложку
+				cover.isCover = true;
+				panel.fireEvent('load', cover);
 			}
 		},
 

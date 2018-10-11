@@ -48,8 +48,6 @@ Ext.define(
 		{
 			var me = this;
 
-			me.hidden = FBEditor.accessHub;
-
 			me.items = [
 				{
 					xtype: 'form-desc-relations-subject-custom-viewer'

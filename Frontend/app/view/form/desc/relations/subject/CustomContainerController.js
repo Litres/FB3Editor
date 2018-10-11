@@ -11,19 +11,6 @@ Ext.define(
 
 		alias: 'controller.form.desc.relations.subject.container.custom',
 
-		_onAccessHub: function ()
-		{
-			var me = this,
-				view = me.getView(),
-				descManager = FBEditor.desc.Manager;
-
-			if (!descManager.isLoadedData())
-			{
-				// если данные не загружены, то скрываем контейнер данных
-				view.setHidden(true);
-			}
-		},
-
 		/**
 		 * Показывает или скрывает текущий контейнер и редактируемые поля.
 		 * @param {Boolean} show Показывать ли контейнер.

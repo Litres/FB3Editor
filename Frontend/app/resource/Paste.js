@@ -64,7 +64,6 @@ Ext.define(
 			var me = this,
 				resources = Ext.clone(me.resources),
 				manager = me.manager,
-				loader = manager.loader,
 				saveResources = [];
 
 			if (resources.length)
@@ -99,28 +98,10 @@ Ext.define(
 
 				if (saveResources.length)
 				{
-					if (FBEditor.accessHub && loader.getArt())
-                    {
-                        saveResources = saveResources.reverse();
-
-                        // сохраняем ресурсы на хабе
-                        loader.saveResources(saveResources).then(
-                            function (xml)
-                            {
-                                // синхронизируем ресурсы с хабом
-                                manager.syncResources(xml);
-
-                                me.afterSave();
-                            }
-                        );
-                    }
-                    else
-                    {
-                        // загружаем в редактор
-                        manager.load(saveResources);
-
-                        me.afterSave();
-                    }
+					// загружаем в редактор
+					manager.load(saveResources);
+					
+					me.afterSave();
                 }
 			}
 		},
@@ -133,37 +114,23 @@ Ext.define(
 			var me = this,
 				history = me.history,
 				manager = me.manager,
-				loader = manager.loader,
 				resources;
 
 			if (history.length)
 			{
 				// список последних вставленных ресурсов
 				resources = history.pop();
-
-				if (FBEditor.accessHub && loader.getArt())
-				{
-					// удаляем ресурсы на хабе
-					loader.removeResources(resources).then(
-						function (xml)
-						{
-							me.afterRemove();
-						}
-					);
-				}
-				else
-				{
-					Ext.Array.each(
-						resources,
-					    function (res)
-					    {
-						    // удаляем из редактора
-						    manager.deleteResource(res);
-					    }
-					);
-
-					me.afterRemove();
-				}
+				
+				Ext.Array.each(
+					resources,
+					function (res)
+					{
+						// удаляем из редактора
+						manager.deleteResource(res);
+					}
+				);
+				
+				me.afterRemove();
 			}
 		},
 

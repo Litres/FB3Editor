@@ -123,15 +123,7 @@ Ext.define(
 				resourceManager = bridge.FBEditor.resource.Manager,
 				result;
 			
-			if (resourceManager.isLoadUrl())
-			{
-				resourceManager.deleteFromUrl(resourceName);
-				result = true;
-			}
-			else
-			{
-				result = resourceManager.deleteResource(resourceName);
-			}
+			result = resourceManager.deleteResource(resourceName);
 			
 			return result;
 		}

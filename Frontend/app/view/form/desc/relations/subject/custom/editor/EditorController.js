@@ -9,11 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.form.desc.AbstractFieldController',
 
-		alias: 'controller.form.desc.relations.subject.custom.editor',
-
-		onAccessHub: function ()
-		{
-			//console.log('access hub');
-		}
+		alias: 'controller.form.desc.relations.subject.custom.editor'
 	}
 );
