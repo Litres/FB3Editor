@@ -39,7 +39,7 @@ Ext.define(
 			var me = this,
 				data = record.getData(),
 				bridge = FBEditor.getBridgeWindow();
-
+			
 			if (data.isFolder)
 			{
 				bridge.FBEditor.resource.Manager.restoreActiveFolder(data.name);
