@@ -2,6 +2,10 @@
 Стили для редактора ресурсов.
 */
 
+.panel-resources .x-panel-body-default {
+	background-color: #fff;
+}
+
 .resource-great-thumb:before,
 .resource-large-thumb:before,
 .resource-normal-thumb:before {

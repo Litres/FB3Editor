@@ -4,6 +4,7 @@
 
 /* делаем элементы невыделяемыми */
 body {
+	font-family: "PT Sans";
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -24,6 +25,40 @@ body {
 	border-top: 1px dashed #000;
 	background-color: #fff;
 	cursor: default;
+}
+
+/* логотип */
+.logo-litres {
+	background-image: url('../images/logo.svg');
+}
+
+/* Панель инструментов */
+.panel-main-tools {
+	/*height: 95px;*/
+	/*margin: 10px 0 4px 0;*/
+}
+.panel-main-toolstab .x-tab-bar {
+	padding: 0 0 0 32px;
+}
+#panel-main-toolstab-body {
+	padding: 0 0 0 32px;
+	background: #fff;
+}
+
+/* Панель навигации */
+.panel-main-navigation {
+	border-radius: 0 4px 0 0;
+}
+.panel-main-navigation .x-panel-header-default-horizontal.x-header-noborder {
+	padding: 10px 10px 10px 32px;
+}
+
+/* Панель свойств */
+.panel-main-props {
+	border-radius: 4px 0 0 0;
+}
+.panel-main-props .x-panel-header-default-horizontal.x-header-noborder {
+	padding: 10px 10px 10px 32px;
 }
 
 /* Деревья панели навигации */
@@ -55,18 +90,15 @@ body {
 .treenavigation-children span:before {
 	width: 18px;
 }
-.panel-treenavigation .x-grid-item-focused .x-grid-cell-inner:before {
-	border: none;
-}
 
 /* Дерево описания */
-
 .treenavigation-root-desc,
 .treenavigation-children-desc,
 .treenavigation-root-desc.x-grid-item-focused,
 .treenavigation-children-desc.x-grid-item-focused {
-	color: #1d458a;
+	/*color: #1d458a;*/
 }
+/*
 .treenavigation-root-desc span:before {
 	content: "\f03a";
 	font-size: 1.33333333em;
@@ -75,6 +107,7 @@ body {
 .treenavigation-children-desc span:before {
 	content: "\f1dd";
 }
+*/
 
 /* Дерево текста */
 .window-panel-body-tree-name {
@@ -88,13 +121,15 @@ body {
 .treenavigation-children-body,
 .treenavigation-root-body.x-grid-item-focused,
 .treenavigation-children-body.x-grid-item-focused {
-	color: #3a7461;
+	/*color: #3a7461;*/
 }
+/*
 .treenavigation-root-body span:before {
 	content: "\f044";
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
+*/
 .treenavigation-children-body span:before {
 	content: "\f06c";
 }
@@ -155,11 +190,13 @@ body {
 /* <-- Дерево текста */
 
 /* Дерево xml */
+/*
 .treenavigation-root-xml span:before {
 	content: "\f1c9";
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
+*/
 /* <-- Дерево xml */
 
 /* Дерево ресурсов */
@@ -167,13 +204,15 @@ body {
 .treenavigation-children-resource,
 .treenavigation-root-resource.x-grid-item-focused,
 .treenavigation-children-resource.x-grid-item-focused {
-	color: #743e45;
+	/*color: #743e45;*/
 }
+/*
 .treenavigation-root-resource span:before {
 	content: "\f1c0";
 	font-size: 1.33333333em;
 	vertical-align: -15%;
 }
+*/
 .treenavigation-children-resource span:before {
 	content: "\f07b";
 }
@@ -190,16 +229,14 @@ body {
 	text-align: center;
 	font-size: 16px;
 	font-weight: bold;
-	color: #fff;
+	color: #828CA2;
 }
-
 .panel-filename-field .x-form-text-default {
 	text-align: center;
 	font-size: 16px;
-	background-color: #B9E7DC;
-	color: #2e9577;
+	background-color: #fff;
+	color: #020C22;
 }
-
 .panel-filename-field .x-form-trigger-wrap-focus {
 	border: none;
 }
@@ -256,10 +293,6 @@ body {
 .x-layer.x-panel-default {
 	border: 1px solid #9b9b9b;
 	box-shadow: 0 4px 7px rgba(0,0,0,0.25);
-}
-
-.panel-main-props .x-panel-body-default {
-	background: #ecebec;
 }
 
 /* пуста панель с информационным сообщением */

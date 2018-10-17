@@ -14,6 +14,8 @@ Ext.define(
 
 		id: 'form-desc-editor-toolbar',
 		xtype: 'form-desc-editor-toolbar',
+		
+		border: false,
 
 		afterRender: function ()
 		{

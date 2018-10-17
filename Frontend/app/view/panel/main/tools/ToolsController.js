@@ -14,10 +14,20 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
-				filename;
-
-			filename = view.down('panel-filename');
-			filename.fireEvent('checkPosition');
+				components;
+			
+			components = [
+				view.down('panel-filename'),
+				view.down('component-logo-litres')
+			];
+			
+			Ext.each(
+				components,
+				function (item)
+				{
+					item.fireEvent('checkPosition');
+				}
+			);
 		}
     }
 );

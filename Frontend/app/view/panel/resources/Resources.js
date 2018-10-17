@@ -17,6 +17,8 @@ Ext.define(
 		id: 'panel-resources',
 		xtype: 'panel-resources',
 		controller: 'panel.resources',
+		
+		cls: 'panel-resources',
 
 		autoScroll: true,
 		bodyPadding: 5,

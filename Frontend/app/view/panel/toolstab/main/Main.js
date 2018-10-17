@@ -52,7 +52,8 @@ Ext.define(
 					xtype: 'component',
 					padding: 10,
 					style: {
-						color: 'gray'
+						color: 'gray',
+						background: '#fff'
 					},
 					html: me.translateText.loading
 				}
@@ -175,14 +176,17 @@ Ext.define(
 		verifyResult: function (res, data)
 		{
 			var me = this,
-				activeToolbar = me.getActiveToolbar();
+				activeToolbar = me.getActiveToolbar(),
+				items = me.items,
+				first;
 
 			if (data.loaded)
 			{
 				Ext.log({msg: 'xmllint загружен', level: 'info'});
 
 				// удаляем надпись о загрузке xmllint
-				me.remove(me.items.first());
+				first = items.first();
+				me.remove(first);
 
 				me.accessXmllint = true;
 

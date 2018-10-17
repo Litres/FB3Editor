@@ -1,0 +1,15 @@
+$tab-base-color: dynamic($base-color);
+$tab-base-color-over: dynamic($tab-base-color);
+
+$tab-color: dynamic(#0A3FB4);
+$tab-color-active: dynamic(#020C22);
+
+$tab-font-size: 16px !default;
+$tab-font-weight: normal !default;
+$tab-font-weight-active: bold !default;
+
+$tab-border-radius: dynamic(2px 2px 0 0);
+$tab-inner-border-width-focus: 0;
+
+$tab-padding: dynamic(10px 20px 8px);
+

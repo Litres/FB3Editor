@@ -1,0 +1,13 @@
+.#{$prefix}grid-item {
+  color: $grid-row-cell-color;
+  font: $grid-row-cell-font;
+  background-color: $base-color;
+}
+.#{$prefix}grid-item-over {
+  color: $grid-row-cell-over-color;
+  background-color: $base-light-color;
+}
+.#{$prefix}grid-item-selected {
+  color: $grid-row-cell-selected-color;
+  background-color: $base-light-color;
+}

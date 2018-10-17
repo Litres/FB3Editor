@@ -43,6 +43,7 @@ Ext.define(
 					item.setValue(val);
 				}
 			);
+			
 			view.setActiveItem('panel-filename-display');
 		},
 
@@ -53,12 +54,16 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				tabsWidth,
+				logoWidth,
 				tools;
 
 			if (view.rendered)
 			{
 				tools = Ext.getCmp('panel-main-tools');
-				view.setWidth(tools.getWidth() - 440);
+				tabsWidth = view.tabsWidth;
+				logoWidth = view.logoWidth;
+				view.setWidth(tools.getWidth() - tabsWidth - logoWidth);
 			}
 		}
 	}

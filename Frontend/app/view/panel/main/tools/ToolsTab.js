@@ -19,9 +19,11 @@ Ext.define(
 		id: 'panel-main-toolstab',
 		xtype: 'panel-main-toolstab',
 		controller: 'panel.main.toolstab',
+		
+		cls: 'panel-main-toolstab',
 
 		activeTab: 'panel-toolstab-main',
-
+		
 		items: [
 			{
 				xtype: 'panel-toolstab-file'

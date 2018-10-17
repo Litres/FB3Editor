@@ -17,6 +17,8 @@ Ext.define(
 	    id: 'panel-main-navigation',
 	    xtype: 'panel-main-navigation',
 	    controller: 'panel.main.navigation',
+	    
+	    cls: 'panel-main-navigation',
 
 	    title: 'Навигация',
 	    panelName: 'navigation',
