@@ -32,17 +32,37 @@ body {
 	background-image: url('../images/logo.svg');
 }
 
-/* Панель инструментов */
-.panel-main-tools {
-	/*height: 95px;*/
-	/*margin: 10px 0 4px 0;*/
-}
+/* Панель вкладок */
 .panel-main-toolstab .x-tab-bar {
 	padding: 0 0 0 32px;
+}
+.panel-main-toolstab .x-btn {
+	margin: 0 5px 0 0;
+}
+.panel-main-toolstab .x-toolbar-default {
+	padding: 5px 0 10px 0;
 }
 #panel-main-toolstab-body {
 	padding: 0 0 0 32px;
 	background: #fff;
+}
+.panel-toolstab-container {
+	padding: 0 10px;
+	background: #EEF2F5;
+	border-radius: 4px;
+}
+.panel-toolstab-container .x-box-inner,
+.panel-toolstab-container .x-box-target {
+	height: 45px;
+}
+.panel-toolstab-container .x-box-item {
+	margin: 10px 5px 0 0;
+}
+.panel-toolstab-container .x-toolbar-spacer {
+	height: 38px;
+	width: 1px;
+	margin: 4px 10px 0 5px;
+	background: rgba(130, 140, 162, 0.1);
 }
 
 /* Панель навигации */
@@ -57,12 +77,12 @@ body {
 .panel-main-props {
 	border-radius: 4px 0 0 0;
 }
-.panel-main-props .x-panel-header-default-horizontal.x-header-noborder {
-	padding: 10px 10px 10px 32px;
-}
 
 /* Деревья панели навигации */
 
+#panel-treenavigation {
+	padding: 0 0 0 15px;
+}
 .treenavigation-root {
 	font-size: 15px;
 }
@@ -225,14 +245,15 @@ body {
 }
 /* <-- Дерево ресурсов */
 
+/* Название файла */
 .panel-filename-display .x-form-display-field-default {
-	text-align: center;
+	/*text-align: center;*/
 	font-size: 16px;
 	font-weight: bold;
 	color: #828CA2;
 }
 .panel-filename-field .x-form-text-default {
-	text-align: center;
+	/*text-align: center;*/
 	font-size: 16px;
 	background-color: #fff;
 	color: #020C22;

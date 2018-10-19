@@ -280,6 +280,7 @@ Ext.define(
 		updateButtons: function ()
 		{
 			var me = this,
+				cmp,
 				visibleButtons;
 
 			if (me.needUpdateButtons())
@@ -291,7 +292,15 @@ Ext.define(
 				me.removeAll();
 
 				// добавляем кнопки (в новом расположении)
-				me.add(visibleButtons);
+				cmp = {
+					xtype: 'container',
+					cls: 'panel-toolstab-container',
+					layout: 'hbox',
+					height: 45,
+					items: visibleButtons
+				};
+				
+				me.add(cmp);
 			}
 		},
 
@@ -381,7 +390,7 @@ Ext.define(
 			btn = me.responsiveBtn || Ext.widget('main-editor-toolbar-responsive-button');
 			me.responsiveBtn = btn;
 
-			// устанавливаем связб
+			// устанавливаем связь
 			btn.setToolbar(me);
 
 			return btn;
@@ -427,8 +436,7 @@ Ext.define(
                 },
                 {
                     xtype: 'main-editor-button-splitelement'
-                },
-				spacer
+                }
 			];
 
 			if (bodyWidth >= responsiveSizes.group1)
@@ -593,8 +601,7 @@ Ext.define(
 				spacer;
 
 			spacer = {
-				xtype: 'tbspacer',
-				width: 20
+				xtype: 'tbspacer'
 			};
 
 			return spacer;

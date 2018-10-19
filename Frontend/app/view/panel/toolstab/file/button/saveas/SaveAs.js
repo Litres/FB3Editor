@@ -20,7 +20,7 @@ Ext.define(
 			click: 'onClick'
 		},
 
-		iconCls: 'fa fa-download',
+		//iconCls: 'fa fa-download',
 		tooltipType: 'title',
 
 		translateText: {

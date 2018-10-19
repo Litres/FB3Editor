@@ -316,6 +316,9 @@
 	background-image: -moz-linear-gradient(center top, #FBE0A8, #FBE0A8 50%, #FBE0A8 51%, #FBE0A8);
 }
 */
+.form-desc .x-btn-inner-default-small {
+	color: #fff;
+}
 .form-desc .x-btn-default-small,
 .form-desc .x-btn-over.x-btn-default-small,
 .form-desc .x-btn-focus.x-btn-default-small,

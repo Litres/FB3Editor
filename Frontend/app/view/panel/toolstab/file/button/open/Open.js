@@ -20,7 +20,7 @@ Ext.define(
 			change: 'onChange'
 		},
 
-		iconCls: 'fa fa-upload',
+		//iconCls: 'fa fa-upload',
 		tooltipType: 'title',
 
 		accept: '', //'application/zip'

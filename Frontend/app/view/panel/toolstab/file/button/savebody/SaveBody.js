@@ -22,7 +22,7 @@ Ext.define(
 		},
 
 		disabled: true,
-		iconCls: 'fa fa-cloud-download',
+		//iconCls: 'fa fa-cloud-download',
 		tooltipType: 'title',
 
 		translateText: {

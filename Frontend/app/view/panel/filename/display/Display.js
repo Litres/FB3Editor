@@ -11,6 +11,7 @@ Ext.define(
 		id: 'panel-filename-display',
 		xtype: 'panel-filename-display',
 		cls: 'panel-filename-display',
-		width: '100%'
+		width: '100%',
+		align: 'left'
 	}
 );

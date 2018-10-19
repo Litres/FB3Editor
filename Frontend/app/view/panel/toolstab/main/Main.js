@@ -1,5 +1,5 @@
 /**
- * Вкладка Форматирование.
+ * Вкладка Текст.
  *
  * Синхронизация кнопок вызывается из менеджера редактора FBEditor.view.panel.main.editor.Manager#syncButtons().
  *
@@ -18,7 +18,7 @@ Ext.define(
 		xtype: 'panel-toolstab-main',
 		controller: 'panel.toolstab.main',
 
-		title: 'Форматирование',
+		title: 'Текст',
 
 		/**
 		 * @private

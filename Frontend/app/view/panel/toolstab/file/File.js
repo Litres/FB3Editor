@@ -14,8 +14,10 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.file.button.savedesc.SaveDesc',
 			'FBEditor.view.panel.toolstab.file.button.savebody.SaveBody'
 		],
+		
 		id:'panel-toolstab-file',
 		xtype: 'panel-toolstab-file',
+		
 		title: 'Файл',
 
 		initComponent: function ()
@@ -24,16 +26,24 @@ Ext.define(
 
 			me.tbar = [
 				{
-					xtype: 'panel-toolstab-file-button-open'
-				},
-				{
-					xtype: 'panel-toolstab-file-button-saveas'
-				},
-				{
-					xtype: 'panel-toolstab-file-button-savedesc'
-				},
-				{
-					xtype: 'panel-toolstab-file-button-savebody'
+					xtype: 'container',
+					cls: 'panel-toolstab-container',
+					layout: 'hbox',
+					height: 45,
+					items: [
+						{
+							xtype: 'panel-toolstab-file-button-open'
+						},
+						{
+							xtype: 'panel-toolstab-file-button-saveas'
+						},
+						{
+							xtype: 'panel-toolstab-file-button-savedesc'
+						},
+						{
+							xtype: 'panel-toolstab-file-button-savebody'
+						}
+					]
 				}
 			];
 			

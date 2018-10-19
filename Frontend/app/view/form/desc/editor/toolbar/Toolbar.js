@@ -20,6 +20,7 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
+				cmp,
 				cleanBtn;
 
 			me.callParent(arguments);
@@ -27,28 +28,33 @@ Ext.define(
             // кнопка уборки
             cleanBtn = Ext.widget('form-desc-editor-toolbar-button-cleaner');
             cleanBtn.setToolbar(me);
+            
+            cmp = {
+	            xtype: 'container',
+	            cls: 'panel-toolstab-container',
+	            layout: 'hbox',
+	            height: 45,
+	            items: [
+		            {
+			            xtype: 'editor-toolbar-button-strong'
+		            },
+		            {
+			            xtype: 'editor-toolbar-button-em'
+		            },
+		            {
+			            xtype: 'editor-toolbar-button-a'
+		            },
+		            {
+			            xtype: 'editor-toolbar-button-unstyle'
+		            },
+		            {
+			            xtype: 'tbspacer'
+		            },
+		            cleanBtn
+	            ]
+            };
 
-            me.add(
-            	[
-					{
-						xtype: 'editor-toolbar-button-strong'
-					},
-					{
-						xtype: 'editor-toolbar-button-em'
-					},
-					{
-						xtype: 'editor-toolbar-button-a'
-					},
-					{
-						xtype: 'editor-toolbar-button-unstyle'
-					},
-                    {
-                        xtype: 'tbspacer',
-                        width: 20
-                    },
-                    cleanBtn
-				]
-			);
+            me.add(cmp);
 
 			me.addSyncButton('form-desc-editor-toolbar-button-cleaner');
 		}

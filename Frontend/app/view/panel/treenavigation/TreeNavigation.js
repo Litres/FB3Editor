@@ -19,7 +19,7 @@ Ext.define(
 		id: 'panel-treenavigation',
 		xtype: 'panel-treenavigation',
 		controller: 'panel.treenavigation',
-
+		
         listeners: {
             clearSelection: 'onClearSelection'
         },
