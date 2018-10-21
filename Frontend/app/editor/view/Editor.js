@@ -37,9 +37,9 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {FBEditor.editor.view.toolbar.Toolbar} Панель кнопок форматирования редактора текста.
+		 * @property {FBEditor.editor.view.toolbar.Toolbar[]} Тулбары, свзяанные с редактором.
 		 */
-		toolbar: null,
+		toolbars: null,
 
 		/**
 		 * @private
@@ -54,9 +54,7 @@ Ext.define(
 
 		afterRender: function ()
 		{
-			var me = this,
-				panelToolstab,
-				toolbar;
+			var me = this;
 
 			// создаем менеджер
 			me.createManager();
@@ -64,19 +62,9 @@ Ext.define(
 			// инициализируем вид редактора
 			me.initEditor();
 
-			// создаем тулбар
-			toolbar = me.createToolbar();
-			toolbar.setDefaultShow(me.defaultShowToolbar);
-
-			// связываем тулбар с панелью редактора
-			me.setToolbar(toolbar);
-
-			// вкладка форматирования
-			panelToolstab = Ext.getCmp('panel-toolstab-main');
-
-			// добавляем тулбар на вкладку
-			panelToolstab.addToolbar(toolbar);
-
+			// добавляем тулбары
+			me.addToolbars();
+			
 			me.callParent(me);
 		},
 
@@ -108,6 +96,29 @@ Ext.define(
 
             me.viewport = viewport;
             me.add(viewport);
+		},
+		
+		/**
+		 * @template
+		 * Добавляет тулбары.
+		 */
+		addToolbars: function ()
+		{
+			var me = this,
+				toolbar,
+				panelToolstab;
+			
+			toolbar = me.createToolbar();
+			toolbar.setDefaultShow(me.defaultShowToolbar);
+			
+			// связываем тулбар с панелью редактора
+			me.setToolbar(toolbar);
+			
+			// вкладка форматирования
+			panelToolstab = Ext.getCmp('panel-toolstab-main');
+			
+			// добавляем тулбар на вкладку
+			panelToolstab.addToolbar(toolbar);
 		},
 
 		/**
@@ -185,18 +196,34 @@ Ext.define(
 		{
 			var me = this,
 				tool = toolbar;
-
-			me.toolbar = tool;
+			
+			me.toolbars = me.toolbars || [];
+			me.toolbars.push(tool);
 			tool.setEditor(me);
 		},
-
+		
+		/**
+		 * Возвращает все тулбары.
+		 * @return {FBEditor.editor.view.toolbar.Toolbar[]}
+		 */
+		getToolbars: function ()
+		{
+			return this.toolbars;
+		},
+		
 		/**
 		 * Возвращает тулбар.
 		 * @return {FBEditor.editor.view.toolbar.Toolbar}
 		 */
 		getToolbar: function ()
 		{
-			return this.toolbar;
+			var me = this,
+				toolbars = me.toolbars,
+				toolbar;
+			
+			toolbar = toolbars.length ? toolbars[0] : null;
+			
+			return toolbar;
 		},
 
 		/**
@@ -225,6 +252,25 @@ Ext.define(
 				manager = me.getManager();
 
 			return manager.getHistory();
+		},
+		
+		/**
+		 * Синхронизирует кнопки на тулбаре.
+		 */
+		syncButtons: function ()
+		{
+			var me = this,
+				toolbars;
+			
+			toolbars = me.getToolbars();
+			
+			Ext.each(
+				toolbars,
+				function (item)
+				{
+					item.fireEvent('syncButtons');
+				}
+			);
 		}
 	}
 );
