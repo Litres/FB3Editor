@@ -10,8 +10,10 @@ Ext.define(
 		extend: 'Ext.tab.Panel',
 		requires: [
 			'FBEditor.view.panel.main.tools.ToolsTabController',
+			'FBEditor.view.panel.toolstab.div.Div',
 			'FBEditor.view.panel.toolstab.file.File',
 			'FBEditor.view.panel.toolstab.main.Main',
+			'FBEditor.view.panel.toolstab.section.Section',
 			'FBEditor.view.panel.toolstab.tools.Tools'
 		],
 
@@ -30,7 +32,13 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'panel-toolstab-file'
+				}/*,
+				{
+					xtype: 'panel-toolstab-section'
 				},
+				{
+					xtype: 'panel-toolstab-div'
+				}*/,
 				{
 					xtype: 'panel-toolstab-main'
 				},

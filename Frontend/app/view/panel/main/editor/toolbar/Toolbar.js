@@ -463,7 +463,7 @@ Ext.define(
 					]
 				);
 			}
-
+			
 			if (bodyWidth >= responsiveSizes.group2)
 			{
 				me.currentResponsiveSize = responsiveSizes.group2;
