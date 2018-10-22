@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-notes',
 		controller: 'main.editor.button.notes',
 		
-		html: '<i class="fa fa-clone"></i>',
+		//html: '<i class="fa fa-clone"></i>',
+		text: '+ Сноски',
 
 		tooltipText: 'Сноски',
 		elementName: 'notes'

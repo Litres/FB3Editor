@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-blockquote',
 		controller: 'main.editor.button.blockquote',
 		
-		html: '<i class="fa fa-quote-right"></i>',
+		//html: '<i class="fa fa-quote-right"></i>',
+		text: 'Цитата',
 
 		tooltipText: 'Цитата',
 		elementName: 'blockquote'

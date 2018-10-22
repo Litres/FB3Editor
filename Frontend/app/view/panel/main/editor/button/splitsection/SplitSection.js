@@ -16,9 +16,11 @@ Ext.define(
 
         xtype: 'main-editor-button-splitsection',
 
-        html: '<i class="fa fa-cut"></i>',
+        //html: '<i class="fa fa-cut"></i>',
+	    iconCls: 'fa fa-cut',
+	    text: 'Рассечь главу',
 
-        tooltipText: 'Разделить секцию',
+        tooltipText: 'Рассечь главу',
 
         isActiveSelection: function ()
         {

@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-div',
 		controller: 'main.editor.button.div',
 		
-		html: '<i class="fa fa-cubes"></i>',
+		//html: '<i class="fa fa-cubes"></i>',
+		text: 'Блок',
 
 		tooltipText: 'Блок',
 		elementName: 'div'

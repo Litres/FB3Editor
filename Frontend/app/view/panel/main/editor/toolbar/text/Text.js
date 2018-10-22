@@ -8,45 +8,69 @@ Ext.define(
 	'FBEditor.view.panel.main.editor.toolbar.text.Text',
 	{
 		extend: 'FBEditor.view.panel.main.editor.toolbar.Toolbar',
-		/*
-		requires: [
-			'FBEditor.view.panel.main.editor.button.a.A',
-			'FBEditor.view.panel.main.editor.button.annotation.Annotation',
-			'FBEditor.view.panel.main.editor.button.blockquote.Blockquote',
-			'FBEditor.view.panel.main.editor.button.code.Code',
-			'FBEditor.view.panel.main.editor.button.div.Div',
-			'FBEditor.view.panel.main.editor.button.em.Em',
-			'FBEditor.view.panel.main.editor.button.epigraph.Epigraph',
-			'FBEditor.view.panel.main.editor.button.img.Img',
-			'FBEditor.view.panel.main.editor.button.note.Note',
-			'FBEditor.view.panel.main.editor.button.notebody.Notebody',
-			'FBEditor.view.panel.main.editor.button.notes.Notes',
-			'FBEditor.view.panel.main.editor.button.ol.Ol',
-			'FBEditor.view.panel.main.editor.button.poem.Poem',
-			'FBEditor.view.panel.main.editor.button.pre.Pre',
-			'FBEditor.view.panel.main.editor.button.section.Section',
-			'FBEditor.view.panel.main.editor.button.smallcaps.Smallcaps',
-			'FBEditor.view.panel.main.editor.button.spacing.Spacing',
-			'FBEditor.view.panel.main.editor.button.span.Span',
-			'FBEditor.view.panel.main.editor.button.splitsection.SplitSection',
-			'FBEditor.view.panel.main.editor.button.splitelement.SplitElement',
-			'FBEditor.view.panel.main.editor.button.strikethrough.Strikethrough',
-			'FBEditor.view.panel.main.editor.button.strong.Strong',
-			'FBEditor.view.panel.main.editor.button.sub.Sub',
-			'FBEditor.view.panel.main.editor.button.subscription.Subscription',
-			'FBEditor.view.panel.main.editor.button.subtitle.Subtitle',
-			'FBEditor.view.panel.main.editor.button.sup.Sup',
-			'FBEditor.view.panel.main.editor.button.table.Table',
-			'FBEditor.view.panel.main.editor.button.title.Title',
-			'FBEditor.view.panel.main.editor.button.titlebody.TitleBody',
-			'FBEditor.view.panel.main.editor.button.ul.Ul',
-			'FBEditor.view.panel.main.editor.button.underline.Underline',
-			'FBEditor.view.panel.main.editor.button.unstyle.Unstyle',
-			'FBEditor.view.panel.main.editor.toolbar.responsive.button.Button',
-			'FBEditor.view.panel.main.editor.toolbar.ToolbarController'
-		],
-		*/
 		
-		xtype: 'panel-toolstab-text'
+		xtype: 'main-editor-toolbar-text',
+		
+		getVisibleButtons: function ()
+		{
+			var me = this,
+				responsiveSizes = me.responsiveSizes,
+				spacer,
+				buttons;
+			
+			me.currentResponsiveSize = responsiveSizes.fit;
+			spacer = me.getSpacer();
+			
+			buttons = [
+				{
+					xtype: 'main-editor-button-strong'
+				},
+				{
+					xtype: 'main-editor-button-em'
+				},
+				{
+					xtype: 'main-editor-button-underline'
+				},
+				{
+					xtype: 'main-editor-button-strikethrough'
+				},
+				{
+					xtype: 'main-editor-button-spacing'
+				},
+				{
+					xtype: 'main-editor-button-sub'
+				},
+				{
+					xtype: 'main-editor-button-sup'
+				},
+				{
+					xtype: 'main-editor-button-code'
+				},
+				{
+					xtype: 'main-editor-button-span'
+				},
+				{
+					xtype: 'main-editor-button-smallcaps'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-img'
+				},
+				{
+					xtype: 'main-editor-button-a'
+				},
+				{
+					xtype: 'main-editor-button-note'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-unstyle'
+				}
+			];
+			
+			me.visibleButtons = buttons;
+			
+			return buttons;
+		}
 	}
 );

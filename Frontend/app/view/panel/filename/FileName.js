@@ -35,7 +35,7 @@ Ext.define(
 		border: false,
 		monitorResize: true,
 		plain: true,
-		x: 560,
+		x: 570,
 		y: 16,
 		
 		/**
@@ -46,7 +46,7 @@ Ext.define(
 		/**
 		 * @property {Number} Ширина логотипа.
 		 */
-		logoWidth: 100,
+		logoWidth: 130,
 		
 		items: [
 			{

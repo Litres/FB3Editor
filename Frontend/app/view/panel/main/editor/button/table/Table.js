@@ -16,7 +16,8 @@ Ext.define(
 		xtype: 'main-editor-button-table',
 		controller: 'main.editor.button.table',
 
-		html: '<i class="fa fa-table fa-lg"></i>',
+		//html: '<i class="fa fa-table fa-lg"></i>',
+		text: 'Таблица',
 
 		tooltipText: 'Таблица',
 		elementName: 'table',

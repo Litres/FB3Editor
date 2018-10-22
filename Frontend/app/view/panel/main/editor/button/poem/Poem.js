@@ -16,8 +16,9 @@ Ext.define(
 		controller: 'main.editor.button.poem',
 		
 		html: '<i class="fa fa-pinterest fa-lg"></i>',
+		text: 'Стихи',
 
-		tooltipText: 'Поэма',
+		tooltipText: 'Стихи',
 		elementName: 'poem'
 	}
 );

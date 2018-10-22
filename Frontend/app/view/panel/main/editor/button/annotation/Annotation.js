@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-annotation',
 		controller: 'main.editor.button.annotation',
 
-		html: '<i class="fa fa-font"></i>',
+		//html: '<i class="fa fa-font"></i>',
+		text: '+ Аннотация',
 
 		tooltipText: 'Аннотация',
 		elementName: 'annotation'

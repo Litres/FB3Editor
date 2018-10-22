@@ -15,9 +15,10 @@ Ext.define(
 		xtype: 'main-editor-button-titlebody',
 		controller: 'main.editor.button.titlebody',
 		
-		html: '<i class="fa fa-header fa-border"></i>',
+		//html: '<i class="fa fa-header fa-border"></i>',
+		text: '+ Заголовок всей книги',
 
-		tooltipText: 'Заголовок для всей книги',
+		tooltipText: 'Заголовок всей книги',
 		elementName: 'title',
 		
 		createOpts: {

@@ -29,32 +29,32 @@ body {
 
 /* кнопки */
 .x-btn-default-small {
-	padding: 4px 4px 5px 4px;
-	border-radius: 4px;
-	border-width: 0;
-	background: #E1E6EB;
-	background-image: none;
+	padding: 4px 4px 5px 4px !important;
+	border-radius: 4px !important;
+	border-width: 0 !important;
+	background: #E1E6EB !important;
+	background-image: none !important;
 }
 .x-btn.x-btn-disabled.x-btn-default-small {
-	background: #E1E6EB;
-	opacity: 0.5;
+	background: #E1E6EB !important;
+	opacity: 0.5 !important;
 }
 .x-btn.x-btn-menu-active.x-btn-default-small,
 .x-btn.x-btn-pressed.x-btn-default-small {
-	background: linear-gradient(0deg, #E1E6EB 0%, #B5BDCA 100%);
+	background: linear-gradient(0deg, #E1E6EB 0%, #B5BDCA 100%) !important;
 }
 .x-btn-focus.x-btn-default-small {
-	box-shadow: none;
-	background: #E1E6EB;
+	box-shadow: none !important;
+	background: #E1E6EB !important;
 }
 .x-btn-over.x-btn-default-small,
 .x-btn-focus.x-btn-over.x-btn-default-small {
-	box-shadow: none;
-	background: linear-gradient(180deg, #E1E6EB 0%, #B5BDCA 100%);
+	box-shadow: none !important;
+	background: linear-gradient(180deg, #E1E6EB 0%, #B5BDCA 100%) !important;
 }
 .x-btn-focus.x-btn-pressed.x-btn-default-small {
-	box-shadow: none;
-	background: linear-gradient(0deg, #E1E6EB 0%, #B5BDCA 100%);
+	box-shadow: none !important;
+	background: linear-gradient(0deg, #E1E6EB 0%, #B5BDCA 100%) !important;
 }
 
 /* логотип */

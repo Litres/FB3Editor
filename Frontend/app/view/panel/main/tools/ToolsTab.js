@@ -32,13 +32,13 @@ Ext.define(
 			me.items = [
 				{
 					xtype: 'panel-toolstab-file'
-				}/*,
+				},
 				{
 					xtype: 'panel-toolstab-section'
 				},
 				{
 					xtype: 'panel-toolstab-div'
-				}*/,
+				},
 				{
 					xtype: 'panel-toolstab-main'
 				},

@@ -397,7 +397,6 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * Возвращает кнопки, которые помещаются на панели.
 		 * @return {Object[]}
 		 */
@@ -591,7 +590,6 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * Возвращает отступ между кнопками на панели.
 		 * @return {Object}
 		 */
@@ -608,7 +606,6 @@ Ext.define(
 		},
 
 		/**
-		 * @private
 		 * Определяет нужно ли обновлять кнопки на панели.
 		 * @return {Boolean}
 		 */
@@ -621,10 +618,11 @@ Ext.define(
 				responsiveSize = null,
 				need;
 
-			responsiveSize = bodyWidth >= responsiveSizes.group1 ? responsiveSizes.group1 : responsiveSize;
-			responsiveSize = bodyWidth >= responsiveSizes.group2 ? responsiveSizes.group2 : responsiveSize;
-			responsiveSize = bodyWidth >= responsiveSizes.group3 ? responsiveSizes.group3 : responsiveSize;
-			responsiveSize = bodyWidth >= responsiveSizes.fit ? responsiveSizes.fit : responsiveSize;
+			//responsiveSize = bodyWidth >= responsiveSizes.group1 ? responsiveSizes.group1 : responsiveSize;
+			//responsiveSize = bodyWidth >= responsiveSizes.group2 ? responsiveSizes.group2 : responsiveSize;
+			//responsiveSize = bodyWidth >= responsiveSizes.group3 ? responsiveSizes.group3 : responsiveSize;
+			//responsiveSize = bodyWidth >= responsiveSizes.fit ? responsiveSizes.fit : responsiveSize;
+			responsiveSize = responsiveSizes.fit;
 
 			need = responsiveSize !== currentResponsiveSize;
 

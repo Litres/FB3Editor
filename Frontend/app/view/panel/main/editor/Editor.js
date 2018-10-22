@@ -11,7 +11,9 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.EditorController',
 			'FBEditor.view.panel.main.editor.Manager',
-			'FBEditor.view.panel.main.editor.toolbar.Toolbar',
+			'FBEditor.view.panel.main.editor.toolbar.div.Div',
+			'FBEditor.view.panel.main.editor.toolbar.section.Section',
+			'FBEditor.view.panel.main.editor.toolbar.text.Text',
 			'FBEditor.view.panel.main.editor.viewport.Viewport'
 		],
 
@@ -87,10 +89,47 @@ Ext.define(
 			me.viewports.north = north;
 			me.add(north);
 		},
-
-		createToolbar: function ()
+		
+		addToolbars: function ()
 		{
-			return Ext.create('FBEditor.view.panel.main.editor.toolbar.Toolbar');
+			var me = this,
+				toolbars;
+			
+			// список тулбаров и вкладок
+			toolbars = [
+				{
+					toolbar: Ext.create('FBEditor.view.panel.main.editor.toolbar.text.Text'),
+					panel: Ext.getCmp('panel-toolstab-main'),
+					defaultShow: true
+				},
+				{
+					toolbar: Ext.create('FBEditor.view.panel.main.editor.toolbar.section.Section'),
+					panel: Ext.getCmp('panel-toolstab-section'),
+					defaultShow: true
+				},
+				{
+					toolbar: Ext.create('FBEditor.view.panel.main.editor.toolbar.div.Div'),
+					panel: Ext.getCmp('panel-toolstab-div'),
+					defaultShow: true
+				}
+			];
+			
+			Ext.each(
+				toolbars,
+				function (item)
+				{
+					var toolbar = item.toolbar,
+						panel = item.panel;
+					
+					toolbar.setDefaultShow(item.defaultShow);
+					
+					// связываем тулбар с панелью редактора
+					me.setToolbar(toolbar);
+					
+					// добавляем тулбар на вкладку
+					panel.addToolbar(toolbar);
+				}
+			);
 		},
 
 		/**

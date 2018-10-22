@@ -16,9 +16,11 @@ Ext.define(
 
         xtype: 'main-editor-button-splitelement',
 
-        html: '<i class="fa fa-border fa-cut"></i>',
+        //html: '<i class="fa fa-border fa-cut"></i>',
+	    iconCls: 'fa fa-cut',
+	    text: 'Рассечь блок',
 
-        tooltipText: 'Разделить элемент блочного типа',
+        tooltipText: 'Рассечь блок',
 
         isActiveSelection: function ()
         {

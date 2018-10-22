@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-epigraph',
 		controller: 'main.editor.button.epigraph',
 		
-		html: '<i class="fa fa-pinterest-p"></i>',
+		//html: '<i class="fa fa-pinterest-p"></i>',
+		text: '+ Эпиграф',
 
 		tooltipText: 'Эпиграф',
 		elementName: 'epigraph'

@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-notebody',
 		controller: 'main.editor.button.notebody',
 		
-		html: '<i class="fa fa-sticky-note"></i>',
+		//html: '<i class="fa fa-sticky-note"></i>',
+		text: '+ Текст сноски',
 
 		tooltipText: 'Текст сноски',
 		elementName: 'notebody'
