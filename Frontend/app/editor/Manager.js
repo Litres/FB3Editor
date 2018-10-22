@@ -863,15 +863,12 @@ Ext.define(
 		syncButtons: function ()
 		{
 			var me = this,
-				editor = me.getEditor(),
-				panelSection,
-				toolbar;
+				editor = me.getEditor();
 
 			console.log('sync');
 
 			// синхронизируем кнопки на тулбаре
-            toolbar = editor.getToolbar();
-			toolbar.fireEvent('syncButtons');
+			editor.syncButtons();
 		},
 
 		/**
