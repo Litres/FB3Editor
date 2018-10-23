@@ -17,7 +17,7 @@ Ext.define(
         xtype: 'main-editor-button-splitsection',
 
         //html: '<i class="fa fa-cut"></i>',
-	    iconCls: 'fa fa-cut',
+	    iconCls: 'litres-icon-cut',
 	    text: 'Рассечь главу',
 
         tooltipText: 'Рассечь главу',

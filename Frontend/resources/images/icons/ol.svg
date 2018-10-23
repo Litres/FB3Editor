@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>5E1E7C4D-96C0-4AC7-900B-9571045F85DA</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-101.000000, -291.000000)">
+        <g id="Page-1-Copy-16" transform="translate(100.000000, 290.000000)">
+            <rect id="Background" x="0" y="0" width="15" height="15"></rect>
+            <rect id="Rectangle-5" fill="#020C22" x="4" y="3" width="10" height="1"></rect>
+            <text id="1" font-family="PTSans-Bold, PT Sans" font-size="4.30000019" font-weight="bold" fill="#020C22">
+                <tspan x="1" y="5">1</tspan>
+            </text>
+            <text id="2" font-family="PTSans-Bold, PT Sans" font-size="4.30000019" font-weight="bold" fill="#020C22">
+                <tspan x="1" y="9">2</tspan>
+            </text>
+            <text id="3" font-family="PTSans-Bold, PT Sans" font-size="4.30000019" font-weight="bold" fill="#020C22">
+                <tspan x="1" y="13">3</tspan>
+            </text>
+            <rect id="Rectangle-5-Copy" fill="#020C22" x="4" y="7" width="9" height="1"></rect>
+            <rect id="Rectangle-5-Copy-2" fill="#020C22" x="4" y="11" width="10" height="1"></rect>
+        </g>
+    </g>
+</svg>

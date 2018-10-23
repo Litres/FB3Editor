@@ -12,7 +12,8 @@ Ext.define(
 		xtype: 'main-editor-button-strikethrough',
 		//controller: 'main.editor.button.strikethrough',
 		
-		html: '<i class="fa fa-strikethrough"></i>',
+		//html: '<i class="fa fa-strikethrough"></i>',
+		iconCls: 'litres-icon-strikethrough',
 
 		tooltipText: 'Зачёркнутый',
 		elementName: 'strikethrough'

@@ -12,7 +12,8 @@ Ext.define(
 		xtype: 'main-editor-button-sub',
 		//controller: 'main.editor.button.sub',
 		
-		html: '<i class="fa fa-subscript"></i>',
+		//html: '<i class="fa fa-subscript"></i>',
+		iconCls: 'litres-icon-sub',
 
 		tooltipText: 'Подстрочный текст',
 		elementName: 'sub'

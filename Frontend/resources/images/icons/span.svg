@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="14px" viewBox="0 0 13 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>98E68AC4-9D3D-4B74-AB0E-74C48C54F3FE</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-101.000000, -315.000000)">
+        <g id="Page-1-Copy" transform="translate(100.000000, 315.000000)">
+            <rect id="Background" x="0" y="0" width="15" height="15"></rect>
+            <circle id="Oval" stroke="#020C22" cx="7.5" cy="2.5" r="1.5"></circle>
+            <path d="M11,13.5 C10.5818366,13.5 11.2485033,13.5 13,13.5 C13,10.4624339 10.5375661,8 7.5,8 C4.46243388,8 2,10.4624339 2,13.5 C3.97450628,13.5 4.64117295,13.5 4,13.5" id="Oval-Copy" stroke="#020C22" transform="translate(7.500000, 10.750000) rotate(-180.000000) translate(-7.500000, -10.750000) "></path>
+            <rect id="Rectangle-3" stroke="#020C22" x="6.5" y="6.5" width="2" height="1"></rect>
+            <path d="M7.5,13 L7.5,4.02313723" id="Path-2" stroke="#020C22"></path>
+        </g>
+    </g>
+</svg>

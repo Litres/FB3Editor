@@ -45,10 +45,10 @@ Ext.define(
 			            xtype: 'editor-toolbar-button-a'
 		            },
 		            {
-			            xtype: 'editor-toolbar-button-unstyle'
+			            xtype: 'tbspacer'
 		            },
 		            {
-			            xtype: 'tbspacer'
+			            xtype: 'editor-toolbar-button-unstyle'
 		            },
 		            cleanBtn
 	            ]

@@ -15,9 +15,12 @@ Ext.define(
         controller: 'editor.toolbar.button.unstyle',
         xtype: 'editor-toolbar-button-unstyle',
 
-        html: '<i class="fa fa-eraser"></i>',
+        //html: '<i class="fa fa-eraser"></i>',
+        //iconCls: 'litres-icon-eraser',
+	    iconCls: 'fa fa-eraser',
+	    text: 'Очистить',
 
-        tooltipText: 'Убрать форматирование',
+        tooltipText: 'Очистить',
 
         isActiveSelection: function ()
         {

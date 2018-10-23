@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'editor-toolbar-button-a',
 		controller: 'editor.toolbar.button.a',
 
-		html: '<i class="fa fa-link"></i>',
+		//html: '<i class="fa fa-link"></i>',
+		iconCls: 'litres-icon-link',
 
 		elementName: 'a',
         tooltipText: 'Ссылка',

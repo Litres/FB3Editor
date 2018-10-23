@@ -12,7 +12,8 @@ Ext.define(
 		xtype: 'main-editor-button-sup',
 		//controller: 'main.editor.button.sup',
 		
-		html: '<i class="fa fa-superscript"></i>',
+		//html: '<i class="fa fa-superscript"></i>',
+		iconCls: 'litres-icon-sup',
 
 		tooltipText: 'Надстрочный текст',
 		elementName: 'sup'

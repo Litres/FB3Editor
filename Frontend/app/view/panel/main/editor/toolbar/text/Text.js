@@ -35,22 +35,23 @@ Ext.define(
 					xtype: 'main-editor-button-strikethrough'
 				},
 				{
-					xtype: 'main-editor-button-spacing'
-				},
-				{
 					xtype: 'main-editor-button-sub'
 				},
 				{
 					xtype: 'main-editor-button-sup'
 				},
 				{
+					xtype: 'main-editor-button-smallcaps'
+				},
+				{
+					xtype: 'main-editor-button-spacing'
+				},
+				spacer,
+				{
 					xtype: 'main-editor-button-code'
 				},
 				{
 					xtype: 'main-editor-button-span'
-				},
-				{
-					xtype: 'main-editor-button-smallcaps'
 				},
 				spacer,
 				{

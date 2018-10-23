@@ -14,7 +14,8 @@ Ext.define(
 
 		enableToggle: true,
 		tooltipType: 'title',
-		html: '<i class="fa fa-paragraph"></i>',
+		//html: '<i class="fa fa-paragraph"></i>',
+		iconCls: 'litres-icon-paragraph',
 		tooltip: 'Показывать непечатаемые символы в редакторе текста',
 
 		handler: function ()

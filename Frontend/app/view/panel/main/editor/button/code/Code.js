@@ -12,7 +12,8 @@ Ext.define(
 		xtype: 'main-editor-button-code',
 		//controller: 'main.editor.button.code',
 
-		html: '<i class="fa fa-code"></i>',
+		//html: '<i class="fa fa-code"></i>',
+		text: 'CODE',
 
 		tooltipText: 'Код',
 		elementName: 'code'

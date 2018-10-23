@@ -12,9 +12,11 @@ Ext.define(
 		xtype: 'main-editor-button-spacing',
 		//controller: 'main.editor.button.spacing',
 		
-		html: '<i class="fa fa-text-width"></i>',
+		//html: '<i class="fa fa-text-width"></i>',
+		iconCls: 'litres-icon-spacing',
+		text: 'Разраядка',
 
-		tooltipText: 'Межбуквенный интервал',
+		tooltipText: 'Разраядка',
 		elementName: 'spacing'
 	}
 );

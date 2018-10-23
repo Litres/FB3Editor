@@ -17,7 +17,7 @@ Ext.define(
         xtype: 'main-editor-button-splitelement',
 
         //html: '<i class="fa fa-border fa-cut"></i>',
-	    iconCls: 'fa fa-cut',
+	    iconCls: 'litres-icon-cut',
 	    text: 'Рассечь блок',
 
         tooltipText: 'Рассечь блок',

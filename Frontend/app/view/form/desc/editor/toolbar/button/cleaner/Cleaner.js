@@ -16,7 +16,9 @@ Ext.define(
 		xtype: 'form-desc-editor-toolbar-button-cleaner',
 		controller: 'form.desc.editor.toolbar.button.cleaner',
 
-		html: '<i class="fa fa-paint-brush"></i>',
+		// html: '<i class="fa fa-paint-brush"></i>',
+		iconCls: 'fa fa-paint-brush',
+		text: 'Уборка',
 		tooltip: 'Уборка',
 		tooltipType: 'title',
 		disabled: true,

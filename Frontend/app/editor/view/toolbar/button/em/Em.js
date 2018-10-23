@@ -11,7 +11,8 @@ Ext.define(
 
 		xtype: 'editor-toolbar-button-em',
 
-		html: '<i class="fa fa-italic"></i>',
+		//html: '<i class="fa fa-italic"></i>',
+		iconCls: 'litres-icon-em',
 
 		elementName: 'em',
         tooltipText: 'Курсив',

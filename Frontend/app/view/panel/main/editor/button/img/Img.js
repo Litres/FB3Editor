@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-img',
 		controller: 'main.editor.button.img',
 		
-		html: '<i class="fa fa-picture-o"></i>',
+		//html: '<i class="fa fa-picture-o"></i>',
+		iconCls: 'litres-icon-img',
 
 		tooltipText: 'Изображение',
 		elementName: 'img',

@@ -18,6 +18,7 @@ Ext.define(
 
 		//html: '<i class="fa fa-table fa-lg"></i>',
 		text: 'Таблица',
+		arrowVisible: false,
 
 		tooltipText: 'Таблица',
 		elementName: 'table',

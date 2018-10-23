@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-ul',
 		controller: 'main.editor.button.ul',
 		
-		html: '<i class="fa fa-list-ul"></i>',
+		//html: '<i class="fa fa-list-ul"></i>',
+		iconCls: 'litres-icon-ul',
 
 		tooltipText: 'Маркированный список',
 		elementName: 'ul'

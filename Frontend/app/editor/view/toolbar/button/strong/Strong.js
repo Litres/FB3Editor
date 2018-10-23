@@ -11,7 +11,8 @@ Ext.define(
 
 		xtype: 'editor-toolbar-button-strong',
 
-		html: '<i class="fa fa-bold"></i>',
+		//html: '<i class="fa fa-bold"></i>',
+		iconCls: 'litres-icon-strong',
 
 		elementName: 'strong',
         tooltipText: 'Полужирный'

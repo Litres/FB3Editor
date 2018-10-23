@@ -12,7 +12,8 @@ Ext.define(
 		xtype: 'main-editor-button-underline',
 		//controller: 'main.editor.button.underline',
 
-		html: '<i class="fa fa-underline"></i>',
+		//html: '<i class="fa fa-underline"></i>',
+		iconCls: 'litres-icon-underline',
 
 		tooltipText: 'Подчёркнутый',
 		elementName: 'underline'

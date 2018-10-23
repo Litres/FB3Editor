@@ -15,7 +15,8 @@ Ext.define(
 		xtype: 'main-editor-button-ol',
 		controller: 'main.editor.button.ol',
 		
-		html: '<i class="fa fa-list-ol"></i>',
+		//html: '<i class="fa fa-list-ol"></i>',
+		iconCls: 'litres-icon-ol',
 
 		tooltipText: 'Нумерованный список',
 		elementName: 'ol'

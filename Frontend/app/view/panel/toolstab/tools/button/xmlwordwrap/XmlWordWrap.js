@@ -14,7 +14,8 @@ Ext.define(
 
         enableToggle: true,
         tooltipType: 'title',
-        html: '<i class="fa fa-exchange"></i>',
+        //html: '<i class="fa fa-exchange"></i>',
+	    iconCls: 'litres-icon-exchange',
         tooltip: 'Переносить длинные строки в редакторе XML',
 
         handler: function ()

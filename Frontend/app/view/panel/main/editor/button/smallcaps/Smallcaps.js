@@ -11,7 +11,9 @@ Ext.define(
 
         xtype: 'main-editor-button-smallcaps',
 
-        html: '<i class="fa fa-text-height"></i>',
+        //html: '<i class="fa fa-text-height"></i>',
+	    iconCls: 'litres-icon-smallcaps',
+        text: 'Капитель',
 
         tooltipText: 'Капитель',
         elementName: 'smallcaps'

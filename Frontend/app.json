@@ -233,6 +233,9 @@
             "path": "bower_components/codemirror/lib/codemirror.css"
         },
         {
+            "path": "resources/css/icons.css"
+        },
+        {
             "path": "resources/css/editor.css"
         },
         {
@@ -284,7 +287,7 @@
      */
     "production": {
         "loader": {
-            "cache": "785",
+            "cache": "786",
             "cacheParam": "_v"
         }
     },

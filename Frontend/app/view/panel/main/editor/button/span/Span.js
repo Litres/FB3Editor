@@ -12,7 +12,7 @@ Ext.define(
 		xtype: 'main-editor-button-span',
 		//controller: 'main.editor.button.span',
 		
-		html: '<i class="fa fa-anchor"></i>',
+		iconCls: 'litres-icon-span',
 
 		tooltipText: 'span',
 		elementName: 'span'
