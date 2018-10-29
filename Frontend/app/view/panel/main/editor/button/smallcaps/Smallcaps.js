@@ -13,7 +13,7 @@ Ext.define(
 
         //html: '<i class="fa fa-text-height"></i>',
 	    iconCls: 'litres-icon-smallcaps',
-        text: 'Капитель',
+        text: 'КАПИТЕЛЬ',
 
         tooltipText: 'Капитель',
         elementName: 'smallcaps'

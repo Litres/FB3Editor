@@ -94,6 +94,9 @@ body {
 	margin: 4px 10px 0 5px;
 	background: rgba(130, 140, 162, 0.1);
 }
+.editor-button-spacing {
+	letter-spacing: 0.2em;
+}
 
 /* Панель навигации */
 .panel-main-navigation {
