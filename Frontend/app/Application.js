@@ -14,7 +14,7 @@ FBEditor.version
 FBEditor.accessHub
 
 {Boolean} Загружен ли xmllint
-FBEditor.xmllintResult
+FBEditor.accessXmllint
 
 {Window} Родительское окно
 FBEditor.parentWindow
