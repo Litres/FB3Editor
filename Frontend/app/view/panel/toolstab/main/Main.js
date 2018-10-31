@@ -40,12 +40,22 @@ Ext.define(
 		{
 			var me = this,
 				tt = me.translateText,
+				activeToolbar,
 				loading,
 				mainEditor,
 				manager,
 				sch;
 			
-			if (!FBEditor.accessXmllint)
+			if (FBEditor.accessXmllint)
+			{
+				activeToolbar = me.getActiveToolbar();
+				
+				if (activeToolbar)
+				{
+					me.setActiveToolbar(activeToolbar);
+				}
+			}
+			else
 			{
 				// добавляем надпись о загрузке xmllint
 				
