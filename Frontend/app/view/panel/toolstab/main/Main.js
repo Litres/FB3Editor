@@ -22,12 +22,6 @@ Ext.define(
 
 		/**
 		 * @private
-		 * @property {Boolean} Загружен ли xmllint.
-		 */
-		accessXmllint: false,
-
-		/**
-		 * @private
 		 * @property {FBEditor.view.panel.main.editor.Editor} Редактор тела книги.
 		 */
 		mainEditor: null,
@@ -42,41 +36,40 @@ Ext.define(
 			loading: 'Загрузка xmllint ...'
 		},
 
-		initComponent: function ()
+		afterRender: function ()
 		{
-			var me = this;
-
-			// надпись по умолчанию, до тех пор, пока не появятся кнопки
-			me.items = [
-				{
+			var me = this,
+				tt = me.translateText,
+				loading,
+				mainEditor,
+				manager,
+				sch;
+			
+			if (!FBEditor.accessXmllint)
+			{
+				// добавляем надпись о загрузке xmllint
+				
+				loading = {
 					xtype: 'component',
 					padding: 10,
 					style: {
 						color: 'gray',
 						background: '#fff'
 					},
-					html: me.translateText.loading
-				}
-			];
-
-			me.callParent(arguments);
-		},
-
-		afterRender: function ()
-		{
-			var me = this,
-				mainEditor,
-				manager,
-				sch;
-
-			// редактор тела книги
-			mainEditor = me.getMainEditor();
-
-			// вызываем тестовую проверку по схеме для определения загрузки xmllint
-			manager = mainEditor.getManager();
-			sch = manager.getSchema();
-			sch.validXml({xml: 'test', callback: me.verifyResult, scope: me});
-
+					html: tt.loading
+				};
+				
+				me.add(loading);
+				
+				// редактор тела книги
+				mainEditor = me.getMainEditor();
+				
+				// вызываем тестовую проверку по схеме для определения загрузки xmllint
+				manager = mainEditor.getManager();
+				sch = manager.getSchema();
+				sch.validXml({xml: 'test', callback: me.verifyResult, scope: me});
+			}
+			
 			me.callParent(arguments);
 		},
 
@@ -140,7 +133,7 @@ Ext.define(
 			);
 
 			me.activeToolbar = toolbar;
-			toolbar.setVisible(me.accessXmllint);
+			toolbar.setVisible(FBEditor.accessXmllint);
 		},
 
 		/**
@@ -188,7 +181,7 @@ Ext.define(
 				first = items.first();
 				me.remove(first);
 
-				me.accessXmllint = true;
+				FBEditor.accessXmllint = true;
 
 				if (activeToolbar)
 				{
