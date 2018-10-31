@@ -10,6 +10,9 @@
 {String} Версия
 FBEditor.version
 
+{Boolean} Загружен ли xmllint
+FBEditor.accessXmllint
+
 {Window} Родительское окно
 FBEditor.parentWindow
 
