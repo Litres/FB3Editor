@@ -60,11 +60,12 @@ Ext.define(
             // заменяем сущности на спецсимволы
             me.text = Ext.String.htmlDecode(me.text);
 
-            /*
-            // заменяем сущности на спецсимволы <, >
+           
+            // преобразуем сущности
 			me.text = me.text.replace(/&lt;/g, '<');
 			me.text = me.text.replace(/&gt;/g, '>');
-
+			
+            /*
 			// преобразуем сущность &nbsp; в пробел
 			me.text = me.text.replace(/&nbsp;/g, " ");
 			*/
@@ -86,8 +87,9 @@ Ext.define(
 				text;
 
 			text = withoutText ? '' : me.text;
-
-			// заменяем спецсимволы <, > на сущности
+			
+			// преобразуем спецсимволы
+			text = text.replace(/&/g, '&amp;');
 			text = text.replace(/</g, '&lt;');
 			text = text.replace(/>/g, '&gt;');
 
