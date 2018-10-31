@@ -13,6 +13,9 @@ FBEditor.version
 {Boolean} Доступен ли хаб
 FBEditor.accessHub
 
+{Boolean} Загружен ли xmllint
+FBEditor.xmllintResult
+
 {Window} Родительское окно
 FBEditor.parentWindow
 
@@ -193,7 +196,7 @@ Ext.define(
 
             // инициализируем менеджер горячих клавиш
             FBEditor.hotkeys.Manager.init();
-
+            
 			// получаем список токенов csrf и определяем доступность хаба
 			me.initCsrf();
 		},
