@@ -16,8 +16,7 @@ Ext.define(
         xtype: 'editor-toolbar-button-unstyle',
 
         //html: '<i class="fa fa-eraser"></i>',
-        //iconCls: 'litres-icon-eraser',
-	    iconCls: 'fa fa-eraser',
+        iconCls: 'litres-icon-eraser',
 	    text: 'Очистить',
 
         tooltipText: 'Очистить',

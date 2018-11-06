@@ -1,0 +1,59 @@
+.#{$prefix}tool-close {
+  @if $enable-font-icons and ($tool-close-glyph != null) {
+    @include font-icon($tool-close-glyph);
+    background: none;
+  } @else {
+    background: url('images/tool/close.svg') no-repeat right;
+    opacity: 1;
+  }
+}
+
+.#{$prefix}tool-maximize {
+  @if $enable-font-icons and ($tool-maximize-glyph != null) {
+    @include font-icon($tool-maximize-glyph);
+    background: none;
+  } @else {
+    background: url('images/tool/maximize.svg') no-repeat right;
+    opacity: 1;
+  }
+}
+
+.#{$prefix}tool-collapse-left {
+  @if $enable-font-icons and ($tool-collapse-left-glyph != null) {
+    @include font-icon($tool-collapse-left-glyph);
+    background: none;
+  } @else {
+    background: url('images/tool/collapse_left.svg') no-repeat right;
+    opacity: 1;
+  }
+}
+
+.#{$prefix}tool-collapse-right {
+  @if $enable-font-icons and ($tool-expand-right-glyph != null) {
+    @include font-icon($tool-expand-right-glyph);
+    background: none;
+  } @else {
+    background: url('images/tool/collapse_right.svg') no-repeat right;
+    opacity: 1;
+  }
+}
+
+.#{$prefix}tool-expand-left {
+  @if $enable-font-icons and ($tool-collapse-left-glyph != null) {
+    @include font-icon($tool-collapse-left-glyph);
+    background: none;
+  } @else {
+    background: url('images/tool/collapse_left.svg') no-repeat right;
+    opacity: 1;
+  }
+}
+
+.#{$prefix}tool-expand-right {
+  @if $enable-font-icons and ($tool-expand-right-glyph != null) {
+    @include font-icon($tool-expand-right-glyph);
+    background: none;
+  } @else {
+    background: url('images/tool/collapse_right.svg') no-repeat right;
+    opacity: 1;
+  }
+}

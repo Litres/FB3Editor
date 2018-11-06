@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
-    <title>A3BE58C4-23C7-4885-AD23-22A4C256D8A1</title>
+    <!-- Generator: sketchtool 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>B2D160C8-D2D8-4956-9A90-52A586CFD53C</title>
     <desc>Created with sketchtool.</desc>
-    <defs></defs>
-    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-101.000000, -366.000000)">
-        <g id="Page-1-Copy-4" transform="translate(100.000000, 365.000000)">
-            <rect id="Background" x="0" y="0" width="15" height="15"></rect>
-            <g id="Group" transform="translate(7.363961, 7.363961) rotate(-45.000000) translate(-7.363961, -7.363961) translate(4.863961, 0.863961)" stroke="#020C22">
-                <rect id="Rectangle-4" x="0.5" y="0.5" width="4" height="5" rx="2"></rect>
-                <rect id="Rectangle-4-Copy" x="2.5" y="3.5" width="1" height="6"></rect>
-                <rect id="Rectangle-4-Copy-2" x="0.5" y="7.5" width="4" height="5" rx="2"></rect>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons" transform="translate(-101.000000, -366.000000)">
+            <g id="Page-1-Copy-4" transform="translate(100.000000, 365.000000)">
+                <rect id="Background" x="0" y="0" width="15" height="15"></rect>
+                <g id="Group" transform="translate(7.363961, 7.363961) rotate(-45.000000) translate(-7.363961, -7.363961) translate(4.863961, 0.863961)">
+                    <rect id="Rectangle-4" stroke="#020C22" x="0.5" y="0.5" width="4" height="5" rx="2"></rect>
+                    <rect id="Rectangle-4-Copy" fill="#020C22" x="2" y="3" width="1" height="7"></rect>
+                    <rect id="Rectangle-4-Copy-2" stroke="#020C22" x="0.5" y="7.5" width="4" height="5" rx="2"></rect>
+                </g>
             </g>
         </g>
     </g>

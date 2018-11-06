@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="13px" height="11px" viewBox="0 0 13 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
-    <title>7C395E9A-6FDB-4D56-A634-877B36E41312</title>
+    <!-- Generator: sketchtool 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>205B19BD-98CC-4B22-8529-07C189273D74</title>
     <desc>Created with sketchtool.</desc>
-    <defs></defs>
-    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-101.000000, -342.000000)">
-        <g id="Page-1-Copy-3" transform="translate(100.000000, 340.000000)">
-            <rect id="Background" x="0" y="0" width="15" height="15"></rect>
-            <rect id="Rectangle-4" stroke="#020C22" x="1.5" y="2.5" width="12" height="10"></rect>
-            <circle id="Oval-2" stroke="#020C22" cx="4.5" cy="5.5" r="1"></circle>
-            <path d="M4.51397973,10.5 C6.30525496,10.5 6.75096922,10.5 11.5,10.5 L11.5,5.46522128 C9.42196174,5.35417029 8.51062066,5.87503083 8.49997661,6.975323 C8.48872938,8.13796687 7.91353514,8.41761674 6.57736528,8.46199673 C6.30318972,8.47110328 6.18999537,8.47655092 6.04717677,8.49007667 C5.07223875,8.58240895 4.59874801,9.02685148 4.51397985,10.5 Z" id="Path-3" stroke="#020C22"></path>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons" transform="translate(-101.000000, -342.000000)">
+            <g id="Page-1-Copy-3" transform="translate(100.000000, 340.000000)">
+                <rect id="Background" x="0" y="0" width="15" height="15"></rect>
+                <rect id="Rectangle-4" stroke="#020C22" x="1.5" y="2.5" width="12" height="10"></rect>
+                <circle id="Oval-2" stroke="#020C22" cx="4.5" cy="5.5" r="1"></circle>
+                <path d="M4.51397973,10.5 C6.30525496,10.5 6.75096922,10.5 11.5,10.5 L11.5,5.46522128 C9.42196174,5.35417029 8.51062066,5.87503083 8.49997661,6.975323 C8.48872938,8.13796687 7.91353514,8.41761674 6.57736528,8.46199673 C6.30318972,8.47110328 6.18999537,8.47655092 6.04717677,8.49007667 C5.07223875,8.58240895 4.59874801,9.02685148 4.51397985,10.5 Z" id="Path-3" stroke="#020C22"></path>
+            </g>
         </g>
     </g>
 </svg>

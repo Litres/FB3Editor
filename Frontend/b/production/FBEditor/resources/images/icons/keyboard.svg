@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
-    <title>E9A8E44A-BB83-484A-B3DA-626772A156A6</title>
+    <!-- Generator: sketchtool 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>DAF97932-1660-4A69-B970-F11963331BD8</title>
     <desc>Created with sketchtool.</desc>
-    <defs></defs>
-    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-101.000000, -468.000000)">
-        <g id="Page-1-Copy-9" transform="translate(100.000000, 465.000000)">
-            <rect id="Background" x="0" y="0" width="15" height="15"></rect>
-            <rect id="Rectangle-8" stroke="#020C22" x="1.5" y="3.5" width="12" height="8" rx="1"></rect>
-            <rect id="Rectangle" stroke="#020C22" x="3.5" y="5.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-5" stroke="#020C22" x="3.5" y="7.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy" stroke="#020C22" x="5.5" y="5.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-6" stroke="#020C22" x="5.5" y="7.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-2" stroke="#020C22" x="7.5" y="5.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-7" stroke="#020C22" x="7.5" y="7.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-3" stroke="#020C22" x="9.5" y="5.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-8" stroke="#020C22" x="9.5" y="7.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-4" stroke="#020C22" x="11.5" y="5.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-9" stroke="#020C22" x="11.5" y="7.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-10" stroke="#020C22" x="10.5" y="9.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-12" stroke="#020C22" x="3.5" y="9.5" width="1" height="1"></rect>
-            <rect id="Rectangle-Copy-11" stroke="#020C22" x="6.5" y="9.5" width="2" height="1"></rect>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons" transform="translate(-101.000000, -468.000000)">
+            <g id="Page-1-Copy-9" transform="translate(100.000000, 465.000000)">
+                <rect id="Background" x="0" y="0" width="15" height="15"></rect>
+                <rect id="Rectangle-8" stroke="#020C22" x="1.5" y="3.5" width="12" height="8" rx="1"></rect>
+                <rect id="Rectangle" fill="#020C22" x="3" y="5" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-5" fill="#020C22" x="3" y="7" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy" fill="#020C22" x="5" y="5" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-6" fill="#020C22" x="5" y="7" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-2" fill="#020C22" x="7" y="5" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-7" fill="#020C22" x="7" y="7" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-3" fill="#020C22" x="9" y="5" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-8" fill="#020C22" x="9" y="7" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-4" fill="#020C22" x="11" y="5" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-9" fill="#020C22" x="11" y="7" width="1" height="1"></rect>
+                <rect id="Rectangle-Copy-10" fill="#020C22" x="10" y="9" width="2" height="1"></rect>
+                <rect id="Rectangle-Copy-12" fill="#020C22" x="3" y="9" width="2" height="1"></rect>
+                <rect id="Rectangle-Copy-11" fill="#020C22" x="6" y="9" width="3" height="1"></rect>
+            </g>
         </g>
     </g>
 </svg>
