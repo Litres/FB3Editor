@@ -125,6 +125,22 @@ Ext.define(
 
 			return style;
 		},
+		
+		getXml: function (withoutText, withoutFormat)
+		{
+			var me = this,
+				xml;
+			
+			if (me.prev() || me.next())
+			{
+				// игнорируем отступы, если элемент расположен внутри текста
+				withoutFormat = true;
+			}
+			
+			xml = me.callParent(arguments);
+			
+			return xml;
+		},
 
 		getData: function ()
 		{
