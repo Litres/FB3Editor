@@ -20,7 +20,6 @@ Ext.define(
 				manager = btn.getEditorManager(),
 				els = {},
 				nodes = {},
-				viewportId,
 				range;
 
 			range = manager.getRange();
@@ -41,12 +40,8 @@ Ext.define(
 
 			//console.log('range', range);
 
-			viewportId = nodes.node.viewportId;
-
 			els.node = nodes.node.getElement();
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-
+			els.parent = els.node.getParent();
 			els.parent = els.node.getParentName('section');
 			els.parent = els.parent ? els.parent : els.node.getParentName('main');
 
@@ -55,23 +50,16 @@ Ext.define(
 				btn.disable();
 				return;
 			}
-
-			nodes.parent = els.parent.nodes[viewportId];
-
-			// ищем существующую вложенную секцию
-			nodes.next = nodes.parent.firstChild;
-			els.next = nodes.next ? nodes.next.getElement() : null;
-			while (els.next)
+			
+			// ищем существующие вложенные секции
+			els.sectionCount = els.parent.getChildrenByName('section', true);
+			els.isSection = els.sectionCount.length > 1;
+			
+			if (els.isSection)
 			{
-				if (els.next.isSection)
-				{
-					// вложенная секция уже существует
-					btn.disable();
-
-					return;
-				}
-				nodes.next = nodes.next.nextSibling;
-				els.next = nodes.next ? nodes.next.getElement() : null;
+				// вложенная секция уже существует
+				btn.disable();
+				return;
 			}
 
 			btn.enable();
