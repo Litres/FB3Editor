@@ -11,7 +11,10 @@ Ext.define(
 			'FBEditor.editor.CreateContent',
 			'FBEditor.editor.Factory',
 			'FBEditor.editor.History',
+			'FBEditor.editor.Range',
+			'FBEditor.editor.overlay.Overlay',
 			'FBEditor.editor.schema.Schema',
+			'FBEditor.editor.search.Search',
 			'FBEditor.xsl.Editor'
 		],
 
@@ -19,9 +22,9 @@ Ext.define(
 		 * @property {Selection} Текущее выделение.
 		 */
 		selection: null,
-
+		
 		/**
-		 * @property {Object} Данные текущего выделения.
+		 * @property {FBEditor.editor.Range} Объект текущего выделения.
 		 */
 		range: null,
 
@@ -69,6 +72,12 @@ Ext.define(
 		 * @property {FBEditor.editor.view.Editor} Редактор текста.
 		 */
 		editor: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.search.Search} Поиск по тексту.
+		 */
+		search: null,
 
 		/**
 		 * @private
@@ -122,6 +131,9 @@ Ext.define(
 
 			// создаем схему
 			me.schema = Ext.create('FBEditor.editor.schema.Schema', rootElementName);
+			
+			// создаем поиск по тексту
+			me.search = Ext.create('FBEditor.editor.search.Search', {manager: me});
 		},
 
 		/**
@@ -320,6 +332,15 @@ Ext.define(
 		getHistory: function ()
 		{
 			return this.history;
+		},
+
+		/**
+		 * Возвращает поиск по тексту.
+		 * @return {FBEditor.editor.search.Search}
+		 */
+		getSearch: function ()
+		{
+			return this.search;
 		},
 
 		/**
@@ -597,6 +618,7 @@ Ext.define(
 				panelProps = me.getPanelProps(),
 				el,
 				range,
+				newRange,
 				difCollapsed;
 
 			el = node.getElement ? node.getElement() : null;
@@ -615,12 +637,14 @@ Ext.define(
 				me.focusElement = el;
 				me.selection = sel || window.getSelection();
 				range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
+				
+				//console.log('setFocusElement', range, el);
 
                 if (range)
 				{
 					difCollapsed = me.range ? me.range.collapsed !== range.collapsed : true;
-
-					me.range = {
+					
+					newRange = {
 						collapsed: range.collapsed,
 						common: range.commonAncestorContainer,
 						start: range.startContainer,
@@ -634,12 +658,14 @@ Ext.define(
 							return range.toString();
 						}
 					};
+					
+					me.setRange(newRange);
 				}
 				else
 				{
 					difCollapsed = true;
-
-					me.range = {
+					
+					newRange = {
 						collapsed: true,
 						common: node,
 						start: node,
@@ -653,6 +679,8 @@ Ext.define(
 							return '';
 						}
 					};
+					
+					me.setRange(newRange);
 				}
 
 				if (!el.isText && me.cashSyncBtn !== el.elementId || difCollapsed)
@@ -728,6 +756,7 @@ Ext.define(
 				root = me.getContent(),
 				sel = window.getSelection(),
 				range,
+				newRange,
 				helper,
 				viewportId;
 
@@ -769,7 +798,7 @@ Ext.define(
 				
 				// сохраняем выделение
 				range = sel.getRangeAt(0);
-				me.range = {
+				newRange = {
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
 					end: range.endContainer,
@@ -778,7 +807,9 @@ Ext.define(
 						end: range.endOffset
 					}
 				};
-
+				
+				me.setRange(newRange);
+				
 				// сохраняем фокусный элемент и ставим фокус
 				helper = data.focusElement.getNodeHelper();
 				me.setFocusElement(helper.getNode(viewportId), sel, data.withoutSyncButtons);
@@ -1025,6 +1056,25 @@ Ext.define(
 		getRange: function ()
 		{
 			return this.range;
+		},
+		
+		/**
+		 * Сохраняет данные текущего выделения.
+		 * @param {Object} range
+		 * @param {Node} range.common
+		 * @param {Node} range.start
+		 * @param {Node} range.end
+		 * @param {Object} range.offset
+		 * @param {Number} range.offset.start
+		 * @param {Number} range.offset.end
+		 * @param {Function} range.toString
+		 */
+		setRange: function (range)
+		{
+			var me = this;
+			
+			// создаем новый объект выделения
+			me.range = range ? Ext.create('FBEditor.editor.Range', range) : null;
 		},
 
 		/**
@@ -1859,6 +1909,84 @@ Ext.define(
 				helper = root.getNodeHelper();
 				helper.scrollBy(0, -posCur.h * 2);
 			}
+		},
+		
+		/**
+		 * Добавляет подсветку в текст.
+		 * @param {FBEditor.editor.overlay.Overlay} overlay Объект подсветки.
+		 */
+		addOverlay: function (overlay)
+		{
+			var me = this,
+				cls = overlay.getCls(),
+				data;
+			
+			// получаем данные подсветки
+			data = overlay.getData();
+			
+			Ext.each(
+				data,
+				function (item)
+				{
+					var el = item.getEl(),
+						pos = item.getPos();
+					
+					if (el.isText)
+					{
+						// создаем подсветку в текстовом элементе
+						el.addOverlay(pos, cls);
+					}
+				}
+			);
+		},
+		
+		/**
+		 * Удаляет подсветку в тексте.
+		 * @param {FBEditor.editor.overlay.Overlay} overlay Объект подсветки.
+		 */
+		removeOverlay: function (overlay)
+		{
+			var me = this,
+				cls = overlay.getCls(),
+				data;
+			
+			// получаем данные подсветки
+			data = overlay.getData();
+			
+			Ext.each(
+				data,
+				function (item)
+				{
+					var el = item.getEl();
+					
+					if (el.isText)
+					{
+						// создаем подсветку в текстовом элементе
+						el.removeOverlay(cls);
+					}
+				}
+			);
+		},
+		
+		/**
+		 * Обновляет порядковые номера всех элементов.
+		 */
+		updateNumbers: function ()
+		{
+			var me = this,
+				root = me.getContent(),
+				number = 0;
+			
+			root.setNumber(number);
+			
+			root.eachAll(
+				function (el)
+				{
+					//console.log(number, el);
+					number++;
+					el.setNumber(number);
+				}
+			);
 		}
 	}
 );
