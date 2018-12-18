@@ -123,6 +123,13 @@ Ext.define(
          * @property {String} Xml элемента.
          */
         xml: null,
+		
+		/**
+		 * @private
+		 * @property {Number} Порядковый номер элемента.
+		 * Отсчитывается с 0 от корневого элемента.
+		 */
+		number: null,
 
 		/**
 		 * @private
@@ -410,6 +417,15 @@ Ext.define(
 
 			parent.remove(me, viewportId);
 		},
+		
+		/**
+		 * Возвращает родительский элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getParent: function ()
+		{
+			return this.parent;
+		},
 
 		/**
 		 * Возвращает первый элемент.
@@ -503,11 +519,12 @@ Ext.define(
 		},
 
 		/**
-		 * Перебирает всех потомков, передавая их в функцию.
+		 * Перебирает все дочерние элементы, передавая их в функцию.
 		 * @param {Function} fn Функция-итератор.
 		 * @param {Object} [scope] Область видимости.
+		 * @param {Boolean} [reverse] Перебирать в обратном порядке.
 		 */
-		each: function (fn, scope)
+		each: function (fn, scope, reverse)
 		{
 			var me = this,
 				pos = 0,
@@ -515,14 +532,53 @@ Ext.define(
 
 			scope = scope || me;
 
-			while (pos < me.children.length)
+			if (!reverse)
 			{
-				child = me.children[pos];
-				pos++;
-				fn.apply(scope, [child, pos - 1]);
+				while (pos < me.children.length)
+				{
+					child = me.children[pos];
+					pos++;
+					fn.apply(scope, [child, pos - 1]);
+				}
 			}
-
-			//Ext.Array.each(this.children, fn);
+			else
+			{
+				pos = me.children.length - 1;
+				
+				while (pos >= 0)
+				{
+					child = me.children[pos];
+					pos--;
+					fn.apply(scope, [child, pos + 1]);
+				}
+			}
+		},
+		
+		/**
+		 * Перебирает всех потомков, передавая их в функцию.
+		 * @param {Function} fn Функция-итератор.
+		 * @param {Object} [scope] Область видимости.
+		 * @param {Boolean} [reverse] Перебирать в обратном порядке.
+		 */
+		eachAll: function (fn, scope, reverse)
+		{
+			var me = this;
+			
+			scope = scope || me;
+			
+			scope.each(
+				function (el)
+				{
+					fn.apply(scope, [el]);
+					
+					if (el.children.length)
+					{
+						el.eachAll(fn, el, reverse);
+					}
+				},
+				scope,
+				reverse
+			);
 		},
 
 		/**
@@ -1008,6 +1064,25 @@ Ext.define(
 		{
 			return this.xmlTag;
 		},
+		
+		/**
+		 * Возвращает порядковый номер элемента.
+		 * Номера отсчитываются с 0 от корневого элемента.
+		 * @return {Number} Номер элемента.
+		 */
+		getNumber: function ()
+		{
+			return this.number;
+		},
+		
+		/**
+		 * Устанавливает порядковый номер элемента.
+		 * @param {Number} number Номер элемента.
+		 */
+		setNumber: function (number)
+		{
+			this.number = number;
+		},
 
 		/**
 		 * Возвращает корневой элемент.
@@ -1384,11 +1459,14 @@ Ext.define(
 						arr = Ext.Array.push(arr, child);
 					}
 
-					childArr = child.getChildrenByName(name, deep);
-
-					if (childArr.length)
+					if (deep)
 					{
-						arr = Ext.Array.push(arr, childArr);
+						childArr = child.getChildrenByName(name, deep);
+						
+						if (childArr.length)
+						{
+							arr = Ext.Array.push(arr, childArr);
+						}
 					}
 				}
 			);

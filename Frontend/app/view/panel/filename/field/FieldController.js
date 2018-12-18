@@ -35,8 +35,16 @@ Ext.define(
 			{
 				val = key === e.ENTER ? val : me.getDisplayValue();
 				me.setNewValue(val);
+				
+				if (val)
+				{
+					//FBEditor.getEditorManager().getSearch().find(val);
+				}
+				else
+				{
+					//FBEditor.getEditorManager().getSearch().removeOverlay();
+				}
 			}
-
 		},
 
 		onActivate: function ()
@@ -60,7 +68,7 @@ Ext.define(
 				view = me.getView(),
 				val = value,
 				panel;
-
+			
 			panel = Ext.getCmp('panel-filename');
 			val = view.isValid() ? val : me.getDisplayValue();
 			panel.fireEvent('setName', val);

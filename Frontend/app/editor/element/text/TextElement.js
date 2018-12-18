@@ -9,8 +9,10 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
-			'FBEditor.editor.element.text.TextElementController'
+			'FBEditor.editor.element.text.TextElementController',
+			'FBEditor.editor.helper.element.TextNode'
 		],
+		
 		controllerClass: 'FBEditor.editor.element.text.TextElementController',
 
 		showedOnTree: false,
@@ -119,6 +121,17 @@ Ext.define(
 			);
 
 			manager.setSuspendEvent(false);
+		},
+		
+		createNodeHelper: function ()
+		{
+			var me = this,
+				nodeHelper;
+			
+			nodeHelper = Ext.create('FBEditor.editor.helper.element.TextNode', me);
+			me.nodeHelper = nodeHelper;
+			
+			return nodeHelper;
 		},
 
 		/**
@@ -239,6 +252,36 @@ Ext.define(
 			// обновляем отображение элемента
 			helper = me.getNodeHelper();
 			helper.setNodeValue(text);
+		},
+		
+		/**
+		 * Добавляет подсветку в текст.
+		 * @param {Number[]} pos Позиция совпадения.
+		 * @param {Number} pos.start Начальная позиция.
+		 * @param {Number} pos.end Конечная позиция.
+		 * @param {Boolean} pos.selection Выделить ли совпадение.
+		 * @param {String} cls CSS-класс подсветки.
+		 */
+		addOverlay: function (pos, cls)
+		{
+			var me = this,
+				helper;
+			
+			helper = me.getNodeHelper();
+			helper.addOverlay(pos, cls);
+		},
+		
+		/**
+		 * Удаляет подсветку в тексте.
+		 * @param {String} cls CSS-класс подсветки.
+		 */
+		removeOverlay: function (cls)
+		{
+			var me = this,
+				helper;
+			
+			helper = me.getNodeHelper();
+			helper.removeOverlay(cls);
 		},
 
 		/**

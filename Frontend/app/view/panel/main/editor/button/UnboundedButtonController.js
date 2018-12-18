@@ -24,7 +24,7 @@ Ext.define(
 				name = btn.elementName,
 				xml,
 				range;
-
+			
 			if (!manager.availableSyncButtons())
 			{
 				me.verifyResult(true);
@@ -198,6 +198,8 @@ Ext.define(
 				// проверяем по схеме
 				me.verify(xml);
 			}
+			
+			//console.log('div xml', manager.getXml());
 
 			return true;
 		}

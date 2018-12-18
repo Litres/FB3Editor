@@ -22,6 +22,15 @@
 	background-color: #fff;
 }
 
+/* подсветка в тексте */
+.overlay-search,
+.overlay-search-selection {
+	background: rgba(255, 255, 0, .4);
+}
+.overlay-search-selection {
+    outline: 1px solid #000;
+}
+
 /* корневой элемент */
 .main-editor-viewport .el-body {
 	width: 100%;
