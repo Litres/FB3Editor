@@ -114,6 +114,12 @@ Ext.define(
 		 * Используется для защиты от многократной синхронизации кнопок.
 		 */
 		cashSyncBtn: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.overlay.Overlay[]} Текущие оверлеи в тексте.
+		 */
+		overlays: null,
 
 		/**
 		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
@@ -1912,14 +1918,19 @@ Ext.define(
 		},
 		
 		/**
-		 * Добавляет подсветку в текст.
-		 * @param {FBEditor.editor.overlay.Overlay} overlay Объект подсветки.
+		 * Добавляет оверлей в текст.
+		 * @param {FBEditor.editor.overlay.Overlay} overlay Оверлей.
 		 */
 		addOverlay: function (overlay)
 		{
 			var me = this,
 				cls = overlay.getCls(),
+				overlays = me.overlays,
 				data;
+			
+			overlays = overlays || [];
+			overlays.push(overlay);
+			me.overlays = overlays;
 			
 			// получаем данные подсветки
 			data = overlay.getData();
@@ -1941,8 +1952,8 @@ Ext.define(
 		},
 		
 		/**
-		 * Удаляет подсветку в тексте.
-		 * @param {FBEditor.editor.overlay.Overlay} overlay Объект подсветки.
+		 * Удаляет оверлей в тексте.
+		 * @param {FBEditor.editor.overlay.Overlay} overlay Оверлей.
 		 */
 		removeOverlay: function (overlay)
 		{
@@ -1966,6 +1977,31 @@ Ext.define(
 					}
 				}
 			);
+			
+			// удаляем оверлей из кэша
+			Ext.each(
+				me.overlays,
+				function (item, i)
+				{
+					if (item.getCls() === cls)
+					{
+						me.overlays.splice(i, 1);
+					}
+				}
+			);
+		},
+		
+		/**
+		 * Удаляет все оверлеи в тексте.
+		 */
+		removeAllOverlays: function ()
+		{
+			var me = this;
+			
+			while (me.overlays && me.overlays.length)
+			{
+				me.removeOverlay(me.overlays[0]);
+			}
 		},
 		
 		/**
