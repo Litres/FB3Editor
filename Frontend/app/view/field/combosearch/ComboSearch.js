@@ -187,8 +187,6 @@ Ext.define(
 
 			// определяем задержку запроса, в зависимости от количества введенных символов
 			me.queryDelay = val && val.length > me.minChars ? me.queryDelayFast : me.queryDelaySlow;
-
-			me.callParent(arguments);
 		},
 
 		onKeyUp: function (e)
