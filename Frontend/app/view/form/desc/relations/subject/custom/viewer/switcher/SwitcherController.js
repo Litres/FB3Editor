@@ -9,7 +9,6 @@ Ext.define(
 	{
 		extend: 'Ext.app.ViewController',
 		
-		alias: 'controller.form.desc.relations.subject.custom.viewer.switcher',
-
+		alias: 'controller.form.desc.relations.subject.custom.viewer.switcher'
 	}
 );

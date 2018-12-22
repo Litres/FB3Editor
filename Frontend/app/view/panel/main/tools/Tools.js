@@ -36,7 +36,7 @@ Ext.define(
 				xtype: 'panel-main-toolstab'
 			},
 			{
-				xtype: 'component-logo-litres',
+				xtype: 'component-logo-litres'
 			},
 			{
 				xtype: 'panel-filename'
