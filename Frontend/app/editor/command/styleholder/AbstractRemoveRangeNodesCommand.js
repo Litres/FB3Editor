@@ -16,16 +16,18 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
 				els = {},
 				nodes = {},
-				sel = window.getSelection(),
 				viewportId,
-				range,
-				manager;
+				range;
 
 			try
 			{
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
@@ -35,14 +37,14 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				range = sel.getRangeAt(0);
+				range = data.range = FBEditor.getEditorManager().getRange();
 
 				if (range.collapsed)
 				{
 					throw Error('Отсутствует выделение');
 				}
 
-				nodes.common = range.commonAncestorContainer;
+				nodes.common = range.common;
 				els.common = nodes.common.getElement();
 
 				manager = els.common.getManager();
@@ -50,59 +52,45 @@ Ext.define(
 
 				viewportId = data.viewportId = nodes.common.viewportId;
 
-				els.startContainer = range.startContainer.getElement();
-				els.endContainer = range.endContainer.getElement();
+				els.startContainer = range.start.getElement();
+				els.endContainer = range.end.getElement();
 
-				if (els.startContainer.elementId === els.common.elementId &&
-				    els.endContainer.elementId === els.common.elementId &&
-				    !els.common.isText)
+				if (els.startContainer.equal(els.common) && els.endContainer.equal(els.common) && !els.common.isText)
 				{
 					// некорректное выделение
 					throw Error('Некорректное выделение');
 				}
 
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					parentStart: range.commonAncestorContainer.parentNode,
-					collapsed: range.collapsed,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					}
-				};
-
-				if (els.startContainer.elementId === els.common.elementId && !els.common.isText)
+				if (els.startContainer.equal(els.common) && !els.common.isText)
 				{
 					// некорректное начальное выделение
-					data.range.start = nodes.common.firstChild;
-					data.range.offset.start = 0;
-					els.startContainer = data.range.start.getElement();
+					range.start = nodes.common.firstChild;
+					range.offset.start = 0;
+					els.startContainer = range.start.getElement();
 				}
-				else if (els.endContainer.elementId === els.common.elementId && !els.common.isText)
+				else if (els.endContainer.equal(els.common) && !els.common.isText)
 				{
 					// некорректное конечное выделение
-					data.range.end = nodes.common.lastChild;
-					data.range.offset.end = 0;
-					els.endContainer = data.range.end.getElement();
+					range.end = nodes.common.lastChild;
+					range.offset.end = 0;
+					els.endContainer = range.end.getElement();
 				}
 
-				if (els.startContainer.elementId === els.endContainer.elementId && !els.common.isText)
+				if (els.startContainer.equal(els.endContainer) && !els.common.isText)
 				{
-					nodes.common = data.range.start;
-					data.range.common = nodes.common;
+					nodes.common = range.start;
+					range.common = nodes.common;
 					els.common = nodes.common.getElement();
 				}
 
-				console.log('remove range ' + me.elementName, data.range);
+				console.log('remove range ' + me.elementName, range);
 
 				// удаленные элементы
 				nodes.removed = [];
 
 				// курсор
 				nodes.cursor = nodes.common;
-				nodes.startCursor = data.range.offset.start;
+				nodes.startCursor = range.offset.start;
 
 				if (els.common.isText)
 				{
@@ -116,7 +104,7 @@ Ext.define(
 					// сохраняем старое значение
 					data.oldValue = nodes.common.nodeValue;
 
-					if (data.range.offset.start === 0 && data.range.offset.end === nodes.common.nodeValue.length)
+					if (range.offset.start === 0 && range.offset.end === nodes.common.nodeValue.length)
 					{
 						// выделен полностью текстовый узел
 
@@ -144,8 +132,7 @@ Ext.define(
 							nodes.next = nodes.common.nextSibling;
 							nodes.prev = nodes.common.previousSibling;
 
-							els.parent.remove(els.common);
-							nodes.parent.removeChild(nodes.common);
+							els.parent.remove(els.common, viewportId);
 						}
 
 						//console.log('isEmpty', els.parent.isEmpty(), els.parent, els.common);
@@ -177,8 +164,8 @@ Ext.define(
 					else
 					{
 						// получаем части текста
-						els.startValue = nodes.common.nodeValue.substring(0, data.range.offset.start);
-						els.endValue = nodes.common.nodeValue.substring(data.range.offset.end);
+						els.startValue = nodes.common.nodeValue.substring(0, range.offset.start);
+						els.endValue = nodes.common.nodeValue.substring(range.offset.end);
 
 						// меняем текст исходного элемента
 						els.common.setText(els.startValue + els.endValue);
@@ -187,40 +174,38 @@ Ext.define(
 				}
 				else
 				{
-					els.startContainer = range.startContainer.getElement();
-					els.endContainer = range.endContainer.getElement();
+					els.startContainer = range.start.getElement();
+					els.endContainer = range.end.getElement();
 
 					// необходимо ли переместить указатель для последнего выделенного элемента
-					els.needPrevEnd = els.endContainer.isText && data.range.offset.end < els.endContainer.text.length;
+					els.needPrevEnd = els.endContainer.isText && range.offset.end < els.endContainer.text.length;
 
 					// разбиваем конечный узел текущего выделения
-					nodes.common = data.range.common;
+					nodes.common = range.common;
 					els.common = nodes.common.getElement();
-					nodes.container = data.range.end;
-					nodes.end = manager.splitNode(els, nodes, data.range.offset.end);
+					nodes.container = range.end;
+					nodes.end = manager.splitNode(els, nodes, range.offset.end);
 					nodes.end = els.needPrevEnd ? nodes.end.previousSibling : nodes.end;
 					els.end = nodes.end.getElement();
 					if (els.end.isEmpty())
 					{
 						// удаляем пустой конечный узел
 						nodes.prev = nodes.end.previousSibling;
-						els.common.remove(els.end);
-						nodes.common.removeChild(nodes.end);
+						els.common.remove(els.end, viewportId);
 						nodes.end = nodes.prev;
 						els.end = nodes.end.getElement();
 					}
 
 					// разбиваем начальный узел текущего выделения
-					nodes.container = data.range.start;
-					nodes.start = manager.splitNode(els, nodes, data.range.offset.start);
+					nodes.container = range.start;
+					nodes.start = manager.splitNode(els, nodes, range.offset.start);
 					els.start = nodes.start.getElement();
 					nodes.prev = nodes.start.previousSibling;
 					els.prev = nodes.prev ? nodes.prev.getElement() : null;
 					if (els.prev && els.prev.isEmpty())
 					{
 						// удаляем пустой начальный узел
-						els.common.remove(els.prev);
-						nodes.common.removeChild(nodes.prev);
+						els.common.remove(els.prev, viewportId);
 					}
 
 					nodes.parent = nodes.common;
@@ -235,21 +220,19 @@ Ext.define(
 					// удаляем получившиеся узлы между начальным и конечным включительно
 					nodes.next = nodes.start;
 					els.next = nodes.next ? nodes.next.getElement() : null;
-					while (els.next && els.next.elementId !== els.end.elementId)
+					while (els.next && !els.next.equal(els.end))
 					{
 						nodes.buf = nodes.next.nextSibling;
 
 						nodes.removed.push(nodes.next);
-						els.parent.remove(els.next);
-						nodes.parent.removeChild(nodes.next);
+						els.parent.remove(els.next, viewportId);
 
 						nodes.next = nodes.buf;
 
 						els.next = nodes.next ? nodes.next.getElement() : null;
 					}
 					nodes.removed.push(nodes.end);
-					els.parent.remove(els.end);
-					nodes.parent.removeChild(nodes.end);
+					els.parent.remove(els.end, viewportId);
 
 					nodes.start = nodes.prevCursor;
 					els.start = nodes.start ? nodes.start.getElement() : null;
@@ -263,7 +246,7 @@ Ext.define(
 						nodes.cursor = nodes.prevCursor;
 
 						// при undo необходимо будет разбить узел обратно
-						data.range.needSplit = true;
+						range.needSplit = true;
 					}
 					else if (!els.parent.isEmpty())
 					{
@@ -289,7 +272,7 @@ Ext.define(
 					// вставляем пустой элемент
 
 					els.empty = manager.createEmptyElement();
-					nodes.empty = els.empty.getNode(data.viewportId);
+					nodes.empty = els.empty.getNode(viewportId);
 					els.parent.add(els.empty);
 					nodes.parent.appendChild(nodes.empty);
 
@@ -300,7 +283,7 @@ Ext.define(
 				//console.log('nodes, els', nodes, els);
 
 				// синхронизируем
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
 				manager.setCursor(
@@ -339,11 +322,13 @@ Ext.define(
 				els = {},
 				nodes = {},
 				factory = FBEditor.editor.Factory,
+				viewportId,
 				manager,
 				range;
 
 			try
 			{
+				viewportId = data.viewportId;
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
@@ -367,13 +352,13 @@ Ext.define(
 					// был выделен только текстовый узел
 
 					els.text = factory.createElementText(data.oldValue);
-					nodes.text = els.text.getNode(data.viewportId);
+					nodes.text = els.text.getNode(viewportId);
 
 					if (nodes.needAddText)
 					{
 						// восстанавливаем структуру, содержашавшую текст
 
-						nodes.common = els.common.getNode(data.viewportId);
+						nodes.common = els.common.getNode(viewportId);
 
 						nodes.deep = manager.getDeepFirst(nodes.common);
 						els.deep = nodes.deep.getElement();
@@ -500,7 +485,7 @@ Ext.define(
 					els.parent.removeEmptyText(true);
 				}
 
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
 				data.saveRange = {
