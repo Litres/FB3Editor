@@ -795,7 +795,7 @@ Ext.define(
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
 			manager = el ? el.getManager() : null;
-
+			
 			if (manager)
 			{
 				el.fireEvent('focus', e);
@@ -821,7 +821,7 @@ Ext.define(
 			node = me.getFocusNode(e.target);
 			el = node.getElement ? node.getElement() : null;
 			manager = el ? el.getManager() : null;
-
+			
             // фокус на элемент
 			manager.setFocusElement(node);
         },

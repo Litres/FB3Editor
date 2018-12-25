@@ -71,7 +71,7 @@ Ext.define(
 
             nodes.target = e.target;
             els.target = nodes.target.getElement ? nodes.target.getElement() : null;
-
+            
             if (!els.target.isRoot)
             {
                 me.callParent(arguments);
@@ -95,10 +95,11 @@ Ext.define(
 			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
 			els.start = range && range.startContainer.getElement ? range.startContainer.getElement() : null;
 			els.startRoot = els.start ? els.start.getRoot() : null;
-
+			
 			if (els.startRoot && els.startRoot.equal(els.root))
 			{
 				// восстановление фокуса не требуется
+				me.callParent(arguments);
 				return;
 			}
 
