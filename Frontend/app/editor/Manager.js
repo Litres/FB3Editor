@@ -803,8 +803,10 @@ Ext.define(
 				}
 				
 				// сохраняем выделение
+				/*
 				range = sel.getRangeAt(0);
 				newRange = {
+					collapsed: range.collapsed,
 					common: range.commonAncestorContainer,
 					start: range.startContainer,
 					end: range.endContainer,
@@ -815,6 +817,7 @@ Ext.define(
 				};
 				
 				me.setRange(newRange);
+				*/
 				
 				// сохраняем фокусный элемент и ставим фокус
 				helper = data.focusElement.getNodeHelper();
@@ -1056,8 +1059,8 @@ Ext.define(
 		},
 
 		/**
-		 * Возвращает данные текущего выделения в теле книги.
-		 * @return {Object}
+		 * Возвращает сохраненные данные выделения в теле книги.
+		 * @return {FBEditor.editor.Range}
 		 */
 		getRange: function ()
 		{
@@ -1065,8 +1068,41 @@ Ext.define(
 		},
 		
 		/**
+		 * Возвращает данные текущего выделения в теле книги, с учетом оверлея в тексте.
+		 * @return {FBEditor.editor.Range}
+		 */
+		getRangeCursor: function ()
+		{
+			var me = this,
+				sel = window.getSelection(),
+				range;
+			
+			range = sel.getRangeAt(0);
+			
+			range = {
+				collapsed: range.collapsed,
+				common: range.commonAncestorContainer,
+				start: range.startContainer,
+				end: range.endContainer,
+				offset: {
+					start: range.startOffset,
+					end: range.endOffset
+				},
+				toString: function ()
+				{
+					return range.toString();
+				}
+			};
+			
+			range = me.range = Ext.create('FBEditor.editor.Range', range);
+			
+			return range;
+		},
+		
+		/**
 		 * Сохраняет данные текущего выделения.
 		 * @param {Object} range
+		 * @param {Boolean} range.collapsed
 		 * @param {Node} range.common
 		 * @param {Node} range.start
 		 * @param {Node} range.end

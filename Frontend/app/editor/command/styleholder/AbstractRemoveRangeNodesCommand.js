@@ -25,9 +25,6 @@ Ext.define(
 
 			try
 			{
-				// удаляем все оверлеи в тексте
-				manager.removeAllOverlays();
-				
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
@@ -37,8 +34,11 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				range = data.range = FBEditor.getEditorManager().getRange();
-
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
 				if (range.collapsed)
 				{
 					throw Error('Отсутствует выделение');

@@ -47,11 +47,10 @@ Ext.define(
 		onKeyDownDelete: function (e)
 		{
 			var me = this,
-				sel = window.getSelection(),
 				name = me.getNameElement(),
+				manager = me.getElement().getManager(),
 				nodes = {},
 				els = {},
-				manager = me.getElement().getManager(),
 				viewportId,
 				helper,
 				cmd,
@@ -62,10 +61,13 @@ Ext.define(
 			{
 				e.preventDefault();
 			}
-
-			range = sel.getRangeAt(0);
-
-			nodes.node = range.startContainer;
+			
+			// получаем текущие данные выделения
+			range = manager.getRangeCursor();
+			
+			//console.log('range del', range);
+			
+			nodes.node = range.start;
 			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
 			els.p = els.node.hisName(name) ? els.node : els.node.parent;
@@ -82,7 +84,7 @@ Ext.define(
 			}
 
 			// курсор в конце элемента?
-			isEnd = range.startOffset === els.node.getText().length;
+			isEnd = range.offset.start === els.node.getText().length;
 
 			//console.log('range, isEnd, nodes', name, range, isEnd, nodes);
 
@@ -96,7 +98,7 @@ Ext.define(
 			}
 
 			// следующий за текущим
-			nodes.next = nodes.node.nextSibling;
+			els.next = els.node.next();
 
 			//console.log('range, isEnd, nodes', range, isEnd, nodes);
 
@@ -105,7 +107,7 @@ Ext.define(
 				// удаляем выделенную часть текста
 				me.removeRangeNodes();
 			}
-			else if (isEnd && !nodes.next)
+			else if (isEnd && !els.next)
 			{
 				// курсор в конце параграфа
 
@@ -131,20 +133,30 @@ Ext.define(
 			{
 				// редактируем текстовый элемент
 
-				nodes.text = isEnd ? nodes.next : nodes.node;
-				nodes.text = manager.getDeepFirst(nodes.text);
-
-				// ставим курсор в текст
-				manager.setCursor(
-					{
-						withoutSyncButtons: true,
-						startNode: nodes.text,
-						startOffset: isEnd ? 0 : range.startOffset
-					}
-				);
-
+				els.text = els.node.getDeepFirst();
+				
+				if (isEnd)
+				{
+					// курсор находится в конце текущего элемента
+					
+					helper = els.next.getNodeHelper();
+					range.common = helper.getNode(viewportId);
+					
+					els.text = els.next.getDeepFirst();
+					helper = els.text.getNodeHelper();
+					range.start = helper.getNode(viewportId);
+					
+					range.end = range.start;
+					range.offset.start = 0;
+					range.offset.end = 0;
+					
+					//manager.setRange(range);
+				}
+				
+				//console.log('is end', isEnd, range);
+				
 				// передаем событие текстовому элементу
-				nodes.text.getElement().fireEvent('keyDownDelete', e);
+				els.text.fireEvent('keyDownDelete', e, range);
 			}
 		},
 
