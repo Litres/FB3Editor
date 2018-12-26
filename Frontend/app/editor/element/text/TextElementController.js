@@ -12,40 +12,59 @@ Ext.define(
 			'FBEditor.editor.command.text.ModifiedCommand',
 			'FBEditor.editor.command.text.DeleteEmptyCommand'
 		],
-
-		onKeyDownDelete: function (e)
+		
+		/**
+		 *
+		 * @param {Object} e
+		 * @param {FBEditor.editor.Range} rangeFromP Данные выделения, переданные из родительского абзаца.
+		 */
+		onKeyDownDelete: function (e, rangeFromP)
 		{
 			var me = this,
 				el = me.getElement(),
-				sel = window.getSelection(),
+				manager = el.getManager(),
+				p,
 				cmd,
 				newValue,
 				range;
-
+			
 			if (e)
 			{
 				e.preventDefault();
 			}
-
-			range = sel.getRangeAt(0);
-
-			// новый текст
-			newValue = el.text.substring(0, range.startOffset) + el.text.substring(range.startOffset + 1);
-
-			if (newValue)
+			
+			// получаем текущие данные выделения
+			range = rangeFromP || manager.getRangeCursor();
+			
+			//console.log('range del text', range);
+			
+			if (!rangeFromP)
 			{
-				// редактируем текст
-				cmd = Ext.create('FBEditor.editor.command.text.ModifiedCommand', {newValue: newValue});
+				p = el.getStyleHolder();
+				
+				// передаем событие абзацу
+				p.fireEvent('keyDownDelete', e);
 			}
 			else
 			{
-				// удаляем пустой элемент
-				cmd = Ext.create('FBEditor.editor.command.text.DeleteEmptyCommand');
-			}
-
-			if (cmd.execute())
-			{
-				me.getHistory().add(cmd);
+				// новый текст
+				newValue = el.text.substring(0, range.offset.start) + el.text.substring(range.offset.start + 1);
+				
+				if (newValue)
+				{
+					// редактируем текст
+					cmd = Ext.create('FBEditor.editor.command.text.ModifiedCommand', {newValue: newValue});
+				}
+				else
+				{
+					// удаляем пустой элемент
+					cmd = Ext.create('FBEditor.editor.command.text.DeleteEmptyCommand');
+				}
+				
+				if (cmd.execute())
+				{
+					me.getHistory().add(cmd);
+				}
 			}
 		},
 

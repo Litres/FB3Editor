@@ -28,9 +28,6 @@ Ext.define(
 
 			try
 			{
-				// удаляем все оверлеи в тексте
-				manager.removeAllOverlays();
-				
 				if (data.saveRange)
 				{
 					// восстанавливаем выделение
@@ -40,7 +37,11 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				range = FBEditor.getEditorManager().getRange();
+				range = FBEditor.getEditorManager().getRangeCursor();
+
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
 				
 				console.log('split ' + me.elementName, range);
 

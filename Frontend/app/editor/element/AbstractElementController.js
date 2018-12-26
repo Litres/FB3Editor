@@ -501,7 +501,7 @@ Ext.define(
 		onKeyDownDelete: function (e)
 		{
 			var me = this;
-
+			
 			if (e)
 			{
 				e.preventDefault();

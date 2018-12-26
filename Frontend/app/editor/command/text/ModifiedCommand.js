@@ -13,13 +13,11 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
-				sel = window.getSelection(),
 				nodes = {},
 				els = {},
 				viewportId,
-				manager,
-				offset,
 				range;
 
 			try
@@ -31,30 +29,23 @@ Ext.define(
 					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
+				
+				// получаем данные из выделения
+				range = data.range = manager.getRange();
+				
+				//console.log('range', range);return false;
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 
-				range = sel.getRangeAt(0);
-
-				offset = {
-					start: range.startOffset,
-					end: range.endOffset
-				};
-
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					collapsed: range.collapsed,
-					offset: offset
-				};
-
-				nodes.node = range.startContainer;
+				nodes.node = range.start;
 				els.node = nodes.node.getElement();
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				viewportId = data.viewportId = nodes.node.viewportId;
 
-				console.log('edit text'/*, data.newValue, els.node, range*/);
+				console.log('edit text', data.newValue, els.node, range);
 
 				data.oldValue = els.node.getText();
 				els.node.setText(data.newValue, viewportId);
@@ -63,8 +54,8 @@ Ext.define(
 				manager.setCursor(
 					{
 						withoutSyncButtons: true,
-						startNode: data.range.start,
-						startOffset: offset.start,
+						startNode: range.start,
+						startOffset: range.offset.start,
 						focusElement: els.node
 					}
 				);
