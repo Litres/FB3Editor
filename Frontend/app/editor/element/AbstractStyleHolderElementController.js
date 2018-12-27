@@ -31,7 +31,7 @@ Ext.define(
 				// удаляем выделенную часть текста
 				me.removeRangeNodes();
 			}
-
+			
 			if (isSame)
 			{
 				// разбиваем элемент на два в позиции курсора
@@ -109,7 +109,7 @@ Ext.define(
 			}
 			else if (isEnd && !els.next)
 			{
-				// курсор в конце параграфа
+				// курсор в конце абзаца
 
 				els.nextP = els.p.next();
 
@@ -149,8 +149,6 @@ Ext.define(
 					range.end = range.start;
 					range.offset.start = 0;
 					range.offset.end = 0;
-					
-					//manager.setRange(range);
 				}
 				
 				//console.log('is end', isEnd, range);
@@ -163,25 +161,31 @@ Ext.define(
 		onKeyDownBackspace: function (e)
 		{
 			var me = this,
-				sel = window.getSelection(),
 				name = me.getNameElement(),
+				manager = me.getElement().getManager(),
 				nodes = {},
 				els = {},
-				manager = me.getElement().getManager(),
+				viewportId,
+				helper,
 				cmd,
 				range,
 				isStart;
-
-			e.preventDefault();
-
-			range = sel.getRangeAt(0);
-
-			nodes.node = range.startContainer;
+			
+			if (e)
+			{
+				e.preventDefault();
+			}
+			
+			// получаем текущие данные выделения
+			range = manager.getRangeCursor();
+			
+			nodes.node = range.start;
+			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement();
 			nodes.p = nodes.node.parentNode;
 			els.p = nodes.p.getElement();
 
-			if (els.node.isEmpty() && nodes.node.firstChild)
+			if (els.node.isEmpty() && els.node.first())
 			{
 				// пустой элемент
 				nodes.node = nodes.node.firstChild;
@@ -191,7 +195,7 @@ Ext.define(
 			}
 
 			// курсор в начале элемента?
-			isStart = range.startOffset === 0;
+			isStart = range.offset.start === 0;
 
 			//console.log('range, isStart, nodes', range, isStart, nodes);
 
@@ -204,19 +208,19 @@ Ext.define(
 				els.p = nodes.p.getElement();
 			}
 
-			// элемент перед текущим в параграфе
-			nodes.prev = nodes.node.previousSibling;
+			// элемент перед текущим в абзаце
+			els.prev = els.node.prev();
 
 			if (!range.collapsed)
 			{
 				// удаляем выделенную часть текста
 				me.removeRangeNodes();
 			}
-			else if (isStart && !nodes.prev)
+			else if (isStart && !els.prev)
 			{
-				// курсор в начале параграфа
+				// курсор в начале абзаца
 
-				// соединяем параграф с предыдущим
+				// соединяем абзац с предыдущим
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinPrevNodeCommand');
 
 				if (cmd.execute())
@@ -228,21 +232,27 @@ Ext.define(
 			{
 				// редактируем текстовый элемент
 
-				nodes.text = isStart ? nodes.prev : nodes.node;
-				nodes.text = manager.getDeepLast(nodes.text);
-				els.text = nodes.text.getElement();
-
-				// ставим курсор в текст
-				manager.setCursor(
-					{
-						withoutSyncButtons: true,
-						startNode: nodes.text,
-						startOffset: isStart ? els.text.getText().length : range.startOffset - 1
-					}
-				);
-
+				els.text = els.node.getDeepLast();
+				range.offset.start = range.offset.start - 1;
+				
+				if (isStart)
+				{
+					// курсор находится в начале текущего элемента
+					
+					helper = els.prev.getNodeHelper();
+					range.common = helper.getNode(viewportId);
+					
+					els.text = els.prev.getDeepFirst();
+					helper = els.text.getNodeHelper();
+					range.start = helper.getNode(viewportId);
+					
+					range.end = range.start;
+					range.offset.start = els.text.getText().length - 1;
+					range.offset.end = range.offset.start;
+				}
+				
 				// передаем событие текстовому элементу
-				nodes.text.getElement().fireEvent('keyDownBackspace', e);
+				els.text.fireEvent('keyDownBackspace', e, range); 
 			}
 		},
 
