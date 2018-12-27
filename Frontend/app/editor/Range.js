@@ -34,8 +34,8 @@ Ext.define(
 		 * @property {Number} Object.end Смещение в конечном узле.
 		 */
 		offset: {
-			start: null,
-			end: null
+			start: 0,
+			end: 0
 		},
 		
 		/**

@@ -14,7 +14,6 @@ Ext.define(
 		],
 		
 		/**
-		 *
 		 * @param {Object} e
 		 * @param {FBEditor.editor.Range} rangeFromP Данные выделения, переданные из родительского абзаца.
 		 */
@@ -67,38 +66,59 @@ Ext.define(
 				}
 			}
 		},
-
-		onKeyDownBackspace: function (e)
+		
+		/**
+		 * @param {Object} e
+		 * @param {FBEditor.editor.Range} rangeFromP Данные выделения, переданные из родительского абзаца.
+		 */
+		onKeyDownBackspace: function (e, rangeFromP)
 		{
 			var me = this,
 				el = me.getElement(),
-				sel = window.getSelection(),
+				manager = el.getManager(),
+				p,
 				cmd,
 				newValue,
 				range;
-
-			e.preventDefault();
-
-			range = sel.getRangeAt(0);
-
-			// новый текст
-			newValue = el.text.substring(0, range.startOffset) + el.text.substring(range.startOffset + 1);
-
-			if (newValue)
+			
+			if (e)
 			{
-				// редактируем текст
-				cmd = Ext.create('FBEditor.editor.command.text.ModifiedCommand',
-					{newValue: newValue, isBackspace: true});
+				e.preventDefault();
+			}
+			
+			// получаем текущие данные выделения
+			range = rangeFromP || manager.getRangeCursor();
+			
+			//console.log('range backspace text', range);
+			
+			if (!rangeFromP)
+			{
+				p = el.getStyleHolder();
+				
+				// передаем событие абзацу
+				p.fireEvent('keyDownBackspace', e);
 			}
 			else
 			{
-				// удаляем пустой элемент
-				cmd = Ext.create('FBEditor.editor.command.text.DeleteEmptyCommand', {isBackspace: true});
-			}
-
-			if (cmd.execute())
-			{
-				me.getHistory().add(cmd);
+				// новый текст
+				newValue = el.getText(0, range.offset.start) + el.getText(range.offset.start + 1);
+				
+				if (newValue)
+				{
+					// редактируем текст
+					cmd = Ext.create('FBEditor.editor.command.text.ModifiedCommand',
+						{newValue: newValue, isBackspace: true});
+				}
+				else
+				{
+					// удаляем пустой элемент
+					cmd = Ext.create('FBEditor.editor.command.text.DeleteEmptyCommand', {isBackspace: true});
+				}
+				
+				if (cmd.execute())
+				{
+					me.getHistory().add(cmd);
+				}
 			}
 		},
 
