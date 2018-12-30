@@ -17,26 +17,27 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
 				els = {},
 				nodes = {},
-				sel = window.getSelection(),
 				helper,
 				viewportId,
-				manager,
 				range;
 
 			try
 			{
 				// получаем данные из выделения
-				range = sel.getRangeAt(0);
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 
-				viewportId = data.viewportId = range.commonAncestorContainer.viewportId;
+				viewportId = data.viewportId = range.common.viewportId;
 
-				nodes.p = range.commonAncestorContainer;
+				nodes.p = range.common;
 				els.p = nodes.p.getElement();
 
-				manager = els.p.getManager();
 				manager.setSuspendEvent(true);
 
 				// ищем самый верхний контейнер
@@ -71,7 +72,7 @@ Ext.define(
 				{
 					// оба пустые
 
-					nodes.cursor = range.commonAncestorContainer;
+					nodes.cursor = range.common;
 					nodes.startCursor = 0;
 
 					nodes.bothEmpty = true;
@@ -108,7 +109,7 @@ Ext.define(
 						// соединяем текстовые узлы
 
 						// сохраняем позицию разделения
-						nodes.offset = els.last.text.length;
+						nodes.offset = els.last.getLength();
 
 						// курсор
 						helper = els.last.getNodeHelper();
