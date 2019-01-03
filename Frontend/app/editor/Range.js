@@ -68,6 +68,7 @@ Ext.define(
 		{
 			var me = this,
 				offset = range.offset,
+				toString,
 				helper,
 				el;
 			
@@ -95,7 +96,12 @@ Ext.define(
 			offset.end = el.isText ? helper.getOffset(range.end, offset.end) : offset.end;
 			
 			me.offset = offset;
-			me.toString = range.toString;
+			
+			toString = range.toString();
+			me.toString = function ()
+			{
+				return toString;
+			};
 		}
 	}
 );

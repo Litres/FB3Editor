@@ -16,25 +16,26 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
-				sel = window.getSelection(),
-				factory = FBEditor.editor.Factory,
 				helper,
 				viewportId,
-				manager,
 				range;
 
 			try
 			{
 				// получаем данные из выделения
-				range = sel.getRangeAt(0);
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 
-				viewportId = data.viewportId = range.commonAncestorContainer.viewportId;
-				nodes.p = range.commonAncestorContainer;
+				viewportId = data.viewportId = range.common.viewportId;
+				nodes.p = range.common;
 				els.p = nodes.p.getElement();
-				manager = els.p.getManager();
 				manager.setSuspendEvent(true);
 
 				// абзац
@@ -122,7 +123,7 @@ Ext.define(
 				els.cursor = els.newP ? els.newP.getDeepLast() : els.nextP.getDeepLast();
 				helper = els.cursor.getNodeHelper();
 				nodes.cursor = helper.getNode(viewportId);
-				nodes.startCursor = els.cursor.getText().length;
+				nodes.startCursor = els.cursor.getLength();
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,
