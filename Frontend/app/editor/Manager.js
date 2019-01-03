@@ -1075,22 +1075,23 @@ Ext.define(
 		{
 			var me = this,
 				sel = window.getSelection(),
-				range;
+				range,
+				curRange;
 			
-			range = sel.getRangeAt(0);
+			curRange = sel.getRangeAt(0);
 			
 			range = {
-				collapsed: range.collapsed,
-				common: range.commonAncestorContainer,
-				start: range.startContainer,
-				end: range.endContainer,
+				collapsed: curRange.collapsed,
+				common: curRange.commonAncestorContainer,
+				start: curRange.startContainer,
+				end: curRange.endContainer,
 				offset: {
-					start: range.startOffset,
-					end: range.endOffset
+					start: curRange.startOffset,
+					end: curRange.endOffset
 				},
 				toString: function ()
 				{
-					return range.toString();
+					return curRange.toString();
 				}
 			};
 			
