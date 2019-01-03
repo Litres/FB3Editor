@@ -16,6 +16,7 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				factory = FBEditor.editor.Factory,
+				manager = FBEditor.getEditorManager(),
 				res = false,
 				els = {},
 				nodes = {},
@@ -24,14 +25,10 @@ Ext.define(
 				helper,
 				viewportId,
 				attributes,
-				manager,
-				sel,
 				range;
 
 			try
 			{
-				console.log('create ' + me.elementName, data);
-
 				if (data.saveRange)
 				{
 					// восстанвливаем выделение
@@ -41,8 +38,12 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				sel = data.sel || window.getSelection();
-				range = sel.getRangeAt(0);
+				range = data.range = manager.getRangeCursor();
+
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
+				console.log('create ' + me.elementName, data);
 
 				if (range.collapsed)
 				{
@@ -52,26 +53,12 @@ Ext.define(
 				// аттрибуты создаваемого элемента
 				attributes = data.opts && data.opts.attributes ? data.opts.attributes : [];
 
-				nodes.common = range.commonAncestorContainer;
+				nodes.common = range.common;
 				els.common = nodes.common.getElement();
-				data.viewportId = nodes.common.viewportId;
-				viewportId = data.viewportId;
-
-				manager = manager || els.common.getManager();
+				viewportId = data.viewportId = nodes.common.viewportId;
 				manager.setSuspendEvent(true);
 
-				offset = {
-					start: range.startOffset,
-					end: range.endOffset
-				};
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					parentStart: range.startContainer.parentNode,
-					collapsed: range.collapsed,
-					offset: offset
-				};
+				offset = range.offset;
 				data.links = {};
 
 				//console.log('range', range);
@@ -147,13 +134,13 @@ Ext.define(
 					nodes.pp = [];
 
 					// первый параграф
-					els.firstP = range.startContainer.getElement();
+					els.firstP = range.start.getElement();
 					els.firstP = els.firstP.getStyleHolder();
 					helper = els.firstP.getNodeHelper();
 					nodes.firstP = helper.getNode(viewportId);
 
 					// последний параграф
-					els.lastP = range.endContainer.getElement().getStyleHolder();
+					els.lastP = range.end.getElement().getStyleHolder();
 					helper = els.lastP.getNodeHelper();
 					nodes.lastP = helper.getNode(viewportId);
 
@@ -189,7 +176,7 @@ Ext.define(
 						// разбиваем первый узел на два в точке начального выделения
 						nodes.common = nodes.firstP;
 						els.common = els.firstP;
-						nodes.container = range.startContainer;
+						nodes.container = range.start;
 						nodes.startContainer = manager.splitNode(els, nodes, offset.start);
 						els.startContainer = nodes.startContainer.getElement();
 						els.common.removeEmptyText();
@@ -198,7 +185,7 @@ Ext.define(
 					nodes.parentStart = nodes.startContainer.parentNode;
 					els.parentStart = nodes.parentStart.getElement();
 
-					nodes.endContainer = range.endContainer;
+					nodes.endContainer = range.end;
 					els.endContainer = nodes.endContainer.getElement();
 					nodes.parentEnd = nodes.endContainer.parentNode;
 					els.parentEnd = nodes.parentEnd.getElement();
@@ -208,8 +195,8 @@ Ext.define(
 						// конечная точка выделения находится в конце параграфа, разделение узла не требуется
 						nodes.endContainer = nodes.lastP.lastChild;
 					}
-					else if (els.endContainer.isText && els.parentEnd.elementId === els.lastP.elementId &&
-					         data.range.offset.end === els.endContainer.text.length)
+					else if (els.endContainer.isText && els.parentEnd.equal(els.lastP) &&
+					         offset.end === els.endContainer.getLength())
 					{
 						// конечная точка выделения находится в конце текстового узла,
 						// который является прямым потомком параграфа
