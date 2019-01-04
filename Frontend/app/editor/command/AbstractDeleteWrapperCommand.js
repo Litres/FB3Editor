@@ -13,12 +13,12 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				nodes = {},
 				els = {},
 				pos = {},
 				offset = {},
-				factory = FBEditor.editor.Factory,
 				helper,
 				viewportId,
 				manager,
@@ -27,9 +27,12 @@ Ext.define(
 			try
 			{
 				manager = data.opts.manager;
-				range = data.range || manager.getRange();
-				data.viewportId = range.start.viewportId;
-				viewportId = data.viewportId;
+				range = data.range = data.range || manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
+				viewportId = data.viewportId = range.start.viewportId;
 
 				console.log('del wrapper ' + me.elementName, range);
 
@@ -72,8 +75,7 @@ Ext.define(
 						{
 							// удаляем элементы, которые не li
 							data.first = nodes.first.nextSibling;
-							els.node.remove(els.first);
-							nodes.node.removeChild(nodes.first);
+							els.node.remove(els.first, viewportId);
 
 							// курсор
 							range.start = manager.getDeepFirst(data.first);
@@ -84,8 +86,7 @@ Ext.define(
 						}
 						else
 						{
-							els.parent.insertBefore(els.first, els.node);
-							nodes.parent.insertBefore(nodes.first, nodes.node);
+							els.parent.insertBefore(els.first, els.node, viewportId);
 
 							if (els.first.isLi)
 							{
@@ -94,15 +95,14 @@ Ext.define(
 								els.p = factory.createElement('p');
 								nodes.p = els.p.getNode(data.viewportId);
 
-								els.parent.insertBefore(els.p, els.first);
-								nodes.parent.insertBefore(nodes.p, nodes.first);
+								els.parent.insertBefore(els.p, els.first, viewportId);
 
-								if (els.first.elementId === data.first.getElement().elementId)
+								if (els.first.equal(data.first.getElement()))
 								{
 									// сохраняем ссылку на первый p
 									data.first = nodes.p;
 								}
-								if (els.first.elementId === data.last.getElement().elementId)
+								if (els.first.equal(data.last.getElement()))
 								{
 									// сохраняем ссылку на последний p
 									data.last = nodes.p;
@@ -112,14 +112,12 @@ Ext.define(
 								els.firstLi = nodes.firstLi ? nodes.firstLi.getElement() : null;
 								while (els.firstLi)
 								{
-									els.p.add(els.firstLi);
-									nodes.p.appendChild(nodes.firstLi);
+									els.p.add(els.firstLi, viewportId);
 									nodes.firstLi = nodes.first.firstChild;
 									els.firstLi = nodes.firstLi ? nodes.firstLi.getElement() : null;
 								}
 
-								els.parent.remove(els.first);
-								nodes.parent.removeChild(nodes.first);
+								els.parent.remove(els.first, viewportId);
 
 								els.first = els.p;
 								nodes.first = nodes.p;
@@ -131,15 +129,13 @@ Ext.define(
 					}
 
 					// удаляем обёртку
-					els.parent.remove(els.node);
-					nodes.parent.removeChild(nodes.node);
+					els.parent.remove(els.node, viewportId);
 				}
 				else
 				{
 					// снимаем форматирование в выделенном фрагменте
 
 					offset = Ext.clone(range.offset);
-					data.range = range;
 					data.links = {};
 					els.wrappers = [];
 
@@ -255,7 +251,7 @@ Ext.define(
 							nodes.endContainer = nodes.lastP.lastChild;
 						}
 						else if (els.endContainer.isText && els.parentEnd.equal(els.lastP) &&
-						         data.range.offset.end === els.endContainer.text.length)
+						         data.range.offset.end === els.endContainer.getLength())
 						{
 							// конечная точка выделения находится в конце текстового узла,
 							// который является прямым потомком параграфа
@@ -347,12 +343,15 @@ Ext.define(
 							el.upChildren(viewportId);
 						}
 					);
+					
+					// корректный родительский элемент для синхронизации
+					els.parent = els.parent.parent;
 				}
 
 				//console.log('els', els);
 
 				// синхронизируем элемент
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				manager.setSuspendEvent(false);
 
@@ -480,13 +479,11 @@ Ext.define(
 						while (els.firstP)
 						{
 							els.li.add(els.firstP, viewportId);
-							//nodes.li.appendChild(nodes.firstP);
 							nodes.firstP = nodes.last.firstChild;
 							els.firstP = nodes.firstP ? nodes.firstP.getElement() : null;
 						}
 
 						els.node.remove(els.last, viewportId);
-						//nodes.node.removeChild(nodes.last);
 					}
 				}
 				else if (data.wrappers)
@@ -518,7 +515,7 @@ Ext.define(
 
 					delete data.wrappers;
 				}
-
+				
 				els.parent.sync(viewportId);
 
 				manager.setSuspendEvent(false);
