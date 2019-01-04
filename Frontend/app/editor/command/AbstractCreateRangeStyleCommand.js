@@ -162,7 +162,7 @@ Ext.define(
 					pos.isEnd = els.lastP.isEndRange(range);
 					data.range.pos = pos;
 					
-					//console.log('pos', pos, range.toString());
+					console.log('pos', pos, range.toString());
 
 					if (pos.isStart)
 					{
