@@ -251,7 +251,7 @@ Ext.define(
 							nodes.endContainer = nodes.lastP.lastChild;
 						}
 						else if (els.endContainer.isText && els.parentEnd.equal(els.lastP) &&
-						         data.range.offset.end === els.endContainer.getLength())
+						         range.offset.end === els.endContainer.getLength())
 						{
 							// конечная точка выделения находится в конце текстового узла,
 							// который является прямым потомком параграфа
@@ -345,7 +345,7 @@ Ext.define(
 					);
 					
 					// корректный родительский элемент для синхронизации
-					els.parent = els.parent.parent;
+					els.parent = els.node.isText ? els.node.getStyleHolder() : els.node;
 				}
 
 				//console.log('els', els);

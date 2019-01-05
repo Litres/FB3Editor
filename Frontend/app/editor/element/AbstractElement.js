@@ -1567,9 +1567,9 @@ Ext.define(
 				text = me.getText(),
 				rangeStr = range.toString(),
 				isEnd;
-
-			isEnd = (rangeStr.lastIndexOf(text) === rangeStr.length - text.length) ||
-			        (text.lastIndexOf(rangeStr) === text.length - rangeStr.length);
+			
+			isEnd = (rangeStr.lastIndexOf(text) !== -1 && rangeStr.lastIndexOf(text) === rangeStr.length - text.length) ||
+				(text.lastIndexOf(rangeStr) !== -1 && text.lastIndexOf(rangeStr) === text.length - rangeStr.length);
 
 			return isEnd;
 		},
