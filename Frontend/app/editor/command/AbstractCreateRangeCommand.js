@@ -19,12 +19,13 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
 				els = {},
 				nodes = {},
 				offset = {},
-				manager,
-				sel,
+				helper,
+				viewportId,
 				collapsed,
 				range,
 				joinStartContainer,
@@ -41,13 +42,17 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				sel = data.sel || window.getSelection();
-				range = sel.getRangeAt(0);
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
+				viewportId = data.viewportId = range.common.viewportId;
+				
+				console.log('create range ' + me.elementName, range);
 
-				nodes.common = range.commonAncestorContainer;
+				nodes.common = range.common;
 				els.common = nodes.common.getElement();
-
-				manager = els.common.getManager();
 				manager.setSuspendEvent(true);
 
 				// ищем самый верхниий элемент, который может делиться на несколько
@@ -62,35 +67,23 @@ Ext.define(
 					}
 				}
 
-				data.viewportId = nodes.common.viewportId;
 				collapsed = range.collapsed;
+				offset = range.offset;
 
-				offset = {
-					start: range.startOffset,
-					end: range.endOffset
-				};
+				joinStartContainer = offset.start === 0 ?
+				                     !manager.isFirstNode(nodes.common, range.start) : true;
 
-				joinStartContainer = range.startOffset === 0 ?
-				                     !manager.isFirstNode(nodes.common, range.startContainer) : true;
+				joinEndContainer = offset.end === range.end.nodeValue.length ?
+				                   !manager.isLastNode(nodes.common, range.end) : true;
 
-				joinEndContainer = range.endOffset === range.endContainer.nodeValue.length ?
-				                   !manager.isLastNode(nodes.common, range.endContainer) : true;
-
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					prevParentStart: range.startContainer.parentNode.previousSibling,
-					collapsed: collapsed,
-					offset: offset,
-					joinStartContainer: joinStartContainer,
-					joinEndContainer : joinEndContainer
-				};
+				range.joinStartContainer = joinStartContainer;
+				range.joinEndContainer = joinEndContainer;
+				range.prevParentStart = range.start.parentNode.previousSibling;
 
 				//console.log('range', data.range);
 
-				nodes.startContainer = range.startContainer;
-				nodes.endContainer = range.endContainer;
+				nodes.startContainer = range.start;
+				nodes.endContainer = range.end;
 
 				// разбиваем конечный узел текущего выделения
 				nodes.container = nodes.endContainer;
@@ -103,8 +96,8 @@ Ext.define(
 					//console.log('удален пустой узел после разделения');
 					nodes.prev = nodes.endContainer.previousSibling;
 
-					els.common.remove(els.endContainer);
-					nodes.common.removeChild(nodes.endContainer);
+					els.common.remove(els.endContainer, viewportId);
+					//nodes.common.removeChild(nodes.endContainer);
 
 					nodes.endContainer = nodes.prev;
 					nodes.endContainer = joinEndContainer ? nodes.endContainer.previousSibling : nodes.endContainer;
@@ -132,17 +125,22 @@ Ext.define(
 				me.createNewElement(els, nodes);
 
 				// синхронизируем
-				els.common.sync(data.viewportId);
+				els.common.sync(viewportId);
 
 				// устанавливаем курсор
+				els.cursor = els.node.first();
+				helper = els.cursor.getNodeHelper();
+				nodes.cursor = helper.getNode(viewportId);
 				manager.setCursor(
 					{
-						startNode: nodes.node.firstChild
+						startNode: nodes.cursor
 					}
 				);
 
-				// сохраянем узлы
+				// сохраянем ссылки
 				data.saveNodes = nodes;
+				data.els = els;
+				data.range = range;
 
 				// проверяем по схеме
 				me.verifyElement(els.common);
@@ -156,6 +154,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 
@@ -173,34 +172,29 @@ Ext.define(
 			try
 			{
 				range = data.range;
+				els = data.els;
 				nodes = data.saveNodes;
-				viewportId = nodes.node.viewportId;
+				viewportId = data.viewportId;
 
 				console.log('undo create range ' + me.elementName, range, nodes);
 
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
+				els.parent = els.node.parent;
 
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				// переносим все элементы обратно в исходный контейнер
 
-				nodes.first = nodes.node.firstChild;
-				els.first = nodes.first.getElement();
+				els.first = els.node.first();
 
 				while (els.first)
 				{
-					els.parent.insertBefore(els.first, els.node);
-					nodes.parent.insertBefore(nodes.first, nodes.node);
-					nodes.first = nodes.node.firstChild;
-					els.first = nodes.first ? nodes.first.getElement() : null;
+					els.parent.insertBefore(els.first, els.node, viewportId);
+					els.first = els.node.first();
 				}
 
 				// удаляем новый элемент
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.node, viewportId);
 
 				// объединяем элементы в точках разделения
 				if (range.joinStartContainer)
@@ -262,35 +256,35 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				factory = FBEditor.editor.Factory;
 
 			els.node = factory.createElement(me.elementName);
-			nodes.node = els.node.getNode(data.viewportId);
 
 			// вставляем новый элемент
-			els.common.insertBefore(els.node, els.startContainer);
-			nodes.common.insertBefore(nodes.node, nodes.startContainer);
+			els.common.insertBefore(els.node, els.startContainer, viewportId);
 
 			// переносим элементы, которые находятся в текущем выделении в новый элемент
 
-			nodes.next = nodes.startContainer;
-			els.next = nodes.next.getElement();
+			//nodes.next = nodes.startContainer;
+			//els.next = nodes.next.getElement();
+			els.next = els.startContainer;
 
-			while (els.next && els.next.elementId !== els.endContainer.elementId)
+			while (els.next && !els.next.equal(els.endContainer))
 			{
-				nodes.buf = nodes.next.nextSibling;
+				//nodes.buf = nodes.next.nextSibling;
+				els.buf = els.next.next();
 
-				els.node.add(els.next);
-				nodes.node.appendChild(nodes.next);
+				els.node.add(els.next, viewportId);
 
-				nodes.next = nodes.buf;
-				els.next = nodes.next ? nodes.next.getElement() : null;
+				//nodes.next = nodes.buf;
+				//els.next = nodes.next ? nodes.next.getElement() : null;
+				els.next = els.buf;
 			}
 
-			if (els.next && els.next.elementId === els.endContainer.elementId && !data.range.joinEndContainer)
+			if (els.next && els.next.equal(els.endContainer) && !data.range.joinEndContainer)
 			{
-				els.node.add(els.next);
-				nodes.node.appendChild(nodes.next);
+				els.node.add(els.next, viewportId);
 			}
 		}
 	}
