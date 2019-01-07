@@ -11,13 +11,19 @@ Ext.define(
 
 		getNodeVerify: function (sel)
 		{
-			var els = {},
+			var manager = FBEditor.getEditorManager(),
+				els = {},
 				nodes = {},
 				viewportId,
 				range;
+			
+			// получаем данные из выделения
+			range = manager.getRangeCursor();
 
-			range = sel.getRangeAt(0);
-			nodes.node = range.startContainer;
+			// удаляем все оверлеи в тексте
+			manager.removeAllOverlays();
+			
+			nodes.node = range.start;
 			viewportId = nodes.node.viewportId;
 			els.node = nodes.node.getElement ? nodes.node.getElement() : null;
 			els.p = els.node ? els.node.getParentName('p') : null;

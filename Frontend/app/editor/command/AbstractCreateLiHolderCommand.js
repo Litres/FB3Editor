@@ -15,14 +15,13 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
-				factory = FBEditor.editor.Factory,
-				manager,
 				isInner,
 				viewportId,
-				sel,
 				range;
 
 			try
@@ -36,133 +35,103 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				sel = data.sel || window.getSelection();
-				range = sel.getRangeAt(0);
+				range = data.range = manager.getRange();
+				viewportId = data.viewportId = range.common.viewportId;
+				
+				console.log('create ' + me.elementName, range, data);
 
 				els.node = data.node.getElement();
-				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
-				data.viewportId = data.node.viewportId;
-				viewportId = data.viewportId;
+				// получаем все элементы p/li, которые затрагивают текущее выделение
 
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					parentStart: range.startContainer.parentNode,
-					collapsed: range.collapsed,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					}
-				};
+				els.pp = [];
 
-				// получаем все узлы p/li, которые затрагивают текущее выделение
-
-				nodes.pp = [];
-
-				// первый узел p/li
-				nodes.firstP = data.node;
-				els.firstP = nodes.firstP.getElement();
-				nodes.pp.push(nodes.firstP);
+				// первый элемент p/li
+				els.firstP = els.node;
+				els.pp.push(els.firstP);
 
 				// если в качестве узла в команду был передан узел li, то создается внутренний список
 				// если в качестве узла передан узел p, значит создается обычный список
 				isInner = els.firstP.isLi;
 				data.isInner = isInner;
 
-				// последний узел p/li
-				nodes.lastP = range.endContainer;
+				// последний элемент p/li
+				nodes.lastP = range.end;
 				els.lastP = nodes.lastP.getElement();
 				els.lastP = isInner ? els.lastP.getParentName('li') : els.lastP.getParentName('p');
-				nodes.lastP = els.lastP ? els.lastP.nodes[viewportId] : null;
 
-				if (els.firstP.elementId !== els.lastP.elementId)
+				if (!els.firstP.equal(els.lastP))
 				{
-					// находим список узлов p/li в контейнере
-					nodes.next = nodes.firstP.nextSibling;
-					els.next = nodes.next ? nodes.next.getElement() : null;
-
-					while (els.next && els.next.isP && els.next.elementId !== els.lastP.elementId)
+					// находим список элементов p/li в контейнере
+					els.next = els.firstP.next();
+					
+					while (els.next && els.next.isP && !els.next.equal(els.lastP))
 					{
-						nodes.pp.push(nodes.next);
-						nodes.next = nodes.next.nextSibling;
-						els.next = nodes.next ? nodes.next.getElement() : null;
+						els.pp.push(els.next);
+						els.next = els.next.next();
 					}
 
-					if (els.next && els.next.elementId === els.lastP.elementId)
+					if (els.next && els.next.equal(els.lastP))
 					{
-						// добавляем последний узел p/li перед выходом из цикла
-						nodes.pp.push(nodes.next);
+						// добавляем последний элемент p/li перед выходом из цикла
+						els.pp.push(els.next);
 					}
 				}
 
 				// родительский элемент узлов p/li
-				nodes.parent = nodes.firstP.parentNode;
-				els.parent = nodes.parent.getElement();
-
+				els.parent = els.firstP.getParent();
+				
 				// новый элемент
 				els.node = factory.createElement(me.elementName);
-				nodes.node = els.node.getNode(data.viewportId);
-				els.parent.insertBefore(els.node, els.firstP);
-				nodes.parent.insertBefore(nodes.node, nodes.firstP);
+				els.parent.insertBefore(els.node, els.firstP, viewportId);
 
-				// перебираем все узлы p/li, которые входят в выделение
+				// перебираем все элементы p/li, которые входят в выделение
 				// и помещаем их содержимое в список
 				Ext.Array.each(
-					nodes.pp,
+					els.pp,
 					function (p)
 					{
-						var elsLi = {},
-							nodesLi = {};
+						var elsLi = {};
 
-						nodesLi.p = p;
-						elsLi.p = nodesLi.p.getElement();
-
+						elsLi.p = p;
+							
 						// новый элемент li в списке
 						elsLi.node = factory.createElement('li');
-						nodesLi.node = elsLi.node.getNode(data.viewportId);
 
 						// добавляем в список
-						els.node.add(elsLi.node);
-						nodes.node.appendChild(nodesLi.node);
+						els.node.add(elsLi.node, viewportId);
 
 						// заполняем новый элемент li элементами из узла p/li
-						nodesLi.first = nodesLi.p.firstChild;
-						elsLi.first = nodesLi.first ? nodesLi.first.getElement() : null;
+						elsLi.first = elsLi.p.first();
 
 						while (elsLi.first)
 						{
-							elsLi.node.add(elsLi.first);
-							nodesLi.node.appendChild(nodesLi.first);
-							nodesLi.first = nodesLi.p.firstChild;
-							elsLi.first = nodesLi.first ? nodesLi.first.getElement() : null;
+							elsLi.node.add(elsLi.first, viewportId);
+							elsLi.first = elsLi.p.first();
 						}
 
 						// удаляем узел p/li
-						els.parent.remove(elsLi.p);
-						nodes.parent.removeChild(nodesLi.p);
+						els.parent.remove(elsLi.p, viewportId);
 					}
 				);
 
 				// синхронизируем
-				els.parent.sync(data.viewportId);
-
-				manager.setSuspendEvent(false);
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
 				manager.setCursor(
 					{
 						withoutSyncButtons: true,
-						startNode: data.range.start,
-						startOffset: data.range.offset.start,
-						focusElement: els.node.children[0]
+						startNode: range.start,
+						startOffset: range.offset.start,
+						focusElement: els.node.first()
 					}
 				);
 
-				// сохраянем узлы
+				// сохраянем ссылки
 				data.saveNodes = nodes;
+				data.els = els;
 				
 				// проверяем по схеме
 				me.verifyElement(els.parent);
@@ -176,6 +145,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 
@@ -183,10 +153,11 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
-				factory = FBEditor.editor.Factory,
+				helper,
 				manager,
 				range,
 				viewportId,
@@ -195,51 +166,52 @@ Ext.define(
 			try
 			{
 				range = data.range;
+				els = data.els;
 				nodes = data.saveNodes;
-				viewportId = nodes.node.viewportId;
+				viewportId = data.viewportId;
 				isInner = data.isInner;
 
-				//console.log('undo create ' + me.elementName, range, nodes);
-
-				els.node = nodes.node.getElement();
-				els.parent = nodes.parent.getElement();
+				console.log('undo create ' + me.elementName, range, els);
 
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				// переносим элементы из списка обратно
-				nodes.pp = [];
-				nodes.li = nodes.node.firstChild;
-				els.li = nodes.li ? nodes.li.getElement() : null;
+				els.pp = [];
+				els.li = els.node.first();
 
 				while (els.li)
 				{
-					// новый узел p/li
+					// новый элемент p/li
 					els.p = isInner ? factory.createElement('li') : factory.createElement('p');
-					nodes.p = els.p.getNode(viewportId);
-					nodes.pp.push(nodes.p);
+					//nodes.p = els.p.getNode(viewportId);
+					//nodes.pp.push(nodes.p);
+					els.pp.push(els.p);
 
-					els.parent.insertBefore(els.p, els.node);
-					nodes.parent.insertBefore(nodes.p, nodes.node);
+					els.parent.insertBefore(els.p, els.node, viewportId);
+					//nodes.parent.insertBefore(nodes.p, nodes.node);
 
-					nodes.first = nodes.li.firstChild;
-					els.first = nodes.first ? nodes.first.getElement() : null;
-
+					//nodes.first = nodes.li.firstChild;
+					//els.first = nodes.first ? nodes.first.getElement() : null;
+					els.first = els.li.first();
+					
 					while (els.first)
 					{
-						els.p.add(els.first);
-						nodes.p.appendChild(nodes.first);
-						nodes.first = nodes.li.firstChild;
-						els.first = nodes.first ? nodes.first.getElement() : null;
+						els.p.add(els.first, viewportId);
+						//nodes.p.appendChild(nodes.first);
+						//nodes.first = nodes.li.firstChild;
+						//els.first = nodes.first ? nodes.first.getElement() : null;
+						els.first = els.li.first()
 					}
 
-					nodes.li = nodes.li.nextSibling;
-					els.li = nodes.li ? nodes.li.getElement() : null;
+					//nodes.li = nodes.li.nextSibling;
+					//els.li = nodes.li ? nodes.li.getElement() : null;
+					els.li = els.li.next();
 				}
 
 				// удаляем список
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.node, viewportId);
+				//nodes.parent.removeChild(nodes.node);
 
 				// синхронизируем
 				els.parent.sync(viewportId);
@@ -256,7 +228,9 @@ Ext.define(
 				manager.setCursor(data.saveRange);
 
 				// сохраняем ссылку на первый узел p/li
-				data.node = nodes.pp[0];
+				els.first = els.pp[0];
+				helper = els.first.getNodeHelper();
+				data.node = helper.getNode();
 
 				res = true;
 			}
