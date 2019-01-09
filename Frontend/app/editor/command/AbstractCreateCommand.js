@@ -13,51 +13,43 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
 				els = {},
 				nodes = {},
-				manager,
-				sel,
 				range;
 
 			try
 			{
 				// получаем данные из выделения
-				sel = data.sel || window.getSelection();
-				range = sel.getRangeAt(0);
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					parentStart: range.startContainer.parentNode,
-					collapsed: range.collapsed,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					}
-				};
+				range = data.range = manager.getRangeCursor();
+				range.parentStart = range.start.parentNode;
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
+				console.log('create', me.elementName, range);
 
 				nodes.node = data.node || data.prevNode;
+				data.viewportId = nodes.node.viewportId;
 				els.node = nodes.node.getElement();
-
-				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
-				if (!nodes.node.parentNode)
+				if (!els.node.parent)
 				{
 					// если ссылка на элемент была потеряна в результате многократного использования ctrl+z,
 					// то пытаемся восстановить ссылку из текущего выделения
-					nodes.parent = data.range.parentStart;
+					
+					nodes.parent = range.parentStart;
 					els.parent = nodes.parent.getElement();
-					while (els.parent.xmlTag !== nodes.node.getElement().xmlTag)
+					
+					while (!els.parent.hisName(els.node.getName()))
 					{
-						nodes.parent = nodes.parent.parentNode;
-						els.parent = nodes.parent.getElement();
+						els.parent = els.parent.getParent();
 					}
-					nodes.node = nodes.parent;
+					
+					els.node = els.parent;
 				}
-
-				data.viewportId = nodes.node.viewportId;
 
 				// создаем элемент
 				me.createElement(els, nodes);
@@ -68,9 +60,9 @@ Ext.define(
 				// устанавливаем курсор
 				me.setCursor(els, nodes);
 
-				// сохраняем узел
-				data.saveNode = nodes.node;
-
+				// сохраняем ссылки
+				data.els = els;
+				
 				// проверяем по схеме
 				me.verifyElement(els.parent);
 
@@ -92,8 +84,7 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				els = {},
-				nodes = {},
+				els,
 				manager,
 				range,
 				viewportId;
@@ -101,19 +92,15 @@ Ext.define(
 			try
 			{
 				range = data.range;
+				els = data.els;
 
-				nodes.node = data.saveNode;
-				els.node = nodes.node.getElement();
-
+				console.log('undo create', me.elementName, range);
+				
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
-
-				viewportId = nodes.node.viewportId;
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+				viewportId = data.viewportId;
+				els.parent = els.node.getParent();
+				els.parent.remove(els.node, viewportId);
 
 				els.parent.sync(viewportId);
 
@@ -159,21 +146,20 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection(),
 				data = me.getData(),
-				viewportId,
 				helper,
 				manager;
 
 			manager = els.p.getManager();
 			data.oldRange = sel.getRangeAt(0);
-			viewportId = data.viewportId;
 			els.cursor = els.p.getDeepFirst();
 			helper = els.cursor.getNodeHelper();
-			nodes.cursor = helper.getNode(viewportId);
+			nodes.cursor = helper.getNode();
+			els.offset = els.cursor.isText ? els.cursor.getLength() : 0;
 
 			data.saveRange = {
 				withoutSyncButtons: true,
 				startNode: nodes.cursor,
-				startOffset: els.cursor.getText().length
+				startOffset: els.offset
 			};
 
 			manager.setCursor(data.saveRange);

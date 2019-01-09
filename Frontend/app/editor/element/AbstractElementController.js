@@ -1027,6 +1027,7 @@ Ext.define(
 			// получаем узел из выделения
 			sel = sel || window.getSelection();
 			range = sel.getRangeAt(0);
+			manager = els.node.getManager();
 
 			nodes.node = range.endContainer;
 			els.node = nodes.node.getElement();
@@ -1041,7 +1042,6 @@ Ext.define(
 			nameElements = me.getNameElementsVerify(nodes);
 
 			// проверяем элемент по схеме
-			manager = els.node.getManager();
 			sch = manager.getSchema();
 			name = els.parent.getName();
 			//console.log('name, nameElements', name, nameElements);

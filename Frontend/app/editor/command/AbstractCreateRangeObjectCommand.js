@@ -19,6 +19,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				elementName = me.elementName,
 				res = false,
 				els = {},
 				nodes = {},
@@ -28,6 +29,8 @@ Ext.define(
 
 			try
 			{
+				console.log('create range ' + elementName + ' from object', data);
+				
 				// выделенный элемент
                 nodes.focus = data.opts.focus;
                 els.focus = nodes.focus.getElement();
@@ -47,7 +50,7 @@ Ext.define(
                 els.splitContainer = nodes.splitContainer.getElement();
 
                 // создаем новый элемент c выделенным объектом
-				els.node = factory.createElement(me.elementName);
+				els.node = factory.createElement(elementName);
 				els.common.insertBefore(els.node, els.splitContainer, viewportId);
 				els.p = factory.createElement('p');
                 els.node.add(els.p, viewportId);
@@ -114,7 +117,7 @@ Ext.define(
                 manager.setSuspendEvent(true);
                 nodes.focus = data.opts.focus;
 
-				console.log('undo create element ' + me.elementName + ' from object', els);
+				console.log('undo create range ' + me.elementName + ' from object', els);
 
                 // переносим объект обратно
 
