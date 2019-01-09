@@ -16,12 +16,11 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				range = data.range,
-				factory = FBEditor.editor.Factory;
+				factory = FBEditor.editor.Factory,
+				viewportId = data.viewportId;
 
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-			nodes.last = nodes.parent.lastChild;
-			els.last = nodes.last ? nodes.last.getElement() : null;
+			els.parent = els.node.getParent();
+			els.last = els.parent.last();
 
 			if (els.last && els.last.isSubscription)
 			{
@@ -41,11 +40,8 @@ Ext.define(
 				els.node.add(els.p);
 			}
 
-			nodes.node = els.node.getNode(data.viewportId);
-
 			// добавляем в конец
-			els.parent.add(els.node);
-			nodes.parent.appendChild(nodes.node);
+			els.parent.add(els.node, viewportId);
 
 			if (!range.collapsed)
 			{
@@ -56,17 +52,14 @@ Ext.define(
 				els.isRoot = els.p.isRoot;
 				while (els.p && !els.p.isP)
 				{
-					nodes.p = els.isRoot ? nodes.p.firstChild : nodes.p.parentNode;
-					els.p = nodes.p ? nodes.p.getElement() : null;
+					els.p = els.isRoot ? els.p.first() : els.p.getParent();
 				}
 
-				nodes.next = nodes.p.nextSibling;
-
-				els.node.add(els.p);
-				nodes.node.appendChild(nodes.p);
+				els.next = els.p.next();
+				els.node.add(els.p, viewportId);
 			}
 
-			me.data.nodes = nodes;
+			data.els = els;
 		},
 
 		unExecute: function ()
@@ -74,9 +67,11 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				els = {},
 				nodes = {},
+				els,
+				viewportId,
 				manager,
+				helper,
 				range;
 
 			try
@@ -87,41 +82,37 @@ Ext.define(
 				{
 					return me.callParent(arguments);
 				}
-
-				nodes = data.nodes;
-				els.node = nodes.node.getElement();
-				els.parent = nodes.parent.getElement();
-				els.p = nodes.p.getElement();
-
+				
+				els = data.els;
+				viewportId = data.viewportId;
+				els.parent = els.node.getParent();
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				// возвращаем параграф на старое место из элемента
-				if (nodes.next)
+				if (els.next)
 				{
-					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.p, els.next);
-					nodes.parent.insertBefore(nodes.p, nodes.next);
+					els.parent.insertBefore(els.p, els.next, viewportId);
 				}
 				else
 				{
-					els.parent.add(els.p);
-					nodes.parent.appendChild(nodes.p);
+					els.parent.add(els.p, viewportId);
 				}
 
 				// удаляем элемент
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.node, viewportId);
 
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
-				nodes.cursor = manager.getDeepLast(nodes.p);
+				els.last = els.p.getDeepLast();
+				helper = els.last.getNodeHelper();
+				nodes.cursor = helper.getNode();
 				data.saveRange = {
 					startNode: nodes.cursor,
 					startOffset: 0,
 					endNode: nodes.cursor,
-					endOffset: nodes.cursor.length
+					endOffset: els.last.getLength()
 				};
 				manager.setCursor(data.saveRange);
 
@@ -134,6 +125,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		}
 	}

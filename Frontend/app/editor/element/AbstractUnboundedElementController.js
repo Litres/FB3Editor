@@ -15,18 +15,18 @@ Ext.define(
 		getNodeVerify: function (sel, opts)
 		{
 			var me = this,
+				manager = FBEditor.getEditorManager(),
 				els = {},
 				nodes = {},
 				name,
 				range;
-
+			
 			name = me.getNameElement();
-
-			// получаем узел из выделения
-			sel = sel || window.getSelection();
-			range = sel.getRangeAt(0);
-
-			nodes.node = range.commonAncestorContainer;
+			
+			// получаем данные из выделения
+			range = manager.getRange();
+			
+			nodes.node = range.common;
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
@@ -41,7 +41,7 @@ Ext.define(
 
 			els.parent = nodes.parent.getElement();
 			nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
-
+			
 			// можно не делать дополнительную проверку, так как кнопки на панели уже проверяют схему при синхронизации
 			return nodes.node;
 		},
