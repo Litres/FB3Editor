@@ -19,16 +19,15 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				reg = {},
 				pos = {},
 				els = {},
 				nodes = {},
 				offset = {},
-				sel = window.getSelection(),
-				factory = FBEditor.editor.Factory,
 				viewportId,
-				manager,
 				range,
 				joinStartContainer,
 				joinEndContainer;
@@ -42,17 +41,22 @@ Ext.define(
 					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
+				
+				// получаем данные из выделения
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
+				viewportId = data.viewportId = range.common.viewportId;
 
-				// получаем данные выделения
-				range = sel.getRangeAt(0);
-
-				console.log('split', me.elementName);
+				console.log('split', me.elementName, range, data);
 
 				if (!data.node)
 				{
 					// узел, в котором установлен курсор
 
-					nodes.cur = range.startContainer;
+					nodes.cur = range.start;
 					els.cur = nodes.cur.getElement();
 
 					while (els.cur && !els.cur.hisName(me.elementName))
@@ -65,43 +69,28 @@ Ext.define(
 				}
 
 				//console.log('data.node', data.node);
-
-				nodes.prevNode = data.node;
-				viewportId = data.viewportId = nodes.prevNode.viewportId;
-				els.prevNode = nodes.prevNode.getElement();
-
-				manager = els.prevNode.getManager();
+				
 				manager.setSuspendEvent(true);
-
-				offset = {
-					start: range.startOffset,
-					end: range.endOffset
-				};
-
-				nodes.startContainer = range.startContainer;
-				nodes.endContainer = range.endContainer;
+				nodes.prevNode = data.node;
+				els.prevNode = nodes.prevNode.getElement();
+				offset = range.offset;
+				nodes.startContainer = range.start;
+				nodes.endContainer = range.end;
 				els.startContainer = nodes.startContainer.getElement();
 				els.endContainer = nodes.endContainer.getElement();
 
 				// необходимо ли после операции undo соединять узлы
-				joinStartContainer = range.startOffset === 0 ?
-				                     !manager.isFirstNode(data.node, range.startContainer) : true;
+				joinStartContainer = offset.start === 0 ?
+				                     !manager.isFirstNode(data.node, range.start) : true;
 
-				joinEndContainer = els.startContainer.equal(els.endContainer) && range.collapsed ? false : true;
-				joinEndContainer = range.startOffset === 0 ||
-				                   range.endOffset === range.endContainer.nodeValue.length ?
-				                   !manager.isLastNode(data.node, range.endContainer) : joinEndContainer;
+				joinEndContainer = !(els.startContainer.equal(els.endContainer) && range.collapsed);
+				joinEndContainer = offset.start === 0 ||
+				                   offset.end === range.end.nodeValue.length ?
+				                   !manager.isLastNode(data.node, range.end) : joinEndContainer;
 
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					prevParentStart: range.startContainer.parentNode.previousSibling,
-					collapsed: range.collapsed,
-					offset: offset,
-					joinStartContainer: joinStartContainer,
-					joinEndContainer: joinEndContainer
-				};
+				range.prevParentStart = range.start.parentNode.previousSibling;
+				range.joinStartContainer = joinStartContainer;
+				range.joinEndContainer = joinEndContainer;
 
 				//console.log('range', data.range);
 
@@ -127,7 +116,8 @@ Ext.define(
 					              manager.isFirstNode(data.node, data.range.start) : false;
 				}
 
-				data.range.pos = pos;
+				range.pos = pos;
+				
 				//console.log('pos', pos, range.toString());
 
 				// разбиваем конечный узел текущего выделения
@@ -136,7 +126,7 @@ Ext.define(
 				els.common = data.node.getElement();
 				nodes.endContainer = manager.splitNode(els, nodes, offset.end);
 				els.endContainer = nodes.endContainer.getElement();
-
+				
 				if (els.endContainer.isEmpty() && !els.common.isEmpty() && nodes.endContainer.nextSibling)
 				{
 					// удаляем пустой последний контейнер
@@ -160,7 +150,7 @@ Ext.define(
 				//console.log('nodes', nodes, els);
 
 				// начальный узел текущего выделения
-				if (data.range.collapsed)
+				if (range.collapsed)
 				{
 					nodes.startContainer = nodes.endContainer;
 				}
@@ -170,7 +160,7 @@ Ext.define(
 					nodes.container = nodes.startContainer;
 					nodes.startContainer = manager.splitNode(els, nodes, offset.start);
 				}
-
+				
 				els.startContainer = nodes.startContainer.getElement();
 				els.endContainer = nodes.endContainer.getElement();
 
@@ -198,7 +188,7 @@ Ext.define(
 
 				// переносим элементы, которые находятся после текущего выделения, из старого в новый
 				me.moveToCreateElement(nodes, els);
-
+				
 				// синхронизируем
 				els.parent.sync(viewportId);
 
@@ -215,8 +205,9 @@ Ext.define(
 					}
 				);
 
-				// сохраянем узлы
+				// сохраянем ссылки
 				data.saveNodes = nodes;
+				data.els = els;
 
 				// проверяем по схеме
 				me.verifyElement(els.parent);
@@ -230,6 +221,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 
@@ -238,8 +230,8 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				els = {},
-				nodes = {},
+				els,
+				nodes,
 				manager,
 				range,
 				viewportId;
@@ -248,17 +240,12 @@ Ext.define(
 			{
 				range = data.range;
 				nodes = data.saveNodes;
-				viewportId = nodes.node.viewportId;
+				els = data.els;
+				viewportId = data.viewportId;
 
 				console.log('undo split ' + me.elementName, range, nodes);
 
-				els.node = nodes.node.getElement();
-				els.prevNode = nodes.prevNode.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-				els.common = nodes.common.getElement();
-				els.endContainer = nodes.endContainer.getElement();
-
+				els.parent = els.node.getParent();
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
@@ -267,30 +254,27 @@ Ext.define(
 				// если старый элемент пустой, то удаляем из него пустой элемент
 				if (els.prevNode.isEmpty())
 				{
-					els.prevNode.removeAll();
-					nodes.prevNode.removeChild(nodes.prevNode.firstChild);
+					els.prevNode.removeAll(viewportId);
 				}
 
 				// если новый элемент пустой, то удаляем из него пустой элемент
 				if (els.node.isEmpty())
 				{
-					els.node.removeAll();
-					nodes.node.removeChild(nodes.node.firstChild);
+					els.node.removeAll(viewportId);
 					range.joinStartContainer = false;
 				}
 
 				me.restoreElement(nodes, els, range);
 
-				nodes.first = nodes.node.firstChild;
+				els.first = els.node.first();
 
-				if (nodes.first)
+				if (els.first)
 				{
 					me.moveNodes(nodes, els);
 				}
 
 				// удаляем новый элемент
-				nodes.parent.removeChild(nodes.node);
-				els.parent.remove(els.node);
+				els.parent.remove(els.node, viewportId);
 
 				// объединяем элементы в точках разделения
 				if (range.joinStartContainer)
@@ -307,7 +291,6 @@ Ext.define(
 				{
 					// удаляем пустой контейнер
 					els.common.remove(els.endContainer, viewportId);
-					//nodes.common.removeChild(nodes.endContainer);
 				}
 
 				// синхронизируем
@@ -361,13 +344,14 @@ Ext.define(
 		 */
 		moveNodes: function (nodes, els)
 		{
-			while (nodes.first)
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId;
+			
+			while (els.first)
 			{
-				els.first = nodes.first.getElement();
-				nodes.prevNode.appendChild(nodes.first);
-				els.prevNode.add(els.first);
-				//els.node.remove(els.first);
-				nodes.first = nodes.node.firstChild;
+				els.prevNode.add(els.first, viewportId);
+				els.first = els.node.first();
 			}
 		},
 
@@ -379,18 +363,20 @@ Ext.define(
 		 */
 		restoreElement: function (nodes, els, range)
 		{
-			var me = this;
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId;
 
 			if (!range.collapsed)
 			{
-				nodes.next = nodes.prevNode.nextSibling;
+				//nodes.next = nodes.prevNode.nextSibling;
+				els.next = els.prevNode.next();
 
-				nodes.first = nodes.next.firstChild;
+				els.first = els.next.first();
 				me.moveNodes(nodes, els);
 
 				// удаляем новый блок
-				nodes.parent.removeChild(nodes.next);
-				els.parent.remove(nodes.next.getElement());
+				els.parent.remove(els.next, viewportId);
 			}
 		},
 
@@ -449,31 +435,19 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				viewportId,
+				viewportId = data.viewportId,
 				manager;
 
-			viewportId = data.viewportId;
-			els.node = nodes.node.getElement();
-			//nodes.next = nodes.endContainer;
 			els.next = els.endContainer;
-			//nodes.parentNext = nodes.next.parentNode ? nodes.next.parentNode : null;
-			//els.parentNext = nodes.parentNext ? nodes.parentNext.getElement() : null;
-			els.parentNext = els.next.next() ? els.next.next().parent : null;
-
+			els.parentNext = els.next.next() ? els.next.next().getParent() : null;
+			
 			while (els.next)
 			{
-				//nodes.buf = nodes.next.nextSibling;
 				els.buf = els.next.next();
-				//els.next = nodes.next.getElement();
-
 				els.node.add(els.next, viewportId);
-				//nodes.node.appendChild(nodes.next);
-				//els.parentNext.remove(els.next);
-
-				//nodes.next = nodes.buf;
 				els.next = els.buf;
 			}
-
+			
 			if (els.parentNext && !els.parentNext.first()/*nodes.parentNext.firstChild*/)
 			{
 				// добавляем пустой параграф в старый элемент
@@ -481,7 +455,6 @@ Ext.define(
 				manager = els.node.getManager();
 				els.p = manager.createEmptyP();
 				els.parentNext.add(els.p, viewportId);
-				//nodes.parentNext.appendChild(els.p.getNode(data.viewportId));
 			}
 		}
 	}
