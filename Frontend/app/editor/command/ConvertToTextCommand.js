@@ -13,10 +13,10 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				nodes = {},
 				els = {},
-				factory = FBEditor.editor.Factory,
 				helper,
 				viewportId,
 				manager,
@@ -27,18 +27,18 @@ Ext.define(
 			{
 
 				manager = data.el.getManager();
-				manager.setSuspendEvent(true);
 				sch = manager.getSchema();
-
 				range = data.range || manager.getRange();
+				
+				console.log('convert ' + data.el.getName() + ' to text ', data, range);
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
 				viewportId = data.viewportId = range.start.viewportId;
-
-				console.log('convert ' + data.el.getName() + ' to text ', data);
-
+				manager.setSuspendEvent(true);
 				els.node = data.el.getBlock();
-				//nodes.node = els.node.nodes[data.viewportId];
-				els.parent = els.node.parent;
-				//nodes.parent = els.parent.nodes[data.viewportId];
+				els.parent = els.node.getParent();
 
 				// проверяем по схеме возможную новую структуру
 
@@ -68,7 +68,7 @@ Ext.define(
 
 				//nodes.fragment = els.fragment.getNode(data.viewportId);
 
-				console.log('nodes', nodes);
+				//console.log('nodes', nodes);
 				
 				els.first = els.fragment.first();
 
