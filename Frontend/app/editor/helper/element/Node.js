@@ -390,6 +390,23 @@ Ext.define(
 				}
 			);
 		},
+		
+		/**
+		 * Прокручивает скролл во всех окнах к элементу.
+		 */
+		scrollIntoView: function ()
+		{
+			var me = this,
+				el = me.el;
+			
+			Ext.Object.each(
+				el.nodes,
+				function (viewportId, node)
+				{
+					node.scrollIntoView();
+				}
+			);
+		},
 
 		/**
 		 * @private

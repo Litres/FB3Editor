@@ -761,8 +761,6 @@ Ext.define(
 			var me = this,
 				root = me.getContent(),
 				sel = window.getSelection(),
-				range,
-				newRange,
 				helper,
 				viewportId;
 
@@ -779,15 +777,17 @@ Ext.define(
 				//helper.getNode(viewportId).focus();
 
 				// перематываем скролл
+				/*
 				if (data.focusElement.nodes[viewportId].scrollIntoView)
 				{
 					//TODO сделать прокрутку только, если элемент не виден, иначе прокрутка не требуется
-					//data.focusElement.nodes[viewportId].scrollIntoView();
+					data.focusElement.nodes[viewportId].scrollIntoView();
 				}
+				*/
 
 				// выделение
 
-				if (data.startNode.getElement().isText)
+				if (data.focusElement.isText)
 				{
 					sel.collapse(data.startNode, data.startOffset);
 				}
@@ -802,30 +802,13 @@ Ext.define(
 					sel.extend(data.endNode, data.endOffset);
 				}
 				
-				// сохраняем выделение
-				/*
-				range = sel.getRangeAt(0);
-				newRange = {
-					collapsed: range.collapsed,
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					}
-				};
-				
-				me.setRange(newRange);
-				*/
-				
 				// сохраняем фокусный элемент и ставим фокус
 				helper = data.focusElement.getNodeHelper();
 				me.setFocusElement(helper.getNode(viewportId), sel, data.withoutSyncButtons);
 			}
 			catch (e)
 			{
-				//
+				console.log('Ошибка установки курсора', e);
 			}
 		},
 

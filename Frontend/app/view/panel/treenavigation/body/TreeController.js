@@ -35,9 +35,10 @@ Ext.define(
 			var me = this,
                 view = me.getView(),
 				data = record.getData(),
+				manager = FBEditor.getEditorManager(),
 				els = {},
 				nodes = {},
-				manager = FBEditor.getEditorManager();
+				helper;
 
 			if (!view.isActivePanel())
 			{
@@ -54,30 +55,24 @@ Ext.define(
 			{
 				// получаем элемент по его id
 				els.node = manager.getElementById(data.elementId);
-
+				
 				if (els.node)
 				{
-					// узлы элемента
-					nodes.nodes = Ext.Object.getValues(els.node.nodes);
-
+					helper = els.node.getNodeHelper();
+					
 					// перематываем скролл во всех окнах
-					Ext.Array.each(
-						nodes.nodes,
-						function (item)
-						{
-							item.scrollIntoView();
-						}
-					);
-
+					helper.scrollIntoView();
+					
 					// получаем самый вложенный первый элемент
-					nodes.first = nodes.nodes[0];
-					while (nodes.first.firstChild)
-					{
-						nodes.first = nodes.first.firstChild;
-					}
-
-					els.first = nodes.first.getElement();
-
+					els.first = els.node.getDeepFirst();
+					helper = els.first.getNodeHelper();
+					nodes.first = helper.getNode();
+					
+					// учитываем оверлей в тексте
+					nodes.first = nodes.first.nodeValue === '' && nodes.first.previousSibling ?
+						nodes.first.previousSibling : nodes.first;
+					nodes.first = manager.getDeepFirst(nodes.first);
+					
 					// устанавливаем курсор на соответствующем элементе в главном окне
 					manager.setCursor(
 						{
