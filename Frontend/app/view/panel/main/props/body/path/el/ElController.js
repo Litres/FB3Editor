@@ -20,13 +20,16 @@ Ext.define(
 				nodes = {},
 				helper;
 			
+			// удаляем все оверлеи в тексте
+			manager.removeAllOverlays();
+			
 			// выделение всего элемента в тексте
 
 			helper = el.getNodeHelper();
 			nodes.node = helper.getNode();
 			nodes.start = manager.getDeepFirst(nodes.node);
             nodes.last = manager.getDeepLast(nodes.node);
-
+            
 			manager.setCursor(
 				{
                     focusElement: el,
