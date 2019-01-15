@@ -2049,6 +2049,9 @@ Ext.define(
 			{
 				me.removeOverlay(me.overlays[0]);
 			}
+			
+			// восстанавливаем выделение
+			me.restoreSelection();
 		},
 		
 		/**
