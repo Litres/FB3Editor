@@ -16,22 +16,26 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				e = data.e,
-				sel = window.getSelection(),
 				res = false,
 				nodes = {},
 				els = {},
 				offset = {},
 				pos = {},
-				manager,
+				sel,
 				range,
 				proxy;
 
 			try
 			{
-				range = sel.getRangeAt(0);
+				// получаем данные из выделения
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 
-				nodes.node = range.startContainer;
+				nodes.node = range.start;
 				els.node = nodes.node.getElement();
 				els.p = els.node.getStyleHolder();
 
@@ -48,7 +52,8 @@ Ext.define(
 					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
-
+				
+				sel = window.getSelection();
 				range = sel.getRangeAt(0);
 
 				offset = {

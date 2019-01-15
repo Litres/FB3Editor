@@ -16,36 +16,40 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				e = data.e,
-				sel = window.getSelection(),
 				res = false,
 				nodes = {},
 				els = {},
 				rangeXml,
-				manager,
 				range,
 				proxy;
 
 			try
 			{
-				range = sel.getRangeAt(0);
-
+				// получаем данные из выделения
+				range = data.range = manager.getRangeCursor();
+				
 				if (range.collapsed)
 				{
 					return false;
 				}
+				
+				console.log('cut', range, e);
 
-				//console.log('cut', range, e);
-
-				nodes.common = range.commonAncestorContainer;
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
+				// восстанавливаем выделение
+				//manager.restoreSelection();
+				
+				nodes.common = range.common;
 				els.common = nodes.common.getElement();
 				els.p = els.common.getStyleHolder();
 
-				manager = els.common.getManager();
-
 				// получаем xml выделенного фрагмента текста
 				rangeXml = manager.getRangeXml();
-
+				
 				// прокси данных из буфера
 				proxy = data.proxy || Ext.create('FBEditor.editor.cutproxy.CutProxy', {e: e, manager: manager});
 				
