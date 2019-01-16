@@ -426,6 +426,15 @@ Ext.define(
 		{
 			return this.parent;
 		},
+		
+		/**
+		 * Возвращает дочерние элементы.
+		 * @return {FBEditor.editor.element.AbstractElement[]}
+		 */
+		getChildren: function ()
+		{
+			return this.children;
+		},
 
 		/**
 		 * Возвращает первый элемент.

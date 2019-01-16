@@ -14,44 +14,47 @@ Ext.define(
             var me = this,
                 data = me.getData(),
                 manager = data.manager,
-                sel = window.getSelection(),
                 res = false,
                 nodes = {},
                 els = {},
-                cursor,
                 range,
                 helper,
                 viewportId;
 
             try
             {
+	            // получаем данные из выделения
+	            range = data.range = manager.getRangeCursor();
+	
+	            // удаляем все оверлеи в тексте
+	            manager.removeAllOverlays();
+	
+	            console.log('unstyle', data, range);
+
                 manager.setSuspendEvent(true);
-                range = sel.getRangeAt(0);
 
                 // сохраняем данные для восстановления выделения
                 data.cursor = {
-                    start: range.startContainer,
-                    end: range.endContainer,
+                    start: range.start,
+                    end: range.end,
                     offset: {
-                        start: range.startOffset,
-                        end: range.endOffset
+                        start: range.offset.start,
+                        end: range.offset.end
                     }
                 };
-
-                console.log('unstyle', data, range);
-
-                els.common = range.commonAncestorContainer.getElement();
-                data.viewportId = viewportId = range.commonAncestorContainer.viewportId;
-                els.first = range.startContainer.getElement();
+	
+	            viewportId = data.viewportId = range.common.viewportId;
+                els.common = range.common.getElement();
+                els.first = range.start.getElement();
                 els.firstP = els.first.getStyleHolder();
-                els.last = range.endContainer.getElement();
+                els.last = range.end.getElement();
                 els.lastP = els.last.getStyleHolder();
                 nodes.pp = [];
 
                 if (!els.firstP.equal(els.lastP))
                 {
                     // получаем узлы выделенных абзацев между первым и последним абзацами
-                    nodes.pp = manager.getNodesPP(range.startContainer, nodes, els);
+                    nodes.pp = manager.getNodesPP(range.start, nodes, els);
 
                     // добавляем последний абзац в полученный массив
                     helper = els.lastP.getNodeHelper();
