@@ -35,7 +35,7 @@ Ext.define(
 				els.node = nodes.node.getElement();
 				manager.setSuspendEvent(true);
 
-				if (!els.node.parent)
+				if (!els.node.getParent())
 				{
 					// если ссылка на элемент была потеряна в результате многократного использования ctrl+z,
 					// то пытаемся восстановить ссылку из текущего выделения

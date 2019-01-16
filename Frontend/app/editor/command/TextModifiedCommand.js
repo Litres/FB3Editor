@@ -48,11 +48,8 @@ Ext.define(
 				{
 					// заменяем пустой элемент на текстовый
 					els.text = factory.createElementText('');
-					nodes.text = els.text.getNode(nodes.node.viewportId);
-
+					nodes.text = els.text.getNode(viewportId);
 					els.parent.replace(els.text, els.node, viewportId);
-					//nodes.parent.replaceChild(nodes.text, nodes.node);
-
 					data.node = nodes.text;
 				}
 
@@ -60,21 +57,10 @@ Ext.define(
 				text = me.newValue;
 
 				console.log('exec text'/*, node, me.newValue, me.oldValue, 'offset=', me.offset*/);
-				//console.log(els.parent.getXml());
 
 				el = node.getElement();
 				el.setText(text);
-
 				el.sync(viewportId);
-
-				// устанавливаем курсор
-				/*manager.setCursor(
-					{
-						withoutSyncButtons: true,
-						startNode: node,
-						startOffset: me.offset
-					}
-				);*/
 
 				res = true;
 			}

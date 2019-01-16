@@ -17,29 +17,25 @@ Ext.define(
 				data = me.getData(),
 				range = data.range,
 				factory = FBEditor.editor.Factory,
+				elementName = me.elementName,
+				viewportId = data.viewportId,
 				manager,
-				viewportId,
 				helper;
-
-			viewportId = nodes.node.viewportId;
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-			els.node = factory.createElement(me.elementName);
-			nodes.node = els.parent.hisName(me.elementName) ? nodes.parent : nodes.node;
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
+			
+			manager = els.node.getManager();
+			els.parent = els.node.getParent();
+			els.node = els.parent.hisName(elementName) ? els.parent : els.node;
+			els.parent = els.node.getParent();
 			els.prevNode = data.prevNode ? data.prevNode.getElement() : null;
 			els.first = els.prevNode && els.prevNode.next() ? els.prevNode : els.parent.first();
-
-			console.log('create epigraph', data, els, nodes);
+			
+			els.node = factory.createElement(elementName);
 
 			if (range.collapsed)
 			{
 				// содержимое по умолчанию
 				els = Ext.apply(els, els.node.createScaffold());
 			}
-
-			nodes.node = els.node.getNode(data.viewportId);
 
 			if (els.first)
 			{
@@ -67,7 +63,7 @@ Ext.define(
 			{
 				els.parent.add(els.node, viewportId);
 			}
-
+			
 			if (!range.collapsed)
 			{
 				// переносим выделенные параграфы в элемент
@@ -76,7 +72,6 @@ Ext.define(
 				els.firstP = els.firstP.isStyleHolder ? els.firstP : els.firstP.getStyleHolder();
 				helper = els.firstP.getNodeHelper();
 				nodes.firstP = helper.getNode(viewportId);
-				manager = els.firstP.getManager();
 				els.lastP = range.end.getElement();
 				els.lastP = els.lastP.isStyleHolder ? els.lastP : els.lastP.getStyleHolder();
 				helper = els.lastP.getNodeHelper();
@@ -106,6 +101,14 @@ Ext.define(
 
 				// для курсора
 				els.p = els.lastP;
+				
+				if (els.parent.last().hisName(elementName))
+				{
+					// добавляем пустой абзац после эпиграфа, если других элементов после него нет,
+					// чтобы соответствовать схеме
+					els.emptyP = manager.createEmptyP();
+					els.parent.add(els.emptyP, viewportId);
+				}
 			}
 
 			data.nodes = nodes;
@@ -140,6 +143,12 @@ Ext.define(
 				els = data.els;
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
+				
+				if (els.emptyP)
+				{
+					// удаляем пустой абзац
+					els.parent.remove(els.emptyP, viewportId);
+				}
 
 				// возвращаем абзацы на старое место
 

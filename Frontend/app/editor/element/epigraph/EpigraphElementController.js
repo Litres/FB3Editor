@@ -12,16 +12,16 @@ Ext.define(
 		getNodeVerify: function (sel, opts)
 		{
 			var me = this,
+				manager = FBEditor.getEditorManager(),
+				name = me.getNameElement(),
 				els = {},
 				nodes = {},
-				name = me.getNameElement(),
 				range;
 
-			// получаем узел из выделения
-			sel = sel || window.getSelection();
-			range = sel.getRangeAt(0);
+			// получаем данные из выделения
+			range = manager.getRangeCursor();
 
-			nodes.node = range.startContainer;
+			nodes.node = range.start;
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
