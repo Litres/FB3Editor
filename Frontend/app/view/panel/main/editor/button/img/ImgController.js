@@ -19,7 +19,6 @@ Ext.define(
 				btn = me.getView(),
 				manager = btn.getEditorManager(),
 				win,
-				sel,
 				range;
 
             if (e)
@@ -27,18 +26,16 @@ Ext.define(
                 e.stopPropagation();
             }
 
-			sel = manager.getSelection();
+			range = manager.getRange();
 
-			if (sel)
+			if (range)
 			{
 				win = btn.win || Ext.create('FBEditor.view.window.img.Create');
 
 				// сохраняем данные текущего выделения
-				range = sel.getRangeAt(0);
 				win.selectionRange = {
-					start: range.startContainer,
-					offset: range.startOffset,
-					oldValue: range.startContainer.nodeValue
+					start: range.start,
+					offset: range.offset.start
 				};
 
 				btn.win = win;
