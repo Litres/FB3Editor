@@ -16,35 +16,34 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
-				factory = FBEditor.editor.Factory,
                 viewportId,
-				manager,
 				range;
 
 			try
 			{
 				range = data.opts.range;
-
+				
 				console.log('create img', data.opts);
-
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
+				
                 viewportId = data.viewportId = range.start.viewportId;
-				data.oldValue = range.start.nodeValue;
-
 				nodes.start = range.start;
 				els.start = nodes.start.getElement();
-
+				data.oldValue = els.start.getText();
 				nodes.parent = !els.start.isStyleHolder ? nodes.start.parentNode : nodes.start;
 				els.parent = nodes.parent.getElement();
-
-				manager = els.start.getManager();
 				manager.setSuspendEvent(true);
 
 				// новый элемент изображения
 				els.node = factory.createElement(me.elementName, {src: data.opts.name});
-				nodes.node = els.node.getNode(data.viewportId);
+				nodes.node = els.node.getNode(viewportId);
 
 				if (!els.parent.isEmpty())
 				{
@@ -54,14 +53,13 @@ Ext.define(
 					els.next = nodes.next ? nodes.next.getElement() : null;
 
 					// получаем части текста
-					els.startValue = nodes.start.nodeValue.substring(0, range.offset);
-					els.endValue = nodes.start.nodeValue.substring(range.offset);
+					els.startValue = els.start.getText(0, range.offset);
+					els.endValue = els.start.getText(range.offset);
 
 					if (els.startValue)
 					{
                         // меняем текст исходного элемента
                         els.start.setText(els.startValue, viewportId);
-                        //nodes.start.nodeValue = els.startValue;
 					}
 					else
 					{
@@ -76,8 +74,6 @@ Ext.define(
 					nodes.start = els.start.isStyleHolder ? nodes.start.firstChild : nodes.start;
 					els.start = nodes.start.getElement();
 					els.parent.remove(els.start, viewportId);
-					//nodes.parent.removeChild(nodes.start);
-
 					data.isEmpty = true;
 				}
 
@@ -85,12 +81,10 @@ Ext.define(
 				if (els.next)
 				{
 					els.parent.insertBefore(els.node, els.next, viewportId);
-					//nodes.parent.insertBefore(nodes.node, nodes.next);
 				}
 				else
 				{
 					els.parent.add(els.node, viewportId);
-					//nodes.parent.appendChild(nodes.node);
 				}
 
 				// новый текстовый элемент c последней частью текста
@@ -102,12 +96,10 @@ Ext.define(
 					if (els.next)
 					{
 						els.parent.insertBefore(els.t, els.next, viewportId);
-						//nodes.parent.insertBefore(nodes.t, nodes.next);
 					}
 					else
 					{
 						els.parent.add(els.t, viewportId);
-						//nodes.parent.appendChild(nodes.t);
 					}
 				}
 
