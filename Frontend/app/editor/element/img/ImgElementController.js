@@ -108,7 +108,7 @@ Ext.define(
 			// данные выделения
 			range = opts.range;
 			nodes.node = range.start;
-
+			
 			return nodes.node;
 		}
 	}
