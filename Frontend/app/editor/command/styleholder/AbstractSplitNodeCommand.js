@@ -37,7 +37,7 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				range = FBEditor.getEditorManager().getRangeCursor();
+				range = manager.getRangeCursor();
 
 				// удаляем все оверлеи в тексте
 				manager.removeAllOverlays();
@@ -290,8 +290,8 @@ Ext.define(
 
 				// устанавливаем курсор
 				data.saveRange = {
-					startOffset: range.offset.start,
-					focusElement: els.p
+					startNode: nodes.cursor,
+					startOffset: range.offset.start
 				};
 				manager.setCursor(data.saveRange);
 
@@ -309,6 +309,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		}
 	}
