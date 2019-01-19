@@ -36,6 +36,7 @@ Ext.define(
 
 				// получаем данные из выделения
 				range = data.range = manager.getRange();
+				
 				viewportId = data.viewportId = range.common.viewportId;
 				
 				console.log('create ' + me.elementName, range, data);
