@@ -790,7 +790,7 @@ Ext.define(
 				sel = window.getSelection(),
 				helper,
 				viewportId;
-
+			
 			try
 			{
 				data.focusElement = data.focusElement || data.startNode.getElement();
@@ -835,7 +835,7 @@ Ext.define(
 			}
 			catch (e)
 			{
-				console.log('Ошибка установки курсора', e);
+				console.log('Ошибка установки курсора', e, data);
 			}
 		},
 

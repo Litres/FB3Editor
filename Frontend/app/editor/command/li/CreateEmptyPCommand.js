@@ -1,5 +1,5 @@
 /**
- * Удаляет последний элемент li из списка и вместо него всего списка добавляет пустой абзац.
+ * Удаляет последний элемент li из списка, и вместо него после списка добавляет пустой абзац.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -13,14 +13,13 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
-				sel = window.getSelection(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
 				els = {},
 				nodes = {},
 				viewportId,
 				helper,
-				range,
-				manager;
+				range;
 
 			try
 			{
@@ -31,42 +30,31 @@ Ext.define(
 					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 
 				// получаем данные из выделения
-				range = sel.getRangeAt(0);
+				range = data.range = manager.getRangeCursor();
 
-				viewportId = data.viewportId = range.startContainer.viewportId;
+				viewportId = data.viewportId = range.start.viewportId;
 
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					parentStart: range.commonAncestorContainer.parentNode,
-					collapsed: range.collapsed,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					}
-				};
+				console.log('li to empty', range);
 
-				console.log('li to empty', data.range);
-
-				nodes.node = range.startContainer;
+				nodes.node = range.start;
 				els.node = nodes.node.getElement();
-				els.list = els.node.parent;
-				els.parentList = els.list.parent;
-				helper = els.parentList.getNodeHelper();
-				nodes.parentList = helper.getNode(viewportId);
-				manager = els.node.getManager();
+				els.node = els.node.getStyleHolder();
+				els.list = els.node.getParent();
+				els.parentList = els.list.getParent();
 				manager.setSuspendEvent(true);
 
 				// создаем пустой абзац
 				els.p = manager.createEmptyP();
-				nodes.p = els.p.getNode(viewportId);
+				
+				els.next = els.list.next();
 
-				if (els.list.next())
+				if (els.next)
 				{
-					els.next = els.list.next();
 					els.parentList.insertBefore(els.p, els.next, viewportId);
 				}
 				else
@@ -76,7 +64,7 @@ Ext.define(
 
 				// удаляем пустой элемент li
 				els.list.remove(els.node, viewportId);
-
+				
 				els.parentList.sync(viewportId);
 
 				// устанавливаем курсор
@@ -89,7 +77,7 @@ Ext.define(
 				);
 
 				// сохраняем ссылки
-				me.data.els = els;
+				data.els = els;
 
 				// проверяем по схеме
 				me.verifyElement(els.parentList);
@@ -159,6 +147,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		}
 	}

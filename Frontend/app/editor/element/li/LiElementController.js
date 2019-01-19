@@ -18,6 +18,11 @@ Ext.define(
 			if (el.isEmptyLast())
 			{
 				// создаем пустой абзац вместо последнего пустого элемента li
+				
+				if (e)
+				{
+					e.preventDefault();
+				}
 
 				cmd = Ext.create('FBEditor.editor.command.li.CreateEmptyPCommand');
 
