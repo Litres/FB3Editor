@@ -12,44 +12,30 @@ Ext.define(
 		getNodeVerify: function (sel, opts)
 		{
 			var me = this,
+				name = me.getNameElement(),
+				manager = FBEditor.getEditorManager(),
 				els = {},
 				nodes = {},
-				name = me.getNameElement(),
-				manager,
-				res,
+				res = false,
+				helper,
 				sch,
 				range,
 				nameElements;
 
 			// получаем узел из выделения
-			sel = sel || window.getSelection();
-			range = sel.getRangeAt(0);
+			range = manager.getRangeCursor();
 
-			nodes.node = range.endContainer;
+			nodes.node = range.end;
 			els.node = nodes.node.getElement();
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
+			els.parent = els.node.getParentName('notes');
 
-			manager = els.node.getManager();
-
-			// ищем notes
-			while (!(els.parent.isNotes || els.parent.isRoot))
-			{
-				nodes.node = nodes.parent;
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-			}
-
-			if (!els.parent.isNotes)
+			if (!els.parent)
 			{
 				return false;
 			}
 
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-			nodes.first = nodes.parent.firstChild;
-			els.first = nodes.first ? nodes.first.getElement() : null;
+			els.notebody = els.node.getParentName('notebody');
+			els.first = els.parent.first();
 
 			// получаем дочерние имена элементов для проверки по схеме
 
@@ -65,10 +51,17 @@ Ext.define(
 			}
 
 			// проверяем элемент по схеме
+			
 			sch = manager.getSchema();
 			name = els.parent.getName();
+			
 			//console.log('name, nameElements', name, nameElements);
-			res = sch.verify(name, nameElements) ? nodes.node : false;
+			
+			if (sch.verify(name, nameElements))
+			{
+				helper = els.notebody.getNodeHelper();
+				res = helper.getNode();
+			}
 
 			return res;
 		}
