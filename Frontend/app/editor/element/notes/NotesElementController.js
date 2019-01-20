@@ -11,24 +11,25 @@ Ext.define(
 
 		getNodeVerify: function (sel, opts)
 		{
-			var els = {},
+			var manager = FBEditor.getEditorManager(),
+				els = {},
 				nodes = {},
-				range,
-				viewportId;
+				helper,
+				range;
 
-			range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
-
+			range = manager.getRangeCursor();
+			
 			if (!range)
 			{
 				return false;
 			}
 
-			nodes.node = range.startContainer;
-			viewportId = nodes.node.viewportId;
+			nodes.node = range.start;
 			els.node = nodes.node.getElement();
 
 			els.root = els.node.getRoot();
-			nodes.root = els.root.nodes[viewportId];
+			helper = els.root.getNodeHelper();
+			nodes.root = helper.getNode();
 
 			return nodes.root;
 		}
