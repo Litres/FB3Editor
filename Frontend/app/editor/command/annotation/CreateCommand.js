@@ -96,15 +96,17 @@ Ext.define(
 				{
 					return me.callParent(arguments);
 				}
-
+				
+				console.log('undo create', me.elementName, range);
+				
 				nodes = data.nodes;
 				els.node = nodes.node.getElement();
+				manager = els.node.getManager();
+				manager.removeAllOverlays();
+				manager.setSuspendEvent(true);
 				els.parent = nodes.parent.getElement();
 				els.p = nodes.p.getElement();
 				els.parentP = nodes.parentP.getElement();
-
-				manager = els.node.getManager();
-				manager.setSuspendEvent(true);
 
 				// возвращаем параграф на старое место из элемента
 				if (nodes.next)

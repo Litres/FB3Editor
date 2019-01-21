@@ -33,6 +33,7 @@ Ext.define(
 				nodes.node = data.node || data.prevNode;
 				data.viewportId = nodes.node.viewportId;
 				els.node = nodes.node.getElement();
+				els.node = els.node.getStyleHolder();
 				manager.setSuspendEvent(true);
 
 				if (!els.node.getParent())
@@ -97,6 +98,7 @@ Ext.define(
 				console.log('undo create', me.elementName, range);
 				
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 				viewportId = data.viewportId;
 				els.parent = els.node.getParent();
@@ -144,13 +146,12 @@ Ext.define(
 		setCursor: function (els, nodes)
 		{
 			var me = this,
-				sel = window.getSelection(),
 				data = me.getData(),
 				helper,
 				manager;
 
 			manager = els.p.getManager();
-			data.oldRange = sel.getRangeAt(0);
+			data.oldRange = manager.getRangeCursor();
 			els.cursor = els.p.getDeepFirst();
 			helper = els.cursor.getNodeHelper();
 			nodes.cursor = helper.getNode();

@@ -247,6 +247,7 @@ Ext.define(
 
 				els.parent = els.node.getParent();
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// переносим все элементы обратно

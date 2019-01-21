@@ -352,11 +352,11 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
+				paste = FBEditor.resource.Manager.getPaste(),
 				nodes = {},
 				els = {},
 				res = false,
-				factory = FBEditor.editor.Factory,
-				paste = FBEditor.resource.Manager.getPaste(),
 				helper,
 				manager,
 				range;
@@ -366,10 +366,9 @@ Ext.define(
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
-
 				nodes.cursor = range.start;
-
 				manager = els.parent.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 				helper = els.fragmentFirst.getNodeHelper();
 				nodes.fragmentFirst = helper.getNode(data.viewportId);

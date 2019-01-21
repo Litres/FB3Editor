@@ -174,6 +174,7 @@ Ext.define(
 
 				viewportId = data.viewportId;
 				manager = els.p.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				if (els.nextParentNextP)
@@ -225,6 +226,7 @@ Ext.define(
 
 				viewportId = data.viewportId;
 				manager = els.p.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				if (els.parentNext)

@@ -31,11 +31,12 @@ Ext.define(
 				console.log('undo create range ' + me.elementName, range, nodes);
 
 				els.node = nodes.node.getElement();
+				manager = els.node.getManager();
+				manager.removeAllOverlays();
+				manager.setSuspendEvent(true);
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
-				manager = els.node.getManager();
-				manager.setSuspendEvent(true);
 
 				// переносим все элементы обратно в исходный контейнер
 				Ext.Array.each(

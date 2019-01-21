@@ -336,6 +336,7 @@ Ext.define(
 				console.log('undo remove range ' + me.elementName, data, nodes);
 
 				manager = els.parent.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				if (els.parent.isEmpty())

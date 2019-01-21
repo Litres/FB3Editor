@@ -142,6 +142,7 @@ Ext.define(
 				nodes = data.nodes;
 				els = data.els;
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 				
 				if (els.emptyP)
@@ -181,12 +182,12 @@ Ext.define(
 
 				// устанавливаем курсор
 				nodes.cursorStart = manager.getDeepFirst(nodes.pp.pop());
-				nodes.cursorEnd = manager.getDeepLast(nodes.pp.shift());
+				nodes.cursorEnd = manager.getDeepLast(nodes.pp.shift()) || nodes.cursorStart;
 				data.saveRange = {
 					startNode: nodes.cursorStart,
 					startOffset: 0,
 					endNode: nodes.cursorEnd,
-					endOffset: nodes.cursorEnd.length
+					endOffset: nodes.cursorEnd.nodeValue.length
 				};
 				manager.setCursor(data.saveRange);
 

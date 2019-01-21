@@ -114,6 +114,7 @@ Ext.define(
 				els = data.els;
 				viewportId = data.viewportId;
 				manager = data.manager;
+				manager.removeAllOverlays();
                 manager.setSuspendEvent(true);
                 nodes.focus = data.opts.focus;
 
