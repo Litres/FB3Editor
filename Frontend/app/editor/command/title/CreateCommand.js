@@ -140,13 +140,15 @@ Ext.define(
 
 				if (range.collapsed)
 				{
-					helper = els.newNode.getNodeHelper();
-                    data.saveNode = helper.getNode(viewportId);
+					els.node = els.newNode;
 
 					return me.callParent(arguments);
 				}
-
+				
+				console.log('undo create', me.elementName, range);
+				
 				manager = els.p.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// возвращаем абзац на старое место из заголовка
@@ -196,7 +198,7 @@ Ext.define(
 					startNode: nodes.cursor,
 					startOffset: 0,
 					endNode: nodes.cursor,
-					endOffset: nodes.cursor.length
+					endOffset: nodes.cursor.nodeValue.length
 				};
 				manager.setCursor(data.saveRange);
 

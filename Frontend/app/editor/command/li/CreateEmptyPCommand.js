@@ -117,6 +117,7 @@ Ext.define(
 				console.log('undo li to empty', nodes, data);
 
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// удаляем пустой абзац

@@ -158,6 +158,7 @@ Ext.define(
 				console.log('undo join prev ' + me.elementName, nodes, data);
 
 				manager = els.parentP.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// новый элемент

@@ -367,10 +367,10 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
-				factory = FBEditor.editor.Factory,
 				manager,
 				range,
 				viewportId;
@@ -383,8 +383,8 @@ Ext.define(
 
 				nodes.common = range.common;
 				els.common = nodes.common.getElement();
-
 				manager = els.common.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				console.log('undo create ' + me.elementName, data, nodes);

@@ -35,7 +35,10 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				range = data.range = manager.getRange();
+				range = data.range = manager.getRangeCursor();
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 				
 				viewportId = data.viewportId = range.common.viewportId;
 				
@@ -154,27 +157,25 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
-				nodes = {},
 				helper,
 				manager,
 				range,
-				viewportId,
 				isInner;
 
 			try
 			{
 				range = data.range;
 				els = data.els;
-				nodes = data.saveNodes;
-				viewportId = data.viewportId;
 				isInner = data.isInner;
 
 				console.log('undo create ' + me.elementName, range, els);
 
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// переносим элементы из списка обратно
@@ -185,34 +186,22 @@ Ext.define(
 				{
 					// новый элемент p/li
 					els.p = isInner ? factory.createElement('li') : factory.createElement('p');
-					//nodes.p = els.p.getNode(viewportId);
-					//nodes.pp.push(nodes.p);
 					els.pp.push(els.p);
 
 					els.parent.insertBefore(els.p, els.node, viewportId);
-					//nodes.parent.insertBefore(nodes.p, nodes.node);
-
-					//nodes.first = nodes.li.firstChild;
-					//els.first = nodes.first ? nodes.first.getElement() : null;
 					els.first = els.li.first();
 					
 					while (els.first)
 					{
 						els.p.add(els.first, viewportId);
-						//nodes.p.appendChild(nodes.first);
-						//nodes.first = nodes.li.firstChild;
-						//els.first = nodes.first ? nodes.first.getElement() : null;
 						els.first = els.li.first()
 					}
 
-					//nodes.li = nodes.li.nextSibling;
-					//els.li = nodes.li ? nodes.li.getElement() : null;
 					els.li = els.li.next();
 				}
 
 				// удаляем список
 				els.parent.remove(els.node, viewportId);
-				//nodes.parent.removeChild(nodes.node);
 
 				// синхронизируем
 				els.parent.sync(viewportId);

@@ -117,7 +117,8 @@ Ext.define(
             try
             {
                 console.log('undo unstyle', data);
-
+	
+	            manager.removeAllOverlays();
                 manager.setSuspendEvent(true);
 
                 Ext.each(

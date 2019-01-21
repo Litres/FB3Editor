@@ -37,11 +37,10 @@ Ext.define(
 				}
 
 				// получаем данные из выделения
-				range = manager.getRangeCursor();
+				range = data.range = manager.getRangeCursor();
 
 				// удаляем все оверлеи в тексте
 				manager.removeAllOverlays();
-				
 				
 				console.log('split ' + me.elementName, range);
 
@@ -194,7 +193,6 @@ Ext.define(
 
 				// сохраняем ссылки
 				data.nodes = nodes;
-				data.range = range;
 
 				// проверяем по схеме
 				me.verifyElement(els.parentP);
@@ -236,12 +234,12 @@ Ext.define(
 
 				els.p = nodes.p.getElement();
 				els.node = nodes.node.getElement();
+				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				els.newP = nodes.newP.getElement();
 				els.parentP = nodes.parentP.getElement();
 				els.prev = nodes.prev ? nodes.prev.getElement() : null;
 				els.start = nodes.start ? nodes.start.getElement() : null;
-
-				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
 
 				// курсор

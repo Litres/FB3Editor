@@ -33,8 +33,6 @@ Ext.define(
 				// получаем данные из выделения
 				range = data.range = manager.getRange();
 				
-				//console.log('range', range);return false;
-				
 				// удаляем все оверлеи в тексте
 				manager.removeAllOverlays();
 
@@ -61,6 +59,7 @@ Ext.define(
 				);
 
 				data.nodes = nodes;
+				data.els = els;
 
 				res = true;
 			}
@@ -79,10 +78,10 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				res = false,
 				nodes = {},
 				els = {},
-				viewportId = data.viewportId,
 				manager,
 				sel,
 				range,
@@ -92,6 +91,10 @@ Ext.define(
 			{
 				range = data.range;
 				nodes = data.nodes;
+				els = data.els;
+				manager = els.node.getManager();
+				manager.removeAllOverlays();
+				manager.setSuspendEvent(true);
 
 				// действительна ли родительская ссылка
 				nodes.parent = nodes.node.parentNode;
@@ -105,17 +108,14 @@ Ext.define(
 				if (!els.parent || !els.parent.isRoot)
 				{
 					// восстанавливаем ссылку из выделения
-					sel = window.getSelection();
-					restoreRange = sel.getRangeAt(0);
-					nodes.node = restoreRange.startContainer;
+					restoreRange = manager.getRangeCursor();
+					nodes.node = restoreRange.start;
 				}
 
 				els.node = nodes.node.getElement();
 
 				console.log('undo text', nodes, data);
 
-				manager = els.node.getManager();
-				manager.setSuspendEvent(true);
 				els.node.setText(data.oldValue, viewportId);
 				els.node.sync(viewportId);
 

@@ -1,5 +1,6 @@
 /**
  * Удаляет выделенную часть элементов.
+ * Не используется!
  *
  * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>

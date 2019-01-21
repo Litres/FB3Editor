@@ -13,11 +13,11 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
 				res = false,
-				sel = window.getSelection(),
 				nodes = {},
 				els = {},
-				manager,
+				viewportId,
 				range;
 
 			try
@@ -29,35 +29,23 @@ Ext.define(
 					manager = els.node.getManager();
 					manager.setCursor(data.saveRange);
 				}
+				
+				// получаем данные из выделения
+				range = data.range = manager.getRange();
+				
+				console.log('del empty', range);
+				
+				// удаляем все оверлеи в тексте
+				manager.removeAllOverlays();
 
-				range = sel.getRangeAt(0);
-
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					collapsed: range.collapsed,
-					offset: {
-						start: range.startOffset,
-						end: range.endOffset
-					}
-				};
-
-				nodes.node = range.startContainer;
-				els.node = nodes.node.getElement();
-
-				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
-
-				data.viewportId = nodes.node.viewportId;
-
-				console.log('del empty', els.node, range);
-
-				manager.suspendEvent = true;
+				nodes.node = range.start;
+				els.node = nodes.node.getElement();
+				
+				viewportId = data.viewportId = nodes.node.viewportId;
 
 				data.oldValue = els.node.getText();
-				els.node.setText('');
-				nodes.node.nodeValue = '';
+				els.node.setText('', viewportId);
 
 				nodes.empty = nodes.node;
 				els.empty = nodes.empty.getElement();
@@ -111,8 +99,8 @@ Ext.define(
 					els.next = nodes.next ? nodes.next.getElement() : null;
 					els.prev = nodes.prev ? nodes.prev.getElement() : null;
 
-					els.parentEmpty.remove(els.empty);
-					nodes.parentEmpty.removeChild(nodes.empty);
+					els.parentEmpty.remove(els.empty, viewportId);
+					//nodes.parentEmpty.removeChild(nodes.empty);
 
 					// курсор
 					nodes.cursor = nodes.next ? manager.getDeepFirst(nodes.next) : manager.getDeepLast(nodes.prev);
@@ -150,13 +138,13 @@ Ext.define(
 					if (nodes.first)
 					{
 						els.first = nodes.first.getElement();
-						els.empty.replace(els.newEmpty, els.first);
-						nodes.empty.replaceChild(nodes.newEmpty, nodes.first);
+						els.empty.replace(els.newEmpty, els.first, viewportId);
+						//nodes.empty.replaceChild(nodes.newEmpty, nodes.first);
 					}
 					else
 					{
-						els.empty.add(els.newEmpty);
-						nodes.empty.appendChild(nodes.newEmpty);
+						els.empty.add(els.newEmpty, viewportId);
+						//nodes.empty.appendChild(nodes.newEmpty);
 					}
 
 					els.parentEmpty = els.empty;
@@ -167,7 +155,7 @@ Ext.define(
 
 				els.parentEmpty.removeEmptyText();
 
-				els.parentEmpty.sync(data.viewportId);
+				els.parentEmpty.sync(viewportId);
 
 				manager.setCursor(
 					{
@@ -188,6 +176,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 
@@ -195,10 +184,10 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
 				res = false,
 				nodes = {},
 				els = {},
-				factory = FBEditor.editor.Factory,
 				manager,
 				sel,
 				restoreRange;
@@ -207,8 +196,8 @@ Ext.define(
 			{
 				nodes = data.nodes;
 				els = data.els;
-
 				manager = els.parentEmpty.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// восстанавливаем узел

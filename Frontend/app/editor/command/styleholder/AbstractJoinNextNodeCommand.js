@@ -178,6 +178,7 @@ Ext.define(
 
 				viewportId = data.viewportId;
 				manager = els.p.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// ссылка на старый абзац
