@@ -151,12 +151,13 @@ Ext.define(
 
 				nodes.node = data.saveNode;
 				els.node = nodes.node.getElement();
+				manager = els.node.getManager();
+				manager.removeAllOverlays();
+				manager.setSuspendEvent(true);
 				nodes.start = range.start;
 				nodes.parent = nodes.node.parentNode;
 				els.parent = nodes.parent.getElement();
 
-				manager = els.node.getManager();
-				manager.setSuspendEvent(true);
 
 				// удаляем изображение
 				els.parent.remove(els.node);

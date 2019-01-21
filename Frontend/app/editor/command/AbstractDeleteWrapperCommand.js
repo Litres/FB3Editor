@@ -405,8 +405,8 @@ Ext.define(
 				range = data.range;
 				els = data.els;
 				nodes = data.nodes;
-
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				console.log('undo del wrapper ' + me.elementName, data, range);

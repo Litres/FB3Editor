@@ -10,23 +10,27 @@ Ext.define(
 		extend: 'FBEditor.editor.command.AbstractCreateUnboundedCommand',
 
 		elementName: 'subtitle',
-
+		
 		setCursor: function (els, nodes)
 		{
 			var me = this,
-				sel = window.getSelection(),
 				data = me.getData(),
+				helper,
 				manager;
-
-			data.oldRange = sel.getRangeAt(0);
-			nodes.p = els.node.nodes[data.viewportId];
+			
+			manager = els.node.getManager();
+			data.oldRange = manager.getRangeCursor();
+			
+			els.start = els.node.first();
+			helper = els.start.getNodeHelper();
+			nodes.start = helper.getNode();
+			
 			data.saveRange = {
 				withoutSyncButtons: true,
-				startNode: nodes.p.firstChild,
-				startOffset: nodes.p.firstChild.length
+				startNode: nodes.start,
+				startOffset: els.start.getLength()
 			};
 
-			manager = els.node.getManager();
 			manager.setCursor(data.saveRange);
 		}
 	}

@@ -13,28 +13,27 @@ Ext.define(
         {
             var me = this,
                 data = me.getData(),
+	            manager = FBEditor.getEditorManager(),
                 res = false,
                 els = {},
                 node,
                 factory,
                 viewportId,
-                manager,
-                sel,
                 range;
 
             try
             {
-                // получаем данные из выделения
-                sel = window.getSelection();
-                range = sel.getRangeAt(0);
+	            // получаем данные из выделения
+	            range = manager.getRangeCursor();
+	
+	            // удаляем все оверлеи в тексте
+	            manager.removeAllOverlays();
 
-                node = range.commonAncestorContainer;
-                data.viewportId = viewportId = node.viewportId;
+                node = range.common;
+	            viewportId = data.viewportId = node.viewportId;
                 els.node = node.getElement();
-                manager = els.node.getManager();
                 factory = manager.getFactory();
                 els.focus = manager.getFocusElement();
-
                 manager.setSuspendEvent(true);
 
                 // текущая секция
@@ -123,7 +122,7 @@ Ext.define(
                 viewportId = data.viewportId;
                 els = data.els;
                 manager = els.focus.getManager();
-
+	            manager.removeAllOverlays();
                 manager.setSuspendEvent(true);
 
                 // восстанавливаем порядок всех секций

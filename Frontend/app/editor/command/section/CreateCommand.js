@@ -16,29 +16,27 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				factory = FBEditor.editor.Factory,
+				viewportId = data.viewportId,
 				inner;
 
 			// вложенная ли секция
 			inner = data.opts && data.opts.inner;
-
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-			nodes.next = nodes.node.nextSibling;
-
+			
+			els.parent = els.node.getParent();
+			els.next = els.node.next();
+			
 			if (inner)
 			{
 				// вложенная секция
-
-				while (!els.parent.isSection && !els.parent.isRoot)
-				{
-					// ищем родительскую секцию или корневой элемент
-					nodes.parent = nodes.parent.parentNode;
-					els.parent = nodes.parent.getElement();
-				}
-
+				
+				// ищем родительскую секцию или корневой элемент
+				els.parent = els.parent.getParentName('section') || els.parent.getRoot();
+				
 				// ищем существующую вложенную секцию
-				nodes.next = nodes.parent.firstChild;
-				els.next = nodes.next ? nodes.next.getElement() : null;
+				
+				els.next = els.parent.first();
+				
 				while (els.next)
 				{
 					if (els.next.isSection)
@@ -46,63 +44,56 @@ Ext.define(
 						// вложенная секция уже существует
 						throw Error('Section exists');
 					}
-					nodes.next = nodes.next.nextSibling;
-					els.next = nodes.next ? nodes.next.getElement() : null;
+					
+					els.next = els.next.first();
 				}
 
 				// создаем секцию
-				els.node = FBEditor.editor.Factory.createElement(me.elementName);
-				nodes.node = els.node.getNode(data.viewportId);
+				els.node = factory.createElement(me.elementName);
 
-				nodes.last = nodes.lastChild;
-				els.last = nodes.last ? nodes.last.getElement() : null;
+				els.last = els.parent.last();
+				
 				if (els.last && els.last.isNotes)
 				{
 					// вставляем новую секцию перед notes
-					els.parent.insertBefore(els.node, els.last);
-					nodes.parent.insertBefore(nodes.node, nodes.last);
+					els.parent.insertBefore(els.node, els.last, viewportId);
 				}
 				else
 				{
 					// вставляем новую секцию в конец
-					els.parent.add(els.node);
-					nodes.parent.appendChild(nodes.node);
+					els.parent.add(els.node, viewportId);
 				}
 
 				// переносим все дочерние элементы в новую секцию, кроме title, epigraph, annotation
+				
 				els.except = ['title', 'epigraph', 'annotation'];
-				nodes.next = nodes.parent.firstChild;
-				els.next = nodes.next ? nodes.next.getElement() : null;
-				while (els.next && els.next.elementId !== els.node.elementId)
+				els.next = els.parent.first();
+				
+				while (els.next && !els.next.equal(els.node))
 				{
-					nodes.buf = nodes.next.nextSibling;
-					if (!Ext.Array.contains(els.except, els.next.xmlTag))
+					els.buf = els.next.next();
+					
+					if (!Ext.Array.contains(els.except, els.next.getName()))
 					{
-						els.node.add(els.next);
-						nodes.node.appendChild(nodes.next);
-						els.parent.remove(els.next);
+						els.node.add(els.next, viewportId);
 					}
-					nodes.next = nodes.buf;
-					els.next = nodes.next ? nodes.next.getElement() : null;
+					
+					els.next = els.buf;
 				}
 			}
 			else
 			{
 				// добавляем секцию
 
-				els.node = FBEditor.editor.Factory.createElement(me.elementName);
+				els.node = factory.createElement(me.elementName);
 				els = Ext.apply(els, els.node.createScaffold());
-				nodes.node = els.node.getNode(data.viewportId);
-				if (nodes.next)
+				if (els.next)
 				{
-					els.next = nodes.next.getElement();
-					els.parent.insertBefore(els.node, els.next);
-					nodes.parent.insertBefore(nodes.node, nodes.next);
+					els.parent.insertBefore(els.node, els.next, viewportId);
 				}
 				else
 				{
-					els.parent.add(els.node);
-					nodes.parent.appendChild(nodes.node);
+					els.parent.add(els.node, viewportId);
 				}
 			}
 		},
@@ -113,34 +104,35 @@ Ext.define(
 				data = me.getData(),
 				res = false,
 				els = {},
-				nodes = {},
+				viewportId,
 				manager,
 				range,
 				inner;
 
 			try
 			{
+				console.log('undo create section', data);
+				
 				// вложенная ли секция
 				inner = data.opts && data.opts.inner;
-
-				nodes.node = data.saveNode;
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-
+				
+				viewportId = data.viewportId;
+				els = data.els;
 				manager = els.node.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
+				els.parent = els.node.getParent();
 
 				if (inner)
 				{
 					// переносим все элементы из секции обратно
-					nodes.first = nodes.node.firstChild;
-					while (nodes.first)
+					
+					els.first = els.node.first();
+					
+					while (els.first)
 					{
-						els.first = nodes.first.getElement();
-						els.parent.insertBefore(els.first, els.node);
-						nodes.parent.insertBefore(nodes.first, nodes.node);
-						nodes.first = nodes.node.firstChild;
+						els.parent.insertBefore(els.first, els.node, viewportId);
+						els.first = els.node.first();
 					}
 
 					// устанавливаем курсор
@@ -159,10 +151,9 @@ Ext.define(
 				}
 
 				// удаляем секцию
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
+				els.parent.remove(els.node, viewportId);
 
-				els.parent.sync(data.viewportId);
+				els.parent.sync(viewportId);
 
 				manager.suspendEvent = false;
 
