@@ -829,6 +829,8 @@ Ext.define(
 					sel.extend(data.endNode, data.endOffset);
 				}
 				
+				//console.log('set cur', sel);
+				
 				// сохраняем фокусный элемент и ставим фокус
 				helper = data.focusElement.getNodeHelper();
 				me.setFocusElement(helper.getNode(viewportId), sel, data.withoutSyncButtons);
@@ -2043,15 +2045,19 @@ Ext.define(
 		 */
 		removeAllOverlays: function ()
 		{
-			var me = this;
+			var me = this,
+				restoreSelection = me.overlays ? me.overlays.length : false;
 			
 			while (me.overlays && me.overlays.length)
 			{
 				me.removeOverlay(me.overlays[0]);
 			}
 			
-			// восстанавливаем выделение
-			me.restoreSelection();
+			if (restoreSelection)
+			{
+				// восстанавливаем выделение
+				me.restoreSelection();
+			}
 		},
 		
 		/**
