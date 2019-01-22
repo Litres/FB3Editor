@@ -53,42 +53,43 @@ Ext.define(
 		checkRangeVerify: function (sel)
 		{
 			var me = this,
+				manager = FBEditor.getEditorManager(),
+				containers = ['p', 'li', 'subtitle'],
 				els = {},
 				nodes = {},
-				containers = ['p', 'li', 'subtitle'],
 				res,
 				range;
 
 			// получаем данные из выделения
-			range = sel.getRangeAt(0);
+			range = manager.getRangeCursor();
 
 			if (range.collapsed)
 			{
 				return false;
 			}
 
-			nodes.common = range.commonAncestorContainer;
+			nodes.common = range.common;
 			els.common = nodes.common.getElement();
 
-			if (els.common.elementId === range.startContainer.getElement().elementId)
+			if (els.common.equal(range.start.getElement()))
 			{
 				// выделен только текстовый узел
 				return true;
 			}
 
 			// первый параграф
-			nodes.firstP = range.startContainer;
+			nodes.firstP = range.start;
 			els.firstP = nodes.firstP.getElement();
-			while (!Ext.Array.contains(containers, els.firstP.xmlTag))
+			while (!Ext.Array.contains(containers, els.firstP.getName()))
 			{
 				nodes.firstP = nodes.firstP.parentNode;
 				els.firstP = nodes.firstP.getElement();
 			}
 
 			// последний параграф
-			nodes.lastP = range.endContainer;
+			nodes.lastP = range.end;
 			els.lastP = nodes.lastP.getElement();
-			while (!Ext.Array.contains(containers, els.lastP.xmlTag))
+			while (!Ext.Array.contains(containers, els.lastP.getName()))
 			{
 				nodes.lastP = nodes.lastP.parentNode;
 				els.lastP = nodes.lastP.getElement();

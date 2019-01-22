@@ -13,15 +13,19 @@ Ext.define(
 		onKeyDownEnter: function (e)
 		{
 			var me = this,
-				sel = window.getSelection(),
+				manager = FBEditor.getEditorManager(),
 				name = me.getNameElement(),
 				isSame,
 				cmd,
 				range;
 
-			e.preventDefault();
-
-			range = sel.getRangeAt(0);
+			if (e)
+			{
+				e.preventDefault();
+			}
+			
+			// получаем текущие данные выделения
+			range = manager.getRangeCursor();
 
 			// в одном ли абзаце выделение
 			isSame = me.sameStyleHolder();
@@ -48,7 +52,7 @@ Ext.define(
 		{
 			var me = this,
 				name = me.getNameElement(),
-				manager = me.getElement().getManager(),
+				manager = FBEditor.getEditorManager(),
 				nodes = {},
 				els = {},
 				viewportId,
@@ -162,7 +166,7 @@ Ext.define(
 		{
 			var me = this,
 				name = me.getNameElement(),
-				manager = me.getElement().getManager(),
+				manager = FBEditor.getEditorManager(),
 				nodes = {},
 				els = {},
 				viewportId,
@@ -276,15 +280,16 @@ Ext.define(
 		sameStyleHolder: function ()
 		{
 			var me = this,
-				sel = window.getSelection(),
+				manager = FBEditor.getEditorManager(),
 				els = {},
 				isSame,
 				range;
 
-			range = sel.getRangeAt(0);
+			// получаем текущие данные выделения
+			range = manager.getRangeCursor();
 
-			els.start = range.startContainer.getElement();
-			els.end = range.endContainer.getElement();
+			els.start = range.start.getElement();
+			els.end = range.end.getElement();
 			els.startP = els.start.getStyleHolder();
 			els.endP = els.end.getStyleHolder();
 
