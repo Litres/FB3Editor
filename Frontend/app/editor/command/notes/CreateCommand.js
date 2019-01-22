@@ -14,19 +14,17 @@ Ext.define(
 		createElement: function (els, nodes)
 		{
 			var me = this,
-				data = me.getData();
+				data = me.getData(),
+				viewportId = data.viewportId,
+				factory = FBEditor.editor.Factory;
 
 			// корневой элемент
-			nodes.parent = data.node;
-			els.parent = nodes.parent.getElement();
+			els.parent = data.node.getElement();
 
 			// создаем элемент
-			els.node = FBEditor.editor.Factory.createElement(me.elementName);
+			els.node = factory.createElement(me.elementName);
 			els = Ext.apply(els, els.node.createScaffold());
-			nodes.node = els.node.getNode(data.viewportId);
-
-			els.parent.add(els.node);
-			nodes.parent.appendChild(nodes.node);
+			els.parent.add(els.node, viewportId);
 		}
 	}
 );
