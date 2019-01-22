@@ -28,12 +28,12 @@ Ext.define(
 				// удаляем все оверлеи в тексте
 				manager.removeAllOverlays();
 				
-				console.log('create', me.elementName, range);
+				console.log('create', me.elementName, data);
 
 				nodes.node = data.node || data.prevNode;
 				data.viewportId = nodes.node.viewportId;
 				els.node = nodes.node.getElement();
-				els.node = els.node.getStyleHolder();
+				els.node = els.node.getStyleHolder() || nodes.node.getElement();
 				manager.setSuspendEvent(true);
 
 				if (!els.node.getParent())
