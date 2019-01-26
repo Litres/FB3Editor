@@ -132,6 +132,12 @@ Ext.define(
 		 * @property {FBEditor.editor.overlay.Overlay[]} Текущие оверлеи в тексте.
 		 */
 		overlays: null,
+		
+		/**
+		 * @private
+		 * @property {String[]} xtype кнопок, с горячими клавишами.
+		 */
+		hotkeysButtons: null,
 
 		/**
 		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
@@ -158,6 +164,10 @@ Ext.define(
 			
 			// создаем поиск по тексту
 			me.search = Ext.create('FBEditor.editor.search.Search', {manager: me});
+			
+			// список кнопок с горячими клавишами
+			me.addHotkeysButton('panel-toolstab-button-find');
+			me.addHotkeysButton('panel-toolstab-button-replace');
 		},
 
 		/**
@@ -168,8 +178,7 @@ Ext.define(
 		{
 			var me = this,
 				oldContent = me.content,
-				content,
-				editor;
+				content;
 
 			try
 			{
@@ -939,6 +948,27 @@ Ext.define(
 				toolbar.fireEvent('disableButtons');
 			}
 		},
+		
+		/**
+		 * Добавляет кнопку в список для горячих клавиш.
+		 * @param {String} xtype Кнопка, которая доступная через горячие клавиши.
+		 */
+		addHotkeysButton: function (xtype)
+		{
+			var me = this;
+			
+			me.hotkeysButtons = me.hotkeysButtons || [];
+			me.hotkeysButtons.push(xtype);
+		},
+		
+		/**
+		 * Возвращает список кнопок, доступных через горячие клавиши.
+		 * @return {String[]}
+		 */
+		getHotkeysButtons: function ()
+		{
+			return this.hotkeysButtons;
+		},
 
         /**
 		 * Проверяет нажатие горячих клавиш.
@@ -948,6 +978,7 @@ Ext.define(
 		{
 			var me = this,
                 hotkeysManager = FBEditor.hotkeys.Manager,
+				hotkeysButtons,
 				keyName,
 				data,
 				evt,
@@ -979,11 +1010,47 @@ Ext.define(
                 if (numberSlot)
                 {
                     e.preventDefault();
+                    
+                    // тулбар с кнопками редактирования текста
                     editor = me.getEditor();
                     toolbar = editor.getToolbar();
 
-                    // выполняем соответствующую функцию
+                    // выполняем клик по кнопке, привязанной к соответствующему слоту горячих клавиш
                     toolbar.callClickButton(numberSlot);
+                    
+                    // другие кнопки, которые привязаны к горячим клавишам
+                    hotkeysButtons = me.getHotkeysButtons();
+                    
+                    Ext.each(
+	                    hotkeysButtons,
+	                    function (xtype)
+	                    {
+	                    	var btn,
+			                    query;
+	                    	
+	                    	// получаем кнопку, привязанную к соответствующему слоту горячих клавиш
+		                    query = xtype + '[numberSlot=' + numberSlot + ']';
+		                    btn = Ext.ComponentQuery.query(query);
+		                    btn = btn ? btn[0] : null;
+		                    
+		                    if (btn)
+		                    {
+		                    	if (!btn.disabled)
+			                    {
+				                    if (btn.enableToggle)
+				                    {
+					                    btn.toggle();
+				                    }
+				
+				                    // выполняем клик по кнопке
+				                    btn.fireEvent('click');
+			                    }
+			
+			                    // прерываем цикл
+			                    return false;
+		                    }
+	                    }
+                    );
                 }
                 else if (keyName === 'ENTER')
 				{
