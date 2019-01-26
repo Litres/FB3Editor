@@ -65,6 +65,13 @@ Ext.define(
 				},
 				spacer,
 				{
+					xtype: 'panel-toolstab-button-find'
+				},
+				{
+					xtype: 'panel-toolstab-button-replace'
+				},
+				spacer,
+				{
 					xtype: 'main-editor-button-unstyle'
 				}
 			];

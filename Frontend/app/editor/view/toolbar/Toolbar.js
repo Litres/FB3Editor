@@ -267,12 +267,15 @@ Ext.define(
             {
                 // создаем временную кнопку
                 btn = me.createTempButton(numberSlot);
-
-                // событие вызовется после синхронизации кнопки
-                btn.on('afterVerifyResult',	afterVerifyResult);
-
-                // синхронизируем
-                btn.fireEvent('sync');
+                
+                if (btn)
+                {
+	                // событие вызовется после синхронизации кнопки
+	                btn.on('afterVerifyResult',	afterVerifyResult);
+	
+	                // синхронизируем
+	                btn.fireEvent('sync');
+                }
             }
         },
 

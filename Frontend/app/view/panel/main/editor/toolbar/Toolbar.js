@@ -42,7 +42,9 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.underline.Underline',
             'FBEditor.view.panel.main.editor.button.unstyle.Unstyle',
 			'FBEditor.view.panel.main.editor.toolbar.responsive.button.Button',
-			'FBEditor.view.panel.main.editor.toolbar.ToolbarController'
+			'FBEditor.view.panel.main.editor.toolbar.ToolbarController',
+			'FBEditor.view.panel.toolstab.button.find.Find',
+			'FBEditor.view.panel.toolstab.button.replace.Replace'
 		],
 
 		xtype: 'main-editor-toolbar',
