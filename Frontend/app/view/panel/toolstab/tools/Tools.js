@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'Ext.panel.Panel',
 		requires: [
+			'FBEditor.view.panel.toolstab.button.find.Find',
+			'FBEditor.view.panel.toolstab.button.replace.Replace',
             'FBEditor.view.panel.toolstab.tools.button.hotkeys.Hotkeys',
 			'FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols',
             'FBEditor.view.panel.toolstab.tools.button.xmlwordwrap.XmlWordWrap'
@@ -50,7 +52,13 @@ Ext.define(
                 },
                 {
                     xtype: 'panel-toolstab-tools-button-hotkeys'
-                }
+                },
+				{
+					xtype: 'panel-toolstab-button-find'
+				},
+				{
+					xtype: 'panel-toolstab-button-replace'
+				}
 			];
 
 			me.callParent(arguments);
