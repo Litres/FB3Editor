@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.EditorController',
 			'FBEditor.view.panel.main.editor.Manager',
+			'FBEditor.view.panel.main.editor.search.Search',
 			'FBEditor.view.panel.main.editor.toolbar.Toolbar',
 			'FBEditor.view.panel.main.editor.viewport.Viewport'
 		],
@@ -58,6 +59,12 @@ Ext.define(
 		 * @property {FBEditor.view.panel.main.content.Content} Панель контента.
 		 */
 		panelContent: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.main.editor.search.Search} Панель поиска.
+		 */
+		searchPanel: null,
 
 		createManager: function ()
 		{
@@ -74,8 +81,21 @@ Ext.define(
 		initEditor: function ()
 		{
 			var me = this,
+				searchPanel,
 				north;
+			
+			// панель поиска
+			searchPanel = Ext.widget(
+				{
+					xtype: 'main-editor-search',
+					region: 'north'
+				}
+			);
+			
+			me.searchPanel = searchPanel;
+			me.add(searchPanel);
 
+			// основное окно редактирования
 			north = Ext.widget(
 				{
 					xtype: 'main-editor-viewport',
