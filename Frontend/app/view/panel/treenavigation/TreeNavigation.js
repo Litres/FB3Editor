@@ -13,7 +13,8 @@ Ext.define(
 			'FBEditor.view.panel.treenavigation.TreeNavigationController',
 			'FBEditor.view.panel.resources.navigation.Navigation',
 			'FBEditor.view.panel.treenavigation.desc.Tree',
-			'FBEditor.view.panel.treenavigation.body.Tree'
+			'FBEditor.view.panel.treenavigation.body.Tree',
+			'FBEditor.view.panel.treenavigation.xml.Tree'
 		],
 
 		id: 'panel-treenavigation',
