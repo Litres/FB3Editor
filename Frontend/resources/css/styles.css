@@ -262,7 +262,7 @@ body {
 	background: #ecebec;
 }
 
-/* пуста панель с информационным сообщением */
+/* пустая панель с информационным сообщением */
 .panel-empty {
 	text-align: center;
 }
@@ -285,4 +285,46 @@ body {
 }
 .window-hotkeys-slot-keys {
 	font-weight: bold;
+}
+
+/* панель поиска */
+.panel-search {
+	padding: 4px 0 6px 0;
+	color: #666;
+	background-color: #F8F7F8;
+}
+.panel-search-findprev,
+.panel-search-findnext {
+	margin: 4px 0 0 10px;
+}
+.panel-search-findprev:hover,
+.panel-search-findnext:hover {
+	color: #000;
+	cursor: pointer;
+}
+.panel-search-findprev .x-mask,
+.panel-search-findnext .x-mask {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+.panel-search-ignorecase,
+.panel-search-words,
+.panel-search-regex {
+	margin-left: 10px;
+}
+.panel-search-ignorecase {
+	margin-left: 20px;
+}
+.panel-search-count {
+	margin: 4px 0 0 20px;
+	font-weight: bold;
+}
+.panel-search-close {
+	margin: 2px 4px 0 0;
+}
+.panel-search-replace {
+	margin: 4px 0 0 0
+}
+.panel-search-replace-current,
+.panel-search-replace-all{
+	margin: 0 0 0 10px;
 }
