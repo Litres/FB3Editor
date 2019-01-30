@@ -19,7 +19,6 @@ Ext.define(
 			'FBEditor.view.panel.search.find.words.Words'
 		],
 		
-		id: 'panel-search-find',
 		xtype: 'panel-search-find',
 		controller: 'panel.search.find',
 		

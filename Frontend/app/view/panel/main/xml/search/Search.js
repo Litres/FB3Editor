@@ -12,6 +12,24 @@ Ext.define(
 	    id: 'panel-xml-search',
 	    xtype: 'panel-xml-search',
 	
-	    idEditorPanel: 'main-xml'
+	    idEditorPanel: 'main-xml',
+	
+	    getText: function ()
+	    {
+		    var me = this,
+			    editorPanel,
+			    manager,
+			    proxyEditor,
+			    text;
+		
+		    editorPanel = me.getEditorPanel();
+		    manager = editorPanel.getManager();
+		    proxyEditor = manager.getProxyEditor();
+		
+		    // получаем выделенный текст из редактора
+		    text = proxyEditor.getSelection();
+		    
+		    return text;
+	    }
     }
 );

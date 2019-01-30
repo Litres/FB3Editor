@@ -65,6 +65,12 @@ Ext.define(
 		 * @property {FBEditor.view.panel.main.editor.search.Search} Панель поиска.
 		 */
 		searchPanel: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.view.panel.search.replace.Replace} Панель замены.
+		 */
+		replacePanel: null,
 
 		createManager: function ()
 		{
@@ -88,7 +94,8 @@ Ext.define(
 			searchPanel = Ext.widget(
 				{
 					xtype: 'main-editor-search',
-					region: 'north'
+					region: 'north',
+					hidden: true
 				}
 			);
 			
@@ -181,6 +188,30 @@ Ext.define(
 			}
 
 			return viewports;
+		},
+		
+		/**
+		 * Врзвращает панель поиска.
+		 * @return {FBEditor.view.panel.main.editor.search.Search}
+		 */
+		getSearchPanel: function ()
+		{
+			return this.searchPanel;
+		},
+		
+		/**
+		 * Возвращает панель замены.
+		 * @return {FBEditor.view.panel.search.replace.Replace}
+		 */
+		getReplacePanel: function ()
+		{
+			var me = this,
+				panel;
+			
+			panel = me.replacePanel || me.down('panel-search-replace');
+			me.replacePanel = panel;
+			
+			return panel;
 		}
 	}
 );

@@ -61,6 +61,16 @@ Ext.define(
 	     * @property {Array} Кнопки для синхронизации с полем поиска.
 	     */
 	    buttonsSync: [],
+	
+	    /**
+	     * @require
+	     * Возвращает текст, выделенный в редакторе.
+	     * @return {String}
+	     */
+	    getText: function ()
+	    {
+	    	throw Error('Необходимо реализовать метод в наследуемом классе');
+	    },
 
         initComponent: function ()
         {
@@ -98,7 +108,7 @@ Ext.define(
 	        manager = editorPanel.getManager();
 	        
 	        // убираем подсветку текста после предыдущего поиска
-	        manager.search();
+	        manager.runSearch();
 
 	        me.callParent(arguments);
         },
@@ -130,21 +140,15 @@ Ext.define(
 	    setFocusSearchField: function ()
 	    {
 		    var me = this,
-			    editorPanel,
-			    manager,
-			    proxyEditor,
 			    text,
 			    findPanel,
 			    searchField;
 		
-		    editorPanel = me.getEditorPanel();
-		    manager = editorPanel.getManager();
-		    proxyEditor = manager.getProxyEditor();
 		    findPanel = me.getFindPanel();
 		    searchField = findPanel.getSearchField();
 		
 		    // получаем выделенный текст из редактора
-		    text = proxyEditor.getSelection();
+		    text = me.getText();
 		
 		    if (text)
 		    {
