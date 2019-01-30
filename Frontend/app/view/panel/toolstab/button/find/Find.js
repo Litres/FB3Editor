@@ -17,7 +17,6 @@ Ext.define(
 		controller: 'panel.toolstab.button.find',
 		
 		numberSlot: 32,
-		disabled: true,
 		tooltipText: 'Поиск',
 		text: 'Поиск...'
 	}

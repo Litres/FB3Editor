@@ -37,6 +37,12 @@ Ext.define(
 		 * @property {Boolean} Доступна ли синхронизация кнопок.
 		 */
 		_availableSyncButtons: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.Range} Хранит данные выделения, которые были акутальны перед поиском.
+		 */
+		beforeSearchRange: null,
 
 		translateText: {
 			loading: 'Загрузка текста...',
@@ -461,6 +467,137 @@ Ext.define(
 					}
 				}
 			);
+		},
+		
+		/**
+		 * Выполняет поиск по тексту.
+		 * @param {Object} [data] Данные поиска. Если данные не переданы, то убираем подсветку текущего поиска.
+		 * @param {String} data.searchText Строка поиска.
+		 * @param {Boolean} [data.isReg] Регулярное ли выражение в строке поиска.
+		 * @param {Boolean} [data.ignoreCase] Игнорировать ли регистр символов.
+		 * @param {Boolean} [data.words] Поиск целых слов.
+		 * @return {Number} Количество найденных совпадений.
+		 */
+		runSearch: function (data)
+		{
+			var me = this,
+				count = 0,
+				query,
+				ignoreCase,
+				isReg,
+				words,
+				search;
+			
+			// объект поиска
+			search = me.getSearch();
+			
+			if (data)
+			{
+				query = data.searchText;
+				isReg = data.isReg;
+				ignoreCase = data.ignoreCase;
+				words = data.words;
+				
+				// выполняем поиск
+				count = search.find(query, data);
+			}
+			else
+			{
+				// убираем подсветку
+				search.removeOverlay();
+			}
+			
+			return count;
+		},
+		
+		/**
+		 * Переводит курсор к следующему результату поиска.
+		 */
+		findNext: function ()
+		{
+			var me = this,
+				search;
+			
+			// объект поиска
+			search = me.getSearch();
+			
+			search.next();
+		},
+		
+		/**
+		 * Переводит курсор к предыдущему результату поиска.
+		 */
+		findPrev: function ()
+		{
+			var me = this,
+				search;
+			
+			// объект поиска
+			search = me.getSearch();
+			
+			search.prev();
+		},
+		
+		/**
+		 * Вызывает панель поиска по тексту.
+		 */
+		doSearch: function ()
+		{
+			var me = this,
+				panel,
+				replacePanel;
+			
+			// сохраняем выделение
+			me.beforeSearchRange = me.getRange();
+			
+			panel = me.getSearchPanel();
+			
+			if (panel.isHidden())
+			{
+				panel.show();
+			}
+			
+			// ставим фокус в поле поиска
+			panel.setFocusSearchField();
+			
+			replacePanel = panel.getReplacePanel();
+			replacePanel.hide();
+		},
+		
+		/**
+		 * Закрывает панель поиска.
+		 */
+		doEsc: function ()
+		{
+			var me = this,
+				panel;
+			
+			panel = me.getSearchPanel();
+			
+			if (!panel.isHidden())
+			{
+				// скрываем панель поиска
+				panel.hide();
+				
+				// восстанавливаем выделение
+				me.setRange(me.beforeSearchRange);
+				me.restoreSelection();
+			}
+		},
+		
+		/**
+		 * Возвращает панель поиска по xml.
+		 * @return {FBEditor.view.panel.main.xml.search.Search}
+		 */
+		getSearchPanel: function ()
+		{
+			var me = this,
+				editor = me.getEditor(),
+				searchPanel;
+			
+			searchPanel = editor.getSearchPanel();
+			
+			return searchPanel;
 		},
 
 		/**

@@ -298,7 +298,7 @@ Ext.define(
          * @param {Boolean} [data.words] Поиск целых слов.
          * @return {Number} Количество найденных совпадений.
          */
-        search: function (data)
+        runSearch: function (data)
         {
             var me = this,
                 proxy = me.getProxyEditor(),

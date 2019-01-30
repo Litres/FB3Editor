@@ -15,7 +15,6 @@ Ext.define(
 			'FBEditor.view.panel.search.replace.textfield.Textfield'
 		],
 		
-		id: 'panel-search-replace',
 		xtype: 'panel-search-replace',
 		controller: 'panel.search.replace',
 		

@@ -57,31 +57,26 @@ Ext.define(
 		 * Ищет все совпадения в тексте.
 		 * @param {String} query Поисковая строка.
 		 * @param {Object} [opts] Дополнительные параметры поиска.
+		 * @return {Number} Количество найденных совпадений.
 		 */
 		find: function (query, opts)
 		{
 			var me = this,
 				state = me.getState(),
+				count,
 				results,
 				ignoreCase,
 				isReg,
 				words,
 				cursor;
 			
-			if (query === 'n')
-			{
-				me.next();
-				return;
-			}
-			
-			if (query === 'p')
-			{
-				me.prev();
-				return;
-			}
-			
 			// убираем старую подсветку
 			me.removeOverlay();
+			
+			if (!query)
+			{
+				return false;
+			}
 			
 			if (opts)
 			{
@@ -107,6 +102,11 @@ Ext.define(
 				// добавляем подсветку ко всем найденым совпадениям
 				me.addOverlay();
 			}
+			
+			// количество найденных совпадений
+			count = cursor.getCount();
+			
+			return count;
 		},
 		
 		/**
