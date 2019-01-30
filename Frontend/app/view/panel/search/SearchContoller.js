@@ -30,7 +30,7 @@ Ext.define(
 			manager = editorPanel.getManager();
 			
 			// выполняем поиск и получаем количество найденных совпадений
-			count = manager.search(data);
+			count = manager.runSearch(data);
 			
 			// отображаем количество найденных результатов
 			view.setCount(count);

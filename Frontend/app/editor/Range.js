@@ -57,7 +57,10 @@ Ext.define(
 		{
 			var me = this;
 			
-			me.setData(range);
+			if (range)
+			{
+				me.setData(range);
+			}
 		},
 		
 		/**

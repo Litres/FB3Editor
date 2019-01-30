@@ -32,6 +32,12 @@ Ext.define(
 		 */
 		pos: null,
 		
+		/**
+		 * @private
+		 * @property {Number} Количество найденных совпадений.
+		 */
+		count: 0,
+		
 		constructor: function (cfg)
 		{
 			var me = this;
@@ -40,6 +46,15 @@ Ext.define(
 			
 			// выполняем поиск
 			me.results = me.getResults();
+		},
+		
+		/**
+		 * Возвращает количество найденных совпадений.
+		 * @returns {number}
+		 */
+		getCount: function ()
+		{
+			return this.count;
 		},
 		
 		/**
@@ -128,6 +143,8 @@ Ext.define(
 									selection: selection
 								}
 							);
+							
+							me.count++;
 						}
 						
 						if (pos.length)

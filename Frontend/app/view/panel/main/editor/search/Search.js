@@ -7,13 +7,29 @@
 Ext.define(
 	'FBEditor.view.panel.main.editor.search.Search',
 	{
-		extend: 'Ext.Panel',
+		extend: 'FBEditor.view.panel.search.Search',
 		
 		id: 'main-editor-search',
 		xtype: 'main-editor-search',
 		
-		html: 'search panel',
+		idEditorPanel: 'main-editor',
 		
-		hidden: true
+		getText: function ()
+		{
+			var me = this,
+				editorPanel,
+				manager,
+				range,
+				text;
+			
+			editorPanel = me.getEditorPanel();
+			manager = editorPanel.getManager();
+			range = manager.getRangeCursor();
+			
+			// получаем выделенный текст из редактора
+			text = range ? range.toString() : '';
+			
+			return text;
+		}
 	}
 );

@@ -35,15 +35,6 @@ Ext.define(
 			{
 				val = key === e.ENTER ? val : me.getDisplayValue();
 				me.setNewValue(val);
-				
-				if (val)
-				{
-					//FBEditor.getEditorManager().getSearch().find(val);
-				}
-				else
-				{
-					//FBEditor.getEditorManager().getSearch().removeOverlay();
-				}
 			}
 		},
 
