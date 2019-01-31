@@ -1127,27 +1127,30 @@ Ext.define(
 		{
 			var me = this,
 				sel = window.getSelection(),
-				range,
+				range = null,
 				curRange;
 			
-			curRange = sel.getRangeAt(0);
+			curRange = sel.rangeCount ? sel.getRangeAt(0) : null;
 			
-			range = {
-				collapsed: curRange.collapsed,
-				common: curRange.commonAncestorContainer,
-				start: curRange.startContainer,
-				end: curRange.endContainer,
-				offset: {
-					start: curRange.startOffset,
-					end: curRange.endOffset
-				},
-				toString: function ()
-				{
-					return curRange.toString();
-				}
-			};
-			
-			range = me.range = Ext.create('FBEditor.editor.Range', range);
+			if (curRange && curRange.startContainer.getElement)
+			{
+				range = {
+					collapsed: curRange.collapsed,
+					common: curRange.commonAncestorContainer,
+					start: curRange.startContainer,
+					end: curRange.endContainer,
+					offset: {
+						start: curRange.startOffset,
+						end: curRange.endOffset
+					},
+					toString: function ()
+					{
+						return curRange.toString();
+					}
+				};
+				
+				range = me.range = Ext.create('FBEditor.editor.Range', range);
+			}
 			
 			return range;
 		},
