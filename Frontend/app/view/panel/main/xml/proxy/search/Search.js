@@ -429,6 +429,7 @@ Ext.define(
 	    },
 	
 	    /**
+	     * @private
 	     * Возвращает компилированную строку для RegExp.
 	     * @param {String} query Строка поиска.
 	     * @return {String} Компилированная строка.
@@ -440,7 +441,7 @@ Ext.define(
 	    	
 	    	// заменяем \w
 	    	w = FBEditor.ExcludedCompiler.regexpW;
-	    	str = query.replace(/\\\w/g, w);
+		    str = query.replace(/\\[w]/g, w);
 	    	
 		    return str;
 	    },

@@ -70,14 +70,6 @@ Ext.define(
 				words,
 				cursor;
 			
-			// убираем старую подсветку
-			me.removeOverlay();
-			
-			if (!query)
-			{
-				return false;
-			}
-			
 			if (opts)
 			{
 				ignoreCase = opts.ignoreCase;
@@ -90,6 +82,14 @@ Ext.define(
 			state.setIgnoreCase(ignoreCase);
 			state.setIsReg(isReg);
 			state.setWords(words);
+
+			// убираем старую подсветку
+			me.removeOverlay();
+			
+			if (!query)
+			{
+				return false;
+			}
 			
 			// получаем объект поиска
 			cursor = me.getCursor();
