@@ -30,7 +30,10 @@ Ext.define(
 		 * @property {Number} Object.number Номер текущего элемента (из FBEditor.editor.search.cursor.Cursor#results).
 		 * @property {Number} Object.pos Номер позиции в текущем элементе.
 		 */
-		pos: null,
+		pos: {
+			number: 0,
+			pos: 0
+		},
 		
 		/**
 		 * @private
@@ -93,7 +96,7 @@ Ext.define(
 			}
 			
 			// получаем регулярное выражение
-			reg = me.parseQuery();
+			reg = search.parseQuery();
 			
 			//console.log('parseQuery', reg);
 			
@@ -174,6 +177,45 @@ Ext.define(
 			return results;
 		},
 		
+		/**
+		 * Возвращает текущее совпадение.
+		 * @return {FBEditor.editor.search.cursor.Result}
+		 */
+		getResult: function ()
+		{
+			var me = this,
+				results = me.getResults(),
+				pos = me.getPos(),
+				res;
+			
+			res = results[pos.number];
+			
+			return res;
+		},
+		
+		/**
+		 * Удаляет результат из коллекции.
+		 * @param {Number} number Номер результата.
+		 */
+		removeResult: function (number)
+		{
+			var me = this,
+				pos = me.getPos(),
+				results = me.getResults();
+			
+			results.splice(number, 1);
+			
+			if (pos.number > number)
+			{
+				// корректируем позицию текущего выделения
+				me.setPos(
+					{
+						number: pos.number - 1,
+						pos: pos.pos
+					}
+				);
+			}
+		},
 		
 		/**
 		 * Возвращает следующий результат поиска.
@@ -351,7 +393,7 @@ Ext.define(
 				if (!Ext.Object.equals(oldPos, newPos))
 				{
 					// убираем выделение со старого текущего совпадения
-					
+					//console.log('oldPos, newPos', oldPos, newPos);
 					oldResult = results[oldPos.number];
 					oldResultEl = oldResult.getEl();
 					oldResultPos = oldResult.getPos();
@@ -634,88 +676,6 @@ Ext.define(
 		getPos: function ()
 		{
 			return this.pos;
-		},
-		
-		/**
-		 * @private
-		 * Возвращает преобразованную поисковую строку.
-		 * @param {Boolean} [ignoreGlobal] Игнорировать ли глобальный поиск.
-		 * @return {RegExp}
-		 */
-		parseQuery: function (ignoreGlobal)
-		{
-			var me = this,
-				search = me.getSearch(),
-				state = search.getState(),
-				queryText = state.getQueryText(),
-				isReg = state.getIsReg(),
-				ignoreCase = state.getIgnoreCase(),
-				words = state.getWords(),
-				borderStart = me.getBorderRegExp(),
-				borderEnd = me.getBorderRegExp(true),
-				mods,
-				query;
-			
-			try
-			{
-				mods = ignoreGlobal ? 'u' : 'gu';
-				mods = ignoreCase ? mods + 'i' : mods;
-				
-				if (!isReg)
-				{
-					// преобразуем строку в регулярное выражение, экранируя все спецсимволы регулярных выражений
-					queryText = queryText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
-				}
-				else
-				{
-					queryText = me.compileQuery(queryText);
-				}
-				
-				query = words ? borderStart + queryText + borderEnd : queryText;
-				query = new RegExp(query, mods);
-			}
-			catch (e)
-			{
-				return false;
-			}
-			
-			//console.log('parseQuery', query);
-			
-			return query;
-		},
-		
-		/**
-		 * @private
-		 * Возвращает универсальную границу слова для использования в регулярном выражении поиска слов.
-		 * @param {Boolean} [isEnd] true - граница конца слова, false - граница начала слова.
-		 * @return {String}
-		 */
-		getBorderRegExp: function (isEnd)
-		{
-			var border;
-			
-			border = (isEnd ? ')' : '') + '(?:' + (isEnd ? '$' : '^') + '|[^_0-9a-zA-Zа-яА-ЯёЁ])' + (isEnd ? '' : '(');
-			border = '\\b';
-			
-			return border;
-		},
-		
-		/**
-		 * @private
-		 * Возвращает компилированную строку для RegExp.
-		 * @param {String} query Строка поиска.
-		 * @return {String} Компилированная строка.
-		 */
-		compileQuery: function (query)
-		{
-			var str,
-				w;
-			
-			// заменяем \w
-			w = FBEditor.ExcludedCompiler.regexpW;
-			str = query.replace(/\\[w]/g, w);
-			
-			return str;
 		}
 	}
 );

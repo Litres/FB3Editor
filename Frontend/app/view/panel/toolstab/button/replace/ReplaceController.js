@@ -13,7 +13,11 @@ Ext.define(
 		
 		onClick: function (e)
 		{
-			console.log('click replace', e);
+			var me = this,
+				manager = FBEditor.getEditorManager();
+			
+			// поиск по тексте
+			manager.doReplace();
 		}
 	}
 );

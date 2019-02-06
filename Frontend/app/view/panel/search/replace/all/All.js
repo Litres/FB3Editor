@@ -16,6 +16,7 @@ Ext.define(
 		
 		cls: 'panel-search-replace-all',
 		
+		hidden: true,
 		text: 'Заменить все',
 		
 		afterRender: function ()

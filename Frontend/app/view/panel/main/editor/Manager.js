@@ -294,6 +294,38 @@ Ext.define(
 		},
 		
 		/**
+		 * Выполняет замену.
+		 * @param {String} replaceStr Строка замены.
+		 * @param {Boolean} [all] Заменить ли все совпадения.
+		 * @return {Number} Количество оставшихся совпадений.
+		 */
+		runReplace: function (replaceStr, all)
+		{
+			var me = this,
+				count,
+				search;
+			
+			// объект поиска
+			search = me.getSearch();
+			
+			if (all)
+			{
+				// заменяем все совпадения
+				if (search.replaceAll(replaceStr))
+				{
+					count = 0;
+				}
+			}
+			else
+			{
+				// заменяем текущее совпадение
+				count = search.replace(replaceStr);
+			}
+			
+			return count;
+		},
+		
+		/**
 		 * Переводит курсор к следующему результату поиска.
 		 */
 		findNext: function ()
@@ -345,6 +377,33 @@ Ext.define(
 			
 			replacePanel = panel.getReplacePanel();
 			replacePanel.hide();
+		},
+		
+		/**
+		 * Вызывает панель замены по тексту.
+		 */
+		doReplace: function ()
+		{
+			var me = this,
+				panel,
+				replacePanel;
+			
+			// сохраняем выделение
+			me.beforeSearchRange = me.getRange();
+			
+			panel = me.getSearchPanel();
+			
+			if (panel.isHidden())
+			{
+				panel.show();
+			}
+			
+			// ставим фокус в поле поиска
+			panel.setFocusSearchField();
+			
+			// показываем панель замены
+			replacePanel = panel.getReplacePanel();
+			replacePanel.show();
 		},
 		
 		/**

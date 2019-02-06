@@ -332,6 +332,39 @@ Ext.define(
         },
 	
 	    /**
+	     * Выполняет замену.
+	     * @param {String} replaceStr Строка замены.
+	     * @param {Boolean} [all] Заменить ли все совпадения.
+	     * @return {Number} Количество оставшихся совпадений.
+	     */
+	    runReplace: function (replaceStr, all)
+	    {
+		    var me = this,
+			    proxy = me.getProxyEditor(),
+			    count,
+			    search;
+		
+		    // прокси поиска
+		    search = proxy.getSearch();
+		
+		    if (all)
+		    {
+			    // заменяем все совпадения
+			    if (search.replaceAll(replaceStr))
+			    {
+				    count = 0;
+			    }
+		    }
+		    else
+		    {
+			    // заменяем текущее совпадение
+			    count = search.replace(replaceStr);
+		    }
+		
+		    return count;
+	    },
+	
+	    /**
          * Переводит курсор к следующему результату поиска.
 	     */
 	    findNext: function ()
@@ -360,40 +393,6 @@ Ext.define(
 		
 		    search.findPrev();
 	    },
-	
-	    /**
-         * Выполняет замену.
-	     * @param {String} replaceStr Строка замены.
-	     * @param {Boolean} [all] Заменить ли все совпадения.
-         * @return {Number} Количество оставшихся совпадений.
-	     */
-	    replace: function (replaceStr, all)
-        {
-	        var me = this,
-		        proxy = me.getProxyEditor(),
-                count,
-                state,
-		        search;
-	
-	        // прокси поиска
-	        search = proxy.getSearch();
-	        
-	        if (all)
-            {
-                // заменяем все совпадения
-                if (search.replaceAll(replaceStr))
-                {
-                    count = 0;
-                }
-            }
-            else
-            {
-                // заменяем текущее совпадение
-	            count = search.replace(replaceStr);
-            }
-            
-            return count;
-        },
 
         /**
          * Вызывает панель поиска по тексту.
