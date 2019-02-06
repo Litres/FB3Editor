@@ -17,7 +17,6 @@ Ext.define(
 		controller: 'panel.toolstab.button.replace',
 		
 		numberSlot: 33,
-		disabled: true,
 		tooltipText: 'Поиск и замена',
 		text: 'Поиск и замена...'
 	}

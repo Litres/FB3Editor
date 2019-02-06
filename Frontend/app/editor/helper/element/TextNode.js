@@ -19,10 +19,10 @@ Ext.define(
 		 * Добавляет подсветку в текст.
 		 * Реализуется путем разделения текста в начальной и конечной точках выделения,
 		 * и переноса выделяемой части текста в создаваемый узел overlay, который может иметь свой css-класс.
-		 * @param {Number[]} pos Позиция совпадения.
+		 * @param {Object[]} pos Позиция подсветки.
 		 * @param {Number} pos.start Начальная позиция.
 		 * @param {Number} pos.end Конечная позиция.
-		 * @param {Boolean} pos.selection Выделить ли совпадение.
+		 * @param {Boolean} pos.selection Выделить ли подсветку.
 		 * @param {String} cls CSS-класс подсветки.
 		 */
 		addOverlay: function (pos, cls)

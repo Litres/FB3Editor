@@ -256,7 +256,7 @@ Ext.define(
 		
 		/**
 		 * Добавляет подсветку в текст.
-		 * @param {Number[]} pos Позиция совпадения.
+		 * @param {Object[]} pos Позиции подсветки.
 		 * @param {Number} pos.start Начальная позиция.
 		 * @param {Number} pos.end Конечная позиция.
 		 * @param {Boolean} pos.selection Выделить ли совпадение.

@@ -174,10 +174,13 @@ Ext.define(
 		    var me = this,
 			    replacePanel,
 			    replaceField,
+			    replaceCurBtn,
+			    replaceAllBtn,
 			    editorPanel,
 			    manager,
 			    replaceStr,
-		        count;
+		        count,
+		        disabled;
 		
 		    replacePanel = me.getReplacePanel();
 		    editorPanel = me.getEditorPanel();
@@ -188,11 +191,19 @@ Ext.define(
 		    replaceStr = replaceField.getValue();
 		
 		    // выполняем замену
-		    count = manager.replace(replaceStr, all);
+		    count = manager.runReplace(replaceStr, all);
 		    
 		    if (Ext.isNumber(count))
 		    {
+		    	// счетчик совпадений
 		    	me.setCount(count);
+			    disabled = !count;
+			    
+			    // кнопки замены
+			    replaceCurBtn = replacePanel.getCurrentBtn();
+			    replaceAllBtn = replacePanel.getAllBtn();
+			    replaceCurBtn.setDisabled(disabled);
+			    replaceAllBtn.setDisabled(disabled);
 		    }
 	    },
 	
