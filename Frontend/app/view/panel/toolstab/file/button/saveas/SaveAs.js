@@ -33,7 +33,12 @@ Ext.define(
 			var me = this,
 				resourcesManager = FBEditor.resource.Manager,
 				resourcesLoader = resourcesManager.getLoader(),
-				loaderObserver = resourcesLoader.getObserver();
+				loaderObserver = resourcesLoader.getObserver(),
+				bridge = FBEditor.getBridgeWindow(),
+				routeManager = bridge.FBEditor.route.Manager;
+			
+			// скрываем
+			me.hidden = routeManager.isSetParam('only_text');
 
 			me.text = me.translateText.save;
 
