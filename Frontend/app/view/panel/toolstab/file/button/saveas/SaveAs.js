@@ -29,7 +29,12 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				routeManager = bridge.FBEditor.route.Manager;
+			
+			// скрываем
+			me.hidden = routeManager.isSetParam('only_text');
 
 			me.text = me.translateText.save;
 
