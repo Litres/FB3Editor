@@ -67,6 +67,35 @@ Ext.define(
 
 			me.param[name] = val;
 		},
+		
+		/**
+		 * Возвращает параметр с заданным именем.
+		 * @param {String} name Имя параметра.
+		 * @return {String|null|undefined} Значение параметра.
+		 */
+		getParam: function (name)
+		{
+			var me = this,
+				params = me.getParams();
+			
+			return params[name];
+		},
+		
+		/**
+		 * Существует ли параметр с заданным именем.
+		 * @param {String} name Имя параметра.
+		 * @returns {Boolean}
+		 */
+		isSetParam: function (name)
+		{
+			var me = this,
+				param = me.getParam(name),
+				isSet;
+			
+			isSet = param !== undefined;
+			
+			return isSet;
+		},
 
 		/**
 		 * Удаляет параметры.

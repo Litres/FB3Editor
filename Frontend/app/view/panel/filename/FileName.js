@@ -13,18 +13,11 @@ Ext.define(
 			'FBEditor.view.panel.filename.display.Display',
 			'FBEditor.view.panel.filename.field.Field'
 		],
+		
 		id: 'panel-filename',
 		xtype: 'panel-filename',
 		controller: 'panel.filename',
-		floating: true,
-		autoShow: true,
-		shadow: false,
-		border: false,
-		monitorResize: true,
-		plain: true,
-		x: 400,
-		y: 3,
-		layout: 'card',
+		
 		listeners: {
 			click: {
 				element: 'el',
@@ -34,6 +27,17 @@ Ext.define(
 			afterrender: 'onAfterRender',
 			checkPosition: 'onCheckPosition'
 		},
+		
+		floating: true,
+		autoShow: true,
+		shadow: false,
+		border: false,
+		monitorResize: true,
+		plain: true,
+		x: 400,
+		y: 3,
+		layout: 'card',
+		
 		items: [
 			{
 				xtype: 'panel-filename-display'

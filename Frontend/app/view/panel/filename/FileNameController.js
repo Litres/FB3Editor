@@ -13,7 +13,15 @@ Ext.define(
 		onClick: function ()
 		{
 			var me = this,
-				view = me.getView();
+				view = me.getView(),
+				bridge = FBEditor.getBridgeWindow(),
+				routeManager = bridge.FBEditor.route.Manager;
+			
+			// скрываем
+			if (routeManager.isSetParam('only_text'))
+			{
+				return;
+			}
 
 			view.setActiveItem('panel-filename-field');
 		},
