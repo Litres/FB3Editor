@@ -131,9 +131,8 @@ Ext.define(
 		 */
 		onCloseApplication: function ()
 		{
-			var me = this,
-				bridgeProps = FBEditor.getBridgeProps();
-
+			var me = this;
+			
 			me.closeDetachPanels();
 		},
 

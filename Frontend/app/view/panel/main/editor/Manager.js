@@ -301,6 +301,7 @@ Ext.define(
 
 		/**
 		 * Сохраняет тело на хабе.
+		 * @return {Promise}
 		 */
 		saveToUrl: function ()
 		{
@@ -308,99 +309,114 @@ Ext.define(
 				loader = me.loader,
 				art = me.getArtId(),
 				revision = me.getRevision(),
-				rev = revision.getRev();
-
-			me.setLoading(art, me.translateText.saving).then(
-				function ()
+				rev = revision.getRev(),
+				promise;
+			
+			promise = new Promise(
+				function (resolve, reject)
 				{
-					// загружаем дифф с хаба
-					return loader.loadDiff(rev);
-				}
-			).then(
-				function (response)
-				{
-					var responseDiff = response.diff,
-						responseRev = response.rev;
-
-					//console.log('response', rev, response);
-
-					if (responseRev !== rev)
-					{
-						// применяем дифф к тексту
-						if (revision.applyDiff(responseDiff))
+					me.setLoading(art, me.translateText.saving).then(
+						function ()
 						{
-							// устанавливаем новую ревизию
-							revision.setRev(responseRev);
-							rev = responseRev;
+							// загружаем дифф с хаба
+							return loader.loadDiff(rev);
 						}
-					}
-
-					// сохраняем дифф
-					return loader.saveDiff(rev);
-				},
-				function (response)
-				{
-					// возникла ошибка
-
-					Ext.log(
+					).then(
+						function (response)
 						{
-							level: 'error',
-							msg: 'Ошибка загрузки дифф тела книги',
-							dump: response
+							var responseDiff = response.diff,
+								responseRev = response.rev;
+							
+							//console.log('response', rev, response);
+							
+							if (responseRev !== rev)
+							{
+								// применяем дифф к тексту
+								if (revision.applyDiff(responseDiff))
+								{
+									// устанавливаем новую ревизию
+									revision.setRev(responseRev);
+									rev = responseRev;
+								}
+							}
+							
+							// сохраняем дифф
+							return loader.saveDiff(rev);
+						},
+						function (response)
+						{
+							// возникла ошибка
+							
+							Ext.log(
+								{
+									level: 'error',
+									msg: 'Ошибка загрузки дифф тела книги',
+									dump: response
+								}
+							);
+							
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно загрузить дифф тела книги',
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
+							
+							// убираем информационное сообщение о загрузке
+							me.clearLoading();
+						}
+					).then(
+						function (response)
+						{
+							var responseRev = response.rev;
+							
+							if (responseRev)
+							{
+								// устанавливаем новую ревизию
+								revision.setRev(responseRev);
+							}
+							
+							// убираем информационное сообщение о загрузке
+							me.clearLoading();
+							
+							// флаг изменений в теле книги
+							me.setChanged(false);
+							
+							resolve();
+						},
+						function (response)
+						{
+							// возникла ошибка
+							
+							Ext.log(
+								{
+									level: 'error',
+									msg: 'Ошибка сохранения дифф тела книги',
+									dump: response
+								}
+							);
+							
+							Ext.Msg.show(
+								{
+									title: 'Ошибка',
+									message: 'Невозможно сохранить дифф тела книги',
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								}
+							);
+							
+							// убираем информационное сообщение о загрузке
+							me.clearLoading();
+							
+							reject();
 						}
 					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно загрузить дифф тела книги',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
-				}
-			).then(
-				function (response)
-				{
-					var responseRev = response.rev;
-
-					if (responseRev)
-					{
-						// устанавливаем новую ревизию
-						revision.setRev(responseRev);
-					}
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
-				},
-				function (response)
-				{
-					// возникла ошибка
-
-					Ext.log(
-						{
-							level: 'error',
-							msg: 'Ошибка сохранения дифф тела книги',
-							dump: response
-						}
-					);
-
-					Ext.Msg.show(
-						{
-							title: 'Ошибка',
-							message: 'Невозможно сохранить дифф тела книги',
-							buttons: Ext.MessageBox.OK,
-							icon: Ext.MessageBox.ERROR
-						}
-					);
-
-					// убираем информационное сообщение о загрузке
-					me.clearLoading();
 				}
 			);
+			
+			return promise;
 		},
 
 		/**

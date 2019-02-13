@@ -166,15 +166,14 @@ Ext.define(
 			};
 
 			// закрытие/обновление окна
-			window.onbeforeunload = function ()
-			{
-				me.onbeforeunload(me);
-			};
-
-			window.onfocus = function ()
-			{
-				me.onfocus();
-			};
+			window.addEventListener('beforeunload', function (evt) {
+				return me.onbeforeunload(me, evt);
+			});
+			
+			// установка фокуса
+			window.addEventListener('focus', function (evt) {
+				return me.onfocus();
+			});
 
 			// вебворкеры
 			FBEditor.webworker.Manager.init();
@@ -228,9 +227,15 @@ Ext.define(
 		/**
 		 * Выполняет необходимые действия перед закрытием окна.
 		 * @param {FBEditor.Application} scope Ссылка на приложение.
+		 * @param {Object} evt Событие.
 		 */
-		onbeforeunload: function (scope)
+		onbeforeunload: function (scope, evt)
 		{
+			var me = scope,
+				editorManager,
+				routeManager,
+				cmd;
+			
 			if (FBEditor.parentWindow && !FBEditor.closingWindow)
 			{
 				// процесс закрытия отсоединенной панели
@@ -253,15 +258,27 @@ Ext.define(
 					FBEditor.getLocalStorage().removeItem(window.name);
 				}
 
-				// принудительно закрываем окно, даже если оно было обновлено
+				// принудительно закрываем дочернее окно, даже если оно было обновлено
 				window.close();
 			}
 			else
 			{
 				// процесс закрытия основного окна редактора
-
+				
 				FBEditor.closingWindow = true;
 				Ext.getCmp('main').fireEvent('closeapplication');
+				
+				routeManager = FBEditor.route.Manager;
+				editorManager = FBEditor.getEditorManager();
+				
+				if (routeManager.isSetParam('only_text') && editorManager.isChanged())
+				{
+					// сохраняем тело книги на хабе
+					editorManager.saveToUrl();
+					
+					// показываем диалоговое окно перед закрытием приложения
+					evt.returnValue = true;
+				}
 			}
 		},
 
