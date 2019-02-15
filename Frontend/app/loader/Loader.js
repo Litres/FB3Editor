@@ -137,11 +137,9 @@ Ext.define(
 		{
 			var me = this,
 				routeManager = FBEditor.route.Manager,
-				art = me.art,
-				params;
+				art = me.art;
 
-			params = routeManager.getParams();
-			art = art || params.art || params.body_art;
+			art = art || routeManager.getParam('art') || routeManager.getParam('body_art');
 
 			return art;
 		},

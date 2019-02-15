@@ -19,6 +19,19 @@ Ext.define(
 		 * @property {String} Id корневого элемента fb3-body.
 		 */
 		fb3BodyId: '',
+		
+		/**
+		 * @private
+		 * @property {Number} Промежуток времени для автоматического сохранения (в секундах).
+		 */
+		saveTime: 300,
+		
+		/**
+		 * @private
+		 * @property {Object} Содержит список задач.
+		 * Смотрите Ext.util.TaskManager.
+		 */
+		task: null,
 
 		/**
 		 * @private
@@ -54,13 +67,39 @@ Ext.define(
 		 */
 		init: function ()
 		{
-			var me = this;
+			var me = this,
+				routeManager = FBEditor.route.Manager;
 
 			// загрузчик
 			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
 
             // менеджер редактора xml
             me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
+            
+            // инициализируем список задач
+			me.task = {
+				// задача для автосохранения
+				autoSave: {
+					run: function ()
+					{
+						me.saveToUrl()
+					},
+					interval: me.saveTime * 1000
+				}
+			};
+            
+            if (routeManager.isSetParam('only_text'))
+            {
+            	// автосохранение
+	            Ext.defer(
+	            	function ()
+		            {
+			            me.autoSave(true);
+		            },
+		            me.saveTime * 1000,
+		            me
+	            )
+            }
 		},
 
 		/**
@@ -208,6 +247,26 @@ Ext.define(
 					},
 					200
 				);
+			}
+		},
+		
+		/**
+		 * Устанавливает периодическое автосохранение.
+		 * @param {Boolean} save Сохранять ли периодически.
+		 */
+		autoSave: function (save)
+		{
+			var me = this,
+				taskManager = Ext.TaskManager,
+				task = me.task.autoSave;
+			
+			if (save)
+			{
+				taskManager.start(task);
+			}
+			else
+			{
+				taskManager.stop(task);
 			}
 		},
 
