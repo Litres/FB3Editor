@@ -185,29 +185,51 @@ Ext.define(
 		replaceAll: function (replaceStr)
 		{
 			var me = this,
+				str = replaceStr,
 				state = me.getState(),
 				res = false,
+				reg,
+				matches,
+				text,
 				queryText,
+				query,
+				isReg,
 				cursor;
 			
-			queryText = state.getQueryText();
+			cursor = state.getCursor();
+			isReg = state.getIsReg();
 			
-			console.log('replace all', replaceStr); return false;
-			
-			if (queryText !== replaceStr)
+			if (cursor)
 			{
-				proxy.operation(
-					function ()
+				queryText = state.getQueryText();
+				
+				if (queryText !== str)
+				{
+					if (isReg)
 					{
-						while (cursor = state.getCursor())
+						// выделенный текст
+						text = me.getTextSelection();
+						query = me.parseQuery(true);
+						matches = text.match(query);
+						
+						if (matches[1])
 						{
-							// заменяем текущее совпадение
-							me.replace(replaceStr);
-							
-							res = true;
+							// преобразуем текущую строку замены с учетом скобочных групп в поисковой строке
+							for (var i = 1; i < matches.length; i++)
+							{
+								reg = new RegExp('\\$' + i, 'g');
+								str = str.replace(reg, matches[i]);
+							}
 						}
 					}
-				);
+					
+					// заменяем все совпадения
+					me.replaceAllResult(str);
+					
+					res = true;
+				}
+				
+				state.setCount(0);
 			}
 			
 			return res;
@@ -428,6 +450,28 @@ Ext.define(
 		},
 		
 		/**
+		 * Возвращает выделенный текст.
+		 * @return {String}
+		 */
+		getTextSelection: function ()
+		{
+			var me = this,
+				state = me.getState(),
+				cursor = state.getCursor(),
+				pos = cursor.getPos(),
+				result = cursor.getResult(),
+				el,
+				resPos,
+				text;
+			
+			el = result.getEl();
+			resPos = result.getPos()[pos.pos];
+			text = el.getText(resPos.start, resPos.end);
+			
+			return text;
+		},
+		
+		/**
 		 * @private
 		 * Заменяет текущее совпадение.
 		 * @param {String} str Строка замены.
@@ -445,9 +489,6 @@ Ext.define(
 				text,
 				newText,
 				difLen;
-			
-			console.log('pos', pos);
-			console.log('result', result);
 			
 			// элемент
 			el = result.getEl();
@@ -491,25 +532,55 @@ Ext.define(
 		},
 		
 		/**
-		 * Возвращает выделенный текст.
-		 * @return {String}
+		 * @private
+		 * Заменяет все совпадения.
+		 * @param {String} str Строка замены.
 		 */
-		getTextSelection: function ()
+		replaceAllResult: function (str)
 		{
 			var me = this,
 				state = me.getState(),
 				cursor = state.getCursor(),
-				pos = cursor.getPos(),
-				result = cursor.getResult(),
 				el,
-				resPos,
-				text;
+				newText;
 			
-			el = result.getEl();
-			resPos = result.getPos()[pos.pos];
-			text = el.getText(resPos.start, resPos.end);
+			// удаляем подсветку
+			me.removeOverlay();
 			
-			return text;
+			cursor.each(
+				function (result)
+				{
+					var text;
+					
+					// элемент
+					el = result.getEl();
+
+					// текст элемента
+					text = el.getText();
+					
+					// перебираем все позиции элемента в обратном порядке
+					result.each(
+						function (pos)
+						{
+							// новый текст
+							newText = text.substring(0, pos.start);
+							newText += str;
+							newText += text.substring(pos.end);
+							el.setText(newText);
+							text = newText;
+						},
+						me,
+						true
+					);
+					
+					// синхронизируем
+					el.sync();
+				},
+				me
+			);
+			
+			// сбрасываем данные поиска
+			state.setCursor(null);
 		}
 	}
 );
