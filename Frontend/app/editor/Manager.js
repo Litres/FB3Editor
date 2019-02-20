@@ -830,6 +830,8 @@ Ext.define(
 				data.startOffset = data.startOffset || 0;
 				data.startOffset = data.startOffset > data.startNode.length ?
 				                   data.startNode.length : data.startOffset;
+				
+				//console.log('set cursor', data);
 
 				// устанавливаем фокус браузера в окно текста
 				viewportId = data.startNode.viewportId;

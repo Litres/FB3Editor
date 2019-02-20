@@ -172,7 +172,16 @@ Ext.define(
 				}
 			);
 			
-			manager.setRange(null);
+			me.results = results;
+			
+			if (results)
+			{
+				// прокручиваем скролл окна к текущему совпадению
+				me.scrollToView();
+			}
+			
+			// сбрасываем данные текущего выделения, чтобы активировать возможность перехода к следующему совпадению
+			//manager.setRange(null);
 			
 			return results;
 		},
@@ -406,11 +415,14 @@ Ext.define(
 			// сохраняем новую позицию текущего совпадения
 			me.setPos(newPos);
 			
+			// прокручиваем скролл окна к текущему совпадению
+			me.scrollToView();
+			
+			// сбрасываем данные текущего выделения, чтобы активировать возможность перехода к следующему совпадению
 			manager.setRange(null);
 			
 			return next;
 		},
-		
 		
 		/**
 		 * Возвращает предыдущий результат поиска.
@@ -605,6 +617,10 @@ Ext.define(
 			// сохраняем новую позицию текущего совпадения
 			me.setPos(newPos);
 			
+			// прокручиваем скролл окна к текущему совпадению
+			me.scrollToView();
+			
+			// сбрасываем данные текущего выделения, чтобы активировать возможность перехода к предыдущему совпадению
 			manager.setRange(null);
 			
 			return prev;
@@ -676,6 +692,21 @@ Ext.define(
 		getPos: function ()
 		{
 			return this.pos;
+		},
+		
+		/**
+		 * Прокручивает скролл окна к текущему совпадению.
+		 */
+		scrollToView: function ()
+		{
+			var me = this,
+				result = me.getResult(),
+				el,
+				helper;
+			
+			el = result.getEl();
+			helper = el.getNodeHelper();
+			helper.scrollIntoView();
 		}
 	}
 );

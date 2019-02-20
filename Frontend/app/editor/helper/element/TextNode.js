@@ -15,6 +15,19 @@ Ext.define(
 		 */
 		overlays: null,
 		
+		scrollIntoView: function ()
+		{
+			var me = this,
+				el = me.el,
+				parent,
+				helper;
+			
+			// так как текстовый элемент не может быть прокручен, то передаем управление родительскому элементу
+			parent = el.getParent();
+			helper = parent.getNodeHelper();
+			helper.scrollIntoView();
+		},
+		
 		/**
 		 * Добавляет подсветку в текст.
 		 * Реализуется путем разделения текста в начальной и конечной точках выделения,

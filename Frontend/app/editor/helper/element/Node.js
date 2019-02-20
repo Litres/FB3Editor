@@ -403,7 +403,7 @@ Ext.define(
 				el.nodes,
 				function (viewportId, node)
 				{
-					node.scrollIntoView();
+					node.scrollIntoView({block: 'center'});
 				}
 			);
 		},
