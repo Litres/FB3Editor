@@ -9,18 +9,25 @@ Ext.define(
     {
         singleton: true,
         requires: [
-            'FBEditor.hotkeys.Store'
+            'FBEditor.hotkeys.Store',
+            'FBEditor.hotkeys.converter.Converter'
         ],
 
         mixins: [
             'Ext.mixin.Observable'
         ],
-
+        
         /**
          * @private
          * @property {FBEditor.hotkeys.Store} Хранилище горячих клавиш.
          */
         store: null,
+	
+	    /**
+         * @private
+         * @property {FBEditor.hotkeys.converter.Converter} Конвертер для преобразования названия клавиши к латинице.
+	     */
+	    converter: null,
 
         /**
          * @private
@@ -226,7 +233,9 @@ Ext.define(
 
         constructor: function (config)
         {
-            this.mixins.observable.constructor.call(this, config);
+            var me = this;
+            
+            me.mixins.observable.constructor.call(me, config);
         },
 
         init: function ()
@@ -237,7 +246,10 @@ Ext.define(
             // хранилище горячих клавиш
             store = Ext.create('FBEditor.hotkeys.Store');
             me.store = store;
-
+	
+            // конвертер названия клавиши к латинице
+	        me.converter = Ext.create('FBEditor.hotkeys.converter.Converter');
+	        
             Ext.each(
                 me.defaultData,
                 function (item)
@@ -263,6 +275,15 @@ Ext.define(
         {
             return this.store;
         },
+	
+	    /**
+	     * Возвращает конвертер для преобразования названия клавиши к латинице.
+	     * @return {FBEditor.hotkeys.converter.Converter}
+	     */
+	    getConverter: function ()
+	    {
+		    return this.converter;
+	    },
 
         /**
          * Возвращает данные слота по его номеру.
@@ -319,7 +340,10 @@ Ext.define(
                 store = me.getStore(),
                 numberSlot = null,
                 index;
-
+            
+            // преобразуем название клавиши
+            data.key = me.convertKey(data.key);
+            
             index = store.findBy(
                 function (record, id)
                 {
@@ -400,6 +424,22 @@ Ext.define(
 
             // вбрасываем событие для подписчиков
             me.fireEvent('changed', data);
+        },
+	
+	    /**
+         * @private
+         * Преобразует название клавиши.
+	     * @param {String} key Название клавиши.
+         * @return {String} Преобразованное название клаиши.
+	     */
+	    convertKey: function (key)
+        {
+            var me = this,
+                converter = me.getConverter();
+            
+            key = converter.getChar(key);
+            
+            return key;
         }
     }
 );

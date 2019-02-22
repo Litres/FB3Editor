@@ -12,6 +12,6 @@ Ext.define(
 		id: 'window-hotkeys-slot-search',
 		xtype: 'window-hotkeys-slot-search',
 		
-		titleText: 'Поиск в редакторе XML'
+		titleText: 'Поиск'
 	}
 );

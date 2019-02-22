@@ -12,6 +12,6 @@ Ext.define(
 		id: 'window-hotkeys-slot-replace',
 		xtype: 'window-hotkeys-slot-replace',
 		
-		titleText: 'Замена в редакторе XML'
+		titleText: 'Замена'
 	}
 );
