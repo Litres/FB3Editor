@@ -9,8 +9,6 @@ Ext.define(
     {
         extend: 'Ext.data.Model',
 
-        //idProperty: 'slot',
-
         fields: [
             {
                 name: 'slot',
