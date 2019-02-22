@@ -435,12 +435,11 @@ Ext.define(
 	    convertKey: function (key)
         {
             var me = this,
-                converter = me.getConverter(),
-                char;
+                converter = me.getConverter();
             
-            char = converter.getChar(key);
+            key = converter.getChar(key);
             
-            return char;
+            return key;
         }
     }
 );

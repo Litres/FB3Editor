@@ -252,7 +252,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.data,
-				char = key;
+				convertKey = key;
 			
 			Ext.each(
 				data,
@@ -260,14 +260,14 @@ Ext.define(
 				{
 					if (item.key === key.toUpperCase())
 					{
-						char = item.char;
+						convertKey = item['char'];
 						
 						return true;
 					}
 				}
 			);
 			
-			return char;
+			return convertKey;
 		}
 	}
 );
