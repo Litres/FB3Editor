@@ -340,6 +340,9 @@ Ext.define(
 
 					case Ext.event.Event.BACKSPACE:
 						return controller.onKeyDownBackspace(e);
+					
+					case Ext.event.Event.ESC:
+						return controller.onKeyDownEsc(e);
 
 					case Ext.event.Event.LEFT:
 						if (e.shiftKey && e.ctrlKey)
@@ -516,6 +519,18 @@ Ext.define(
 
 			e.preventDefault();
 			me.removeNodes();
+		},
+		
+		onKeyDownEsc: function (e)
+		{
+			var me = this,
+				el = me.getElement(),
+				manager = el.getManager();
+			
+			e.preventDefault();
+			
+			// закрываем панель поиска
+			manager.doEsc();
 		},
 
 		onKeyDownLeft: function (e)
