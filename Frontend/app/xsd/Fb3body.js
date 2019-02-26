@@ -148,6 +148,7 @@ Ext.define(
 				<attribute name="doi" type="fb3b:DOIType" use="optional"/>\
 				<attribute name="clipped" type="boolean"/>\
 				<attribute name="first-char-pos" type="positiveInteger"/>\
+				<attribute name="output" type="fb3b:TrialShareType" default="default"/>\
 			</extension>\
 		</complexContent>\
 	</complexType>\
@@ -439,6 +440,14 @@ Ext.define(
 			<enumeration value="right"/>\
 			<enumeration value="both"/>\
 			<enumeration value="page"/>\
+		</restriction>\
+	</simpleType>\
+	<simpleType name="TrialShareType">\
+		<restriction base="token">\
+			<enumeration value="default"/>\
+			<enumeration value="trial"/>\
+			<enumeration value="trial-only"/>\
+			<enumeration value="payed"/>\
 		</restriction>\
 	</simpleType>\
 	<simpleType name="ScreenSizeType">\
