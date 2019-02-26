@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.main.props.body.editor.section.Editor',
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
+		requires: [
+			'FBEditor.view.panel.main.props.body.editor.section.output.Output'
+		],
 
 		translateText: {
 			article: 'article',
@@ -57,7 +60,10 @@ Ext.define(
                     labelAlign: 'left',
                     fieldLabel: me.translateText.pos,
                     minValue: 0
-                }
+                },
+				{
+					xtype: 'panel-props-body-editor-section-output'
+				}
 			];
 
 			me.callParent(arguments);
