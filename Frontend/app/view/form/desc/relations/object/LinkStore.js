@@ -75,20 +75,32 @@ Ext.define(
 				name: 'Переиздание'
 			},
 			{
-				value: 'alt_translation',
+				value: 'another_translation',
 				name: 'Другой перевод'
 			},
 			{
-				value: 'alt_translation_and_media',
+				value: 'another_translation_alt_media',
 				name: 'Другой перевод на другом носителе'
 			},
 			{
-				value: 'alt_translation_compilation',
+				value: 'compilation_another_translation',
 				name: 'Сборник (другой перевод)'
 			},
 			{
-				value: 'alt_translation_part',
+				value: 'part_another_translation',
 				name: 'Часть (другой перевод)'
+			},
+			{
+				value: 'compilation_alt_media',
+				name: 'Сборник (другой носитель)'
+			},
+			{
+				value: 'part_alt_media',
+				name: 'Часть (другой носитель)'
+			},
+			{
+				value: 'translation_to_other_lang',
+				name: 'Перевод на другой язык'
 			},
 			{
 				value: 'undef',

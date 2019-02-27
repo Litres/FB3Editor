@@ -91,10 +91,13 @@ attributeFormDefault="unqualified">\
 		          <enumeration value="sequel" />\
 		          <enumeration value="prequel" />\
 		          <enumeration value="reissue" />\
-		          <enumeration value="alt_translation" />\
-		          <enumeration value="alt_translation_and_media" />\
-		          <enumeration value="alt_translation_compilation" />\
-		          <enumeration value="alt_translation_part" />\
+		          <enumeration value="another_translation" />\
+		          <enumeration value="another_translation_alt_media" />\
+		          <enumeration value="compilation_another_translation" />\
+		          <enumeration value="part_another_translation" />\
+		          <enumeration value="compilation_alt_media" />\
+		          <enumeration value="part_alt_media" />\
+		          <enumeration value="translation_to_other_lang" />\
 		          <enumeration value="undef" />\
 	          </restriction>\
           </simpleType>\
