@@ -14,7 +14,7 @@ Ext.define(
 		getXsd: function ()
 		{
 			var xsd;
-
+			
 			xsd = '<?xml version="1.0" encoding="UTF-8"?>\
 <schema xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns="http://www.w3.org/2001/XMLSchema"\
 		xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.fictionbook.org/FictionBook3/body"\
@@ -77,7 +77,7 @@ Ext.define(
 			                <element name="p" type="fb3b:StyleType"/>\
 			                <element name="br" type="fb3b:BRType"/>\
 			            </choice>\
-			            <element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
+			            <element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>\
 			        </sequence>\
 				</complexType>\
 			</element>\
@@ -90,7 +90,7 @@ Ext.define(
 				<element name="p" type="fb3b:StyleType"/>\
 				<element name="br" type="fb3b:BRType"/>\
 			</choice>\
-			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
+			<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>\
 		</sequence>\
 		<attribute name="id" type="ID" use="optional"/>\
 	</complexType>\
@@ -138,7 +138,7 @@ Ext.define(
 								<element name="br" type="fb3b:BRType"/>\
 								<element name="div" type="fb3b:DivBlockType"></element>\
 							</choice>\
-							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
+							<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>\
 						</sequence>\
 						<element name="clipped"><complexType/></element>\
 					</choice>\
@@ -181,7 +181,7 @@ Ext.define(
 				<element name="blockquote" type="fb3b:PHolderType"/>\
 				<element name="br" type="fb3b:BRType"/>\
 			</choice>\
-			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"></element>\
+			<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>\
 		</sequence>\
 		<attributeGroup ref="fb3b:SizingAttributes"/>\
 		<attribute name="float" use="optional">\
@@ -215,6 +215,26 @@ Ext.define(
 				<element name="ul" type="fb3b:LiHolderType"/>\
 				<element name="pre" type="fb3b:PHolderType"/>\
 				<element name="blockquote" type="fb3b:PHolderType"/>\
+				<element name="br" type="fb3b:BRType"/>\
+			</choice>\
+		</sequence>\
+		<attribute name="id" type="ID" use="optional"/>\
+	</complexType>\
+	<complexType name="SubscriptionType">\
+		<sequence>\
+			<choice>\
+				<element name="p" type="fb3b:StyleType"/>\
+				<element name="ol" type="fb3b:LiHolderType"/>\
+				<element name="ul" type="fb3b:LiHolderType"/>\
+				<element name="pre" type="fb3b:ReducedPHolderType"/>\
+				<element name="blockquote" type="fb3b:ReducedPHolderType"/>\
+			</choice>\
+			<choice minOccurs="0" maxOccurs="unbounded">\
+				<element name="p" type="fb3b:StyleType"/>\
+				<element name="ol" type="fb3b:LiHolderType"/>\
+				<element name="ul" type="fb3b:LiHolderType"/>\
+				<element name="pre" type="fb3b:ReducedPHolderType"/>\
+				<element name="blockquote" type="fb3b:ReducedPHolderType"/>\
 				<element name="br" type="fb3b:BRType"/>\
 			</choice>\
 		</sequence>\
@@ -349,14 +369,22 @@ Ext.define(
 	</complexType>\
 	<complexType name="PHolderType">\
 		<complexContent>\
+			<extension base="fb3b:ReducedPHolderType">\
+				<sequence>\
+					<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>\
+				</sequence>\
+			</extension>\
+		</complexContent>\
+	</complexType>\
+	<complexType name="ReducedPHolderType">\
+		<complexContent>\
 			<extension base="fb3b:TitledType">\
-				<sequence maxOccurs="unbounded">\
+				<sequence>\
+				<element name="p" type="fb3b:StyleType"/>\
+				<choice minOccurs="0" maxOccurs="unbounded">\
 					<element name="p" type="fb3b:StyleType"/>\
-					<choice minOccurs="0" maxOccurs="unbounded">\
-			            <element name="p" type="fb3b:StyleType"/>\
-                        <element name="br" type="fb3b:BRType"/>\
-                    </choice>\
-					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
+					<element name="br" type="fb3b:BRType"/>\
+				</choice>\
 				</sequence>\
 			</extension>\
 		</complexContent>\
@@ -381,7 +409,7 @@ Ext.define(
 			<extension base="fb3b:TitledType">\
 				<sequence>\
 					<element name="stanza" type="fb3b:PHolderType" maxOccurs="unbounded"/>\
-					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>\
+					<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>\
 				</sequence>\
 				<attribute name="id" type="ID" use="optional"/>\
 			</extension>\
