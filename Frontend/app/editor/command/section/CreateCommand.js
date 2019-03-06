@@ -31,39 +31,14 @@ Ext.define(
 				// вложенная секция
 				
 				// ищем родительскую секцию или корневой элемент
-				els.parent = els.parent.getParentName('section') || els.parent.getRoot();
+				els.parent = els.node.getParentName('section') || els.node.getRoot();
 				
-				// ищем существующую вложенную секцию
-				
-				els.next = els.parent.first();
-				
-				while (els.next)
-				{
-					if (els.next.isSection)
-					{
-						// вложенная секция уже существует
-						throw Error('Section exists');
-					}
-					
-					els.next = els.next.first();
-				}
-
 				// создаем секцию
 				els.node = factory.createElement(me.elementName);
-
-				els.last = els.parent.last();
 				
-				if (els.last && els.last.isNotes)
-				{
-					// вставляем новую секцию перед notes
-					els.parent.insertBefore(els.node, els.last, viewportId);
-				}
-				else
-				{
-					// вставляем новую секцию в конец
-					els.parent.add(els.node, viewportId);
-				}
-
+				// вставляем новую секцию внутрь текущей
+				els.parent.add(els.node, viewportId);
+				
 				// переносим все дочерние элементы в новую секцию, кроме title, epigraph, annotation
 				
 				els.except = ['title', 'epigraph', 'annotation'];

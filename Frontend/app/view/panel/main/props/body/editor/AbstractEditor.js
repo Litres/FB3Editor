@@ -50,6 +50,12 @@ Ext.define(
 		 * Если заргузка первичная, то нет необходимости реагировать на событие change полей формы.
 		 */
 		isLoad: false,
+		
+		/**
+		 * @protected
+		 * @property {Object} Данные элемента.
+		 */
+		data: null,
 
 		/**
 		 * @private
@@ -61,6 +67,7 @@ Ext.define(
 		{
 			var me = this;
 
+			me.data = data;
 			me.elementName = data.elementName;
 			me.callParent(arguments);
 		},

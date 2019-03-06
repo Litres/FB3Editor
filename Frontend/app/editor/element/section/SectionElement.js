@@ -21,11 +21,11 @@ Ext.define(
 		splittable: true,
 
 		isSection: true,
-
+		
 		constructor: function ()
 		{
 			var me = this;
-
+			
 			me.callParent(arguments);
 
 			// генерируем новый uuid
@@ -49,6 +49,19 @@ Ext.define(
 			me.add(els.p);
 
 			return els;
+		},
+		
+		getData: function ()
+		{
+			var me = this,
+				data;
+			
+			data = me.callParent(arguments);
+			
+			// являятся ли секция самой верхней
+			data.isTop = !me.hasParentName('section');
+			
+			return data;
 		}
 	}
 );

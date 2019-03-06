@@ -72,6 +72,7 @@ Ext.define(
 				deleteBtn = view.getDeleteBtn(),
 				editor = view.editor,
 				data,
+				initData,
 				name,
 				el;
 
@@ -121,7 +122,9 @@ Ext.define(
 						name = data.elementName.replace(/-/g, '');
 						name = name.toLowerCase();
 						name = 'FBEditor.view.panel.main.props.body.editor.' + name + '.Editor';
-						editor = Ext.create(name, {elementName: data.elementName});
+						initData = Ext.apply({}, data);
+						delete initData.id;
+						editor = Ext.create(name, initData);
 						view.add(editor);
 					}
 					catch (e)
