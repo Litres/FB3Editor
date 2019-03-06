@@ -24,7 +24,15 @@ Ext.define(
 			<complexContent>\
 				<extension base="fb3b:TitledType">\
 					<sequence>\
-						<element name="section" type="fb3b:SectionType" maxOccurs="unbounded"/>\
+						<element name="section" maxOccurs="unbounded">\
+							<complexType>\
+								<complexContent>\
+									<extension base="fb3b:SectionType">\
+										<attribute name="output" type="fb3b:TrialShareType" default="default"/>\
+									</extension>\
+								</complexContent>\
+							</complexType>\
+						</element>\
 						<element name="notes" minOccurs="0" maxOccurs="unbounded">\
 							<complexType>\
 								<complexContent>\
@@ -148,7 +156,6 @@ Ext.define(
 				<attribute name="doi" type="fb3b:DOIType" use="optional"/>\
 				<attribute name="clipped" type="boolean"/>\
 				<attribute name="first-char-pos" type="positiveInteger"/>\
-				<attribute name="output" type="fb3b:TrialShareType" default="default"/>\
 			</extension>\
 		</complexContent>\
 	</complexType>\
