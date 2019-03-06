@@ -23,7 +23,8 @@ Ext.define(
 
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				data = me.data;
 
 			me.items = [
 				{
@@ -62,7 +63,8 @@ Ext.define(
                     minValue: 0
                 },
 				{
-					xtype: 'panel-props-body-editor-section-output'
+					xtype: 'panel-props-body-editor-section-output',
+					hidden: !data.isTop
 				}
 			];
 
