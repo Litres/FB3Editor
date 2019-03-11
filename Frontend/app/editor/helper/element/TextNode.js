@@ -158,7 +158,7 @@ Ext.define(
 		{
 			var me = this,
 				el = me.el,
-				overlay = me.overlays[cls],
+				overlay = me.overlays ? me.overlays[cls] : null,
 				node = me.getNode(),
 				manager = el.getManager(),
 				nodes = {};
@@ -177,6 +177,11 @@ Ext.define(
 				manager.setSuspendEvent(false);
 				
 				delete me.overlays[cls];
+				
+				if (!me.overlays.length)
+				{
+					delete me.overlays;
+				}
 			}
 		},
 		
@@ -216,7 +221,7 @@ Ext.define(
 									return false;
 								}
 								
-								text = token.innerHTML || token;
+								text = token.innerHTML || token.nodeValue;
 								length = text.length;
 								realOffset += length;
 								//console.log('token', token, text, length);
@@ -234,6 +239,61 @@ Ext.define(
 			}
 			
 			return realOffset;
+		},
+		
+		/**
+		 * Устанавливает новый текст с учетом оверляя.
+		 * @param {Node} nodeOverlay Узел, в котором устанавливается новый текст.
+		 * @param {String} text Новый текст.
+		 */
+		setTextOverlay: function (nodeOverlay, text)
+		{
+			var me = this,
+				el = me.el,
+				node = me.getNode(),
+				overlays = me.overlays,
+				str;
+			
+			if (overlays)
+			{
+				str = '';
+				
+				// перебираем все обертки-оверлеи
+				Ext.Object.each(
+					overlays,
+					function (key, wrap)
+					{
+						// перебираем все дочерние элементы обертки-оверлея
+						Ext.each(
+							wrap.childNodes,
+							function (token)
+							{
+								var textToken = token.innerHTML || token.nodeValue;
+								
+								//console.log('token', token.contains(nodeOverlay), textToken);
+								
+								if (token.contains(nodeOverlay))
+								{
+									// заменяем часть старого текста на новый
+									str += text;
+								}
+								else
+								{
+									str += textToken;
+								}
+							}
+						);
+					}
+				);
+			}
+			else
+			{
+				str = text;
+				node.nodeValue = str;
+			}
+			
+			//console.log('str', str);
+			el.text = str;
 		}
 	}
 );
