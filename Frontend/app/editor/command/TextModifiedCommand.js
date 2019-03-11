@@ -17,57 +17,61 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				res = false,
-				sel = window.getSelection(),
-				factory = FBEditor.editor.Factory,
-				offset = sel.getRangeAt(0).startOffset,
 				nodes = {},
 				els = {},
+				range,
+				offset,
+				helper,
 				manager,
-				node,
-				text,
-				viewportId,
-				el;
+				viewportId;
 
 			try
 			{
-				me.newValue = me.newValue || data.newValue;
-				me.oldValue = me.oldValue || data.oldValue;
-				me.offset = me.offset ? me.offset : offset;
-				nodes.node = data.saveRange ? data.saveRange.startNode : data.node;
+				console.log('exec text');
+				
+				nodes.node = data.node;
 				els.node = nodes.node.getElement();
 				manager = els.node.getManager();
+				me.newValue = me.newValue || data.newValue;
+				me.oldValue = me.oldValue || els.node.getText();
+				
+				range = manager.getRangeCursor();
+				
+				// позиция курсора
+				offset = me.offset = me.offset || range.offset.start;
+				
 				manager.setSuspendEvent(true);
-				data.node = nodes.node;
-                viewportId = data.node.viewportId;
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-
-				//console.log(els.node, els.parent.getXml());
-
-				if (els.node.isEmpty() && !els.node.isText)
-				{
-					// заменяем пустой элемент на текстовый
-					els.text = factory.createElementText('');
-					nodes.text = els.text.getNode(viewportId);
-					els.parent.replace(els.text, els.node, viewportId);
-					data.node = nodes.text;
-				}
-
-				node = data.node;
-				text = me.newValue;
-
-				console.log('exec text'/*, node, me.newValue, me.oldValue, 'offset=', me.offset*/);
-
-				el = node.getElement();
-				el.setText(text);
-				el.sync(viewportId);
-
+				
+				helper = els.node.getNodeHelper();
+				
+				// устанавливаем новый текст с учетом оверлея
+				helper.setTextOverlay(nodes.node, me.newValue);
+				
+				// удаляем подсветку
+				manager.removeAllOverlays();
+				
+				data.node = helper.getNode();
+				viewportId = data.viewportId = data.node.viewportId;
+				
+				els.node.sync(viewportId);
+				
+				// устанавливаем курсор
+				manager.setCursor(
+					{
+						withoutSyncButtons: true,
+						startNode: data.node,
+						startOffset: offset
+					}
+				);
+				
+				data.els = els;
+				
 				res = true;
 			}
 			catch (e)
 			{
 				Ext.log({level: 'warn', msg: e, dump: e});
-				me.getHistory(el).removeNext();
+				me.getHistory(els.node).removeNext();
 			}
 
 			manager.setSuspendEvent(false);
@@ -83,55 +87,38 @@ Ext.define(
 				nodes = {},
 				els = {},
 				manager,
-				node,
-				text,
-				viewportId,
-				el;
+				viewportId;
 
 			try
 			{
-				node = data.node;
-				text = me.oldValue;
-				viewportId = node.viewportId;
-				el = node.getElement();
-				manager = el.getManager();
+				console.log('undo exec text');
+
+				nodes.node = data.node;
+				viewportId = data.viewportId;
+				els = data.els;
+				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
-				node.nodeValue = text;
-				el.setText(text);
-				nodes.parent = node.parentNode;
-				els.parent = nodes.parent.getElement();
-				nodes.cursor = node;
-
-				console.log('undo exec text', me.offset, node, el);
-
-				if (!text && els.parent.isStyleHolder)
-				{
-					// вставляем пустой элемент
-
-					els.empty = manager.createEmptyElement();
-					nodes.empty = els.empty.getNode(viewportId);
-					els.parent.replace(els.empty, el, viewportId);
-					nodes.cursor = nodes.empty;
-					els.parent.sync(viewportId);
-				}
-				else
-				{
-					el.sync(viewportId);
-				}
+				
+				// восстанавливаем старый текст
+				els.node.setText(me.oldValue, viewportId);
+				
+				els.node.sync(viewportId);
 
 				// устанавливаем курсор
-				data.saveRange = {
-					startNode: nodes.cursor,
-					startOffset: me.offset - 1
-				};
-				manager.setCursor(data.saveRange);
+				manager.setCursor(
+					{
+						withoutSyncButtons: true,
+						startNode: nodes.node,
+						startOffset: me.offset - 1
+					}
+				);
 
 				res = true;
 			}
 			catch (e)
 			{
 				Ext.log({level: 'warn', msg: e, dump: e});
-				me.getHistory(els.parent).remove();
+				me.getHistory(els.node).remove();
 			}
 
 			manager.setSuspendEvent(false);
