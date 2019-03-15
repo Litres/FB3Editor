@@ -25,6 +25,9 @@ Ext.define(
 			els.node = factory.createElement(me.elementName);
 			els = Ext.apply(els, els.node.createScaffold());
 			els.parent.add(els.node, viewportId);
+			
+			// генерируем новый id для сноски
+			els.notebody.generateNoteId();
 		}
 	}
 );

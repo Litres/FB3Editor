@@ -138,6 +138,12 @@ Ext.define(
 		 * @property {String[]} xtype кнопок, с горячими клавишами.
 		 */
 		hotkeysButtons: null,
+		
+		/**
+		 * @private
+		 * @property {String[]} Список всех айди сносок.
+		 */
+		notesId: null,
 
 		/**
 		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
@@ -2151,6 +2157,57 @@ Ext.define(
 					el.setNumber(number);
 				}
 			);
+		},
+		
+		/**
+		 * Генерирует новый id для сноски.
+		 * Принцип генерации id заключается в переборе всех существующих id сносок и увеличении порядкового номера на 1.
+		 *
+		 * @example
+		 * note_1
+		 * note_2
+		 * note_3
+		 * ...
+		 *
+		 * @return {string} Id сноски.
+		 */
+		generateNoteId: function ()
+		{
+			var me = this,
+				notesId = me.notesId || [],
+				prefix = 'note_',
+				maxNumber = 0,
+				reg,
+				id;
+			
+			reg = new RegExp(prefix + '([0-9]+)', 'i');
+			
+			Ext.each(
+				notesId,
+				function (noteId)
+				{
+					var res,
+						number;
+					
+					res = noteId.match(reg);
+					
+					number = res && Ext.isNumber(Number(res[1])) ? Number(res[1]) : null;
+					
+					if (number)
+					{
+						maxNumber = number > maxNumber ? number : maxNumber;
+					}
+				}
+			);
+			
+			// новый id
+			id = prefix + (maxNumber + 1);
+			
+			// добавляем в коллекцию
+			notesId.push(id);
+			me.notesId = notesId;
+			
+			return id;
 		}
 	}
 );
