@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.editor.command.notebody.CreateCommand',
 			'FBEditor.editor.element.notebody.NotebodyElementController'
 		],
+		
 		controllerClass: 'FBEditor.editor.element.notebody.NotebodyElementController',
 		htmlTag: 'notebody',
 		xmlTag: 'notebody',
@@ -23,14 +24,26 @@ Ext.define(
 		createScaffold: function ()
 		{
 			var me = this,
+				factory = FBEditor.editor.Factory,
 				els = {};
 
-			els.p = FBEditor.editor.Factory.createElement('p');
-			els.t = FBEditor.editor.Factory.createElementText('Сноска');
+			els.p = factory.createElement('p');
+			els.t = factory.createElementText('Сноска');
 			els.p.add(els.t);
 			me.add(els.p);
 
 			return els;
+		},
+		
+		/**
+		 * Генерирует новый id.
+		 */
+		generateNoteId: function ()
+		{
+			var me = this,
+				manager = me.getManager();
+			
+			me.attributes.id = manager.generateNoteId();
 		}
 	}
 );
