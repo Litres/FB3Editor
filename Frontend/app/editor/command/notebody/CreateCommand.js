@@ -15,6 +15,7 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				factory = FBEditor.editor.Factory;
 
 			nodes.parent = nodes.node.parentNode;
@@ -26,19 +27,19 @@ Ext.define(
 			// создаем элемент
 			els.node = factory.createElement(me.elementName);
 			els = Ext.apply(els, els.node.createScaffold());
-			nodes.node = els.node.getNode(data.viewportId);
 
 			if (nodes.next)
 			{
 				els.next = nodes.next.getElement();
-				els.parent.insertBefore(els.node, els.next);
-				nodes.parent.insertBefore(nodes.node, nodes.next);
+				els.parent.insertBefore(els.node, els.next, viewportId);
 			}
 			else
 			{
-				els.parent.add(els.node);
-				nodes.parent.appendChild(nodes.node);
+				els.parent.add(els.node, viewportId);
 			}
+			
+			// генерируем новый id для сноски
+			els.node.generateNoteId();
 		}
 	}
 );
