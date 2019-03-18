@@ -905,6 +905,20 @@ Ext.define(
 
 			return data;
 		},
+		
+		/**
+		 * Возвращает id.
+		 * @return {String}
+		 */
+		getId: function ()
+		{
+			var me = this,
+				id;
+			
+			id = me.attributes && me.attributes.id ? me.attributes.id : null;
+			
+			return id;
+		},
 
 		/**
 		 * Синхронизирует узлы элемента в окнах.
