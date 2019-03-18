@@ -35,6 +35,17 @@ Ext.define(
 			return els;
 		},
 		
+		update: function (data, opts)
+		{
+			var me = this,
+				manager = me.getManager();
+			
+			me.callParent(arguments);
+			
+			// обновляем коллекцию id сносок
+			manager.updateNotesId();
+		},
+		
 		/**
 		 * Генерирует новый id.
 		 */
@@ -43,6 +54,10 @@ Ext.define(
 			var me = this,
 				manager = me.getManager();
 			
+			// обновляем коллекцию id сносок
+			manager.updateNotesId();
+			
+			// получаем новый id сноски
 			me.attributes.id = manager.generateNoteId();
 		}
 	}

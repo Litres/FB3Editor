@@ -2208,6 +2208,38 @@ Ext.define(
 			me.notesId = notesId;
 			
 			return id;
+		},
+		
+		/**
+		 * Обновляет коллекцию id сносок.
+		 */
+		updateNotesId: function ()
+		{
+			var me = this,
+				root = me.getContent(),
+				notesId = [];
+			
+			root.each(
+				function (notes)
+				{
+					if (notes.isNotes)
+					{
+						notes.each(
+							function (notebody)
+							{
+								var id = notebody.getId();
+								
+								if (notebody.isNotebody && id)
+								{
+									notesId.push(id);
+								}
+							}
+						);
+					}
+				}
+			);
+			
+			me.notesId = notesId;
 		}
 	}
 );
