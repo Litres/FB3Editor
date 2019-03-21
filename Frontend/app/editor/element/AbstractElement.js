@@ -879,15 +879,10 @@ Ext.define(
 		getData: function ()
 		{
 			var me = this,
-				helper = me.getNodeHelper(),
-				node,
 				data,
 				el;
 
-			node = helper.getNode();
-
 			// текущий выделенный элемент
-			//el = me.isImg ? me : me.getBlock();
 			el = me.isText || me.isBr ? me.parent : me;
 
 			data = {

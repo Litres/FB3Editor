@@ -363,6 +363,15 @@ Ext.define(
 		{
 			return this.search;
 		},
+		
+		/**
+		 * Возвращает список айди сносок.
+		 * @return {String[]}
+		 */
+		getNotesId: function ()
+		{
+			return this.notesId;
+		},
 
 		/**
 		 * Возвращает html тела книги.
