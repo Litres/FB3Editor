@@ -54,6 +54,20 @@ Ext.define(
 		getBlock: function ()
 		{
 			return this;
+		},
+		
+		getData: function ()
+		{
+			var me = this,
+				manager = me.getManager(),
+				data;
+			
+			data = me.callParent(arguments);
+			
+			// список айди сносок
+			data.notesId = manager.getNotesId();
+			
+			return data;
 		}
 	}
 );
