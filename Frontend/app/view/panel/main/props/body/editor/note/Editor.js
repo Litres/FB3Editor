@@ -10,11 +10,11 @@ Ext.define(
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 		requires: [
             'FBEditor.view.panel.main.props.body.editor.note.AutotextStore',
-			'FBEditor.view.panel.main.props.body.editor.note.RoleStore'
+			'FBEditor.view.panel.main.props.body.editor.note.RoleStore',
+			'FBEditor.view.panel.main.props.body.editor.note.href.Href'
 		],
 
 		translateText: {
-			href: 'Ссылка',
 			autotext: 'Автотекст',
 			role: 'Тип'
 		},
@@ -22,21 +22,22 @@ Ext.define(
 		initComponent: function ()
 		{
 			var me = this,
+				notesId,
 				roleStore,
                 autotextStore;
 
 			roleStore = Ext.create('FBEditor.view.panel.main.props.body.editor.note.RoleStore');
             autotextStore = Ext.create('FBEditor.view.panel.main.props.body.editor.note.AutotextStore');
+			
+			notesId = me.data.notesId;
 
 			me.items = [
 				{
 					xtype: 'panel-props-body-editor-fields-id'
 				},
 				{
-					name: 'href',
-					fieldLabel: me.translateText.href,
-					anchor: '100%',
-					allowBlank: false
+					xtype: 'panel-props-body-editor-note-href',
+					notesId: notesId
 				},
 				{
 					xtype: 'combobox',
