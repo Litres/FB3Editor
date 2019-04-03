@@ -64,6 +64,9 @@ Ext.define(
 			
 			data = me.callParent(arguments);
 			
+			// обновляем список айди существующих сносок
+			manager.updateNotesId();
+			
 			// список айди сносок
 			data.notesId = manager.getNotesId();
 			
