@@ -70,7 +70,7 @@ Ext.define(
 		},
 
 		/**
-		 * @property {Ext.panel.Panel} Панель редактирования элемента.
+		 * @property {FBEditor.view.panel.main.props.body.editor.AbstractEditor} Панель редактирования элемента.
 		 */
 		editor: null,
 
@@ -127,10 +127,37 @@ Ext.define(
 
 			me.callParent(arguments);
 		},
-
+		
 		getContentId: function ()
 		{
 			return 'main-editor';
+		},
+		
+		/**
+		 * Обновляет данные панели редактирования.
+		 */
+		updateEditor: function ()
+		{
+			var me = this,
+				editor,
+				el;
+			
+			editor = me.getEditor();
+			
+			if (editor)
+			{
+				el = editor.getElement();
+				me.fireEvent('loadData', el);
+			}
+		},
+		
+		/**
+		 * Возвращает панель редактирования элемента.
+		 * @return {FBEditor.view.panel.main.props.body.editor.AbstractEditor}
+		 */
+		getEditor: function ()
+		{
+			return this.editor;
 		},
 
 		/**

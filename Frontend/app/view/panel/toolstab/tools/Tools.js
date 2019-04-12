@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.view.panel.toolstab.button.find.Find',
 			'FBEditor.view.panel.toolstab.button.replace.Replace',
             'FBEditor.view.panel.toolstab.tools.button.hotkeys.Hotkeys',
+			'FBEditor.view.panel.toolstab.tools.button.outputsection.OutputSection',
 			'FBEditor.view.panel.toolstab.tools.button.unprintsymbols.UnprintSymbols',
             'FBEditor.view.panel.toolstab.tools.button.xmlwordwrap.XmlWordWrap'
 		],
@@ -43,6 +44,9 @@ Ext.define(
 				{
 					xtype: 'tbspacer',
 					width: 20
+				},
+				{
+					xtype: 'panel-toolstab-tools-button-outputsection'
 				},
 				{
 					xtype: 'panel-toolstab-tools-button-unprintsymbols'
