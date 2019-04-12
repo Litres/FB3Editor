@@ -43,6 +43,7 @@ Ext.define(
 
 			content = bridgeWindow.Ext.getCmp('panel-main-content');
 			activeItem = content.getLayout().getActiveItem();
+			
 			if (activeItem.id === contentId)
 			{
 				Ext.getCmp('panel-main-props-card').setActiveItem(me.id);

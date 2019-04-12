@@ -49,32 +49,6 @@ Ext.define(
 			saving: 'Сохранение текста...'
 		},
 
-		/**
-		 * Инициализирует менеджер.
-		 */
-		init: function ()
-		{
-			var me = this;
-
-			// загрузчик
-			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
-
-            // менеджер редактора xml
-            me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
-		},
-
-		/**
-		 * Сбрасывает редактор тела книги.
-		 */
-		reset: function ()
-		{
-			var me = this;
-
-			me.resetFocus();
-			me.loader.reset();
-			me._availableSyncButtons = null;
-		},
-
 		createContent: function ()
 		{
 			var me = this;
@@ -84,15 +58,6 @@ Ext.define(
 			// обновляем дерево навигации по тексту
 			me.updateTree();
 		},
-
-        /**
-         * Возвращает менеджер редактора xml.
-         * @return {FBEditor.view.panel.main.xml.Manager}
-         */
-        getManagerXml: function ()
-        {
-            return this.managerXml;
-        },
 
 		availableSyncButtons: function ()
 		{
@@ -144,6 +109,93 @@ Ext.define(
 			// разворачиваем узел элемента в дереве навигации по тексту
 			panelNav.expandElement(el);
 		},
+		
+		getPanelProps: function ()
+		{
+			var bridge = FBEditor.getBridgeProps(),
+				panel;
+			
+			panel = bridge.Ext.getCmp('panel-props-body');
+			
+			return panel;
+		},
+		
+		/**
+		 * Инициализирует менеджер.
+		 */
+		init: function ()
+		{
+			var me = this;
+			
+			// загрузчик
+			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
+			
+			// менеджер редактора xml
+			me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
+		},
+		
+		/**
+		 * Сбрасывает редактор тела книги.
+		 */
+		reset: function ()
+		{
+			var me = this;
+			
+			me.resetFocus();
+			me.loader.reset();
+			me._availableSyncButtons = null;
+		},
+		
+		/**
+		 * Возвращает менеджер редактора xml.
+		 * @return {FBEditor.view.panel.main.xml.Manager}
+		 */
+		getManagerXml: function ()
+		{
+			return this.managerXml;
+		},
+		
+		/**
+		 * Возвращает данные всех секций верхнего уровня.
+		 * @return {Object}
+		 */
+		getSectionsData: function ()
+		{
+			var me = this,
+				root = me.getContent(),
+				data = [];
+			
+			root.each(
+				function (el)
+				{
+					var first,
+						output,
+						name;
+					
+					if (el.isSection)
+					{
+						first = el.first();
+						
+						if (first && first.isTitle)
+						{
+							name = first.getText(true);
+						}
+						
+						output = el.attributes.output || 'default';
+						
+						data.push(
+							{
+								el: el,
+								output: output,
+								name: name
+							}
+						);
+					}
+				}
+			);
+			
+			return data;
+		},
 
         /**
          * Возвращает панель кнопок для сдвига секции.
@@ -158,16 +210,6 @@ Ext.define(
 
             return panel;
         },
-
-		getPanelProps: function ()
-		{
-			var bridge = FBEditor.getBridgeProps(),
-				panel;
-
-			panel = bridge.Ext.getCmp('panel-props-body');
-
-			return panel;
-		},
 
 		/**
 		 * Возвращает айди произведения, загружаемого с хаба.

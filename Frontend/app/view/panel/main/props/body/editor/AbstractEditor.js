@@ -71,6 +71,15 @@ Ext.define(
 			me.elementName = data.elementName;
 			me.callParent(arguments);
 		},
+		
+		/**
+		 * Возвращает элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getElement: function ()
+		{
+			return this.element;
+		},
 
 		/**
 		 * Обновляет данные.
