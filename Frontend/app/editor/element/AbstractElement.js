@@ -949,6 +949,8 @@ Ext.define(
 		 * @param {Object} data Новые данные для элемента.
 		 * @param {Object} [opts] Опции.
 		 * @param {Boolean} opts.withoutView true - обновить только данные, без обновления отображения.
+		 * @param {Boolean} opts.merge true - обновить только переданные данные, сохраняя предыдущие,
+		 * которые не переданы.
 		 */
 		update: function (data, opts)
 		{
@@ -1002,8 +1004,11 @@ Ext.define(
 				me.removeMarker();
 			}
 
-			// аттрибуты
-			me.attributes = me.defaultAttributes ? Ext.clone(me.defaultAttributes) : {};
+			if (!opts.merge)
+			{
+				// аттрибуты
+				me.attributes = me.defaultAttributes ? Ext.clone(me.defaultAttributes) : {};
+			}
 
 			Ext.Object.each(
 				resData,

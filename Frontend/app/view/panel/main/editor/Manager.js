@@ -62,58 +62,6 @@ Ext.define(
 			saving: 'Сохранение текста...'
 		},
 
-		/**
-		 * Инициализирует менеджер.
-		 */
-		init: function ()
-		{
-			var me = this,
-				routeManager = FBEditor.route.Manager;
-
-			// загрузчик
-			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
-
-            // менеджер редактора xml
-            me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
-            
-            // инициализируем список задач
-			me.task = {
-				// задача для автосохранения
-				autoSave: {
-					run: function ()
-					{
-						me.saveToUrl()
-					},
-					interval: me.saveTime * 1000
-				}
-			};
-            
-            if (routeManager.isSetParam('only_text'))
-            {
-            	// автосохранение
-	            Ext.defer(
-	            	function ()
-		            {
-			            me.autoSave(true);
-		            },
-		            me.saveTime * 1000,
-		            me
-	            )
-            }
-		},
-
-		/**
-		 * Сбрасывает редактор тела книги.
-		 */
-		reset: function ()
-		{
-			var me = this;
-
-			me.resetFocus();
-			me.loader.reset();
-			me._availableSyncButtons = null;
-		},
-
 		createContent: function ()
 		{
 			var me = this;
@@ -123,15 +71,6 @@ Ext.define(
 			// обновляем дерево навигации по тексту
 			me.updateTree();
 		},
-
-        /**
-         * Возвращает менеджер редактора xml.
-         * @return {FBEditor.view.panel.main.xml.Manager}
-         */
-        getManagerXml: function ()
-        {
-            return this.managerXml;
-        },
 
 		availableSyncButtons: function ()
 		{
@@ -183,6 +122,119 @@ Ext.define(
 			// разворачиваем узел элемента в дереве навигации по тексту
 			panelNav.expandElement(el);
 		},
+		
+		getPanelProps: function ()
+		{
+			var bridge = FBEditor.getBridgeProps(),
+				panel;
+			
+			panel = bridge.Ext.getCmp('panel-props-body');
+			
+			return panel;
+		},
+		
+		/**
+		 * Инициализирует менеджер.
+		 */
+		init: function ()
+		{
+			var me = this,
+				routeManager = FBEditor.route.Manager;
+			
+			// загрузчик
+			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
+			
+			// менеджер редактора xml
+			me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
+			
+			// инициализируем список задач
+			me.task = {
+				// задача для автосохранения
+				autoSave: {
+					run: function ()
+					{
+						me.saveToUrl()
+					},
+					interval: me.saveTime * 1000
+				}
+			};
+			
+			if (routeManager.isSetParam('only_text'))
+			{
+				// автосохранение
+				Ext.defer(
+					function ()
+					{
+						me.autoSave(true);
+					},
+					me.saveTime * 1000,
+					me
+				)
+			}
+		},
+		
+		/**
+		 * Сбрасывает редактор тела книги.
+		 */
+		reset: function ()
+		{
+			var me = this;
+			
+			me.resetFocus();
+			me.loader.reset();
+			me._availableSyncButtons = null;
+		},
+		
+		/**
+		 * Возвращает менеджер редактора xml.
+		 * @return {FBEditor.view.panel.main.xml.Manager}
+		 */
+		getManagerXml: function ()
+		{
+			return this.managerXml;
+		},
+		
+		/**
+		 * Возвращает данные всех секций верхнего уровня.
+		 * @return {Object}
+		 */
+		getSectionsData: function ()
+		{
+			var me = this,
+				root = me.getContent(),
+				data = [];
+			
+			root.each(
+				function (el)
+				{
+					var first,
+						output,
+						name;
+					
+					if (el.isSection)
+					{
+						first = el.first();
+						
+						if (first && first.isTitle)
+						{
+							name = first.getText(true);
+						}
+						
+						output = el.attributes.output || 'default';
+						
+						data.push(
+							{
+								el: el,
+								output: output,
+								name: name
+							}
+						);
+					}
+				}
+			);
+			
+			return data;
+		},
 
         /**
          * Возвращает панель кнопок для сдвига секции.
@@ -197,16 +249,6 @@ Ext.define(
 
             return panel;
         },
-
-		getPanelProps: function ()
-		{
-			var bridge = FBEditor.getBridgeProps(),
-				panel;
-
-			panel = bridge.Ext.getCmp('panel-props-body');
-
-			return panel;
-		},
 
 		/**
 		 * Возвращает айди произведения, загружаемого с хаба.
