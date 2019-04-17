@@ -28,7 +28,7 @@ Ext.define(
 				els = {};
 
 			els.p = factory.createElement('p');
-			els.t = factory.createElementText('Сноска');
+			els.t = factory.createElementText('Текст сноски');
 			els.p.add(els.t);
 			me.add(els.p);
 
