@@ -83,7 +83,7 @@ Ext.define(
             me.saveStateNodes();
             treeData = me.getTreeData(data);
             me.store.loadData(treeData);
-            me.getView().expand(me.store.first());
+           // me.getView().expand(me.store.first());
         },
 
         /**
