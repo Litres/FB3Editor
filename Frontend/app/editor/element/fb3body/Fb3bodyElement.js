@@ -88,12 +88,12 @@ Ext.define(
 			els.p = me.createP('Письмо, цитируем его:');
 			els.section.add(els.p);
 			
-			els.div = factory.createElement('div');
-			els.section.add(els.div);
+			els.bq = factory.createElement('blockquote');
+			els.section.add(els.bq);
 			els.p = me.createP('Текст цитаты, цитаты текст.');
-			els.div.add(els.p);
+			els.bq.add(els.p);
 			els.p = me.createP('Еще текст цитаты еще цитаты текст.');
-			els.div.add(els.p);
+			els.bq.add(els.p);
 			
 			els.p = me.createP('Снова простой текст.');
 			els.section.add(els.p);
