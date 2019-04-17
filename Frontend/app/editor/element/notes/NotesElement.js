@@ -22,15 +22,19 @@ Ext.define(
 		createScaffold: function ()
 		{
 			var me = this,
+				factory = FBEditor.editor.Factory,
 				els = {};
 
 			// заголовок
-			els.title = FBEditor.editor.Factory.createElement('title');
-			els = Ext.apply(els, els.title.createScaffold());
+			els.title = factory.createElement('title');
 			me.add(els.title);
+			els.p = factory.createElement('p');
+			els.title.add(els.p);
+			els.t = factory.createElementText('Примечания');
+			els.p.add(els.t);
 
 			// сноска
-			els.notebody = FBEditor.editor.Factory.createElement('notebody');
+			els.notebody = factory.createElement('notebody');
 			els = Ext.apply(els, els.notebody.createScaffold());
 
 			me.add(els.notebody);
