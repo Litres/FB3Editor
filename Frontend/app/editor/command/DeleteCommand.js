@@ -24,7 +24,6 @@ Ext.define(
 
 			try
 			{
-
 				els.node = data.el;
 				manager = els.node.getManager();
 				manager.setSuspendEvent(true);
