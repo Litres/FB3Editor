@@ -105,8 +105,22 @@ Ext.define(
 			els.next = els.node.next();
 
 			//console.log('range, isEnd, nodes', range, isEnd, nodes);
-
-			if (!range.collapsed)
+			
+			// пустой элемент
+			els.empty = me.getEmptyEl(els.p);
+			
+			if (els.empty)
+			{
+				// удаляем пустой элемент
+				
+				cmd = Ext.create('FBEditor.editor.command.DeleteCommand', {el: els.empty});
+				
+				if (cmd.execute())
+				{
+					me.getHistory().add(cmd);
+				}
+			}
+			else if (!range.collapsed)
 			{
 				// удаляем выделенную часть текста
 				me.removeRangeNodes();
@@ -296,6 +310,32 @@ Ext.define(
 			isSame = els.startP.equal(els.endP);
 
 			return isSame;
+		},
+		
+		/**
+		 * @private
+		 * Возвращает пустой элемент, если он есть.
+		 * Пустым элементом считается самый верхний родительский элемент,
+		 * который содержит только пустые вложенные элементы.
+		 * @param {FBEditor.editor.element.AbstractElement} el Исходный элемент.
+		 * @return {FBEditor.editor.element.AbstractElement} Пустой элемент
+		 */
+		getEmptyEl: function (el)
+		{
+			var els = {};
+			
+			els.empty = el;
+			els.emptyParent = els.empty.getParent();
+			
+			while (els.emptyParent.isEmpty())
+			{
+				els.empty = els.empty.getParent();
+				els.emptyParent = els.empty.getParent();
+			}
+			
+			els.empty = !els.empty.isStyleHolder ? els.empty : null;
+			
+			return els.empty;
 		}
 	}
 );
