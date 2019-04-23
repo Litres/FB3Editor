@@ -112,13 +112,7 @@ Ext.define(
 			if (els.empty)
 			{
 				// удаляем пустой элемент
-				
 				cmd = Ext.create('FBEditor.editor.command.DeleteCommand', {el: els.empty});
-				
-				if (cmd.execute())
-				{
-					me.getHistory().add(cmd);
-				}
 			}
 			else if (!range.collapsed)
 			{
@@ -130,21 +124,32 @@ Ext.define(
 				// курсор в конце абзаца
 
 				els.nextP = els.p.next();
-
+				
 				if (!els.nextP || !els.nextP.isStyleHolder)
 				{
-					// пытаемся подтянуть первый абзац из следующего блока
-					cmd = Ext.create('FBEditor.editor.command.' + name + '.GetNextHolderCommand');
+					// первый абзац из следующего элемента
+					els.nextP = me.getNextP(els.p);
+					
+					// следующий пустой элемент
+					els.empty = els.nextP ? me.getEmptyEl(els.nextP) : null;
+					
+					console.log('els.empty', els.empty);
+					
+					if (els.empty)
+					{
+						// удаляем следующий пустой элемент
+						cmd = Ext.create('FBEditor.editor.command.DeleteCommand', {el: els.empty});
+					}
+					else
+					{
+						// пытаемся подтянуть первый абзац из следующего блока
+						cmd = Ext.create('FBEditor.editor.command.' + name + '.GetNextHolderCommand');
+					}
 				}
 				else
 				{
 					// соединяем абзац со следующим
 					cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinNextNodeCommand');
-				}
-
-				if (cmd.execute())
-				{
-					me.getHistory().add(cmd);
 				}
 			}
 			else
@@ -173,6 +178,11 @@ Ext.define(
 				
 				// передаем событие текстовому элементу
 				els.text.fireEvent('keyDownDelete', e, range);
+			}
+			
+			if (cmd && cmd.execute())
+			{
+				me.getHistory().add(cmd);
 			}
 		},
 
@@ -318,7 +328,7 @@ Ext.define(
 		 * Пустым элементом считается самый верхний родительский элемент,
 		 * который содержит только пустые вложенные элементы.
 		 * @param {FBEditor.editor.element.AbstractElement} el Исходный элемент.
-		 * @return {FBEditor.editor.element.AbstractElement} Пустой элемент
+		 * @return {FBEditor.editor.element.AbstractElement} Пустой элемент.
 		 */
 		getEmptyEl: function (el)
 		{
@@ -336,6 +346,37 @@ Ext.define(
 			els.empty = !els.empty.isStyleHolder ? els.empty : null;
 			
 			return els.empty;
+		},
+		
+		/**
+		 * @private
+		 * Возвращает первый абзац из следующего блока.
+		 * @param {FBEditor.editor.element.AbstractStyleHolderElement} el Текущий абзац.
+		 * @return {FBEditor.editor.element.AbstractStyleHolderElement}
+		 */
+		getNextP: function (el)
+		{
+			var me = this,
+				els = {};
+			
+			els.next = el.next();
+			els.parent = el.getParent();
+			
+			while (!els.next && !els.parent.isRoot)
+			{
+				els.next = els.parent.next();
+				els.parent = els.parent.getParent();
+			}
+			
+			els.nextParent = els.next;
+			
+			if (els.nextParent)
+			{
+				els.nextDeepFirst = els.nextParent.getDeepFirst();
+				els.nextP = els.nextDeepFirst.getStyleHolder();
+			}
+			
+			return els.nextP;
 		}
 	}
 );

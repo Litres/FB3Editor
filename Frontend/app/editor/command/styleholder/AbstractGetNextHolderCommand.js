@@ -47,6 +47,8 @@ Ext.define(
 				// первый абзац из следующего блока
 				els.nextP = me.getNextP(els);
 				
+				console.log('els.nextP', els.nextP);
+				
 				if (!els.nextP)
 				{
 					// отсутствует или не подходит абзац из следующего блока
@@ -321,7 +323,7 @@ Ext.define(
 
 		/**
 		 * @private
-		 * Возвращает первые абзац из следующего блока.
+		 * Возвращает первый абзац из следующего блока.
 		 * @param {Object} els
 		 * @return {FBEditor.editor.element.AbstractStyleHolderElement}
 		 */
@@ -330,7 +332,15 @@ Ext.define(
 			var me = this;
 
 			els.next = els.p.next();
-			els.nextParent = els.next || els.parentP.next();
+			els._parent = els.p.getParent();
+			
+			while (!els.next && !els._parent.isRoot)
+			{
+				els.next = els._parent.next();
+				els._parent = els._parent.getParent();
+			}
+			
+			els.nextParent = els.next;
 
 			if (els.nextParent)
 			{
