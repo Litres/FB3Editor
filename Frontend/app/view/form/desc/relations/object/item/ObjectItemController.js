@@ -21,6 +21,11 @@ Ext.define(
 				// показываем поля поиска
 				view.switchContainers(true);
 			}
+			else
+			{
+				// показываем поля данных
+				view.switchContainers();
+			}
 		},
 
 		/**
