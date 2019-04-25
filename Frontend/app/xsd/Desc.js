@@ -189,18 +189,13 @@ attributeFormDefault="unqualified">\
 		</simpleType>\
 	\
                         <element name="fb3-description">\
-	                        	                        <complexType>\
+	                        <complexType>\
 		                        <sequence>\
-			                        <element name="periodical" type="fb3d:PeriodicalType" minOccurs="0">\
-				                        			                        </element>\
-			                        <element name="title" type="fb3d:TitleType">\
-				                        			                        </element>\
-			                        <element name="sequence" type="fb3d:SequenceType" minOccurs="0" maxOccurs="unbounded">\
-				                        			                        </element>\
-			                        <element ref="fb3d:fb3-relations">\
-				                        			                        </element>\
-			                        <element ref="fb3d:fb3-classification">\
-				                        			                        </element>\
+			                        <element name="periodical" type="fb3d:PeriodicalType" minOccurs="0"/>\
+			                        <element name="title" type="fb3d:TitleType"/>\
+			                        <element name="sequence" type="fb3d:SequenceType" minOccurs="0" maxOccurs="unbounded"/>\
+			                        <element ref="fb3d:fb3-relations"/>\
+			                        <element ref="fb3d:fb3-classification"/>\
 			                        <element name="lang" type="language"/>\
 			                        <element name="written" minOccurs="0">\
 				                        <complexType mixed="false">\
@@ -281,6 +276,19 @@ attributeFormDefault="unqualified">\
 					                        <attribute name="fb3-lvl" type="integer" use="optional"/>\
 				                        </complexType>\
 			                        </element>\
+			                        <element name="draft-status" minOccurs="0">\
+										<complexType mixed="false">\
+											<attribute name="expected-chars" use="required">\
+												<simpleType>\
+													<restriction base="positiveInteger">\
+														<minInclusive value="1000"/>\
+													</restriction>\
+												</simpleType>\
+											</attribute>\
+											<attribute name="expectef-frequency" type="positiveInteger"/>\
+											<attribute name="expected-release" type="dateTime"/>\
+										</complexType>\
+									</element>\
 			                        <element name="history" type="fb3d:AnnotationType" minOccurs="0"/>\
 			                        <element name="paper-publish-info" minOccurs="0" maxOccurs="unbounded">\
 										<complexType mixed="false">\
