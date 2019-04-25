@@ -43,11 +43,11 @@ Ext.define(
 
 				els.parentP = els.p.parent;
 				els.parent = els.parentP.parent;
-
-				// первый абзац из следующего блока
-				els.nextP = me.getNextP(els);
 				
-				console.log('els.nextP', els.nextP);
+				// первый абзац из следующего элемента
+				els.nextP = els.p.getNextStyleHolder();
+				
+				//console.log('els.nextP', els.nextP);
 				
 				if (!els.nextP)
 				{

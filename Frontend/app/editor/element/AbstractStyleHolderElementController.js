@@ -128,12 +128,12 @@ Ext.define(
 				if (!els.nextP || !els.nextP.isStyleHolder)
 				{
 					// первый абзац из следующего элемента
-					els.nextP = me.getNextP(els.p);
+					els.nextP = els.p.getNextStyleHolder();
 					
 					// следующий пустой элемент
 					els.empty = els.nextP ? me.getEmptyEl(els.nextP) : null;
 					
-					console.log('els.empty', els.empty);
+					//console.log('els.empty', els.empty);
 					
 					if (els.empty)
 					{
