@@ -77,6 +77,36 @@ Ext.define(
 			formatOptions.nlBefore = formatOptions.nlBefore && !existTextChild ? formatOptions.nlBefore : '';
 
 			return formatOptions;
+		},
+		
+		/**
+		 * @protected
+		 * Возвращает первый абзац из следующего элемента.
+		 * @return {FBEditor.editor.element.AbstractStyleHolderElement}
+		 */
+		getNextStyleHolder: function ()
+		{
+			var me = this,
+				els = {};
+			
+			els.next = me.next();
+			els.parent = me.getParent();
+			
+			while (!els.next && !els.parent.isRoot)
+			{
+				els.next = els.parent.next();
+				els.parent = els.parent.getParent();
+			}
+			
+			els.nextParent = els.next;
+			
+			if (els.nextParent)
+			{
+				els.nextDeepFirst = els.nextParent.getDeepFirst();
+				els.nextP = els.nextDeepFirst.getStyleHolder();
+			}
+			
+			return els.nextP;
 		}
 	}
 );
