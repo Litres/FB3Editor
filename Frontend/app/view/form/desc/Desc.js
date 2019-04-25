@@ -63,6 +63,12 @@ Ext.define(
 		autoScroll: true,
 		minWidth: 730,
 		bodyPadding: 0,
+		
+		/**
+		 * @private
+		 * @property {Object} Данные draft-status.
+		 */
+		draftStatus: null,
 
 		/**
 		 * @private
@@ -208,11 +214,13 @@ Ext.define(
 		{
 			var me = this,
 				items = me.items,
+				draftStatus = me.getDraftStatus(),
 				data = {},
 				orderData = {},
 				orderNames = ['_id', '_version', '_xmlns', 'periodical', 'title', 'sequence', 'fb3-relations',
-				              'fb3-classification', 'lang', 'written', 'translated', 'document-info', 'history',
-				              'paper-publish-info', 'custom-info', 'annotation', 'preamble'];
+				                'fb3-classification', 'lang', 'written', 'translated', 'document-info',
+								'draft-status', 'history', 'paper-publish-info', 'custom-info', 'annotation',
+								'preamble'];
 
 			// получаем данные
 			items.each(
@@ -224,6 +232,11 @@ Ext.define(
 					}
 				}
 			);
+			
+			if (draftStatus)
+			{
+				data['draft-status'] = me.getDraftStatus();
+			}
 
 			// упорядочиваем данные
 			Ext.Array.each(
@@ -236,6 +249,8 @@ Ext.define(
 				    }
 			    }
 			);
+			
+			//console.log('order data', orderData);
 
 			return orderData;
 		},
@@ -271,6 +286,36 @@ Ext.define(
             bookName = titlePanel.getMain().getValue();
 
 			return bookName;
+		},
+		
+		/**
+		 * Устанавливает данные draft-status.
+		 * @param {Object} data Данные.
+		 */
+		setDraftStatus: function (data)
+		{
+			this.draftStatus = data;
+		},
+		
+		/**
+		 * Возвращает данные draft-status.
+		 * @return {Object}
+		 */
+		getDraftStatus: function ()
+		{
+			var me = this,
+				data;
+			
+			Ext.Object.each(
+				me.draftStatus,
+				function (key, val)
+				{
+					data = data || {};
+					data['_' + key] = val;
+				}
+			);
+			
+			return data;
 		}
 	}
 );

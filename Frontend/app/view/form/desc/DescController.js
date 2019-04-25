@@ -25,6 +25,10 @@ Ext.define(
 				form = view.getForm(),
 				descManager = FBEditor.desc.Manager;
 
+			//console.log('desc data', data);
+			
+			view.setDraftStatus(data['draft-status']);
+			
 			view.fireEvent('reset');
 			form.setValues(data);
 			Ext.getCmp('form-desc-sequence').fireEvent('loadData', data.sequence);
