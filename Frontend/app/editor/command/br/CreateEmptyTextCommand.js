@@ -19,7 +19,6 @@ Ext.define(
 				sel = window. getSelection(),
 				viewportId,
 				manager,
-				factory,
 				range;
 
 			try

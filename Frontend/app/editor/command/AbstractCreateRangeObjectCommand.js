@@ -34,15 +34,22 @@ Ext.define(
 				// выделенный элемент
                 nodes.focus = data.opts.focus;
                 els.focus = nodes.focus.getElement();
+				manager = data.manager = els.focus.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+
                 els.prev = els.focus.prev(); // для undo
                 els.holder = els.focus.getStyleHolder();
                 els.nextHolder = els.holder.next();
                 els.prevHolder = els.holder.prev();
                 els.common = els.holder.parent;
 				viewportId = data.viewportId = nodes.focus.viewportId;
-                manager = data.manager = els.focus.getManager();
                 factory = manager.getFactory();
-                manager.setSuspendEvent(true);
+				
+				manager.setSuspendEvent(true);
 
                 // разбиваем узел текущего выделения
                 nodes.container = nodes.focus;

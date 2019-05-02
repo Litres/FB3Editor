@@ -29,6 +29,11 @@ Ext.define(
 
 			try
 			{
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				// получаем данные из выделения
 				range = data.range = manager.getRangeCursor();
 				

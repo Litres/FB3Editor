@@ -22,6 +22,11 @@ Ext.define(
 				e.stopPropagation();
 			}
 			
+			if (manager.isSuspendCmd())
+			{
+				return false;
+			}
+			
 			manager.createElement(btn.elementName, btn.createOpts);
 		},
 
