@@ -22,7 +22,12 @@ Ext.define(
 			{
 				e.stopPropagation();
 			}
-
+			
+			if (manager.isSuspendCmd())
+			{
+				return false;
+			}
+			
 			name = btn.elementName;
 			opts = btn.createOpts;
 

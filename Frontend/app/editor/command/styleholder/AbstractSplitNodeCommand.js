@@ -28,6 +28,11 @@ Ext.define(
 
 			try
 			{
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				if (data.saveRange)
 				{
 					// восстанавливаем выделение

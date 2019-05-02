@@ -34,6 +34,10 @@ Ext.define(
 
 			try
 			{
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
 				
 				if (data.saveRange)
 				{
@@ -208,6 +212,7 @@ Ext.define(
 				nodes.cursor = manager.getDeepFirst(nodes.cursor);
 				manager.setCursor(
 					{
+						withoutSyncButtons: true,
 						startNode: nodes.cursor
 					}
 				);

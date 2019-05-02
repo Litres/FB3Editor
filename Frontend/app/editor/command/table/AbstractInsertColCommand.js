@@ -27,6 +27,12 @@ Ext.define(
 				els.node = nodes.node.getElement();
 
 				manager = els.node.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				manager.setSuspendEvent(true);
 
 				range = data.range || manager.getRange();

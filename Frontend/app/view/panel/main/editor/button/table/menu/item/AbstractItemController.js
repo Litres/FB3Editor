@@ -64,7 +64,12 @@ Ext.define(
 				history,
 				range,
 				cmd;
-
+			
+			if (manager.isSuspendCmd())
+			{
+				return false;
+			}
+			
 			if (cmdName)
 			{
 				range = manager.getRange();

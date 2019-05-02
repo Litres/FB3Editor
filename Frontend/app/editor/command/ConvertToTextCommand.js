@@ -25,8 +25,13 @@ Ext.define(
 
 			try
 			{
-
 				manager = data.el.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				sch = manager.getSchema();
 				range = data.range || manager.getRange();
 				

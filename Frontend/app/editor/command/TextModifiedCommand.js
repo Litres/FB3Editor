@@ -32,6 +32,12 @@ Ext.define(
 				nodes.node = data.node;
 				els.node = nodes.node.getElement();
 				manager = els.node.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				me.newValue = me.newValue || data.newValue;
 				me.oldValue = me.oldValue || els.node.getText();
 				

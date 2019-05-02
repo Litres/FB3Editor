@@ -26,6 +26,12 @@ Ext.define(
 			{
 				els.node = data.el;
 				manager = els.node.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				manager.setSuspendEvent(true);
 				range = data.range || manager.getRange();
 				viewportId = data.viewportId = range.start.viewportId;

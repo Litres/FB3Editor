@@ -28,8 +28,13 @@ Ext.define(
             {
                 e.stopPropagation();
             }
-
-            range = sel.rangeCount ? sel.getRangeAt(0) : null;
+	
+	        if (manager.isSuspendCmd())
+	        {
+		        return false;
+	        }
+	
+	        range = sel.rangeCount ? sel.getRangeAt(0) : null;
 
             if (!range || !range.commonAncestorContainer.getElement)
             {
