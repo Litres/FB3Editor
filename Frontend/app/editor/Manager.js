@@ -29,11 +29,6 @@ Ext.define(
 		range: null,
 
 		/**
-		 * @property {Boolean} Активна ли заморозка событий вставки узлов.
-		 */
-		suspendEvent: false,
-
-		/**
 		 * @property {Boolean} Идет ли процесс синхронизации кнопок.
 		 */
 		processSyncButtons: false,
@@ -54,6 +49,11 @@ Ext.define(
 		 * неопределено.
 		 */
 		selectionToUp: null,
+		
+		/**
+		 * @property {Object} Хранит id развернутых узлов дерева навигации по тексту.
+		 */
+		stateExpandedNodesTree: {},
 
 		/**
 		 * @protected
@@ -66,6 +66,18 @@ Ext.define(
 		 * @property {Boolean} Отображаются ли непечатаемые символы в настоящий момент.
 		 */
 		unprintedSymbols: false,
+		
+		/**
+		 * @private
+		 * @property {Boolean} Активна ли заморозка событий вставки узлов.
+		 */
+		suspendEvent: false,
+		
+		/**
+		 * @private
+		 * @property {Boolean} Остановлена ли обработка последующих команд.
+		 */
+		suspendCmd: false,
 
 		/**
 		 * @private
@@ -102,11 +114,6 @@ Ext.define(
 		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
 		 */
 		focusElement: null,
-
-		/**
-		 * @property {Object} Хранит id развернутых узлов дерева навигации по тексту.
-		 */
-		stateExpandedNodesTree: {},
 
 		/**
 		 * @private
@@ -308,6 +315,24 @@ Ext.define(
 		isSuspendEvent: function ()
 		{
 			return this.suspendEvent;
+		},
+		
+		/**
+		 * Останавливает выполнение последующих команд.
+		 * @param {Boolean} suspend true - остановить выполнение команд, false - возобновить.
+		 */
+		setSuspendCmd: function (suspend)
+		{
+			this.suspendCmd = suspend;
+		},
+		
+		/**
+		 * Остановлено ли выполнение команд.
+		 * @return {Boolean}
+		 */
+		isSuspendCmd: function ()
+		{
+			return this.suspendCmd;
 		},
 
 		/**

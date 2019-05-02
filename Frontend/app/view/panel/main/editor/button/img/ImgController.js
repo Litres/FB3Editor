@@ -25,7 +25,12 @@ Ext.define(
             {
                 e.stopPropagation();
             }
-
+			
+			if (manager.isSuspendCmd())
+			{
+				return false;
+			}
+			
 			range = manager.getRange();
 
 			if (range)

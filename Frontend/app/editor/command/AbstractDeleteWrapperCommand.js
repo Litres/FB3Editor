@@ -27,6 +27,12 @@ Ext.define(
 			try
 			{
 				manager = data.opts.manager;
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				range = data.range = data.range || manager.getRangeCursor();
 				
 				// удаляем все оверлеи в тексте

@@ -28,6 +28,12 @@ Ext.define(
 				els.table = els.td.getParentName('table');
 
 				manager = els.table.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				manager.setSuspendEvent(true);
 
 				me.splitCell(els.td, viewportId);

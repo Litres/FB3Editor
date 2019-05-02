@@ -56,40 +56,6 @@ Ext.define(
 		},
 
 		/**
-		 * Проверяет по схеме элемент.
-		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
-		 * @param {Boolean} [debug] Нужны ли отладочные сообщения.
-		 */
-		verifyElement: function (el, debug)
-		{
-			var me = this,
-				manager = el.getManager(),
-				sch = manager.getSchema(),
-				scopeData,
-				xml;
-
-			if (!el || el.isText || el.isUndefined || el.isStyleHolder && el.isEmpty())
-			{
-				// текст, пустые абзацы и неопределенные элементы не нуждаются в проверке
-				return true;
-			}
-
-			// получаем xml без текстовых элементов
-			xml = manager.getContent().getXml(true);
-
-			//console.log(xml);
-
-			scopeData = {
-				el: el,
-				debug: debug,
-				syncButtons: me.syncButtons
-			};
-
-			// вызываем проверку по схеме
-			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
-		},
-
-		/**
 		 * @template
 		 * Выполняется перед отменой операции unExecute.
 		 * В сдучае, если отмена дествительно нужна то выполнит resolve, иначе reject.
@@ -399,6 +365,43 @@ Ext.define(
 				}
 			)
 		},
+		
+		/**
+		 * Проверяет по схеме элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @param {Boolean} [debug] Нужны ли отладочные сообщения.
+		 */
+		verifyElement: function (el, debug)
+		{
+			var me = this,
+				manager = el.getManager(),
+				sch = manager.getSchema(),
+				scopeData,
+				xml;
+			
+			if (!el || el.isText || el.isUndefined || el.isStyleHolder && el.isEmpty())
+			{
+				// текст, пустые абзацы и неопределенные элементы не нуждаются в проверке
+				return true;
+			}
+			
+			// получаем xml без текстовых элементов
+			xml = manager.getContent().getXml(true);
+			
+			//console.log(xml);
+			
+			scopeData = {
+				el: el,
+				debug: debug,
+				syncButtons: me.syncButtons
+			};
+			
+			// приостанавливаем обработку команд на время выполнения проверки по схеме
+			manager.setSuspendCmd(true);
+			
+			// вызываем проверку по схеме
+			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+		},
 
 		/**
 		 * @private
@@ -411,10 +414,13 @@ Ext.define(
 			var me = this,
 				el = scopeData.el,
 				syncButtons = scopeData.syncButtons,
-				manager,
+				manager = el.getManager(),
 				xml;
 
 			//console.log('res', res, scopeData);
+			
+			// возобновляем обработку команд
+			manager.setSuspendCmd(false);
 
 			if (!res)
 			{
@@ -436,8 +442,6 @@ Ext.define(
 				    }
 				);
 			}
-
-			manager = el.getManager();
 
 			if (syncButtons)
 			{

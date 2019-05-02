@@ -33,6 +33,12 @@ Ext.define(
 				console.log('join cells', data);
 
 				manager = els.table.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				manager.setSuspendEvent(true);
 
 				// убираем выделение

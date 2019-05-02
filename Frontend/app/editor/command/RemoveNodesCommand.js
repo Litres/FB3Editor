@@ -52,6 +52,12 @@ Ext.define(
 				els.common = nodes.common.getElement();
 
 				manager = els.common.getManager();
+				
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				manager.setSuspendEvent(true);
 
 				data.viewportId = nodes.common.viewportId;

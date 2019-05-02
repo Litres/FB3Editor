@@ -26,6 +26,11 @@ Ext.define(
 
 			try
 			{
+				if (manager.isSuspendCmd())
+				{
+					return false;
+				}
+				
 				range = data.opts.range;
 				
 				console.log('create img', data.opts);
