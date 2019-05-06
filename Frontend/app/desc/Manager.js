@@ -129,10 +129,14 @@ Ext.define(
 					).then(
 						function (xml)
 						{
-							var resourceManager = FBEditor.resource.Manager;
-
-							// загружаем данные в форму
-							me.loadDataToForm(xml);
+							var resourceManager = FBEditor.resource.Manager,
+								routeManager = FBEditor.route.Manager;
+							
+							if (!routeManager.isSetParam('only_text'))
+							{
+								// загружаем данные в форму
+								me.loadDataToForm(xml);
+							}
 
 							// загружены ли уже ресурсы
 							if (!resourceManager.isLoadUrl())

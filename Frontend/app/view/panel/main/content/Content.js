@@ -76,6 +76,19 @@ Ext.define(
 		 * @property {FBEditor.view.panel.toolstab.main.Main} Вкладка Форматирование.
 		 */
 		toolstab: null,
+		
+		initComponent: function ()
+		{
+			var me = this,
+				routeManager = FBEditor.route.Manager;
+			
+			if (routeManager.isSetParam('only_text'))
+			{
+				me.activeItem = 'main-editor';
+			}
+			
+			me.callParent(arguments);
+		},
 
 		afterRender: function ()
 		{
