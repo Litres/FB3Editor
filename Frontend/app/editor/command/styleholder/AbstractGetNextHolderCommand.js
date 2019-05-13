@@ -91,8 +91,18 @@ Ext.define(
 					{
 						els.newP.add(els.first, viewportId);
 					}
-
-					els.parentP.add(els.newP, viewportId);
+					
+					els.next = els.p.next();
+					
+					if (!els.next)
+					{
+						els.parentP.add(els.newP, viewportId);
+					}
+					else
+					{
+						els.parentP.insertBefore(els.newP, els.next, viewportId);
+					}
+					
 					els.nextNextP = els.nextP.next();
 					els.parentNextP.remove(els.nextP, viewportId);
 				}

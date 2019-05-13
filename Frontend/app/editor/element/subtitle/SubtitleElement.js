@@ -42,15 +42,26 @@ Ext.define(
 			return els;
 		},
 
-		getXml: function ()
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				xml;
 
 			xml = me.callParent(arguments);
 
-			// заменяем все пустые элементы subtitle на br
-			xml = xml.replace(/<subtitle><br\/><\/subtitle>/gi, '<subtitle></subtitle>');
+			if (me.isEmpty())
+			{
+				// заменяем все пустые subtitle
+				
+				if (!withoutFormat)
+				{
+					xml = xml.replace(/<subtitle(.*?)>\n\s*<br(.*?)\/>\n\s*<\/subtitle>/gi, '<subtitle$1></subtitle>');
+				}
+				else
+				{
+					xml = xml.replace(/<subtitle(.*?)><br(.*?)\/><\/subtitle>/gi, '<subtitle$1></subtitle>');
+				}
+			}
 
 			return xml;
 		}
