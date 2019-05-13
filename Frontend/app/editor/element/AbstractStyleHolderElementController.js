@@ -92,7 +92,7 @@ Ext.define(
 
 			//console.log('range, isEnd, nodes', name, range, isEnd, nodes);
 
-			// текущий контейнер в параграфе
+			// текущий контейнер в абзаце
 			while (!els.p.hisName(name))
 			{
 				nodes.node = nodes.p;
@@ -337,13 +337,20 @@ Ext.define(
 			els.empty = el;
 			els.emptyParent = els.empty.getParent();
 			
-			while (els.emptyParent.isEmpty())
+			if (els.emptyParent.isEmpty())
 			{
-				els.empty = els.empty.getParent();
-				els.emptyParent = els.empty.getParent();
+				while (els.emptyParent.isEmpty())
+				{
+					els.empty = els.empty.getParent();
+					els.emptyParent = els.empty.getParent();
+				}
+				
+				els.empty = !els.empty.isStyleHolder ? els.empty : null;
 			}
-			
-			els.empty = !els.empty.isStyleHolder ? els.empty : null;
+			else if (!els.empty.isEmpty())
+			{
+				els.empty = null;
+			}
 			
 			return els.empty;
 		},

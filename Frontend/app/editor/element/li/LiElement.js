@@ -28,15 +28,26 @@ Ext.define(
 
 		isLi: true,
 
-		getXml: function ()
+		getXml: function (withoutText, withoutFormat)
 		{
 			var me = this,
 				xml;
 
 			xml = me.callParent(arguments);
 
-			// удаляем все одиночные br
-			xml = xml.replace(/<li(.*?)>\n\s+<br(.*?)\/>\n\s+<\/li>/gi, '<li><\/li>');
+			if (me.isEmpty())
+			{
+				// заменяем все пустые li
+				
+				if (!withoutFormat)
+				{
+					xml = xml.replace(/<li(.*?)>\n\s*<br(.*?)\/>\n\s*<\/li>/gi, '<li$1></li>');
+				}
+				else
+				{
+					xml = xml.replace(/<li(.*?)><br(.*?)\/><\/li>/gi, '<li$1></li>');
+				}
+			}
 
 			return xml;
 		},

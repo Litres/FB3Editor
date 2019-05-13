@@ -38,25 +38,35 @@ Ext.define(
 			if (me.isEmpty())
 			{
 				// заменяем все пустые абзацы на br
-
-                if (!withoutFormat)
+				
+				if (!withoutFormat)
 				{
-                    //console.log(me.isEmpty(), me, xml);
-
-                    xml = xml.replace(/<p(.*?)>\n\s*<br(.*?)\/>\n\s*<\/p>/gi, '<br$2/>');
+					//console.log(me.isEmpty(), me, xml);
+					
+					if (!parent.hisName('section') && parent.first().equal(me))
+					{
+						// для всех элементов, кроме section, первым элементом не может быть br
+						xml = xml.replace(/<p(.*?)>\n\s*<br(.*?)\/>\n\s*<\/p>/gi, '<p$1></p>');
+					}
+					else
+					{
+						xml = xml.replace(/<p(.*?)>\n\s*<br(.*?)\/>\n\s*<\/p>/gi, '<br$2/>');
+					}
 				}
 				else
 				{
-					xml = xml.replace(/<p(.*?)><br(.*?)\/><\/p>/gi, '<br$2/>');
+					if (!parent.hisName('section') && parent.first().equal(me))
+					{
+						// для всех элементов, кроме section, первым элементом не может быть br
+						xml = xml.replace(/<p(.*?)><br(.*?)\/><\/p>/gi, '<p$1></p>');
+					}
+					else
+					{
+						xml = xml.replace(/<p(.*?)><br(.*?)\/><\/p>/gi, '<br$2/>');
+					}
 				}
-
-				if (!parent.hisName('section') && parent.first().equal(me))
-				{
-					// для всех элементов, кроме section, первым элементом не может быть br
-					xml = '<p></p>';
-				}
-
-                //console.log(xml);
+				
+				//console.log(xml);
             }
 
 			return xml;
