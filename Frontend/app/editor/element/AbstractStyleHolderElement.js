@@ -35,23 +35,6 @@ Ext.define(
 			return el;
 		},
 
-		/**
-		 * Удаляет выделенную часть текста.
-		 */
-		removeRangeNodes: function ()
-		{
-			var me = this,
-				name = me.getName(),
-				cmd;
-
-			cmd = Ext.create('FBEditor.editor.command.' + name + '.RemoveRangeNodesCommand');
-
-			if (cmd.execute())
-			{
-				me.getHistory().add(cmd);
-			}
-		},
-
 		getFormatOptionsXml: function ()
 		{
 			var me = this,
@@ -77,6 +60,23 @@ Ext.define(
 			formatOptions.nlBefore = formatOptions.nlBefore && !existTextChild ? formatOptions.nlBefore : '';
 
 			return formatOptions;
+		},
+		
+		/**
+		 * Удаляет выделенную часть текста.
+		 */
+		removeRangeNodes: function ()
+		{
+			var me = this,
+				name = me.getName(),
+				cmd;
+			
+			cmd = Ext.create('FBEditor.editor.command.' + name + '.RemoveRangeNodesCommand');
+			
+			if (cmd.execute())
+			{
+				me.getHistory().add(cmd);
+			}
 		},
 		
 		/**

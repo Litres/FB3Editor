@@ -42,7 +42,7 @@ Ext.define(
 			var me = this,
 				btn;
 
-			me.callParent(me);
+			me.callParent(arguments);
 			me.createRoot();
 			btn = me.getUnprintedSymbolsBtn();
 
