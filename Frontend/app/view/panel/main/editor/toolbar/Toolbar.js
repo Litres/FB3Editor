@@ -105,12 +105,12 @@ Ext.define(
 				{
 					sequence: [
 						'main-editor-button-div',
-						'main-editor-button-subtitle',
-						'main-editor-button-blockquote',
-						'main-editor-button-pre',
-						'main-editor-button-poem'
+						'main-editor-button-subtitle'
 					]
 				},
+				'main-editor-button-blockquote',
+				'main-editor-button-pre',
+				'main-editor-button-poem',
 				'main-editor-button-ul',
 				'main-editor-button-ol',
 				'main-editor-button-table',
