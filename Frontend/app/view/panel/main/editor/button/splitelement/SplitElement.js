@@ -39,8 +39,11 @@ Ext.define(
 
             // находится ли текущее выделение внутри секции
             els.isSection = els.common.hasParentName('section');
+	
+	        // находится ли текущее выделение внутри списка
+	        els.isLi = els.common.hasParentName('li');
 
-            active = els.isSection ? true : active;
+            active = els.isSection && !els.isLi ? true : active;
 
             return active;
         }
