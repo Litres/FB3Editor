@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractElement',
 		requires: [
 			'FBEditor.editor.command.epigraph.CreateCommand',
-			'FBEditor.editor.element.epigraph.EpigraphElementController'
+			'FBEditor.editor.element.epigraph.EpigraphElementController',
+			'FBEditor.editor.command.epigraph.SplitCommand'
 		],
 		controllerClass: 'FBEditor.editor.element.epigraph.EpigraphElementController',
 		htmlTag: 'epigraph',

@@ -26,6 +26,7 @@ Ext.define(
                 active = false,
                 sel = window.getSelection(),
                 els = {},
+	            splittable,
                 range;
 
             range = sel.rangeCount ? sel.getRangeAt(0) : null;
@@ -39,10 +40,38 @@ Ext.define(
 
             // находится ли текущее выделение внутри секции
             els.isSection = els.common.hasParentName('section');
-
-            active = els.isSection ? true : active;
+	
+	        splittable = me.isSplittable(els.common);
+	
+	        active = els.isSection && splittable ? true : active;
 
             return active;
-        }
+        },
+	
+	    /**
+	     * Находится ли текущее выделение внтури элемента, из которого можно разделить секцию.
+	     * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+	     * @return {Boolean}
+	     */
+	    isSplittable: function (el)
+	    {
+		    var names = ['epigraph', 'annotation', 'subscription'],
+			    res = true;
+		
+		    Ext.each(
+			    names,
+			    function (name)
+			    {
+				    if (el.hasParentName(name))
+				    {
+					    res = false;
+					
+					    return false;
+				    }
+			    }
+		    );
+		
+		    return res;
+	    }
     }
 );
