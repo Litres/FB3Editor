@@ -159,7 +159,7 @@ Ext.define(
 				}
 			};
 			
-			if (routeManager.isSetParam('only_text'))
+			if (routeManager.isSetParam('only_text') && me.getArtId())
 			{
 				// автосохранение
 				Ext.defer(
@@ -169,7 +169,7 @@ Ext.define(
 					},
 					me.saveTime * 1000,
 					me
-				)
+				);
 			}
 		},
 		
