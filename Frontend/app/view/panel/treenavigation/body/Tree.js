@@ -11,7 +11,8 @@ Ext.define(
 		requires: [
             'FBEditor.command.OpenBody',
 			'FBEditor.view.panel.treenavigation.body.TreeController',
-			'FBEditor.view.panel.treenavigation.body.TreeStore'
+			'FBEditor.view.panel.treenavigation.body.TreeStore',
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.Section'
 		],
 
 		id: 'panel-body-navigation',
@@ -64,6 +65,27 @@ Ext.define(
 			me.saveStateNodes();
 
 			me.callParent(arguments);
+		},
+		
+		/**
+		 * Создает контекстное меню для элемента.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @param {Object} evt Объект события itemcontextmenu.
+		 */
+		createContextMenu: function (el, evt)
+		{
+			var me = this;
+			
+			if (el.isSection)
+			{
+				// контекстное меню секции
+				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.section.Section',
+					{
+						x: evt.pageX,
+						y: evt.pageY
+					}
+				);
+			}
 		},
 
 		/**
