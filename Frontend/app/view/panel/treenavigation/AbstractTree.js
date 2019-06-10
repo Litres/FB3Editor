@@ -15,6 +15,7 @@ Ext.define(
 			itemclick: 'onItemClick',
 			itemdblclick: 'onItemDblClick',
 			beforeitemclick: 'onBeforeItemClick',
+			itemcontextmenu: 'onItemContextMenu',
 			selectionchange: 'onSelectionChange',
 			select: 'onSelect'
 		},
