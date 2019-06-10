@@ -25,6 +25,23 @@ Ext.define(
 			// устанавливаем курсор на элементе и прокурчиваем к нему окно
 			me.setFocusElement(record);
 		},
+		
+		onItemContextMenu: function (node, record, item, index, evt)
+		{
+			var me = this,
+				view = me.getView(),
+				data = record.getData(),
+				bridge = FBEditor.getBridgeWindow(),
+				manager = bridge.FBEditor.getEditorManager(),
+				el;
+			
+			evt.preventDefault();
+			
+			// получаем элемент по его id
+			el = manager.getElementById(data.elementId);
+
+			view.createContextMenu(el, evt);
+		},
 
 		/**
 		 * Устанавливает фокус на элементе и прокуручивает к нему скролл.
@@ -35,7 +52,8 @@ Ext.define(
 			var me = this,
                 view = me.getView(),
 				data = record.getData(),
-				manager = FBEditor.getEditorManager(),
+				bridge = FBEditor.getBridgeWindow(),
+				manager = bridge.FBEditor.getEditorManager(),
 				els = {},
 				nodes = {},
 				helper;

@@ -59,6 +59,14 @@ Ext.define(
 			node.deselect(record, false);
 			Ext.getCmp('panel-treenavigation').restoreSelectData();
 		},
+		
+		/**
+		 * Вызывает контекстное меню.
+		 */
+		onItemContextMenu: function (node, record, item, index, e)
+		{
+			e.preventDefault();
+		},
 
 		onSelect: function ()
 		{
@@ -67,7 +75,7 @@ Ext.define(
 
 		onSelectionChange: function ()
 		{
-
+			//
 		},
 
 		/**

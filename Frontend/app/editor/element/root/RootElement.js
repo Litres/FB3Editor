@@ -49,10 +49,11 @@ Ext.define(
 			paste: 'onPaste',
 			beforecopy: 'onBeforeCopy',
 			copy: 'onCopy',
-			beforecut: 'onBeforecut',
+			beforecut: 'onBeforeCut',
 			cut: 'onCut',
 			scroll: 'onScroll',
-			focus: 'onFocus'
+			focus: 'onFocus',
+			contextmenu: 'onContextMenu'
 		},
 
 		/**
