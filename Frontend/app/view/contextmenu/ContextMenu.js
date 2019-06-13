@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'Ext.menu.Menu',
 		
+		xtype: 'contextmenu',
+		
 		autoShow: true
 	}
 );
