@@ -82,7 +82,8 @@ Ext.define(
 				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.section.Section',
 					{
 						x: evt.pageX,
-						y: evt.pageY
+						y: evt.pageY,
+						element: el
 					}
 				);
 			}
