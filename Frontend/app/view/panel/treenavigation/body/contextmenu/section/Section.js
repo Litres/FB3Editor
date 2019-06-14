@@ -8,17 +8,14 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.body.contextmenu.section.Section',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
-		requires: [
-			'FBEditor.view.panel.treenavigation.body.contextmenu.section.editsource.EditSource'
-		],
 		
 		xtype: 'contextmenu-treenavigation-body-section',
 		
-		initComponent: function ()
+		getItems: function ()
 		{
-			var me = this;
+			var items;
 			
-			me.items = [
+			items = [
 				{
 					text: 'Добавить вложенную главу',
 					disabled: true
@@ -49,11 +46,11 @@ Ext.define(
 					xtype: 'menuseparator'
 				},
 				{
-					xtype: 'contextmenu-treenavigation-body-section-editsource'
+					xtype: 'contextmenu-treenavigation-body-item-editsource'
 				}
 			];
 			
-			me.callParent(arguments);
+			return items;
 		}
 	}
 );
