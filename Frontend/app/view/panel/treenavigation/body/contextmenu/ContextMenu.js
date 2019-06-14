@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
 	{
 		extend: 'FBEditor.view.contextmenu.ContextMenu',
+		requires: [
+			'FBEditor.view.panel.treenavigation.body.contextmenu.item.editsource.EditSource'
+		],
 		
 		xtype: 'contextmenu-treenavigation-body',
 		
@@ -27,6 +30,32 @@ Ext.define(
 			me.element = cfg.element;
 			
 			me.callParent(arguments);
+		},
+		
+		initComponent: function ()
+		{
+			var me = this;
+			
+			me.items = me.getItems();
+			
+			me.callParent(arguments);
+		},
+		
+		/**
+		 * Возвращает пункты меню.
+		 * @return {Object}
+		 */
+		getItems: function ()
+		{
+			var items;
+			
+			items = [
+				{
+					xtype: 'contextmenu-treenavigation-body-item-editsource'
+				}
+			];
+			
+			return items;
 		},
 		
 		/**

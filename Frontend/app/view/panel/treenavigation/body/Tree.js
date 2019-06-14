@@ -87,6 +87,17 @@ Ext.define(
 					}
 				);
 			}
+			else
+			{
+				// общее контекстное меню
+				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
+					{
+						x: evt.pageX,
+						y: evt.pageY,
+						element: el
+					}
+				);
+			}
 		},
 
 		/**
