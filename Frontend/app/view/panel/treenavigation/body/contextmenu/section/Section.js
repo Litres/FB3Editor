@@ -8,6 +8,9 @@ Ext.define(
 	'FBEditor.view.panel.treenavigation.body.contextmenu.section.Section',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
+		requires: [
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.inner.Inner'
+		],
 		
 		xtype: 'contextmenu-treenavigation-body-section',
 		
@@ -17,8 +20,7 @@ Ext.define(
 			
 			items = [
 				{
-					text: 'Добавить вложенную главу',
-					disabled: true
+					xtype: 'contextmenu-treenavigation-body-section-inner'
 				},
 				{
 					text: 'Добавить главу ниже',
