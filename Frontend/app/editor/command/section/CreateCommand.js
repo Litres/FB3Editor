@@ -29,9 +29,10 @@ Ext.define(
 			if (inner)
 			{
 				// вложенная секция
+				console.log('els.node', els.node);
 				
 				// ищем родительскую секцию или корневой элемент
-				els.parent = els.node.getParentName('section') || els.node.getRoot();
+				els.parent = els.node.isSection ? els.node : (els.node.getParentName('section') || els.node.getRoot());
 				
 				// создаем секцию
 				els.node = factory.createElement(me.elementName);
