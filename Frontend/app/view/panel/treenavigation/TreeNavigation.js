@@ -46,9 +46,9 @@ Ext.define(
 				{
 					xtype: 'panel-body-navigation'
 				},
-                {
+                /*{
                     xtype: 'panel-navigation-section'
-                },
+                },*/
                 {
                     xtype: 'panel-xml-navigation'
                 }

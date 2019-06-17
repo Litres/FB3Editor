@@ -31,6 +31,8 @@ Ext.define(
 	            // получаем данные из выделения
 	            range = manager.getRangeCursor();
 	
+	            console.log('section -> left', range);
+	
 	            // удаляем все оверлеи в тексте
 	            manager.removeAllOverlays();
 

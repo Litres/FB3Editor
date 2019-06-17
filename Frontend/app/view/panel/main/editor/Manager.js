@@ -83,8 +83,8 @@ Ext.define(
             me.callParent(arguments);
 
             // синхронизируем кнопки сдвига секции
-            panelSection = me.getPanelSection();
-            panelSection.fireEvent('sync');
+            // panelSection = me.getPanelSection();
+            //panelSection.fireEvent('sync');
         },
 
 		setFocusElement: function (elOrNode, sel)
