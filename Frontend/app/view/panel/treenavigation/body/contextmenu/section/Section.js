@@ -9,7 +9,9 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
 		requires: [
-			'FBEditor.view.panel.treenavigation.body.contextmenu.section.inner.Inner'
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.inner.Inner',
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.left.Left',
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.right.Right'
 		],
 		
 		xtype: 'contextmenu-treenavigation-body-section',
@@ -37,12 +39,10 @@ Ext.define(
 					xtype: 'menuseparator'
 				},
 				{
-					text: 'Сдвинуть вправо (сделать вложенной)',
-					disabled: true
+					xtype: 'contextmenu-treenavigation-body-section-right'
 				},
 				{
-					text: 'Сдвинуть влево (убрать вложенность)',
-					disabled: true
+					xtype: 'contextmenu-treenavigation-body-section-left'
 				},
 				{
 					xtype: 'menuseparator'
