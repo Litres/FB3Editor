@@ -21,6 +21,18 @@ Ext.define(
 		
 		icon: null,
 		
+		initComponent: function ()
+		{
+			var me = this;
+			
+			if (!me.isActive())
+			{
+				me.disabled = true;
+			}
+			
+			me.callParent(arguments);
+		},
+		
 		/**
 		 * Возвращает контекстное меню.
 		 * @return {FBEditor.view.contextmenu.ContextMenu}
@@ -33,6 +45,23 @@ Ext.define(
 			menu = me.up('contextmenu');
 			
 			return menu;
+		},
+		
+		/**
+		 * Возвращает активный менеджер редактора текста.
+		 */
+		getEditorManager: function ()
+		{
+			return FBEditor.getEditorManager();
+		},
+		
+		/**
+		 * Активен ли пункт меню.
+		 * @return {Boolean}
+		 */
+		isActive: function ()
+		{
+			return true;
 		}
 	}
 );

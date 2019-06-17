@@ -5,25 +5,30 @@
  */
 
 Ext.define(
-	'FBEditor.view.panel.treenavigation.body.contextmenu.section.inner.InnerController',
+	'FBEditor.view.panel.treenavigation.body.contextmenu.section.left.LeftController',
 	{
 		extend: 'FBEditor.view.panel.treenavigation.body.contextmenu.section.ItemController',
 		
-		alias: 'controller.contextmenu.treenavigation.body.section.inner',
+		alias: 'controller.contextmenu.treenavigation.body.section.left',
 		
 		onClick: function ()
 		{
 			var me = this,
 				view = me.getView(),
-				el;
-			
-			el = view.getElement();
+				manager = view.getEditorManager(),
+				history,
+				cmd;
 			
 			// корректируем выделение в тексте
 			me.setSelection();
 			
-			// создаем вложенную секцию
-			el.fireEvent('createElement', null, {inner: true});
+			cmd = Ext.create('FBEditor.editor.command.section.LeftCommand');
+			
+			if (cmd.execute())
+			{
+				history = manager.getHistory();
+				history.add(cmd);
+			}
 		}
 	}
 );

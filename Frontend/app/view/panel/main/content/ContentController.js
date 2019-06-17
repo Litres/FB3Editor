@@ -53,7 +53,7 @@ Ext.define(
 			toolbar = editor.getToolbar();
 			toolstab.setActiveToolbar(toolbar);
 
-            sectionPanel.fireEvent('enablePanel');
+            //sectionPanel.fireEvent('enablePanel');
 		},
 
         /**
@@ -81,7 +81,7 @@ Ext.define(
                 manager.disableButtons();
             }
 
-            sectionPanel.fireEvent('disablePanel');
+            //sectionPanel.fireEvent('disablePanel');
         },
 
 		/**
@@ -108,7 +108,7 @@ Ext.define(
 			manager = editor.getManager();
 			manager.syncButtons();
 
-            sectionPanel.fireEvent('disablePanel');
+            //sectionPanel.fireEvent('disablePanel');
 		},
 
 		/**
@@ -136,7 +136,7 @@ Ext.define(
 				manager.disableButtons();
 			}
 
-            sectionPanel.fireEvent('disablePanel');
+            //sectionPanel.fireEvent('disablePanel');
 		},
 
 		/**
