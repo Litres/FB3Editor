@@ -19,6 +19,21 @@ Ext.define(
 			
 			splitBtn = view.getSplitButton();
 			
+			if (!splitBtn)
+			{
+				splitBtn = Ext.widget('main-editor-button-splitsection');
+				
+				// рассекаем секцию
+				splitBtn.fireEvent('click', splitBtn, null);
+				
+				splitBtn.destroy();
+			}
+			else
+			{
+				// рассекаем секцию
+				splitBtn.fireEvent('click', splitBtn, null);
+			}
+			
 			// рассекаем секцию
 			splitBtn.fireEvent('click', splitBtn, null);
 		}
