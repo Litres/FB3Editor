@@ -24,7 +24,17 @@ Ext.define(
 				active;
 			
 			splitBtn = me.getSplitButton();
-			active = splitBtn.isActiveSelection();
+			
+			if (!splitBtn)
+			{
+				splitBtn = Ext.widget('main-editor-button-splitsection');
+				active = splitBtn.isActiveSelection();
+				splitBtn.destroy();
+			}
+			else
+			{
+				active = splitBtn.isActiveSelection();
+			}
 			
 			return active;
 		},
