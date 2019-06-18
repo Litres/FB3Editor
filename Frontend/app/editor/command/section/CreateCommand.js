@@ -36,6 +36,16 @@ Ext.define(
 				// создаем секцию
 				els.node = factory.createElement(me.elementName);
 				
+				// создаем заголовок вложенной секции
+				els.inner = {};
+				els.inner.title = factory.createElement('title');
+				els.inner.p = factory.createElement('p');
+				els.inner.t = factory.createElementText('Вложенная глава');
+				els.inner.p.add(els.inner.t);
+				els.inner.title.add(els.inner.p);
+				els.node.add(els.inner.title);
+				
+				
 				// вставляем новую секцию внутрь текущей
 				els.parent.add(els.node, viewportId);
 				
@@ -100,6 +110,9 @@ Ext.define(
 
 				if (inner)
 				{
+					// удаляем заголовок вложенной секции
+					els.node.remove(els.inner.title, viewportId);
+					
 					// переносим все элементы из секции обратно
 					
 					els.first = els.node.first();
