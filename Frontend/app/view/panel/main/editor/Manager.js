@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.editor.Manager',
 		requires: [
 			'FBEditor.view.panel.main.editor.Loader',
+			'FBEditor.view.panel.main.editor.contextmenu.Menu',
             'FBEditor.view.panel.main.xml.Manager'
 		],
 
@@ -70,6 +71,23 @@ Ext.define(
 			
 			// обновляем дерево навигации по тексту
 			me.updateTree();
+		},
+		
+		createContextMenu: function (el, evt)
+		{
+			var me = this,
+				data;
+			
+			evt.preventDefault();
+			
+			// данные контекстного меню
+			data = {
+				x: evt.pageX,
+				y: evt.pageY,
+				element: el.getBlock()
+			};
+			
+			Ext.create('FBEditor.view.panel.main.editor.contextmenu.Menu', data);
 		},
 
 		availableSyncButtons: function ()
