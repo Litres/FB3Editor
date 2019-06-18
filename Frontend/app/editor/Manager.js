@@ -193,6 +193,16 @@ Ext.define(
 				throw e;
 			}
 		},
+		
+		/**
+		 * Создает контекстное меню.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @param {Object} evt Объект события contextmenu.
+		 */
+		createContextMenu: function (el, evt)
+		{
+			//
+		},
 
         /**
 		 * Устанавливает исходный xml.

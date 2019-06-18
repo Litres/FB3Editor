@@ -241,6 +241,17 @@ Ext.define(
             clipboardData.setHtml(rangeXml);
 
             e.preventDefault();
-        }
+        },
+		
+		onContextMenu: function (e)
+		{
+			var me = this,
+				manager,
+				el;
+			
+			el = e.target.getElement ? e.target.getElement() : null;
+			manager = el.getManager();
+			manager.createContextMenu(el, e);
+		}
 	}
 );

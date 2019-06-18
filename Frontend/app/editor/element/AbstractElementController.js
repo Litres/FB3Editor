@@ -984,7 +984,7 @@ Ext.define(
 		
 		onContextMenu: function (e)
 		{
-			//console.log('onContextMenu', e);
+			e.preventDefault();
 		},
 
 		/**
