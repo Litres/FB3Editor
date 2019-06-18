@@ -74,29 +74,25 @@ Ext.define(
 		 */
 		createContextMenu: function (el, evt)
 		{
-			var me = this;
+			var me = this,
+				data;
+			
+			// данные контекстного меню
+			data = {
+				x: evt.pageX,
+				y: evt.pageY,
+				element: el
+			};
 			
 			if (el.isSection)
 			{
 				// контекстное меню секции
-				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.section.Section',
-					{
-						x: evt.pageX,
-						y: evt.pageY,
-						element: el
-					}
-				);
+				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.section.Section', data);
 			}
 			else
 			{
 				// общее контекстное меню
-				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
-					{
-						x: evt.pageX,
-						y: evt.pageY,
-						element: el
-					}
-				);
+				Ext.create('FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu', data);
 			}
 		},
 
