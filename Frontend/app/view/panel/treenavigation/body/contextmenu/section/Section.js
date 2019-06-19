@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.inner.Inner',
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.left.Left',
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.next.Next',
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.right.Right'
 		],
 		
@@ -25,8 +26,7 @@ Ext.define(
 					xtype: 'contextmenu-treenavigation-body-section-inner'
 				},
 				{
-					text: 'Добавить главу ниже',
-					disabled: true
+					xtype: 'contextmenu-treenavigation-body-section-next'
 				},
 				{
 					xtype: 'menuseparator'

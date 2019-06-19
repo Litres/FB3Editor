@@ -18,6 +18,7 @@ Ext.define(
 				data = me.getData(),
 				factory = FBEditor.editor.Factory,
 				viewportId = data.viewportId,
+				next,
 				inner;
 
 			// вложенная ли секция
@@ -72,6 +73,10 @@ Ext.define(
 
 				els.node = factory.createElement(me.elementName);
 				els = Ext.apply(els, els.node.createScaffold());
+				
+				// следующая ли секция
+				//next = data.opts && data.opts.inner;
+				
 				if (els.next)
 				{
 					els.parent.insertBefore(els.node, els.next, viewportId);
