@@ -17,6 +17,8 @@ Ext.define(
 		htmlTag: 'annotation',
 		xmlTag: 'annotation',
 		cls: 'el-annotation',
+		
+		isAnnotation: true,
 
 		createScaffold: function ()
 		{

@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.panel.treenavigation.body.contextmenu.ContextMenu',
 		requires: [
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.inner.Inner',
+			'FBEditor.view.panel.treenavigation.body.contextmenu.section.join.Join',
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.left.Left',
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.next.Next',
 			'FBEditor.view.panel.treenavigation.body.contextmenu.section.right.Right'
@@ -32,8 +33,7 @@ Ext.define(
 					xtype: 'menuseparator'
 				},
 				{
-					text: 'Объединить главу с предыдущей',
-					disabled: true
+					xtype: 'contextmenu-treenavigation-body-section-join'
 				},
 				{
 					xtype: 'menuseparator'
