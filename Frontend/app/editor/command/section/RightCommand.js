@@ -123,7 +123,7 @@ Ext.define(
                 manager.restoreSelection();
 
                 // проверяем по схеме
-                me.verifyElement(els.parent);
+                //me.verifyElement(els.parent);
 
                 res = true;
             }

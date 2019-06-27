@@ -175,7 +175,7 @@ Ext.define(
                 manager.restoreSelection();
 
                 // проверяем по схеме
-                me.verifyElement(els.sectionParent);
+                //me.verifyElement(els.sectionParent);
 
                 res = true;
             }
