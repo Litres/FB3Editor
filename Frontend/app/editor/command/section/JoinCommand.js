@@ -68,9 +68,26 @@ Ext.define(
 				
 				// самая последняя вложенная секция в предыдущей секции
 				els.lastInnerSectionPrev = els.hasInnerSectionPrev ?
-					els.sectionPrev.last().getDeepLast().getParentName('section') : null;
+					els.sectionPrev.last().getDeepLast().getParentName('section') : els.sectionPrev;
 				
-				if (els.hasInnerSection && !els.lastInnerSectionPrev)
+				if (els.lastInnerSectionPrev.last().isSubscription)
+				{
+					// преобразуем подпись в предыдущей секции
+					
+					els.subscription = els.lastInnerSectionPrev.last();
+					els.subscriptionBq = factory.createElement('blockquote');
+					els.lastInnerSectionPrev.add(els.subscriptionBq, viewportId);
+					
+					while (els.subscription.first())
+					{
+						els.subscriptionBq.add(els.subscription.first(), viewportId);
+					}
+					
+					els.lastInnerSectionPrev.remove(els.subscription, viewportId);
+				}
+				
+				
+				if (els.hasInnerSection && !els.hasInnerSectionPrev)
 				{
 					me.joinInnerSection(els);
 				}
@@ -95,16 +112,8 @@ Ext.define(
 								}
 							);
 							
-							if (els.lastInnerSectionPrev)
-							{
-								// добавляем элементы в последнюю вложенную секцию из предыдущей секции
-								els.lastInnerSectionPrev.add(els.bq, viewportId);
-							}
-							else
-							{
-								// добавляем элементы в предыдущую секцию
-								els.sectionPrev.add(els.bq, viewportId);
-							}
+							// добавляем элементы в последнюю вложенную секцию из предыдущей секции
+							els.lastInnerSectionPrev.add(els.bq, viewportId);
 							
 							while (els.first.first())
 							{
@@ -115,15 +124,8 @@ Ext.define(
 						}
 						else
 						{
-							if (els.lastInnerSectionPrev && !els.hasInnerSection)
-							{
-								// добавляем элементы в последнюю вложенную секцию из предыдущей секции
-								els.lastInnerSectionPrev.add(els.first, viewportId);
-							}
-							else
-							{
-								els.sectionPrev.add(els.first, viewportId);
-							}
+							// добавляем элементы в последнюю вложенную секцию из предыдущей секции
+							els.lastInnerSectionPrev.add(els.first, viewportId);
 						}
 						
 						els.first = els.section.first();
@@ -179,7 +181,7 @@ Ext.define(
 				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 				
-				if (els.hasInnerSection && !els.lastInnerSectionPrev)
+				if (els.hasInnerSection && !els.hasInnerSectionPrev)
 				{
 					me.unJoinInnerSection(els);
 				}
@@ -211,15 +213,7 @@ Ext.define(
 								}
 								
 								els.next = item.dest.next();
-								
-								if (els.lastInnerSectionPrev)
-								{
-									els.lastInnerSectionPrev.remove(item.dest, viewportId);
-								}
-								else
-								{
-									els.sectionPrev.remove(item.dest, viewportId);
-								}
+								els.lastInnerSectionPrev.remove(item.dest, viewportId);
 							}
 						);
 					}
@@ -234,6 +228,20 @@ Ext.define(
 						els.section.add(els.next, viewportId);
 						els.next = els.buf;
 					}
+				}
+				
+				if (els.subscription)
+				{
+					// восстанавливаем подпись в предыдущей секции
+					
+					els.lastInnerSectionPrev.add(els.subscription, viewportId);
+					
+					while (els.subscriptionBq.first())
+					{
+						els.subscription.add(els.subscriptionBq.first(), viewportId);
+					}
+					
+					els.lastInnerSectionPrev.remove(els.subscriptionBq, viewportId);
 				}
 				
 				// устанавливаем курсор
