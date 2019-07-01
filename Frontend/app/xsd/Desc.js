@@ -280,12 +280,10 @@ attributeFormDefault="unqualified">\
 										<complexType mixed="false">\
 											<attribute name="expected-chars" use="required">\
 												<simpleType>\
-													<restriction base="positiveInteger">\
-														<minInclusive value="1000"/>\
-													</restriction>\
+													<restriction base="nonNegativeInteger"/>\
 												</simpleType>\
 											</attribute>\
-											<attribute name="expectef-frequency" type="positiveInteger"/>\
+											<attribute name="expected-frequency" type="positiveInteger"/>\
 											<attribute name="expected-release" type="dateTime"/>\
 										</complexType>\
 									</element>\
