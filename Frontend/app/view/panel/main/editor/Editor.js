@@ -28,7 +28,8 @@ Ext.define(
 			loadData: 'onLoadData',
 			split: 'onSplit',
 			unsplit: 'onUnsplit',
-			syncContent: 'onSyncContent'
+			syncContent: 'onSyncContent',
+			focusleave: 'onFocusLeave'
 		},
 
 		rootElementName: 'fb3-body',
@@ -73,6 +74,12 @@ Ext.define(
 		 * @property {FBEditor.view.panel.search.replace.Replace} Панель замены.
 		 */
 		replacePanel: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.Range} Выделение в тексте.
+		 */
+		editorRange: null,
 
 		createManager: function ()
 		{
@@ -251,6 +258,26 @@ Ext.define(
 			me.replacePanel = panel;
 			
 			return panel;
+		},
+		
+		/**
+		 * Сохраняет выделение текста.
+		 */
+		saveEditorRange: function ()
+		{
+			var me = this,
+				manager = me.getManager();
+			
+			me.editorRange = manager.getRange();
+		},
+		
+		/**
+		 * Возвращает сохраненное выделение в тексте.
+		 * @return {FBEditor.editor.Range}
+		 */
+		getEditorRange: function ()
+		{
+			return this.editorRange;
 		}
 	}
 );
