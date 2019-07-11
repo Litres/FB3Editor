@@ -71,10 +71,17 @@ Ext.define(
 	     * @property {Number} Object.ch Номер колонки.
 	     */
 	    posCursor: null,
+	
+	    /**
+	     * @private
+	     * @property {Boolean} Активен ли процесс синхронизации xml с текстом.
+	     */
+	    syncProcess: false,
 
         translateText: {
             invalidXml: 'Невалидный XML',
-            invalidXmlMsg: 'Покинуть редактор XML без сохранения всех изменений?'
+            invalidXmlMsg: 'Покинуть редактор XML без сохранения всех изменений?',
+	        invalidXmlMsg2: 'Перейти к редактированию другого элемента без сохранения всех изменений в текущем?'
         },
 
         /**
@@ -154,9 +161,11 @@ Ext.define(
         /**
          * Проверяет и синхронизирует xml с текстом.
          * @resolve {Boolean} true - синхронизация успешна.
+         * @param {Boolean} isXmlPanel Проходит ли синхронизация в панели XML или произошло переключение
+         * на другую панель.
          * @return {Promise}
          */
-        sync: function ()
+        sync: function (isXmlPanel)
         {
             var me = this,
                 promise;
@@ -173,6 +182,15 @@ Ext.define(
                         schema,
                         root,
                         xml;
+                    
+                    if (!el)
+                    {
+                    	resolve(true);
+                    	return;
+                    }
+                    
+                    // устанавливаем флаг процесса синхронизации
+                    me.setSyncProcess(true);
 
                     // получаем текущий xml из редактора
                     xml = proxy.getData();
@@ -197,7 +215,8 @@ Ext.define(
 
                             scopeData = {
                                 resolve: resolve,
-                                fullXml: xml
+                                fullXml: xml,
+	                            isXmlPanel: isXmlPanel
                             };
 
                             // получаем модель для измененного xml
@@ -221,11 +240,12 @@ Ext.define(
                         }
                         catch (e)
                         {
-                            me.errorValidMessage(e, resolve);
+                            me.errorValidMessage(e, resolve, isXmlPanel);
                         }
                     }
                     else
                     {
+	                    me.setSyncProcess(false);
                         resolve(true);
                     }
                 }
@@ -233,6 +253,24 @@ Ext.define(
 
             return promise;
         },
+	
+	    /**
+	     * Устанавливает флаг процесса синхронизации xml с текстом.
+	     * @param {Boolean} sync true - процесс синхронизации активен.
+	     */
+	    setSyncProcess: function (sync)
+	    {
+	    	this.syncProcess = sync;
+	    },
+	
+	    /**
+	     * Активен ли процесс синхронизации.
+	     * @return {Boolean}
+	     */
+	    isSyncProcess: function ()
+	    {
+	    	return this.syncProcess;
+	    },
 
         /**
          * Обновляет дерево навигации по xml.
@@ -487,6 +525,8 @@ Ext.define(
          * @param {Object} resData Данные.
          * @param {Function} resData.resolve Колбэк.
          * @param {Object} resData.response Дополнительные данные проверки xml.
+         * @param {Boolean} resData.isXmlPanel Проходит ли синхронизация в панели XML (true) или произошло переключение
+         * на другую панель (false).
          */
         verifyResult: function (res, resData)
         {
@@ -505,16 +545,20 @@ Ext.define(
                     e = new Error();
                     e.error = response.valid;
 
-                    me.errorValidMessage(e, resData.resolve);
+                    me.errorValidMessage(e, resData.resolve, resData.isXmlPanel);
                 }
                 else
                 {
                     // устанавливаем новый xml
                     managerEditor.setXml(resData.fullXml);
-
-                    // устанавливаем новый контент
-                    managerEditor.updateContent(resData.content);
-
+	
+	                // устанавливаем новый контент
+	                managerEditor.updateContent(resData.content);
+	
+	                managerEditor.updateTree();
+	
+	                me.setSyncProcess(false);
+	                
                     resData.resolve(true);
                 }
             }
@@ -530,18 +574,23 @@ Ext.define(
          * @param {Error} e Объект ошибки.
          * @param {String} e.error Отредактированное сообщение об ошибке.
          * @param {Function} resolve Колбэк.
+         * @param {Boolean} isXmlPanel Проходит ли синхронизация в панели XML или произошло переключение
+         * на другую панель.
          */
-        errorValidMessage: function (e, resolve)
+        errorValidMessage: function (e, resolve, isXmlPanel)
         {
             var me = this,
                 tt = me.translateText,
                 errMsg;
-
-            errMsg = e.error;
+	
+	        me.setSyncProcess(false);
+	
+	        errMsg = e.error;
             errMsg = Ext.String.htmlEncode(errMsg);
             errMsg = errMsg.replace(/\^/g, '');
             errMsg = errMsg.replace(/\n+/g, '<br/>');
-            errMsg = errMsg + '<br/>' + tt.invalidXmlMsg;
+            errMsg += '<br/>';
+	        errMsg += isXmlPanel ? tt.invalidXmlMsg2 : tt.invalidXmlMsg;
 
             Ext.Msg.show(
                 {

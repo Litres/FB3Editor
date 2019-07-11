@@ -1305,15 +1305,18 @@ Ext.define(
 				res = null;
 
 			el = el || me.getContent();
+			
 			if (el.elementId === id)
 			{
 				return el;
 			}
-			Ext.Array.each(
+			
+			Ext.each(
 				el.children,
 				function (item)
 				{
 					res = me.getElementById(id, item);
+					
 					if (res)
 					{
 						return false;

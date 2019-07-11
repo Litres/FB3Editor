@@ -86,7 +86,6 @@ Ext.define(
             me.saveStateNodes();
             treeData = me.getTreeData(data);
             me.store.loadData(treeData);
-           // me.getView().expand(me.store.first());
         },
 
         /**
@@ -246,7 +245,17 @@ Ext.define(
             //console.log('expandElement', el.xmlTreePath, el);
             me.selectPath(el.xmlTreePath, 'elementId');
         },
-
+	
+	    /**
+         * Разворачивает корневой узел.
+	     */
+	    expandRoot: function ()
+        {
+            var me = this;
+            
+	        me.getView().expand(me.store.first());
+        },
+        
         /**
          * Устанавливает фокус на корневом узле дерева навигации по тексту.
          */
