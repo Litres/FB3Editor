@@ -19,11 +19,14 @@ Ext.define(
         onItemClick: function (nodeView, record)
         {
             var me = this;
-
-            me.callParent(arguments);
-
-            // показываем выбранный элемент в редакторе xml
-            me.setFocusElement(record);
+            
+            if (!nodeView.isSelected(record))
+            {
+	            // показываем выбранный элемент в редакторе xml
+	            me.setFocusElement(record);
+            }
+	
+	        me.callParent(arguments);
         },
 
         /**
@@ -57,12 +60,16 @@ Ext.define(
                 view = me.getView(),
                 data = record.getData(),
                 managerEditor = FBEditor.getEditorManager(),
+                promise,
                 managerXml,
                 el;
-
-            if (!view.isActivePanel())
+	
+	        managerXml = managerEditor.getManagerXml();
+	        //console.log('managerXml.isSyncProcess()', managerXml.isSyncProcess());
+	        
+	        if (!view.isActivePanel() || managerXml.isSyncProcess())
             {
-                // ждем рендеринга панели
+                // ждем рендеринга панели или окончения процесса синхронизации xml с текстом
                 Ext.defer(
                     function ()
                     {
@@ -73,12 +80,29 @@ Ext.define(
             }
             else
             {
-                // получаем элемент по его id
-                el = managerEditor.getElementById(data.elementId);
+	            // получаем элемент по его id
+	            el = managerEditor.getElementById(data.elementId);
 
-                // загружаем данные в редактор xml
-                managerXml = managerEditor.getManagerXml();
-                managerXml.loadData(el);
+	            // проверяем и синхронизируем xml c моделью
+	            promise = managerXml.sync(true);
+	            
+	            promise.then(
+	                function (res)
+                    {
+                        if (res)
+                        {
+	                        // загружаем данные в редактор xml
+	                        managerXml.loadData(el);
+	                        
+	                        // разворачиваем корневой узел
+	                        view.expandRoot();
+                        }
+                    },
+                    function ()
+                    {
+                        // reject
+                    }
+                );
             }
         }
     }
