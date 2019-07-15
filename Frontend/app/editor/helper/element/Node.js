@@ -397,13 +397,40 @@ Ext.define(
 		scrollIntoView: function ()
 		{
 			var me = this,
-				el = me.el;
+				el = me.el,
+				root = el.getRoot(),
+				helper = root.getNodeHelper();
 			
 			Ext.Object.each(
 				el.nodes,
 				function (viewportId, node)
 				{
-					node.scrollIntoView(/*{block: 'center'}*/);
+					var rootNode,
+						scrollTop,
+						y,
+						top,
+						rootTop;
+					
+					// узел корневого элемента
+					rootNode = helper.getNode(viewportId);
+					
+					// вертикальная позиция скролла
+					scrollTop = Ext.fly(rootNode).getScrollTop();
+					
+					// вертикальная позиция корневого элемента относительно окна.
+					y = Ext.fly(rootNode).getY();
+					
+					// текущая вертикальная позиция элемента относительно корневого элемента
+					top = Ext.fly(node).getRegion().top;
+					
+					// вертикальная позиция элемента относительно корневого элемента с учетом позиции
+					// вертикального скролла
+					rootTop = scrollTop + top - y;
+					
+					//console.log(scrollTop, top, y, rootTop);
+					
+					// устанавливаем новую позицию скролла
+					Ext.fly(rootNode).setScrollTop(rootTop);
 				}
 			);
 		},
