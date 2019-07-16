@@ -48,6 +48,9 @@ Ext.define(
 					xtype: 'menuseparator'
 				},
 				{
+					xtype: 'contextmenu-treenavigation-body-item-editelement'
+				},
+				{
 					xtype: 'contextmenu-treenavigation-body-item-editsource'
 				}
 			];

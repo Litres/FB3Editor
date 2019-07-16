@@ -10,6 +10,7 @@ Ext.define(
 		extend: 'FBEditor.view.contextmenu.ContextMenu',
 		requires: [
 			'FBEditor.view.panel.main.editor.contextmenu.item.convert.Convert',
+			'FBEditor.view.panel.main.editor.contextmenu.item.editelement.EditElement',
 			'FBEditor.view.panel.main.editor.contextmenu.item.editsource.EditSource',
 			'FBEditor.view.panel.main.editor.contextmenu.item.split.Split'
 		],
@@ -47,6 +48,9 @@ Ext.define(
 				},
 				{
 					xtype: 'menuseparator'
+				},
+				{
+					xtype: 'contextmenu-main-editor-item-editelement'
 				},
 				{
 					xtype: 'contextmenu-main-editor-item-editsource'
