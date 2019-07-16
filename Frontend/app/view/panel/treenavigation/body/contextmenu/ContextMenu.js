@@ -9,6 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.contextmenu.ContextMenu',
 		requires: [
+			'FBEditor.view.panel.treenavigation.body.contextmenu.item.editelement.EditElement',
 			'FBEditor.view.panel.treenavigation.body.contextmenu.item.editsource.EditSource'
 		],
 		
@@ -50,6 +51,9 @@ Ext.define(
 			var items;
 			
 			items = [
+				{
+					xtype: 'contextmenu-treenavigation-body-item-editelement'
+				},
 				{
 					xtype: 'contextmenu-treenavigation-body-item-editsource'
 				}
