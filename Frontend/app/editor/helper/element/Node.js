@@ -19,6 +19,12 @@ Ext.define(
 		 * @property {FBEditor.editor.element.AbstractElement} Элемент.
 		 */
 		el: null,
+		
+		/**
+		 * @private
+		 * @property {String} Хранит CSS-стиль узла, который был дйствующим перед тем, как его скрыли.
+		 */
+		styleDisplay: '',
 
 		constructor: function (el)
 		{
@@ -431,6 +437,43 @@ Ext.define(
 					
 					// устанавливаем новую позицию скролла
 					Ext.fly(rootNode).setScrollTop(rootTop);
+				}
+			);
+		},
+		
+		/**
+		 * Скрывает узел.
+		 */
+		hide: function ()
+		{
+			var me = this,
+				el = me.el;
+			
+			Ext.Object.each(
+				el.nodes,
+				function (viewportId, node)
+				{
+					// сохраняем свойство видимости узла
+					me.styleDisplay = node.style.display;
+					
+					node.style.display = 'none';
+				}
+			);
+		},
+		
+		/**
+		 * Показывает узел.
+		 */
+		show: function ()
+		{
+			var me = this,
+				el = me.el;
+			
+			Ext.Object.each(
+				el.nodes,
+				function (viewportId, node)
+				{
+					node.style.display = me.styleDisplay;
 				}
 			);
 		},
