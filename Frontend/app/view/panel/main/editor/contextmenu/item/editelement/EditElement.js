@@ -9,7 +9,9 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.editor.contextmenu.item.Item',
 		requires: [
-			'FBEditor.view.panel.main.editor.contextmenu.item.editelement.EditElementController'
+			'FBEditor.view.panel.main.editor.contextmenu.item.editelement.EditElementController',
+			'FBEditor.view.panel.main.editor.contextmenu.item.editelement.EditElementController',
+			'FBEditor.command.EditElement'
 		],
 		
 		xtype: 'contextmenu-main-editor-item-editelement',

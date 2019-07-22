@@ -15,11 +15,16 @@ Ext.define(
 		{
 			var me = this,
 				view = me.getView(),
+				cmd,
 				el;
 			
 			el = view.getElement();
-			console.log('edit el', el);
-			alert('Данный функционал находится в разработке.')
+			cmd = Ext.create('FBEditor.command.EditElement', {el: el});
+			
+			if (cmd.execute())
+			{
+				FBEditor.HistoryCommand.add(cmd);
+			}
 		}
 	}
 );
