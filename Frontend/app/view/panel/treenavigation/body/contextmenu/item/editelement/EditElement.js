@@ -9,7 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.treenavigation.body.contextmenu.item.Item',
 		requires: [
-			'FBEditor.view.panel.treenavigation.body.contextmenu.item.editelement.EditElementController'
+			'FBEditor.view.panel.treenavigation.body.contextmenu.item.editelement.EditElementController',
+			'FBEditor.command.EditElement'
 		],
 		
 		xtype: 'contextmenu-treenavigation-body-item-editelement',
