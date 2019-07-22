@@ -67,9 +67,12 @@ Ext.define(
         {
             var me = this,
                 cmdName = me.cmdName,
+	            manager = FBEditor.getEditorManager(),
 				managerXml = FBEditor.view.panel.main.xml.Manager.getInstance(),
 				promise,
                 cmd;
+            
+            manager.resetEditElement();
 
             // если панель не открыта
             if (!me.isActivePanel())

@@ -40,7 +40,10 @@ Ext.define(
 			// получаем элемент по его id
 			el = manager.getElementById(data.elementId);
 
-			view.createContextMenu(el, evt);
+			if (!el.isRoot)
+			{
+				view.createContextMenu(el, evt);
+			}
 		},
 
 		/**

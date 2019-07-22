@@ -117,6 +117,11 @@ Ext.define(
 		 * @property {String} Полный путь элемента в дереве навигации.
 		 */
 		treePath: '',
+		
+		/**
+		 * @property {Boolean} Скрыто ли отображение элемента.
+		 */
+		isHide: false,
 
         /**
 		 * @private
@@ -207,9 +212,12 @@ Ext.define(
 		equal: function (el)
 		{
 			var me = this,
-				equal;
-
-			equal = el.elementId === me.elementId;
+				equal = false;
+			
+			if (el)
+			{
+				equal = el.elementId === me.elementId;
+			}
 
 			return equal;
 		},
@@ -588,6 +596,32 @@ Ext.define(
 				scope,
 				reverse
 			);
+		},
+		
+		/**
+		 * Проверяет содержится ли текущий элемент в переданом массиве.
+		 * @param {FBEditor.editor.element.AbstractElement[]} arr Проверяемый массив элементов.
+		 * @return {Boolean} true - элемент содержится в переданом массиве.
+		 */
+		contains: function (arr)
+		{
+			var me = this,
+				res = false;
+			
+			Ext.each(
+				arr,
+				function (item)
+				{
+					if (me.equal(item))
+					{
+						res = true;
+						
+						return false;
+					}
+				}
+			);
+			
+			return res;
 		},
 
 		/**
@@ -1649,20 +1683,10 @@ Ext.define(
 		hide: function ()
 		{
 			var me = this,
-				nodes = me.nodes;
+				helper = me.getNodeHelper();
 
 			me.isHide = true;
-
-			Ext.Object.each(
-				nodes,
-				function (key, node)
-				{
-					// сохраняем свойство видимости узла
-					me.styleDisplay = node.style.display;
-
-					node.style.display = 'none';
-				}
-			);
+			helper.hide();
 		},
 
 		/**
@@ -1672,17 +1696,10 @@ Ext.define(
 		show: function ()
 		{
 			var me = this,
-				nodes = me.nodes;
+				helper = me.getNodeHelper();
 
 			me.isHide = false;
-
-			Ext.Object.each(
-				nodes,
-				function (key, node)
-				{
-					node.style.display = me.styleDisplay;
-				}
-			);
+			helper.show();
 		},
 
 		/**

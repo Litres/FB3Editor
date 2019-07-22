@@ -32,6 +32,12 @@ Ext.define(
          * @property {FBEditor.view.panel.main.xml.Manager} Менеджер редактора xml.
          */
         managerXml: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.element.AbstractElement} Редактируемый элемент.
+		 */
+		editElement: null,
 
 		/**
 		 * @private
@@ -75,6 +81,34 @@ Ext.define(
 			};
 			
 			Ext.create('FBEditor.view.panel.main.editor.contextmenu.Menu', data);
+		},
+		
+		_getNode: function (viewportId)
+		{
+			var me = this,
+				content = me.getContent(),
+				editElement = me.getEditElement(),
+				helper,
+				node;
+			
+			me.setSuspendEvent(true);
+			
+			//node = content.getNode(viewportId);
+			
+			if (!editElement)
+			{
+				node = content.getNode(viewportId);
+			}
+			else
+			{
+				// отдельный элемент
+				helper = editElement.getNodeHelper();
+				node = helper.getNode(viewportId);
+			}
+			
+			me.setSuspendEvent(false);
+			
+			return node;
 		},
 
 		availableSyncButtons: function ()
@@ -171,6 +205,103 @@ Ext.define(
 		getManagerXml: function ()
 		{
 			return this.managerXml;
+		},
+		
+		/**
+		 * Возвращает редактируемый элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getEditElement: function ()
+		{
+			return this.editElement;
+		},
+		
+		/**
+		 * Устанавливает редактор в режим редактирования отдельного элемента.
+		 * @param {FBEditor.editor.element.AbstractElement} el Редактируемый элемент.
+		 */
+		setEditElement: function (el)
+		{
+			var me = this,
+				parents = [],
+				parent;
+			
+			/**
+			 * Перебирает дочерние элементы переданного элемента.
+			 * @param {FBEditor.editor.element.AbstractElement} child Элемент
+			 */
+			function eachChildren (child)
+			{
+				child.each(
+					function (item)
+					{
+						var parent = item.getParent();
+						
+						if (!parent.hideForEditElement)
+						{
+							if (!item.contains(parents) && !item.isHide)
+							{
+								// скрываем элемент
+								item.hide();
+								
+								// ставим маркер на элементе, что элемент был скрыт временно
+								// для редактирования отдельного элемента
+								item.hideForEditElement = true;
+							}
+							else if (!item.equal(el))
+							{
+								// перебираем дочерние элементы
+								eachChildren(item);
+							}
+						}
+					}
+				);
+			}
+			
+			// редактируемый элемент
+			me.editElement = el;
+			
+			parents.push(el);
+			parent = el.getParent();
+			
+			while (parent)
+			{
+				// список всех родительских элементов
+				parents.push(parent);
+				parent = parent.getParent();
+			}
+			
+			// перебираем все элементы
+			eachChildren(el.getRoot());
+		},
+		
+		/**
+		 * Сбрасывает режим отдельного редактирования элемента.
+		 */
+		resetEditElement: function ()
+		{
+			var me = this,
+				root = me.getContent();
+			
+			if (!me.getEditElement())
+			{
+				return;
+			}
+
+			me.editElement = null;
+			
+			root.eachAll(
+				function (item)
+				{
+					if (item.hideForEditElement)
+					{
+						delete item.hideForEditElement;
+						
+						// показываем элемент
+						item.show();
+					}
+				}
+			);
 		},
 		
 		/**
