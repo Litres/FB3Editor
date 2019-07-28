@@ -81,7 +81,8 @@ Ext.define(
 											xtype: 'desc-field-time-required',
 											name: 'document-info-created-time',
 											value: new Date(),
-											format: 'H:i:s',
+											format: 'H:i:sP',
+											altFormats: 'H:i:s|g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H|gi a|hi a|giA|hiA|gi A|hi A',
 											fieldLabel: me.translateText.time
 										}
 									]
@@ -139,7 +140,8 @@ Ext.define(
 											xtype: 'displayfield',
 											//allowBlank: false,
 											name: 'document-info-updated-time',
-											format: 'H:i:s',
+											format: 'H:i:sP',
+											altFormats: 'H:i:s|g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H|gi a|hi a|giA|hiA|gi A|hi A',
 											//disabled: true,
 											fieldLabel: me.translateText.time/*,
 											cls: 'field-required'*/
