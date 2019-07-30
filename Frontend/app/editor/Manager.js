@@ -151,6 +151,12 @@ Ext.define(
 		 * @property {String[]} Список всех айди сносок.
 		 */
 		notesId: null,
+		
+		/**
+		 * @private
+		 * @property {Boolean} Флаг изменения тела книги после сохранения. true - изменения внесены.
+		 */
+		changed: false,
 
 		/**
 		 * @param {FBEditor.editor.view.Editor} editor Редактор текста.
@@ -361,6 +367,24 @@ Ext.define(
 		isSuspendCmd: function ()
 		{
 			return this.suspendCmd;
+		},
+		
+		/**
+		 * Уставнавливает флаг изменения тела книги после сохранения.
+		 * @param {Boolean} change true - внесены изменения.
+		 */
+		setChanged: function (change)
+		{
+			this.changed = change;
+		},
+		
+		/**
+		 * Определяет внесены ли изменения в тело книги после сохранения.
+		 * @return {Boolean}
+		 */
+		isChanged: function ()
+		{
+			return this.changed;
 		},
 
 		/**

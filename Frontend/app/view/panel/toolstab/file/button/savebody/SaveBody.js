@@ -22,19 +22,23 @@ Ext.define(
 		},
 
 		disabled: true,
-		iconCls: 'fa fa-cloud-download',
 		tooltipType: 'title',
 
 		translateText: {
-			save: 'Сохранить тело (хаб)'
+			save: 'Сохранить тело (хаб)',
+			onlySave: 'Сохранить'
 		},
 
 		initComponent: function ()
 		{
-			var me = this;
-
-			me.text = me.translateText.save;
-			me.tooltip = me.translateText.save;
+			var me = this,
+				bridge = FBEditor.getBridgeWindow(),
+				routeManager = bridge.FBEditor.route.Manager,
+				text;
+			
+			text = routeManager.isSetParam('only_text') ? me.translateText.onlySave : me.translateText.save;
+			me.text = text;
+			me.tooltip = text;
 
 			me.callParent(arguments);
 		},

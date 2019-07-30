@@ -18,12 +18,10 @@ Ext.define(
 		{
 			var me = this,
 				routeManager = FBEditor.route.Manager,
-				params,
 				art;
 
 			me.callParent(arguments);
-			params = routeManager.getParams();
-			art = params.body_art;
+			art = routeManager.getParam('body_art');
 
 			if (art)
 			{

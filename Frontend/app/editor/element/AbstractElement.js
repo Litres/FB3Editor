@@ -960,6 +960,7 @@ Ext.define(
 				newNode;
 
 			manager.setSuspendEvent(true);
+			manager.setChanged(true);
 
 			Ext.Object.each(
 				me.nodes,
