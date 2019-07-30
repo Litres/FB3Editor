@@ -242,13 +242,39 @@ Ext.define(
 		 */
 		init: function ()
 		{
-			var me = this;
+			var me = this,
+				routeManager = FBEditor.route.Manager;
 			
 			// загрузчик
 			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
 			
 			// менеджер редактора xml
 			me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
+			
+			// инициализируем список задач
+			me.task = {
+				// задача для автосохранения
+				autoSave: {
+					run: function ()
+					{
+						me.saveToUrl()
+					},
+					interval: me.saveTime * 1000
+				}
+			};
+			
+			if (routeManager.isSetParam('only_text') && me.getArtId())
+			{
+				// автосохранение
+				Ext.defer(
+					function ()
+					{
+						me.autoSave(true);
+					},
+					me.saveTime * 1000,
+					me
+				);
+			}
 		},
 		
 		/**

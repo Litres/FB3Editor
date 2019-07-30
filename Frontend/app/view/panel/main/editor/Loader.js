@@ -91,7 +91,7 @@ Ext.define(
 		{
 			var me = this,
 				promise;
-
+			
 			promise = new Promise(
 				function (resolve, reject)
 				{
