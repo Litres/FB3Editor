@@ -300,11 +300,16 @@ Ext.define(
 		{
 			var me = this,
 				factory = me.getFactory(),
+				routeManager = FBEditor.route.Manager,
 				root;
 
 			root = factory.createElement(name);
-			root.createScaffold();
 			me.content = root;
+			
+			if (!routeManager.isSetParam('body_art'))
+			{
+				root.createScaffold();
+			}
 
 			return root;
 		},
