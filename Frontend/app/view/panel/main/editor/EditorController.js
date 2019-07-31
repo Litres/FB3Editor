@@ -94,6 +94,18 @@ Ext.define(
 					}
 				}
 			);
+		},
+		
+		/**
+		 * Вызывается когда фокус покидает редактор тела книги.
+		 */
+		onFocusLeave: function ()
+		{
+			var me = this,
+				view = me.getView();
+			
+			// сохраняем выделение в тексте
+			view.saveEditorRange();
 		}
 	}
 );

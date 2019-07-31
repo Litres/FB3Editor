@@ -17,6 +17,10 @@ Ext.define(
 		id:'panel-toolstab-main',
 		xtype: 'panel-toolstab-main',
 		controller: 'panel.toolstab.main',
+		
+		listeners: {
+			activate: 'onActivate'
+		},
 
 		title: 'Форматирование',
 
