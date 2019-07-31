@@ -31,6 +31,10 @@ Ext.define(
 
 		syncContentId: 'main-editor',
         cmdName: 'FBEditor.command.OpenBody',
+		
+		translateText: {
+			loadText: 'Загрузить текст'
+		},
 
 		initComponent: function ()
 		{
@@ -43,15 +47,41 @@ Ext.define(
 		afterRender: function ()
 		{
 			var me = this,
-				manager,
+				tt = me.translateText,
+				bridgeWindow = FBEditor.getBridgeWindow(),
+				descManager = bridgeWindow.FBEditor.desc.Manager,
+				manager = FBEditor.getEditorManager(),
+				rootData,
 				data;
 
-			manager = FBEditor.getEditorManager();
 			data = manager.getContent();
 
 			if (data)
 			{
-				me.loadData(data);
+				if (descManager.isLoadUrl() && !manager.isLoadUrl())
+				{
+					// необходимо загрузить текст
+					
+					rootData = me.store.getRoot().data;
+					
+					me.store.loadData(
+						[
+							{
+								root: true,
+								text: tt.loadText,
+								expandable: rootData.expandable,
+								icon: rootData.icon,
+								cls: rootData.cls,
+								iconCls: rootData.iconCls
+							}
+						]
+					);
+				}
+				else
+				{
+					// дерево навигации по тексту
+					me.loadData(data);
+				}
 			}
 
 			me.callParent(arguments);

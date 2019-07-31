@@ -47,14 +47,17 @@ Ext.define(
         afterRender: function ()
         {
             var me = this,
+	            bridgeWindow = FBEditor.getBridgeWindow(),
+	            descManager = bridgeWindow.FBEditor.desc.Manager,
                 manager,
                 data;
 
             manager = FBEditor.getEditorManager();
             data = manager.getContent();
 
-            if (data)
+            if (data && (manager.isLoadUrl() || !descManager.isLoadUrl() && !manager.isLoadUrl()))
             {
+                // дерево должно отображдаться только при уже загруженом тексте
                 me.loadData(data);
             }
 
