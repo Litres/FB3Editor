@@ -19,12 +19,14 @@ Ext.define(
 				btn = me.getView(),
 				manager = btn.getEditorManager(),
 				root,
+				first,
 				name,
 				disable;
 
 			root = manager.getContent();
 			name = btn.elementName;
-			disable = root.children[0].hisName(name);
+			first = root.first();
+			disable = first ? first.hisName(name) : true;
 
 			if (!disable)
 			{
