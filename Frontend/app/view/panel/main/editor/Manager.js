@@ -94,19 +94,16 @@ Ext.define(
 					interval: me.saveTime * 1000
 				}
 			};
-            
-            if (routeManager.isSetParam('only_text'))
-            {
-            	// автосохранение
-	            Ext.defer(
-	            	function ()
-		            {
-			            me.autoSave(true);
-		            },
-		            me.saveTime * 1000,
-		            me
-	            )
-            }
+			
+			// автосохранение
+			Ext.defer(
+				function ()
+				{
+					me.autoSave(true);
+				},
+				me.saveTime * 1000,
+				me
+			);
 		},
 
 		/**
@@ -263,18 +260,15 @@ Ext.define(
 				}
 			};
 			
-			if (routeManager.isSetParam('only_text') && me.getArtId())
-			{
-				// автосохранение
-				Ext.defer(
-					function ()
-					{
-						me.autoSave(true);
-					},
-					me.saveTime * 1000,
-					me
-				);
-			}
+			// автосохранение
+			Ext.defer(
+				function ()
+				{
+					me.autoSave(true);
+				},
+				me.saveTime * 1000,
+				me
+			);
 		},
 		
 		/**

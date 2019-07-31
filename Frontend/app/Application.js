@@ -271,7 +271,7 @@ Ext.define(
 				routeManager = FBEditor.route.Manager;
 				editorManager = FBEditor.getEditorManager();
 				
-				if (routeManager.isSetParam('only_text') && editorManager.isChanged() && editorManager.getArtId())
+				if (editorManager.isChanged() && editorManager.getArtId())
 				{
 					// сохраняем тело книги на хабе
 					editorManager.saveToUrl();
