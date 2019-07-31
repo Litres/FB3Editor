@@ -69,6 +69,55 @@ Ext.define(
 			saving: 'Сохранение текста...'
 		},
 
+		/**
+		 * Инициализирует менеджер.
+		 */
+		init: function ()
+		{
+			var me = this,
+				routeManager = FBEditor.route.Manager;
+
+			// загрузчик
+			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
+
+            // менеджер редактора xml
+            me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
+            
+            // инициализируем список задач
+			me.task = {
+				// задача для автосохранения
+				autoSave: {
+					run: function ()
+					{
+						me.saveToUrl()
+					},
+					interval: me.saveTime * 1000
+				}
+			};
+			
+			// автосохранение
+			Ext.defer(
+				function ()
+				{
+					me.autoSave(true);
+				},
+				me.saveTime * 1000,
+				me
+			);
+		},
+
+		/**
+		 * Сбрасывает редактор тела книги.
+		 */
+		reset: function ()
+		{
+			var me = this;
+
+			me.resetFocus();
+			me.loader.reset();
+			me._availableSyncButtons = null;
+		},
+
 		createContent: function ()
 		{
 			var me = this;
@@ -211,18 +260,15 @@ Ext.define(
 				}
 			};
 			
-			if (routeManager.isSetParam('only_text') && me.getArtId())
-			{
-				// автосохранение
-				Ext.defer(
-					function ()
-					{
-						me.autoSave(true);
-					},
-					me.saveTime * 1000,
-					me
-				);
-			}
+			// автосохранение
+			Ext.defer(
+				function ()
+				{
+					me.autoSave(true);
+				},
+				me.saveTime * 1000,
+				me
+			);
 		},
 		
 		/**
