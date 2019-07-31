@@ -13,6 +13,16 @@ Ext.define(
 			'FBEditor.view.panel.main.editor.button.ButtonController'
 		],
 
-		controller: 'main.editor.button'
+		controller: 'main.editor.button',
+		
+		afterRender: function ()
+		{
+			var me = this;
+			
+			me.callParent(arguments);
+			
+			// синхронизируем кнопку
+			me.fireEvent('sync');
+		}
 	}
 );
