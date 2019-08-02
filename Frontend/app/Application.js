@@ -56,6 +56,7 @@ Ext.define(
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
 			'FBEditor.scroll.Scroll',
+			'FBEditor.state.Manager',
 			'FBEditor.util.Ajax',
             'FBEditor.util.ClipboardData',
 			'FBEditor.util.Diff',
@@ -162,36 +163,20 @@ Ext.define(
 			};
 
 			// закрытие/обновление окна
-			window.onbeforeunload = function ()
-			{
-				me.onbeforeunload(me);
-			};
-
-			window.onfocus = function ()
-			{
-				me.onfocus();
-			};
-
-			// вебворкеры
-			FBEditor.webworker.Manager.init();
-
+			window.addEventListener('beforeunload', function (evt) {
+				return me.onbeforeunload(me, evt);
+			});
+			
+			// установка фокуса
+			window.addEventListener('focus', function (evt) {
+				return me.onfocus();
+			});
+			
 			// хранилище состояний компонентов
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
-
-			// всплывающие подсказки
-			//Ext.tip.QuickTipManager.init();
-
-			// глобальная история команд
-			FBEditor.command.HistoryCommand.init();
-
-			// роуты
-			FBEditor.route.Manager.init();
-
-			// инициализируем менеджер ресурсов
-			FBEditor.resource.Manager.init();
-
-            // инициализируем менеджер горячих клавиш
-            FBEditor.hotkeys.Manager.init();
+			
+			// инициализируем все необходимые менеджеры
+			me.initManagers();
 		},
 
 	    launch: function ()
@@ -268,6 +253,32 @@ Ext.define(
 			{
 				//
 			}
+		},
+		
+		/**
+		 * Инициализирует все необходимые менеджеры.
+		 */
+		initManagers: function ()
+		{
+			var managers;
+			
+			// список всех менеджеров, которые будут инициализированы по порядку
+			managers = [
+				FBEditor.webworker.Manager,
+				FBEditor.state.Manager,
+				FBEditor.command.HistoryCommand,
+				FBEditor.route.Manager,
+				FBEditor.resource.Manager,
+				FBEditor.hotkeys.Manager
+			];
+			
+			Ext.each(
+				managers,
+				function (manager)
+				{
+					manager.init();
+				}
+			);
 		},
 
         /**

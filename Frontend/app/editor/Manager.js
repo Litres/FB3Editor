@@ -12,6 +12,7 @@ Ext.define(
 			'FBEditor.editor.Factory',
 			'FBEditor.editor.History',
 			'FBEditor.editor.Range',
+			'FBEditor.editor.State',
 			'FBEditor.editor.overlay.Overlay',
 			'FBEditor.editor.schema.Schema',
 			'FBEditor.editor.search.Search',
@@ -90,6 +91,12 @@ Ext.define(
 		 * @property {FBEditor.editor.search.Search} Поиск по тексту.
 		 */
 		search: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.state.InterfaceState} Состояние редактора.
+		 */
+		state: null,
 
 		/**
 		 * @private
@@ -150,6 +157,9 @@ Ext.define(
 
 			// связь с редактором
 			me.editor = editor;
+			
+			// создаем состояние
+			me.createState();
 
 			// создаем историю
 			me.history = Ext.create('FBEditor.editor.History');
@@ -163,6 +173,14 @@ Ext.define(
 			// список кнопок с горячими клавишами
 			me.addHotkeysButton('panel-toolstab-button-find');
 			me.addHotkeysButton('panel-toolstab-button-replace');
+		},
+		
+		/**
+		 * Создает состояние.
+		 */
+		createState: function ()
+		{
+			this.state = Ext.create('FBEditor.editor.State');
 		},
 
 		/**
@@ -402,6 +420,15 @@ Ext.define(
 		getSearch: function ()
 		{
 			return this.search;
+		},
+		
+		/**
+		 * Возвращает состояние.
+		 * @return {FBEditor.state.InterfaceState}
+		 */
+		getState: function ()
+		{
+			return this.state;
 		},
 		
 		/**
