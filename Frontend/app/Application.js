@@ -60,6 +60,7 @@ Ext.define(
 			'FBEditor.resource.Manager',
 			'FBEditor.route.Manager',
 			'FBEditor.scroll.Scroll',
+			'FBEditor.state.Manager',
 			'FBEditor.util.Ajax',
             'FBEditor.util.ClipboardData',
 			'FBEditor.util.Diff',
@@ -174,28 +175,13 @@ Ext.define(
 			window.addEventListener('focus', function (evt) {
 				return me.onfocus();
 			});
-
-			// вебворкеры
-			FBEditor.webworker.Manager.init();
-
+			
 			// хранилище состояний компонентов
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider({prefix: me.getName() + '-'}));
+			
+			// инициализируем все необходимые менеджеры
+			me.initManagers();
 
-			// всплывающие подсказки
-			//Ext.tip.QuickTipManager.init();
-
-			// глобальная история команд
-			FBEditor.command.HistoryCommand.init();
-
-			// роуты
-			FBEditor.route.Manager.init();
-
-			// инициализируем менеджер ресурсов
-			FBEditor.resource.Manager.init();
-
-            // инициализируем менеджер горячих клавиш
-            FBEditor.hotkeys.Manager.init();
-            
 			// получаем список токенов csrf и определяем доступность хаба
 			me.initCsrf();
 		},
@@ -292,6 +278,32 @@ Ext.define(
 			{
 				//
 			}
+		},
+		
+		/**
+		 * Инициализирует все необходимые менеджеры.
+		 */
+		initManagers: function ()
+		{
+			var managers;
+			
+			// список всех менеджеров, которые будут инициализированы по порядку
+			managers = [
+				FBEditor.webworker.Manager,
+				FBEditor.state.Manager,
+				FBEditor.command.HistoryCommand,
+				FBEditor.route.Manager,
+				FBEditor.resource.Manager,
+				FBEditor.hotkeys.Manager
+			];
+			
+			Ext.each(
+				managers,
+				function (manager)
+				{
+					manager.init();
+				}
+			);
 		},
 
 		/**

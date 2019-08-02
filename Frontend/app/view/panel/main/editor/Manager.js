@@ -11,6 +11,7 @@ Ext.define(
 		requires: [
 			'FBEditor.view.panel.main.editor.Loader',
 			'FBEditor.view.panel.main.editor.contextmenu.Menu',
+			'FBEditor.view.panel.main.editor.State',
             'FBEditor.view.panel.main.xml.Manager'
 		],
 
@@ -74,8 +75,7 @@ Ext.define(
 		 */
 		init: function ()
 		{
-			var me = this,
-				routeManager = FBEditor.route.Manager;
+			var me = this;
 
 			// загрузчик
 			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
@@ -95,15 +95,18 @@ Ext.define(
 				}
 			};
 			
-			// автосохранение
-			Ext.defer(
-				function ()
-				{
-					me.autoSave(true);
-				},
-				me.saveTime * 1000,
-				me
-			);
+			if (me.getArtId())
+			{
+				// автосохранение
+				Ext.defer(
+					function ()
+					{
+						me.autoSave(true);
+					},
+					me.saveTime * 1000,
+					me
+				);
+			}
 		},
 
 		/**
@@ -128,6 +131,11 @@ Ext.define(
 			me.updateTree();
 		},
 		
+		createState: function ()
+		{
+			this.state = Ext.create('FBEditor.view.panel.main.editor.State');
+		},
+		
 		createContextMenu: function (el, evt)
 		{
 			var me = this,
@@ -145,34 +153,6 @@ Ext.define(
 			Ext.create('FBEditor.view.panel.main.editor.contextmenu.Menu', data);
 		},
 		
-		_getNode: function (viewportId)
-		{
-			var me = this,
-				content = me.getContent(),
-				editElement = me.getEditElement(),
-				helper,
-				node;
-			
-			me.setSuspendEvent(true);
-			
-			//node = content.getNode(viewportId);
-			
-			if (!editElement)
-			{
-				node = content.getNode(viewportId);
-			}
-			else
-			{
-				// отдельный элемент
-				helper = editElement.getNodeHelper();
-				node = helper.getNode(viewportId);
-			}
-			
-			me.setSuspendEvent(false);
-			
-			return node;
-		},
-
 		availableSyncButtons: function ()
 		{
 			var me = this,
@@ -235,55 +215,6 @@ Ext.define(
 		},
 		
 		/**
-		 * Инициализирует менеджер.
-		 */
-		init: function ()
-		{
-			var me = this,
-				routeManager = FBEditor.route.Manager;
-			
-			// загрузчик
-			me.loader = Ext.create('FBEditor.view.panel.main.editor.Loader', me);
-			
-			// менеджер редактора xml
-			me.managerXml = me.managerXml || Ext.create('FBEditor.view.panel.main.xml.Manager', me);
-			
-			// инициализируем список задач
-			me.task = {
-				// задача для автосохранения
-				autoSave: {
-					run: function ()
-					{
-						me.saveToUrl()
-					},
-					interval: me.saveTime * 1000
-				}
-			};
-			
-			// автосохранение
-			Ext.defer(
-				function ()
-				{
-					me.autoSave(true);
-				},
-				me.saveTime * 1000,
-				me
-			);
-		},
-		
-		/**
-		 * Сбрасывает редактор тела книги.
-		 */
-		reset: function ()
-		{
-			var me = this;
-			
-			me.resetFocus();
-			me.loader.reset();
-			me._availableSyncButtons = null;
-		},
-		
-		/**
 		 * Возвращает менеджер редактора xml.
 		 * @return {FBEditor.view.panel.main.xml.Manager}
 		 */
@@ -308,6 +239,7 @@ Ext.define(
 		setEditElement: function (el)
 		{
 			var me = this,
+				state = me.getState(),
 				parents = [],
 				parent;
 			
@@ -343,15 +275,19 @@ Ext.define(
 				);
 			}
 			
+			// запоминаем отдельно редактируемый элемент
+			state.setEditElement(el);
+			
 			// редактируемый элемент
 			me.editElement = el;
 			
+			// список всех родительских элементов
 			parents.push(el);
+			
 			parent = el.getParent();
 			
 			while (parent)
 			{
-				// список всех родительских элементов
 				parents.push(parent);
 				parent = parent.getParent();
 			}
