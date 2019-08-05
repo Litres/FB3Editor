@@ -26,24 +26,28 @@ Ext.define(
 		setItem: function (name, value)
 		{
 			var me = this,
-				storage = me.getStorage();
+				storage = me.getStorage(),
+				val;
 			
 			name = me.getItemName(name);
+			val = JSON.stringify(value);
 			console.log('set', name, value);
-			storage.setItem(name, value);
+			storage.setItem(name, val);
 		},
 		
 		getItem: function (name)
 		{
 			var me = this,
 				storage = me.getStorage(),
-				item;
+				item,
+				val;
 			
 			name = me.getItemName(name);
 			item = storage.getItem(name);
-			console.log('get', name, item);
+			val = JSON.parse(item);
+			console.log('get', name, item, val);
 			
-			return item;
+			return val;
 		},
 		
 		removeItem: function (name)
