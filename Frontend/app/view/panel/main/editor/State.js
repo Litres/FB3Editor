@@ -9,7 +9,15 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.State',
 		
-		ITEM_BODY_EDIT_ELEMENT_PATH: 'body-edit-element-path',
+		/**
+		 * @const {String} Отдельно редактируемый элемент.
+		 */
+		ITEM_BODY_EDIT_ELEMENT: 'body-edit-element',
+		
+		/**
+		 * @const {String} Данные выделения в тексте.
+		 */
+		ITEM_BODY_RANGE: 'body-cursor-range',
 		
 		init: function ()
 		{
@@ -31,6 +39,7 @@ Ext.define(
 			var me = this,
 				manager = me.getManager(),
 				appState = me.getAppState(),
+				range,
 				editElement,
 				artId;
 			
@@ -56,6 +65,18 @@ Ext.define(
 			else
 			{
 				me.removeEditElement();
+			}
+			
+			//позиция курсора
+			range = manager.getRangeCursor();
+			
+			if (range)
+			{
+				me.saveRange(range);
+			}
+			else
+			{
+				me.removeRange();
 			}
 		},
 		
@@ -93,6 +114,7 @@ Ext.define(
 				// если айди арта не поменялось, то восстанавливаем состояние после загрузки данных в редакторе текста
 				
 				me.restoreEditElement();
+				me.restoreRange();
 			}
 		},
 		
@@ -108,7 +130,7 @@ Ext.define(
 			// полный путь xml элемента
 			xmlPath = el.getXmlPath();
 
-			me.setItem(me.ITEM_BODY_EDIT_ELEMENT_PATH, xmlPath);
+			me.setItem(me.ITEM_BODY_EDIT_ELEMENT, xmlPath);
 		},
 		
 		/**
@@ -121,7 +143,7 @@ Ext.define(
 				xmlPath,
 				el;
 			
-			xmlPath = me.getItem(me.ITEM_BODY_EDIT_ELEMENT_PATH);
+			xmlPath = me.getItem(me.ITEM_BODY_EDIT_ELEMENT);
 			
 			if (xmlPath)
 			{
@@ -140,9 +162,89 @@ Ext.define(
 		 */
 		removeEditElement: function ()
 		{
+			this.removeItem(this.ITEM_BODY_EDIT_ELEMENT);
+		},
+		
+		/**
+		 * Сохраняет выделение в тексте.
+		 * @param {FBEditor.editor.Range} range Данные теущего выделения.
+		 */
+		saveRange: function (range)
+		{
+			var me = this,
+				data;
+			
+			data = {
+				collapsed: range.collapsed,
+				offset: range.offset,
+				common: range.common.getElement().getXmlPath(),
+				start: range.start.getElement().getXmlPath(),
+				end: range.end.getElement().getXmlPath()
+			};
+			
+			me.setItem(me.ITEM_BODY_RANGE, data);
+		},
+		
+		/**
+		 * Восстанавливает выделение в тексте.
+		 */
+		restoreRange: function ()
+		{
+			var me = this,
+				manager = me.getManager(),
+				helper,
+				range,
+				data,
+				start,
+				startHelper,
+				end;
+			
+			range = me.getItem(me.ITEM_BODY_RANGE);
+			
+			if (range)
+			{
+				start = manager.getElementByXmlPath(range.start);
+				startHelper = start ? start.getNodeHelper() : null;
+				start = startHelper ? startHelper.getNode() : null;
+				
+				end = manager.getElementByXmlPath(range.end);
+				helper = end ? end.getNodeHelper() : null;
+				end = helper ? helper.getNode() : null;
+				
+				if (start && end)
+				{
+					data = {
+						startNode: start,
+						endNode: end,
+						startOffset: range.offset.start,
+						endOffset: range.offset.end
+					};
+					
+					// небольшая задержка с учетом рендеринга
+					Ext.defer(
+						function ()
+						{
+							// прокрутка скролла
+							startHelper.scrollIntoView();
+							
+							// установка курсора
+							manager.setCursor(data);
+						},
+						500,
+						me
+					);
+				}
+			}
+		},
+		
+		/**
+		 * Удаляет выделение в тексте.
+		 */
+		removeRange: function ()
+		{
 			var me = this;
 			
-			me.removeItem(me.ITEM_BODY_EDIT_ELEMENT_PATH);
+			me.removeItem(me.ITEM_BODY_RANGE);
 		}
 	}
 );
