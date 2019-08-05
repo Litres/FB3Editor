@@ -26,6 +26,7 @@ Ext.define(
 
 		listeners: {
 			loadData: 'onLoadData',
+			afterLoadData: 'onAfterLoadData',
 			split: 'onSplit',
 			unsplit: 'onUnsplit',
 			syncContent: 'onSyncContent',

@@ -9,23 +9,48 @@ Ext.define(
 	'FBEditor.state.InterfaceState',
 	{
 		/**
-		 * Устанавливает значение состояния.
+		 * Инициализирует состояние.
+		 */
+		init: function ()
+		{
+			throw Error('Необходимо реализовать метод FBEditor.state.InterfaceState#init()');
+		},
+		
+		/**
+		 * Устанавливает значение.
 		 * @param {String} name Имя значения.
 		 * @param {*} value Значение.
 		 */
 		setItem: function (name, value)
 		{
-			//
+			throw Error('Необходимо реализовать метод FBEditor.state.InterfaceState#setItem()');
 		},
 		
 		/**
-		 * Возвращает значение состояния.
+		 * Возвращает значение.
 		 * @param {String} name Имя значения.
 		 * @return {*}
 		 */
 		getItem: function (name)
 		{
-			//
+			throw Error('Необходимо реализовать метод FBEditor.state.InterfaceState#getItem()');
+		},
+		
+		/**
+		 * Удаляет значение.
+		 * @param {String} name Имя значения.
+		 */
+		removeItem: function (name)
+		{
+			throw Error('Необходимо реализовать метод FBEditor.state.InterfaceState#removeItem()');
+		},
+		
+		/**
+		 * Сохраняет состояние.
+		 */
+		save: function ()
+		{
+			throw Error('Необходимо реализовать метод FBEditor.state.InterfaceState#save()');
 		}
 	}
 );
