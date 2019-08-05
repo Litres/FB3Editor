@@ -82,7 +82,7 @@ Ext.define(
 		
 		createState: function ()
 		{
-			this.state = Ext.create('FBEditor.view.panel.main.editor.State');
+			this.state = Ext.create('FBEditor.view.panel.main.editor.State', this);
 		},
 		
 		createContextMenu: function (el, evt)
@@ -188,7 +188,6 @@ Ext.define(
 		setEditElement: function (el)
 		{
 			var me = this,
-				state = me.getState(),
 				parents = [],
 				parent;
 			
@@ -224,9 +223,6 @@ Ext.define(
 				);
 			}
 			
-			// запоминаем отдельно редактируемый элемент
-			state.setEditElement(el);
-			
 			// редактируемый элемент
 			me.editElement = el;
 			
@@ -257,7 +253,7 @@ Ext.define(
 			{
 				return;
 			}
-
+			
 			me.editElement = null;
 			
 			root.eachAll(

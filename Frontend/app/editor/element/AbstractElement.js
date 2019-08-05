@@ -909,7 +909,6 @@ Ext.define(
 		/**
 		 * Возвращает полный xml путь элемента (по аналогии с XPath, только без начального /).
 		 * @param {Object} [opts] Дополнительные опции.
-		 * @param {Boolean} opts.position Возвращать ли позицию элемента относительно родителя.
 		 * @return {String}
 		 */
 		getXmlPath: function (opts)
@@ -918,25 +917,27 @@ Ext.define(
 				o = opts || {},
 				names = [],
 				parent = me,
+				name,
 				pos,
 				path;
 			
 			while (parent)
 			{
-				names.push(parent.getName());
+				name = parent.getName();
+
+				if (parent.getParent())
+				{
+					// ищем позицию относительно родителя
+					pos = parent.getParent().getChildPosition(parent);
+					name +='[' + pos + ']';
+				}
+				
+				names.push(name);
 				parent = parent.getParent();
 			}
 			
 			names = names.reverse();
 			path = names.join('/');
-			
-			if (o.position)
-			{
-				// ищем поизицию относительно родителя
-				parent = me.getParent();
-				pos = parent.getChildPosition(me);
-				path +='[' + pos + ']';
-			}
 			
 			return path;
 		},
@@ -994,7 +995,6 @@ Ext.define(
 				manager = me.getManager(),
 				newNode;
 
-			console.log('sync changed');
 			manager.setSuspendEvent(true);
 
 			Ext.Object.each(

@@ -240,6 +240,9 @@ Ext.define(
 
 				FBEditor.closingWindow = true;
 				Ext.getCmp('main').fireEvent('closeapplication');
+				
+				// сохраняем состояние приложения
+				FBEditor.state.Manager.saveState();
 			}
 		},
 

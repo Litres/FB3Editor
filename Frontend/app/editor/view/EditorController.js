@@ -12,6 +12,7 @@ Ext.define(
 		alias: 'controller.view.editor',
 
 		/**
+		 * @event afterLoadData
 		 * Загружает корневой элемент в редактор.
 		 */
 		onLoadData: function ()
@@ -31,6 +32,8 @@ Ext.define(
 
 			// загружаем узел в окно
 			viewport.loadData(node);
+			
+			view.fireEvent('afterLoadData');
 		}
 	}
 );
