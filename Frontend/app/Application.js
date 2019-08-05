@@ -254,7 +254,9 @@ Ext.define(
 				FBEditor.closingWindow = true;
 				Ext.getCmp('main').fireEvent('closeapplication');
 				
-				routeManager = FBEditor.route.Manager;
+				// сохраняем состояние приложения
+				FBEditor.state.Manager.saveState();
+				
 				editorManager = FBEditor.getEditorManager();
 				
 				if (editorManager.isChanged() && editorManager.getArtId())

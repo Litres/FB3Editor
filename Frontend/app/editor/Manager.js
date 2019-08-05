@@ -171,13 +171,19 @@ Ext.define(
 		constructor: function (editor)
 		{
 			var me = this,
-				rootElementName = editor.rootElementName;
+				rootElementName = editor.rootElementName,
+				stateManager = FBEditor.state.Manager,
+				state;
 
 			// связь с редактором
 			me.editor = editor;
 			
 			// создаем состояние
 			me.createState();
+			
+			// инициализируем состояние
+			state = me.getState();
+			state.init();
 
 			// создаем историю
 			me.history = Ext.create('FBEditor.editor.History');
@@ -204,7 +210,7 @@ Ext.define(
 		 */
 		createState: function ()
 		{
-			this.state = Ext.create('FBEditor.editor.State');
+			this.state = Ext.create('FBEditor.editor.State', this);
 		},
 
 		/**
@@ -1352,6 +1358,107 @@ Ext.define(
 			);
 
 			return res;
+		},
+		
+		/**
+		 * Возвращает элемент по xml-пути.
+		 * Смотрите FBEditor.editor.element.AbstractElement#getXmlPath().
+		 *
+		 * @example
+		 * fb3-body/section[0]/section[0] вернет первую вложенную секцию второго уровня.
+		 *
+		 * @param {String} xmlPath Путь элемента по аналогии с XPath.
+		 * @param {FBEditor.editor.element.AbstractElement} [el] Элемент относительно которого происходит поиск,
+		 * по умолчанию - это корневой элемент.
+		 * @return {FBEditor.editor.element.AbstractElement}
+		 */
+		getElementByXmlPath: function (xmlPath, el)
+		{
+			var me = this,
+				next,
+				pathData;
+			
+			/**
+			 * Парсит xml-путь и возвращает данные.
+			 * @param {String} path Путь xml.
+			 * @return {Object} Данные.
+			 * @return {String[]} Object.items Все части пути, разбитые по элементам.
+			 * @return {String} Object.item Первая часть пути.
+			 * @return {String} Object.name Имя первого элемента.
+			 * @return {Number} Object.pos Позиция первого элемента.
+			 * @return {Object} [Object.nextItem] Данные следующей части элемента.
+			 * @return {String} Object.nextItem.item Следующая часть пути.
+			 * @return {String} Object.nextItem.xmlPath Следующая часть пути, без первой части.
+			 * @return {String} Object.nextItem.name Имя следующего элемента.
+			 * @return {Number} Object.nextItem.pos Позиция следующего элемента.
+			 */
+			function parseXmlPath (path)
+			{
+				var data,
+					nextPath,
+					item,
+					name,
+					pos,
+					names;
+				
+				names = path.split('/');
+				item = names[0].split(/\[|\]/);
+				name = item[0];
+				pos = item[1] ? Number(item[1]) : null;
+				
+				// данные певрого элемента в пути
+				data = {
+					items: names,
+					item: item,
+					name: name,
+					pos: pos
+				};
+				
+				if (names[1])
+				{
+					
+					item = names[1].split(/\[|\]/);
+					name = item[0];
+					pos = item[1] ? Number(item[1]) : null;
+					nextPath = names.slice(1).join('/');
+					
+					// данные следующего элемента в пути
+					data.nextItem = {
+						xmlPath: nextPath,
+						item: item,
+						name: name,
+						pos: pos
+					}
+				}
+				
+				return data;
+			}
+			
+			el = el || me.getContent();
+			
+			pathData = parseXmlPath(xmlPath);
+			
+			if (el.hisName(pathData.name))
+			{
+				next = pathData.nextItem;
+				
+				if (next)
+				{
+					el.each(
+						function (child, pos)
+						{
+							if (child.hisName(next.name) && pos === next.pos)
+							{
+								el = me.getElementByXmlPath(next.xmlPath, child);
+							}
+						}
+					);
+				}
+			}
+			
+			el = el.isRoot && next ? null : el;
+			
+			return el;
 		},
 
 		/**
