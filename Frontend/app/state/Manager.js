@@ -31,9 +31,11 @@ Ext.define(
 		{
 			var me = this;
 			
+			// состояние приложения
 			me.state = Ext.create('FBEditor.state.State');
+			me.state.init();
 			
-			// списко участников состояния
+			// список участников состояния
 			me.members = new Ext.util.MixedCollection();
 			me.members.add(me.state);
 		},

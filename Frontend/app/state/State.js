@@ -18,9 +18,31 @@ Ext.define(
 		 */
 		prefix: 'state-',
 		
+		/**
+		 * @private
+		 * @property {String} Имя парамтера в URL, который сообщает приложению о том,
+		 * что необоходимо использовать сохраненное состояние приложения
+		 */
+		paramURL: 'savestate',
+		
 		init: function ()
 		{
-			//
+			var me = this,
+				paramURL = me.paramURL,
+				routeManager = FBEditor.route.Manager,
+				isSaveState;
+			
+			// было ли сохранено состояние
+			isSaveState = routeManager.isSetParam(paramURL);
+			
+			if (!isSaveState)
+			{
+				// очищаем состояние приложения
+				me.clearAll();
+				
+				// добавляем параметр в URL
+				routeManager.setParamToURL(paramURL);
+			}
 		},
 		
 		setItem: function (name, value)
@@ -31,7 +53,7 @@ Ext.define(
 			
 			name = me.getItemName(name);
 			val = JSON.stringify(value);
-			console.log('set', name, value);
+			console.log('state set', name, value);
 			storage.setItem(name, val);
 		},
 		
@@ -45,7 +67,7 @@ Ext.define(
 			name = me.getItemName(name);
 			item = storage.getItem(name);
 			val = JSON.parse(item);
-			console.log('get', name, item, val);
+			console.log('state get', name, item, val);
 			
 			return val;
 		},
@@ -57,7 +79,7 @@ Ext.define(
 			
 			name = me.getItemName(name);
 			storage.removeItem(name);
-			console.log('remove', name);
+			console.log('state remove', name);
 		},
 		
 		save: function ()
@@ -81,11 +103,11 @@ Ext.define(
 		
 		/**
 		 * Возвращает хранилище.
-		 * @return {Storage}
+		 * @return {FBEditor.storage.Session}
 		 */
 		getStorage: function ()
 		{
-			return sessionStorage;
+			return FBEditor.storage.Session;
 		},
 		
 		/**
@@ -101,6 +123,32 @@ Ext.define(
 			name = prefix + name;
 			
 			return name;
+		},
+		
+		/**
+		 * Очищает все данные состояния.
+		 */
+		clearAll: function ()
+		{
+			var me = this,
+				storage = me.getStorage(),
+				prefix = me.prefix,
+				reg;
+			
+			reg = new RegExp('^' + prefix);
+			
+			// перебираем все значения в хранилище
+			storage.each(
+				function (item)
+				{
+					if (reg.test(item))
+					{
+						// удаляем все значения состояния приложения
+						storage.removeItem(item);
+					}
+				},
+				me
+			);
 		},
 		
 		/**
