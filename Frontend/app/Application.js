@@ -57,6 +57,7 @@ Ext.define(
 			'FBEditor.route.Manager',
 			'FBEditor.scroll.Scroll',
 			'FBEditor.state.Manager',
+			'FBEditor.storage.Session',
 			'FBEditor.util.Ajax',
             'FBEditor.util.ClipboardData',
 			'FBEditor.util.Diff',
@@ -268,9 +269,9 @@ Ext.define(
 			// список всех менеджеров, которые будут инициализированы по порядку
 			managers = [
 				FBEditor.webworker.Manager,
+				FBEditor.route.Manager,
 				FBEditor.state.Manager,
 				FBEditor.command.HistoryCommand,
-				FBEditor.route.Manager,
 				FBEditor.resource.Manager,
 				FBEditor.hotkeys.Manager
 			];
