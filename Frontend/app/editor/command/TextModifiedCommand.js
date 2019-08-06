@@ -61,6 +61,8 @@ Ext.define(
 				
 				els.node.sync(viewportId);
 				
+				manager.setChanged(true);
+				
 				// устанавливаем курсор
 				manager.setCursor(
 					{

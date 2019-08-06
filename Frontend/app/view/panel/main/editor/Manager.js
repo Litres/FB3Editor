@@ -89,7 +89,10 @@ Ext.define(
 				autoSave: {
 					run: function ()
 					{
-						me.saveToUrl()
+						if (me.isChanged())
+						{
+							me.saveToUrl();
+						}
 					},
 					interval: me.saveTime * 1000
 				}

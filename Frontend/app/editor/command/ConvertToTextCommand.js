@@ -56,6 +56,8 @@ Ext.define(
 				{
 					// новая структура разрешена, подставляя вместо текущего элемента p
 					els.verify = true;
+					
+					manager.setChanged(true);
 				}
 				else if (!sch.verify(els.node.getName(), ['p']))
 				{
@@ -125,8 +127,6 @@ Ext.define(
 
 				// синхронизируем
 				els.parent.sync(viewportId);
-
-				manager.setSuspendEvent(false);
 
 				// устанавливаем курсор
 				els.cursor = range.start.getElement();

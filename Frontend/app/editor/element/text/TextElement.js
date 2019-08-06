@@ -108,7 +108,6 @@ Ext.define(
 				manager = me.getManager();
 
 			manager.setSuspendEvent(true);
-			manager.setChanged(true);
 
 			Ext.Object.each(
 				me.nodes,
