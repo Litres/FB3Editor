@@ -329,11 +329,7 @@ Ext.define(
 
 			root = factory.createElement(name);
 			me.content = root;
-			
-			if (!routeManager.isSetParam('body_art'))
-			{
-				root.createScaffold();
-			}
+			root.createScaffold();
 
 			return root;
 		},
@@ -372,6 +368,25 @@ Ext.define(
 		isSuspendCmd: function ()
 		{
 			return this.suspendCmd;
+		},
+		
+		/**
+		 * Уставнавливает флаг изменения тела книги после сохранения.
+		 * @param {Boolean} change true - внесены изменения.
+		 */
+		setChanged: function (change)
+		{
+			this.changed = change;
+			console.log('change', change);
+		},
+		
+		/**
+		 * Определяет внесены ли изменения в тело книги после сохранения.
+		 * @return {Boolean}
+		 */
+		isChanged: function ()
+		{
+			return this.changed;
 		},
 
 		/**
