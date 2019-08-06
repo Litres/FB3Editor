@@ -128,6 +128,46 @@ Ext.define(
 					}
 				}
 			);
+		},
+		
+		/**
+		 * Возвращает общее количество параметров в URL.
+		 * @return {Number}
+		 */
+		getCountParams: function ()
+		{
+			var me = this,
+				params = me.getParams(),
+				count;
+			
+			count = Ext.Object.getSize(params);
+			
+			return count;
+		},
+		
+		/**
+		 * устанавливает параметр в URL.
+		 * @param {String} name Имя параметра.
+		 * @param {String} [value] Значение параметра.
+		 */
+		setParamToURL: function (name, value)
+		{
+			var me = this,
+				paramURL,
+				count;
+			
+			// предварительно удаляем параметр из URL, если он уже существует
+			me.removeParams(name);
+			
+			count = me.getCountParams();
+			
+			// формируем параметр для URL
+			value = value !== undefined ? '=' + value : '';
+			paramURL = name + value;
+			paramURL = count ? '&' + paramURL : '#' + paramURL;
+			
+			// добавляем в URL
+			location.href += paramURL;
 		}
 	}
 );

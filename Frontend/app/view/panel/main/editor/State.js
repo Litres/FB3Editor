@@ -98,17 +98,6 @@ Ext.define(
 			// текущий айди арта
 			artId = manager.getArtId();
 			
-			if (artId)
-			{
-				// сохраняем айди арта
-				appState.saveArtId(artId);
-			}
-			else
-			{
-				// удаляем айди арта
-				appState.removeArtId();
-			}
-			
 			if (artId === stateArtId)
 			{
 				// если айди арта не поменялось, то восстанавливаем состояние после загрузки данных в редакторе текста
