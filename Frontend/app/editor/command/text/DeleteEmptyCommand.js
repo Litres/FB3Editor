@@ -161,6 +161,8 @@ Ext.define(
 				els.parentEmpty.removeEmptyText();
 
 				els.parentEmpty.sync(viewportId);
+				
+				manager.setChanged(true);
 
 				manager.setCursor(
 					{

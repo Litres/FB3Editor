@@ -53,6 +53,8 @@ Ext.define(
 				data.oldValue = els.node.getText();
 				els.node.setText(data.newValue, viewportId);
 				els.node.sync(viewportId);
+				
+				manager.setChanged(true);
 
 				manager.setCursor(
 					{

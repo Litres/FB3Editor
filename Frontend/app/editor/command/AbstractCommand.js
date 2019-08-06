@@ -442,7 +442,9 @@ Ext.define(
 				    }
 				);
 			}
-
+			
+			manager.setChanged(true);
+			
 			if (syncButtons)
 			{
 				// принудительно синхронизируем кнопки, игнорируя кэш
