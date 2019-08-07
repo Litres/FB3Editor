@@ -256,11 +256,77 @@ Ext.define(
 
 				switch (e.keyCode)
 				{
+					case Ext.event.Event.LEFT:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyUpShiftCtrlLeft(e);
+						}
+						else if (e.shiftKey)
+						{
+							return controller.onKeyUpShiftLeft(e);
+						}
+						
+						return controller.onKeyUpLeft(e);
+						
 					case Ext.event.Event.UP:
+						if (e.shiftKey)
+						{
+							return controller.onKeyUpShiftUp(e);
+						}
+						
 						return controller.onKeyUpUp(e);
-
+					
+					case Ext.event.Event.RIGHT:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyUpShiftCtrlRight(e);
+						}
+						else if (e.shiftKey)
+						{
+							return controller.onKeyUpShiftRight(e);
+						}
+						
+						return controller.onKeyUpRight(e);
+					
 					case Ext.event.Event.DOWN:
+						if (e.shiftKey)
+						{
+							return controller.onKeyUpShiftDown(e);
+						}
+						
 						return controller.onKeyUpDown(e);
+					
+					case Ext.event.Event.A:
+						if (e.ctrlKey)
+						{
+							return controller.onKeyUpCtrlA(e);
+						}
+						
+						return false;
+					
+					case Ext.event.Event.HOME:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyUpShiftCtrlHome(e);
+						}
+						else if (e.ctrlKey)
+						{
+							return controller.onKeyUpCtrlHome(e);
+						}
+						
+						return false;
+					
+					case Ext.event.Event.END:
+						if (e.shiftKey && e.ctrlKey)
+						{
+							return controller.onKeyUpShiftCtrlEnd(e);
+						}
+						else if (e.ctrlKey)
+						{
+							return controller.onKeyUpCtrlEnd(e);
+						}
+						
+						return false;
 
 					default:
 						return controller.onKeyUpDefault(e);
@@ -274,15 +340,80 @@ Ext.define(
 		{
 			//
 		},
+		
+		onKeyUpLeft: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftCtrlLeft: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftLeft: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
 
 		onKeyUpUp: function (e)
 		{
-			//
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftUp: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpRight: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftCtrlRight: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftRight: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
 		},
 
 		onKeyUpDown: function (e)
 		{
-			//
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftDown: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpCtrlA: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftCtrlHome: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpCtrlHome: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpShiftCtrlEnd: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
+		},
+		
+		onKeyUpCtrlEnd: function (e)
+		{
+			this.syncButtonsAfterSelectionKeys();
 		},
 
 		/**
@@ -702,12 +833,17 @@ Ext.define(
 			var me = this,
 				sel = window.getSelection(),
 				els = {},
+				manager = me.getElement().getManager(),
 				range;
 
 			range = sel.getRangeAt(0);
 			els.node = range.startContainer.getElement();
 			els.p = els.node.getStyleHolder();
-			if (els.p && !me.getElement().equal(els.p)){els.p.fireEvent('keyDownCtrlA', e);}
+			
+			if (els.p && !me.getElement().equal(els.p))
+			{
+				els.p.fireEvent('keyDownCtrlA', e);
+			}
 		},
 
 		onKeyDownShiftCtrlHome: function (e)
@@ -1169,6 +1305,23 @@ Ext.define(
 			html = text.replace(/^(.*?)$/gim, '<p>$1</p>');
 
 			return html;
+		},
+		
+		/**
+		 * @protected
+		 * Синхронизирует панель форматирования после выделения в тексте через клавиши.
+		 */
+		syncButtonsAfterSelectionKeys: function ()
+		{
+			var me = this,
+				el = me.getElement(),
+				manager = el.getManager();
+			
+			// обновляем реальные данные выделения в тексте перед синхронизацией
+			manager.getRangeCursor();
+			
+			// синхронизируем панель форматирования
+			manager.syncButtons();
 		}
 	}
 );

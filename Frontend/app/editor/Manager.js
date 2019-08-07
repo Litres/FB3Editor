@@ -405,7 +405,6 @@ Ext.define(
 		setChanged: function (change)
 		{
 			this.changed = change;
-			console.log('change', change);
 		},
 		
 		/**

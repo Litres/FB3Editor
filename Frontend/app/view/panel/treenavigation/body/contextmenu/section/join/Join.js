@@ -30,7 +30,7 @@ Ext.define(
 			if (active)
 			{
 				prev = el.prev();
-				active = prev.isSection;
+				active = prev ? prev.isSection : false;
 			}
 			
 			return active;

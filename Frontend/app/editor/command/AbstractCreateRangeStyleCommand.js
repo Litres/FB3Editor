@@ -294,19 +294,22 @@ Ext.define(
 
 							nodesP.p = p;
 							elsP.p = nodesP.p.getElement();
-
-							// новый элемент в параграфе
-							elsP.node = factory.createElement(me.elementName, attributes);
-							nodesP.node = elsP.node.getNode(viewportId);
-							nodesP.first = nodesP.p.firstChild;
-							elsP.first = nodesP.first.getElement();
-							elsP.p.insertBefore(elsP.node, elsP.first);
-							nodesP.p.insertBefore(nodesP.node, nodesP.first);
-
-							// заполняем новый элемент
-							while (elsP.next = elsP.node.next())
+							
+							if (!elsP.p.isEmpty())
 							{
-								elsP.node.add(elsP.next, viewportId);
+								// новый элемент в параграфе
+								elsP.node = factory.createElement(me.elementName, attributes);
+								nodesP.node = elsP.node.getNode(viewportId);
+								nodesP.first = nodesP.p.firstChild;
+								elsP.first = nodesP.first.getElement();
+								elsP.p.insertBefore(elsP.node, elsP.first);
+								nodesP.p.insertBefore(nodesP.node, nodesP.first);
+								
+								// заполняем новый элемент
+								while (elsP.next = elsP.node.next())
+								{
+									elsP.node.add(elsP.next, viewportId);
+								}
 							}
 						}
 					);
