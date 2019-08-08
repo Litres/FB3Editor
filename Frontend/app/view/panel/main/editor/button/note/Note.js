@@ -7,10 +7,13 @@
 Ext.define(
 	'FBEditor.view.panel.main.editor.button.note.Note',
 	{
-		extend: 'FBEditor.view.panel.main.editor.button.AbstractStyleButton',
+		extend: 'FBEditor.view.panel.main.editor.button.AbstractButton',
+		requires: [
+			'FBEditor.view.panel.main.editor.button.note.NoteController'
+		],
 		
 		xtype: 'main-editor-button-note',
-		//controller: 'main.editor.button.note',
+		controller: 'main.editor.button.note',
 		
 		html: '<i class="fa fa-sticky-note-o"></i>',
 

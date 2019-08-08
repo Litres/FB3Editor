@@ -10,7 +10,8 @@ Ext.define(
 		extend: 'FBEditor.editor.element.AbstractStyleElement',
 		requires: [
 			'FBEditor.editor.element.note.NoteElementController',
-			'FBEditor.editor.command.note.CreateRangeCommand',
+			'FBEditor.editor.command.note.CreateCommand',
+			//'FBEditor.editor.command.note.CreateRangeCommand',
 			'FBEditor.editor.command.note.DeleteWrapperCommand'
 		],
 
@@ -24,6 +25,18 @@ Ext.define(
 			href: 'undefined',
 			role: 'auto',
 			autotext: '1'
+		},
+		
+		createScaffold: function ()
+		{
+			var me = this,
+				factory = FBEditor.editor.Factory,
+				els = {};
+			
+			els.t = factory.createElementText('[Cноска]');
+			me.add(els.t);
+			
+			return els;
 		},
 
 		getAttributesXml: function (withoutText)
