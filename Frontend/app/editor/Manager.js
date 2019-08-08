@@ -887,7 +887,7 @@ Ext.define(
 				// устанавливаем фокус браузера в окно текста
 				viewportId = data.startNode.viewportId;
 				helper = root.getNodeHelper();
-				//helper.getNode(viewportId).focus();
+				helper.getNode(viewportId).focus();
 
 				// перематываем скролл
 				/*
