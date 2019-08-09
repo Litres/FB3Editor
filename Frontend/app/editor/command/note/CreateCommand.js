@@ -46,10 +46,11 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 				manager.setSuspendEvent(true);
 				
+				// тело сноски
+				me.createNotebody(els);
+				
 				// новая сноска
-				els.node = factory.createElement(me.elementName);
-				els.node.createScaffold();
-				//nodes.node = els.node.getNode(viewportId);
+				els.node = factory.createElement(me.elementName, {href: els.notebody.getId()});
 				
 				if (!els.parent.isEmpty())
 				{
@@ -92,12 +93,15 @@ Ext.define(
 				{
 					els.parent.add(els.node, viewportId);
 				}
+
+				// текст сноски
+				els.text = factory.createElementText(els.node.generateText());
+				els.node.add(els.text, viewportId);
 				
 				// новый текстовый элемент c последней частью текста
 				if (els.endValue)
 				{
 					els.t = factory.createElementText(els.endValue);
-					//nodes.t = els.t.getNode(data.viewportId);
 					
 					if (els.next)
 					{
@@ -109,21 +113,31 @@ Ext.define(
 					}
 				}
 				
-				// синхронизируем элемент
-				els.parent.sync(viewportId);
+				if (els.sync.isRoot)
+				{
+					// синхронизируем корневой элемент
+					els.sync.sync(viewportId);
+				}
+				else
+				{
+					// синхронизируем элемент
+					els.parent.sync(viewportId);
+					els.sync.sync(viewportId);
+				}
 				
-				//manager.setChanged(true);
+				nodes.cursor = els.node.first().getNodeHelper().getNode(viewportId);
 				
 				// устанавливаем курсор
 				manager.setCursor(
 					{
+						focus: true,
 						withoutSyncButtons: true,
-						startNode: els.node.first().getNodeHelper().getNode(viewportId),
+						startNode: nodes.cursor,
 						startOffset: 1
 					}
 				);
 				
-				// сохраняем узел
+				// сохраняем
 				data.els = els;
 				
 				// проверяем по схеме
@@ -165,6 +179,9 @@ Ext.define(
 				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 				
+				// удаляем тело сноски
+				me.deleteNotebody(els);
+				
 				// удаляем сноску
 				els.parent.remove(els.node, viewportId);
 				
@@ -177,25 +194,32 @@ Ext.define(
 					els.parent.add(els.empty, viewportId);
 					nodes.empty = els.empty.getNodeHelper().getNode(viewportId);
 					nodes.cursor = nodes.empty;
-					//range.start = nodes.empty;
 				}
 				else
 				{
 					// возвращаем старый текст
 					els.start.setText(data.oldValue, viewportId);
 					
-					//nodes.next = nodes.start.nextSibling;
 					els.next = els.start.next();
 					
 					if (range.offset < els.start.getLength() && els.next)
 					{
 						// удаляем новый текстовый узел
-						//els.next = nodes.next.getElement();
 						els.parent.remove(els.next, viewportId);
 					}
 				}
 				
-				els.parent.sync(viewportId);
+				if (els.sync.isRoot)
+				{
+					// синхронизируем корневой элемент
+					els.sync.sync(viewportId);
+				}
+				else
+				{
+					// синхронизируем элемент
+					els.parent.sync(viewportId);
+					els.sync.sync(viewportId);
+				}
 				
 				manager.setChanged(true);
 				
@@ -219,6 +243,73 @@ Ext.define(
 			manager.updateTree();
 			
 			return res;
+		},
+		
+		/**
+		 * @private
+		 * Создает тело сноски.
+		 * @param {Object} els
+		 */
+		createNotebody: function (els)
+		{
+			var me = this,
+				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				factory = manager.getFactory(),
+				root = manager.getContent(),
+				viewportId;
+			
+			viewportId = data.viewportId;
+			
+			els.notes = root.last();
+			
+			if (!els.notes.isNotes)
+			{
+				// создаем блок примечаний
+				els.notes = factory.createElement('notes');
+				els = Ext.apply(els, els.notes.createScaffold());
+				root.add(els.notes, viewportId);
+				els.sync = root;
+			}
+			else
+			{
+				// создаем
+				els.notebody = factory.createElement('notebody');
+				els.notebody.createScaffold();
+				els.notes.add(els.notebody, viewportId);
+				els.sync = els.notes;
+			}
+			
+			els.notebody.generateNoteId();
+		},
+		
+		/**
+		 * @private
+		 * Удаляет тело сноски.
+		 * @param {Object} els
+		 */
+		deleteNotebody: function (els)
+		{
+			var me = this,
+				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				noteManager = manager.getNoteManager(),
+				notesId = noteManager.getNotesId(),
+				root = manager.getContent(),
+				viewportId;
+			
+			viewportId = data.viewportId;
+			
+			if (notesId.length > 1)
+			{
+				// удаляем тело сноски
+				els.notes.remove(els.notebody, viewportId);
+			}
+			else
+			{
+				// удаляем весь блок примечаний
+				root.remove(els.notes, viewportId);
+			}
 		}
 	}
 );

@@ -33,7 +33,7 @@ Ext.define(
 				factory = FBEditor.editor.Factory,
 				els = {};
 			
-			els.t = factory.createElementText('[Cноска]');
+			els.t = factory.createElementText('[Сноска]');
 			me.add(els.t);
 			
 			return els;
@@ -73,17 +73,48 @@ Ext.define(
 		{
 			var me = this,
 				manager = me.getManager(),
+				noteManager = manager.getNoteManager(),
 				data;
 			
 			data = me.callParent(arguments);
 			
 			// обновляем список айди существующих сносок
-			manager.updateNotesId();
+			noteManager.updateNotesId();
 			
 			// список айди сносок
-			data.notesId = manager.getNotesId();
+			data.notesId = noteManager.getNotesId();
 			
 			return data;
+		},
+		
+		/**
+		 * Генерирует текст новой сноски.
+		 * @return  {String}
+		 */
+		generateText: function ()
+		{
+			var me = this,
+				manager = me.getManager(),
+				noteManager = manager.getNoteManager(),
+				maxNumber,
+				text;
+			
+			// обновляем список айди существующих сносок
+			noteManager.updateNotesId();
+			
+			// максимальный существующйи номер сноски
+			maxNumber = noteManager.getMaxNumber();
+			
+			if (maxNumber)
+			{
+				text = '[' + maxNumber + ']';
+			}
+			else
+			{
+				text = 'Сноска';
+			}
+			
+			return text;
 		}
 	}
 );

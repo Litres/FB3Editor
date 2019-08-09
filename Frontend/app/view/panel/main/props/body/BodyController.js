@@ -75,12 +75,14 @@ Ext.define(
 				initData,
 				name,
 				el;
-
+			
 			// данные элемента
 			data = elem.getData();
 
 			// ссылка на родительский элемент-контейнер, данные которого и будут отображены в панели
 			el = data.el;
+			
+			data = el.getData();
 
 			if (data)
 			{

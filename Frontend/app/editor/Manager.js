@@ -155,12 +155,6 @@ Ext.define(
 		
 		/**
 		 * @private
-		 * @property {String[]} Список всех айди сносок.
-		 */
-		notesId: null,
-		
-		/**
-		 * @private
 		 * @property {Boolean} Флаг изменения тела книги после сохранения. true - изменения внесены.
 		 */
 		changed: false,
@@ -486,15 +480,6 @@ Ext.define(
 		getState: function ()
 		{
 			return this.state;
-		},
-		
-		/**
-		 * Возвращает список айди сносок.
-		 * @return {String[]}
-		 */
-		getNotesId: function ()
-		{
-			return this.notesId;
 		},
 
 		/**
@@ -901,6 +886,7 @@ Ext.define(
 		 * @param {Number} [data.startOffset] Начальное смещение.
 		 * @param {Node} [data.endNode] Конечный узел.
 		 * @param {Number} [data.endOffset] Конечное смещение.
+		 * @param {Boolean} [data.focus] Установить ли фокус браузера в окно текста.
 		 * @param {Boolean} [data.withoutSyncButtons] Без синхронизации кнопок.
 		 * @param {FBEditor.editor.element.AbstractElement} [data.focusElement] Фокусный элемент.
 		 */
@@ -920,11 +906,15 @@ Ext.define(
 				                   data.startNode.length : data.startOffset;
 				
 				//console.log('set cursor', data);
-
-				// устанавливаем фокус браузера в окно текста
+				
 				viewportId = data.startNode.viewportId;
-				helper = root.getNodeHelper();
-				helper.getNode(viewportId).focus();
+
+				if (data.focus)
+				{
+					// устанавливаем фокус браузера в окно текста
+					helper = root.getNodeHelper();
+					helper.getNode(viewportId).focus();
+				}
 
 				// перематываем скролл
 				/*
@@ -2367,89 +2357,6 @@ Ext.define(
 					el.setNumber(number);
 				}
 			);
-		},
-		
-		/**
-		 * Генерирует новый id для сноски.
-		 * Принцип генерации id заключается в переборе всех существующих id сносок и увеличении порядкового номера на 1.
-		 *
-		 * @example
-		 * note_1
-		 * note_2
-		 * note_3
-		 * ...
-		 *
-		 * @return {string} Id сноски.
-		 */
-		generateNoteId: function ()
-		{
-			var me = this,
-				notesId = me.notesId || [],
-				prefix = 'note_',
-				maxNumber = 0,
-				reg,
-				id;
-			
-			reg = new RegExp(prefix + '([0-9]+)', 'i');
-			
-			Ext.each(
-				notesId,
-				function (noteId)
-				{
-					var res,
-						number;
-					
-					res = noteId.match(reg);
-					
-					number = res && Ext.isNumber(Number(res[1])) ? Number(res[1]) : null;
-					
-					if (number)
-					{
-						maxNumber = number > maxNumber ? number : maxNumber;
-					}
-				}
-			);
-			
-			// новый id
-			id = prefix + (maxNumber + 1);
-			
-			// добавляем в коллекцию
-			notesId.push(id);
-			me.notesId = notesId;
-			
-			return id;
-		},
-		
-		/**
-		 * Обновляет коллекцию id сносок.
-		 */
-		updateNotesId: function ()
-		{
-			var me = this,
-				root = me.getContent(),
-				notesId = [];
-			
-			root.each(
-				function (notes)
-				{
-					if (notes.isNotes)
-					{
-						notes.each(
-							function (notebody)
-							{
-								var id = notebody.getId();
-								
-								if (notebody.isNotebody && id)
-								{
-									notesId.push(id);
-								}
-							}
-						);
-					}
-				}
-			);
-			
-			me.notesId = notesId;
 		}
 	}
 );
