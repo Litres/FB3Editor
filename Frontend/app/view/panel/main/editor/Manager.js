@@ -9,8 +9,9 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.Manager',
 		requires: [
-			'FBEditor.view.panel.main.editor.contextmenu.Menu',
+			'FBEditor.view.panel.main.editor.NoteManager',
 			'FBEditor.view.panel.main.editor.State',
+			'FBEditor.view.panel.main.editor.contextmenu.Menu',
             'FBEditor.view.panel.main.xml.Manager'
 		],
 
@@ -148,7 +149,7 @@ Ext.define(
 			me.callParent(arguments);
 
 			el = me.getFocusElement();
-
+			
 			// разворачиваем узел элемента в дереве навигации по тексту
 			panelNav.expandElement(el);
 		},
@@ -170,6 +171,15 @@ Ext.define(
 		getManagerXml: function ()
 		{
 			return this.managerXml;
+		},
+		
+		/**
+		 * Возвращает менеджер сносок.
+		 * @returns {FBEditor.view.panel.main.editor.NoteManager}
+		 */
+		getNoteManager: function ()
+		{
+			return FBEditor.view.panel.main.editor.NoteManager;
 		},
 		
 		/**

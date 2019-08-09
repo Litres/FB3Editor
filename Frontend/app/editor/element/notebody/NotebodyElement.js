@@ -38,12 +38,13 @@ Ext.define(
 		update: function (data, opts)
 		{
 			var me = this,
-				manager = me.getManager();
+				manager = me.getManager(),
+				noteManager = manager.getNoteManager();
 			
 			me.callParent(arguments);
 			
 			// обновляем коллекцию id сносок
-			manager.updateNotesId();
+			noteManager.updateNotesId();
 		},
 		
 		/**
@@ -52,13 +53,14 @@ Ext.define(
 		generateNoteId: function ()
 		{
 			var me = this,
-				manager = me.getManager();
+				manager = me.getManager(),
+				noteManager = manager.getNoteManager();
 			
 			// обновляем коллекцию id сносок
-			manager.updateNotesId();
+			noteManager.updateNotesId();
 			
 			// получаем новый id сноски
-			me.attributes.id = manager.generateNoteId();
+			me.attributes.id = noteManager.generateNoteId();
 		}
 	}
 );
