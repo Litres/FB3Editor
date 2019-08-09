@@ -1,5 +1,5 @@
 /**
- *
+ * Контроллер сноски.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
