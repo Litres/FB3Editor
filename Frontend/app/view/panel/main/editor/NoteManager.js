@@ -122,6 +122,81 @@ Ext.define(
 			);
 			
 			return Number(maxNumber);
+		},
+		
+		/**
+		 * Переводит курсор к тексту сноски.
+		 * @param {FBEditor.editor.element.note.NoteElement} el Элемент сноски.
+		 * @return {FBEditor.editor.element.notebody.NotebodyElement} Тело сноски.
+		 */
+		toNotebody: function (el)
+		{
+			var me = this,
+				notebody,
+				helper,
+				manager;
+			
+			// тело сноски
+			notebody = me.getNotebodyByNote(el);
+			
+			helper = notebody.getNodeHelper();
+			
+			// устанавливаем курсор в тело сноски
+			helper.setCursor();
+			
+			return notebody;
+		},
+		
+		/**
+		 * Возвращает тело сноски по сноске.
+		 * @param {FBEditor.editor.element.note.NoteElement} el Элемент сноски.
+		 * @return {FBEditor.editor.element.notebody.NotebodyElement}
+		 */
+		getNotebodyByNote: function (el)
+		{
+			var me = this,
+				id,
+				notebody;
+			
+			id = el.attributes.href;
+			notebody = me.getNotebodyById(id);
+			
+			return notebody;
+		},
+		
+		/**
+		 * Возвращает тело сноски по его айди-ссылке.
+		 * @param {String} id  Айди-ссылка тела сноски.
+		 * @return {FBEditor.editor.element.notebody.NotebodyElement}
+		 */
+		getNotebodyById: function (id)
+		{
+			var me = this,
+				manager = FBEditor.getEditorManager(),
+				root = manager.getContent(),
+				el;
+			
+			root.each(
+				function (notes)
+				{
+					if (notes.isNotes)
+					{
+						notes.each(
+							function (notebody)
+							{
+								if (notebody.isNotebody && id === notebody.getId())
+								{
+									el = notebody;
+									
+									return true;
+								}
+							}
+						);
+					}
+				}
+			);
+			
+			return el;
 		}
 	}
 );

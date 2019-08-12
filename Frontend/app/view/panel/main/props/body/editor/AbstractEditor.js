@@ -14,6 +14,7 @@ Ext.define(
 			'FBEditor.view.panel.main.props.body.editor.fields.id.Id'
 		],
 
+		xtype: 'panel-props-body-editor',
 		controller: 'panel.props.body.editor',
 
 		listeners: {
