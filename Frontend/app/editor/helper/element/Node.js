@@ -477,6 +477,32 @@ Ext.define(
 				}
 			);
 		},
+		
+		/**
+		 * Устанавливает курсор в начало элемента.
+		 */
+		setCursor: function ()
+		{
+			var me = this,
+				el = me.el,
+				manager = el.getManager(),
+				helper,
+				firstDeep;
+			
+			// самый первый вложенный элемент
+			firstDeep = el.getDeepFirst();
+			helper = firstDeep.getNodeHelper();
+			
+			// ставим курсор
+			manager.setCursor(
+				{
+					startNode: helper.getNode()
+				}
+			);
+			
+			// прокручиваем окно
+			me.scrollIntoView();
+		},
 
 		/**
 		 * @private
