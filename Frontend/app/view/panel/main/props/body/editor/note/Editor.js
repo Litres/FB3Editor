@@ -9,11 +9,15 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.props.body.editor.AbstractEditor',
 		requires: [
+			'FBEditor.view.panel.main.props.body.editor.note.EditorController',
             'FBEditor.view.panel.main.props.body.editor.note.AutotextStore',
 			'FBEditor.view.panel.main.props.body.editor.note.RoleStore',
-			'FBEditor.view.panel.main.props.body.editor.note.href.Href'
+			'FBEditor.view.panel.main.props.body.editor.note.href.Href',
+			'FBEditor.view.panel.main.props.body.editor.note.text.Text'
 		],
-
+		
+		controller: 'panel.props.body.editor.note',
+		
 		translateText: {
 			autotext: 'Автотекст',
 			role: 'Тип'
@@ -58,10 +62,22 @@ Ext.define(
                     store: autotextStore,
                     valueField: 'value',
 					value: '1'
-                }
+                },
+				{
+					xtype: 'panel-props-body-editor-note-text'
+				}
 			];
 
 			me.callParent(arguments);
+		},
+		
+		/**
+		 * Возвращает кнопку перехода к тексту сноски.
+		 * @return {FBEditor.view.panel.main.props.body.editor.note.text.Text}
+		 */
+		getNoteTextCmp: function ()
+		{
+			return this.down('panel-props-body-editor-note-text');
 		}
 	}
 );

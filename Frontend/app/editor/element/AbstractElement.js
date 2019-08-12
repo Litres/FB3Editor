@@ -545,6 +545,7 @@ Ext.define(
 		{
 			var me = this,
 				pos = 0,
+				res,
 				child;
 
 			scope = scope || me;
@@ -555,7 +556,12 @@ Ext.define(
 				{
 					child = me.children[pos];
 					pos++;
-					fn.apply(scope, [child, pos - 1]);
+					res = fn.apply(scope, [child, pos - 1]);
+					
+					if (res)
+					{
+						break;
+					}
 				}
 			}
 			else
@@ -566,7 +572,12 @@ Ext.define(
 				{
 					child = me.children[pos];
 					pos--;
-					fn.apply(scope, [child, pos + 1]);
+					res = fn.apply(scope, [child, pos + 1]);
+					
+					if (res)
+					{
+						break;
+					}
 				}
 			}
 		},
@@ -579,16 +590,17 @@ Ext.define(
 		 */
 		eachAll: function (fn, scope, reverse)
 		{
-			var me = this;
+			var me = this,
+				res;
 			
 			scope = scope || me;
 			
 			scope.each(
 				function (el)
 				{
-					fn.apply(scope, [el]);
+					res = fn.apply(scope, [el]);
 					
-					if (el.children.length)
+					if (!res && el.children.length)
 					{
 						el.eachAll(fn, el, reverse);
 					}

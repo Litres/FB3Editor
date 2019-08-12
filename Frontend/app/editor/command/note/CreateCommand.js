@@ -255,6 +255,7 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				manager = FBEditor.getEditorManager(),
+				noteManager = manager.getNoteManager(),
 				factory = manager.getFactory(),
 				root = manager.getContent(),
 				viewportId;
@@ -275,12 +276,16 @@ Ext.define(
 			{
 				// создаем
 				els.notebody = factory.createElement('notebody');
-				els.notebody.createScaffold();
+				els = Ext.apply(els, els.notebody.createScaffold());
 				els.notes.add(els.notebody, viewportId);
 				els.sync = els.notes;
 			}
 			
+			// ссылка
 			els.notebody.generateNoteId();
+			
+			// текст сноски
+			els.t.setText(els.t.getText() + ' ' + noteManager.getMaxNumber(), viewportId);
 		},
 		
 		/**
