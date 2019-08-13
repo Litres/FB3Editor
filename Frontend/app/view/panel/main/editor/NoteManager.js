@@ -148,6 +148,21 @@ Ext.define(
 		},
 		
 		/**
+		 * Переводит курсор к сноске в тексте.
+		 * @param {FBEditor.editor.element.note.NoteElement} el Элемент сноски.
+		 */
+		toNote: function (el)
+		{
+			var me = this,
+				helper;
+			
+			helper = el.getNodeHelper();
+			
+			// устанавливаем курсор в начало сноски
+			helper.setCursor({start: 1});
+		},
+		
+		/**
 		 * Возвращает тело сноски по сноске.
 		 * @param {FBEditor.editor.element.note.NoteElement} el Элемент сноски.
 		 * @return {FBEditor.editor.element.notebody.NotebodyElement}
@@ -162,6 +177,23 @@ Ext.define(
 			notebody = me.getNotebodyById(id);
 			
 			return notebody;
+		},
+		
+		/**
+		 * Возвращает все сноски, которые привязаны к телу сноски.
+		 * @param {FBEditor.editor.element.note.NotebodyElement} el Тело сноски.
+		 * @return {FBEditor.editor.element.notebody.NoteElement[]}
+		 */
+		getNotesByNotebody: function (el)
+		{
+			var me = this,
+				href,
+				notes;
+			
+			href = el.getId();
+			notes = me.getNotesByHref(href);
+			
+			return notes;
 		},
 		
 		/**
@@ -197,6 +229,34 @@ Ext.define(
 			);
 			
 			return el;
+		},
+		
+		/**
+		 * Возвращает все сноски по их ссылке.
+		 * @param {String} href  Ссылка сноски.
+		 * @return {FBEditor.editor.element.notebody.NoteElement[]}
+		 */
+		getNotesByHref: function (href)
+		{
+			var me = this,
+				manager = FBEditor.getEditorManager(),
+				root = manager.getContent(),
+				notes = [];
+			
+			if (href)
+			{
+				root.eachAll(
+					function (el)
+					{
+						if (el.isNote && el.getAttributes('href') === href)
+						{
+							notes.push(el);
+						}
+					}
+				);
+			}
+			
+			return notes;
 		}
 	}
 );

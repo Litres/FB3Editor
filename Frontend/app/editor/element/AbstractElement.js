@@ -984,7 +984,7 @@ Ext.define(
 		},
 		
 		/**
-		 * Возвращает id.
+		 * Возвращает id из аттрибута.
 		 * @return {String}
 		 */
 		getId: function ()
@@ -995,6 +995,21 @@ Ext.define(
 			id = me.attributes && me.attributes.id ? me.attributes.id : null;
 			
 			return id;
+		},
+		
+		/**
+		 * Возвращает данные аттрибутов или значение конкретного аттрибута, если передано его имя.
+		 * @param {String} [name] Имя аттрибута.
+		 * @return {Object|String}
+		 */
+		getAttributes: function (name)
+		{
+			var me = this,
+				attributes = me.attributes;
+			
+			attributes = name ? attributes[name] : attributes;
+			
+			return attributes;
 		},
 
 		/**
