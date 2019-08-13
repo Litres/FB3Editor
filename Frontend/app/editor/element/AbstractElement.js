@@ -961,11 +961,20 @@ Ext.define(
 		getData: function ()
 		{
 			var me = this,
+				notebody = me.getParentName('notebody'),
 				data,
 				el;
-
+			
 			// текущий выделенный элемент
-			el = me.isText || me.isBr ? me.parent : me;
+			if (notebody)
+			{
+				// тело сноски
+				el = notebody;
+			}
+			else
+			{
+				el = me.isText || me.isBr ? me.parent : me;
+			}
 
 			data = {
 				el: el,
