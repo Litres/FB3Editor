@@ -480,23 +480,30 @@ Ext.define(
 		
 		/**
 		 * Устанавливает курсор в начало элемента.
+		 * @param {Object} [opts] Дополнительные опции.
+		 * @param {Number} opts.start Стартовая позиция курсора.
 		 */
-		setCursor: function ()
+		setCursor: function (opts)
 		{
 			var me = this,
 				el = me.el,
 				manager = el.getManager(),
+				node,
 				helper,
 				firstDeep;
+			
+			opts = opts || {};
 			
 			// самый первый вложенный элемент
 			firstDeep = el.getDeepFirst();
 			helper = firstDeep.getNodeHelper();
+			node = helper.getNode();
 			
 			// ставим курсор
 			manager.setCursor(
 				{
-					startNode: helper.getNode()
+					startNode: node,
+					startOffset: opts.start ? opts.start : 0
 				}
 			);
 			
