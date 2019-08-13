@@ -23,6 +23,5 @@ Ext.define(
 			textCmp = view.getNoteTextCmp();
 			textCmp.updateView();
 		}
-		
 	}
 );

@@ -20,6 +20,8 @@ Ext.define(
 		xmlTag: 'note',
 		cls: 'el-note',
 		showedOnTree: false,
+		
+		isNote: true,
 
 		defaultAttributes: {
 			href: 'undefined',
