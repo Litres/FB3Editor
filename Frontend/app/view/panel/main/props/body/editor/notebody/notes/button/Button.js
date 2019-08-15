@@ -25,15 +25,16 @@ Ext.define(
 		/**
 		 * @property {Number} Порядковый номер сноски.
 		 */
-		number: 1,
+		number: 0,
 		
 		text: 'Перейти к сноске',
 		
 		initComponent: function ()
 		{
-			var me = this;
+			var me = this,
+				number = me.number;
 			
-			me.text += ' ' + me.number;
+			me.text += number ? ' ' + number : '';
 			
 			me.callParent(arguments);
 		},
