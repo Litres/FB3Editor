@@ -53,11 +53,13 @@ Ext.define(
 				notes,
 				function (note, i)
 				{
+					var number = notes.length > 1 ? i + 1 : 0;
+					
 					cmps.push(
 						{
 							xtype: 'panel-props-body-editor-notebody-notes-button',
 							noteEl: note,
-							number: i + 1
+							number: number
 						}
 					);
 				}
