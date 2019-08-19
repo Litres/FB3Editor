@@ -193,7 +193,7 @@ Ext.define(
 			{
 				// чистим текст
 				val = me.cleanText(node);
-
+				
 				if (val)
 				{
 					el = factory.createElementText(val);
@@ -205,6 +205,20 @@ Ext.define(
 				{
 					// пытаемся конвертировать span в другие элементы, учитывая его текущие CSS-стили
 					name = me.convertSpan(node);
+					
+					if (!name)
+					{
+						// получаем текст
+						val = me.cleanText(node.textContent);
+						
+						if (val)
+						{
+							// создаем текстовый элемент вместо span
+							el = factory.createElementText(val);
+						}
+						
+						return el;
+					}
 				}
 
 				// получаем универсальное имя элемента, которое используется в схеме
@@ -217,7 +231,7 @@ Ext.define(
 				{
 					// создаем вложенный родительский элемент
 
-					// получаем разрашенные атрибуты
+					// получаем разрешенные атрибуты
 					attributes = me.getAttributes(node, elementSchema);
 
 					// создаем элемент с аттрибутами
@@ -312,19 +326,29 @@ Ext.define(
 		/**
 		 * @private
 		 * Возвращает очищенный текст.
-		 * @param {Node} node Текстовый узел.
+		 * @param {Node|String} node Текстовый узел или текст.
+		 * @return {String}
 		 */
 		cleanText: function (node)
 		{
-			var t = node.nodeValue,
-				reg = FBEditor.ExcludedCompiler.regexpUtf;
+			var reg = FBEditor.ExcludedCompiler.regexpUtf,
+				t;
 
-			if (node.previousSibling &&
-			    node.previousSibling.nodeType === Node.COMMENT_NODE &&
-			    node.previousSibling.nodeValue === 'EndFragment')
+			if (node.nodeValue)
 			{
-				// пропускаем текстовый узел после завершающего комментария (для ворда)
-				return false;
+				t = node.nodeValue;
+
+				if (node.previousSibling &&
+					node.previousSibling.nodeType === Node.COMMENT_NODE &&
+					node.previousSibling.nodeValue === 'EndFragment')
+				{
+					// пропускаем текстовый узел после завершающего комментария (для ворда)
+					return false;
+				}
+			}
+			else
+			{
+				t = node;
 			}
 
 			t = t.replace(/[\n\t\s]+/ig, ' ');
@@ -361,6 +385,10 @@ Ext.define(
 			{
 				// преобразуем название элемента в title
 				return 'title';
+			}
+			else if (/^h[1-9]+/i.test(nodeName))
+			{
+				return 'p';
 			}
 
 			name = schema.elements[nodeName] ? nodeName : false;
