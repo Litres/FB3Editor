@@ -8,11 +8,17 @@ Ext.define(
 	'FBEditor.xsd.desc.Preamble',
 	{
 		extend: 'FBEditor.xsd.desc.AbstractAnnotation',
+		
+		getJson: function ()
+		{
+			var me = this,
+				json;
+			
+			json = me.callParent(['preamble']);
+			
+			return json;
+		},
 
-		/**
-		 * Вовзращает xsd.
-		 * @return {String} Строка xsd.
-		 */
 		getXsd: function ()
 		{
 			var me = this,
