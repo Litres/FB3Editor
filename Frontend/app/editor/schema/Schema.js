@@ -56,6 +56,7 @@ Ext.define(
 		{
 			var me = this,
 				schName = schemaName,
+				json,
 				xsl,
 				xsd,
 				xsdJson,
@@ -76,19 +77,33 @@ Ext.define(
 				options.schemaName = schName;
 				return FBEditor.editor.schema.Factory.defineType(name, options);
 			};
-
+			
 			try
 			{
-				me._xsd = me.createXsd(schName);
-				xsd = me._xsd.replace(/<schema.*?>/, "<schema>");
-				xsl = FBEditor.xsl.SchemaBody.getXsl();
-				xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
-				//console.log(xsdJson);
-
-				// преобразование строки в объект
-				eval(xsdJson);
-				me.elements = elements;
-				//Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: elements});
+				// получаем json схемы
+				json = me.getJson(schName);
+				
+				if (!json)
+				{
+					// если json схемы отсутствует, то получаем его из xsd
+					
+					me._xsd = me.createXsd(schName);
+					xsd = me._xsd.replace(/<schema.*?>/, "<schema>");
+					xsl = FBEditor.xsl.SchemaBody.getXsl();
+					xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
+					//console.log(xsdJson);
+					
+					// преобразование строки в объект
+					eval(xsdJson);
+					me.elements = elements;
+					console.log(JSON.stringify(me.elements));
+				}
+				else
+				{
+					me.elements = json;
+				}
+				
+				Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: me.elements});
 			}
 			catch (e)
 			{
@@ -242,6 +257,73 @@ Ext.define(
 			}
 
 			return children;
+		},
+		
+		/**
+		 * @private
+		 * Возвращает json схемы в зависимости от переданного имени.
+		 * @param {String} name Имя схемы.
+		 * @return {Object}
+		 */
+		getJson: function (name)
+		{
+			var n = name,
+				lastPart,
+				nameXsd,
+				json;
+			
+			if (Ext.isEmpty(n))
+			{
+				throw Error('Невозможно создать json схемы. Передано пустое назавние схемы.');
+			}
+			
+			// преобразуем имя в реальное
+			
+			n = n.toLowerCase();
+			n = n.replace(/-([a-z])/g, '$1');
+			
+			if (/:/.test(n))
+			{
+				// учитываем пространство имен
+				
+				n = n.split(':');
+				
+				// корректируем последнюю часть имени
+				lastPart = n.pop();
+				lastPart = Ext.String.capitalize(lastPart);
+				n.push(lastPart);
+				
+				n = n.join('.');
+			}
+			else
+			{
+				// без пространства имен
+				n = Ext.String.capitalize(n);
+			}
+			
+			nameXsd = 'FBEditor.xsd.' + n;
+			
+			try
+			{
+				json = Ext.create(nameXsd);
+				json = json.getJson ? json.getJson() : null;
+			}
+			catch (e)
+			{
+				json = '';
+				
+				Ext.log(
+					{
+						level: 'error',
+						msg: 'Не найдена схема: ' + nameXsd,
+						dump: e
+					}
+				);
+			}
+			
+			//console.log(name, xsd);
+			
+			return json;
 		},
 
 		/**
