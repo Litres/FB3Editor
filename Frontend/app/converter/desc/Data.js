@@ -116,24 +116,29 @@ Ext.define(
 					d.relations['relations-subject'],
 					function (index, item)
 					{
-						// конвертируем данные для типа связи
-						item['relations-subject-link-radio-' + number] = {};
-						item['relations-subject-link-radio-' + number]['rel-subject-link-' + number] =
-							item['relations-subject-link'];
-
-						if (item['relations-subject-link'] !== 'author' &&
-						    item['relations-subject-link'] !== 'translator'&&
-						    item['relations-subject-link'] !== 'publisher')
+						if (item['relations-subject-link'])
 						{
-							item['relations-subject-link-list'] = item['relations-subject-link'];
-							item['relations-subject-link-radio-' + number]['rel-subject-link-' + number] = 'other-list';
+							// конвертируем данные для типа связи
+							item['relations-subject-link-radio-' + number] = {};
+							
+							item['relations-subject-link-radio-' + number]['rel-subject-link-' + number] =
+								item['relations-subject-link'];
+							
+							if (item['relations-subject-link'] !== 'author' &&
+								item['relations-subject-link'] !== 'translator'&&
+								item['relations-subject-link'] !== 'publisher')
+							{
+								item['relations-subject-link-list'] = item['relations-subject-link'];
+								item['relations-subject-link-radio-' + number]['rel-subject-link-' + number] = 'other-list';
+							}
+							
+							delete item['relations-subject-link'];
+							
+							number++;
 						}
-
-						delete item['relations-subject-link'];
-
-						number++;
 					}
 				);
+				
 				delete d['fb3-relations'];
 			}
 
