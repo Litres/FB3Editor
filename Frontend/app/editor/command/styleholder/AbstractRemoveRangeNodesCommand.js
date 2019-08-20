@@ -118,7 +118,7 @@ Ext.define(
 
 						// удаляем пустой текстовый узел
 						//nodes.removed.push(nodes.common);
-						els.parent.removeAll(els.common, viewportId);
+						els.parent.remove(els.common, viewportId);
 
 						if (!els.parent.isStyleHolder)
 						{
