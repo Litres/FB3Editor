@@ -10,6 +10,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.view.panel.main.editor.button.AbstractButton',
 
+		// не используется, см. FBEditor.view.panel.main.editor.button.LiHolderButtonController#onSync()
 		isActiveSelection: function ()
 		{
 			var me = this,
@@ -23,7 +24,7 @@ Ext.define(
 				enable;
 
 			range = manager.getRange();
-
+			
 			if (!range)
 			{
 				return false;
