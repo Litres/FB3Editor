@@ -83,11 +83,12 @@ Ext.define(
 				// получаем json схемы
 				json = me.getJson(schName);
 				
+				me._xsd = me.createXsd(schName);
+				
 				if (!json)
 				{
 					// если json схемы отсутствует, то получаем его из xsd
 					
-					me._xsd = me.createXsd(schName);
 					xsd = me._xsd.replace(/<schema.*?>/, "<schema>");
 					xsl = FBEditor.xsl.SchemaBody.getXsl();
 					xsdJson = FBEditor.util.xml.Jsxml.trans(xsd, xsl);
