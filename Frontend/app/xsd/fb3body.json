@@ -1,0 +1,3076 @@
+{
+  "fb3-body": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "section": {
+            "name": "section",
+            "maxOccurs": "unbounded"
+          }
+        }
+      },
+      {
+        "element": {
+          "notes": {
+            "name": "notes",
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          }
+        }
+      },
+      {
+        "element": {
+          "notebody": {
+            "name": "notebody",
+            "type": "fb3b:SemiSimpleBodyType",
+            "maxOccurs": "unbounded"
+          }
+        }
+      }
+    ],
+    "choice": {}
+  },
+  "section": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "annotation": {
+            "name": "annotation",
+            "type": "fb3b:BasicAnnotationType",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "choice": {
+          "elements": [
+            {
+              "section": {
+                "name": "section",
+                "type": "fb3b:SectionType",
+                "maxOccurs": "unbounded"
+              }
+            },
+            {
+              "clipped": {
+                "name": "clipped"
+              }
+            }
+          ],
+          "sequence": [
+            {
+              "choice": {
+                "attributes": {
+                  "maxOccurs": "unbounded"
+                },
+                "elements": [
+                  {
+                    "p": {
+                      "name": "p",
+                      "type": "fb3b:StyleType"
+                    }
+                  },
+                  {
+                    "subtitle": {
+                      "name": "subtitle",
+                      "type": "fb3b:StyleType"
+                    }
+                  },
+                  {
+                    "ol": {
+                      "name": "ol"
+                    }
+                  },
+                  {
+                    "ul": {
+                      "name": "ul"
+                    }
+                  },
+                  {
+                    "pre": {
+                      "name": "pre",
+                      "type": "fb3b:PHolderType"
+                    }
+                  },
+                  {
+                    "table": {
+                      "name": "table"
+                    }
+                  },
+                  {
+                    "poem": {
+                      "name": "poem"
+                    }
+                  },
+                  {
+                    "blockquote": {
+                      "name": "blockquote",
+                      "type": "fb3b:PHolderType"
+                    }
+                  },
+                  {
+                    "br": {
+                      "name": "br",
+                      "type": "fb3b:BRType"
+                    }
+                  },
+                  {
+                    "div": {
+                      "name": "div",
+                      "type": "fb3b:DivBlockType"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "element": {
+                "subscription": {
+                  "name": "subscription",
+                  "type": "fb3b:SubscriptionType",
+                  "minOccurs": "0"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "section",
+      "maxOccurs": "unbounded",
+      "output": {
+        "name": "output",
+        "type": {},
+        "default": "default"
+      },
+      "id": {
+        "name": "id",
+        "type": {},
+        "use": "required"
+      },
+      "article": {
+        "name": "article",
+        "type": "boolean",
+        "use": "optional"
+      },
+      "doi": {
+        "name": "doi",
+        "type": {},
+        "use": "optional"
+      },
+      "clipped": {
+        "name": "clipped",
+        "type": "boolean"
+      },
+      "first-char-pos": {
+        "name": "first-char-pos",
+        "type": "positiveInteger"
+      }
+    }
+  },
+  "notes": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "notebody": {
+            "name": "notebody",
+            "type": "fb3b:SemiSimpleBodyType",
+            "maxOccurs": "unbounded"
+          }
+        }
+      }
+    ],
+    "choice": {}
+  },
+  "notebody": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "type": "fb3b:SimpleTextType",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "table": {
+                "name": "table",
+                "type": "fb3b:TableType"
+              }
+            },
+            {
+              "poem": {
+                "name": "poem",
+                "type": "fb3b:PoemType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "notebody",
+      "type": "fb3b:SemiSimpleBodyType",
+      "maxOccurs": "unbounded",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "title": {
+    "sequence": [
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "title",
+      "minOccurs": "0",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "epigraph": {
+    "sequence": [
+      {
+        "element": {
+          "poem": {
+            "name": "poem",
+            "type": "fb3b:PoemType"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "element": {
+          "poem": {
+            "name": "poem",
+            "type": "fb3b:PoemType"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "element": {
+          "br": {
+            "name": "br",
+            "type": "fb3b:BRType"
+          }
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ]
+  },
+  "poem": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "stanza": {
+            "name": "stanza",
+            "type": "fb3b:PHolderType",
+            "maxOccurs": "unbounded"
+          }
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "poem",
+      "type": "fb3b:PoemType",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "p": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "p",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "br": {
+    "sequence": [],
+    "choice": {},
+    "attributes": {
+      "name": "br",
+      "type": "fb3b:BRType",
+      "clear": {
+        "name": "clear",
+        "type": {},
+        "use": "optional"
+      },
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "subscription": {
+    "sequence": [
+      {
+        "choice": {
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:ReducedPHolderType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:ReducedPHolderType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:ReducedPHolderType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:ReducedPHolderType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "subscription",
+      "type": "fb3b:SubscriptionType",
+      "minOccurs": "0",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "annotation": {
+    "sequence": [
+      {
+        "choice": {
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:PHolderType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "annotation",
+      "type": "fb3b:BasicAnnotationType",
+      "minOccurs": "0",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "subtitle": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "subtitle",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "ol": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "li": {
+            "name": "li",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "li": {
+                "name": "li",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "ol",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "ul": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "li": {
+            "name": "li",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "li": {
+                "name": "li",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "ul",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "pre": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {}
+  },
+  "table": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "tr": {
+            "name": "tr",
+            "maxOccurs": "unbounded"
+          }
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "table",
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "blockquote": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {}
+  },
+  "div": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "type": "fb3b:SimpleTextType",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "marker": {
+            "name": "marker",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "choice": {
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "table": {
+                "name": "table",
+                "type": "fb3b:TableType"
+              }
+            },
+            {
+              "poem": {
+                "name": "poem",
+                "type": "fb3b:PoemType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:PHolderType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "ol": {
+                "name": "ol",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "ul": {
+                "name": "ul",
+                "type": "fb3b:LiHolderType"
+              }
+            },
+            {
+              "pre": {
+                "name": "pre",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "table": {
+                "name": "table",
+                "type": "fb3b:TableType"
+              }
+            },
+            {
+              "poem": {
+                "name": "poem",
+                "type": "fb3b:PoemType"
+              }
+            },
+            {
+              "blockquote": {
+                "name": "blockquote",
+                "type": "fb3b:PHolderType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "div",
+      "type": "fb3b:DivBlockType",
+      "float": {
+        "name": "float",
+        "use": "optional",
+        "type": {
+          "base": "token",
+          "enumeration": [
+            "left",
+            "right",
+            "center",
+            "default"
+          ]
+        }
+      },
+      "align": {
+        "name": "align",
+        "type": {},
+        "use": "optional"
+      },
+      "bindto": {
+        "name": "bindto",
+        "type": "IDREF",
+        "use": "optional"
+      },
+      "border": {
+        "name": "border",
+        "type": "boolean",
+        "use": "optional"
+      },
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      },
+      "on-one-page": {
+        "name": "on-one-page",
+        "type": "boolean",
+        "use": "optional"
+      },
+      "width": {
+        "name": "width",
+        "type": {},
+        "use": "optional"
+      },
+      "min-width": {
+        "name": "min-width",
+        "type": {},
+        "use": "optional"
+      },
+      "max-width": {
+        "name": "max-width",
+        "type": {},
+        "use": "optional"
+      }
+    }
+  },
+  "clipped": {
+    "sequence": []
+  },
+  "marker": {
+    "sequence": [
+      {
+        "element": {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        }
+      }
+    ]
+  },
+  "img": {
+    "sequence": [],
+    "choice": {},
+    "attributes": {
+      "name": "img",
+      "type": "fb3b:ImgType",
+      "src": {
+        "name": "src",
+        "type": "anyURI",
+        "use": "required"
+      },
+      "alt": {
+        "name": "alt",
+        "type": "string",
+        "use": "optional"
+      },
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      },
+      "width": {
+        "name": "width",
+        "type": {},
+        "use": "optional"
+      },
+      "min-width": {
+        "name": "min-width",
+        "type": {},
+        "use": "optional"
+      },
+      "max-width": {
+        "name": "max-width",
+        "type": {},
+        "use": "optional"
+      }
+    }
+  },
+  "tr": {
+    "sequence": [
+      {
+        "element": {
+          "th": {
+            "name": "th",
+            "type": "fb3b:TDType"
+          }
+        }
+      },
+      {
+        "element": {
+          "td": {
+            "name": "td",
+            "type": "fb3b:TDType"
+          }
+        }
+      }
+    ]
+  },
+  "th": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "th",
+      "type": "fb3b:TDType",
+      "colspan": {
+        "name": "colspan",
+        "type": "integer",
+        "use": "optional"
+      },
+      "rowspan": {
+        "name": "rowspan",
+        "type": "integer",
+        "use": "optional"
+      },
+      "align": {
+        "name": "align",
+        "type": {},
+        "use": "optional",
+        "default": "left"
+      },
+      "valign": {
+        "name": "valign",
+        "type": {},
+        "use": "optional",
+        "default": "top"
+      }
+    }
+  },
+  "td": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {},
+    "attributes": {
+      "name": "td",
+      "type": "fb3b:TDType",
+      "colspan": {
+        "name": "colspan",
+        "type": "integer",
+        "use": "optional"
+      },
+      "rowspan": {
+        "name": "rowspan",
+        "type": "integer",
+        "use": "optional"
+      },
+      "align": {
+        "name": "align",
+        "type": {},
+        "use": "optional",
+        "default": "left"
+      },
+      "valign": {
+        "name": "valign",
+        "type": {},
+        "use": "optional",
+        "default": "top"
+      }
+    }
+  },
+  "strong": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "strong",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "em": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "em",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "strikethrough": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "strikethrough",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "sub": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "sub",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "sup": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "sup",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "code": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "code",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "underline": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "underline",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "spacing": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "spacing",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "span": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "span",
+      "class": {
+        "name": "class",
+        "type": "normalizedString",
+        "use": "optional"
+      },
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "note": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "note",
+      "type": "fb3b:NoteType",
+      "mixed": true,
+      "href": {
+        "name": "href",
+        "type": "IDREF",
+        "use": "required"
+      },
+      "role": {
+        "name": "role",
+        "use": "optional",
+        "default": "auto",
+        "type": {
+          "base": "token",
+          "enumeration": [
+            "auto",
+            "footnote",
+            "endnote",
+            "comment",
+            "other"
+          ]
+        }
+      },
+      "autotext": {
+        "name": "autotext",
+        "default": "1",
+        "use": "optional",
+        "type": {
+          "base": "token",
+          "enumeration": [
+            "1",
+            "i",
+            "a",
+            "*",
+            "keep"
+          ]
+        }
+      },
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "a": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleInLinkType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "a",
+      "type": "fb3b:LinkType",
+      "mixed": true,
+      "href": {
+        "name": "href",
+        "type": "anyURI",
+        "use": "required"
+      },
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "smallcaps": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "smallcaps",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "paper-page-break": {
+    "sequence": [],
+    "choice": {},
+    "attributes": {
+      "name": "paper-page-break",
+      "type": "fb3b:PaperPageBreakType",
+      "page-before": {
+        "name": "page-before",
+        "type": "positiveInteger",
+        "use": "required"
+      },
+      "page-after": {
+        "name": "page-after",
+        "type": "positiveInteger",
+        "use": "optional"
+      }
+    }
+  },
+  "li": {
+    "sequence": [],
+    "choice": {
+      "attributes": {
+        "minOccurs": "0",
+        "maxOccurs": "unbounded"
+      },
+      "elements": [
+        {
+          "strong": {
+            "name": "strong",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "em": {
+            "name": "em",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "strikethrough": {
+            "name": "strikethrough",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sub": {
+            "name": "sub",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "sup": {
+            "name": "sup",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "code": {
+            "name": "code",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "underline": {
+            "name": "underline",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "spacing": {
+            "name": "spacing",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "span": {
+            "name": "span"
+          }
+        },
+        {
+          "note": {
+            "name": "note",
+            "type": "fb3b:NoteType"
+          }
+        },
+        {
+          "a": {
+            "name": "a",
+            "type": "fb3b:LinkType"
+          }
+        },
+        {
+          "smallcaps": {
+            "name": "smallcaps",
+            "type": "fb3b:StyleType"
+          }
+        },
+        {
+          "img": {
+            "name": "img",
+            "type": "fb3b:ImgType"
+          }
+        },
+        {
+          "paper-page-break": {
+            "name": "paper-page-break",
+            "type": "fb3b:PaperPageBreakType"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "name": "li",
+      "type": "fb3b:StyleType",
+      "mixed": true,
+      "id": {
+        "name": "id",
+        "type": "ID",
+        "use": "optional"
+      }
+    }
+  },
+  "stanza": {
+    "sequence": [
+      {
+        "element": {
+          "title": {
+            "name": "title",
+            "minOccurs": "0"
+          }
+        }
+      },
+      {
+        "element": {
+          "epigraph": {
+            "name": "epigraph",
+            "minOccurs": "0",
+            "maxOccurs": "25"
+          }
+        }
+      },
+      {
+        "element": {
+          "p": {
+            "name": "p",
+            "type": "fb3b:StyleType"
+          }
+        }
+      },
+      {
+        "choice": {
+          "attributes": {
+            "minOccurs": "0",
+            "maxOccurs": "unbounded"
+          },
+          "elements": [
+            {
+              "p": {
+                "name": "p",
+                "type": "fb3b:StyleType"
+              }
+            },
+            {
+              "br": {
+                "name": "br",
+                "type": "fb3b:BRType"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "element": {
+          "subscription": {
+            "name": "subscription",
+            "type": "fb3b:SubscriptionType",
+            "minOccurs": "0"
+          }
+        }
+      }
+    ],
+    "choice": {}
+  }
+}

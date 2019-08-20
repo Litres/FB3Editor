@@ -8,11 +8,17 @@ Ext.define(
 	'FBEditor.xsd.desc.Annotation',
 	{
 		extend: 'FBEditor.xsd.desc.AbstractAnnotation',
+		
+		getJson: function ()
+		{
+			var me = this,
+				json;
+			
+			json = me.callParent(['annotation']);
+			
+			return json;
+		},
 
-		/**
-		 * Вовзращает xsd.
-		 * @return {String} Строка xsd.
-		 */
 		getXsd: function ()
 		{
 			var me = this,

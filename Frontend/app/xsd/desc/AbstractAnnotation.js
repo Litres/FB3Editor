@@ -8,6 +8,166 @@ Ext.define(
 	'FBEditor.xsd.desc.AbstractAnnotation',
 	{
 		/**
+		 * Возвращает JSON.
+		 * @return {Object}
+		 */
+		getJson: function (name)
+		{
+			var json;
+			
+			json = {
+				"name": {
+					"sequence": [
+						{
+							"element": {
+								"p": {
+									"name": "p",
+									"type": "fb3d:BasicTextType"
+								}
+							}
+						},
+						{
+							"element": {
+								"p": {
+									"name": "p",
+									"type": "fb3d:BasicTextType"
+								}
+							}
+						},
+						{
+							"element": {
+								"br": {
+									"name": "br"
+								}
+							}
+						}
+					]
+				},
+				"p": {
+					"sequence": [],
+					"choice": {
+						"attributes": {
+							"minOccurs": "0",
+							"maxOccurs": "unbounded"
+						},
+						"elements": [
+							{
+								"strong": {
+									"name": "strong",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"em": {
+									"name": "em",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"a": {
+									"name": "a"
+								}
+							}
+						]
+					}
+				},
+				"br": {
+					"sequence": []
+				},
+				"strong": {
+					"sequence": [],
+					"choice": {
+						"attributes": {
+							"minOccurs": "0",
+							"maxOccurs": "unbounded"
+						},
+						"elements": [
+							{
+								"strong": {
+									"name": "strong",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"em": {
+									"name": "em",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"a": {
+									"name": "a"
+								}
+							}
+						]
+					}
+				},
+				"em": {
+					"sequence": [],
+					"choice": {
+						"attributes": {
+							"minOccurs": "0",
+							"maxOccurs": "unbounded"
+						},
+						"elements": [
+							{
+								"strong": {
+									"name": "strong",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"em": {
+									"name": "em",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"a": {
+									"name": "a"
+								}
+							}
+						]
+					}
+				},
+				"a": {
+					"sequence": [],
+					"choice": {
+						"attributes": {
+							"minOccurs": "0",
+							"maxOccurs": "unbounded"
+						},
+						"elements": [
+							{
+								"strong": {
+									"name": "strong",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"em": {
+									"name": "em",
+									"type": "fb3d:BasicTextType"
+								}
+							},
+							{
+								"a": {
+									"name": "a"
+								}
+							}
+						]
+					}
+				}
+			};
+			
+			json[name] = json.name;
+			
+			delete json.name;
+			
+			return json;
+		},
+		
+		/**
 		 * Вовзращает xsd.
 		 * @return {String} Строка xsd.
 		 */
