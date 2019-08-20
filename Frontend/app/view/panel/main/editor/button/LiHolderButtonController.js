@@ -28,7 +28,7 @@ Ext.define(
             }
 
             range = manager.getRange();
-
+            
             if (!range)
             {
                 btn.disable();
@@ -48,10 +48,13 @@ Ext.define(
 
             if (!els.p)
             {
-                return;
+                els.p = range.start.getElement().getStyleHolder();
+	            els.parent = els.node;
             }
-
-            els.parent = els.p.parent;
+            else
+            {
+	            els.parent = els.p.parent;
+            }
 
             // создаем временный элемент для проверки новой структуры
             els.new = factory.createElement(name);
