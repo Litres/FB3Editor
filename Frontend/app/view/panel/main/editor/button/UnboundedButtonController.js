@@ -17,191 +17,51 @@ Ext.define(
 			var me = this,
 				btn = me.getView(),
 				manager = btn.getEditorManager(),
-				factory = FBEditor.editor.Factory,
-				nodes = {},
-				els = {},
-				pos = {},
 				name = btn.elementName,
-				xml,
+				els = {},
+				hash = {},
 				range;
 			
 			if (!manager.availableSyncButtons())
 			{
 				me.verifyResult(true);
-				//btn.enable();
 				return;
 			}
 			
 			range = manager.getRange();
 
-			if (!range)
+			if (!range || !range.common.getElement || range.common.getElement().isRoot)
 			{
 				me.verifyResult(false);
-				//btn.disable();
-				return false;
+				return;
 			}
-
+			
+			els.node = range.common.getElement();
+			
 			if (!range.collapsed)
 			{
-				nodes.common = range.common;
-
-				if (!nodes.common.getElement || nodes.common.getElement().isRoot)
-				{
-					me.verifyResult(false);
-					//btn.disable();
-					return false;
-				}
-
-				els.common = nodes.common.getElement();
-				nodes.start = range.start;
-				els.start = nodes.start.getElement();
-				nodes.end = range.end;
-				els.end = nodes.end.getElement();
-
 				// ищем самый верхниий элемент, который может делиться на несколько
-				while (!els.common.splittable)
+				while (!els.node.splittable)
 				{
-					nodes.common = nodes.common.parentNode;
-					els.common = nodes.common.getElement();
-					if (els.common.isRoot)
+					els.node = els.node.getParent();
+					
+					if (els.node.isRoot)
 					{
 						me.verifyResult(false);
-						//btn.disable();
-						return false;
+						return;
 					}
 				}
-
-				// получаем позицию первого элемента из выделения
-				nodes.start = range.start;
-				els.start = nodes.start.getElement();
-				nodes.parentStart = nodes.start.parentNode;
-				els.parentStart = nodes.parentStart.getElement();
-				while (els.parentStart.elementId !== els.common.elementId)
-				{
-					nodes.start = nodes.parentStart;
-					els.start = nodes.start.getElement();
-					nodes.parentStart = nodes.start.parentNode;
-					els.parentStart = nodes.parentStart.getElement();
-				}
-				pos.start = els.common.getChildPosition(els.start);
-
-				// получаем позицию последнего элемента из выделения
-				nodes.end = range.end;
-				els.end = nodes.end.getElement();
-				nodes.parentEnd = nodes.end.parentNode;
-				els.parentEnd = nodes.parentEnd.getElement();
-				while (els.parentEnd.elementId !== els.common.elementId)
-				{
-					nodes.end = nodes.parentEnd;
-					els.end = nodes.end.getElement();
-					nodes.parentEnd = nodes.end.parentNode;
-					els.parentEnd = nodes.parentEnd.getElement();
-				}
-				pos.end = els.common.getChildPosition(els.end);
-
-				// позиция выделения относительно затронутых элементов
-				pos.isStart = els.start.isStartRange(range);
-				pos.isEnd = els.end.isEndRange(range);
-				
-				//console.log('pos', pos);
-
-				// создаем временный элемент для проверки новой структуры
-				els.newEl = factory.createElement(name);
-				els.newEl.createScaffold();
-
-				pos.count = pos.end - pos.start;
-				pos.start = !pos.isStart ? pos.start + 1 : pos.start;
-				pos.count = pos.isStart && pos.isEnd ? pos.count + 1 : pos.count;
-				pos.count = !pos.isStart && !pos.isEnd ? pos.count - 1 : pos.count;
-
-				//console.log(els);
-				//console.log(pos);
-
-				els.common.children.splice(pos.start, 0, els.newEl);
-
-				// переносим все выделенные элементы во временный
-				els.rangeNext = els.common.children[pos.start + pos.count + 1];
-				els.range = els.common.children.splice(pos.start + 1, pos.count);
-				for (var i = 0; i < pos.count; i++)
-				{
-					els.newEl.add(els.range[i]);
-				}
-
-				// получаем xml
-				xml = me.getContentXml();
-
-				//console.log(name, xml);
-
-				// возвращаем все выделенные элементы обратно
-				for (i = 0; i < pos.count; i++)
-				{
-					if (els.rangeNext)
-					{
-						els.common.insertBefore(els.range[i], els.rangeNext);
-					}
-					else
-					{
-						els.common.add(els.range[i]);
-					}
-				}
-
-				// удаляем временный элемент
-				els.common.children.splice(pos.start, 1);
-
-				// проверяем по схеме
-				me.verify(xml);
 			}
 			else
 			{
-				nodes.node = range.common;
-
-				if (!nodes.node.getElement || nodes.node.getElement().isRoot)
-				{
-					me.verifyResult(false);
-					//btn.disable();
-					return false;
-				}
-
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-
-				while (els.parent.isStyleHolder || els.parent.isStyleType)
-				{
-					nodes.node = nodes.parent;
-					els.node = nodes.node.getElement();
-					nodes.parent = nodes.node.parentNode;
-					els.parent = nodes.parent.getElement();
-				}
-
-				els.parent = nodes.parent.getElement();
-				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
-
-				nodes.parent = els.node.isRoot ? nodes.node : nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
-
-				// создаем временный элемент для проверки новой структуры
-				els.newEl = factory.createElement(name);
-				els.newEl.createScaffold();
-
-				pos = els.parent.getChildPosition(els.node) + 1;
-				els.parent.children.splice(pos, 0, els.newEl);
-
-				// получаем xml
-				xml = me.getContentXml();
-
-				// удаляем временный элемент
-				els.parent.children.splice(pos, 1);
-
-				//console.log('xml', xml);
-
-				// проверяем по схеме
-				me.verify(xml);
+				els.node = els.node.getStyleHolder();
+				els.parent = els.node.getParent();
+				els.node = els.parent.hisName(name) ? els.parent : els.node;
+				els.node = els.node.isRoot ? els.node : els.node.getParent();
 			}
 			
-			//console.log('div xml', manager.getXml());
-
-			return true;
+			hash[name] = me.getHash(els.node);
+			me.verifyHash(hash);
 		}
 	}
 );

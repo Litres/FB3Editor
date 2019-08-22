@@ -21,7 +21,7 @@ Ext.define(
 		 * @property {Object} Элементы схемы в виде json.
 		 */
 		elements: null,
-
+		
 		/**
 		 * @private
 		 * @property {String} Схема текста.
@@ -492,6 +492,71 @@ Ext.define(
 		getName: function (el)
 		{
 			return el.attributes.name;
+		},
+		
+		/**
+		 * Проверяет хэш по json-схеме.
+		 * @param {Object} hash Хэш.
+		 * @return {Boolean} Успешна ли проверка.
+		 */
+		verifyHash: function (hash)
+		{
+			var me = this,
+				res = true,
+				parentName,
+				name,
+				val;
+			
+			//console.log('verify', hash);
+			
+			name = Ext.Object.getKeys(hash)[0];
+			val = hash[name];
+			
+			while (val)
+			{
+				parentName = Ext.Object.getKeys(val)[0];
+				val = val[parentName];
+				
+				//console.log([parentName, name]);
+				
+				res = me.isChild(parentName, name);
+				
+				if (!res)
+				{
+					// как только встречается несоответствие вложенности элементов - выходим
+					break;
+				}
+				
+				name = parentName;
+			}
+			
+			return res;
+		},
+		
+		/**
+		 * Возвращает хэш всей родительской цепочки элемента до корня.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @return {Object}
+		 */
+		getHash: function (el)
+		{
+			var me = this,
+				parent = el.getParent(),
+				name = el.getName(),
+				hash = {},
+				next;
+			
+			next = hash[name] = {};
+			
+			while (parent)
+			{
+				next = next || {};
+				name = parent.getName();
+				next = next[name] = false;
+				parent = parent.getParent()
+			}
+			
+			return hash;
 		},
 
 		/**
