@@ -41,12 +41,10 @@ Ext.define(
 			if (!btn.isActiveSelection())
 			{
 				me.verifyResult(false);
-				//btn.disable();
 			}
 			else
 			{
 				me.verifyResult(true);
-				//btn.enable();
 			}
 		},
 
@@ -67,6 +65,40 @@ Ext.define(
 
 			// вызываем проверку по схеме
 			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+		},
+		
+		/**
+		 * Проверяет хэш по схеме.
+		 * @param {Object} hash
+		 */
+		verifyHash: function (hash)
+		{
+			var me = this,
+				btn = me.getView(),
+				manager = btn.getEditorManager(),
+				sch = manager.getSchema(),
+				res;
+			
+			res = sch.verifyHash(hash);
+			me.verifyResult(res);
+		},
+		
+		/**
+		 * Возвращает хэш всей родительской цепочки элемента до корня.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
+		 * @return {Object}
+		 */
+		getHash: function (el)
+		{
+			var me = this,
+				btn = me.getView(),
+				manager = btn.getEditorManager(),
+				sch = manager.getSchema(),
+				hash;
+			
+			hash = sch.getHash(el);
+			
+			return hash;
 		},
 
 		/**
