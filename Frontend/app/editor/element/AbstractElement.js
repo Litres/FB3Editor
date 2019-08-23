@@ -1561,6 +1561,29 @@ Ext.define(
 
 			return el;
 		},
+		
+		/**
+		 * Возвращает родительский элемент, который может делиться на несколько.
+		 * @return {FBEditor.editor.element.AbstractElement} Делимый родительский элемент.
+		 */
+		getSplittable: function ()
+		{
+			var el = this;
+			
+			while (!el.splittable)
+			{
+				if (el.isRoot)
+				{
+					el = null;
+					
+					break;
+				}
+				
+				el = el.getParent();
+			}
+			
+			return el;
+		},
 
 		/**
 		 * Возвращает список дочерних элементов, которые имеют определенные имена.

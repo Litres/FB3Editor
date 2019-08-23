@@ -16,8 +16,8 @@ Ext.define(
 		{
 			var me = this,
 				btn = me.getView(),
-				manager = btn.getEditorManager(),
 				name = btn.elementName,
+				manager = btn.getEditorManager(),
 				els = {},
 				hash = {},
 				range;
@@ -33,6 +33,7 @@ Ext.define(
 			if (!range || !range.common.getElement || range.common.getElement().isRoot)
 			{
 				me.verifyResult(false);
+				
 				return;
 			}
 			
@@ -41,16 +42,27 @@ Ext.define(
 			if (!range.collapsed)
 			{
 				// ищем самый верхниий элемент, который может делиться на несколько
-				while (!els.node.splittable)
+				els.node = els.node.getSplittable();
+				
+				if (els.node)
 				{
-					els.node = els.node.getParent();
+					els.start = range.start.getElement();
+					els.start = els.start.getSplittable();
+					els.end = range.end.getElement();
+					els.end = els.end.getSplittable();
 					
-					if (els.node.isRoot)
+					if (els.start.equal(els.end))
 					{
-						me.verifyResult(false);
+						// если начальная и конечная точки выделения находятся в одном и том же делимом элементе
+						
+						hash[name] = me.getHash(els.node);
+						me.verifyHash(hash);
+						
 						return;
 					}
 				}
+				
+				me.verifyResult(false);
 			}
 			else
 			{
@@ -58,10 +70,10 @@ Ext.define(
 				els.parent = els.node.getParent();
 				els.node = els.parent.hisName(name) ? els.parent : els.node;
 				els.node = els.node.isRoot ? els.node : els.node.getParent();
+				
+				hash[name] = me.getHash(els.node);
+				me.verifyHash(hash);
 			}
-			
-			hash[name] = me.getHash(els.node);
-			me.verifyHash(hash);
 		}
 	}
 );

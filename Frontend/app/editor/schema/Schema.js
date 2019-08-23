@@ -104,7 +104,7 @@ Ext.define(
 					me.elements = json;
 				}
 				
-				Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: me.elements});
+				//Ext.log({msg: 'Элементы схемы ' + schName, level: 'info', dump: me.elements});
 			}
 			catch (e)
 			{

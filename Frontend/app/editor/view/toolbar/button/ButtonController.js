@@ -140,11 +140,6 @@ Ext.define(
 			
 			sequence = btn.getSequence();
 
-			/*if (btn.elementName === 'table')
-			{
-				console.log(enable);
-			}*/
-			
 			if (enable)
 			{
 				btn.enable();
