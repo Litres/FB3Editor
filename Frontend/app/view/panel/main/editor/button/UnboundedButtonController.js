@@ -33,7 +33,6 @@ Ext.define(
 			if (!range || !range.common.getElement || range.common.getElement().isRoot)
 			{
 				me.verifyResult(false);
-				
 				return;
 			}
 			
@@ -47,11 +46,11 @@ Ext.define(
 				if (els.node)
 				{
 					els.start = range.start.getElement();
-					els.start = els.start.getSplittable();
+					els.startSplit = els.start.getSplittable();
 					els.end = range.end.getElement();
-					els.end = els.end.getSplittable();
+					els.endSplit = els.end.getSplittable();
 					
-					if (els.start.equal(els.end))
+					if (els.startSplit.equal(els.endSplit))
 					{
 						// если начальная и конечная точки выделения находятся в одном и том же делимом элементе
 						

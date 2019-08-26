@@ -13,68 +13,44 @@ Ext.define(
 		{
             var me = this,
                 btn = me.getView(),
+	            name = btn.elementName,
                 manager = btn.getEditorManager(),
-                factory = FBEditor.editor.Factory,
                 nodes = {},
                 els = {},
-                name = btn.elementName,
-                range,
-                xml;
+	            hash = {},
+                range;
 
             if (!manager.availableSyncButtons())
             {
-                btn.enable();
+	            me.verifyResult(true);
                 return;
             }
 
             range = manager.getRange();
             
-            if (!range)
+            if (!range || !range.common.getElement || range.common.getElement().isRoot)
             {
-                btn.disable();
+	            me.verifyResult(false);
                 return;
             }
-
-            nodes.node = range.common;
-
-            if (!nodes.node.getElement || nodes.node.getElement().isRoot)
-            {
-                btn.disable();
-                return;
-            }
-
-            els.node = nodes.node.getElement();
-            els.p = els.node.getStyleHolder();
-
-            if (!els.p)
-            {
-                els.p = range.start.getElement().getStyleHolder();
-	            els.parent = els.node;
-            }
-            else
-            {
-	            els.parent = els.p.parent;
-            }
-
-            // создаем временный элемент для проверки новой структуры
-            els.new = factory.createElement(name);
-            els.new.createScaffold();
-
-            //els.parent.children.push(els.newEl);
-			els.parent.insertBefore(els.new, els.p);
-            els.parent.remove(els.p);
-
-            // получаем xml
-            xml = manager.getContent().getXml(true);
-
-            //console.log(name, xml);
-
-            // восстанавливаем абзац и удаляем временный элемент
-            els.parent.insertBefore(els.p, els.new);
-            els.parent.remove(els.new);
-
-            // проверяем по схеме
-            me.verify(xml);
+			
+			nodes.node = range.common;
+			els.node = nodes.node.getElement();
+			els.p = els.node.getStyleHolder();
+			els.parent = els.node.getParent();
+			
+			if (!els.p)
+			{
+				els.p = range.start.getElement().getStyleHolder();
+				els.parent = els.node;
+			}
+			else
+			{
+				els.parent = els.p.getParent();
+			}
+			
+			hash[name] = me.getHash(els.parent);
+			me.verifyHash(hash);
 		}
 	}
 );
