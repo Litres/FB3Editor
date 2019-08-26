@@ -68,7 +68,6 @@ Ext.define(
 				return;
 			}
 			
-			
 			els.parent = els.p.getParent();
 			
 			hash[name] = me.getHash(els.parent);
