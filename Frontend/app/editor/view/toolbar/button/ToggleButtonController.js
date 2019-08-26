@@ -64,8 +64,6 @@ Ext.define(
 			if (!range)
 			{
 				me.verifyResult(false);
-				//btn.disable();
-
 				return;
 			}
 
@@ -82,22 +80,21 @@ Ext.define(
 
 			//console.log('state', state);
 
-			me.verifyResult(true);
-			//btn.enable();
-
 			if (!state)
 			{
 				// активность кнопки для отжатого состояния
 				if (!btn.isActiveSelection())
 				{
 					me.verifyResult(false);
-					//btn.disable();
 				}
 				else
 				{
 					me.verifyResult(true);
-					//btn.enable();
 				}
+			}
+			else
+			{
+				me.verifyResult(true);
 			}
 		}
 	}
