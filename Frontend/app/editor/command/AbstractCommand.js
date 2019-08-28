@@ -363,15 +363,17 @@ Ext.define(
 						}
 					)
 				}
-			)
+			);
 		},
 		
 		/**
 		 * Проверяет по схеме элемент.
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
-		 * @param {Boolean} [debug] Нужны ли отладочные сообщения.
+		 * @param {Object} [opts] Дополнительные опции.
+		 * @param {Boolean} [opts.validXml] Нужно ли проверить получившуюся структуру документа через xsd.
+		 * @param {Boolean} [opts.debug] Нужны ли отладочные сообщения.
 		 */
-		verifyElement: function (el, debug)
+		verifyElement: function (el, opts)
 		{
 			var me = this,
 				manager = el.getManager(),
@@ -385,22 +387,27 @@ Ext.define(
 				return true;
 			}
 			
-			// получаем xml без текстовых элементов
-			xml = manager.getContent().getXml(true);
+			opts = opts || {};
 			
-			//console.log(xml);
-			
-			scopeData = {
-				el: el,
-				debug: debug,
-				syncButtons: me.syncButtons
-			};
-			
-			// приостанавливаем обработку команд на время выполнения проверки по схеме
-			manager.setSuspendCmd(true);
-			
-			// вызываем проверку по схеме
-			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+			if (opts.validXml)
+			{
+				// получаем xml без текстовых элементов
+				xml = manager.getContent().getXml(true);
+				
+				//console.log(xml);
+				
+				scopeData = {
+					el: el,
+					debug: opts.debug,
+					syncButtons: me.syncButtons
+				};
+				
+				// приостанавливаем обработку команд на время выполнения проверки по схеме
+				manager.setSuspendCmd(true);
+				
+				// вызываем проверку по схеме
+				sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+			}
 		},
 
 		/**

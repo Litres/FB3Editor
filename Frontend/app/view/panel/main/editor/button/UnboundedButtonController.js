@@ -60,19 +60,25 @@ Ext.define(
 						return;
 					}
 				}
-				
-				me.verifyResult(false);
 			}
 			else
 			{
 				els.node = els.node.getStyleHolder();
-				els.parent = els.node.getParent();
-				els.node = els.parent.hisName(name) ? els.parent : els.node;
-				els.node = els.node.isRoot ? els.node : els.node.getParent();
 				
-				hash[name] = me.getHash(els.node);
-				me.verifyHash(hash);
+				if (els.node)
+				{
+					els.parent = els.node.getParent();
+					els.node = els.parent.hisName(name) ? els.parent : els.node;
+					els.node = els.node.isRoot ? els.node : els.node.getParent();
+					
+					hash[name] = me.getHash(els.node);
+					me.verifyHash(hash);
+					
+					return;
+				}
 			}
+			
+			me.verifyResult(false);
 		}
 	}
 );

@@ -174,9 +174,6 @@ Ext.define(
                 // восстанавливаем выделение
                 manager.restoreSelection();
 
-                // проверяем по схеме
-                //me.verifyElement(els.sectionParent);
-
                 res = true;
             }
             catch (e)

@@ -121,13 +121,6 @@ Ext.define(
 		 * @property {FBEditor.editor.element.AbstractElement} Текущий выделенный элемент в редакторе.
 		 */
 		focusElement: null,
-
-		/**
-		 * @private
-		 * @property {String} Кэш для синхронизации кнопок.
-		 * Используется для защиты от многократной синхронизации кнопок.
-		 */
-		cashSyncBtn: null,
 		
 		/**
 		 * @private
@@ -726,8 +719,7 @@ Ext.define(
 				panelProps = me.getPanelProps(),
 				el,
 				range,
-				newRange,
-				difCollapsed;
+				newRange;
 
 			el = node.getElement ? node.getElement() : null;
 
@@ -741,7 +733,7 @@ Ext.define(
                     // обновляем информацию о выделенном элементе в панели свойств
                     panelProps.fireEvent('loadData', el);
                 }
-
+                
 				me.focusElement = el;
 				me.selection = sel || window.getSelection();
 				range = me.selection.rangeCount ? me.selection.getRangeAt(0) : null;
@@ -750,8 +742,6 @@ Ext.define(
 
                 if (range)
 				{
-					difCollapsed = me.range ? me.range.collapsed !== range.collapsed : true;
-					
 					newRange = {
 						collapsed: range.collapsed,
 						common: range.commonAncestorContainer,
@@ -766,13 +756,9 @@ Ext.define(
 							return range.toString();
 						}
 					};
-					
-					me.setRange(newRange);
 				}
 				else
 				{
-					difCollapsed = true;
-					
 					newRange = {
 						collapsed: true,
 						common: node,
@@ -787,20 +773,15 @@ Ext.define(
 							return '';
 						}
 					};
-					
-					me.setRange(newRange);
 				}
-
-				if (!el.isText && me.cashSyncBtn !== el.elementId || difCollapsed)
+				
+				//console.log('range', newRange);
+				
+				me.setRange(newRange);
+				
+				if (!withoutSyncButtons)
 				{
-					// синхронизируем кнопки элементов с текущим выделением
-					// защита от многократной синхронизации на одном и том же элементе
-					me.cashSyncBtn = el.elementId;
-
-					if (!withoutSyncButtons)
-					{
-						me.syncButtons();
-					}
+					me.syncButtons();
 				}
 			}
 		},
@@ -975,14 +956,6 @@ Ext.define(
 		},
 
 		/**
-		 * Очищает куэш синхронизированной кнопки.
-		 */
-		clearCacheSyncButton: function ()
-		{
-			this.cashSyncBtn = null;
-		},
-
-		/**
 		 * Доступна ли синхронизация кнопок.
 		 * @return {Boolean}
 		 */
@@ -999,7 +972,7 @@ Ext.define(
 			var me = this,
 				editor = me.getEditor();
 
-			console.log('sync');
+			console.log('sync buttons');
 
 			// синхронизируем кнопки на тулбаре
 			editor.syncButtons();
@@ -1442,30 +1415,6 @@ Ext.define(
 
 			return els;
 		},
-
-		/**
-		 * Проверяет по схеме элемент.
-		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
-		 * @param {Boolean} [debug] Нужны ли отладочные сообщения.
-		 */
-		/*verifyElement: function (el, debug)
-		{
-			var me = this,
-				sch = me.getSchema(),
-				xml;
-
-			if (!el || el.isText || el.isUndefined || el.isStyleHolder && el.isEmpty())
-			{
-				// текст, пустые абзаци и неопределенные элементы не нуждаются в проверке
-				return true;
-			}
-
-			// получаем xml без текстовых элементов
-			xml = me.content.getXml(true);
-
-			// вызываем проверку по схеме
-			sch.validXml({xml: xml, callback: me.verifyResult, scope: me, debug: debug});
-		},*/
 
 		/**
 		 * Возвращает пустой элемент, для заполнения элементов без содержимого.
