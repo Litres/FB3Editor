@@ -11,106 +11,54 @@ Ext.define(
 		alias: 'controller.main.editor.button.subscription',
 
 		/**
-		 * Синхронизирует кнопку, используя проверку по схему.
+		 * Синхронизирует кнопку, используя проверку по json-схеме.
 		 */
 		onSync: function ()
 		{
 			var me = this,
 				btn = me.getView(),
+				name = btn.elementName,
 				manager = btn.getEditorManager(),
 				factory = FBEditor.editor.Factory,
 				nodes = {},
 				els = {},
-				name = btn.elementName,
+				hash = {},
 				range,
 				xml;
-
+			
 			if (!manager.availableSyncButtons())
 			{
-				btn.enable();
+				me.verifyResult(true);
 				return;
 			}
-
+			
 			range = manager.getRange();
-
-			if (!range)
+			
+			if (!range || !range.common.getElement || range.common.getElement().isRoot)
 			{
-				btn.disable();
-
+				me.verifyResult(false);
 				return;
 			}
-
-			nodes.node = range.common;
-
-			if (!nodes.node.getElement || nodes.node.getElement().isRoot)
+			
+			els.node = range.common.getElement();
+			els.p = els.node.getStyleHolder();
+			
+			if (!els.p)
 			{
-				btn.disable();
-
+				me.verifyResult(false);
 				return;
 			}
-
-			els.node = nodes.node.getElement();
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-
-			while (els.parent.isStyleHolder || els.parent.isStyleType)
+			
+			els.parent = els.p.getParent();
+			
+			if (els.parent.last().isSubscription)
 			{
-				nodes.node = nodes.parent;
-				els.node = nodes.node.getElement();
-				nodes.parent = nodes.node.parentNode;
-				els.parent = nodes.parent.getElement();
+				me.verifyResult(false);
+				return;
 			}
-
-			// создаем временный элемент для проверки новой структуры
-			els.newEl = factory.createElement(name);
-			els.newEl.createScaffold();
-
-			if (!range.collapsed)
-			{
-				// переносим выделенный параграф
-
-				els.p = range.start.getElement();
-				els.isRoot = els.p.isRoot;
-				while (els.p && !els.p.isP)
-				{
-					els.p = els.isRoot ? els.p.first() : els.p.parent;
-				}
-
-				if (!els.p)
-				{
-					btn.disable();
-
-					return;
-				}
-
-				els.parentP = els.p.parent;
-				els.next = els.p.next();
-				els.newEl.add(els.p);
-			}
-
-			els.parent.children.push(els.newEl);
-
-			// получаем xml
-			xml = manager.getContent().getXml(true);
-
-			// удаляем временный элемент
-			els.parent.children.pop();
-
-			if (!range.collapsed)
-			{
-				// возвращаем параграф на старое место
-				if (els.next)
-				{
-					els.parentP.insertBefore(els.p, els.next);
-				}
-				else
-				{
-					els.parentP.add(els.p);
-				}
-			}
-
-			// проверяем по схеме
-			me.verify(xml);
+			
+			hash[name] = me.getHash(els.parent);
+			me.verifyHash(hash);
 		}
 	}
 );
