@@ -122,9 +122,6 @@ Ext.define(
                 // восстанавливаем курсор
                 manager.restoreSelection();
 
-                // проверяем по схеме
-                //me.verifyElement(els.parent);
-
                 res = true;
             }
             catch (e)

@@ -178,6 +178,9 @@ Ext.define(
 			// разрешена ли разбивка элемента
 			if (els.node.splittable)
 			{
+				els.node.fireEvent('insertElement', nodes.node, isEmpty);
+				
+				/*
 				// создаем временную будущую структуру и проверяем ее по схеме
 
 				els.root = els.node.getRoot();
@@ -200,6 +203,8 @@ Ext.define(
 				els.parent.children.splice(pos, 1);
 
 				sch = manager.getSchema();
+				
+				console.log('onSplitElement', xml);
 
 				// вызываем проверку по схеме
 				sch.validXml(
@@ -216,6 +221,7 @@ Ext.define(
 						scope: me
 					}
 				);
+				*/
 			}
 			else
 			{

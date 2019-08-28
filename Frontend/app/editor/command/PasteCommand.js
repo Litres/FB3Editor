@@ -339,7 +339,7 @@ Ext.define(
 				data.els = els;
 
 				// проверяем по схеме
-				me.verifyElement(els.parent);
+				me.verifyElement(els.parent, {validXml: true});
 
 				res = true;
 			}
@@ -350,6 +350,7 @@ Ext.define(
 			}
 
 			manager.setSuspendEvent(false);
+			
 			return res;
 		},
 
