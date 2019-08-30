@@ -37,7 +37,7 @@ Ext.define(
 				return;
 			}
 			
-			els.node = range.common.getElement();
+			els.node = range.start.getElement();
 			els.p = els.node.getStyleHolder();
 			
 			if (!els.p)
