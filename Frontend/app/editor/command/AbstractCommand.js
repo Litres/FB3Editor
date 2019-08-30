@@ -389,6 +389,12 @@ Ext.define(
 			
 			opts = opts || {};
 			
+			scopeData = {
+				el: el,
+				debug: opts.debug,
+				syncButtons: me.syncButtons
+			};
+			
 			if (opts.validXml)
 			{
 				// получаем xml без текстовых элементов
@@ -396,17 +402,15 @@ Ext.define(
 				
 				//console.log(xml);
 				
-				scopeData = {
-					el: el,
-					debug: opts.debug,
-					syncButtons: me.syncButtons
-				};
-				
 				// приостанавливаем обработку команд на время выполнения проверки по схеме
 				manager.setSuspendCmd(true);
 				
 				// вызываем проверку по схеме
 				sch.validXml({xml: xml, callback: me.verifyResult, scope: me, scopeData: scopeData});
+			}
+			else
+			{
+				me.verifyResult(true, scopeData);
 			}
 		},
 
