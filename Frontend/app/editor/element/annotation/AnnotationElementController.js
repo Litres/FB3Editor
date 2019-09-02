@@ -16,14 +16,10 @@ Ext.define(
 				manager = FBEditor.getEditorManager(),
 				els = {},
 				nodes = {},
-				pos = 0,
-				res,
-				sch,
-				range,
-				nameElements;
+				range;
 
 			range = manager.getRangeCursor();
-			nodes.node = range.common;
+			nodes.node = range.start;
 			els.node = nodes.node.getElement();
 			nodes.parent = nodes.node.parentNode;
 			els.parent = nodes.parent.getElement();
@@ -55,31 +51,8 @@ Ext.define(
 				els.parent = nodes.parent.getElement();
 				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 			}
-
-			nodes.parent = nodes.node.parentNode;
-			els.parent = nodes.parent.getElement();
-
-			nodes.first = nodes.parent.firstChild;
-			els.first = nodes.first ? nodes.first.getElement() : null;
-
-			nameElements = manager.getNamesElements(els.parent);
-
-			while (els.first && (els.first.isEpigraph || els.first.isTitle))
-			{
-				pos++;
-				nodes.first = nodes.first.nextSibling;
-				els.first = nodes.first ? nodes.first.getElement() : null;
-			}
-
-			nameElements.splice(pos, 0, name);
-
-			// проверяем элемент по схеме
-			sch = manager.getSchema();
-			name = els.parent.getName();
-			//console.log('name, nameElements', name, nameElements);
-			res = sch.verify(name, nameElements) ? nodes.node : false;
-
-			return res;
+			
+			return nodes.node;
 		}
 	}
 );

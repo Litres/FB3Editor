@@ -16,66 +16,128 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				range = data.range,
-				factory = FBEditor.editor.Factory;
-
-			els.node = factory.createElement(me.elementName);
-			nodes.parent = nodes.node.parentNode;
-			nodes.first = nodes.parent.firstChild;
-			els.parent = nodes.parent.getElement();
-
+				viewportId = data.viewportId,
+				factory = FBEditor.editor.Factory,
+				elementName = me.elementName,
+				helper,
+				manager;
+			
+			manager = els.node.getManager();
+			
+			els.common = range.common.getElement();
+			els.parent = els.common.isSection ? els.common : els.common.getParentName('section');
+			els.first = els.parent.first();
+			
+			els.node = factory.createElement(elementName);
+			
 			if (range.collapsed)
 			{
 				// содержимое по умолчанию
-				els.p = factory.createElement('p');
-				els.t = factory.createElementText('Аннотация');
-				els.p.add(els.t);
-				els.node.add(els.p);
+				els = Ext.apply(els, els.node.createScaffold());
 			}
-
-			nodes.node = els.node.getNode(data.viewportId);
-
-			if (nodes.first)
+			
+			if (els.first)
 			{
 				// вставка после всех эпиграфов или заголовка
-				nodes.next = nodes.first.nextSibling;
-				while (nodes.next &&
-				       (nodes.first.getElement().isEpigraph ||
-				        nodes.first.getElement().isTitle))
+				
+				els.next = els.first.next();
+				
+				while (els.next && (els.first.isEpigraph || els.first.isTitle))
 				{
-					nodes.first = nodes.next;
-					nodes.next = nodes.next.nextSibling;
+					els.first = els.next;
+					els.next = els.next.next();
 				}
-				els.first = nodes.first.getElement();
-				els.parent.insertBefore(els.node, els.first);
-				nodes.parent.insertBefore(nodes.node, nodes.first);
+				
+				els.parent.insertBefore(els.node, els.first, viewportId);
 			}
 			else
 			{
-				els.parent.add(els.node);
-				nodes.parent.appendChild(nodes.node);
+				els.parent.add(els.node, viewportId);
 			}
-
+			
 			if (!range.collapsed)
 			{
-				// переносим выделенный параграф в элемент
-
-				nodes.p = range.start;
-				els.p = nodes.p.getElement();
-				els.isRoot = els.p.isRoot;
-				while (els.p && !els.p.isP)
+				// переносим выделенные параграфы в элемент
+				
+				els.firstP = range.start.getElement();
+				els.firstP = els.firstP.getStyleHolder();
+				helper = els.firstP.getNodeHelper();
+				nodes.firstP = helper.getNode(viewportId);
+				els.lastP = range.end.getElement();
+				els.lastP = els.lastP.getStyleHolder();
+				helper = els.lastP.getNodeHelper();
+				nodes.lastP = helper.getNode(viewportId);
+				
+				// получаем все выделенные абзацы
+				
+				els.pp = {
+					common: range.common.getElement(),
+					lastP: els.lastP
+				};
+				
+				nodes.pp = manager.getNodesPP(nodes.firstP, nodes, els.pp);
+				nodes.pp.push(nodes.lastP);
+				
+				// переносим все выделенные абзацы в аннотацию
+				Ext.each(
+					nodes.pp,
+					function (p)
+					{
+						var elP = p.getElement(),
+							elParent = elP.getParent(),
+							elEmpty = {
+								el: null,
+								elParent: null,
+								next: null
+							};
+						
+						// временно сохраняем ссылки для использования в операции undo
+						elP._oldLinks = {
+							parent: elParent,
+							next: elP.next(),
+							empty: null
+						};
+						
+						// переносим абзац в аннотацию
+						els.node.add(elP, viewportId);
+						
+						if (elParent.isEmpty())
+						{
+							// удаляем пустой родительский элемент, образовавшийся после переноса абзаца
+							
+							elEmpty.el = elParent;
+							elEmpty.elParent = elEmpty.el.getParent();
+							
+							while (elEmpty.elParent.isEmpty())
+							{
+								elEmpty.el = elEmpty.elParent;
+								elEmpty.elParent = elEmpty.elParent.getParent();
+							}
+							
+							elEmpty.next = elEmpty.el.next();
+							
+							elEmpty.elParent.remove(elEmpty.el, viewportId);
+							
+							// сохраняем ссылку на удаленный элемент
+							elP._oldLinks.empty = elEmpty;
+						}
+					}
+				);
+				
+				// для курсора
+				els.p = els.lastP;
+				
+				if (els.parent.last().hisName(elementName))
 				{
-					nodes.p = els.isRoot ? nodes.p.firstChild : nodes.p.parentNode;
-					els.p = nodes.p ? nodes.p.getElement() : null;
+					// добавляем пустой абзац после аннотации, если других элементов после нее нет,
+					// чтобы соответствовать схеме
+					els.emptyP = manager.createEmptyP();
+					els.parent.add(els.emptyP, viewportId);
 				}
-
-				nodes.parentP = nodes.p.parentNode;
-				nodes.next = nodes.p.nextSibling;
-
-				els.node.add(els.p);
-				nodes.node.appendChild(nodes.p);
 			}
 
-			me.data.nodes = nodes;
+			data.nodes = nodes;
+			data.els = els;
 		},
 
 		unExecute: function ()
@@ -86,6 +148,7 @@ Ext.define(
 				els = {},
 				nodes = {},
 				manager,
+				viewportId,
 				range;
 
 			try
@@ -94,51 +157,81 @@ Ext.define(
 
 				if (range.collapsed)
 				{
+					// простая отмена аннотации, созданной по умолчанию (без выделения текста)
 					return me.callParent(arguments);
 				}
 				
 				console.log('undo create', me.elementName, range);
 				
+				viewportId = data.viewportId;
 				nodes = data.nodes;
-				els.node = nodes.node.getElement();
+				els = data.els;
 				manager = els.node.getManager();
 				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
-				els.parent = nodes.parent.getElement();
-				els.p = nodes.p.getElement();
-				els.parentP = nodes.parentP.getElement();
-
-				// возвращаем параграф на старое место из элемента
-				if (nodes.next)
+				
+				if (els.emptyP)
 				{
-					els.next = nodes.next.getElement();
-					els.parentP.insertBefore(els.p, els.next);
-					nodes.parentP.insertBefore(nodes.p, nodes.next);
+					// удаляем пустой абзац
+					els.parent.remove(els.emptyP, viewportId);
 				}
-				else
-				{
-					els.parentP.add(els.p);
-					nodes.parentP.appendChild(nodes.p);
-				}
-
-				// удаляем элемент
-				els.parent.remove(els.node);
-				nodes.parent.removeChild(nodes.node);
-
-				els.parent.sync(data.viewportId);
-
+				
+				// возвращаем абзацы на старое место
+				
+				// переворачиваем массив, чтобы восстанавливались корректные связи между сиблингами
+				nodes.pp = nodes.pp.reverse();
+				
+				Ext.each(
+					nodes.pp,
+					function (p)
+					{
+						var elP = p.getElement(),
+							oldLinks = elP._oldLinks,
+							empty = oldLinks.empty;
+						
+						if (empty)
+						{
+							// восстанавливаем родительский элемент абзаца, если он оказался пустым и был удален
+							
+							if (empty.next)
+							{
+								empty.elParent.insertBefore(empty.el, empty.next, viewportId);
+							}
+							else
+							{
+								empty.elParent.add(empty.el, viewportId);
+							}
+						}
+						
+						// восстанавливаем абзац
+						if (oldLinks.next)
+						{
+							oldLinks.parent.insertBefore(elP, oldLinks.next, viewportId);
+						}
+						else
+						{
+							oldLinks.parent.add(elP, viewportId);
+						}
+						
+						elP._oldLinks = null;
+					}
+				);
+				
+				els.parent.remove(els.node, viewportId);
+				els.parent.sync(viewportId);
 				manager.setSuspendEvent(false);
-
+				
 				// устанавливаем курсор
-				nodes.cursor = manager.getDeepLast(nodes.p);
+				nodes.cursorStart = manager.getDeepFirst(nodes.pp.pop());
+				nodes.cursorEnd = manager.getDeepLast(nodes.pp.shift()) || nodes.cursorStart;
 				data.saveRange = {
-					startNode: nodes.cursor,
+					startNode: nodes.cursorStart,
 					startOffset: 0,
-					endNode: nodes.cursor,
-					endOffset: nodes.cursor.length
+					endNode: nodes.cursorEnd,
+					endOffset: nodes.cursorEnd.nodeValue.length
 				};
 				manager.setCursor(data.saveRange);
-
+				
 				res = true;
 			}
 			catch (e)
