@@ -54,8 +54,6 @@ Ext.define(
 				nodes.node = els.parent.hisName(name) ? nodes.parent : nodes.node;
 			}
 
-			//console.log('node verify', range, els, nodes);
-
 			return nodes.node;
 		}
 	}

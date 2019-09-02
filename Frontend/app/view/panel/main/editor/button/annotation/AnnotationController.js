@@ -37,16 +37,10 @@ Ext.define(
 				return;
 			}
 			
-			els.node = range.common.getElement();
-			els.p = els.node.getStyleHolder();
-			
-			if (!els.p)
-			{
-				me.verifyResult(false);
-				return;
-			}
-			
-			els.section = els.p.getParentName('section');
+			els.node = range.start.getElement();
+			els.common = range.common.getElement();
+			els.p = els.common.getStyleHolder();
+			els.section = els.common.isSection ? els.common : els.common.getParentName('section');
 			
 			if (!els.section)
 			{
@@ -62,13 +56,13 @@ Ext.define(
 				return;
 			}
 			
-			if (els.p.hasParentName('title'))
+			if (els.common.hasParentName('title'))
 			{
 				me.verifyResult(true);
 				return;
 			}
 			
-			els.parent = els.p.getParent();
+			els.parent = els.p ? els.p.getParent() : els.common;
 			
 			hash[name] = me.getHash(els.parent);
 			me.verifyHash(hash);

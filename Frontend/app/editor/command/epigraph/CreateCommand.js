@@ -23,9 +23,9 @@ Ext.define(
 				helper;
 			
 			manager = els.node.getManager();
-			els.parent = els.node.getParent();
-			els.node = els.parent.hisName(elementName) ? els.parent : els.node;
-			els.parent = els.node.getParent();
+			
+			els.common = range.common.getElement();
+			els.parent = els.common.isSection ? els.common : els.common.getParentName('section');
 			els.prevNode = data.prevNode ? data.prevNode.getElement() : null;
 			els.first = els.prevNode && els.prevNode.next() ? els.prevNode : els.parent.first();
 			
@@ -86,16 +86,44 @@ Ext.define(
 					nodes.pp,
 				    function (p)
 				    {
-					    var elP = p.getElement();
-
+					    var elP = p.getElement(),
+						    elParent = elP.getParent(),
+						    elEmpty = {
+							    el: null,
+							    elParent: null,
+							    next: null
+						    };
+					
 					    // временно сохраняем ссылки для использования в операции undo
 					    elP._oldLinks = {
-						    parent: elP.parent,
-						    next: elP.next()
+						    parent: elParent,
+						    next: elP.next(),
+						    empty: null
 					    };
-
+					
 					    // переносим абзац в эпиграф
 					    els.node.add(elP, viewportId);
+					
+					    if (elParent.isEmpty())
+					    {
+						    // удаляем пустой родительский элемент, образовавшийся после переноса абзаца
+						
+						    elEmpty.el = elParent;
+						    elEmpty.elParent = elEmpty.el.getParent();
+						
+						    while (elEmpty.elParent.isEmpty())
+						    {
+							    elEmpty.el = elEmpty.elParent;
+							    elEmpty.elParent = elEmpty.elParent.getParent();
+						    }
+						
+						    elEmpty.next = elEmpty.el.next();
+						
+						    elEmpty.elParent.remove(elEmpty.el, viewportId);
+						
+						    // сохраняем ссылку на удаленный элемент
+						    elP._oldLinks.empty = elEmpty;
+					    }
 				    }
 				);
 
@@ -161,7 +189,22 @@ Ext.define(
 					function (p)
 					{
 						var elP = p.getElement(),
-							oldLinks = elP._oldLinks;
+							oldLinks = elP._oldLinks,
+							empty = oldLinks.empty;
+						
+						if (empty)
+						{
+							// восстанавливаем родительский элемент абзаца, если он оказался пустым и был удален
+							
+							if (empty.next)
+							{
+								empty.elParent.insertBefore(empty.el, empty.next, viewportId);
+							}
+							else
+							{
+								empty.elParent.add(empty.el, viewportId);
+							}
+						}
 
 						if (oldLinks.next)
 						{
