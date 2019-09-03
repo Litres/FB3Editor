@@ -16,6 +16,8 @@ Ext.define(
 		htmlTag: 'header',
 		xmlTag: 'title',
 		cls: 'el-title',
+		
+		showedOnTree: false,
 
 		isTitle: true,
 

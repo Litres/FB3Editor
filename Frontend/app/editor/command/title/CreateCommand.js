@@ -19,6 +19,7 @@ Ext.define(
 				range = data.range,
 				factory = FBEditor.editor.Factory,
 				viewportId,
+				helper,
 				manager;
 
 			viewportId = data.viewportId;
@@ -43,8 +44,17 @@ Ext.define(
             nodes.p = range.start;
             els.p = nodes.p.getElement();
             els.p = els.p.getStyleHolder();
-
-            if (range.collapsed)
+			
+			els.firstP = range.start.getElement();
+			els.firstP = els.firstP.getStyleHolder();
+			helper = els.firstP.getNodeHelper();
+			nodes.firstP = helper.getNode(viewportId);
+			els.lastP = range.end.getElement();
+			els.lastP = els.lastP.getStyleHolder();
+			helper = els.lastP.getNodeHelper();
+			nodes.lastP = helper.getNode(viewportId);
+			
+			if (range.collapsed)
 			{
                 // содержимое по умолчанию
                 els = Ext.apply(els, els.newNode.createScaffold());
@@ -83,17 +93,35 @@ Ext.define(
 
 					// добавляем заголовок в новую секцию
                     els.newSection.add(els.newNode, viewportId);
-
-                    if (!els.p.next())
+					
+					// ищем следующий элемент после последнего абзаца,
+	                // начиная с которого будут перенесены все элементы в новую секцию
+	                
+	                els.next = els.lastP.getParent().equal(els.section) ? els.lastP.next() : null;
+	                
+	                if (!els.next && !els.lastP.getParent().equal(els.section))
+	                {
+	                	// если абзац вложен в другой элемент, кроме секции
+	                	
+		                els.next = els.lastP.getParent();
+		                
+	                	while (!els.next.getParent().equal(els.section))
+		                {
+			                els.next = els.next.getParent();
+		                }
+		                
+		                // следующий элемент относительно родительского элемента абзаца
+		                els.next = els.next.next();
+	                }
+	
+	                if (!els.next)
                     {
                         // добавляем пустой абзац после заголовка, чтобы соответствовать схеме
                         els.emptyP = manager.createEmptyP();
                         els.newSection.add(els.emptyP, viewportId);
                     }
 
-					// переносим элементы в новую секцию
-
-					els.next = els.p;
+					// переносим элементы, находящиеся после выделения, в новую секцию
 
                     while (els.next)
                     {
@@ -112,11 +140,72 @@ Ext.define(
 				}
 
                 // переносим выделенный абзац в заголовок
-                els.newNode.add(els.p, viewportId);
+                //els.newNode.add(els.p, viewportId);
+				
+				// переносим выделенные параграфы в элемент
+				
+				// получаем все выделенные абзацы
+				
+				els.pp = {
+					common: range.common.getElement(),
+					lastP: els.lastP
+				};
+				
+				nodes.pp = manager.getNodesPP(nodes.firstP, nodes, els.pp);
+				nodes.pp.push(nodes.lastP);
+				
+				// переносим все выделенные абзацы в новый заголовок
+				Ext.each(
+					nodes.pp,
+					function (p)
+					{
+						var elP = p.getElement(),
+							elParent = elP.getParent(),
+							elEmpty = {
+								el: null,
+								elParent: null,
+								next: null
+							};
+						
+						// временно сохраняем ссылки для использования в операции undo
+						elP._oldLinks = {
+							parent: elParent,
+							next: elP.next(),
+							empty: null
+						};
+						
+						// переносим абзац в заголовок
+						els.newNode.add(elP, viewportId);
+						
+						if (elParent.isEmpty())
+						{
+							// удаляем пустой родительский элемент, образовавшийся после переноса абзаца
+							
+							elEmpty.el = elParent;
+							elEmpty.elParent = elEmpty.el.getParent();
+							
+							while (elEmpty.elParent.isEmpty())
+							{
+								elEmpty.el = elEmpty.elParent;
+								elEmpty.elParent = elEmpty.elParent.getParent();
+							}
+							
+							elEmpty.next = elEmpty.el.next();
+							
+							elEmpty.elParent.remove(elEmpty.el, viewportId);
+							
+							// сохраняем ссылку на удаленный элемент
+							elP._oldLinks.empty = elEmpty;
+						}
+					}
+				);
+				
+				// для курсора
+				els.p = els.lastP;
 			}
 
-			me.data.nodes = nodes;
-            me.data.els = els;
+			data.nodes = nodes;
+            data.els = els;
 		},
 
 		unExecute: function ()
@@ -151,6 +240,7 @@ Ext.define(
 				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
+				/*
 				// возвращаем абзац на старое место из заголовка
 				if (els.next)
 				{
@@ -162,6 +252,48 @@ Ext.define(
                     els.oldParent = els.oldParent ? els.oldParent : els.parent;
 					els.oldParent.add(els.p, viewportId);
 				}
+				*/
+				
+				// возвращаем абзацы на старое место
+				
+				// переворачиваем массив, чтобы восстанавливались корректные связи между сиблингами
+				nodes.pp = nodes.pp.reverse();
+				
+				Ext.each(
+					nodes.pp,
+					function (p)
+					{
+						var elP = p.getElement(),
+							oldLinks = elP._oldLinks,
+							empty = oldLinks.empty;
+						
+						if (empty)
+						{
+							// восстанавливаем родительский элемент абзаца, если он оказался пустым и был удален
+							
+							if (empty.next)
+							{
+								empty.elParent.insertBefore(empty.el, empty.next, viewportId);
+							}
+							else
+							{
+								empty.elParent.add(empty.el, viewportId);
+							}
+						}
+						
+						// восстанавливаем абзац
+						if (oldLinks.next)
+						{
+							oldLinks.parent.insertBefore(elP, oldLinks.next, viewportId);
+						}
+						else
+						{
+							oldLinks.parent.add(elP, viewportId);
+						}
+						
+						elP._oldLinks = null;
+					}
+				);
 
 				if (els.newSection)
 				{
