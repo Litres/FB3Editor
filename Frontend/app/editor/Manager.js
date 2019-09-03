@@ -972,7 +972,7 @@ Ext.define(
 			var me = this,
 				editor = me.getEditor();
 
-			console.log('sync buttons');
+			//console.log('sync buttons');
 
 			// синхронизируем кнопки на тулбаре
 			editor.syncButtons();
