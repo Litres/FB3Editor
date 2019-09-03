@@ -40,15 +40,9 @@ Ext.define(
 			els.node = range.common.getElement();
 			els.p = els.node.getStyleHolder();
 			
-			if (!els.p)
-			{
-				me.verifyResult(false);
-				return;
-			}
+			els.parent = els.p ? els.p.getParent() : els.node;
 			
-			els.parent = els.p.getParent();
-			
-			if (els.parent.first().isTitle)
+			if (els.parent.first().isTitle && range.collapsed)
 			{
 				me.verifyResult(false);
 				return;
