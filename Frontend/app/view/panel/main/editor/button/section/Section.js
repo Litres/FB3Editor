@@ -16,9 +16,9 @@ Ext.define(
 		controller: 'main.editor.button.section',
 		
 		//html: '<i class="fa fa-cube"></i>',
-		text: '+ Глава',
+		text: '+ Вложенная глава',
 
-		tooltipText: 'Глава',
+		tooltipText: 'Вложенная глава',
 		elementName: 'section',
 
 		createOpts: {

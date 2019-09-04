@@ -23,7 +23,14 @@ Ext.define(
 			
 			buttons = [
 				{
-					xtype: 'main-editor-button-table'
+					xtype: 'main-editor-button-ul'
+				},
+				{
+					xtype: 'main-editor-button-ol'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-poem'
 				},
 				{
 					xtype: 'main-editor-button-blockquote'
@@ -31,24 +38,19 @@ Ext.define(
 				{
 					xtype: 'main-editor-button-subtitle'
 				},
+				spacer,
+				{
+					xtype: 'main-editor-button-table'
+				},
 				{
 					xtype: 'main-editor-button-pre'
 				},
-				{
-					xtype: 'main-editor-button-poem'
-				},
+				spacer,
 				{
 					xtype: 'main-editor-button-div'
 				},
 				{
 					xtype: 'main-editor-button-splitelement'
-				},
-				spacer,
-				{
-					xtype: 'main-editor-button-ul'
-				},
-				{
-					xtype: 'main-editor-button-ol'
 				}
 			];
 			

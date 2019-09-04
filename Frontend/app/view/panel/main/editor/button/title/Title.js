@@ -16,9 +16,9 @@ Ext.define(
 		controller: 'main.editor.button.title',
 
 		//html: '<i class="fa fa-header"></i>',
-		text: '+ Заголовок',
+		text: 'Название главы',
 
-		tooltipText: 'Заголовок',
+		tooltipText: 'Название главы',
 		elementName: 'title'
 	}
 );

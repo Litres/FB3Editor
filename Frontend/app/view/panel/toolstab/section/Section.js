@@ -12,6 +12,6 @@ Ext.define(
 		id:'panel-toolstab-section',
 		xtype: 'panel-toolstab-section',
 		
-		title: 'Главы'
+		title: 'Структура'
 	}
 );

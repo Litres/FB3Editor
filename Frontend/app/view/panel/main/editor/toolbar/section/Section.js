@@ -28,20 +28,22 @@ Ext.define(
 				{
 					xtype: 'main-editor-button-title'
 				},
-				{
-					xtype: 'main-editor-button-epigraph'
-				},
-				{
-					xtype: 'main-editor-button-annotation'
-				},
-				{
-					xtype: 'main-editor-button-subscription'
-				},
+				spacer,
 				{
 					xtype: 'main-editor-button-section'
 				},
 				{
 					xtype: 'main-editor-button-splitsection'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-epigraph'
+				},
+				{
+					xtype: 'main-editor-button-subscription'
+				},
+				{
+					xtype: 'main-editor-button-annotation'
 				},
 				spacer,
 				{
