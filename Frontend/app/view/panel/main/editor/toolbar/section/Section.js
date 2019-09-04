@@ -44,14 +44,14 @@ Ext.define(
 				},
 				{
 					xtype: 'main-editor-button-annotation'
-				},
+				}/*,
 				spacer,
 				{
 					xtype: 'main-editor-button-notes'
 				},
 				{
 					xtype: 'main-editor-button-notebody'
-				}
+				}*/
 			];
 			
 			me.visibleButtons = buttons;

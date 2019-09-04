@@ -51,6 +51,13 @@ Ext.define(
 				},
 				{
 					xtype: 'main-editor-button-splitelement'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-epigraph'
+				},
+				{
+					xtype: 'main-editor-button-annotation'
 				}
 			];
 			
