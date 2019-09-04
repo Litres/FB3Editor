@@ -26,6 +26,7 @@ Ext.define(
 			
 			els.common = range.common.getElement();
 			els.parent = els.common.isSection ? els.common : els.common.getParentName('section');
+			els.parent = els.parent ? els.parent : els.common.getRoot();
 			els.prevNode = data.prevNode ? data.prevNode.getElement() : null;
 			els.first = els.prevNode && els.prevNode.next() ? els.prevNode : els.parent.first();
 			
