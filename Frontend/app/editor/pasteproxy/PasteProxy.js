@@ -101,6 +101,15 @@ Ext.define(
 			// сохраняем вставляемые ресурсы в редакторе
 			resourcesPaste.save();
 		},
+		
+		/**
+		 * Возвращает менедежр редактора текста.
+		 * @return {FBEditor.editor.Manager}
+		 */
+		getManager: function ()
+		{
+			return this.manager;
+		},
 
 		/**
 		 * Возвращает модель элемента, полученного из вставляемого DOM.

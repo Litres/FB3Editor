@@ -8,17 +8,10 @@ Ext.define(
 	'FBEditor.editor.pasteproxy.DomProxy',
 	{
 		requires: [
+			'FBEditor.editor.pasteproxy.google.doc.dom.Proxy',
+			'FBEditor.editor.pasteproxy.DomProxyDefault',
 			'FBEditor.editor.pasteproxy.dom.SpanProxy'
 		],
-		
-		/**
-		 * @property {Object} Список альтернативных тегов html.
-		 */
-		altNames: {
-			em: ['i', 'em'],
-			strong: ['b', 'strong'],
-			underline: ['u', 'underline']
-		},
 
 		/**
 		 * @private
@@ -37,6 +30,12 @@ Ext.define(
 		 * @property {FBEditor.editor.pasteproxy.PasteProxy} Прокси данных.
 		 */
 		pasteProxy: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.pasteproxy.DomProxyDefault} DOM-прокси для конкретного источника копирования.
+		 */
+		domProxy: null,
 
 		/**
 		 * @param data {Object}
@@ -49,6 +48,41 @@ Ext.define(
 			
 			me.dom = data.dom;
 			me.pasteProxy = data.pasteProxy;
+			
+			// создаем CSS-классы из стилей DOM
+			me.createCss();
+			
+			// создаем прокси для конкретного источника
+			me.createDomProxy();
+		},
+		
+		/**
+		 * Создает DOM-прокси для конкретного источника копирования.
+		 */
+		createDomProxy: function ()
+		{
+			var me = this,
+				dom = me.dom,
+				css = me.css,
+				manager = me.pasteProxy.getManager(),
+				body;
+			
+			if (body = dom.querySelector('body > b'))
+			{
+				// google docs
+				
+				me.domProxy = Ext.create('FBEditor.editor.pasteproxy.google.doc.dom.Proxy',
+					{manager: manager, body: body, css: css});
+			}
+			else
+			{
+				// по умолчанию, если источник не определен
+				
+				body = dom.querySelector('fb3-body') || dom.querySelector('body');
+
+				me.domProxy = Ext.create('FBEditor.editor.pasteproxy.DomProxyDefault',
+					{manager: manager, body: body, css: css});
+			}
 		},
 
 		/**
@@ -58,16 +92,15 @@ Ext.define(
 		getElement: function ()
 		{
 			var me = this,
-				dom = me.dom,
-				body,
+				//dom = me.dom,
+				domProxy = me.domProxy,
+				//body,
 				el;
 
-			// создаем CSS-классы из стилей DOM
-			me.createCss();
-
 			// создаем элемент
-			body = dom.querySelector('fb3-body') || dom.querySelector('body');
-			el = me.createElement(body);
+			//body = dom.querySelector('fb3-body') || dom.querySelector('body');
+			//el = me.createElement(body);
+			el = domProxy.getElement();
 			
 			return el
 		},
@@ -156,262 +189,6 @@ Ext.define(
 			Ext.log({level: 'info', msg: 'STYLES', dump: css});
 
 			me.css = css;
-		},
-
-		/**
-		 * @private
-		 * Создает элемент из узла.
-		 * При этом игнорируются узлы, которые не указаны в схеме тела книги.
-		 * @param {Node} node Узел.
-		 * @param {FBEditor.editor.element.AbstractElement} [parentEl] Родительский элемент.
-		 * @return {FBEditor.editor.element.AbstractElement} Элемент.
-		 */
-		createElement: function (node, parentEl)
-		{
-			var me = this,
-				pasteProxy = me.pasteProxy,
-				manager = pasteProxy.manager,
-				factory = manager.getFactory(),
-				schema = manager.getSchema(),
-				attributes = {},
-				elementSchema,
-				name,
-				val,
-				el;
-
-			// создаем временный корневой элемент для элемента
-			parentEl = parentEl || factory.createElement('body');
-
-			// имя узла
-			name = node.nodeName.toLowerCase();
-
-			//console.log([name], node);
-			//console.log(parentEl.xmlTag, parentEl);
-			//console.log(parentEl.getXml());
-
-			if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim())
-			{
-				// чистим текст
-				val = me.cleanText(node);
-				
-				if (val)
-				{
-					el = factory.createElementText(val);
-				}
-			}
-			else
-			{
-				if (name === 'span')
-				{
-					// пытаемся конвертировать span в другие элементы, учитывая его текущие CSS-стили
-					name = me.convertSpan(node);
-					
-					if (!name)
-					{
-						// получаем текст
-						val = me.cleanText(node.textContent);
-						
-						if (val)
-						{
-							// создаем текстовый элемент вместо span
-							el = factory.createElementText(val);
-						}
-						
-						return el;
-					}
-				}
-
-				// получаем универсальное имя элемента, которое используется в схеме
-				name = me.getNameElement(name);
-
-				// данные элемента из схемы
-				elementSchema = schema.elements[name];
-
-				if (elementSchema)
-				{
-					// создаем вложенный родительский элемент
-
-					// получаем разрешенные атрибуты
-					attributes = me.getAttributes(node, elementSchema);
-
-					// создаем элемент с аттрибутами
-					el = factory.createElement(name, attributes);
-				}
-				else
-				{
-					// используем родительский элемент в качестве текущего
-					el = parentEl;
-				}
-
-				if (node.childNodes.length)
-				{
-					// создаем дочерние элементы для текущего элемента
-					Ext.Array.each(
-						node.childNodes,
-						function (child)
-						{
-							var childEl;
-
-							childEl = me.createElement(child, el);
-
-							if (childEl && !childEl.equal(el))
-							{
-								el.add(childEl);
-							}
-						}
-					);
-				}
-			}
-
-			return el;
-		},
-
-		/**
-		 * @private
-		 * Возвращает разрешенные аттрибуты для узла.
-		 * @param {Node} node Узел.
-		 * @param {Object} elementSchema Данные из схемы для элемента.
-		 * @return {Object} Аттрибуты.
-		 */
-		getAttributes: function (node, elementSchema)
-		{
-			var attributes = {};
-
-			Ext.Array.each(
-				node.attributes,
-				function (item)
-				{
-					var name = item.name,
-						val = item.value;
-
-					switch (name)
-					{
-						case 'xlink:href':
-							name = 'href';
-							break;
-						case 'id':
-							name = /^[_a-z0-9][0-9a-z._-]*$/i.test(val) ? name : null;
-					}
-
-					// соответствует ли аттрибут схеме
-					if (name && Ext.isObject(elementSchema.attributes[item.name]) && val)
-					{
-						attributes[name] = val;
-					}
-				}
-			);
-
-			return attributes;
-		},
-
-		/**
-		 * @private
-		 * Пытается преобразовать span в другой элемент, возвращая новое имя узла.
-		 * Преобразование основывается на текущих CSS-стилях span, полученных из DOM.
-		 * @param {Node} node Узел span.
-		 * @return {String|false} Имя нового элемента.
-		 */
-		convertSpan: function (node)
-		{
-			var me = this,
-				spanProxy,
-				name;
-
-			spanProxy = FBEditor.editor.pasteproxy.dom.SpanProxy.getImplementation({node: node, domProxy: me});
-			name = spanProxy.getNewName();
-
-			return name;
-		},
-
-		/**
-		 * @private
-		 * Возвращает очищенный текст.
-		 * @param {Node|String} node Текстовый узел или текст.
-		 * @return {String}
-		 */
-		cleanText: function (node)
-		{
-			var reg = FBEditor.ExcludedCompiler.regexpUtf,
-				t;
-
-			if (node.nodeValue)
-			{
-				t = node.nodeValue;
-
-				if (node.previousSibling &&
-					node.previousSibling.nodeType === Node.COMMENT_NODE &&
-					node.previousSibling.nodeValue === 'EndFragment')
-				{
-					// пропускаем текстовый узел после завершающего комментария (для ворда)
-					return false;
-				}
-			}
-			else
-			{
-				t = node;
-			}
-
-			t = t.replace(/[\n\t\s]+/ig, ' ');
-			t = t.replace(reg, '');
-
-			return t;
-		},
-
-		/**
-		 * @private
-		 * Возвращает универсальное имя элемента по имени узла.
-		 * Одному и тому же элементу могут соответствовать разные html-элементы.
-		 * @example
-		 * em=[em, i]
-		 * strong=[strong, b]
-		 * @param {String} nodeName Имя узла.
-		 * @return {String|false} Имя элемента из схемы.
-		 */
-		getNameElement: function (nodeName)
-		{
-			var me = this,
-				pasteProxy = me.pasteProxy,
-				manager = pasteProxy.manager,
-				schema = manager.getSchema(),
-				altNames = me.altNames,
-				name;
-
-			if (nodeName === 'span')
-			{
-				// жестко игнорим, ибо там только мусор
-				return false;
-			}
-			else if (nodeName === 'fb3-title')
-			{
-				// преобразуем название элемента в title
-				return 'title';
-			}
-			else if (/^h[1-9]+/i.test(nodeName))
-			{
-				return 'p';
-			}
-
-			name = schema.elements[nodeName] ? nodeName : false;
-
-			if (!name)
-			{
-				// ищем альтернативное имя
-				Ext.Object.each(
-					altNames,
-				    function (key, names)
-				    {
-					    if (Ext.Array.contains(names, nodeName))
-					    {
-						    name = key;
-						    return false;
-					    }
-				    }
-				);
-			}
-
-			//console.log('nodeName, name', nodeName, name);
-
-			return name;
 		}
 	}
 );
