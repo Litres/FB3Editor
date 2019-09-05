@@ -18,6 +18,7 @@ Ext.define(
 		//html: '<i class="fa fa-sticky-note-o"></i>',
 		iconCls: 'litres-icon-note',
 
+		text: 'Сноска',
 		tooltipText: 'Сноска',
 		elementName: 'note'
 	}

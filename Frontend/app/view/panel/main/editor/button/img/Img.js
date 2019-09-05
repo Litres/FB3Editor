@@ -18,7 +18,8 @@ Ext.define(
 		//html: '<i class="fa fa-picture-o"></i>',
 		iconCls: 'litres-icon-img',
 
-		tooltipText: 'Изображение',
+		text: 'Картинка',
+		tooltipText: 'Картинка',
 		elementName: 'img',
 
 		/**

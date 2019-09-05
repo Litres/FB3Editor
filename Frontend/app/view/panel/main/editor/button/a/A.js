@@ -9,6 +9,8 @@ Ext.define(
 	{
 		extend: 'FBEditor.editor.view.toolbar.button.a.A',
 
-		xtype: 'main-editor-button-a'
+		xtype: 'main-editor-button-a',
+		
+		text: 'Ссылка'
 	}
 );
