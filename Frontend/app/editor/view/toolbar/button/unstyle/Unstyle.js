@@ -17,7 +17,8 @@ Ext.define(
 
         //html: '<i class="fa fa-eraser"></i>',
         iconCls: 'litres-icon-eraser',
-
+	
+	    text: 'Очистить форматирование',
         tooltipText: 'Очистить форматирование',
 
         isActiveSelection: function ()
