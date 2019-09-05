@@ -14,7 +14,7 @@ Ext.define(
 		
 		iconCls: 'litres-icon-span',
 
-		tooltipText: 'span',
+		tooltipText: 'Метка/Выделение',
 		elementName: 'span'
 	}
 );
