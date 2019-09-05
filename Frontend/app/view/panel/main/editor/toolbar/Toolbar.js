@@ -100,12 +100,14 @@ Ext.define(
 				'main-editor-button-epigraph',
 				'main-editor-button-annotation',
 				'main-editor-button-subscription',
-				{
+				'main-editor-button-div',
+				'main-editor-button-subtitle',
+				/*{
 					sequence: [
 						'main-editor-button-div',
 						'main-editor-button-subtitle'
 					]
-				},
+				},*/
 				'main-editor-button-blockquote',
 				'main-editor-button-pre',
 				'main-editor-button-poem',

@@ -14,7 +14,7 @@ Ext.define(
 		
 		html: '<i class="fa fa-anchor"></i>',
 
-		tooltipText: 'span',
+		tooltipText: 'Метка/Выделение',
 		elementName: 'span'
 	}
 );

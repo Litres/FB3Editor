@@ -17,7 +17,7 @@ Ext.define(
 
         html: '<i class="fa fa-eraser"></i>',
 
-        tooltipText: 'Убрать форматирование',
+        tooltipText: 'Очистить форматирование',
 
         isActiveSelection: function ()
         {
