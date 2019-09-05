@@ -30,6 +30,10 @@ Ext.define(
 				},
 				spacer,
 				{
+					xtype: 'main-editor-button-subtitle'
+				},
+				spacer,
+				{
 					xtype: 'main-editor-button-section'
 				},
 				{

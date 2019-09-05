@@ -41,17 +41,14 @@ Ext.define(
 					xtype: 'main-editor-button-sup'
 				},
 				{
+					xtype: 'main-editor-button-code'
+				},
+				spacer,
+				{
 					xtype: 'main-editor-button-smallcaps'
 				},
 				{
 					xtype: 'main-editor-button-spacing'
-				},
-				spacer,
-				{
-					xtype: 'main-editor-button-code'
-				},
-				{
-					xtype: 'main-editor-button-span'
 				},
 				spacer,
 				{
@@ -65,14 +62,18 @@ Ext.define(
 				},
 				spacer,
 				{
-					xtype: 'panel-toolstab-button-find'
-				},
-				{
-					xtype: 'panel-toolstab-button-replace'
+					xtype: 'main-editor-button-span'
 				},
 				spacer,
 				{
 					xtype: 'main-editor-button-unstyle'
+				},
+				spacer,
+				{
+					xtype: 'panel-toolstab-button-find'
+				},
+				{
+					xtype: 'panel-toolstab-button-replace'
 				}
 			];
 			
