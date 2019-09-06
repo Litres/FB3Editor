@@ -1414,6 +1414,7 @@ Ext.define(
 		getNameTree: function ()
 		{
 			var me = this,
+				MAX_LENGTH = 30,
 				first = me.first(),
 				name = '';
 
@@ -1421,8 +1422,18 @@ Ext.define(
 			{
 				name += first.getText(true);
 			}
+			else
+			{
+				name = me.getText(true);
+			}
+			
+			if (name.length > MAX_LENGTH)
+			{
+				// обрезаем текст, еслим превышает допустимую длину
+				name = name.substr(0, MAX_LENGTH) + '...';
+			}
 
-			name += '&lt;' + me.xmlTag + '&gt;';
+			//name += '&lt;' + me.xmlTag + '&gt;';
 
 			return name;
 		},
