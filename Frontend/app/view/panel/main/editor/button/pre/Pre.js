@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'main-editor-button-pre',
 		controller: 'main.editor.button.pre',
 		
-		html: '<span style="position: relative; font-family: monospace; font-size: 1.4em; top: 2px;">M</span>',
+		html: '<i class="fas fa-file-code fa-lg"></i>',
 
 		tooltipText: 'Предварительно отформатированный текст',
 		elementName: 'pre'

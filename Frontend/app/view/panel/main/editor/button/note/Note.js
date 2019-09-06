@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'main-editor-button-note',
 		controller: 'main.editor.button.note',
 		
-		html: '<i class="fa fa-sticky-note-o"></i>',
+		html: '<i class="far fa-sticky-note"></i>',
 
 		tooltipText: 'Сноска',
 		elementName: 'note'

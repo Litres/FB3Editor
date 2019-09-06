@@ -227,7 +227,7 @@
             "path": "resources/css/fire666.css"
         },*/
         {
-            "path": "resources/css/font-awesome.css"
+            "path": "resources/css/font-awesome-5_10_2.css"
         },
         {
             "path": "bower_components/codemirror/lib/codemirror.css"
