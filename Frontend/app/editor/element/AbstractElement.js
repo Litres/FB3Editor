@@ -1418,14 +1418,10 @@ Ext.define(
 				first = me.first(),
 				name = '';
 
-			if (first && first.hisName('title'))
-			{
-				name += first.getText(true);
-			}
-			else
-			{
-				name = me.getText(true);
-			}
+			// первый абзац
+			first = me.getDeepFirst();
+			first = first.getStyleHolder();
+			name = first.getText();
 			
 			if (name.length > MAX_LENGTH)
 			{
