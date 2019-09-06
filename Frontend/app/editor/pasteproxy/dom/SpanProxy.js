@@ -40,14 +40,16 @@ Ext.define(
 		 */
 		mapStyleSpan: {
 			'font-weight': {
-				bold: 'strong'
+				bold: 'strong',
+				'700': 'strong' // google doc
 			},
 			'font-style': {
 				italic: 'em'
 			},
 			'text-decoration': {
 				underline: 'underline',
-				'none underline': 'underline'
+				'none underline': 'underline',
+				'line-through': 'strikethrough'
 			},
 			'letter-spacing': {
 				pattern: /\d+(\.\d+)?(\w{2})/,
