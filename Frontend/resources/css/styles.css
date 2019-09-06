@@ -42,15 +42,17 @@ body {
 	width: 24px;
 	text-align: center;
 	left: -3px;
-
-	display: inline-block;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
+	/* стили из font-awesome */
+	font: normal normal normal 14px/1 "Font Awesome 5 Free";
+	font-weight: 900;
+	font-display: auto;
 	-moz-osx-font-smoothing: grayscale;
-	transform: translate(0, 0);
-	line-height: 0.75em;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
 }
 .treenavigation-children span:before {
 	width: 18px;
@@ -68,8 +70,8 @@ body {
 	color: #1d458a;
 }
 .treenavigation-root-desc span:before {
-	content: "\f03a";
-	font-size: 1.33333333em;
+	content: "\f46d";
+	font-size: 1.3em;
 	vertical-align: -15%;
 }
 .treenavigation-children-desc span:before {
@@ -91,8 +93,8 @@ body {
 	color: #3a7461;
 }
 .treenavigation-root-body span:before {
-	content: "\f044";
-	font-size: 1.33333333em;
+	content: "\f5fd";
+	font-size: 1.3em;
 	vertical-align: -15%;
 }
 .treenavigation-children-body span:before {
@@ -105,19 +107,23 @@ body {
 	content: "\f1dc";
 }
 .treenavigation-children-el-poem span:before {
-	content: "\f0d2";
+	content: "\f52d";
 }
 .treenavigation-children-el-stanza span:before {
-	content: "\f0d3";
+	content: "\f56b";
 }
 .treenavigation-children-el-img span:before {
 	content: "\f03e";
+	font: normal normal normal 14px/1 "Font Awesome 5 Free Regular";
+	font-weight: normal;
 }
 .treenavigation-children-el-div span:before {
-	content: "\f1b3";
+	content: "\f55d";
 }
 .treenavigation-children-el-notes span:before {
 	content: "\f24d";
+	font: normal normal normal 14px/1 "Font Awesome 5 Free Regular";
+	font-weight: normal;
 }
 .treenavigation-children-el-notebody span:before {
 	content: "\f249";
@@ -135,20 +141,24 @@ body {
 	content: "\f031";
 }
 .treenavigation-children-el-subscription span:before {
-	content: "\f08d";
+	content: "\f086";
 }
 .treenavigation-children-el-blockquote span:before {
 	content: "\f10e";
 }
 .treenavigation-children-el-epigraph span:before {
-	content: "\f231";
+	content: "\f4ad";
 }
 .treenavigation-children-el-subtitle span:before {
-	content: "\f0fd";
+	content: "\f791";
+	font: normal normal normal 14px/1 "Font Awesome 5 Brands";
 }
 .treenavigation-children-el-table span:before {
 	content: "\f0ce";
 }
+.treenavigation-children-el-pre span:before {
+	content: "\f1c9";
+	font-size: 1.2em;}
 .treenavigation-children-el-undefined span:before {
 	content: "\f128";
 }
@@ -156,8 +166,8 @@ body {
 
 /* Дерево xml */
 .treenavigation-root-xml span:before {
-	content: "\f1c9";
-	font-size: 1.33333333em;
+	content: "\f5fc";
+	font-size: 1.3em;
 	vertical-align: -15%;
 }
 /* <-- Дерево xml */
@@ -170,8 +180,8 @@ body {
 	color: #743e45;
 }
 .treenavigation-root-resource span:before {
-	content: "\f1c0";
-	font-size: 1.33333333em;
+	content: "\f07c";
+	font-size: 1.3em;
 	vertical-align: -15%;
 }
 .treenavigation-children-resource span:before {

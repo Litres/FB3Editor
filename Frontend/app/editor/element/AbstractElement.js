@@ -1415,12 +1415,18 @@ Ext.define(
 		{
 			var me = this,
 				MAX_LENGTH = 30,
-				first = me.first(),
-				name = '';
+				first,
+				name;
 
 			// первый абзац
 			first = me.getDeepFirst();
 			first = first.getStyleHolder();
+			
+			if (!first)
+			{
+				return '';
+			}
+			
 			name = first.getText();
 			
 			if (name.length > MAX_LENGTH)

@@ -15,7 +15,7 @@ Ext.define(
 		xtype: 'main-editor-button-img',
 		controller: 'main.editor.button.img',
 		
-		html: '<i class="fa fa-picture-o"></i>',
+		html: '<i class="far fa-image fa-lg"></i>',
 
 		tooltipText: 'Изображение',
 		elementName: 'img',
