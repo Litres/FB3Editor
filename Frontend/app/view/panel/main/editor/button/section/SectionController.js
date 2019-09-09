@@ -42,7 +42,7 @@ Ext.define(
 
 			els.node = nodes.node.getElement();
 			els.parent = els.node.getParent();
-			els.parent = els.node.getParentName('section');
+			els.parent = els.node.isSection ? els.node : els.node.getParentName('section');
 			els.parent = els.parent ? els.parent : els.node.getParentName('main');
 
 			if (!els.parent)
