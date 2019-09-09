@@ -139,9 +139,6 @@ Ext.define(
 					els.parent.add(els.emptyP, viewportId);
 				}
 			}
-
-			data.nodes = nodes;
-			data.els = els;
 		},
 
 		unExecute: function ()
