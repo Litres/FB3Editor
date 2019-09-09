@@ -19,7 +19,10 @@ Ext.define(
 			selectionchange: 'onSelectionChange',
 			select: 'onSelect'
 		},
-
+		
+		scrollable: true,
+		width: 100,
+		
 		/**
 		 * @property {String} Id панели контента, с которой связано дерево.
 		 */
