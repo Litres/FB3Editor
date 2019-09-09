@@ -20,14 +20,10 @@ Ext.define(
 	    
 	    cls: 'panel-main-navigation',
 
+	    scrollable: true,
+	
 	    title: 'Навигация',
 	    panelName: 'navigation',
-	    layout: 'anchor',
-	    overflowY: 'auto',
-
-	    defaults: {
-		    anchor: '100%'
-	    },
 
 	    initComponent: function ()
 	    {

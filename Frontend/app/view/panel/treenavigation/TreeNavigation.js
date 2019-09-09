@@ -24,9 +24,15 @@ Ext.define(
         listeners: {
             clearSelection: 'onClearSelection'
         },
-
+		
 		defaults: {
-			width: '100%'
+			width: '100%',
+			height: 'auto',
+			scrolling: false
+		},
+		
+		layout: {
+			type: 'vbox'
 		},
 
 		/**
