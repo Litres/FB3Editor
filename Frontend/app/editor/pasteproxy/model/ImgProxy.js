@@ -144,7 +144,7 @@ Ext.define(
 							// нормализуем ширину
 
 							// исправляем паттерн
-							pattern = pattern.replace(/d\+/g, '\\d+');
+							//pattern = pattern.replace(/d\+/g, '\\d+');
 
 							reg = new RegExp(pattern);
 
