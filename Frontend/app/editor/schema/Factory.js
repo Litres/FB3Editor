@@ -92,12 +92,27 @@ Ext.define(
 							me.attributes,
 						    function (name, item)
 						    {
-							    var typeCls;
+							    var typeCls,
+							        type,
+							        pattern;
 
 							    if (item.type && /:/.test(item.type))
 							    {
 								    typeCls = 'FBEditor.editor.schema.' + schemaName + '.extend.' + item.type.substring(5);
-								    item.type = Ext.create(typeCls);
+								    type = Ext.create(typeCls);
+								    
+								    // необходимые свойства нужно прописать напрямую,
+								    // чтобы при формировнии строкового представляния из json
+								    // они корректно преобразовались
+								    
+								    // исправляем паттерн
+								    pattern = type.pattern ? type.pattern.replace(/d\+/g, '\\d+') : null;
+
+								    item.type = {
+								    	base: type.base,
+									    pattern: pattern,
+									    enumeration: type.enumeration
+								    };
 								    //console.log(name, item);
 							    }
 						    }

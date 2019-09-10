@@ -301,29 +301,32 @@ Ext.define(
 		{
 			var attributes = {};
 			
-			Ext.Array.each(
-				node.attributes,
-				function (item)
-				{
-					var name = item.name,
-						val = item.value;
-					
-					switch (name)
+			if (elementSchema.attributes)
+			{
+				Ext.Array.each(
+					node.attributes,
+					function (item)
 					{
-						case 'xlink:href':
-							name = 'href';
-							break;
-						case 'id':
-							name = /^[_a-z0-9][0-9a-z._-]*$/i.test(val) ? name : null;
+						var name = item.name,
+							val = item.value;
+						
+						switch (name)
+						{
+							case 'xlink:href':
+								name = 'href';
+								break;
+							case 'id':
+								name = /^[_a-z][0-9a-z._-]*$/i.test(val) ? name : null;
+						}
+						
+						// соответствует ли аттрибут схеме
+						if (name && Ext.isObject(elementSchema.attributes[item.name]) && val)
+						{
+							attributes[name] = val;
+						}
 					}
-					
-					// соответствует ли аттрибут схеме
-					if (name && Ext.isObject(elementSchema.attributes[item.name]) && val)
-					{
-						attributes[name] = val;
-					}
-				}
-			);
+				);
+			}
 			
 			return attributes;
 		}

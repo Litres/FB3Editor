@@ -97,7 +97,7 @@ Ext.define(
 					// преобразование строки в объект
 					eval(xsdJson);
 					me.elements = elements;
-					console.log(JSON.stringify(me.elements));
+					console.log(Ext.JSON.encodeValue(me.elements));
 				}
 				else
 				{
