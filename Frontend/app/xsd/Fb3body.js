@@ -193,12 +193,24 @@ Ext.define(
 						"maxOccurs": "unbounded",
 						"output": {
 							"name": "output",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"default",
+									"trial",
+									"trial-only",
+									"payed"
+								]
+							},
 							"default": "default"
 						},
 						"id": {
 							"name": "id",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}"
+							},
 							"use": "required"
 						},
 						"article": {
@@ -208,7 +220,10 @@ Ext.define(
 						},
 						"doi": {
 							"name": "doi",
-							"type": {},
+							"type": {
+								"base": "string",
+								"pattern": "(10[.][0-9]{3,})(.[0-9]+)*/[^\"]([^\"&amp;&lt;&gt;])+"
+							},
 							"use": "optional"
 						},
 						"clipped": {
@@ -598,7 +613,16 @@ Ext.define(
 						"type": "fb3b:BRType",
 						"clear": {
 							"name": "clear",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"left",
+									"right",
+									"both",
+									"page"
+								]
+							},
 							"use": "optional"
 						},
 						"id": {
@@ -1352,7 +1376,16 @@ Ext.define(
 						},
 						"align": {
 							"name": "align",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"left",
+									"right",
+									"center",
+									"justify"
+								]
+							},
 							"use": "optional"
 						},
 						"bindto": {
@@ -1377,17 +1410,26 @@ Ext.define(
 						},
 						"width": {
 							"name": "width",
-							"type": {},
+							"type": {
+								"base": "normalizedString",
+								"pattern": "\\d+(.\\d+)?(em|ex|%|mm)"
+							},
 							"use": "optional"
 						},
 						"min-width": {
 							"name": "min-width",
-							"type": {},
+							"type": {
+								"base": "normalizedString",
+								"pattern": "\\d+(.\\d+)?(em|ex|%|mm)"
+							},
 							"use": "optional"
 						},
 						"max-width": {
 							"name": "max-width",
-							"type": {},
+							"type": {
+								"base": "normalizedString",
+								"pattern": "\\d+(.\\d+)?(em|ex|%|mm)"
+							},
 							"use": "optional"
 						}
 					}
@@ -1430,17 +1472,26 @@ Ext.define(
 						},
 						"width": {
 							"name": "width",
-							"type": {},
+							"type": {
+								"base": "normalizedString",
+								"pattern": "\\d+(.\\d+)?(em|ex|%|mm)"
+							},
 							"use": "optional"
 						},
 						"min-width": {
 							"name": "min-width",
-							"type": {},
+							"type": {
+								"base": "normalizedString",
+								"pattern": "\\d+(.\\d+)?(em|ex|%|mm)"
+							},
 							"use": "optional"
 						},
 						"max-width": {
 							"name": "max-width",
-							"type": {},
+							"type": {
+								"base": "normalizedString",
+								"pattern": "\\d+(.\\d+)?(em|ex|%|mm)"
+							},
 							"use": "optional"
 						}
 					}
@@ -1540,13 +1591,30 @@ Ext.define(
 						},
 						"align": {
 							"name": "align",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"left",
+									"right",
+									"center",
+									"justify"
+								]
+							},
 							"use": "optional",
 							"default": "left"
 						},
 						"valign": {
 							"name": "valign",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"top",
+									"middle",
+									"bottom"
+								]
+							},
 							"use": "optional",
 							"default": "top"
 						}
@@ -1627,13 +1695,30 @@ Ext.define(
 						},
 						"align": {
 							"name": "align",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"left",
+									"right",
+									"center",
+									"justify"
+								]
+							},
 							"use": "optional",
 							"default": "left"
 						},
 						"valign": {
 							"name": "valign",
-							"type": {},
+							"type": {
+								"base": "token",
+								"pattern": null,
+								"enumeration": [
+									"top",
+									"middle",
+									"bottom"
+								]
+							},
 							"use": "optional",
 							"default": "top"
 						}
