@@ -16,7 +16,7 @@ Ext.define(
         xtype: 'panel-toolstab-tools-button-hotkeys',
 
         tooltipType: 'title',
-        html: '<i class="fa fa-keyboard-o"></i>',
+        html: '<i class="far fa-keyboard"></i>',
 
         /**
          * @private
