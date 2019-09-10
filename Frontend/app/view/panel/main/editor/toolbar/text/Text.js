@@ -23,6 +23,23 @@ Ext.define(
 			
 			buttons = [
 				{
+					xtype: 'main-editor-button-smallcaps'
+				},
+				{
+					xtype: 'main-editor-button-spacing'
+				},
+				spacer,
+				{
+					xtype: 'main-editor-button-img'
+				},
+				{
+					xtype: 'main-editor-button-a'
+				},
+				{
+					xtype: 'main-editor-button-note'
+				},
+				spacer,
+				{
 					xtype: 'main-editor-button-strong'
 				},
 				{
@@ -42,23 +59,6 @@ Ext.define(
 				},
 				{
 					xtype: 'main-editor-button-code'
-				},
-				spacer,
-				{
-					xtype: 'main-editor-button-smallcaps'
-				},
-				{
-					xtype: 'main-editor-button-spacing'
-				},
-				spacer,
-				{
-					xtype: 'main-editor-button-img'
-				},
-				{
-					xtype: 'main-editor-button-a'
-				},
-				{
-					xtype: 'main-editor-button-note'
 				},
 				spacer,
 				{

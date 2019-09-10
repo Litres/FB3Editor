@@ -34,13 +34,13 @@ Ext.define(
 					xtype: 'panel-toolstab-file'
 				},
 				{
-					xtype: 'panel-toolstab-main'
+					xtype: 'panel-toolstab-section'
 				},
 				{
 					xtype: 'panel-toolstab-div'
 				},
 				{
-					xtype: 'panel-toolstab-section'
+					xtype: 'panel-toolstab-main'
 				},
 				{
 					xtype: 'panel-toolstab-tools'
