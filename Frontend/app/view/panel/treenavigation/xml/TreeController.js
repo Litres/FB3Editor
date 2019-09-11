@@ -85,6 +85,7 @@ Ext.define(
 
 	            // проверяем и синхронизируем xml c моделью
 	            promise = managerXml.sync(true);
+                //promise = Promise.resolve(true);
 	            
 	            promise.then(
 	                function (res)
@@ -92,6 +93,7 @@ Ext.define(
                         if (res)
                         {
 	                        // загружаем данные в редактор xml
+	                        el = Ext.isObject(res) ? res : el;
 	                        managerXml.loadData(el);
 	                        
 	                        // разворачиваем корневой узел
