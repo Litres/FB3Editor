@@ -153,7 +153,7 @@ Ext.define(
 
             // получаем xml
             xml = el.getXml();
-
+            
             // загружаем в панель
             panel.fireEvent('loadData', xml);
         },
@@ -183,7 +183,7 @@ Ext.define(
                         root,
                         xml;
                     
-                    if (!el)
+                    if (!el || !srcXml)
                     {
                     	resolve(true);
                     	return;
@@ -194,7 +194,7 @@ Ext.define(
 
                     // получаем текущий xml из редактора
                     xml = proxy.getData();
-
+                    
                     if (xml !== srcXml)
                     {
                         // xml изменился
@@ -559,7 +559,7 @@ Ext.define(
 	
 	                me.setSyncProcess(false);
 	                
-                    resData.resolve(true);
+                    resData.resolve(resData.content);
                 }
             }
             catch (e)
