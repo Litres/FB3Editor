@@ -1,6 +1,8 @@
 /**
  * Сдвигает секцию вправо (увеличивает вложенность).
- * Текущая секция и секция над ней помещаются в одну общую секцию.
+ * Текущая секция помещается в хвост предыдущей секции.
+ * Если в предыдущей секции нет вложенных секций,
+ * то сначадал создаем там вложенную секцию и затем перемещаем нашу под нее.
  *
  * @author dew1983@mail.ru <Suvorov Andrey M.>
  */
@@ -57,17 +59,23 @@ Ext.define(
                 }
 
                 // родительский элемент секций
-                els.parent = els.section.parent;
+                els.parent = els.section.getParent();
+                
+                if (!els.sectionPrev.last().isSection)
+                {
+                    // если в предыдущей секции нет вложенных секци,
+                    // то создаем вложенную секцию
+	
+	                // новая вложенная секция
+	                els.sectionInner = factory.createElement('section');
+	                els.sectionPrev.add(els.sectionInner, viewportId);
 
-                // новая общая секция
-                els.sectionCommon = factory.createElement('section');
+	                // переносим все элементы во вложенную
+	                els.sectionPrev.moveTo(els.sectionInner, viewportId);
+                }
 
-                // вставляем новую общую секцию
-                els.parent.insertBefore(els.sectionCommon, els.sectionPrev, viewportId);
-
-                // переносим текущую и предыдущую секции в новую
-                els.sectionCommon.add(els.sectionPrev, viewportId);
-                els.sectionCommon.add(els.section, viewportId);
+                // переносим текущую секциию в предыдущую
+                els.sectionPrev.add(els.section, viewportId);
 
                 // сохраняем ссылки на элементы
                 data.els = els;
@@ -111,10 +119,24 @@ Ext.define(
 	            manager.removeAllOverlays();
                 manager.setSuspendEvent(true);
 
-                // переносим секкции обратно и удаляем новую
-                els.parent.insertBefore(els.sectionPrev, els.sectionCommon, viewportId);
-                els.parent.insertBefore(els.section, els.sectionCommon, viewportId);
-                els.parent.remove(els.sectionCommon, viewportId);
+                // переносим секцию обратно
+	
+	            els.sectionNext = els.sectionPrev.next();
+	            
+	            if (els.sectionNext)
+                {
+	                els.parent.insertBefore(els.section, els.sectionNext, viewportId);
+                }
+                else
+                {
+	                els.parent.add(els.section, viewportId);
+                }
+                
+                if (els.sectionInner)
+                {
+                    // удаляем вложенную секцию из предыдущей, предаврительно перенеся все элементы
+	                els.sectionInner.upChildren(viewportId);
+                }
 
                 // синхронизируем элемент
                 els.parent.sync(viewportId);
