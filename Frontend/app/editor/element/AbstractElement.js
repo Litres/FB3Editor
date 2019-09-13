@@ -408,6 +408,32 @@ Ext.define(
 				}
 			}
 		},
+		
+		/**
+		 * Добавляет все элементы из текущего в другой элемент.
+		 * @param {FBEditor.editor.element.AbstractElement} el Элемент, в который происходит перенос.
+		 * @param {String} [viewportId] Айди окна. Если передан, то затрагивает узел отображения.
+		 */
+		moveTo: function (el, viewportId)
+		{
+			var me = this,
+				cur;
+			
+			cur = me.first();
+			
+			while (cur)
+			{
+				if (!cur.equal(el))
+				{
+					el.add(cur, viewportId);
+					cur = me.first();
+				}
+				else
+				{
+					break;
+				}
+			}
+		},
 
 		/**
 		 * Переносит всех потомков на уровень выше, а опустевший элемент удаляет.
@@ -1047,6 +1073,12 @@ Ext.define(
 			);
 
 			manager.setSuspendEvent(false);
+			
+			if (manager.updateTree)
+			{
+				// обновляем дерево навигации
+				manager.updateTree();
+			}
 		},
 
 		/**

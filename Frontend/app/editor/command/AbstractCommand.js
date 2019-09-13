@@ -461,12 +461,6 @@ Ext.define(
 				// принудительно синхронизируем кнопки, игнорируя кэш
 				manager.syncButtons();
 			}
-
-			if (manager.updateTree)
-			{
-				// обновляем дерево навигации
-				manager.updateTree();
-			}
 		}
 	}
 );
