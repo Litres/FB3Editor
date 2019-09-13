@@ -1829,7 +1829,7 @@ Ext.define(
 
 				if (!child.isStyleType && !child.isText)
 				{
-					//console.log('style child', pos, child ? child.xmlTag : '');
+					//console.log('style child', pos, child ? child.getName() : '');
 
 					// конвертируем потомка
 					child.convertToText(fragment);
@@ -1837,7 +1837,8 @@ Ext.define(
 
 				if (child && (child.isStyleType || child.isText))
 				{
-					//console.log('child', pos, child.xmlTag);
+					//console.log('child', pos, child.getName());
+					
 					if (child.isStyleType)
 					{
 						// удаляем все неопределенные элементы
@@ -1846,6 +1847,8 @@ Ext.define(
 
 					if (child.children.length)
 					{
+						//console.log('add', me.getName(), child.getName());
+						
 						// добавляем в контейнер текстовый элемент
 						fragment.add(child);
 					}
@@ -2146,6 +2149,27 @@ Ext.define(
 		removeMarker: function ()
 		{
 			this.marker = null;
+		},
+		
+		/**
+		 * Удаляет все аттрибуты.
+		 * @param {Boolean} [deep] Удалять ли в дочерних элементах.
+		 */
+		removeAttributes: function (deep)
+		{
+			var me = this;
+			
+			me.attributes = {};
+			
+			if (deep)
+			{
+				me.each(
+					function (child)
+					{
+						child.removeAttributes(deep);
+					}
+				);
+			}
 		}
 	}
 );

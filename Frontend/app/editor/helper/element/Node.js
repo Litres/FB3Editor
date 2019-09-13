@@ -481,7 +481,8 @@ Ext.define(
 		/**
 		 * Устанавливает курсор в начало элемента.
 		 * @param {Object} [opts] Дополнительные опции.
-		 * @param {Number} opts.start Стартовая позиция курсора.
+		 * @param {Number} [opts.start] Стартовая позиция курсора.
+		 * @param {Boolean} [opts.withoutScroll] Не прокручивать окно к элементу.
 		 */
 		setCursor: function (opts)
 		{
@@ -507,8 +508,11 @@ Ext.define(
 				}
 			);
 			
-			// прокручиваем окно
-			me.scrollIntoView();
+			if (!opts.withoutScroll)
+			{
+				// прокручиваем окно
+				me.scrollIntoView();
+			}
 		},
 
 		/**
