@@ -83,7 +83,14 @@ Ext.define(
 								td.children,
 								function (child)
 								{
-									p.add(child);
+									if (!child.isP)
+									{
+										p.add(child);
+									}
+									else
+									{
+										p = child;
+									}
 								}
 							);
 

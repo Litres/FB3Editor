@@ -42,6 +42,9 @@ Ext.define(
 			
 			els.parent = els.p ? els.p.getParent() : els.node;
 			
+			//console.log(els.parent);
+			//console.log(els.parent.first());
+			
 			if (els.parent.first().isTitle && range.collapsed)
 			{
 				me.verifyResult(false);
