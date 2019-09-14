@@ -27,6 +27,13 @@ Ext.define(
 				factory = FBEditor.editor.Factory,
 				els = {};
 
+			els.title = factory.createElement('title');
+			els.titleP = factory.createElement('p');
+			els.titleT = factory.createElementText('Заголовок сноски');
+			els.titleP.add(els.titleT);
+			els.title.add(els.titleP);
+			me.add(els.title);
+
 			els.p = factory.createElement('p');
 			els.t = factory.createElementText('Текст сноски');
 			els.p.add(els.t);

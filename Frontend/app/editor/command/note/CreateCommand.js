@@ -125,17 +125,8 @@ Ext.define(
 					els.sync.sync(viewportId);
 				}
 				
-				nodes.cursor = els.node.first().getNodeHelper().getNode(viewportId);
-				
 				// устанавливаем курсор
-				manager.setCursor(
-					{
-						focus: true,
-						withoutSyncButtons: true,
-						startNode: nodes.cursor,
-						startOffset: 1
-					}
-				);
+				els.cursor.getNodeHelper().setCursor();
 				
 				// сохраняем
 				data.els = els;
@@ -185,15 +176,14 @@ Ext.define(
 				// удаляем сноску
 				els.parent.remove(els.node, viewportId);
 				
-				nodes.cursor = range.start;
+				els.cursor = range.start.getElement();
 				
 				if (data.isEmpty)
 				{
 					// вставляем пустой
 					els.empty = manager.createEmptyElement();
 					els.parent.add(els.empty, viewportId);
-					nodes.empty = els.empty.getNodeHelper().getNode(viewportId);
-					nodes.cursor = nodes.empty;
+					els.cursor = els.empty;
 				}
 				else
 				{
@@ -224,6 +214,7 @@ Ext.define(
 				manager.setChanged(true);
 				
 				// устанавливаем курсор
+				nodes.cursor = els.cursor.getNodeHelper().getNode(viewportId);
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,
@@ -266,7 +257,7 @@ Ext.define(
 			
 			if (!els.notes.isNotes)
 			{
-				// создаем блок примечаний
+				// создаем блок сносок
 				els.notes = factory.createElement('notes');
 				els = Ext.apply(els, els.notes.createScaffold());
 				root.add(els.notes, viewportId);
@@ -274,7 +265,7 @@ Ext.define(
 			}
 			else
 			{
-				// создаем
+				// создаем тело сноски
 				els.notebody = factory.createElement('notebody');
 				els = Ext.apply(els, els.notebody.createScaffold());
 				els.notes.add(els.notebody, viewportId);
@@ -284,8 +275,11 @@ Ext.define(
 			// ссылка
 			els.notebody.generateNoteId();
 			
-			// текст сноски
-			els.t.setText(els.t.getText() + ' ' + noteManager.getMaxNumber(), viewportId);
+			// текст заголовка сноски
+			els.titleT.setText(noteManager.getMaxNumber(), viewportId);
+			
+			// курсор на текст сноски
+			els.cursor = els.t;
 		},
 		
 		/**
