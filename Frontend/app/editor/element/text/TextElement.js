@@ -144,6 +144,8 @@ Ext.define(
 			var me = this,
 				helper,
 				node;
+			
+			text = String(text);
 
 			// заменяем непечатаемые символы
 			me.text = me.convertUnprintedSymbols(text);
