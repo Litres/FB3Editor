@@ -11,6 +11,12 @@ Ext.define(
 		requires: [
 			'FBEditor.editor.pasteproxy.PasteProxy'
 		],
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.command.RemoveNodesCommand} Команда удаления выделенной части тела.
+		 */
+		removeCmd: null,
 
 		execute: function ()
 		{
@@ -23,289 +29,312 @@ Ext.define(
 				els = {},
 				offset = {},
 				pos = {},
+				promise,
+				removeCmd,
 				helper,
 				viewportId,
-				//sel,
 				range,
 				proxy;
 
 			try
 			{
-				if (manager.isSuspendCmd())
-				{
-					return false;
-				}
-				
-				if (data.saveRange)
-				{
-					//return false;
-				}
-				
 				// получаем данные из выделения
-				range = data.range = manager.getRangeCursor();
-				offset = range.offset;
+				range = manager.getRangeCursor();
 				
-				// удаляем все оверлеи в тексте
-				manager.removeAllOverlays();
-
-				nodes.node = range.start;
-				els.node = nodes.node.getElement();
-				els.p = els.node.getStyleHolder();
-
 				if (!range.collapsed)
 				{
 					// удаляем выделенную часть текста
-					els.p.removeRangeNodes();
-				}
-				
-				nodes.node = range.start;
-				els.node = nodes.node.getElement();
-
-				//manager = els.node.getManager();
-				manager.setSuspendEvent(true);
-				
-				viewportId = data.viewportId = nodes.node.viewportId;
-
-				// прокси данных из буфера
-				proxy = data.proxy || Ext.create('FBEditor.editor.pasteproxy.PasteProxy', {e: e, manager: manager});
-
-				// получаем модель вставляемого фрагмента
-				els.fragment = data.proxy ? proxy.getCreateModel() : proxy.getModel();
-
-				//Ext.log({level: 'info', msg: 'Фрагмент', dump: els.fragment});
-
-				data.proxy = proxy;
-				els.fragP = els.fragment.first();
-
-				if (!els.fragP)
-				{
-					// пустая вставка
-					return true;
-				}
-
-				// проверяем корректность вставки в текущий элемент
-				me.checkPasteIntoEl(els);
-
-				if (els.fragP.isStyleHolder && els.fragment.getChildren().length === 1 && !els.node.isEmpty())
-				{
-					// если вставляемая модель содержит только один абзац,
-					// то вставляем его содержимое в текущий абзац
-
-					els.next = els.fragP.first();
-
-					while (els.next)
-					{
-						els.temp = els.next.next();
-						els.fragment.add(els.next);
-						els.next = els.temp;
-					}
-
-					els.fragment.remove(els.fragP);
-				}
-
-				if (els.node.isEmpty())
-				{
-					// позиция курсора в пустом абзаце
-
-					els.fragP = els.fragment.first();
-					els.needEmpty = true;
-					
-					if (els.fragP && els.fragP.isBlock())
-					{
-						// абзац
-						els.node = els.node.getStyleHolder();
-					}
-					else
-					{
-						// пустой элемент
-						els.node = els.node.getDeepFirst();
-					}
+					me.removeCmd = Ext.create('FBEditor.editor.command.RemoveNodesCommand', {promise: true});
+					promise = me.removeCmd.execute();
 				}
 				else
 				{
-					// делим узел в позиции курсора
-
-					els.fragF = els.fragment.first();
-
-					if (!els.fragF.isImg &&
-					    (els.fragF.isStyleHolder ||
-					    !els.fragF.isStyleType && !els.fragF.isText))
+					if (manager.isSuspendCmd())
 					{
-						// делим на уровне абзацев
-
-						// абзац
-						els.node = els.node.getStyleHolder();
-						helper = els.node.getNodeHelper();
-						nodes.node = helper.getNode(viewportId);
-
-						// находится ли курсор в конце абзаца
-						pos.isEnd = manager.isLastNode(nodes.node, range.start) &&
-						        range.start.nodeValue.length === offset.start;
-
-						// находится ли курсор в начале абзаца
-						pos.isStart = manager.isFirstNode(nodes.node, range.start) && offset.start === 0;
+						return false;
 					}
-					else
+					
+					// удаляем все оверлеи в тексте
+					manager.removeAllOverlays();
+					promise = Promise.resolve(true);
+				}
+				
+				promise.then(
+					function (res)
 					{
-						// делим узел на уровне стилевых элементов
-
-						nodes.node = range.start;
-						els.node = nodes.node.getElement();
-
-						// находится ли курсор в конце элемента
-						pos.isEnd = els.node.getLength() === offset.start;
-
-						// находится ли курсор в начале элемента
-						pos.isStart = offset.start === 0;
-					}
-
-					//console.log('pos', pos); //return false;
-
-					if (pos.isStart)
-					{
-						// если курсор в начале элемента
-					}
-					else if (pos.isEnd)
-					{
-						// если курсор в конце элемента
+						if (!res)
+						{
+							return false;
+						}
 						
-						if (els.node.next())
-						{
-							// указатель на следующий элемент
-							els.node = els.node.next();
-						}
-						else
-						{
-							// добавляем временно пустой элемент в конец и переносим на него указатель
-							// после переноса фрагмента пустой элемент будет удален
-							
-							els.parent = els.node.getParent();
-							els.node = manager.createEmptyElement();
-							els.parent.add(els.node, viewportId);
-						}
-					}
-					else
-					{
-						// делим элемент, если курсор не в конце и не в начале элемента
-
-						els.needJoin = true;
-						nodes.container = range.start;
-						els.common = els.node.getParent();
-						nodes.node = manager.splitNode(els, nodes, offset.start);
+						// получаем данные из выделения
+						range = data.range = manager.getRangeCursor();
+						offset = range.offset;
+						
+						console.log('range', range);
+						
+						nodes.node = range.start;
+						viewportId = data.viewportId = nodes.node.viewportId;
 						els.node = nodes.node.getElement();
-						els.common.removeEmptyText();
-					}
-				}
-
-				//console.log('nodes', nodes); return false;
-
-				els.parent = els.node.getParent();
-				
-				// ссылки на первый и последний элементы фрагмента
-				els.fragmentFirst = els.fragment.first();
-				els.fragmentLast = els.fragment.last();
-
-				// переносим все элементы из фрагмента в текст
-				
-				els.first = els.fragment.first();
-				
-				while (els.first)
-				{
-					els.parent.insertBefore(els.first, els.node, viewportId);
-					els.first = els.fragment.first();
-				}
-
-				// соединяем соседние текстовые узлы
-				
-				els.prev = els.fragmentFirst.prev();
-				els.next = els.fragmentLast.next();
-				
-				if (els.prev && els.prev.isText && els.next && els.next.isText && els.fragmentFirst.isText &&
-				    els.fragmentFirst.equal(els.fragmentLast))
-				{
-					// соединяем текстовый узел фрагмента с соседними текстовыми узлами
-					
-					// курсор
-					els.cursor = els.prev;
-					offset.cursor = offset.start;
-
-					els.needReplaceText = els.prev.getText() + els.next.getText();
-					
-					offset.cursor = els.prev.getLength() + els.fragmentFirst.getLength();
-
-					els.textValue = els.prev.getText() + els.fragmentFirst.getText() + els.next.getText();
-					els.prev.setText(els.textValue, viewportId);
-					//nodes.prev.nodeValue = els.textValue;
-
-					els.parent.remove(els.fragmentFirst, viewportId);
-					els.parent.remove(els.next, viewportId);
-					els.next = null;
-				}
-				else if (els.prev && els.prev.isText && els.fragmentFirst.isText)
-				{
-					// соединяем первый узел фрагмента
-					
-					// курсор
-					els.cursor = els.prev;
-					offset.cursor = els.prev.getLength();
-
-					els.needSplitFirst = true;
-
-					els.textValue = els.prev.getText() + els.fragmentFirst.getText();
-					els.prev.setText(els.textValue, viewportId);
-
-					els.parent.remove(els.fragmentFirst, viewportId);
-				}
-
-				if (els.next && els.next.isText && els.fragmentLast.isText)
-				{
-					// соединяем последний узел фрагмента
-
-					els.needSplitLast = true;
-
-					els.textValue = els.fragmentLast.getText() + els.next.getText();
-					els.next.setText(els.textValue, viewportId);
-
-					els.parent.remove(els.fragmentLast, viewportId);
-
-					// курсор
-					els.cursor = els.next;
-					offset.cursor = els.fragmentLast.getLength();
-				}
-
-				if (els.node.isEmpty())
-				{
-					// удаляем пустой элемент
-					els.parent.remove(els.node, viewportId);
-				}
-
-				//console.log('nodes, els', nodes, els);
-
-				// синхронизируем элемент
-				els.parent.sync(viewportId);
-
-				manager.setSuspendEvent(false);
-
-				//console.log('cursor', offset.cursor, els.cursor);
-				
-				// устанавливаем курсор
-				els.cursor = els.cursor || els.fragmentFirst.getDeepFirst();
-				nodes.cursor = els.cursor.getNodeHelper().getNode(viewportId);
-				offset.cursor = offset.cursor ? offset.cursor : 0;
-				manager.setCursor(
+						els.p = els.node.isStyleHolder || !els.node.isText && !els.node.isStyleType ? null : els.node.getStyleHolder();
+						els.node = !els.p ? els.node.getDeepFirst().getStyleHolder() : els.node;
+						
+						console.log('els', els);
+						
+						manager.setSuspendEvent(true);
+						
+						// прокси данных из буфера
+						proxy = data.proxy || Ext.create('FBEditor.editor.pasteproxy.PasteProxy', {e: e, manager: manager});
+						
+						// получаем модель вставляемого фрагмента
+						els.fragment = data.proxy ? proxy.getCreateModel() : proxy.getModel();
+						
+						//Ext.log({level: 'info', msg: 'Фрагмент', dump: els.fragment});
+						
+						data.proxy = proxy;
+						els.fragP = els.fragment.first();
+						
+						if (!els.fragP)
+						{
+							// пустая вставка
+							return true;
+						}
+						
+						// проверяем корректность вставки в текущий элемент
+						me.checkPasteIntoEl(els);
+						
+						if (els.fragP.isStyleHolder && els.fragment.getChildren().length === 1 && !els.node.isEmpty())
+						{
+							// если вставляемая модель содержит только один абзац,
+							// то вставляем его содержимое в текущий абзац
+							
+							els.next = els.fragP.first();
+							
+							while (els.next)
+							{
+								els.temp = els.next.next();
+								els.fragment.add(els.next);
+								els.next = els.temp;
+							}
+							
+							els.fragment.remove(els.fragP);
+						}
+						
+						if (els.node.isEmpty())
+						{
+							// позиция курсора в пустом абзаце
+							
+							els.fragP = els.fragment.first();
+							els.needEmpty = true;
+							
+							if (els.fragP && els.fragP.isBlock())
+							{
+								// абзац
+								els.node = els.node.getStyleHolder();
+							}
+							else
+							{
+								// пустой элемент
+								els.node = els.node.getDeepFirst();
+							}
+							
+							els.emptyNext = els.node.next();
+						}
+						else if (els.p)
+						{
+							// делим узел в позиции курсора
+							
+							els.fragF = els.fragment.first();
+							
+							if (!els.fragF.isImg &&
+								(els.fragF.isStyleHolder ||
+									!els.fragF.isStyleType && !els.fragF.isText))
+							{
+								// делим на уровне абзацев
+								
+								// абзац
+								helper = els.p.getNodeHelper();
+								nodes.p = helper.getNode(viewportId);
+								
+								// находится ли курсор в конце абзаца
+								pos.isEnd = manager.isLastNode(nodes.p, nodes.node) &&
+									els.node.getLength() === offset.start;
+								
+								// находится ли курсор в начале абзаца
+								pos.isStart = manager.isFirstNode(nodes.p, nodes.node) && offset.start === 0;
+								
+								els.node = els.p;
+								//nodes.node = nodes.p;
+							}
+							else
+							{
+								// делим узел на уровне стилевых элементов
+								
+								nodes.node = range.start;
+								els.node = nodes.node.getElement();
+								
+								// находится ли курсор в конце элемента
+								pos.isEnd = els.node.getLength() === offset.start;
+								
+								// находится ли курсор в начале элемента
+								pos.isStart = offset.start === 0;
+							}
+							
+							//console.log('pos', pos); //return false;
+							
+							if (pos.isStart)
+							{
+								// если курсор в начале элемента
+							}
+							else if (pos.isEnd)
+							{
+								// если курсор в конце элемента
+								
+								if (els.node.next())
+								{
+									// указатель на следующий элемент
+									els.node = els.node.next();
+								}
+								else
+								{
+									// добавляем временно пустой элемент в конец и переносим на него указатель
+									// после переноса фрагмента пустой элемент будет удален
+									
+									els.parent = els.node.getParent();
+									els.node = manager.createEmptyElement();
+									els.parent.add(els.node, viewportId);
+								}
+							}
+							else
+							{
+								// делим элемент, если курсор не в конце и не в начале элемента
+								
+								els.needJoin = true;
+								nodes.container = range.start;
+								els.common = els.node.getParent();
+								nodes.node = manager.splitNode(els, nodes, offset.start);
+								els.node = nodes.node.getElement();
+								els.common.removeEmptyText();
+							}
+						}
+						
+						//console.log('nodes', nodes, els); return false;
+						
+						els.parent = els.node.getParent();
+						
+						// ссылки на первый и последний элементы фрагмента
+						els.fragmentFirst = els.fragment.first();
+						els.fragmentLast = els.fragment.last();
+						
+						// переносим все элементы из фрагмента в текст
+						
+						els.first = els.fragment.first();
+						
+						while (els.first)
+						{
+							els.parent.insertBefore(els.first, els.node, viewportId);
+							els.first = els.fragment.first();
+						}
+						
+						// соединяем соседние текстовые узлы
+						
+						els.prev = els.fragmentFirst.prev();
+						els.next = els.fragmentLast.next();
+						
+						if (els.prev && els.prev.isText && els.next && els.next.isText && els.fragmentFirst.isText &&
+							els.fragmentFirst.equal(els.fragmentLast))
+						{
+							// соединяем текстовый узел фрагмента с соседними текстовыми узлами
+							
+							// курсор
+							els.cursor = els.prev;
+							offset.cursor = offset.start;
+							
+							els.needReplaceText = els.prev.getText() + els.next.getText();
+							
+							offset.cursor = els.prev.getLength() + els.fragmentFirst.getLength();
+							
+							els.textValue = els.prev.getText() + els.fragmentFirst.getText() + els.next.getText();
+							els.prev.setText(els.textValue, viewportId);
+							
+							els.parent.remove(els.fragmentFirst, viewportId);
+							els.parent.remove(els.next, viewportId);
+							els.next = null;
+						}
+						else if (els.prev && els.prev.isText && els.fragmentFirst.isText)
+						{
+							// соединяем первый узел фрагмента
+							
+							// курсор
+							els.cursor = els.prev;
+							offset.cursor = els.prev.getLength();
+							
+							els.needSplitFirst = true;
+							
+							els.textValue = els.prev.getText() + els.fragmentFirst.getText();
+							els.prev.setText(els.textValue, viewportId);
+							
+							els.parent.remove(els.fragmentFirst, viewportId);
+						}
+						
+						if (els.next && els.next.isText && els.fragmentLast.isText)
+						{
+							// соединяем последний узел фрагмента
+							
+							els.needSplitLast = true;
+							
+							els.textValue = els.fragmentLast.getText() + els.next.getText();
+							els.next.setText(els.textValue, viewportId);
+							
+							els.parent.remove(els.fragmentLast, viewportId);
+							
+							// курсор
+							els.cursor = els.next;
+							offset.cursor = els.fragmentLast.getLength();
+						}
+						
+						if (els.node.isEmpty())
+						{
+							// удаляем пустой элемент
+							els.parent.remove(els.node, viewportId);
+						}
+						
+						//console.log('nodes, els', nodes, els);
+						
+						// синхронизируем элемент
+						els.parent.sync(viewportId);
+						
+						manager.setSuspendEvent(false);
+						
+						//console.log('cursor', offset.cursor, els.cursor);
+						
+						// устанавливаем курсор
+						els.cursor = els.cursor || els.fragmentFirst.getDeepFirst();
+						nodes.cursor = els.cursor.getNodeHelper().getNode(viewportId);
+						offset.cursor = offset.cursor ? offset.cursor : 0;
+						manager.setCursor(
+							{
+								startNode: nodes.cursor,
+								startOffset: offset.cursor
+							}
+						);
+						
+						// сохраняем
+						data.nodes = nodes;
+						data.els = els;
+						
+						// проверяем по схеме
+						me.verifyElement(els.parent, {validXml: true});
+						
+						res = true;
+					},
+					function ()
 					{
-						startNode: nodes.cursor,
-						startOffset: offset.cursor
+						Ext.log({level: 'warn', msg: e, dump: e});
+						me.getHistory(els.parent).removeNext();
 					}
 				);
-
-				// сохраняем
-				data.nodes = nodes;
-				data.els = els;
-
-				// проверяем по схеме
-				me.verifyElement(els.parent, {validXml: true});
-
+				
 				res = true;
 			}
 			catch (e)
@@ -343,7 +372,7 @@ Ext.define(
 				manager.setSuspendEvent(true);
 				els.cursor = range.start.getElement();
 				
-				console.log('undo paste', nodes, els, range);
+				console.log('undo paste', els);
 
 				if (els.needReplaceText)
 				{
@@ -409,7 +438,14 @@ Ext.define(
 					if (els.needEmpty)
 					{
 						// вставляем пустой узел
-						els.parent.add(els.node, viewportId);
+						if (els.emptyNext)
+						{
+							els.parent.insertBefore(els.node, els.emptyNext, viewportId);
+						}
+						else
+						{
+							els.parent.add(els.node, viewportId);
+						}
 					}
 
 					els.parent.sync(viewportId);
@@ -427,6 +463,13 @@ Ext.define(
 				
 				// удаляем вставленные ресурсы
 				paste.remove();
+				
+				if (me.removeCmd)
+				{
+					// восстанавливаем удаленный текст, который был выделен перед вставкой
+					me.removeCmd.unExecute();
+					me.removeCmd = null;
+				}
 
 				res = true;
 			}
@@ -515,24 +558,24 @@ Ext.define(
 			
 			manager.setSuspendEvent(true);
 			
-			//console.log(nodes.fragmentFirst);
-			//console.log(nodes.fragmentLast);
+			//console.log(els.fragmentFirst);
+			//console.log(els.fragmentLast);
 			
 			els.nextF = els.fragmentFirst;
 			els.lastF = els.fragmentLast.next();
 			
-			//console.log('last', els.last);
+			//console.log('last', els.lastF);
 			
 			while (els.nextF)
 			{
 				els.buf = els.nextF.next();
 				
-				//console.log('next', els.next.getName());
+				//console.log('next', els.nextF.getXml());
 				
 				// удаляем все аттрибуты
 				els.nextF.removeAttributes(true);
 				
-				if (!els.nextF.isP)
+				if (!els.nextF.isP && !els.nextF.isText)
 				{
 					// фрагмент для хранения преобразованных элементов
 					els.fragment = factory.createElement('div');
@@ -550,7 +593,6 @@ Ext.define(
 					els.fragmentLast = els.fragment.last();
 					
 					// заменяем текущий элемент на фрагмент
-					//els.parent.replace(els.fragment, els.next, viewportId);
 					els.parent.insertBefore(els.fragment, els.nextF, viewportId);
 					els.parent.remove(els.nextF, viewportId);
 					
