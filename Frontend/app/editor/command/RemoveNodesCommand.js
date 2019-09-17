@@ -1,6 +1,5 @@
 /**
  * Удаляет выделенную часть элементов.
- * Не используется!
  *
  * @abstract
  * @author dew1983@mail.ru <Suvorov Andrey M.>
@@ -12,226 +11,230 @@ Ext.define(
 		extend: 'FBEditor.editor.command.AbstractCommand',
 
 		elementName: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.command.p.RemoveRangeNodesCommand} Команда удаления выделенной части тела
+		 * на уровне абзаца.
+		 */
+		removeCmd: null,
 
 		execute: function ()
 		{
 			var me = this,
 				data = me.getData(),
+				manager = FBEditor.getEditorManager(),
+				factory = manager.getFactory(),
 				res = false,
 				els = {},
 				nodes = {},
 				offset = {},
 				pos = {},
-				reg = {},
-				sel = window.getSelection(),
-				factory = FBEditor.editor.Factory,
-				manager,
+				promise,
+				viewportId,
 				range;
-
-			try
+			
+			promise = new Promise(
+				function (resolve, reject)
+				{
+					try
+					{
+						if (manager.isSuspendCmd())
+						{
+							resolve(false);
+							return false;
+						}
+						
+						// удаляем все оверлеи в тексте
+						manager.removeAllOverlays();
+						
+						if (data.saveRange)
+						{
+							// восстанвливаем выделение
+							manager.setCursor(data.saveRange);
+						}
+						
+						// получаем данные из выделения
+						range = data.range = manager.getRangeCursor();
+						offset = range.offset;
+						viewportId = data.viewportId = range.common.viewportId;
+						
+						if (range.collapsed)
+						{
+							throw Error('Отсутствует выделение');
+						}
+						
+						els.common = range.common.getElement();
+						
+						if (els.common.getStyleHolder())
+						{
+							// удаление на уровне одного абзаца
+							
+							me.removeCmd = Ext.create('FBEditor.editor.command.p.RemoveRangeNodesCommand', {promise: true});
+							me.removeCmd.execute().then(
+								function (res)
+								{
+									resolve(res);
+								}
+							);
+							
+							return true;
+						}
+						
+						manager.setSuspendEvent(true);
+						
+						console.log('remove nodes', range);
+						
+						// первый элемент
+						
+						els.first = range.start.getElement();
+						
+						while (els.first && !els.first.getParent().equal(els.common))
+						{
+							els.first = els.isRoot ? els.first.first() : els.first.getParent();
+						}
+						
+						// последний элемент
+						
+						els.last = range.end.getElement();
+						
+						while (els.last && !els.last.getParent().equal(els.common))
+						{
+							els.last = els.isRoot ? els.last.last() : els.last.getParent();
+						}
+						
+						// позиция выделения относительно затронутых элементов
+						pos.isStart = els.first.isStartRange(range);
+						pos.isEnd = els.last.isEndRange(range);
+						data.range.pos = pos;
+						
+						//console.log('pos', pos, range.toString());
+						
+						if (!pos.isStart)
+						{
+							// разбиваем первый элемент
+							nodes.container = range.start;
+							nodes.start = manager.splitNode(els, nodes, offset.start);
+							els.start = nodes.start.getElement();
+						}
+						else
+						{
+							els.start = els.first;
+						}
+						
+						if (!pos.isEnd)
+						{
+							// разбиваем последний элемент
+							nodes.container = range.end;
+							nodes.end = manager.splitNode(els, nodes, offset.end);
+							els.end = nodes.end.getElement();
+							
+							// курсор
+							els.cursor = els.end;
+							els.startCursor = 0;
+							
+							els.end = els.end.prev();
+						}
+						else
+						{
+							els.end = els.last;
+							
+							if (els.start.prev())
+							{
+								//куросор
+								els.cursor = els.start.prev().getDeepFirst();
+								els.startCursor = els.cursor.isText ? els.cursor.getLength() : 0;
+							}
+						}
+						
+						els.parent = els.common;
+						
+						//console.log('nodes, els', nodes, els);return false;
+						
+						// удаляем элементы
+						
+						els.removed = [];
+						els.next = els.start;
+						
+						while (els.next && !els.next.equal(els.end))
+						{
+							els.removed.push(els.next);
+							els.buf = els.next.next();
+							els.parent.remove(els.next, viewportId);
+							els.next = els.buf;
+						}
+						
+						els.nextCursor = els.next.next();
+						els.removed.push(els.next);
+						els.parent.remove(els.next, viewportId);
+						els.first = els.parent.first();
+						
+						if (!els.first)
+						{
+							// если в родительском элементе не осталось потомков, то вставляем в него пустой абзац
+							els.isEmpty = true;
+							
+							// пустой абзац
+							els.p = manager.createEmptyP();
+							els.newEl = els.p;
+							
+							if (els.parent.isRoot && !els.parent.isDesc)
+							{
+								// в корневом элементе должна быть хотя бы одна секция
+								els.s = factory.createElement('section');
+								els.s.add(els.p);
+								els.newEl = els.s;
+							}
+							
+							els.parent.add(els.newEl, viewportId);
+							
+							// курсор
+							els.cursor = els.newEl.getDeepFirst();
+							els.startCursor = 0;
+						}
+						
+						//console.log('nodes, els', nodes, els);
+						
+						// синхронизируем
+						els.parent.sync(viewportId);
+						
+						manager.setSuspendEvent(false);
+						
+						// устанавливаем курсор
+						nodes.cursor = els.cursor.getNodeHelper().getNode(viewportId);
+						manager.setCursor(
+							{
+								startNode: nodes.cursor,
+								startOffset: els.startCursor
+							}
+						);
+						
+						// сохраняем узлы
+						data.nodes = nodes;
+						data.els = els;
+						
+						// проверяем по схеме
+						me.verifyElement(els.parent, {resolve: resolve});
+						
+						res = true;
+					}
+					catch (e)
+					{
+						Ext.log({level: 'warn', msg: e, dump: e});
+						me.getHistory(els.parent).removeNext();
+						reject();
+					}
+					
+					manager.setSuspendEvent(false);
+				}
+			);
+			
+			if (!data.promise)
 			{
-				if (data.saveRange)
-				{
-					// восстанвливаем выделение
-					els.node = data.saveRange.startNode.getElement();
-					manager = els.node.getManager();
-					manager.setCursor(data.saveRange);
-				}
-
-				// получаем данные из выделения
-				range = sel.getRangeAt(0);
-
-				if (range.collapsed)
-				{
-					throw Error('Отсутствует выделение');
-				}
-
-				// TODO проверить перед удалением на допустимость получаемой структуры согласно схеме
-
-				nodes.common = range.commonAncestorContainer;
-				els.common = nodes.common.getElement();
-
-				manager = els.common.getManager();
-				
-				if (manager.isSuspendCmd())
-				{
-					return false;
-				}
-				
-				manager.setSuspendEvent(true);
-
-				data.viewportId = nodes.common.viewportId;
-
-				offset = {
-					start: range.startOffset,
-					end: range.endOffset
-				};
-				data.range = {
-					common: range.commonAncestorContainer,
-					start: range.startContainer,
-					end: range.endContainer,
-					parentStart: range.commonAncestorContainer.parentNode,
-					collapsed: range.collapsed,
-					offset: offset
-				};
-
-				console.log('remove nodes ', data.range);
-
-				// первый элемент
-
-				nodes.first = range.startContainer;
-				els.first = nodes.first.getElement();
-				els.commonId = els.common.elementId;
-
-				while (els.first && els.first.parent.elementId !== els.commonId)
-				{
-					nodes.first = els.isRoot ? nodes.first.firstChild : nodes.first.parentNode;
-					els.first = nodes.first ? nodes.first.getElement() : null;
-				}
-
-				// последний элемент
-
-				nodes.last = range.endContainer;
-				els.last = nodes.last.getElement();
-
-				while (els.last && els.last.parent.elementId !== els.commonId)
-				{
-					nodes.last = els.isRoot ? nodes.last.lastChild : nodes.last.parentNode;
-					els.last = nodes.last ? nodes.last.getElement() : null;
-				}
-
-				// позиция выделения относительно затронутых элементов
-				pos.isStart = els.first.isStartRange(range);
-				pos.isEnd = els.last.isEndRange(range);
-				data.range.pos = pos;
-				
-				//console.log('pos', pos, range.toString());
-
-				if (!pos.isStart)
-				{
-					// разбиваем первый элемент
-					nodes.container = range.startContainer;
-					nodes.start = manager.splitNode(els, nodes, offset.start);
-				}
-				else
-				{
-					nodes.start = nodes.first;
-				}
-
-				if (!pos.isEnd)
-				{
-					// разбиваем последний элемент
-					nodes.container = range.endContainer;
-					nodes.end = manager.splitNode(els, nodes, offset.end);
-					nodes.cursor = nodes.end;
-					nodes.startCursor = 0;
-					nodes.end = nodes.end.previousSibling;
-				}
-				else
-				{
-					nodes.end = nodes.last;
-					if (nodes.start.previousSibling)
-					{
-						nodes.cursor = manager.getDeepFirst(nodes.start.previousSibling);
-						nodes.startCursor = nodes.cursor.nodeValue ? nodes.cursor.nodeValue.length : 0;
-					}
-				}
-
-				els.start = nodes.start.getElement();
-				els.end = nodes.end.getElement();
-				nodes.parent = nodes.common;
-				els.parent = els.common;
-
-				//console.log('nodes, els', nodes, els);return false;
-
-				// удаляем элементы
-
-				els.removed = [];
-				nodes.removed = [];
-
-				nodes.next = nodes.start;
-				els.next = nodes.next.getElement();
-
-				while (els.next && !els.next.equal(els.end))
-				{
-					els.removed.push(els.next);
-					nodes.removed.push(nodes.next);
-
-					nodes.buf = nodes.next.nextSibling;
-					els.parent.remove(els.next);
-					nodes.parent.removeChild(nodes.next);
-					nodes.next = nodes.buf;
-					els.next = nodes.next ? nodes.next.getElement() : null;
-				}
-
-				nodes.nextCursor = nodes.next.nextSibling ? nodes.next.nextSibling : null;
-				els.removed.push(els.next);
-				nodes.removed.push(nodes.next);
-				els.parent.remove(els.next);
-				nodes.parent.removeChild(nodes.next);
-
-				nodes.first = nodes.parent.firstChild;
-
-				if (!nodes.first)
-				{
-					// если в родительском элементе не осталось потомков, то вставляем в него пустой параграф
-					els.isEmpty = true;
-
-					// пустой параграф
-					els.p = manager.createEmptyP();
-					els.newEl = els.p;
-
-					if (els.parent.isRoot && !els.parent.isDesc)
-					{
-						// в корневом элементе должна быть хотя бы одна секция
-						els.s = factory.createElement('section');
-						els.s.add(els.p);
-						els.newEl = els.s;
-					}
-
-					nodes.newEl = els.newEl.getNode(data.viewportId);
-
-					els.parent.add(els.newEl);
-					nodes.parent.appendChild(nodes.newEl);
-
-					nodes.cursor = manager.getDeepFirst(nodes.newEl);
-					nodes.startCursor = 0;
-				}
-
-				//console.log('nodes, els', nodes, els);
-
-				// синхронизируем
-				els.parent.sync(data.viewportId);
-
-				manager.setSuspendEvent(false);
-
-				// устанавливаем курсор
-				manager.setCursor(
-					{
-						startNode: nodes.cursor,
-						startOffset: nodes.startCursor
-					}
-				);
-
-				// сохраняем узлы
-				data.nodes = nodes;
-				data.els = els;
-
-				// проверяем по схеме
-				me.verifyElement(els.parent);
-
-				res = true;
+				promise.then();
 			}
-			catch (e)
-			{
-				Ext.log({level: 'warn', msg: e, dump: e});
-				console.log('nodes', nodes);
-				me.getHistory(els.parent).removeNext();
-			}
-
-			manager.setSuspendEvent(false);
-
-			return res;
+			
+			return promise;
 		},
 
 		unExecute: function ()
@@ -241,43 +244,50 @@ Ext.define(
 				res = false,
 				els = {},
 				nodes = {},
+				viewportId,
 				manager,
 				range;
+			
+			if (me.removeCmd)
+			{
+				// восстанавливаем удаленный текст, который был выделен на уровне абзаца
+				res = me.removeCmd.unExecute();
+				me.removeCmd = null;
+				
+				return res;
+			}
 
 			try
 			{
 				range = data.range;
 				nodes = data.nodes;
 				els = data.els;
-
+				viewportId = data.viewportId;
 				manager = els.parent.getManager();
+				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
-				console.log('undo remove nodes ', data, nodes);
+				console.log('undo remove nodes ', els);
 
 				if (els.isEmpty)
 				{
-					// удаляем пустой параграф или секцию
-					els.parent.remove(els.newEl);
-					nodes.parent.removeChild(nodes.newEl);
-					nodes.nextCursor = null;
+					// удаляем пустой абзац или секцию
+					els.parent.remove(els.newEl, viewportId);
+					els.nextCursor = null;
 				}
-
-				// восстанавливаем удлаенные элементы
+				
+				// восстанавливаем удаленные элементы
 				Ext.Array.each(
-					nodes.removed,
-					function (node)
+					els.removed,
+					function (el)
 					{
-						if (nodes.nextCursor)
+						if (els.nextCursor)
 						{
-							els.nextCursor = nodes.nextCursor.getElement();
-							els.parent.insertBefore(node.getElement(), els.nextCursor);
-							nodes.parent.insertBefore(node, nodes.nextCursor);
+							els.parent.insertBefore(el, els.nextCursor, viewportId);
 						}
 						else
 						{
-							els.parent.add(node.getElement());
-							nodes.parent.appendChild(node);
+							els.parent.add(el, viewportId);
 						}
 					}
 				);
@@ -285,25 +295,25 @@ Ext.define(
 				if (!range.pos.isStart)
 				{
 					// соединяем первый элемент
-					nodes.prev = nodes.removed[0].previousSibling;
-					manager.joinNode(nodes.removed[0]);
+					nodes.first = els.removed[0].getNodeHelper().getNode(viewportId);
+					manager.joinNode(nodes.first);
 
 					// удаляем пустые элементы
-					manager.removeEmptyNodes(nodes.prev);
+					manager.removeEmptyNodes(nodes.first);
 				}
-
+				
 				if (!range.pos.isEnd)
 				{
 					// соединяем последний элемент
+					nodes.nextCursor = els.nextCursor.getNodeHelper().getNode(viewportId);
 					manager.joinNode(nodes.nextCursor);
 
 					// удаляем пустые элементы
-					manager.removeEmptyNodes(nodes.removed[nodes.removed.length - 1]);
+					nodes.emptyNode = els.removed[els.removed.length - 1].getNodeHelper().getNode(viewportId);
+					manager.removeEmptyNodes(nodes.emptyNode);
 				}
 
-				els.parent.sync(data.viewportId);
-
-				manager.suspendEvent = false;
+				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
 				data.saveRange = {
@@ -312,8 +322,8 @@ Ext.define(
 					startOffset: range.offset.start,
 					endOffset: range.offset.end
 				};
-
-				data.nodes = nodes;
+				
+				manager.setCursor(data.saveRange);
 
 				res = true;
 			}
