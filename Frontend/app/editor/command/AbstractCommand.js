@@ -371,6 +371,7 @@ Ext.define(
 		 * @param {FBEditor.editor.element.AbstractElement} el Элемент.
 		 * @param {Object} [opts] Дополнительные опции.
 		 * @param {Boolean} [opts.validXml] Нужно ли проверить получившуюся структуру документа через xsd.
+		 * @param {Function} [opts.resolve] Функция возврата для Promise.
 		 * @param {Boolean} [opts.debug] Нужны ли отладочные сообщения.
 		 */
 		verifyElement: function (el, opts)
@@ -378,20 +379,29 @@ Ext.define(
 			var me = this,
 				manager = el.getManager(),
 				sch = manager.getSchema(),
+				resolve,
 				scopeData,
 				xml;
+			
+			opts = opts || {};
+			resolve = opts.resolve;
 			
 			if (!el || el.isText || el.isUndefined || el.isStyleHolder && el.isEmpty())
 			{
 				// текст, пустые абзацы и неопределенные элементы не нуждаются в проверке
+				
+				if (resolve)
+				{
+					resolve(true);
+				}
+				
 				return true;
 			}
-			
-			opts = opts || {};
 			
 			scopeData = {
 				el: el,
 				debug: opts.debug,
+				resolve: resolve,
 				syncButtons: me.syncButtons
 			};
 			
@@ -460,6 +470,11 @@ Ext.define(
 			{
 				// принудительно синхронизируем кнопки, игнорируя кэш
 				manager.syncButtons();
+			}
+			
+			if (scopeData.resolve)
+			{
+				scopeData.resolve(true);
 			}
 		}
 	}

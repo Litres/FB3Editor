@@ -1642,7 +1642,6 @@ Ext.define(
 				// соединяем текстовые узлы
 				els.text = els.prev.getText() + els.node.getText();
 				els.prev.setText(els.text, viewportId);
-				//nodes.prev.nodeValue = els.text;
 			}
 			else
 			{
@@ -1662,7 +1661,6 @@ Ext.define(
 					nodes.firstChild = nodes.first.firstChild;
 					nodes.next = nodes.first;
 					//console.log('nodes.first, nodes.last, nodes.prevLast', nodes.first,
-					// nodes.first.childNodes.length, nodes.last, nodes.prevLast);
 
 					if (els.last.isText && !els.first.isText)
 					{
@@ -1693,8 +1691,6 @@ Ext.define(
 							if (els.last && els.last.isText && els.next.isText)
 							{
 								// объединяем текстовые узлы
-								//els.nodeValue = nodes.last.nodeValue + nodes.next.nodeValue;
-								//nodes.last.nodeValue = els.nodeValue;
 								els.nodeValue = els.last.getText() + els.next.getText();
 								els.last.setText(els.nodeValue, viewportId);
 							}
@@ -1702,7 +1698,6 @@ Ext.define(
 							{
 								// переносим узел
 								els.prevLast.add(els.next);
-								//nodes.next.parentNode.getElement().remove(els.next);
 								nodes.prevLast.appendChild(nodes.next);
 
 								if (els.last.isText)
@@ -1711,6 +1706,7 @@ Ext.define(
 									els.last = nodes.last ? nodes.last.getElement() : null;
 								}
 							}
+							
 							nodes.next = nodes.buf;
 						}
 

@@ -1747,7 +1747,7 @@ Ext.define(
 				text = me.getText(),
 				rangeStr = range.toString(),
 				isStart;
-
+			
 			isStart = (rangeStr.indexOf(text) === 0) || (text.indexOf(rangeStr) === 0);
 
 			return isStart;
@@ -1764,6 +1764,13 @@ Ext.define(
 				text = me.getText(),
 				rangeStr = range.toString(),
 				isEnd;
+			
+			/*
+			console.log('text', text);
+			console.log('rangeStr', rangeStr);
+			console.log([rangeStr.lastIndexOf(text), rangeStr.length - text.length]);
+			console.log([text.lastIndexOf(rangeStr), text.length - rangeStr.length]);
+			*/
 			
 			isEnd = (rangeStr.lastIndexOf(text) !== -1 && rangeStr.lastIndexOf(text) === rangeStr.length - text.length) ||
 				(text.lastIndexOf(rangeStr) !== -1 && text.lastIndexOf(rangeStr) === text.length - rangeStr.length);
