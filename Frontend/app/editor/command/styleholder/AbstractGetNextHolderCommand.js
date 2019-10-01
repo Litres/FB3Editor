@@ -17,7 +17,7 @@ Ext.define(
 			var me = this,
 				data = me.getData(),
 				manager = FBEditor.getEditorManager(),
-				factory = FBEditor.editor.Factory,
+				//factory = FBEditor.editor.Factory,
 				res = false,
 				els = {},
 				nodes = {},
@@ -79,49 +79,10 @@ Ext.define(
 					els.isEmpty = true;
 					els.parentP.remove(els.p, viewportId);
 				}
-
-				if (!els.nextP.hisName(me.elementName))
-				{
-					// создаем новый элемент подходящего типа и переносим в него содержимое следующего абзаца
-
-					els.newP = factory.createElement(me.elementName);
-					nodes.newP = els.newP.getNode(viewportId);
-
-					while (els.first = els.nextP.first())
-					{
-						els.newP.add(els.first, viewportId);
-					}
-					
-					els.next = els.p.next();
-					
-					if (!els.next)
-					{
-						els.parentP.add(els.newP, viewportId);
-					}
-					else
-					{
-						els.parentP.insertBefore(els.newP, els.next, viewportId);
-					}
-					
-					els.nextNextP = els.nextP.next();
-					els.parentNextP.remove(els.nextP, viewportId);
-				}
-				else
-				{
-					// переносим следующий абзац
-					
-					els.next = els.p.next();
-					
-					if (!els.next)
-					{
-						els.parentP.add(els.nextP, viewportId);
-					}
-					else
-					{
-						els.parentP.insertBefore(els.nextP, els.next, viewportId);
-					}
-				}
-
+				
+				// перемещаем содержимое следующего абзаца в конец текущего элемента
+				me.moveNextP(els);
+				
 				if (els.parentNextP.isEmpty())
 				{
 					// удаляем пустой следующий блок
@@ -137,10 +98,10 @@ Ext.define(
 				//console.log('nodes, els', nodes, els);
 
 				// устанавливаем курсор
-				els.cursor = els.newP ? els.newP.getDeepLast() : els.nextP.getDeepLast();
+				els.cursor = els.cursor ? els.cursor : els.nextP.getDeepLast();
 				helper = els.cursor.getNodeHelper();
 				nodes.cursor = helper.getNode(viewportId);
-				nodes.startCursor = els.cursor.getLength();
+				nodes.startCursor = data.offset ? data.offset : els.cursor.getLength();
 				manager.setCursor(
 					{
 						startNode: nodes.cursor,
@@ -265,43 +226,8 @@ Ext.define(
 					}
 				}
 
-				if (els.newP)
-				{
-					// переносим все элементы в старый абзац
-
-					while (els.first = els.newP.first())
-					{
-						els.nextP.add(els.first, viewportId);
-					}
-
-					els.parentP.remove(els.newP, viewportId);
-
-					// воссоздаем старый следующий абзац
-
-					if (els.nextNextP)
-					{
-						els.parentNextP.insertBefore(els.nextP, els.nextNextP, viewportId);
-					}
-					else
-					{
-						els.parentNextP.add(els.nextP, viewportId);
-					}
-				}
-				else
-				{
-					// воссоздаем абзац в следующем блоке
-
-					els.next = !els.parentNextP.equal(els.parent) ? els.parentNextP.first() : false;
-
-					if (els.next)
-					{
-						els.parentNextP.insertBefore(els.nextP, els.next, viewportId);
-					}
-					else
-					{
-						els.parentNextP.add(els.nextP, viewportId);
-					}
-				}
+				// восстанавливаем следующий абзац
+				me.unMoveNextP(els);
 
 				if (els.isEmpty)
 				{
@@ -313,10 +239,10 @@ Ext.define(
 				els.parent.sync(viewportId);
 
 				// устанавливаем курсор
-				els.cursor = els.p.getDeepLast();
+				els.cursor = els.cursor ? els.cursor : els.p.getDeepLast();
 				helper = els.cursor.getNodeHelper();
 				nodes.cursor = helper.getNode(viewportId);
-				nodes.startCursor = els.cursor.getText().length;
+				nodes.startCursor = els.cursor.getLength();
 				data.saveRange = {
 					startNode: nodes.cursor,
 					startOffset: nodes.startCursor
@@ -335,35 +261,113 @@ Ext.define(
 
 			return res;
 		},
-
+		
 		/**
-		 * @private
-		 * Возвращает первый абзац из следующего блока.
+		 * @template
+		 * Перемещает содержимое следующего абзаца в конец текущего элемента.
 		 * @param {Object} els
-		 * @return {FBEditor.editor.element.AbstractStyleHolderElement}
 		 */
-		getNextP: function (els)
+		moveNextP: function (els)
 		{
-			var me = this;
-
-			els.next = els.p.next();
-			els._parent = els.p.getParent();
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId,
+				manager = FBEditor.getEditorManager(),
+				factory = manager.getFactory();
 			
-			while (!els.next && !els._parent.isRoot)
+			if (!els.nextP.hisName(me.elementName))
 			{
-				els.next = els._parent.next();
-				els._parent = els._parent.getParent();
+				// создаем новый элемент подходящего типа и переносим в него содержимое следующего абзаца
+				
+				els.newP = factory.createElement(me.elementName);
+				
+				while (els.first = els.nextP.first())
+				{
+					els.newP.add(els.first, viewportId);
+				}
+				
+				els.next = els.p.next();
+				
+				if (!els.next)
+				{
+					els.parentP.add(els.newP, viewportId);
+				}
+				else
+				{
+					els.parentP.insertBefore(els.newP, els.next, viewportId);
+				}
+				
+				els.nextNextP = els.nextP.next();
+				els.parentNextP.remove(els.nextP, viewportId);
+				
+				// курсор
+				els.cursor = els.newP.getDeepLast();
 			}
+			else
+			{
+				// переносим следующий абзац
+				
+				els.next = els.p.next();
+				
+				if (!els.next)
+				{
+					els.parentP.add(els.nextP, viewportId);
+				}
+				else
+				{
+					els.parentP.insertBefore(els.nextP, els.next, viewportId);
+				}
+			}
+		},
+		
+		/**
+		 * @template
+		 * Восстанавливает следующий абзац.
+		 * @param {Object} els
+		 */
+		unMoveNextP: function (els)
+		{
+			var me = this,
+				data = me.getData(),
+				viewportId = data.viewportId;
 			
-			els.nextParent = els.next;
-
-			if (els.nextParent)
+			if (els.newP)
 			{
-				els.nextDeepFirst = els.nextParent.getDeepFirst();
-				els.nextP = els.nextDeepFirst.getStyleHolder();
+				// переносим все элементы в старый абзац
+				
+				while (els.first = els.newP.first())
+				{
+					els.nextP.add(els.first, viewportId);
+				}
+				
+				els.parentP.remove(els.newP, viewportId);
+				
+				// воссоздаем старый следующий абзац
+				
+				if (els.nextNextP)
+				{
+					els.parentNextP.insertBefore(els.nextP, els.nextNextP, viewportId);
+				}
+				else
+				{
+					els.parentNextP.add(els.nextP, viewportId);
+				}
 			}
-
-			return els.nextP;
+			else
+			{
+				// воссоздаем абзац в следующем блоке
+				
+				els.next = !els.parentNextP.equal(els.parent) ? els.parentNextP.first() : false;
+				
+				if (els.next)
+				{
+					els.parentNextP.insertBefore(els.nextP, els.next, viewportId);
+				}
+				else
+				{
+					els.parentNextP.add(els.nextP, viewportId);
+				}
+			}
 		}
 	}
 );
