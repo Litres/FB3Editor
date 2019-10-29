@@ -9,8 +9,9 @@ Ext.define(
 	{
 		requires: [
 			'FBEditor.editor.pasteproxy.google.doc.dom.Proxy',
-			'FBEditor.editor.pasteproxy.DomProxyDefault',
-			'FBEditor.editor.pasteproxy.dom.SpanProxy'
+			'FBEditor.editor.pasteproxy.dom.SpanProxy',
+			'FBEditor.editor.pasteproxy.office.word.dom.Proxy',
+			'FBEditor.editor.pasteproxy.DomProxyDefault'
 		],
 
 		/**
@@ -64,14 +65,28 @@ Ext.define(
 			var me = this,
 				dom = me.dom,
 				css = me.css,
-				manager = me.pasteProxy.getManager(),
+				pasteProxy  = me.pasteProxy,
+				manager = pasteProxy.getManager(),
 				body;
 			
 			if (body = dom.querySelector('body > b'))
 			{
 				// google docs
 				
+				pasteProxy.setType(pasteProxy.GOOGLE_TYPE);
+				
 				me.domProxy = Ext.create('FBEditor.editor.pasteproxy.google.doc.dom.Proxy',
+					{manager: manager, body: body, css: css});
+			}
+			else if (dom.querySelector('head > meta[content^=Word]'))
+			{
+				// office word
+				
+				pasteProxy.setType(pasteProxy.WORD_OFFICE_TYPE);
+				
+				body = dom.querySelector('body');
+				
+				me.domProxy = Ext.create('FBEditor.editor.pasteproxy.office.word.dom.Proxy',
 					{manager: manager, body: body, css: css});
 			}
 			else

@@ -1046,6 +1046,16 @@ Ext.define(
 			
 			return attributes;
 		},
+		
+		/**
+		 * Устанавливает аттрибут.
+		 * @param {String} [name] Имя аттрибута.
+		 * @param {*} val Значение аттрибута.
+		 */
+		setAttribute: function (name, val)
+		{
+			this.attributes[name] = val;
+		},
 
 		/**
 		 * Синхронизирует узлы элемента в окнах.
