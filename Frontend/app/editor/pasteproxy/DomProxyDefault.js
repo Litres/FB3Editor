@@ -7,6 +7,11 @@
 Ext.define(
 	'FBEditor.editor.pasteproxy.DomProxyDefault',
 	{
+		requires: [
+			'FBEditor.editor.pasteproxy.dom.PProxy',
+			'FBEditor.editor.pasteproxy.dom.SpanProxy'
+		],
+		
 		/**
 		 * @property {Object} Список альтернативных тегов html.
 		 */
@@ -33,6 +38,12 @@ Ext.define(
 		 * @property {Object} CSS-классы из DOM.
 		 */
 		css: null,
+		
+		/**
+		 * @private
+		 * @property {FBEditor.editor.pasteproxy.dom.AbstractProxy} Прокси узла.
+		 */
+		nodeProxy:  null,
 		
 		/**
 		 * @param data
@@ -100,7 +111,7 @@ Ext.define(
 			name = node.nodeName.toLowerCase();
 			
 			//console.log([name], node);
-			//console.log(parentEl.xmlTag, parentEl);
+			//console.log(parentEl.getName(), parentEl);
 			//console.log(parentEl.getXml());
 			
 			if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim())
@@ -120,7 +131,7 @@ Ext.define(
 					// пытаемся конвертировать span в другие элементы, учитывая его текущие CSS-стили
 					name = me.convertSpan(node);
 					
-					if (!name)
+					if (!name && !node.childNodes.length)
 					{
 						// получаем текст
 						val = me.cleanText(node.textContent);
@@ -133,6 +144,11 @@ Ext.define(
 						
 						return el;
 					}
+				}
+				else if (name === 'p')
+				{
+					// преобразуем абзац
+					name = me.convertP(node);
 				}
 				
 				// получаем универсальное имя элемента, которое используется в схеме
@@ -218,19 +234,58 @@ Ext.define(
 		 * @protected
 		 * Пытается преобразовать span в другой элемент, возвращая новое имя узла.
 		 * Преобразование основывается на текущих CSS-стилях span, полученных из DOM.
+		 * Вернет false - в случае, если преобразование не найдено.
 		 * @param {Node} node Узел span.
-		 * @return {String|false} Имя нового элемента.
+		 * @return {String|Boolean} Имя нового элемента.
 		 */
 		convertSpan: function (node)
 		{
 			var me = this,
-				spanProxy,
+				proxy,
 				name;
 			
-			spanProxy = FBEditor.editor.pasteproxy.dom.SpanProxy.getImplementation({node: node, domProxy: me});
-			name = spanProxy.getNewName();
+			proxy = FBEditor.editor.pasteproxy.dom.SpanProxy.getImplementation({node: node, domProxy: me});
+			me.setNodeProxy(proxy);
+			name = proxy.getNewName();
 			
 			return name;
+		},
+		
+		/**
+		 * @protected
+		 * Преобразует абзац.
+		 * @param {Node} node Узел span.
+		 * @return {String|false} Имя нового элемента.
+		 */
+		convertP: function (node)
+		{
+			var me = this,
+				proxy,
+				name;
+			
+			proxy = FBEditor.editor.pasteproxy.dom.PProxy.getImplementation({node: node, domProxy: me});
+			me.setNodeProxy(proxy);
+			name = proxy.getNewName();
+			
+			return name;
+		},
+		
+		/**
+		 * Устанавливает прокси узла.
+		 * @param {FBEditor.editor.pasteproxy.dom.AbstractProxy} proxy
+		 */
+		setNodeProxy: function (proxy)
+		{
+			this.nodeProxy = proxy;
+		},
+		
+		/**
+		 * Возвращает прокси узла.
+		 * @returns {FBEditor.editor.pasteproxy.dom.AbstractProxy}
+		 */
+		getNodeProxy: function ()
+		{
+			return this.nodeProxy;
 		},
 		
 		/**

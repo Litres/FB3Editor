@@ -71,7 +71,7 @@ Ext.define(
 						range = data.range = manager.getRangeCursor();
 						offset = range.offset;
 						
-						console.log('range', range);
+						//console.log('range', range);
 						
 						nodes.node = range.start;
 						viewportId = data.viewportId = nodes.node.viewportId;
@@ -79,7 +79,7 @@ Ext.define(
 						els.p = els.node.isStyleHolder || !els.node.isText && !els.node.isStyleType ? null : els.node.getStyleHolder();
 						els.node = !els.p ? els.node.getDeepFirst().getStyleHolder() : els.node;
 						
-						console.log('els', els);
+						//console.log('els', els);
 						
 						manager.setSuspendEvent(true);
 						
