@@ -13,6 +13,16 @@ Ext.define(
 			'FBEditor.editor.pasteproxy.ModelProxy',
 		    'FBEditor.resource.data.PasteData'
 		],
+		
+		DEFAULT_TYPE: 0, // тип вставки - по умолчанию
+		GOOGLE_TYPE: 1, // google docs
+		WORD_OFFICE_TYPE: 2, // ms office word
+		
+		/**
+		 * @private
+		 * @property {Number} Тип вставки.
+		 */
+		type: 0,
 
 		/**
 		 * @protected
@@ -100,6 +110,24 @@ Ext.define(
 
 			// сохраняем вставляемые ресурсы в редакторе
 			resourcesPaste.save();
+		},
+		
+		/**
+		 * Устанавливает тип вставки.
+		 * @param {Number} type
+		 */
+		setType: function (type)
+		{
+			this.type = type;
+		},
+		
+		/**
+		 * Возвращает тип вставки.
+		 * @return {number}
+		 */
+		getType: function ()
+		{
+			return this.type;
 		},
 		
 		/**
