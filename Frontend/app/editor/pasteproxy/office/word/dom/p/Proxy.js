@@ -45,6 +45,31 @@ Ext.define(
 				pattern: /l[0-1] level[0-9]+ lfo[1-2]/,
 				el: 'li'
 			}
+		},
+		
+		clean: function ()
+		{
+			var me = this;
+			
+			me.cleanList();
+		},
+		
+		/**
+		 * @private
+		 * Очищает лишний текст, который возникает при копировании списка.
+		 */
+		cleanList: function ()
+		{
+			var me = this,
+				node = me.node,
+				ignoreNode;
+			
+			ignoreNode = node.querySelector('span[style="mso-list:Ignore"]');
+			
+			if (ignoreNode)
+			{
+				ignoreNode.parentNode.removeChild(ignoreNode);
+			}
 		}
 	}
 );
