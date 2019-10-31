@@ -210,14 +210,6 @@ Ext.define(
 			if (node.nodeValue)
 			{
 				t = node.nodeValue;
-				
-				if (node.previousSibling &&
-					node.previousSibling.nodeType === Node.COMMENT_NODE &&
-					node.previousSibling.nodeValue === 'EndFragment')
-				{
-					// пропускаем текстовый узел после завершающего комментария (для ворда)
-					return false;
-				}
 			}
 			else
 			{
@@ -246,6 +238,10 @@ Ext.define(
 			
 			proxy = FBEditor.editor.pasteproxy.dom.SpanProxy.getImplementation({node: node, domProxy: me});
 			me.setNodeProxy(proxy);
+			
+			// очищаем span от лишнего текста
+			proxy.clean();
+
 			name = proxy.getNewName();
 			
 			return name;
@@ -265,6 +261,10 @@ Ext.define(
 			
 			proxy = FBEditor.editor.pasteproxy.dom.PProxy.getImplementation({node: node, domProxy: me});
 			me.setNodeProxy(proxy);
+			
+			// очищаем p от лишнего текста
+			proxy.clean();
+			
 			name = proxy.getNewName();
 			
 			return name;
