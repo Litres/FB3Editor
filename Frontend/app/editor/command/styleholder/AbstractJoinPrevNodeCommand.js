@@ -51,8 +51,17 @@ Ext.define(
 
 				if (!els.prevP || !els.prevP.hisName(me.elementName))
 				{
-					// отсутствует или не подходит предыдущий узел
-					return false;
+					if (els.prevP && els.prevP.isLiHolder)
+					{
+						// предыдущий элемент - список
+						els.liHolder = els.prevP;
+						els.prevP = els.prevP.last();
+					}
+					else
+					{
+						// отсутствует или не подходит предыдущий узел
+						return false;
+					}
 				}
 
 				console.log('join prev ' + me.elementName, range);
@@ -62,7 +71,7 @@ Ext.define(
 
 				// курсор
 				els.cursor = els.lastPrev.getDeepLast();
-				nodes.startCursor = els.lastPrev.getText() ? els.lastPrev.getLength() : 0;
+				nodes.startCursor = els.cursor.getText() ? els.cursor.getLength() : 0;
 
 				// пустой ли элемент
 				data.curEmpty = els.p.isEmpty();
@@ -146,11 +155,11 @@ Ext.define(
 		{
 			var me = this,
 				data = me.getData(),
+				viewportId = data.viewportId,
 				res = false,
 				els = {},
 				nodes = {},
-				factory = FBEditor.editor.Factory,
-				viewportId = data.viewportId,
+				factory,
 				helper,
 				manager;
 
@@ -163,15 +172,18 @@ Ext.define(
 				console.log('undo join prev ' + me.elementName, nodes, data);
 
 				manager = els.parentP.getManager();
+				factory = manager.getFactory();
 				manager.removeAllOverlays();
 				manager.setSuspendEvent(true);
 
 				// новый элемент
 				els.newP = factory.createElement(me.elementName);
-				nodes.newP = els.newP.getNode(viewportId);
+				//nodes.newP = els.newP.getNode(viewportId);
+				
+				els.nextP = els.liHolder ? els.liHolder.next() : els.prevP.next();
 
 				// вставляем
-				if (els.nextP = els.prevP.next())
+				if (els.nextP)
 				{
 					els.parentP.insertBefore(els.newP, els.nextP, viewportId);
 				}
@@ -216,7 +228,6 @@ Ext.define(
 						nodes.empty = els.empty.getNode(viewportId);
 						els.prevP.add(els.empty, viewportId);
 					}
-
 				}
 
 				els.parentP.sync(viewportId);
