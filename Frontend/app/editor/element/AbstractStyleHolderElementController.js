@@ -227,7 +227,7 @@ Ext.define(
 
 			//console.log('range, isStart, nodes', range, isStart, nodes);
 
-			// текущий контейнер в параграфе
+			// текущий контейнер в абзаце
 			while (!els.p.hisName(name))
 			{
 				nodes.node = nodes.p;
@@ -247,7 +247,7 @@ Ext.define(
 			else if (isStart && !els.prev)
 			{
 				// курсор в начале абзаца
-
+				
 				// соединяем абзац с предыдущим
 				cmd = Ext.create('FBEditor.editor.command.' + name + '.JoinPrevNodeCommand');
 
