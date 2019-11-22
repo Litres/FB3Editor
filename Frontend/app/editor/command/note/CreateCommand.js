@@ -126,7 +126,7 @@ Ext.define(
 				}
 				
 				// устанавливаем курсор
-				els.cursor.getNodeHelper().setCursor();
+				els.cursor.getNodeHelper().setCursor({viewportId: viewportId});
 				
 				// сохраняем
 				data.els = els;
