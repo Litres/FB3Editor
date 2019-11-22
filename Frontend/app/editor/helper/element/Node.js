@@ -399,8 +399,9 @@ Ext.define(
 		
 		/**
 		 * Прокручивает скролл во всех окнах к элементу.
+		 * @param {String} [id] Айди окна. Если айди передано, то прокрутка происходит в указанном окне.
 		 */
-		scrollIntoView: function ()
+		scrollIntoView: function (id)
 		{
 			var me = this,
 				el = me.el,
@@ -417,26 +418,29 @@ Ext.define(
 						top,
 						rootTop;
 					
-					// узел корневого элемента
-					rootNode = helper.getNode(viewportId);
-					
-					// вертикальная позиция скролла
-					scrollTop = Ext.fly(rootNode).getScrollTop();
-					
-					// вертикальная позиция корневого элемента относительно окна.
-					y = Ext.fly(rootNode).getY();
-					
-					// текущая вертикальная позиция элемента относительно корневого элемента
-					top = Ext.fly(node).getRegion().top;
-					
-					// вертикальная позиция элемента относительно корневого элемента с учетом позиции
-					// вертикального скролла
-					rootTop = scrollTop + top - y;
-					
-					//console.log(scrollTop, top, y, rootTop);
-					
-					// устанавливаем новую позицию скролла
-					Ext.fly(rootNode).setScrollTop(rootTop);
+					if (!id || id && id === viewportId)
+					{
+						// узел корневого элемента
+						rootNode = helper.getNode(viewportId);
+						
+						// вертикальная позиция скролла
+						scrollTop = Ext.fly(rootNode).getScrollTop();
+						
+						// вертикальная позиция корневого элемента относительно окна.
+						y = Ext.fly(rootNode).getY();
+						
+						// текущая вертикальная позиция элемента относительно корневого элемента
+						top = Ext.fly(node).getRegion().top;
+						
+						// вертикальная позиция элемента относительно корневого элемента с учетом позиции
+						// вертикального скролла
+						rootTop = scrollTop + top - y;
+						
+						//console.log(scrollTop, top, y, rootTop);
+						
+						// устанавливаем новую позицию скролла
+						Ext.fly(rootNode).setScrollTop(rootTop);
+					}
 				}
 			);
 		},
@@ -482,6 +486,7 @@ Ext.define(
 		 * Устанавливает курсор в начало элемента.
 		 * @param {Object} [opts] Дополнительные опции.
 		 * @param {Number} [opts.start] Стартовая позиция курсора.
+		 * @param {String} [opts.viewportId] Айди окна.
 		 * @param {Boolean} [opts.withoutScroll] Не прокручивать окно к элементу.
 		 */
 		setCursor: function (opts)
@@ -511,7 +516,7 @@ Ext.define(
 			if (!opts.withoutScroll)
 			{
 				// прокручиваем окно
-				me.scrollIntoView();
+				me.scrollIntoView(opts.viewportId);
 			}
 		},
 
