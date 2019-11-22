@@ -15,7 +15,7 @@ Ext.define(
 		 */
 		overlays: null,
 		
-		scrollIntoView: function ()
+		scrollIntoView: function (id)
 		{
 			var me = this,
 				el = me.el,
@@ -25,7 +25,7 @@ Ext.define(
 			// так как текстовый элемент не может быть прокручен, то передаем управление родительскому элементу
 			parent = el.getParent();
 			helper = parent.getNodeHelper();
-			helper.scrollIntoView();
+			helper.scrollIntoView(id);
 		},
 		
 		/**
