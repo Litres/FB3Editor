@@ -218,12 +218,12 @@ Ext.define(
                                 fullXml: xml,
 	                            isXmlPanel: isXmlPanel
                             };
-
-                            // получаем модель для измененного xml
+	
+	                        // получаем модель для измененного xml
                             content = managerEditor.getModelFromXml(xml);
                             scopeData.content = content;
-
-                            // получаем xml новой модели для проверки по схеме
+	
+	                        // получаем xml новой модели для проверки по схеме
                             xml = content.getXml(true);
 
                             schema = managerEditor.getSchema();
@@ -581,11 +581,13 @@ Ext.define(
         {
             var me = this,
                 tt = me.translateText,
+	            line,
                 errMsg;
 	
 	        me.setSyncProcess(false);
 	
 	        errMsg = e.error;
+	        line = errMsg;
             errMsg = Ext.String.htmlEncode(errMsg);
             errMsg = errMsg.replace(/\^/g, '');
             errMsg = errMsg.replace(/\n+/g, '<br/>');
@@ -606,9 +608,50 @@ Ext.define(
                         {
                             resolve(true);
                         }
+                        else
+                        {
+                        	// перемещаем курсор к месту ошибки
+                        	me.toErrorLine(line);
+                        }
                     }
                 }
             );
-        }
+        },
+	
+	    /**
+	     * @private
+	     * Перемещает курсор к месту ошибки.
+	     * @param {String} text Исходный текст ошибки, в котором содержится номер первой ошибочной строки.
+	     */
+	    toErrorLine: function (text)
+	    {
+	    	var me = this,
+			    proxy = me.getProxyEditor(),
+			    str,
+			    line,
+		        diff;
+	    	
+		    line = text.match(/error on line ([0-9]+)/);
+		    
+		    // корректировка номера строки в зависимости от сообщения
+		    diff = line ? 3 : 2;
+		    
+		    line = line || text.match(/body\.xml:([0-9]+)/);
+		    
+		    if (line)
+		    {
+		    	line = Number(line[1]);
+		    	line = line - diff;
+		    	
+		    	// текст строки
+		    	str = proxy.getLine(line);
+		    	
+		    	// возвращаем фокус в редактор xml
+		    	proxy.focus();
+		    	
+		    	// выделяем строку
+			    proxy.setSelection({line: line, ch: 0}, {line: line, ch: str.length});
+		    }
+	    }
     }
 );
