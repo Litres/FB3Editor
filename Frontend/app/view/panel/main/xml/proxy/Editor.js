@@ -177,6 +177,22 @@ Ext.define(
         },
 	
 	    /**
+	     * Возвращает текст строки.
+	     * @param {Number} num Номер строки.
+	     * @return {String} Текст строки.
+	     */
+	    getLine: function (num)
+	    {
+		    var me = this,
+			    lib = me.getLib(),
+			    text;
+		
+		    text = lib.getLine(num);
+		
+		    return text;
+	    },
+	
+	    /**
          * Возвращает текущую позицию курсора в тексте.
 	     * @param {String} start - from|to|head|anchor
 	     * @return {Object}
@@ -203,7 +219,7 @@ Ext.define(
 	     */
 	    setSelection: function (from, to)
         {
-	        var me        = this,
+	        var me = this,
 		        lib = me.getLib();
 	
 	        lib.setSelection(from, to);
@@ -247,6 +263,21 @@ Ext.define(
                 margin
             );
         },
+	
+	    /**
+	     * Устанавливает курсор в нужную позицию.
+	     * @param {Object} pos Позиция курсора.
+	     * @param {Number} pos.line Номер строки.
+	     * @param {Number} pos.ch Номер столбца.
+	     */
+	    setCursor: function (pos)
+	    {
+		    var me = this,
+			    lib = me.getLib();
+		
+		    me.focus();
+		    lib.setCursor(pos);
+	    },
 	
 	    /**
 	     * Создает подсветку в тексте.
