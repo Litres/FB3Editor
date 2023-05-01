@@ -11,7 +11,7 @@ Ext.define(
 		xtype: 'form-desc-field-link-uuid',
 		cls: 'form-desc-field-link-uuid',
 
-		linkTpl: '<a href="https://hub.litres.ru/pages/any_uuid_redir/?uuid={href}" target="_blank"' +
+		linkTpl: '<a href="' + Ext.manifest.hubApiEndpoint + '/pages/any_uuid_redir/?uuid={href}" target="_blank"' +
 		         ' title="{title}">{value}</a>',
 
 		translateText: {

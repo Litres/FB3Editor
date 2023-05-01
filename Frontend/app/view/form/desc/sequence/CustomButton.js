@@ -30,7 +30,7 @@ Ext.define(
 			// получаем новый id
 			manager.getNewId(
 				{
-					url: 'https://hub.litres.ru/pages/machax_sequences/',
+					url: Ext.manifest.hubApiEndpoint + '/pages/machax_sequences/',
 					property: 'series',
 					fn: me.setSequenceId,
 					scope: me

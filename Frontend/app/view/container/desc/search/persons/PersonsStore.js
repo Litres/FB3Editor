@@ -12,7 +12,7 @@ Ext.define(
 		/**
 		 * @property {String} URL запроса.
 		 */
-		url: 'https://hub.litres.ru/pages/machax_persons/',
+		url: Ext.manifest.hubApiEndpoint + '/pages/machax_persons/',
 
 		rootProperty: 'persons'
 	}

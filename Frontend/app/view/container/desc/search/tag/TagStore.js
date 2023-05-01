@@ -9,6 +9,6 @@ Ext.define(
 	{
 		extend: 'FBEditor.store.AbstractStore',
 
-		url: 'https://hub.litres.ru/pages/tags_search'
+		url: Ext.manifest.hubApiEndpoint + '/pages/tags_search'
 	}
 );

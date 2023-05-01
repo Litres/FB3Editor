@@ -38,7 +38,7 @@ Ext.define(
 		/**
 		 * @property {String} Адрес которого загружается xml дерева жанров.
 		 */
-		urlTree: 'https://hub.litres.ru/genres_list_2/',
+		urlTree: Ext.manifest.hubApiEndpoint + '/genres_list_2/',
 
         /**
 		 * @property {Number} Таймаут запроса дерева жанров с сервера (миллисекунды).

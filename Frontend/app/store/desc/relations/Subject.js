@@ -33,7 +33,7 @@ Ext.define(
 		],
 		proxy: {
 			type: 'ajax',
-			url: 'https://hub.litres.ru/pages/machax_persons/',
+			url: Ext.manifest.hubApiEndpoint + '/pages/machax_persons/',
 			reader: {
 				type: 'json',
 				rootProperty: 'persons'

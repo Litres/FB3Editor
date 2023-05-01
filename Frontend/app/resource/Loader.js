@@ -15,19 +15,19 @@ Ext.define(
 		/**
 		 * @property {String} Адрес загрузки списка ресурсов.
 		 */
-		loadAction: 'https://hub.litres.ru/pages/get_fb3_body_rels/',
+		loadAction: Ext.manifest.hubApiEndpoint + '/pages/get_fb3_body_rels/',
 		
 		/**
 		 * @private
 		 * @property {String} Адрес загрузки ресурса.
 		 */
-		urlRes: 'https://hub.litres.ru/pages/get_fb3_body_image/',
+		urlRes: Ext.manifest.hubApiEndpoint + '/pages/get_fb3_body_image/',
 
 		/**
 		 * @private
 		 * @property {String} Адрес загрузки обложки.
 		 */
-		urlCover: 'https://hub.litres.ru/pages/get_fb3_cover_image/',
+		urlCover: Ext.manifest.hubApiEndpoint + '/pages/get_fb3_cover_image/',
 
 		/**
 		 * @property {Number} Максимальное количество одновременных запросов к хабу.

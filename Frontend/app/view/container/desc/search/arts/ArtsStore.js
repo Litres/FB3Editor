@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend: 'FBEditor.store.AbstractStore',
 
-		url: 'https://hub.litres.ru/pages/machax_arts/',
+		url: Ext.manifest.hubApiEndpoint + '/pages/machax_arts/',
 
 		rootProperty: 'arts'
 	}
