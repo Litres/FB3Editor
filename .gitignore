@@ -1,3 +1,4 @@
 MockHubServer/node_modules
 MockHubServer/fb3_files
 .idea
+.DS_Store
