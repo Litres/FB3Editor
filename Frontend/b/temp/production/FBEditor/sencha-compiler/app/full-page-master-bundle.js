@@ -1,0 +1,9 @@
+// @tag full-page
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/Blob.js/Blob.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/clipboard-polyfill/index.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/jszip/dist/jszip.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/es6-promise-polyfill/promise.min.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/FileSaver.js/FileSaver.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/x2js/xml2json.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/bower_components/jsdiff/diff.min.js
+// @require /Users/sergyperov/litres/FB3Editor/Frontend/app.js

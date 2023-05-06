@@ -42,6 +42,20 @@ Ext.define(
 			
 			me.callParent(arguments);
 		},
+
+		// иногда попадаются оглавления с большим количеством элементов
+		// по этому устанавливаем максимальную высоту окна
+		afterShow : function() {
+			var me = this;
+
+			var height = Ext.getBody().getViewSize().height;
+			var maxHeight = height * 0.8;
+			if (me.getHeight() > maxHeight) {
+				me.setHeight(maxHeight);
+			}
+			me.center();
+			me.setAutoScroll(true);
+		},
 		
 		/**
 		 * Возвращает компоненты всех верхних секций.

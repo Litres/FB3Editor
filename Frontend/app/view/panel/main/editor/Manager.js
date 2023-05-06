@@ -498,12 +498,16 @@ Ext.define(
 
 					//console.log(xml);
 					rev = xml.match(/rev (\d+) -->$/);
-					rev = rev[1];
+					if (rev) {
+						rev = rev[1];
+					} else {
+						console.log("Не найден параметр rev в теле книги");
+					}
 
 					// загружаем данные в редактор
 					me.loadDataToEditor(xml);
 
-					if (me.enableRevision)
+					if (me.enableRevision && rev)
 					{
 						// сохраняем ревизию
 						revision.setRev(rev, xml);

@@ -284,7 +284,7 @@
      */
     "production": {
         "loader": {
-            "cache": "1206",
+            "cache": "1207",
             "cacheParam": "_v"
         },
         "hubApiEndpoint": "https://hub.litres.ru"
