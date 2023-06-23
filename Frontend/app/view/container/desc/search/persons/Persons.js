@@ -218,7 +218,7 @@ Ext.define(
 				'   <div class="container-search-persons-item-time">{last_action_time}</div>' +
 				'   <a class="container-search-persons-item-link" target="_blank"' +
 				'           title="' + me.translateText.link + '"' +
-				'           href="https://hub.litres.ru/pages/edit_subject/?subject={id}">' +
+				'           href="' + Ext.manifest.hubApiEndpoint + '/pages/edit_subject/?subject={id}">' +
 				'       <i class="fa fa-external-link"></i>' +
 				'   </a>' +
 				'</div>'
@@ -273,7 +273,7 @@ Ext.define(
 				'<tpl for="arts">' +
 				'<li class="container-search-persons-item-book" style="background-color: {bgcolor}">' +
 				'   <a style="color: {link_color}" target="_blank" ' +
-				'       href="https://hub.litres.ru/pages/edit_object/?art={id}">{name}</a>' +
+				'       href="' + Ext.manifest.hubApiEndpoint + '/pages/edit_object/?art={id}">{name}</a>' +
 				'</li>' +
 				'</tpl>' +
 				'</ul>'

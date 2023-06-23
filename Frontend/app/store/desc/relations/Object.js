@@ -25,7 +25,7 @@ Ext.define(
 		],
 		proxy: {
 			type: 'ajax',
-			url: 'https://hub.litres.ru/pages/machax_arts/',
+			url: Ext.manifest.hubApiEndpoint + '/pages/machax_arts/',
 			reader: {
 				type: 'json',
 				rootProperty: 'arts'

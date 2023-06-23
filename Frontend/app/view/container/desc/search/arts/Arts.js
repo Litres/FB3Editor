@@ -123,7 +123,7 @@ Ext.define(
 				'       <div class="panel-arts-item-name" art-id="{id}">' +
 				'           <a style="color: {link_color}" target="_blank"' +
 				'               title="{owner_login}"' +
-				'               href="https://hub.litres.ru/pages/edit_object/?art={id}">{name}</a>' +
+				'               href="' + Ext.manifest.hubApiEndpoint + '/pages/edit_object/?art={id}">{name}</a>' +
 				'       </div>' +
 				'       <div class="panel-arts-item-author">{authors}</div>' +
 				'       <div class="panel-arts-item-date">{registered}</div>' +

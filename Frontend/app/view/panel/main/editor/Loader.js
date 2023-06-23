@@ -9,7 +9,7 @@ Ext.define(
 	{
 		extend : 'FBEditor.loader.Loader',
 
-		loadAction: 'https://hub.litres.ru/pages/get_fb3_body/',
+		loadAction: Ext.manifest.hubApiEndpoint + '/pages/get_fb3_body/',
 
 		/**
 		 * Инициализирует адреса загрузки и сохранения.

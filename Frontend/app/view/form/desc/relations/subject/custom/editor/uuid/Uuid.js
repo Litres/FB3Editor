@@ -24,7 +24,7 @@ Ext.define(
 				// получаем новый id
 				manager.getNewId(
 					{
-						url: 'https://hub.litres.ru/pages/machax_persons/',
+						url: Ext.manifest.hubApiEndpoint + '/pages/machax_persons/',
 						property: 'persons',
 						fn: me.setSubjectId,
 						scope: me

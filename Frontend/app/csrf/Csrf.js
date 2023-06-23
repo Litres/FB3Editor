@@ -12,7 +12,7 @@ Ext.define(
 		/**
 		 * @property {String} Адрес списка токенов.
 		 */
-		url: 'https://hub.litres.ru/pages/get_some_csrfs/',
+		url: Ext.manifest.hubApiEndpoint + '/pages/get_some_csrfs/',
 
 		/**
 		 * @property {Number} Необходимое количество токенов.

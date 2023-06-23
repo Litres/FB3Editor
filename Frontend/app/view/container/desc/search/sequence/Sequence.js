@@ -121,7 +121,7 @@ Ext.define(
 				'   <div class="container-sequence-item-id">{id}</div>' +
 				'   <a class="container-sequence-item-link" target="_blank"' +
 				'           title="' + me.translateText.link + '"' +
-				'           href="https://hub.litres.ru/pages/edit_serie/?id={id}">' +
+				'           href="' + Ext.manifest.hubApiEndpoint + '/pages/edit_serie/?id={id}">' +
 				'       <i class="fa fa-external-link"></i>' +
 				'   </a>' +
 				'</div>'

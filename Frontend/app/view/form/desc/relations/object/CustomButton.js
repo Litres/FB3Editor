@@ -32,7 +32,7 @@ Ext.define(
 			// получаем новый id
 			manager.getNewId(
 				{
-					url: 'https://hub.litres.ru/pages/machax_arts/',
+					url: Ext.manifest.hubApiEndpoint + '/pages/machax_arts/',
 					property: 'arts',
 					fn: me.setObjectId,
 					scope: me
